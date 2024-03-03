@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * An interface that represents the general item.
+ * An interface that represents an item.
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public interface Item {
