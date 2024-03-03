@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * A general interface for executing actions requiring an {@link ItemStack}.
  */
 @FunctionalInterface
-public interface BukkitAction {
+public interface BukkitItemAction {
 
     /**
      * Execute.
