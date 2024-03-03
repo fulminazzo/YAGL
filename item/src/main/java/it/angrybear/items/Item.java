@@ -135,7 +135,12 @@ public interface Item {
      * @param lore the lore
      * @return this item
      */
-    Item setLore(final @NotNull Collection<String> lore);
+    default Item setLore(final @NotNull Collection<String> lore) {
+        @NotNull List<String> prevLore = getLore();
+        prevLore.clear();
+        prevLore.addAll(lore);
+        return this;
+    }
 
     /**
      * Gets lore.

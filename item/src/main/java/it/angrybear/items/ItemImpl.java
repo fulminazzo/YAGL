@@ -81,13 +81,6 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public Item setLore(final @NotNull Collection<String> lore) {
-        this.lore.clear();
-        this.lore.addAll(lore);
-        return this;
-    }
-
-    @Override
     public Item setUnbreakable(final boolean unbreakable) {
         this.unbreakable = unbreakable;
         return this;
