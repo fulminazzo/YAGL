@@ -12,7 +12,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     protected Recipe recipe;
 
     @Override
-    public RecipeItem setRecipe(@Nullable Recipe recipe) {
+    public RecipeItem setRecipe(final @Nullable Recipe recipe) {
         this.recipe = recipe;
         return this;
     }
