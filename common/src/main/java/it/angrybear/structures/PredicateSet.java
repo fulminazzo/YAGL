@@ -16,8 +16,8 @@ import java.util.function.BiPredicate;
  * @param <E> the type parameter
  */
 public class PredicateSet<E> implements Set<E>, Serializable {
-    private final Set<E> internal;
-    private final BiPredicate<E, E> predicate;
+    protected final Set<E> internal;
+    protected final BiPredicate<E, E> predicate;
 
     /**
      * Instantiates a new Predicate set.
