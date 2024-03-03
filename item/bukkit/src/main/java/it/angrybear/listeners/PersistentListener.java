@@ -90,23 +90,25 @@ public class PersistentListener implements Listener {
 
     @EventHandler
     void on(InventoryClickEvent event) {
-        findPersistentItem(event.getCurrentItem(), cancelled(event), () ->
-                findPersistentItem(event.getCursor(), cancelled(event)));
+        Player player = (Player) event.getWhoClicked();
+        clickPersistentItem(event.getCurrentItem(), cancelled(event), () ->
+                clickPersistentItem(event.getCursor(), cancelled(event), player), player);
     }
 
     @EventHandler
     void on(InventoryDragEvent event) {
-        findPersistentItem(event.getCursor(), cancelled(event), () -> findPersistentItem(event.getOldCursor(), cancelled(event), () -> {
+        Player player = (Player) event.getWhoClicked();
+        clickPersistentItem(event.getCursor(), cancelled(event), () -> clickPersistentItem(event.getOldCursor(), cancelled(event), () -> {
             Collection<ItemStack> items = event.getNewItems().values();
             AtomicBoolean check = new AtomicBoolean(true);
             for (ItemStack i : items) {
-                findPersistentItem(i, p -> {
+                clickPersistentItem(i, p -> {
                     cancelled(event).accept(p);
                     check.set(false);
-                });
+                }, player);
                 if (!check.get()) break;
             }
-        }));
+        }, player), player);
     }
 
     private Consumer<PersistentItem> cancelled(Cancellable event) {
