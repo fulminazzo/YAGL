@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
-    private Recipe recipe;
+    protected Recipe recipe;
 
     @Override
     public void registerRecipe() {
