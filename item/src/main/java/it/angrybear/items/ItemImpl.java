@@ -11,6 +11,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+/**
+ * An implementation of {@link Item}.
+ */
 @Getter
 class ItemImpl implements Item {
     private String material;
@@ -22,14 +25,28 @@ class ItemImpl implements Item {
     private final Set<ItemFlag> itemFlags;
     private boolean unbreakable;
 
+    /**
+     * Instantiates a new Item.
+     */
     public ItemImpl() {
         this(null);
     }
 
+    /**
+     * Instantiates a new Item.
+     *
+     * @param material the material
+     */
     public ItemImpl(final String material) {
         this(material, 1);
     }
 
+    /**
+     * Instantiates a new Item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
     public ItemImpl(final String material, final int amount) {
         if (material != null) setMaterial(material);
         setAmount(amount).setDisplayName("");
