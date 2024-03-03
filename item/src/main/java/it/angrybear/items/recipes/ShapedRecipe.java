@@ -67,7 +67,7 @@ public class ShapedRecipe implements Recipe {
      * The type Shape.
      */
     @Getter
-    protected static class Shape {
+    public static class Shape {
         private int rows;
         private int columns;
 
