@@ -85,7 +85,7 @@ class ItemTest {
         }
 
         @Override
-        public boolean isSimilar() {
+        public boolean isSimilar(Item item, ItemField... ignore) {
             return false;
         }
     }
