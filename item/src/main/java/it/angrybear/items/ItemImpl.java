@@ -7,6 +7,8 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 @Getter
@@ -75,8 +77,24 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public boolean isSimilar() {
-        return false;
+    public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
+        if (item == null) return false;
+        mainloop:
+        for (final Field field : ItemImpl.class.getDeclaredFields()) {
+            if (Modifier.isStatic(field.getModifiers())) continue;
+            try {
+                for (final ItemField f : ignore)
+                    if (field.getName().equalsIgnoreCase(f.name().replace("_", "")))
+                        continue mainloop;
+                field.setAccessible(true);
+                Object obj1 = field.get(this);
+                Object obj2 = field.get(item);
+                if (!Objects.equals(obj1, obj2)) return false;
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return true;
     }
 
     /**
