@@ -26,7 +26,7 @@ public class BukkitItem extends ItemImpl {
     }
 
     @Override
-    public BukkitItem setDurability(final short durability) {
+    public BukkitItem setDurability(final int durability) {
         return (BukkitItem) super.setDurability(durability);
     }
 

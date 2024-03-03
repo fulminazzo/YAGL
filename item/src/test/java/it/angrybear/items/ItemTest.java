@@ -40,7 +40,7 @@ class ItemTest {
     public static class MockItem implements Item {
         private String material;
         private int amount;
-        private short durability;
+        private int durability;
         private String displayName = "";
         private List<String> lore = new LinkedList<>();
         private Set<Enchantment> enchantments = new EnchantmentSet();
@@ -60,7 +60,7 @@ class ItemTest {
         }
 
         @Override
-        public Item setDurability(short durability) {
+        public Item setDurability(int durability) {
             this.durability = durability;
             return this;
         }

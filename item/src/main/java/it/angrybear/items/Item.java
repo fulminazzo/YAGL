@@ -51,14 +51,14 @@ public interface Item {
      * @param durability the durability
      * @return this item
      */
-    Item setDurability(final short durability);
+    Item setDurability(final int durability);
 
     /**
      * Gets durability.
      *
      * @return the durability
      */
-    short getDurability();
+    int getDurability();
 
     /**
      * Sets display name.

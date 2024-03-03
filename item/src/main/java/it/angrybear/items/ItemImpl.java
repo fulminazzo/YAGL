@@ -18,7 +18,7 @@ import java.util.*;
 class ItemImpl implements Item {
     private String material;
     private int amount;
-    private short durability;
+    private int durability;
     private String displayName;
     private final List<String> lore;
     private final Set<Enchantment> enchantments;
@@ -69,7 +69,7 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public Item setDurability(final short durability) {
+    public Item setDurability(final int durability) {
         this.durability = durability;
         return this;
     }

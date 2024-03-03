@@ -37,7 +37,7 @@ public class ItemUtils {
             if (lore != null) item.setLore(lore);
             meta.getEnchants().forEach((e, l) -> item.addEnchantments(new Enchantment(e.getKey().getKey(), l)));
             meta.getItemFlags().forEach(f -> item.addItemFlags(ItemFlag.valueOf(f.name())));
-            if (meta instanceof Damageable) item.setDurability((short) ((Damageable) meta).getDamage());
+            if (meta instanceof Damageable) item.setDurability(((Damageable) meta).getDamage());
             item.setUnbreakable(meta.isUnbreakable());
         }
         return item;
