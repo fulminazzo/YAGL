@@ -1,14 +1,18 @@
 package it.angrybear.utils;
 
 import it.angrybear.items.BukkitItem;
-import it.angrybear.items.fields.Enchantment;
 import it.angrybear.items.Item;
+import it.angrybear.items.fields.Enchantment;
 import it.angrybear.items.fields.ItemFlag;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -17,6 +21,7 @@ import java.util.List;
  * A collection of utilities for {@link Item}.
  */
 public class ItemUtils {
+    private static final String ID_KEY = "yagl";
 
     /**
      * Converts the given {@link ItemStack} to an {@link Item}.
@@ -67,5 +72,41 @@ public class ItemUtils {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    public static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.Recipe recipe) {
+        if (recipe == null) return null;
+        Recipe result;
+        if (recipe instanceof it.angrybear.items.recipes.ShapedRecipe) {
+        } else if (recipe instanceof it.angrybear.items.recipes.ShapelessRecipe) {
+        } else if (recipe instanceof it.angrybear.items.recipes.FurnaceRecipe)
+            result = recipeToMinecraft((it.angrybear.items.recipes.FurnaceRecipe) recipe);
+        else throw new IllegalArgumentException("Unrecognized recipe type: " + recipe.getClass());
+        return result;
+    }
+
+    private static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.FurnaceRecipe recipe) {
+        if (recipe == null) return null;
+        final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
+
+        final Object ingredient = getItemOrRecipeChoice((BukkitItem) recipe.getIngredients().get(0));
+        final ItemStack output = ((BukkitItem) recipe.getOutput()).create();
+        final int cookingTime = recipe.getCookingTime();
+        final float experience = recipe.getExperience();
+
+        FurnaceRecipe r = new FurnaceRecipe(namespacedKey, output, Material.STONE, experience, cookingTime);
+        Refl<?> tmp = new Refl<>(r);
+        tmp.setFieldObject("ingredient", ingredient);
+
+        return r;
+    }
+
+    private static Object getItemOrRecipeChoice(final @NotNull BukkitItem item) {
+        ItemStack itemStack = item.create();
+        try {
+            return new Refl<>("org.bukkit.inventory.RecipeChoice.ExactChoice", itemStack).getObject();
+        } catch (Exception e) {
+            return itemStack;
+        }
     }
 }
