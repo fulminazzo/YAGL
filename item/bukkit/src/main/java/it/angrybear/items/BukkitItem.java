@@ -35,6 +35,16 @@ public interface BukkitItem extends Item {
     BukkitItem copy();
 
     /**
+     * Compares the given {@link ItemStack} with the one created from {@link #create()}.
+     *
+     * @param itemStack the item stack
+     * @return true if they are similar (uses {@link ItemStack#isSimilar(ItemStack)})
+     */
+    default boolean isSimilar(final ItemStack itemStack) {
+        return create().isSimilar(itemStack);
+    }
+
+    /**
      * Create an item stack from this item.
      *
      * @return the item stack
