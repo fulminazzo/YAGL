@@ -45,6 +45,11 @@ public class BukkitItem extends ItemImpl {
         return (BukkitItem) super.setUnbreakable(unbreakable);
     }
 
+    @Override
+    public BukkitItem copy() {
+        return super.copy(BukkitItem.class);
+    }
+
     /**
      * Create an item stack from this item.
      *
