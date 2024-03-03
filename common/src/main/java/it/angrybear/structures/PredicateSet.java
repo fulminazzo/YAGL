@@ -141,7 +141,7 @@ public class PredicateSet<E> implements Set<E>, Serializable {
      */
     public boolean equals(@Nullable PredicateSet<?> set) {
         if (set == null) return false;
-        return this.internal.equals(set.internal);
+        return equals(set.internal);
     }
 
     /**
@@ -153,7 +153,14 @@ public class PredicateSet<E> implements Set<E>, Serializable {
     public boolean equals(@Nullable Set<?> set) {
         if (set == null) return false;
         if (set instanceof PredicateSet) return equals((PredicateSet<?>) set);
-        return this.internal.equals(set);
+        if (size() != set.size()) return false;
+        mainloop:
+        for (E e : this.internal) {
+            for (Object o : set)
+                if (e.equals(o)) continue mainloop;
+            return false;
+        }
+        return true;
     }
 
     @Override
