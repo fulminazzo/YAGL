@@ -94,7 +94,7 @@ public interface Item {
      */
     default Item addLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
-        for ()
+        for (final String l : lore) prevLore.add(MessageUtils.color(l));
         return this;
     }
 
