@@ -1,0 +1,16 @@
+[versions]
+shadow = "8.1.1"
+delombok = "8.4"
+
+fulmicollection = "1.3.7"
+
+lombok = "1.18.30"
+annotations = "24.1.0"
+junit = "5.9.1"
+
+[libraries]
+fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }
+
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+junit-platform = { module = "org.junit:junit-bom", version.ref = "junit" }
