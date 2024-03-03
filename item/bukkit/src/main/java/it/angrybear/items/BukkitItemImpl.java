@@ -11,38 +11,38 @@ import java.util.Collection;
 class BukkitItemImpl extends ItemImpl implements BukkitItem {
 
     @Override
-    public BukkitItemImpl setMaterial(@NotNull String material) {
+    public BukkitItem setMaterial(@NotNull String material) {
         MaterialUtils.getMaterial(material, true);
-        return (BukkitItemImpl) super.setMaterial(material);
+        return (BukkitItem) super.setMaterial(material);
     }
 
     @Override
-    public BukkitItemImpl setAmount(final int amount) {
-        return (BukkitItemImpl) super.setAmount(amount);
+    public BukkitItem setAmount(final int amount) {
+        return (BukkitItem) super.setAmount(amount);
     }
 
     @Override
-    public BukkitItemImpl setDurability(final int durability) {
-        return (BukkitItemImpl) super.setDurability(durability);
+    public BukkitItem setDurability(final int durability) {
+        return (BukkitItem) super.setDurability(durability);
     }
 
     @Override
-    public BukkitItemImpl setDisplayName(final @NotNull String displayName) {
-        return (BukkitItemImpl) super.setDisplayName(displayName);
+    public BukkitItem setDisplayName(final @NotNull String displayName) {
+        return (BukkitItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public BukkitItemImpl setLore(final @NotNull Collection<String> lore) {
-        return (BukkitItemImpl) super.setLore(lore);
+    public BukkitItem setLore(final @NotNull Collection<String> lore) {
+        return (BukkitItem) super.setLore(lore);
     }
 
     @Override
-    public BukkitItemImpl setUnbreakable(final boolean unbreakable) {
-        return (BukkitItemImpl) super.setUnbreakable(unbreakable);
+    public BukkitItem setUnbreakable(final boolean unbreakable) {
+        return (BukkitItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public BukkitItemImpl copy() {
-        return super.copy(BukkitItemImpl.class);
+    public BukkitItem copy() {
+        return super.copy(BukkitItem.class);
     }
 }
