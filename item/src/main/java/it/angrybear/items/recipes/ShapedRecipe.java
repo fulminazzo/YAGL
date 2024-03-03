@@ -30,7 +30,7 @@ public class ShapedRecipe implements Recipe {
     public ShapedRecipe(final @NotNull String id) {
         this.id = id;
         this.shape = new Shape();
-        this.ingredients = new Item[0];
+        this.ingredients = new Item[9];
     }
 
     /**
