@@ -15,6 +15,32 @@ import java.util.Iterator;
  */
 class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
 
+    /**
+     * Instantiates a new Bukkit recipe item.
+     */
+    public BukkitRecipeItemImpl() {
+        super();
+    }
+
+    /**
+     * Instantiates a new Bukkit recipe item.
+     *
+     * @param material the material
+     */
+    public BukkitRecipeItemImpl(String material) {
+        super(material);
+    }
+
+    /**
+     * Instantiates a new Bukkit recipe item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
+    public BukkitRecipeItemImpl(String material, int amount) {
+        super(material, amount);
+    }
+
     @Override
     public void registerRecipe() {
         if (this.recipe == null) return;

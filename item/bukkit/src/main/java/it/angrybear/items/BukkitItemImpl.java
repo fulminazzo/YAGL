@@ -10,6 +10,32 @@ import java.util.Collection;
  */
 class BukkitItemImpl extends ItemImpl implements BukkitItem {
 
+    /**
+     * Instantiates a new Bukkit item.
+     */
+    public BukkitItemImpl() {
+        super();
+    }
+
+    /**
+     * Instantiates a new Bukkit item.
+     *
+     * @param material the material
+     */
+    public BukkitItemImpl(String material) {
+        super(material);
+    }
+
+    /**
+     * Instantiates a new Bukkit item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
+    public BukkitItemImpl(String material, int amount) {
+        super(material, amount);
+    }
+
     @Override
     public BukkitItem setMaterial(@NotNull String material) {
         MaterialUtils.getMaterial(material, true);

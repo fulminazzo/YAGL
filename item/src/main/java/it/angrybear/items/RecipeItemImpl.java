@@ -11,6 +11,32 @@ import org.jetbrains.annotations.Nullable;
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
     protected Recipe recipe;
 
+    /**
+     * Instantiates a new Recipe item.
+     */
+    public RecipeItemImpl() {
+        super();
+    }
+
+    /**
+     * Instantiates a new Recipe item.
+     *
+     * @param material the material
+     */
+    public RecipeItemImpl(String material) {
+        super(material);
+    }
+
+    /**
+     * Instantiates a new Recipe item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
+    public RecipeItemImpl(String material, int amount) {
+        super(material, amount);
+    }
+
     @Override
     public RecipeItem setRecipe(final @Nullable Recipe recipe) {
         this.recipe = recipe;
