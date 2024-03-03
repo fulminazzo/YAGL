@@ -26,7 +26,7 @@ public class ItemUtils {
      */
     public static @Nullable Item itemStackToItem(final @Nullable ItemStack itemStack) {
         if (itemStack == null) return null;
-        Item item = new BukkitItem()
+        Item item = BukkitItem.newItem()
                 .setMaterial(itemStack.getType().name())
                 .setAmount(itemStack.getAmount());
         ItemMeta meta = itemStack.getItemMeta();
