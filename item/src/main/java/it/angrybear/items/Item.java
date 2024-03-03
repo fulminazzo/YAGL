@@ -74,6 +74,50 @@ public interface Item {
     @NotNull String getDisplayName();
 
     /**
+     * Adds lore.
+     *
+     * @param lore the lore
+     * @return this
+     */
+    default Item addLore(final String @NotNull ... lore) {
+        return addLore(Arrays.asList(lore));
+    }
+
+    /**
+     * Adds lore.
+     *
+     * @param lore the lore
+     * @return this
+     */
+    default Item addLore(final @NotNull Collection<String> lore) {
+        @NotNull List<String> prevLore = getLore();
+        prevLore.addAll(lore);
+        return this;
+    }
+
+    /**
+     * Removes lore.
+     *
+     * @param lore the lore
+     * @return this
+     */
+    default Item removeLore(final String @NotNull ... lore) {
+        return removeLore(Arrays.asList(lore));
+    }
+
+    /**
+     * Removes lore.
+     *
+     * @param lore the lore
+     * @return this
+     */
+    default Item removeLore(final @NotNull Collection<String> lore) {
+        @NotNull List<String> prevLore = getLore();
+        for (final String l : lore) prevLore.removeIf(l2 -> l2.equals(l));
+        return this;
+    }
+
+    /**
      * Sets lore.
      *
      * @param lore the lore
