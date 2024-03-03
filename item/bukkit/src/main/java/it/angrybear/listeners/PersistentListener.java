@@ -106,6 +106,38 @@ public class PersistentListener implements Listener {
         return p -> event.setCancelled(true);
     }
 
+    private void interactPersistentItem(final @Nullable ItemStack itemStack,
+                                        final @Nullable Consumer<PersistentItem> ifPresent,
+                                        final @NotNull Player player) {
+        interactPersistentItem(itemStack, ifPresent, null, player);
+    }
+
+    private void interactPersistentItem(final @Nullable ItemStack itemStack,
+                                        final @Nullable Consumer<PersistentItem> ifPresent,
+                                        final @Nullable Runnable orElse,
+                                        final @NotNull Player player) {
+        findPersistentItem(itemStack, p -> {
+            if (p.getInteractAction() != null) p.getInteractAction().accept(player, itemStack);
+            if (ifPresent != null) ifPresent.accept(p);
+        }, orElse);
+    }
+
+    private void clickPersistentItem(final @Nullable ItemStack itemStack,
+                                        final @Nullable Consumer<PersistentItem> ifPresent,
+                                        final @NotNull Player player) {
+        clickPersistentItem(itemStack, ifPresent, null, player);
+    }
+
+    private void clickPersistentItem(final @Nullable ItemStack itemStack,
+                                        final @Nullable Consumer<PersistentItem> ifPresent,
+                                        final @Nullable Runnable orElse,
+                                        final @NotNull Player player) {
+        findPersistentItem(itemStack, p -> {
+            if (p.getClickAction() != null) p.getClickAction().accept(player, itemStack);
+            if (ifPresent != null) ifPresent.accept(p);
+        }, orElse);
+    }
+
     private void findPersistentItem(final @Nullable ItemStack itemStack,
                                     final @NotNull Consumer<PersistentItem> ifPresent) {
         findPersistentItem(itemStack, ifPresent, null);
