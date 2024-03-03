@@ -59,6 +59,17 @@ public class Enchantment {
     }
 
     /**
+     * Compare this enchantment with the given one
+     *
+     * @param enchantment the enchantment
+     * @return true, if they have the same enchantment and the second one has a level higher or equal than the current
+     */
+    public boolean isSimilar(final @Nullable Enchantment enchantment) {
+        if (enchantment == null) return false;
+        return this.enchantment.equalsIgnoreCase(enchantment.getEnchantment()) && this.level <= enchantment.getLevel();
+    }
+
+    /**
      * Compare this enchantment with the given one.
      *
      * @param enchantment the enchantment
