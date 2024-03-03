@@ -26,7 +26,7 @@ public class PersistentItem extends BukkitItemImpl {
      * Instantiates a new Persistent item.
      */
     public PersistentItem() {
-        super();
+        this(null);
     }
 
     /**
@@ -34,8 +34,8 @@ public class PersistentItem extends BukkitItemImpl {
      *
      * @param material the material
      */
-    public PersistentItem(String material) {
-        super(material);
+    public PersistentItem(final @Nullable String material) {
+        this(material, 1);
     }
 
     /**
@@ -44,8 +44,9 @@ public class PersistentItem extends BukkitItemImpl {
      * @param material the material
      * @param amount   the amount
      */
-    public PersistentItem(String material, int amount) {
+    public PersistentItem(final @Nullable String material, final int amount) {
         super(material, amount);
+        PERSISTENT_ITEMS.add(this);
     }
 
     @Override
