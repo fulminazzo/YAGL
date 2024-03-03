@@ -46,6 +46,7 @@ public class PersistentItem extends BukkitItemImpl {
      */
     public PersistentItem(final @Nullable String material, final int amount) {
         super(material, amount);
+        this.deathAction = DeathAction.MAINTAIN;
         PERSISTENT_ITEMS.add(this);
     }
 
