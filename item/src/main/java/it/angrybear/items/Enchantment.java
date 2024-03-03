@@ -93,6 +93,7 @@ public class Enchantment {
 
     @Override
     public boolean equals(Object o) {
+        if (o instanceof Enchantment) return equals((Enchantment) o);
         return super.equals(o);
     }
 
