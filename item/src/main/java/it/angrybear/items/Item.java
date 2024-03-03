@@ -1,6 +1,7 @@
 package it.angrybear.items;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +27,7 @@ public interface Item {
      *
      * @return the material
      */
-    @NotNull String getMaterial();
+    @Nullable String getMaterial();
 
     /**
      * Sets amount.
