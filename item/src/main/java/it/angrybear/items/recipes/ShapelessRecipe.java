@@ -26,7 +26,7 @@ public class ShapelessRecipe implements Recipe {
      *
      * @param id the id
      */
-    public ShapelessRecipe(String id) {
+    public ShapelessRecipe(final @NotNull String id) {
         this.id = id;
         this.ingredients = new ArrayList<>();
     }
