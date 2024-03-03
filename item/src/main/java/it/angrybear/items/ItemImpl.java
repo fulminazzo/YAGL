@@ -1,6 +1,7 @@
 package it.angrybear.items;
 
 import it.angrybear.structures.EnchantmentSet;
+import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -93,5 +94,10 @@ class ItemImpl implements Item {
     public boolean equals(Object o) {
         if (o instanceof Item) return equals((Item) o);
         return super.equals(o);
+    }
+
+    @Override
+    public String toString() {
+        return Printable.convertToJson(this);
     }
 }
