@@ -44,7 +44,7 @@ public class PersistentListener implements Listener {
      *
      * @return the boolean
      */
-    public boolean isInitialized() {
+    public static boolean isInitialized() {
         return INITIALIZED;
     }
 }
