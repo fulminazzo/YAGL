@@ -74,4 +74,13 @@ public interface BukkitItem extends Item {
     static BukkitItem newItem() {
         return new BukkitItemImpl();
     }
+
+    /**
+     * Creates a new recipe item to be used.
+     *
+     * @return the item
+     */
+    static RecipeItem newRecipeItem() {
+        return new BukkitRecipeItemImpl();
+    }
 }
