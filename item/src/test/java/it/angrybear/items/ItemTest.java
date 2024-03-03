@@ -90,7 +90,7 @@ class ItemTest {
         }
 
         @Override
-        public Item copy() {
+        public <I extends Item> I copy(Class<I> clazz) {
             return null;
         }
     }
