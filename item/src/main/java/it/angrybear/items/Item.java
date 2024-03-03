@@ -3,7 +3,6 @@ package it.angrybear.items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * An interface that represents the general item.
  */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public interface Item {
 
     /**
@@ -354,4 +354,14 @@ public interface Item {
      * @return true if it does
      */
     boolean isUnbreakable();
+
+    /**
+     * Compares this item with the given one.
+     * Uses the given {@link ItemField}s to skip checks on those.
+     *
+     * @param item   the item
+     * @param ignore the ignored fields
+     * @return true if they match
+     */
+    boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore);
 }
