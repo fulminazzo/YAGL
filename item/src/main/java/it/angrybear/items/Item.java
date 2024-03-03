@@ -116,6 +116,10 @@ public interface Item {
 
     Set<ItemFlag> getItemFlags();
 
+    void setUnbreakable(final boolean unbreakable);
+
+    boolean isUnbreakable();
+
     //TODO:
     boolean isSimilar();
 }
