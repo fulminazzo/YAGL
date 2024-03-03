@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * An implementation of {@link Recipe} to express the shaped recipes in Minecraft.
+ * An example of shaped recipe is the TNT, which requires all the items in an exact position.
  */
 public class ShapedRecipe implements Recipe {
     @Getter
