@@ -1,4 +1,4 @@
-package it.angrybear.items;
+package it.angrybear.items.fields;
 
 /**
  * Wrapper for Bukkit ItemFlag counterpart.

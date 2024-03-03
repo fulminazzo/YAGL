@@ -1,4 +1,6 @@
-package it.angrybear.items;
+package it.angrybear.items.fields;
+
+import it.angrybear.items.Item;
 
 /**
  * This object represents all the default fields of {@link Item}.

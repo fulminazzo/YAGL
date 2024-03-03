@@ -1,4 +1,4 @@
-package it.angrybear.items;
+package it.angrybear.items.fields;
 
 import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;

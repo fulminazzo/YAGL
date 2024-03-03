@@ -1,9 +1,9 @@
 package it.angrybear.utils;
 
 import it.angrybear.items.BukkitItem;
-import it.angrybear.items.Enchantment;
+import it.angrybear.items.fields.Enchantment;
 import it.angrybear.items.Item;
-import it.angrybear.items.ItemFlag;
+import it.angrybear.items.fields.ItemFlag;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

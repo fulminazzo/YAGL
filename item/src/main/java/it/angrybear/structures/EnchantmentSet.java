@@ -1,6 +1,6 @@
 package it.angrybear.structures;
 
-import it.angrybear.items.Enchantment;
+import it.angrybear.items.fields.Enchantment;
 
 /**
  * An implementation of {@link PComparatorSet} for {@link Enchantment}s.

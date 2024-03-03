@@ -1,5 +1,8 @@
 package it.angrybear.items;
 
+import it.angrybear.items.fields.Enchantment;
+import it.angrybear.items.fields.ItemField;
+import it.angrybear.items.fields.ItemFlag;
 import it.angrybear.structures.EnchantmentSet;
 import it.angrybear.utils.MessageUtils;
 import it.fulminazzo.fulmicollection.objects.Printable;
