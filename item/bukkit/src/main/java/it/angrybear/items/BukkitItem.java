@@ -1,7 +1,6 @@
 package it.angrybear.items;
 
 import it.angrybear.utils.ItemUtils;
-import it.angrybear.utils.MaterialUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -65,5 +64,14 @@ public interface BukkitItem extends Item {
             }
         }
         return itemStack;
+    }
+
+    /**
+     * Creates a new item to be used.
+     *
+     * @return the item
+     */
+    static BukkitItem newItem() {
+        return new BukkitItemImpl();
     }
 }
