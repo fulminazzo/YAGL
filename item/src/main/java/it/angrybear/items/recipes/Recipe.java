@@ -1,6 +1,7 @@
 package it.angrybear.items.recipes;
 
 import it.angrybear.items.Item;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,6 +23,13 @@ public interface Recipe {
      * @return the ingredients
      */
     List<Item> getIngredients();
+
+    /**
+     * Sets output.
+     *
+     * @param item the item
+     */
+    void setOutput(final @NotNull Item item);
 
     /**
      * Gets output.
