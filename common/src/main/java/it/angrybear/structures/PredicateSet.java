@@ -107,7 +107,12 @@ public class PredicateSet<E> implements Set<E>, Serializable {
 
     @Override
     public boolean addAll(@NotNull Collection<? extends E> collection) {
-        return this.internal.addAll(collection);
+        boolean added = true;
+        for (E e : collection) {
+            boolean t = add(e);
+            if (added) added = t;
+        }
+        return added;
     }
 
     @Override
