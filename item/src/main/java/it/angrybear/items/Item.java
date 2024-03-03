@@ -90,6 +90,32 @@ public interface Item {
 
     Set<Enchantment> getEnchantments();
 
+    default boolean hasItemFlag(final @NotNull ItemFlag flag) {
+        return getItemFlags().stream().anyMatch(f -> f.equals(flag));
+    }
+
+    default Item addItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return addItemFlags(Arrays.asList(itemFlags));
+    }
+
+    default Item addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+        Set<ItemFlag> flags = getItemFlags();
+        flags.addAll(itemFlags);
+        return this;
+    }
+
+    default Item removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return removeItemFlags(Arrays.asList(itemFlags));
+    }
+
+    default Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+        Set<ItemFlag> flags = getItemFlags();
+        for (final ItemFlag i : itemFlags) flags.remove(i);
+        return this;
+    }
+
+    Set<ItemFlag> getItemFlags();
+
     //TODO:
     boolean isSimilar();
 }
