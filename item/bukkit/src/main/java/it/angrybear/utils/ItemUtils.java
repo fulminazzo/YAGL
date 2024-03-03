@@ -7,15 +7,15 @@ import it.angrybear.items.fields.ItemFlag;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A collection of utilities for {@link Item}.
@@ -78,11 +78,29 @@ public class ItemUtils {
         if (recipe == null) return null;
         Recipe result;
         if (recipe instanceof it.angrybear.items.recipes.ShapedRecipe) {
-        } else if (recipe instanceof it.angrybear.items.recipes.ShapelessRecipe) {
-        } else if (recipe instanceof it.angrybear.items.recipes.FurnaceRecipe)
+        } else if (recipe instanceof it.angrybear.items.recipes.ShapelessRecipe)
+            result = recipeToMinecraft((it.angrybear.items.recipes.ShapelessRecipe) recipe);
+        else if (recipe instanceof it.angrybear.items.recipes.FurnaceRecipe)
             result = recipeToMinecraft((it.angrybear.items.recipes.FurnaceRecipe) recipe);
         else throw new IllegalArgumentException("Unrecognized recipe type: " + recipe.getClass());
         return result;
+    }
+
+    private static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.ShapelessRecipe recipe) {
+        if (recipe == null) return null;
+        final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
+
+        final List<Object> ingredients = recipe.getIngredients().stream()
+                .map(i -> (BukkitItem) i)
+                .map(ItemUtils::getItemOrRecipeChoice)
+                .collect(Collectors.toList());
+        final ItemStack output = ((BukkitItem) recipe.getOutput()).create();
+
+        ShapelessRecipe r = new ShapelessRecipe(namespacedKey, output);
+        Refl<?> tmp = new Refl<>(r);
+        tmp.setFieldObject("ingredients", ingredients);
+
+        return r;
     }
 
     private static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.FurnaceRecipe recipe) {
