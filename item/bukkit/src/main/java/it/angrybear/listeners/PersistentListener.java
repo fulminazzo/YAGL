@@ -1,19 +1,26 @@
 package it.angrybear.listeners;
 
 import it.angrybear.items.PersistentItem;
+import it.angrybear.persistent.DeathAction;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -28,6 +35,29 @@ public class PersistentListener implements Listener {
      */
     public PersistentListener() {
         INITIALIZED = true;
+    }
+
+    @EventHandler
+    void on(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        Map<Integer, PersistentItem> toRestore = new HashMap<>();
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            int finalI = i;
+            final ItemStack item = contents[i];
+            findPersistentItem(item, p -> {
+                if (p.getDeathAction() == DeathAction.MAINTAIN) toRestore.put(finalI, p);
+                event.getDrops().remove(item);
+            });
+        }
+        if (toRestore.isEmpty()) return;
+        new Thread(() -> {
+            try {
+                Thread.sleep(50);
+                toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
+            } catch (InterruptedException ignored) {
+            }
+        }).start();
     }
 
     @EventHandler
