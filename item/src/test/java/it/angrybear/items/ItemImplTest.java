@@ -2,10 +2,16 @@ package it.angrybear.items;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemImplTest {
+
+    @Test
+    void testCopy() {
+        Item i1 = new ItemImpl();
+        Item i2 = i1.copy();
+        assertEquals(i1, i2);
+    }
 
     @Test
     void testSimilarity() {
