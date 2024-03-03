@@ -1,0 +1,5 @@
+dependencies {
+    implementation(project(":item"))
+
+    compileOnly libs.spigot
+}
