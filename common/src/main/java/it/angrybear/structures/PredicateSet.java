@@ -1,6 +1,7 @@
 package it.angrybear.structures;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -75,12 +76,22 @@ public class PredicateSet<E> implements Set<E>, Serializable {
             this.internal.add(e);
             return true;
         }
-        E internalE = this.internal.stream().filter(t -> t.equals(e)).findFirst().orElse(null);
+        E internalE = getInternal(e);
         if (internalE == null || this.predicate.test(internalE, e)) {
             this.internal.add(e);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Gets the internal element that equals to the given one.
+     *
+     * @param e the element
+     * @return the internal element
+     */
+    protected @Nullable E getInternal(@Nullable E e) {
+        return e == null ? null : this.internal.stream().filter(t -> t.equals(e)).findFirst().orElse(null);
     }
 
     @Override
