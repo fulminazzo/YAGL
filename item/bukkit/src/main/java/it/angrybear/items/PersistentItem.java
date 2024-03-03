@@ -1,9 +1,9 @@
 package it.angrybear.items;
 
+import it.angrybear.actions.BukkitAction;
 import it.angrybear.listeners.PersistentListener;
 import it.angrybear.persistent.DeathAction;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -23,8 +22,8 @@ public class PersistentItem extends BukkitItemImpl {
     private static final String WARNING_MESSAGE = "Creating a PersistentItem without registering a PersistentListener will cause the former to fail. Please register one listener.";
     private static final List<PersistentItem> PERSISTENT_ITEMS = new ArrayList<>();
     private DeathAction deathAction;
-    private BiConsumer<Player, ItemStack> clickAction;
-    private BiConsumer<Player, ItemStack> interactAction;
+    private BukkitAction clickAction;
+    private BukkitAction interactAction;
 
     /**
      * Instantiates a new Persistent item.
@@ -79,7 +78,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onInteract(final @Nullable BiConsumer<Player, ItemStack> action) {
+    public PersistentItem onInteract(final @Nullable BukkitAction action) {
         this.interactAction = action;
         return this;
     }
@@ -91,7 +90,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onClick(final @Nullable BiConsumer<Player, ItemStack> action) {
+    public PersistentItem onClick(final @Nullable BukkitAction action) {
         this.clickAction = action;
         return this;
     }
