@@ -27,6 +27,22 @@ allprojects {
         return fileName + "-${rootProject.version}"
     }
 
+    this.ext.getParentFromProject = { project ->
+        return new HashMap<>(project.getProperties()).get("parent")
+    }
+
+    this.ext.getProjectGroupId = {
+        String groupId = ""
+        Project tmp = parent
+        while (tmp != null) {
+            groupId = "${tmp.name}.${groupId}"
+            tmp = getParentFromProject(tmp)
+        }
+        if (groupId.size() > 0)
+            groupId = "." + groupId.substring(0, groupId.length() - 1)
+        return "${rootProject.group}${groupId}"
+    }
+
     repositories {
         mavenCentral()
         maven {
@@ -111,15 +127,14 @@ allprojects {
     publishing {
         publications {
             maven(MavenPublication) {
-                String projectName = "${project.name}"
-                String rootProjectName = "${rootProject.name}"
-                groupId = "${rootProject.group}" + (projectName == rootProjectName ? "" : ".${rootProjectName}")
+                groupId = getProjectGroupId()
                 artifactId = "${project.name}"
                 version = "${rootProject.version}"
 
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
+                println("${groupId}:${artifactId}:${version}")
             }
         }
     }
