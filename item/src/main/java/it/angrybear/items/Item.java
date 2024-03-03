@@ -1,5 +1,6 @@
 package it.angrybear.items;
 
+import it.angrybear.utils.MessageUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,7 +94,7 @@ public interface Item {
      */
     default Item addLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
-        prevLore.addAll(lore);
+        for ()
         return this;
     }
 
@@ -115,7 +116,7 @@ public interface Item {
      */
     default Item removeLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
-        for (final String l : lore) prevLore.removeIf(l2 -> l2.equals(l));
+        for (final String l : lore) prevLore.removeIf(l2 -> l2.equals(MessageUtils.color(l)));
         return this;
     }
 
@@ -136,10 +137,8 @@ public interface Item {
      * @return this item
      */
     default Item setLore(final @NotNull Collection<String> lore) {
-        @NotNull List<String> prevLore = getLore();
-        prevLore.clear();
-        prevLore.addAll(lore);
-        return this;
+        getLore().clear();
+        return addLore(lore);
     }
 
     /**
