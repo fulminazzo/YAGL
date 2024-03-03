@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -399,5 +398,14 @@ public interface Item {
                 throw new RuntimeException(e);
             }
         return item.getObject();
+    }
+
+    /**
+     * Creates a new item to be used.
+     *
+     * @return the item
+     */
+    static Item newItem() {
+        return new ItemImpl();
     }
 }
