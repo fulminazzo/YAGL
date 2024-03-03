@@ -1,8 +1,10 @@
 package it.angrybear.items;
 
 import it.angrybear.structures.EnchantmentSet;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -74,5 +76,22 @@ class ItemImpl implements Item {
     @Override
     public boolean isSimilar() {
         return false;
+    }
+
+    /**
+     * Compare this item with the given one.
+     *
+     * @param item the item
+     * @return true if they are equal
+     */
+    public boolean equals(final @Nullable Item item) {
+        if (item == null) return false;
+        return ReflectionUtils.equalsFields(this, item);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Item) return equals((Item) o);
+        return super.equals(o);
     }
 }
