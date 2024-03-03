@@ -139,8 +139,20 @@ public class PredicateSet<E> implements Set<E>, Serializable {
      * @param set the set
      * @return true if they are equal
      */
+    public boolean equals(@Nullable PredicateSet<?> set) {
+        if (set == null) return false;
+        return this.internal.equals(set.internal);
+    }
+
+    /**
+     * Compares the internal set with the given one.
+     *
+     * @param set the set
+     * @return true if they are equal
+     */
     public boolean equals(@Nullable Set<?> set) {
         if (set == null) return false;
+        if (set instanceof PredicateSet) return equals((PredicateSet<?>) set);
         return this.internal.equals(set);
     }
 
