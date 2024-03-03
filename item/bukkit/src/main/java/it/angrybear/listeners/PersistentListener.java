@@ -4,10 +4,12 @@ import it.angrybear.items.PersistentItem;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +28,12 @@ public class PersistentListener implements Listener {
      */
     public PersistentListener() {
         INITIALIZED = true;
+    }
+
+    @EventHandler
+    void on(BlockPlaceEvent event) {
+        PlayerInventory inventory = event.getPlayer().getInventory();
+        findPersistentItem(inventory.getItem(inventory.getHeldItemSlot()), cancelled(event));
     }
 
     @EventHandler
