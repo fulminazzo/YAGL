@@ -2,5 +2,4 @@ rootProject.name = 'YAGL'
 include 'item'
 include 'common'
 include 'item:bukkit'
-include 'gui'
 
