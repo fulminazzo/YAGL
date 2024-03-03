@@ -1,6 +1,7 @@
 package it.angrybear.items;
 
 import it.angrybear.structures.EnchantmentSet;
+import it.angrybear.utils.MessageUtils;
 import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
@@ -76,7 +77,7 @@ class ItemImpl implements Item {
 
     @Override
     public Item setDisplayName(final @NotNull String displayName) {
-        this.displayName = displayName;
+        this.displayName = MessageUtils.color(displayName);
         return this;
     }
 
