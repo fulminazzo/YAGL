@@ -132,7 +132,6 @@ allprojects {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
-                println("${groupId}:${artifactId}:${version}")
             }
         }
     }
