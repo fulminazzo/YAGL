@@ -1,9 +1,12 @@
 package it.angrybear.items;
 
 import it.angrybear.utils.MessageUtils;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -374,5 +377,27 @@ public interface Item {
      *
      * @return the item
      */
-    Item copy();
+    default Item copy() {
+        return copy(ItemImpl.class);
+    }
+
+    /**
+     * Copies the current item into a new one using the provided class.
+     *
+     * @param <I>   the type parameter
+     * @param clazz the clazz
+     * @return the item
+     */
+    default <I extends Item> I copy(final @NotNull Class<I> clazz) {
+        Refl<I> item = new Refl<>(clazz, new Object[0]);
+        for (final Field field : item.getNonStaticFields())
+            try {
+                field.setAccessible(true);
+                Object obj1 = field.get(this);
+                item.setFieldObject(field, obj1);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        return item.getObject();
+    }
 }
