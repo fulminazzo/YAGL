@@ -17,15 +17,15 @@ import java.util.function.BiPredicate;
  */
 public class PredicateSet<E> implements Set<E>, Serializable {
     protected final Set<E> internal;
-    protected final BiPredicate<E, E> predicate;
+    protected final BiPredicate<E, E> addTest;
 
     /**
      * Instantiates a new Predicate set.
      *
-     * @param predicate the predicate
+     * @param addTest the predicate used to verify if an element is eligible for adding
      */
-    public PredicateSet(final @NotNull BiPredicate<E, E> predicate) {
-        this.predicate = predicate;
+    public PredicateSet(final @NotNull BiPredicate<E, E> addTest) {
+        this.addTest = addTest;
         this.internal = new HashSet<>();
     }
 
@@ -77,7 +77,7 @@ public class PredicateSet<E> implements Set<E>, Serializable {
             return true;
         }
         E internalE = getInternal(e);
-        if (internalE == null || this.predicate.test(internalE, e)) {
+        if (internalE == null || this.addTest.test(internalE, e)) {
             if (internalE != null) this.internal.remove(internalE);
             this.internal.add(e);
             return true;
