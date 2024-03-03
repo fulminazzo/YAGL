@@ -77,13 +77,44 @@ public class ItemUtils {
     public static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.Recipe recipe) {
         if (recipe == null) return null;
         Recipe result;
-        if (recipe instanceof it.angrybear.items.recipes.ShapedRecipe) {
-        } else if (recipe instanceof it.angrybear.items.recipes.ShapelessRecipe)
+        if (recipe instanceof it.angrybear.items.recipes.ShapedRecipe)
+            result = recipeToMinecraft((it.angrybear.items.recipes.ShapedRecipe) recipe);
+        else if (recipe instanceof it.angrybear.items.recipes.ShapelessRecipe)
             result = recipeToMinecraft((it.angrybear.items.recipes.ShapelessRecipe) recipe);
         else if (recipe instanceof it.angrybear.items.recipes.FurnaceRecipe)
             result = recipeToMinecraft((it.angrybear.items.recipes.FurnaceRecipe) recipe);
         else throw new IllegalArgumentException("Unrecognized recipe type: " + recipe.getClass());
         return result;
+    }
+
+    private static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.ShapedRecipe recipe) {
+        if (recipe == null) return null;
+        final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
+
+        final ItemStack output = ((BukkitItem) recipe.getOutput()).create();
+
+        ShapedRecipe r = new ShapedRecipe(namespacedKey, output);
+
+        StringBuilder charShape = new StringBuilder();
+        it.angrybear.items.recipes.ShapedRecipe.Shape shape = recipe.getShape();
+        char c = 'A';
+        for (int i = 0; i < shape.getRows(); i++) {
+            for (int j = 0; j < shape.getColumns(); j++) {
+                charShape.append(c++);
+            }
+            charShape.append(",");
+        }
+        r.shape(charShape.toString().split(","));
+
+        List<Item> ingredients = recipe.getIngredients();
+        Refl<?> tmp = new Refl<>(r);
+        Map<Character, Object> finalIngredients = tmp.getFieldObject("ingredients");
+
+        if (finalIngredients != null)
+            for (char ch = 'A'; ch < c; ch++)
+                finalIngredients.put(ch, getItemOrRecipeChoice((BukkitItem) ingredients.get(ch - 'A')));
+
+        return r;
     }
 
     private static Recipe recipeToMinecraft(final @Nullable it.angrybear.items.recipes.ShapelessRecipe recipe) {
