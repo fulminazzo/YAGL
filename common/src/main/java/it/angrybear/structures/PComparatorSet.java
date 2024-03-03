@@ -17,7 +17,8 @@ public class PComparatorSet<E> extends PredicateSet<E> {
     /**
      * Instantiates a new PComparatorSet set.
      *
-     * @param predicate the predicate
+     * @param predicate         the predicate
+     * @param internalPredicate the internal predicate
      */
     public PComparatorSet(@NotNull BiPredicate<E, E> predicate, @NotNull BiPredicate<E, E> internalPredicate) {
         super(predicate);
