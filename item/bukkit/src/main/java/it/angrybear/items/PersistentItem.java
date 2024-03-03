@@ -1,19 +1,24 @@
 package it.angrybear.items;
 
+import it.angrybear.listeners.PersistentListener;
 import it.angrybear.persistent.DeathAction;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 /**
  * An implementation of {@link BukkitItemImpl} created to be a constant item in a player's inventory.
  */
 @Getter
 public class PersistentItem extends BukkitItemImpl {
+    private static final String WARNING_MESSAGE = "Creating a PersistentItem without registering a PersistentListener will cause the former to fail. Please register one listener.";
     private static final List<PersistentItem> PERSISTENT_ITEMS = new ArrayList<>();
     private DeathAction deathAction;
 
@@ -41,6 +46,13 @@ public class PersistentItem extends BukkitItemImpl {
      */
     public PersistentItem(String material, int amount) {
         super(material, amount);
+    }
+
+    @Override
+    public @NotNull <M extends ItemMeta> ItemStack create(Class<M> itemMetaClass, Consumer<M> metaFunction) {
+        if (!PersistentListener.isInitialized())
+            Logger.getGlobal().warning(WARNING_MESSAGE);
+        return super.create(itemMetaClass, metaFunction);
     }
 
     /**
