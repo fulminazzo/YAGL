@@ -3,6 +3,7 @@ package it.angrybear.items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface Item {
      * Sets material.
      *
      * @param material the material
-     * @return this
+     * @return this item
      */
     Item setMaterial(final @NotNull String material);
 
@@ -33,7 +34,7 @@ public interface Item {
      * Sets amount.
      *
      * @param amount the amount
-     * @return this
+     * @return this item
      */
     Item setAmount(final int amount);
 
@@ -48,7 +49,7 @@ public interface Item {
      * Sets durability.
      *
      * @param durability the durability
-     * @return this
+     * @return this item
      */
     Item setDurability(final short durability);
 
@@ -63,7 +64,7 @@ public interface Item {
      * Sets display name.
      *
      * @param displayName the display name
-     * @return this
+     * @return this item
      */
     Item setDisplayName(final @NotNull String displayName);
 
@@ -78,7 +79,7 @@ public interface Item {
      * Adds lore.
      *
      * @param lore the lore
-     * @return this
+     * @return this item
      */
     default Item addLore(final String @NotNull ... lore) {
         return addLore(Arrays.asList(lore));
@@ -88,7 +89,7 @@ public interface Item {
      * Adds lore.
      *
      * @param lore the lore
-     * @return this
+     * @return this item
      */
     default Item addLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
@@ -100,7 +101,7 @@ public interface Item {
      * Removes lore.
      *
      * @param lore the lore
-     * @return this
+     * @return this item
      */
     default Item removeLore(final String @NotNull ... lore) {
         return removeLore(Arrays.asList(lore));
@@ -110,7 +111,7 @@ public interface Item {
      * Removes lore.
      *
      * @param lore the lore
-     * @return this
+     * @return this item
      */
     default Item removeLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
@@ -122,7 +123,7 @@ public interface Item {
      * Sets lore.
      *
      * @param lore the lore
-     * @return this
+     * @return this item
      */
     default Item setLore(final String @NotNull ... lore) {
         return setLore(Arrays.asList(lore));
@@ -132,7 +133,7 @@ public interface Item {
      * Sets lore.
      *
      * @param lore the lore
-     * @return this
+     * @return this item
      */
     Item setLore(final @NotNull Collection<String> lore);
 
@@ -188,7 +189,7 @@ public interface Item {
      *
      * @param enchantment the enchantment
      * @param level       the level
-     * @return this
+     * @return this item
      */
     default Item addEnchantment(final @NotNull String enchantment, final int level) {
         return addEnchantments(new Enchantment(enchantment, level));
@@ -198,7 +199,7 @@ public interface Item {
      * Add enchantments.
      *
      * @param enchantments the enchantments
-     * @return this
+     * @return this item
      */
     default Item addEnchantments(final String @NotNull ... enchantments) {
         return addEnchantments(Arrays.stream(enchantments).distinct().map(Enchantment::new).collect(Collectors.toList()));
@@ -208,7 +209,7 @@ public interface Item {
      * Add enchantments.
      *
      * @param enchantments the enchantments
-     * @return this
+     * @return this item
      */
     default Item addEnchantments(final Enchantment @NotNull ... enchantments) {
         return addEnchantments(Arrays.asList(enchantments));
@@ -218,7 +219,7 @@ public interface Item {
      * Add enchantments.
      *
      * @param enchantments the enchantments
-     * @return this
+     * @return this item
      */
     default Item addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         final Set<Enchantment> enchants = getEnchantments();
@@ -231,7 +232,7 @@ public interface Item {
      *
      * @param enchantment the enchantment
      * @param level       the level
-     * @return this
+     * @return this item
      */
     default Item removeEnchantment(final @NotNull String enchantment, final int level) {
         return removeEnchantments(new Enchantment(enchantment, level));
@@ -241,7 +242,7 @@ public interface Item {
      * Remove enchantments.
      *
      * @param enchantments the enchantments
-     * @return this
+     * @return this item
      */
     default Item removeEnchantments(final String @NotNull ... enchantments) {
         final Set<Enchantment> enchants = getEnchantments();
@@ -253,7 +254,7 @@ public interface Item {
      * Remove enchantments.
      *
      * @param enchantments the enchantments
-     * @return this
+     * @return this item
      */
     default Item removeEnchantments(final Enchantment @NotNull ... enchantments) {
         return removeEnchantments(Arrays.asList(enchantments));
@@ -263,7 +264,7 @@ public interface Item {
      * Remove enchantments.
      *
      * @param enchantments the enchantments
-     * @return this
+     * @return this item
      */
     default Item removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         final Set<Enchantment> enchants = getEnchantments();
@@ -292,7 +293,7 @@ public interface Item {
      * Add item flags.
      *
      * @param itemFlags the item flags
-     * @return this
+     * @return this item
      */
     default Item addItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return addItemFlags(Arrays.asList(itemFlags));
@@ -302,7 +303,7 @@ public interface Item {
      * Add item flags.
      *
      * @param itemFlags the item flags
-     * @return this
+     * @return this item
      */
     default Item addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         Set<ItemFlag> flags = getItemFlags();
@@ -314,7 +315,7 @@ public interface Item {
      * Remove item flags.
      *
      * @param itemFlags the item flags
-     * @return this
+     * @return this item
      */
     default Item removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return removeItemFlags(Arrays.asList(itemFlags));
@@ -324,7 +325,7 @@ public interface Item {
      * Remove item flags.
      *
      * @param itemFlags the item flags
-     * @return this
+     * @return this item
      */
     default Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         Set<ItemFlag> flags = getItemFlags();
@@ -343,7 +344,7 @@ public interface Item {
      * Sets unbreakable.
      *
      * @param unbreakable the unbreakable
-     * @return this
+     * @return this item
      */
     Item setUnbreakable(final boolean unbreakable);
 
@@ -353,7 +354,4 @@ public interface Item {
      * @return true if it does
      */
     boolean isUnbreakable();
-
-//TODO:
-    boolean isSimilar();
 }
