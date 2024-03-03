@@ -2,15 +2,20 @@ package it.angrybear.items;
 
 import it.angrybear.items.recipes.Recipe;
 import lombok.Getter;
-import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An implementation of {@link RecipeItem}.
  */
 @Getter
-@Setter
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
     protected Recipe recipe;
+
+    @Override
+    public RecipeItem setRecipe(@Nullable Recipe recipe) {
+        this.recipe = recipe;
+        return this;
+    }
 
     @Override
     public void registerRecipe() {
