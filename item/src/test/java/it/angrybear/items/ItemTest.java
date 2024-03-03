@@ -88,5 +88,10 @@ class ItemTest {
         public boolean isSimilar(Item item, ItemField... ignore) {
             return false;
         }
+
+        @Override
+        public Item copy() {
+            return null;
+        }
     }
 }

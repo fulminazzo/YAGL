@@ -364,4 +364,11 @@ public interface Item {
      * @return true if they match
      */
     boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore);
+
+    /**
+     * Copies the current item into a new one.
+     *
+     * @return the item
+     */
+    Item copy();
 }
