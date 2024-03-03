@@ -108,22 +108,6 @@ class ItemImpl implements Item {
         return true;
     }
 
-    @Override
-    public Item copy() {
-        ItemImpl item = new ItemImpl();
-        for (final Field field : ItemImpl.class.getDeclaredFields()) {
-            if (Modifier.isStatic(field.getModifiers())) continue;
-            try {
-                field.setAccessible(true);
-                Object obj1 = field.get(this);
-                field.set(item, obj1);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return item;
-    }
-
     /**
      * Compare this item with the given one.
      *
