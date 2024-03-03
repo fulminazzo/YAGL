@@ -11,6 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
@@ -58,6 +59,12 @@ public class PersistentListener implements Listener {
             } catch (InterruptedException ignored) {
             }
         }).start();
+    }
+
+    @EventHandler
+    void on(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        interactPersistentItem(event.getItem(), cancelled(event), player);
     }
 
     @EventHandler
