@@ -16,6 +16,7 @@ public class ShapedRecipe implements Recipe {
     @Getter
     private final String id;
     private final Item[] ingredients;
+    @Getter
     private final Shape shape;
     @Getter
     @Setter
