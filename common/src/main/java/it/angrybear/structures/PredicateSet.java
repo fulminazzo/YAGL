@@ -17,6 +17,9 @@ import java.util.function.BiPredicate;
  */
 public class PredicateSet<E> implements Set<E>, Serializable {
     protected final Set<E> internal;
+    /**
+     * The Add test.
+     */
     protected final BiPredicate<E, E> addTest;
 
     /**
@@ -128,6 +131,23 @@ public class PredicateSet<E> implements Set<E>, Serializable {
     @Override
     public void clear() {
         this.internal.clear();
+    }
+
+    /**
+     * Compares the internal set with the given one.
+     *
+     * @param set the set
+     * @return true if they are equal
+     */
+    public boolean equals(@Nullable Set<?> set) {
+        if (set == null) return false;
+        return this.internal.equals(set);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Set) return equals((Set<?>) o);
+        return super.equals(o);
     }
 
     @Override
