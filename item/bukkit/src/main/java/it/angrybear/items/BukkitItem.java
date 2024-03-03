@@ -12,50 +12,36 @@ import java.util.function.Consumer;
 /**
  * An implementation of {@link Item} for Bukkit.
  */
-public class BukkitItem extends ItemImpl {
+public interface BukkitItem extends Item {
 
     @Override
-    public BukkitItem setMaterial(@NotNull String material) {
-        MaterialUtils.getMaterial(material, true);
-        return (BukkitItem) super.setMaterial(material);
-    }
+    BukkitItem setMaterial(@NotNull String material);
 
     @Override
-    public BukkitItem setAmount(final int amount) {
-        return (BukkitItem) super.setAmount(amount);
-    }
+    BukkitItem setAmount(final int amount);
 
     @Override
-    public BukkitItem setDurability(final int durability) {
-        return (BukkitItem) super.setDurability(durability);
-    }
+    BukkitItem setDurability(final int durability);
 
     @Override
-    public BukkitItem setDisplayName(final @NotNull String displayName) {
-        return (BukkitItem) super.setDisplayName(displayName);
-    }
+    BukkitItem setDisplayName(final @NotNull String displayName);
 
     @Override
-    public BukkitItem setLore(final @NotNull Collection<String> lore) {
-        return (BukkitItem) super.setLore(lore);
-    }
+    BukkitItem setLore(final @NotNull Collection<String> lore);
 
     @Override
-    public BukkitItem setUnbreakable(final boolean unbreakable) {
-        return (BukkitItem) super.setUnbreakable(unbreakable);
-    }
+    BukkitItem setUnbreakable(final boolean unbreakable);
 
     @Override
-    public BukkitItem copy() {
-        return super.copy(BukkitItem.class);
-    }
+    BukkitItem copy();
 
     /**
      * Create an item stack from this item.
      *
      * @return the item stack
      */
-    public @NotNull ItemStack create() {
+    @NotNull
+    default ItemStack create() {
         return create(null, null);
     }
 
@@ -67,7 +53,7 @@ public class BukkitItem extends ItemImpl {
      * @param metaFunction  the item meta function
      * @return the item stack
      */
-    public <M extends ItemMeta> @NotNull ItemStack create(Class<M> itemMetaClass, final Consumer<M> metaFunction) {
+    default <M extends ItemMeta> @NotNull ItemStack create(Class<M> itemMetaClass, final Consumer<M> metaFunction) {
         if (getMaterial() == null) throw new NullPointerException("Cannot create item from null material");
         ItemStack itemStack = ItemUtils.itemToItemStack(this);
         if (itemStack == null) throw new IllegalStateException("Unreachable code");
