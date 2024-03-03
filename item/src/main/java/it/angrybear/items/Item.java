@@ -411,4 +411,13 @@ public interface Item {
     static Item newItem() {
         return new ItemImpl();
     }
+
+    /**
+     * Creates a new recipe item to be used.
+     *
+     * @return the item
+     */
+    static RecipeItem newRecipeItem() {
+        return new RecipeItemImpl();
+    }
 }
