@@ -78,6 +78,7 @@ public class PredicateSet<E> implements Set<E>, Serializable {
         }
         E internalE = getInternal(e);
         if (internalE == null || this.predicate.test(internalE, e)) {
+            if (internalE != null) this.internal.remove(internalE);
             this.internal.add(e);
             return true;
         }
