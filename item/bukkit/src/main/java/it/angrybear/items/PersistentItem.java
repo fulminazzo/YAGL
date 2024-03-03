@@ -3,6 +3,7 @@ package it.angrybear.items;
 import it.angrybear.listeners.PersistentListener;
 import it.angrybear.persistent.DeathAction;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -21,6 +23,8 @@ public class PersistentItem extends BukkitItemImpl {
     private static final String WARNING_MESSAGE = "Creating a PersistentItem without registering a PersistentListener will cause the former to fail. Please register one listener.";
     private static final List<PersistentItem> PERSISTENT_ITEMS = new ArrayList<>();
     private DeathAction deathAction;
+    private BiConsumer<Player, ItemStack> clickAction;
+    private BiConsumer<Player, ItemStack> interactAction;
 
     /**
      * Instantiates a new Persistent item.
@@ -61,7 +65,7 @@ public class PersistentItem extends BukkitItemImpl {
      * Sets death action.
      *
      * @param deathAction the death action
-     * @return the death action
+     * @return this persistent item
      */
     public PersistentItem setDeathAction(final @NotNull DeathAction deathAction) {
         this.deathAction = deathAction;
@@ -69,10 +73,34 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     /**
+     * Set the action executed on interacting.
+     * A player interacts with an item when they right-click with it in game.
+     *
+     * @param action the action
+     * @return this persistent item
+     */
+    public PersistentItem onInteract(final @Nullable BiConsumer<Player, ItemStack> action) {
+        this.interactAction = action;
+        return this;
+    }
+
+    /**
+     * Set the action executed on clicking.
+     * A player clicks with an item when they click on it in their inventory.
+     *
+     * @param action the action
+     * @return this persistent item
+     */
+    public PersistentItem onClick(final @Nullable BiConsumer<Player, ItemStack> action) {
+        this.clickAction = action;
+        return this;
+    }
+
+    /**
      * Tries to get the corresponding {@link PersistentItem} from the given {@link ItemStack}.
      *
      * @param itemStack the item stack
-     * @return the persistent item
+     * @return this persistent item
      */
     public static @Nullable PersistentItem getPersistentItem(final @Nullable ItemStack itemStack) {
         if (itemStack == null) return null;
