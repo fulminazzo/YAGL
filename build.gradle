@@ -1,19 +1,130 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version libs.versions.shadow
+    id 'io.freefair.lombok' version libs.versions.delombok
 }
 
-group = 'it.fulminazzo'
-version = '1.0-SNAPSHOT'
+group = 'it.angrybear'
+version = '1.0'
 
-repositories {
-    mavenCentral()
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'io.freefair.lombok'
+
+    group = "${rootProject.group}"
+    version = "${rootProject.version}"
+    description = 'Yet Another GUI Library to create and manage custom items and user interfaces in Minecraft.'
+    final String author = 'Fulminazzo'
+
+    this.ext.getFileName = { name ->
+        if (name == null) throw new RuntimeException("getFileName(): Name cannot be null!")
+        String fileName = name
+        final String projectName = rootProject.name
+        if (projectName != fileName) fileName = "${projectName}-" + fileName
+        return fileName + "-${rootProject.version}"
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = "spigotmc-repo"
+            url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/groups/public/"
+        }
+        maven {
+            name = "JitPack"
+            url = "https://jitpack.io"
+        }
+        maven {
+            name = "Fulminazzo repository"
+            url = "https://repo.fulminazzo.it/releases"
+        }
+    }
+
+    dependencies {
+        compileOnly libs.lombok
+        annotationProcessor libs.lombok
+        compileOnly libs.annotations
+
+        implementation libs.fulmicollection
+
+        testCompileOnly libs.lombok
+        testAnnotationProcessor libs.lombok
+
+        testImplementation platform(libs.junit.platform)
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    processResources {
+        def props = [
+                version: rootProject.version, name: rootProject.name,
+                description: rootProject.description, author: author,
+                group: rootProject.group, module: project.name
+        ]
+        inputs.properties props
+        filteringCharset 'UTF-8'
+        expand props
+    }
+
+    shadowJar {
+        exclude("META-INF/**") // Removes all Maven META-INF/ files.
+        archiveFileName = "${getFileName(project.name)}.jar"
+        manifest {
+            attributes ("Manifest-Version": "${rootProject.version}")
+        }
+    }
+
+    tasks.register('sourcesJar', Jar) {
+        from sourceSets.main.delombokTask
+        archiveClassifier = 'sources'
+    }
+
+    tasks.register('javadocJar', Jar) {
+        from javadoc
+        archiveClassifier = 'javadoc'
+    }
+
+    jar {
+        enabled = true // Required for sub projects depending on sub projects
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        archiveFileName = "${getFileName(project.name)}-original.jar"
+
+        dependsOn(processResources)
+        dependsOn(shadowJar)
+
+        manifest {
+            attributes ("Manifest-Version": "${rootProject.version}")
+        }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                String projectName = "${project.name}"
+                String rootProjectName = "${rootProject.name}"
+                groupId = "${rootProject.group}" + (projectName == rootProjectName ? "" : ".${rootProjectName}")
+                artifactId = "${project.name}"
+                version = "${rootProject.version}"
+
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
+    subprojects.each {implementation project(it.path)}
 }
