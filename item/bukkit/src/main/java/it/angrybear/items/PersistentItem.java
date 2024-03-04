@@ -30,7 +30,7 @@ public class PersistentItem extends BukkitItemImpl {
     @Getter(AccessLevel.NONE)
     private ClickItemAction clickAction;
     @Getter(AccessLevel.NONE)
-    private InteractItemEvent interactAction;
+    private InteractItemAction interactAction;
 
     /**
      * Instantiates a new Persistent item.
@@ -85,7 +85,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onInteract(final @Nullable InteractItemEvent action) {
+    public PersistentItem onInteract(final @Nullable InteractItemAction action) {
         this.interactAction = action;
         return this;
     }
