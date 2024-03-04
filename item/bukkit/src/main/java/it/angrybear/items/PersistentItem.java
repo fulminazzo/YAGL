@@ -2,12 +2,13 @@ package it.angrybear.items;
 
 import it.angrybear.actions.BukkitItemAction;
 import it.angrybear.actions.ClickItemAction;
-import it.angrybear.events.items.interact.InteractItemEvent;
+import it.angrybear.actions.InteractItemAction;
 import it.angrybear.listeners.PersistentListener;
 import it.angrybear.persistent.DeathAction;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -76,6 +77,17 @@ public class PersistentItem extends BukkitItemImpl {
     public PersistentItem setDeathAction(final @NotNull DeathAction deathAction) {
         this.deathAction = deathAction;
         return this;
+    }
+
+    /**
+     * Executes {@link #interactAction}.
+     *
+     * @param player    the player
+     * @param itemStack the item stack
+     * @param actionType the action type
+     */
+    public void interact(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull Action actionType) {
+        if (this.interactAction != null) BukkitItemAction.runInteractItemAction(this.interactAction, player, itemStack, actionType);
     }
 
     /**
