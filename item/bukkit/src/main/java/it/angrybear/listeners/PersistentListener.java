@@ -147,22 +147,16 @@ public class PersistentListener implements Listener {
         }, orElse);
     }
 
-    private void findPersistentItem(final @Nullable ItemStack itemStack,
-                                    final @NotNull Consumer<PersistentItem> ifPresent) {
-        findPersistentItem(itemStack, ifPresent, null);
-    }
-
-    private void findPersistentItem(final @Nullable ItemStack itemStack,
-                                    final @NotNull Consumer<PersistentItem> ifPresent,
-                                    final @Nullable Runnable orElse) {
+    private boolean findPersistentItem(final @Nullable ItemStack itemStack,
+                                       final @NotNull Consumer<PersistentItem> ifPresent) {
         if (itemStack != null) {
             PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
             if (persistentItem != null) {
                 ifPresent.accept(persistentItem);
-                return;
+                return true;
             }
         }
-        if (orElse != null) orElse.run();
+        return false;
     }
 
     /**
