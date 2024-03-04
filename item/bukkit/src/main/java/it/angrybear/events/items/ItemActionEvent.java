@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This event is called after executing a {@link it.angrybear.actions.BukkitItemAction}.
  */
-public abstract class ItemActionEvent extends AItemActionEvent {
+public abstract class ItemActionEvent extends AbstractItemActionEvent {
 
     /**
      * Instantiates a new Pre item action event.

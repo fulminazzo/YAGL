@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An abstract event that represents a call to a {@link it.angrybear.actions.BukkitItemAction#execute(Player, ItemStack)} method.
  */
-abstract class AItemActionEvent extends Event {
+abstract class AbstractItemActionEvent extends Event {
     @Getter
     private static final HandlerList handlerList = new HandlerList();
     protected final Player player;
@@ -23,7 +23,7 @@ abstract class AItemActionEvent extends Event {
      * @param player    the player
      * @param itemStack the item stack
      */
-    public AItemActionEvent(final @NotNull Player player, final @NotNull ItemStack itemStack) {
+    public AbstractItemActionEvent(final @NotNull Player player, final @NotNull ItemStack itemStack) {
         super(!Bukkit.isPrimaryThread());
         this.player = player;
         this.itemStack = itemStack;

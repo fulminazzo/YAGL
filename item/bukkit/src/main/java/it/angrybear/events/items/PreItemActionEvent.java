@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 @Setter
-public abstract class PreItemActionEvent extends AItemActionEvent implements Cancellable {
+public abstract class PreItemActionEvent extends AbstractItemActionEvent implements Cancellable {
     protected boolean cancelled;
 
     /**
