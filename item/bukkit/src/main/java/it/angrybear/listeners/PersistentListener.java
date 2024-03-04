@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -23,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
@@ -112,20 +112,14 @@ public class PersistentListener implements Listener {
         return p -> event.setCancelled(true);
     }
 
-    private void interactPersistentItem(final @Nullable ItemStack itemStack,
-                                        final @Nullable Consumer<PersistentItem> ifPresent,
-                                        final @NotNull Player player) {
-        interactPersistentItem(itemStack, ifPresent, null, player);
-    }
-
-    private void interactPersistentItem(final @Nullable ItemStack itemStack,
-                                        final @Nullable Consumer<PersistentItem> ifPresent,
-                                        final @Nullable Runnable orElse,
-                                        final @NotNull Player player) {
-        findPersistentItem(itemStack, p -> {
-            if (p.getInteractAction() != null) p.getInteractAction().accept(player, itemStack);
+    private boolean interactPersistentItem(final @Nullable ItemStack itemStack,
+                                           final @NotNull Player player,
+                                           final @NotNull Action interactAction,
+                                           final @Nullable Consumer<PersistentItem> ifPresent) {
+        return findPersistentItem(itemStack, p -> {
+            if (itemStack != null) p.interact(player, itemStack, interactAction);
             if (ifPresent != null) ifPresent.accept(p);
-        }, orElse);
+        });
     }
 
     private boolean clickPersistentItem(final @Nullable ItemStack itemStack,
