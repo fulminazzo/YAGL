@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class ItemActionEvent extends AbstractItemActionEvent {
 
     /**
-     * Instantiates a new Pre item action event.
+     * Instantiates a new Item action event.
      *
      * @param player    the player
      * @param itemStack the item stack
