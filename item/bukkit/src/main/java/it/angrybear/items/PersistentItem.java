@@ -1,9 +1,13 @@
 package it.angrybear.items;
 
 import it.angrybear.actions.BukkitItemAction;
+import it.angrybear.actions.ClickItemAction;
 import it.angrybear.listeners.PersistentListener;
 import it.angrybear.persistent.DeathAction;
+import lombok.AccessLevel;
 import lombok.Getter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +26,9 @@ public class PersistentItem extends BukkitItemImpl {
     private static final String WARNING_MESSAGE = "Creating a PersistentItem without registering a PersistentListener will cause the former to fail. Please register one listener.";
     private static final List<PersistentItem> PERSISTENT_ITEMS = new ArrayList<>();
     private DeathAction deathAction;
-    private BukkitItemAction clickAction;
+    @Getter(AccessLevel.NONE)
+    private ClickItemAction clickAction;
+    @Getter(AccessLevel.NONE)
     private BukkitItemAction interactAction;
 
     /**
@@ -84,13 +90,24 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     /**
+     * Executes {@link #clickAction}.
+     *
+     * @param player    the player
+     * @param itemStack the item stack
+     * @param clickType the click type
+     */
+    public void click(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull ClickType clickType) {
+        if (this.clickAction != null) BukkitItemAction.runClickItemAction(this.clickAction, player, itemStack, clickType);
+    }
+
+    /**
      * Set the action executed on clicking.
      * A player clicks with an item when they click on it in their inventory.
      *
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onClick(final @Nullable BukkitItemAction action) {
+    public PersistentItem onClick(final @Nullable ClickItemAction action) {
         this.clickAction = action;
         return this;
     }
