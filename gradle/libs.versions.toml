@@ -4,7 +4,7 @@ delombok = "8.4"
 
 fulmicollection = "1.3.8"
 
-spigot = "1.13-R0.1-SNAPSHOT"
+spigot = "1.14-R0.1-SNAPSHOT"
 
 lombok = "1.18.30"
 annotations = "24.1.0"
