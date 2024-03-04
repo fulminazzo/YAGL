@@ -44,6 +44,9 @@ public class ItemUtils {
             meta.getItemFlags().forEach(f -> item.addItemFlags(ItemFlag.valueOf(f.name())));
             if (meta instanceof Damageable) item.setDurability(((Damageable) meta).getDamage());
             item.setUnbreakable(meta.isUnbreakable());
+            try {
+                item.setCustomModelData(meta.getCustomModelData());
+            } catch (Exception ignored) {}
         }
         return item;
     }
@@ -69,6 +72,9 @@ public class ItemUtils {
             item.getItemFlags().forEach(f -> meta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(f.name())));
             if (meta instanceof Damageable) ((Damageable) meta).setDamage(item.getDurability());
             meta.setUnbreakable(item.isUnbreakable());
+            try {
+                meta.setCustomModelData(item.getCustomModelData());
+            } catch (Exception ignored) {}
             itemStack.setItemMeta(meta);
         }
         return itemStack;
