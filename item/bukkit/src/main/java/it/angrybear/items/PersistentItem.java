@@ -84,10 +84,10 @@ public class PersistentItem extends BukkitItemImpl {
      *
      * @param player    the player
      * @param itemStack the item stack
-     * @param actionType the action type
+     * @param interactAction the interact action
      */
-    public void interact(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull Action actionType) {
-        if (this.interactAction != null) BukkitItemAction.runInteractItemAction(this.interactAction, player, itemStack, actionType);
+    public void interact(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull Action interactAction) {
+        if (this.interactAction != null) BukkitItemAction.runInteractItemAction(this.interactAction, player, itemStack, interactAction);
     }
 
     /**

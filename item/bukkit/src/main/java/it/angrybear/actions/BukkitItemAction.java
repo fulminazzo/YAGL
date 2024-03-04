@@ -54,17 +54,17 @@ public interface BukkitItemAction {
      * @param action     the action
      * @param player     the player
      * @param itemStack  the item stack
-     * @param actionType the action type
+     * @param interactAction the interact action
      */
     static void runInteractItemAction(final @NotNull InteractItemAction action,
                                       final @NotNull Player player,
                                       final @NotNull ItemStack itemStack,
-                                      final @NotNull Action actionType) {
-        PreInteractItemEvent preInteractItemEvent = new PreInteractItemEvent(player, itemStack, actionType);
+                                      final @NotNull Action interactAction) {
+        PreInteractItemEvent preInteractItemEvent = new PreInteractItemEvent(player, itemStack, interactAction);
         Bukkit.getPluginManager().callEvent(preInteractItemEvent);
         if (preInteractItemEvent.isCancelled()) return;
-        action.execute(player, itemStack, actionType);
-        InteractItemEvent interactItemEvent = new InteractItemEvent(player, itemStack, actionType);
+        action.execute(player, itemStack, interactAction);
+        InteractItemEvent interactItemEvent = new InteractItemEvent(player, itemStack, interactAction);
         Bukkit.getPluginManager().callEvent(interactItemEvent);
     }
 }
