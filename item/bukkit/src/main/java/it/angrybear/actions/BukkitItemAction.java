@@ -2,8 +2,11 @@ package it.angrybear.actions;
 
 import it.angrybear.events.items.click.ClickItemEvent;
 import it.angrybear.events.items.click.PreClickItemEvent;
+import it.angrybear.events.items.interact.InteractItemEvent;
+import it.angrybear.events.items.interact.PreInteractItemEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -43,5 +46,25 @@ public interface BukkitItemAction {
         action.execute(player, itemStack, clickType);
         ClickItemEvent clickItemEvent = new ClickItemEvent(player, itemStack, clickType);
         Bukkit.getPluginManager().callEvent(clickItemEvent);
+    }
+
+    /**
+     * Run action item action.
+     *
+     * @param action     the action
+     * @param player     the player
+     * @param itemStack  the item stack
+     * @param actionType the action type
+     */
+    static void runActionItemAction(final @NotNull InteractItemAction action,
+                                   final @NotNull Player player,
+                                   final @NotNull ItemStack itemStack,
+                                   final @NotNull Action actionType) {
+        PreInteractItemEvent preInteractItemEvent = new PreInteractItemEvent(player, itemStack, actionType);
+        Bukkit.getPluginManager().callEvent(preInteractItemEvent);
+        if (preInteractItemEvent.isCancelled()) return;
+        action.execute(player, itemStack, actionType);
+        InteractItemEvent interactItemEvent = new InteractItemEvent(player, itemStack, actionType);
+        Bukkit.getPluginManager().callEvent(interactItemEvent);
     }
 }
