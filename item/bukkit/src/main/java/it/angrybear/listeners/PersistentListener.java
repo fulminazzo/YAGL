@@ -65,7 +65,7 @@ public class PersistentListener implements Listener {
     @EventHandler
     void on(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        interactPersistentItem(event.getItem(), cancelled(event), player);
+        interactPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
     }
 
     @EventHandler
