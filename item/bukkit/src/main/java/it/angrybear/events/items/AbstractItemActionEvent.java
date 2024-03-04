@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * An abstract event that represents an action executed on an item by a player.
  * This can either be 'interact' or 'click'.
  */
+@Getter
 abstract class AbstractItemActionEvent extends Event {
     @Getter
     private static final HandlerList handlerList = new HandlerList();
