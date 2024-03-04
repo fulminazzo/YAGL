@@ -28,6 +28,7 @@ class ItemImpl implements Item {
     private final Set<Enchantment> enchantments;
     private final Set<ItemFlag> itemFlags;
     private boolean unbreakable;
+    private int customModelData;
 
     /**
      * Instantiates a new Item.
@@ -87,6 +88,12 @@ class ItemImpl implements Item {
     @Override
     public Item setUnbreakable(final boolean unbreakable) {
         this.unbreakable = unbreakable;
+        return this;
+    }
+
+    @Override
+    public Item setCustomModelData(int customModelData) {
+        this.customModelData = customModelData;
         return this;
     }
 

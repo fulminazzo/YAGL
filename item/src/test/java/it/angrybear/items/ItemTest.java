@@ -49,6 +49,7 @@ class ItemTest {
         private Set<Enchantment> enchantments = new EnchantmentSet();
         private Set<ItemFlag> itemFlags = new LinkedHashSet<>();
         private boolean unbreakable;
+        private int customModelData;
 
         @Override
         public Item setMaterial(String material) {
@@ -85,6 +86,11 @@ class ItemTest {
         public Item setUnbreakable(boolean unbreakable) {
             this.unbreakable = unbreakable;
             return this;
+        }
+
+        @Override
+        public Item setCustomModelData(int customModelData) {
+            return null;
         }
 
         @Override

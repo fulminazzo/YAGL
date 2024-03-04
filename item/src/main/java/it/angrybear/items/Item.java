@@ -365,6 +365,22 @@ public interface Item {
     boolean isUnbreakable();
 
     /**
+     * Sets custom model data.
+     *
+     * @param customModelData the custom model data
+     * @return the custom model data
+     * @since Minecraft 1.14
+     */
+    Item setCustomModelData(final int customModelData);
+
+    /**
+     * Gets custom model data.
+     * @return the custom model data
+     * @since Minecraft 1.14
+     */
+    int getCustomModelData();
+
+    /**
      * Compares this item with the given one.
      * Uses the given {@link ItemField}s to skip checks on those.
      *
