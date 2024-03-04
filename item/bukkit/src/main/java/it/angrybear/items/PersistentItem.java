@@ -2,6 +2,7 @@ package it.angrybear.items;
 
 import it.angrybear.actions.BukkitItemAction;
 import it.angrybear.actions.ClickItemAction;
+import it.angrybear.events.items.interact.InteractItemEvent;
 import it.angrybear.listeners.PersistentListener;
 import it.angrybear.persistent.DeathAction;
 import lombok.AccessLevel;
@@ -29,7 +30,7 @@ public class PersistentItem extends BukkitItemImpl {
     @Getter(AccessLevel.NONE)
     private ClickItemAction clickAction;
     @Getter(AccessLevel.NONE)
-    private BukkitItemAction interactAction;
+    private InteractItemEvent interactAction;
 
     /**
      * Instantiates a new Persistent item.
@@ -84,7 +85,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onInteract(final @Nullable BukkitItemAction action) {
+    public PersistentItem onInteract(final @Nullable InteractItemEvent action) {
         this.interactAction = action;
         return this;
     }
