@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -91,24 +92,20 @@ public class PersistentListener implements Listener {
     @EventHandler
     void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        clickPersistentItem(event.getCurrentItem(), cancelled(event), () ->
-                clickPersistentItem(event.getCursor(), cancelled(event), player), player);
+        ClickType type = event.getClick();
+        if (clickPersistentItem(event.getCurrentItem(), player, type, cancelled(event))) return;
+        clickPersistentItem(event.getCursor(), player, type, cancelled(event));
     }
 
     @EventHandler
     void on(InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
-        clickPersistentItem(event.getCursor(), cancelled(event), () -> clickPersistentItem(event.getOldCursor(), cancelled(event), () -> {
-            Collection<ItemStack> items = event.getNewItems().values();
-            AtomicBoolean check = new AtomicBoolean(true);
-            for (ItemStack i : items) {
-                clickPersistentItem(i, p -> {
-                    cancelled(event).accept(p);
-                    check.set(false);
-                }, player);
-                if (!check.get()) break;
-            }
-        }, player), player);
+        ClickType type = ClickType.LEFT;
+        if (clickPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
+        if (clickPersistentItem(event.getOldCursor(), player, type, cancelled(event))) return;
+        Collection<ItemStack> items = event.getNewItems().values();
+        for (ItemStack i : items)
+            if (clickPersistentItem(i, player, type, p -> cancelled(event).accept(p))) return;
     }
 
     private Consumer<PersistentItem> cancelled(Cancellable event) {
