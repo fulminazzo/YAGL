@@ -9,7 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An abstract event that represents a call to a {@link it.angrybear.actions.BukkitItemAction#execute(Player, ItemStack)} method.
+ * An abstract event that represents an action executed on an item by a player.
+ * This can either be 'interact' or 'click'.
  */
 abstract class AbstractItemActionEvent extends Event {
     @Getter
