@@ -1,5 +1,6 @@
 package it.angrybear.events.items.click;
 
+import it.angrybear.events.items.ItemActionEvent;
 import it.angrybear.events.items.PreItemActionEvent;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * An event called <b>after</b> executing a {@link it.angrybear.actions.ClickItemAction}.
  */
 @Getter
-public class ClickActionEvent extends PreItemActionEvent implements ClickEvent {
+public class ClickActionEvent extends ItemActionEvent implements ClickEvent {
     private final ClickType clickType;
 
     /**
