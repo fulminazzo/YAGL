@@ -131,20 +131,14 @@ public class PersistentListener implements Listener {
         }, orElse);
     }
 
-    private void clickPersistentItem(final @Nullable ItemStack itemStack,
-                                        final @Nullable Consumer<PersistentItem> ifPresent,
-                                        final @NotNull Player player) {
-        clickPersistentItem(itemStack, ifPresent, null, player);
-    }
-
-    private void clickPersistentItem(final @Nullable ItemStack itemStack,
-                                        final @Nullable Consumer<PersistentItem> ifPresent,
-                                        final @Nullable Runnable orElse,
-                                        final @NotNull Player player) {
-        findPersistentItem(itemStack, p -> {
-            if (p.getClickAction() != null) p.getClickAction().accept(player, itemStack);
+    private boolean clickPersistentItem(final @Nullable ItemStack itemStack,
+                                        final @NotNull Player player,
+                                        final @NotNull ClickType clickType,
+                                        final @Nullable Consumer<PersistentItem> ifPresent) {
+        return findPersistentItem(itemStack, p -> {
+            if (itemStack != null) p.click(player, itemStack, clickType);
             if (ifPresent != null) ifPresent.accept(p);
-        }, orElse);
+        });
     }
 
     private boolean findPersistentItem(final @Nullable ItemStack itemStack,
