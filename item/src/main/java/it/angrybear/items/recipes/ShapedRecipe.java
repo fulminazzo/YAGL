@@ -78,7 +78,7 @@ public class ShapedRecipe implements Recipe {
          * @param columns the columns
          */
         public void setColumns(int columns) {
-            if (columns < 1 || columns > 2)
+            if (columns < 1 || columns > 3)
                 throw new IllegalArgumentException("Columns size should be between 1 and 3");
             this.columns = columns;
         }
