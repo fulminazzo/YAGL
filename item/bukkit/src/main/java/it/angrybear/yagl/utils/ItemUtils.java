@@ -10,7 +10,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -97,7 +96,7 @@ public class ItemUtils {
         if (recipe == null) return null;
         final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
 
-        final ItemStack output = ((BukkitItem) recipe.getOutput()).create();
+        final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 
         ShapedRecipe r = new ShapedRecipe(namespacedKey, output);
 
@@ -118,7 +117,7 @@ public class ItemUtils {
 
         if (finalIngredients != null)
             for (char ch = 'A'; ch < c; ch++)
-                finalIngredients.put(ch, getItemOrRecipeChoice((BukkitItem) ingredients.get(ch - 'A')));
+                finalIngredients.put(ch, getItemOrRecipeChoice(ingredients.get(ch - 'A')));
 
         return r;
     }
@@ -128,10 +127,9 @@ public class ItemUtils {
         final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
 
         final List<Object> ingredients = recipe.getIngredients().stream()
-                .map(i -> (BukkitItem) i)
                 .map(ItemUtils::getItemOrRecipeChoice)
                 .collect(Collectors.toList());
-        final ItemStack output = ((BukkitItem) recipe.getOutput()).create();
+        final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 
         ShapelessRecipe r = new ShapelessRecipe(namespacedKey, output);
         Refl<?> tmp = new Refl<>(r);
@@ -144,8 +142,8 @@ public class ItemUtils {
         if (recipe == null) return null;
         final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
 
-        final Object ingredient = getItemOrRecipeChoice((BukkitItem) recipe.getIngredients().get(0));
-        final ItemStack output = ((BukkitItem) recipe.getOutput()).create();
+        final Object ingredient = getItemOrRecipeChoice(recipe.getIngredients().get(0));
+        final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
         final int cookingTime = recipe.getCookingTime();
         final float experience = recipe.getExperience();
 
@@ -156,8 +154,9 @@ public class ItemUtils {
         return r;
     }
 
-    private static Object getItemOrRecipeChoice(final @NotNull BukkitItem item) {
-        ItemStack itemStack = item.create();
+    private static Object getItemOrRecipeChoice(final @Nullable Item item) {
+        if (item == null) return null;
+        ItemStack itemStack = item.copy(BukkitItem.class).create();
         try {
             return new Refl<>("org.bukkit.inventory.RecipeChoice.ExactChoice", itemStack).getObject();
         } catch (Exception e) {
