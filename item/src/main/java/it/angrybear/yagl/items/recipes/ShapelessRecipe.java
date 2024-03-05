@@ -31,7 +31,7 @@ public class ShapelessRecipe implements Recipe {
 
     @Override
     public void setOutput(final @NotNull Item output) {
-        this.output = output.copy(output.getClass());
+        this.output = output.copy(Item.class);
     }
 
     /**
@@ -52,7 +52,7 @@ public class ShapelessRecipe implements Recipe {
     public void addIngredient(final @NotNull Item item) {
         if (this.ingredients.size() >= MAX_SIZE)
             throw new IllegalStateException(String.format("Cannot add ingredient to ingredients as maximum size of %s has been reached", MAX_SIZE));
-        this.ingredients.add(item.copy(item.getClass()));
+        this.ingredients.add(item.copy(Item.class));
     }
 
     /**
