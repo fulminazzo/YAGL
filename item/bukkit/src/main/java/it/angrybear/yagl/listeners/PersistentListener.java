@@ -40,7 +40,7 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    void on(PlayerDeathEvent event) {
+    protected void on(PlayerDeathEvent event) {
         Player player = event.getEntity();
         Map<Integer, PersistentItem> toRestore = new HashMap<>();
         ItemStack[] contents = player.getInventory().getContents();
@@ -63,34 +63,34 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    void on(PlayerInteractEvent event) {
+    protected void on(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         interactPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
     }
 
     @EventHandler
-    void on(PlayerItemConsumeEvent event) {
+    protected void on(PlayerItemConsumeEvent event) {
         findPersistentItem(event.getItem(), cancelled(event));
     }
 
     @EventHandler
-    void on(PlayerItemDamageEvent event) {
+    protected void on(PlayerItemDamageEvent event) {
         findPersistentItem(event.getItem(), cancelled(event));
     }
 
     @EventHandler
-    void on(BlockPlaceEvent event) {
+    protected void on(BlockPlaceEvent event) {
         PlayerInventory inventory = event.getPlayer().getInventory();
         findPersistentItem(inventory.getItem(inventory.getHeldItemSlot()), cancelled(event));
     }
 
     @EventHandler
-    void on(PlayerDropItemEvent event) {
+    protected void on(PlayerDropItemEvent event) {
         findPersistentItem(event.getItemDrop().getItemStack(), cancelled(event));
     }
 
     @EventHandler
-    void on(InventoryClickEvent event) {
+    protected void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = event.getClick();
         if (clickPersistentItem(event.getCurrentItem(), player, type, cancelled(event))) return;
@@ -98,7 +98,7 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    void on(InventoryDragEvent event) {
+    protected void on(InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = ClickType.LEFT;
         if (clickPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
