@@ -2,7 +2,7 @@
 shadow = "8.1.1"
 delombok = "8.4"
 
-fulmicollection = "1.4"
+fulmicollection = "1.4.1"
 yamlparser = "1.5.9"
 
 spigot = "1.14-R0.1-SNAPSHOT"
