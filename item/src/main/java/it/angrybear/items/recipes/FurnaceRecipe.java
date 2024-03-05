@@ -32,6 +32,20 @@ public class FurnaceRecipe implements Recipe {
         this.id = id;
     }
 
+    /**
+     * Sets ingredient.
+     *
+     * @param ingredient the ingredient
+     */
+    public void setIngredient(final @NotNull Item ingredient) {
+        this.ingredient = ingredient.copy(ingredient.getClass());
+    }
+
+    @Override
+    public void setOutput(final @NotNull Item output) {
+        this.output = output.copy(output.getClass());
+    }
+
     @Override
     public List<Item> getIngredients() {
         return Collections.singletonList(this.ingredient);
