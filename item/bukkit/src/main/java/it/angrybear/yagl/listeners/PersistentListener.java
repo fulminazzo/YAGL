@@ -34,14 +34,14 @@ public class PersistentListener implements Listener {
      * Timeout, in milliseconds, to check before calling {@link #on(PlayerInteractEvent)}.
      * This is used to prevent double calls.
      */
-    private static long INTERACT_TIMEOUT = 10;
+    private static final long INTERACT_TIMEOUT = 10;
     private final Map<UUID, Long> lastUsed;
 
     /**
      * Instantiates a new Persistent listener.
      */
-    public PersistentListener(Map<UUID, Long> lastUsed) {
-        this.lastUsed = lastUsed;
+    public PersistentListener() {
+        this.lastUsed = new HashMap<>();
         INITIALIZED = true;
     }
 
