@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
 public class ShapedRecipe implements Recipe {
     @Getter
     private final String id;
-    private final Item[] ingredients;
+    private final List<Item> ingredients;
     @Getter
     private final Shape shape;
     @Getter
@@ -30,7 +30,7 @@ public class ShapedRecipe implements Recipe {
     public ShapedRecipe(final @NotNull String id) {
         this.id = id;
         this.shape = new Shape();
-        this.ingredients = new Item[9];
+        this.ingredients = new LinkedList<>();
     }
 
     /**
@@ -55,12 +55,12 @@ public class ShapedRecipe implements Recipe {
         if (!this.shape.contains(position))
             throw new IllegalArgumentException(String.format("Shape %sx%s does not allow position %s",
                     this.shape.getRows(), this.shape.getColumns(), position));
-        this.ingredients[position] = item;
+        this.ingredients.set(position, item);
     }
 
     @Override
     public List<Item> getIngredients() {
-        return Arrays.asList(this.ingredients);
+        return new LinkedList<>(this.ingredients);
     }
 
     /**
