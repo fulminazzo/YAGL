@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +33,7 @@ public class PersistentListener implements Listener {
      * Timeout, in milliseconds, to check before calling {@link #on(PlayerInteractEvent)}.
      * This is used to prevent double calls.
      */
-    private static final long INTERACT_TIMEOUT = 10;
+    private static final long INTERACT_DELAY = 10;
     private final Map<UUID, Long> lastUsed;
 
     /**
@@ -70,11 +69,10 @@ public class PersistentListener implements Listener {
 
     @EventHandler
     protected void on(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
         Player player = event.getPlayer();
         long lastUsed = this.lastUsed.getOrDefault(player.getUniqueId(), 0L);
         long now = new Date().getTime();
-        if (now < lastUsed + INTERACT_TIMEOUT) return;
+        if (now < lastUsed + INTERACT_DELAY) return;
         this.lastUsed.put(player.getUniqueId(), now);
         interactPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
     }
