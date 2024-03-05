@@ -15,8 +15,7 @@ class ItemParserTest {
 
     @Test
     void testSaveAndLoad() throws IOException {
-        FileConfiguration.addParsers(new EnchantmentParser());
-        FileConfiguration.addParsers(new ItemParser());
+        YAGLParser.addAllParsers();
 
         File output = new File("build/resources/test/item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
