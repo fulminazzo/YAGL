@@ -22,9 +22,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -32,11 +30,18 @@ import java.util.function.Consumer;
  */
 public class PersistentListener implements Listener {
     private static boolean INITIALIZED = false;
+    /**
+     * Timeout, in milliseconds, to check before calling {@link #on(PlayerInteractEvent)}.
+     * This is used to prevent double calls.
+     */
+    private static long INTERACT_TIMEOUT = 10;
+    private final Map<UUID, Long> lastUsed;
 
     /**
      * Instantiates a new Persistent listener.
      */
-    public PersistentListener() {
+    public PersistentListener(Map<UUID, Long> lastUsed) {
+        this.lastUsed = lastUsed;
         INITIALIZED = true;
     }
 
@@ -67,6 +72,10 @@ public class PersistentListener implements Listener {
     protected void on(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
         Player player = event.getPlayer();
+        long lastUsed = this.lastUsed.getOrDefault(player.getUniqueId(), 0L);
+        long now = new Date().getTime();
+        if (now < lastUsed + INTERACT_TIMEOUT) return;
+        this.lastUsed.put(player.getUniqueId(), now);
         interactPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
     }
 
