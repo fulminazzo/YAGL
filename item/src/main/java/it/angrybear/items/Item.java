@@ -5,6 +5,7 @@ import it.angrybear.items.fields.ItemField;
 import it.angrybear.items.fields.ItemFlag;
 import it.angrybear.utils.MessageUtils;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -401,12 +402,21 @@ public interface Item {
 
     /**
      * Copies the current item into a new one using the provided class.
+     * If an interface is provided (say {@link Item}),
+     * it tries to convert it to {@link ItemImpl} by appending <i>Impl</i>.
      *
      * @param <I>   the type parameter
      * @param clazz the clazz
      * @return the item
      */
-    default <I extends Item> I copy(final @NotNull Class<I> clazz) {
+    default <I extends Item> I copy(@NotNull Class<I> clazz) {
+        if (clazz.isInterface())
+            try {
+                clazz = ReflectionUtils.getClass(clazz.getCanonicalName() + "Impl");
+            } catch (Exception ignored) {
+
+            }
+
         Refl<I> item = new Refl<>(clazz, new Object[0]);
         for (final Field field : item.getNonStaticFields())
             try {

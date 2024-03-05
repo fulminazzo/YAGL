@@ -16,6 +16,13 @@ class ItemImplTest {
     }
 
     @Test
+    void testCopyItem() {
+        Item i1 = new ItemImpl();
+        Item i2 = i1.copy(Item.class);
+        assertEquals(i1, i2);
+    }
+
+    @Test
     void testSimilarity() {
         Item i1 = new ItemImpl()
                 .setMaterial("material")
