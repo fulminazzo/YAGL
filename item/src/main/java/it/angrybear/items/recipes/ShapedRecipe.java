@@ -31,6 +31,7 @@ public class ShapedRecipe implements Recipe {
         this.id = id;
         this.shape = new Shape();
         this.ingredients = new LinkedList<>();
+        for (int i = 0; i < 9; i++) this.ingredients.add(null);
     }
 
     /**
