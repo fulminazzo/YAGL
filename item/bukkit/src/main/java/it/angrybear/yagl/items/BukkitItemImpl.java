@@ -69,6 +69,6 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
 
     @Override
     public BukkitItem copy() {
-        return super.copy(BukkitItemImpl.class);
+        return (BukkitItem) super.copy();
     }
 }

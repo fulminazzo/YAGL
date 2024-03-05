@@ -9,6 +9,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
@@ -397,7 +398,13 @@ public interface Item {
      * @return the item
      */
     default Item copy() {
-        return copy(ItemImpl.class);
+        Class<? extends Item> clazz = this.getClass();
+        try {
+            Constructor<? extends Item> constructor = ReflectionUtils.getConstructor(clazz);
+        } catch (Exception e) {
+            clazz = ItemImpl.class;
+        }
+        return copy(clazz);
     }
 
     /**
