@@ -60,7 +60,7 @@ public class ShapedRecipe implements Recipe {
         if (!this.shape.contains(position))
             throw new IllegalArgumentException(String.format("Shape %sx%s does not allow position %s",
                     this.shape.getRows(), this.shape.getColumns(), position));
-        while (this.ingredients.size() - 1 <= position) this.ingredients.add(null);
+        while (this.ingredients.size() - 1 < position) this.ingredients.add(null);
         this.ingredients.set(position, item.copy(item.getClass()));
     }
 
