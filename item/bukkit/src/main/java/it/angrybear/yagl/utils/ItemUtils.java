@@ -44,7 +44,8 @@ public class ItemUtils {
             if (meta instanceof Damageable) item.setDurability(((Damageable) meta).getDamage());
             item.setUnbreakable(meta.isUnbreakable());
             try {
-                item.setCustomModelData(meta.getCustomModelData());
+                int modelData = meta.getCustomModelData();
+                if (modelData > 0) item.setCustomModelData(modelData);
             } catch (Exception ignored) {}
         }
         return item;
@@ -72,7 +73,8 @@ public class ItemUtils {
             if (meta instanceof Damageable) ((Damageable) meta).setDamage(item.getDurability());
             meta.setUnbreakable(item.isUnbreakable());
             try {
-                meta.setCustomModelData(item.getCustomModelData());
+                int modelData = item.getCustomModelData();
+                if (modelData > 0) meta.setCustomModelData(modelData);
             } catch (Exception ignored) {}
             itemStack.setItemMeta(meta);
         }
