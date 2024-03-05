@@ -1,5 +1,5 @@
 dependencies {
     implementation(project(":item"))
 
-    api("it.fulminazzo:YAMLParser:1.5.8")
+    api(libs.yamlparser)
 }

@@ -3,6 +3,7 @@ shadow = "8.1.1"
 delombok = "8.4"
 
 fulmicollection = "1.4"
+yamlparser = "1.5.9"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 
@@ -12,6 +13,7 @@ junit = "5.9.1"
 
 [libraries]
 fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }
+yamlparser = { module = "it.fulminazzo:YAMLParser", version.ref = "yamlparser" }
 
 spigot = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
 
