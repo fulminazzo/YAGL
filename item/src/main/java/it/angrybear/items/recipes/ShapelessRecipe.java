@@ -18,7 +18,6 @@ public class ShapelessRecipe implements Recipe {
     private final String id;
     private final List<Item> ingredients;
     @Getter
-    @Setter
     private Item output;
 
     /**
