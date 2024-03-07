@@ -1,5 +1,6 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.items.MovablePersistentItem;
 import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -102,8 +104,17 @@ public class PersistentListener implements Listener {
     protected void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = event.getClick();
-        if (clickPersistentItem(event.getCurrentItem(), player, type, cancelled(event))) return;
-        clickPersistentItem(event.getCursor(), player, type, cancelled(event));
+        ItemStack itemStack = event.getCurrentItem();
+        Inventory clicked = event.getClickedInventory();
+        Inventory playerInventory = player.getInventory();
+
+        Consumer<PersistentItem> ifPresent = e -> {
+            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked))
+                cancelled(event).accept(e);
+        };
+
+        if (clickPersistentItem(itemStack, player, type, ifPresent)) return;
+        clickPersistentItem(event.getCursor(), player, type, ifPresent);
     }
 
     @EventHandler
