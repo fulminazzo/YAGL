@@ -114,7 +114,11 @@ public class PersistentListener implements Listener {
         };
 
         if (clickPersistentItem(itemStack, player, type, ifPresent)) return;
-        clickPersistentItem(event.getCursor(), player, type, ifPresent);
+        if (clickPersistentItem(event.getCursor(), player, type, ifPresent)) return;
+        if (type.equals(ClickType.NUMBER_KEY)) {
+            itemStack = playerInventory.getItem(event.getHotbarButton());
+            clickPersistentItem(itemStack, player, type, ifPresent);
+        }
     }
 
     @EventHandler
