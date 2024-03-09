@@ -103,12 +103,13 @@ public class PersistentListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ClickType type = event.getClick();
         ItemStack itemStack = event.getCurrentItem();
+        Inventory open = player.getOpenInventory().getTopInventory();
         Inventory clicked = event.getClickedInventory();
         Inventory playerInventory = player.getInventory();
 
         Consumer<PersistentItem> ifPresent = e -> {
             int rawSlot = event.getRawSlot();
-            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || rawSlot < clicked.getSize())
+            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || rawSlot < open.getSize())
                 cancelled(event).accept(e);
         };
 
