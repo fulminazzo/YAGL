@@ -10,10 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -110,7 +107,8 @@ public class PersistentListener implements Listener {
         Inventory playerInventory = player.getInventory();
 
         Consumer<PersistentItem> ifPresent = e -> {
-            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY))
+            int rawSlot = event.getRawSlot();
+            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || rawSlot < clicked.getSize())
                 cancelled(event).accept(e);
         };
 
