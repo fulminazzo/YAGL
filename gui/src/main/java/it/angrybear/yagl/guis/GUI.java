@@ -126,6 +126,7 @@ public interface GUI extends Iterable<GUIContent> {
      * and for those remaining, the one with higher {@link GUIContent#getPriority()} is returned.
      *
      * @param viewer the viewer
+     * @param slot   the slot
      * @return the content
      */
     default @Nullable GUIContent getContent(final @NotNull Viewer viewer, int slot) {
@@ -164,7 +165,7 @@ public interface GUI extends Iterable<GUIContent> {
      * Sets the given contents at the specified index.
      * These will be then filtered using {@link #getContent(Viewer, int)}
      *
-     * @param slot    the slot
+     * @param slot     the slot
      * @param contents the contents
      * @return this gui
      */
