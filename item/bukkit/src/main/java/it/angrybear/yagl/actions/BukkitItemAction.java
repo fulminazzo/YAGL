@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A general interface for executing actions requiring an {@link ItemStack}.
  */
-@SuppressWarnings("deprecation")
 @FunctionalInterface
 public interface BukkitItemAction {
 
@@ -18,9 +17,7 @@ public interface BukkitItemAction {
      *
      * @param player    the player
      * @param itemStack the item stack
-     * @deprecated this method should be used only for defining the interface. This will NOT call the relative events. Use the static methods found in this interface instead.
      */
-    @Deprecated
     void execute(final @NotNull Player player, final @NotNull ItemStack itemStack);
 
     /**

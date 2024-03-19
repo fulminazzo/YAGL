@@ -17,8 +17,6 @@ public interface InteractItemAction {
      * @param player         the player
      * @param itemStack      the item stack
      * @param interactAction the interact action
-     * @deprecated this method should be used only for defining the interface. This will NOT call the relative events.
      */
-    @Deprecated
     void execute(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull Action interactAction);
 }
