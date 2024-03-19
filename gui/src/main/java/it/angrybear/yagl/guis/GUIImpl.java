@@ -12,6 +12,8 @@ import java.util.*;
  */
 @Getter
 abstract class GUIImpl implements GUI {
+    protected static final int MAX_SIZE = 54;
+
     protected GUI previous;
     protected GUI next;
     protected GUI back;
@@ -24,7 +26,7 @@ abstract class GUIImpl implements GUI {
      * @param size the size
      */
     public GUIImpl(int size) {
-        if (size < 0 || size > 54) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
+        if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
         this.contents = createList(size, null);
         this.movableSlots = new HashSet<>();
     }
