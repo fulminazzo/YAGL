@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
@@ -7,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,6 +75,16 @@ class GUIImplTest {
         @Override
         public boolean hasViewRequirements(@NotNull Viewer viewer) {
             return false;
+        }
+
+        @Override
+        public @NotNull GUIContent onClickItem(@NotNull GUIItemAction action) {
+            return null;
+        }
+
+        @Override
+        public @NotNull Optional<GUIItemAction> clickItemAction() {
+            return Optional.empty();
         }
 
         @Override
