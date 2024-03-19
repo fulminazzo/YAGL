@@ -3,7 +3,11 @@ package it.angrybear.yagl.listeners;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -19,6 +23,18 @@ public class GUIListener implements Listener {
     public GUIListener() {
         instance = this;
         this.openGUIs = new LinkedHashMap<>();
+    }
+
+    @EventHandler
+    void on(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        GUI gui = this.openGUIs.remove(player.getUniqueId());
+    }
+
+    @EventHandler
+    void on(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        GUI gui = this.openGUIs.remove(player.getUniqueId());
     }
 
     public static void openGUI(final @NotNull Viewer viewer, final @NotNull GUI gui) {
