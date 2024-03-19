@@ -1,6 +1,7 @@
 package it.angrybear.yagl.listeners;
 
 import it.angrybear.yagl.guis.GUI;
+import it.angrybear.yagl.viewers.BukkitViewer;
 import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -48,13 +49,18 @@ public class GUIListener implements Listener {
     @EventHandler
     void on(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        GUI gui = this.openGUIs.remove(player.getUniqueId());
+        closeGUI(player);
     }
 
     @EventHandler
     void on(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        closeGUI(player);
+    }
+
+    private void closeGUI(Player player) {
         GUI gui = this.openGUIs.remove(player.getUniqueId());
+        gui.closeGUIAction().ifPresent(c -> c.execute(BukkitViewer.newViewer(player), gui));
     }
 
     @EventHandler
