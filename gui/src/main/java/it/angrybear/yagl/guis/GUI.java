@@ -3,6 +3,7 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,14 +76,6 @@ public interface GUI extends Iterable<GUIContent> {
     @Nullable GUI getBack();
 
     /**
-     * Gets the content at the given slot.
-     *
-     * @param slot the slot
-     * @return the content
-     */
-    @Nullable GUIContent getContent(int slot);
-
-    /**
      * Gets size.
      *
      * @return the size
@@ -127,6 +120,32 @@ public interface GUI extends Iterable<GUIContent> {
     @NotNull GUI setMovable(int slot, boolean movable);
 
     /**
+     * Gets the most matching content at the given slot.
+     * The contents are filtered using {@link GUIContent#hasViewRequirements(Viewer)}
+     * and for those remaining, the one with higher {@link GUIContent#getPriority()} is returned.
+     *
+     * @param viewer the viewer
+     * @return the content
+     */
+    @Nullable GUIContent getContent(final @NotNull Viewer viewer, int slot);
+
+    /**
+     * Gets a copy of the contents at the given slot.
+     *
+     * @param slot the slot
+     * @return the contents
+     */
+    @NotNull List<GUIContent> getContents(int slot);
+
+    /**
+     * Gets a copy of all the contents.
+     * To get the actual content, use the GUI in a for-enhanced loop or use {@link #iterator()}.
+     *
+     * @return the contents
+     */
+    @NotNull List<GUIContent> getContents();
+
+    /**
      * Tries to add all the contents in the GUI.
      * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
      *
@@ -136,13 +155,14 @@ public interface GUI extends Iterable<GUIContent> {
     @NotNull GUI addContent(final GUIContent @NotNull ... contents);
 
     /**
-     * Sets the content at the given index.
+     * Sets the given contents at the specified index.
+     * These will be then filtered using {@link #getContent(Viewer, int)}
      *
      * @param slot    the slot
-     * @param content the content
+     * @param contents the contents
      * @return this gui
      */
-    @NotNull GUI setContent(int slot, final @NotNull GUIContent content);
+    @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
     /**
      * Removes the content from the given index.
@@ -151,14 +171,6 @@ public interface GUI extends Iterable<GUIContent> {
      * @return this gui
      */
     @NotNull GUI unsetContent(int slot);
-
-    /**
-     * Gets a copy of all the contents.
-     * To get the actual content, use the GUI in a for-enhanced loop or use {@link #iterator()}.
-     *
-     * @return the contents
-     */
-    @NotNull List<GUIContent> getContents();
 
     /**
      * Executes the given action when clicking outside the GUI (will not include player's inventory slots).
