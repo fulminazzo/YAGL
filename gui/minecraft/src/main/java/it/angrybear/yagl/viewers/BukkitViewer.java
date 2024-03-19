@@ -4,7 +4,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.listeners.GUIListener;
-import it.angrybear.yagl.utils.MessageUtils;
+import it.angrybear.yagl.utils.GUIUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -29,7 +29,7 @@ public class BukkitViewer extends Viewer {
     public void openGUI(@NotNull GUI gui) {
         Player player = getPlayer();
         if (player == null) throw new IllegalStateException(String.format("%s is not online", this.name));
-        Inventory inventory = Bukkit.createInventory(null, gui.getSize(), MessageUtils.color(gui.getTitle()));
+        final Inventory inventory = GUIUtils.guiToInventory(gui);
         for (int i = 0; i < gui.getSize(); i++) {
             GUIContent content = gui.getContent(this, i);
             if (content != null) {
