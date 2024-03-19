@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,10 @@ abstract class GUIImpl implements GUI {
     protected String title;
     protected List<GUIContent> contents;
     protected final Set<Integer> movableSlots;
+
+    protected GUIAction clickOutsideAction;
+    protected GUIAction openGUIAction;
+    protected GUIAction closeGUIAction;
 
     /**
      * Instantiates a new Gui.
@@ -111,6 +116,39 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull List<GUIContent> getContents() {
         return new LinkedList<>(this.contents);
+    }
+
+    @Override
+    public @NotNull GUI onClickOutside(@NotNull GUIAction action) {
+        this.clickOutsideAction = action;
+        return this;
+    }
+
+    @Override
+    public @NotNull Optional<GUIAction> clickOutsideAction() {
+        return Optional.ofNullable(this.clickOutsideAction);
+    }
+
+    @Override
+    public @NotNull GUI onOpenGUI(@NotNull GUIAction action) {
+        this.openGUIAction = action;
+        return this;
+    }
+
+    @Override
+    public @NotNull Optional<GUIAction> openGUIAction() {
+        return Optional.ofNullable(this.openGUIAction);
+    }
+
+    @Override
+    public @NotNull GUI onCloseGUI(@NotNull GUIAction action) {
+        this.closeGUIAction = action;
+        return this;
+    }
+
+    @Override
+    public @NotNull Optional<GUIAction> closeGUIAction() {
+        return Optional.ofNullable(this.closeGUIAction);
     }
 
     @NotNull
