@@ -43,7 +43,7 @@ public class ResizableGUI extends GUIImpl {
 
     @Override
     public @NotNull GUI setContent(int slot, @NotNull GUIContent content) {
-        if (slot > getSize() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
+        if (slot >= getSize() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
         return super.setContent(slot, content);
     }
 
