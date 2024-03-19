@@ -186,7 +186,7 @@ abstract class GUIImpl implements GUI {
         return contents;
     }
 
-    static class Contents {
+    static class Contents implements Iterable<GUIContent> {
         private final GUIContent[] contents;
 
         protected Contents(final GUIContent @NotNull ... contents) {
@@ -195,6 +195,12 @@ abstract class GUIImpl implements GUI {
 
         public List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
+        }
+
+        @NotNull
+        @Override
+        public Iterator<GUIContent> iterator() {
+            return Arrays.stream(this.contents).iterator();
         }
     }
 }
