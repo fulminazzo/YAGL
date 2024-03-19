@@ -1,5 +1,6 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,14 @@ import java.util.function.Predicate;
  * Represents the generic content of a GUI.
  */
 public interface GUIContent {
+
+    /**
+     * Renders the current content in an Item.
+     * This will NOT check for {@link #hasViewRequirements(Viewer)} or {@link #getPriority()}.
+     *
+     * @return the item
+     */
+    @NotNull Item render();
 
     /**
      * Sets priority.
