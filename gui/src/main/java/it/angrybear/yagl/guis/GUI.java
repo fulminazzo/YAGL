@@ -7,6 +7,7 @@ import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,7 +128,12 @@ public interface GUI extends Iterable<GUIContent> {
      * @param viewer the viewer
      * @return the content
      */
-    @Nullable GUIContent getContent(final @NotNull Viewer viewer, int slot);
+    default @Nullable GUIContent getContent(final @NotNull Viewer viewer, int slot) {
+        return getContents(slot).stream()
+                .filter(c -> c.hasViewRequirements(viewer))
+                .min(Comparator.comparing(c -> -c.getPriority()))
+                .orElse(null);
+    }
 
     /**
      * Gets a copy of the contents at the given slot.
