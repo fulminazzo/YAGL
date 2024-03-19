@@ -64,16 +64,16 @@ public class GUIListener implements Listener {
     @EventHandler
     void on(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        closeGUI(player);
+        onCloseGUI(player);
     }
 
     @EventHandler
     void on(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        closeGUI(player);
+        onCloseGUI(player);
     }
 
-    private void closeGUI(Player player) {
+    private void onCloseGUI(Player player) {
         getOpenGUI(player.getUniqueId()).ifPresent(gui ->
                 gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
     }
@@ -91,6 +91,13 @@ public class GUIListener implements Listener {
         if (listener == null)
             throw new IllegalStateException("GUIListener has not been initialized yet");
         return Optional.ofNullable(listener.openGUIs.get(uuid));
+    }
+
+    public static void closeGUI(final @NotNull UUID uuid) {
+        GUIListener listener = getInstance();
+        if (listener == null)
+            throw new IllegalStateException("GUIListener has not been initialized yet");
+        listener.openGUIs.remove(uuid);
     }
 
     public static void openGUI(final @NotNull Viewer viewer, final @NotNull GUI gui) {
