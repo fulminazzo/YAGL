@@ -1,5 +1,6 @@
 package it.angrybear.yagl.viewers;
 
+import it.angrybear.yagl.guis.GUI;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -21,6 +22,13 @@ public abstract class Viewer {
         this.uniqueId = uniqueId;
         this.name = name;
     }
+
+    /**
+     * Opens gui.
+     *
+     * @param gui the gui
+     */
+    public abstract void openGUI(final @NotNull GUI gui);
 
     /**
      * Check if the viewer has the given permission
