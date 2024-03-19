@@ -1,5 +1,6 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.BukkitViewer;
 import it.angrybear.yagl.viewers.Viewer;
@@ -17,6 +18,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -43,9 +45,17 @@ public class GUIListener implements Listener {
 
     @EventHandler
     void on(InventoryClickEvent event) {
-        GUI gui = this.openGUIs.get(event.getWhoClicked().getUniqueId());
-        if (gui != null && !gui.isMovable(event.getRawSlot()))
-            event.setCancelled(true);
+        Player player = (Player) event.getWhoClicked();
+        GUI gui = this.openGUIs.get(player.getUniqueId());
+        if (gui == null) return;
+        int slot = event.getRawSlot();
+        if (!gui.isMovable(slot)) event.setCancelled(true);
+        Viewer viewer = BukkitViewer.newViewer(player);
+        if (slot < 0) gui.clickOutsideAction().ifPresent(a -> a.execute(viewer, gui));
+        else if (slot < gui.getSize()) {
+            @Nullable GUIContent content = gui.getContent(viewer, slot);
+            if (content != null) content.clickItemAction().ifPresent(a -> a.execute(viewer, gui, content));
+        }
     }
 
     @EventHandler
