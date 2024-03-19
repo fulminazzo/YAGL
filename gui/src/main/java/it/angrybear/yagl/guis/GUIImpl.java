@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import lombok.Getter;
@@ -25,6 +26,7 @@ abstract class GUIImpl implements GUI {
     protected GUIAction clickOutsideAction;
     protected GUIAction openGUIAction;
     protected GUIAction closeGUIAction;
+    protected BiGUIAction changeGUIAction;
 
     /**
      * Instantiates a new Gui.
@@ -149,6 +151,17 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull Optional<GUIAction> closeGUIAction() {
         return Optional.ofNullable(this.closeGUIAction);
+    }
+
+    @Override
+    public @NotNull GUI onChangeGUI(@NotNull BiGUIAction action) {
+        this.changeGUIAction = action;
+        return this;
+    }
+
+    @Override
+    public @NotNull Optional<BiGUIAction> changeGUIAction() {
+        return Optional.ofNullable(this.changeGUIAction);
     }
 
     @NotNull
