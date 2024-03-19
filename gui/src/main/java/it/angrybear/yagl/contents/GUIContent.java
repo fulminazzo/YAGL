@@ -59,4 +59,11 @@ public interface GUIContent {
      * @return the boolean
      */
     boolean hasViewRequirements(final @NotNull Viewer viewer);
+
+    /**
+     * Copy this content to another one.
+     *
+     * @return the copy
+     */
+    GUIContent copy();
 }
