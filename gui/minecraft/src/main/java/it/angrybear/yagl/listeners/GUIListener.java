@@ -20,10 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class GUIListener implements Listener {
     @Getter
@@ -39,23 +36,23 @@ public class GUIListener implements Listener {
     @EventHandler
     void on(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        GUI gui = this.openGUIs.get(player.getUniqueId());
-        if (gui != null) gui.openGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui));
+        getOpenGUI(player.getUniqueId()).ifPresent(gui ->
+                gui.openGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
     }
 
     @EventHandler
     void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        GUI gui = this.openGUIs.get(player.getUniqueId());
-        if (gui == null) return;
-        int slot = event.getRawSlot();
-        if (!gui.isMovable(slot)) event.setCancelled(true);
-        Viewer viewer = BukkitViewer.newViewer(player);
-        if (slot < 0) gui.clickOutsideAction().ifPresent(a -> a.execute(viewer, gui));
-        else if (slot < gui.getSize()) {
-            @Nullable GUIContent content = gui.getContent(viewer, slot);
-            if (content != null) content.clickItemAction().ifPresent(a -> a.execute(viewer, gui, content));
-        }
+        getOpenGUI(player.getUniqueId()).ifPresent(gui -> {
+            int slot = event.getRawSlot();
+            if (!gui.isMovable(slot)) event.setCancelled(true);
+            Viewer viewer = BukkitViewer.newViewer(player);
+            if (slot < 0) gui.clickOutsideAction().ifPresent(a -> a.execute(viewer, gui));
+            else if (slot < gui.getSize()) {
+                @Nullable GUIContent content = gui.getContent(viewer, slot);
+                if (content != null) content.clickItemAction().ifPresent(a -> a.execute(viewer, gui, content));
+            }
+        });
     }
 
     @EventHandler
@@ -77,8 +74,8 @@ public class GUIListener implements Listener {
     }
 
     private void closeGUI(Player player) {
-        GUI gui = this.openGUIs.remove(player.getUniqueId());
-        if (gui != null) gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui));
+        getOpenGUI(player.getUniqueId()).ifPresent(gui ->
+                gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
     }
 
     @EventHandler
@@ -87,6 +84,13 @@ public class GUIListener implements Listener {
         Plugin disablingPlugin = event.getPlugin();
         if (plugin.equals(disablingPlugin))
             this.openGUIs.keySet().stream().map(Bukkit::getPlayer).filter(Objects::nonNull).forEach(Player::closeInventory);
+    }
+
+    public static Optional<GUI> getOpenGUI(final @NotNull UUID uuid) {
+        GUIListener listener = getInstance();
+        if (listener == null)
+            throw new IllegalStateException("GUIListener has not been initialized yet");
+        return Optional.ofNullable(listener.openGUIs.get(uuid));
     }
 
     public static void openGUI(final @NotNull Viewer viewer, final @NotNull GUI gui) {
