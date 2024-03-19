@@ -20,7 +20,7 @@ abstract class GUIImpl implements GUI {
     protected GUI next;
     protected GUI back;
     protected String title;
-    protected List<GUIContent> contents;
+    protected List<Contents> contents;
     protected final Set<Integer> movableSlots;
 
     protected GUIAction clickOutsideAction;
@@ -35,7 +35,7 @@ abstract class GUIImpl implements GUI {
      */
     public GUIImpl(int size) {
         if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
-        this.contents = createList(size, null);
+        this.contents = createContents(size, null);
         this.movableSlots = new HashSet<>();
     }
 
@@ -177,13 +177,13 @@ abstract class GUIImpl implements GUI {
      * @param copyFrom if not null, copy the contents of this list in the resulting one
      * @return the list
      */
-    protected List<GUIContent> createList(int size, final List<GUIContent> copyFrom) {
-        List<GUIContent> list = new LinkedList<>();
-        for (int i = 0; i < size; i++) list.add(null);
+    protected List<Contents> createContents(int size, final List<Contents> copyFrom) {
+        List<Contents> contents = new LinkedList<>();
+        for (int i = 0; i < size; i++) contents.add(null);
         if (copyFrom != null) 
-            for (int i = 0; i < Math.min(copyFrom.size(), list.size()); i++)
-                list.set(i, copyFrom.get(i));
-        return list;
+            for (int i = 0; i < Math.min(copyFrom.size(), contents.size()); i++)
+                contents.set(i, copyFrom.get(i));
+        return contents;
     }
 
     protected static class Contents {
