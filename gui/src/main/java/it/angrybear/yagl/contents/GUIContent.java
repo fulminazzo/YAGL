@@ -38,11 +38,11 @@ public interface GUIContent {
     @NotNull GUIContent setClickSound(final String rawSound);
 
     /**
-     * Gets sound.
+     * Gets the sound played upon clicking on this content in the GUI.
      *
      * @return the sound, if set
      */
-    @Nullable String getSound();
+    @Nullable String getClickSound();
 
     /**
      * Sets the given predicate as a checker for {@link #hasViewRequirements(Viewer)}.
