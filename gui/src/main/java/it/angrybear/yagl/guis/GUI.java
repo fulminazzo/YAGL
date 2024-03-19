@@ -90,7 +90,7 @@ public interface GUI extends Iterable<GUIContent> {
 
     /**
      * Tries to add all the contents in the GUI.
-     * If it fails (because of empty GUI) it throws an {@link IllegalStateException}.
+     * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
      *
      * @param contents the contents
      * @return this gui
