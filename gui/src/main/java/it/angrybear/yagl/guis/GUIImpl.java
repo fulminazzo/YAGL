@@ -64,11 +64,6 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @Nullable GUIContent getContent(int slot) {
-        return this.contents.get(slot);
-    }
-
-    @Override
     public int getSize() {
         return this.contents.size();
     }
