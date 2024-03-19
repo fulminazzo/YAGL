@@ -60,7 +60,8 @@ public class GUIListener implements Listener {
 
     private void closeGUI(Player player) {
         GUI gui = this.openGUIs.remove(player.getUniqueId());
-        gui.closeGUIAction().ifPresent(c -> c.execute(BukkitViewer.newViewer(player), gui));
+        if (gui != null)
+            gui.closeGUIAction().ifPresent(c -> c.execute(BukkitViewer.newViewer(player), gui));
     }
 
     @EventHandler
