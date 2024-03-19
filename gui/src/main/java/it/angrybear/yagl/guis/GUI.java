@@ -95,6 +95,26 @@ public interface GUI extends Iterable<GUIContent> {
     boolean isMovable(int slot);
 
     /**
+     * Sets all movable.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI setAllMovable() {
+        for (int i = 0; i < getSize(); i++) setMovable(i, true);
+        return this;
+    }
+
+    /**
+     * Sets all unmovable.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI setAllUnmovable() {
+        for (int i = 0; i < getSize(); i++) setMovable(i, false);
+        return this;
+    }
+
+    /**
      * Sets the given slot movable.
      *
      * @param slot    the slot
