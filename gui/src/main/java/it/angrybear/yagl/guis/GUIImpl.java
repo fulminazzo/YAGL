@@ -81,6 +81,13 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
+    public @NotNull List<GUIContent> getContents(int slot) {
+        Contents contents = this.contents.get(slot);
+        if (contents == null) return new LinkedList<>();
+        return contents.getContents();
+    }
+
+    @Override
     public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
         int j = 0;
         main_loop:
