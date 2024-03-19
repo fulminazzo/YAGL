@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
@@ -31,6 +32,13 @@ public class GUIListener implements Listener {
     public GUIListener() {
         instance = this;
         this.openGUIs = new LinkedHashMap<>();
+    }
+
+    @EventHandler
+    void on(InventoryOpenEvent event) {
+        Player player = (Player) event.getPlayer();
+        GUI gui = this.openGUIs.get(player.getUniqueId());
+        if (gui != null) gui.openGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui));
     }
 
     @EventHandler
@@ -60,8 +68,7 @@ public class GUIListener implements Listener {
 
     private void closeGUI(Player player) {
         GUI gui = this.openGUIs.remove(player.getUniqueId());
-        if (gui != null)
-            gui.closeGUIAction().ifPresent(c -> c.execute(BukkitViewer.newViewer(player), gui));
+        if (gui != null) gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui));
     }
 
     @EventHandler
