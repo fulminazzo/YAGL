@@ -12,6 +12,14 @@ import java.util.List;
 public interface GUI extends Iterable<GUIContent> {
 
     /**
+     * Sets previous GUI.
+     *
+     * @param previous the previous gui
+     * @return this gui
+     */
+    @NotNull GUI setPrevious(final @Nullable GUI previous);
+
+    /**
      * Gets the previous GUI.
      *
      * @return the previous
@@ -19,11 +27,27 @@ public interface GUI extends Iterable<GUIContent> {
     @Nullable GUI getPrevious();
 
     /**
+     * Sets next GUI.
+     *
+     * @param next the next
+     * @return this gui
+     */
+    @NotNull GUI setNext(final @Nullable GUI next);
+
+    /**
      * Gets the next GUI.
      *
      * @return the next
      */
     @Nullable GUI getNext();
+
+    /**
+     * Sets back GUI.
+     *
+     * @param back the back
+     * @return this gui
+     */
+    @NotNull GUI setBack(final @Nullable GUI back);
 
     /**
      * Gets the GUI opened before opening this GUI (not previous).
