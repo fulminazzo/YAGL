@@ -56,6 +56,15 @@ public interface GUI extends Iterable<GUIContent> {
     boolean isMovable(int slot);
 
     /**
+     * Sets the given slot movable.
+     *
+     * @param slot    the slot
+     * @param movable true if it should be movable
+     * @return this gui
+     */
+    @NotNull GUI setMovable(int slot, boolean movable);
+
+    /**
      * Tries to add all the contents in the GUI.
      * If it fails (because of empty GUI) it throws an {@link IllegalStateException}.
      *
