@@ -1,9 +1,11 @@
 `item` is the module designed to handling simple items designing and association of custom recipes.
 It includes various submodules that can be used for specific tasks.
 
-| **Modules**     |
-|-----------------|
-| [items](#items) |
+| **Modules**                 |
+|-----------------------------|
+| [items](#items)             |
+| [bukkit](#bukkit)           |
+| [serializers](#serializers) |
 
 # items
 ```xml
@@ -68,3 +70,15 @@ These provide various methods to handle events, specifically:
 - `PersistentItem#setDeathAction`: one of the option from [DeathAction](bukkit/src/main/java/it/angrybear/yagl/persistent/DeathAction.java);
 - `PersistentItem#onInteract`: executes the given [InteractItemAction](bukkit/src/main/java/it/angrybear/yagl/actions/InteractItemAction.java) upon interaction;
 - `PersistentItem#onClick`: executes the given [ClickItemAction](bukkit/src/main/java/it/angrybear/yagl/actions/ClickItemAction.java) upon clicking.
+
+# serializers
+```xml
+<dependency>
+    <groupId>it.angrybear.YAGL.item</groupId>
+    <artifactId>serializers</artifactId>
+    <version>LATEST</version>
+</dependency>
+```
+
+A simple module containing various classes to save items using [YAMLParser](https://github.com/Fulminazzo/YAMLParser).
+Specifically, it is suggested `YAGLParser#addAllParsers()` to correctly load and save everything.
