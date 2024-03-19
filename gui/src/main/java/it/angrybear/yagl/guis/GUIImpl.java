@@ -17,6 +17,7 @@ abstract class GUIImpl implements GUI {
     protected GUI previous;
     protected GUI next;
     protected GUI back;
+    protected String title;
     protected List<GUIContent> contents;
     protected final Set<Integer> movableSlots;
 
@@ -29,6 +30,12 @@ abstract class GUIImpl implements GUI {
         if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
         this.contents = createList(size, null);
         this.movableSlots = new HashSet<>();
+    }
+
+    @Override
+    public @NotNull GUI setTitle(@Nullable String title) {
+        this.title = title;
+        return this;
     }
 
     @Override

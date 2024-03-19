@@ -12,6 +12,21 @@ import java.util.List;
 public interface GUI extends Iterable<GUIContent> {
 
     /**
+     * Sets title.
+     *
+     * @param title the title
+     * @return this gui
+     */
+    @NotNull GUI setTitle(final @Nullable String title);
+
+    /**
+     * Gets title.
+     *
+     * @return the title
+     */
+    @Nullable String getTitle();
+
+    /**
      * Sets previous GUI.
      *
      * @param previous the previous gui
