@@ -1,10 +1,15 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.BiGUIAction;
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The general interface to represent a GUI.
@@ -72,14 +77,6 @@ public interface GUI extends Iterable<GUIContent> {
     @Nullable GUI getBack();
 
     /**
-     * Gets the content at the given slot.
-     *
-     * @param slot the slot
-     * @return the content
-     */
-    @Nullable GUIContent getContent(int slot);
-
-    /**
      * Gets size.
      *
      * @return the size
@@ -95,6 +92,26 @@ public interface GUI extends Iterable<GUIContent> {
     boolean isMovable(int slot);
 
     /**
+     * Sets all movable.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI setAllMovable() {
+        for (int i = 0; i < getSize(); i++) setMovable(i, true);
+        return this;
+    }
+
+    /**
+     * Sets all unmovable.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI setAllUnmovable() {
+        for (int i = 0; i < getSize(); i++) setMovable(i, false);
+        return this;
+    }
+
+    /**
      * Sets the given slot movable.
      *
      * @param slot    the slot
@@ -102,6 +119,38 @@ public interface GUI extends Iterable<GUIContent> {
      * @return this gui
      */
     @NotNull GUI setMovable(int slot, boolean movable);
+
+    /**
+     * Gets the most matching content at the given slot.
+     * The contents are filtered using {@link GUIContent#hasViewRequirements(Viewer)}
+     * and for those remaining, the one with higher {@link GUIContent#getPriority()} is returned.
+     *
+     * @param viewer the viewer
+     * @param slot   the slot
+     * @return the content
+     */
+    default @Nullable GUIContent getContent(final @NotNull Viewer viewer, int slot) {
+        return getContents(slot).stream()
+                .filter(c -> c.hasViewRequirements(viewer))
+                .min(Comparator.comparing(c -> -c.getPriority()))
+                .orElse(null);
+    }
+
+    /**
+     * Gets a copy of the contents at the given slot.
+     *
+     * @param slot the slot
+     * @return the contents
+     */
+    @NotNull List<GUIContent> getContents(int slot);
+
+    /**
+     * Gets a copy of all the contents.
+     * To get the actual content, use the GUI in a for-enhanced loop or use {@link #iterator()}.
+     *
+     * @return the contents
+     */
+    @NotNull List<GUIContent> getContents();
 
     /**
      * Tries to add all the contents in the GUI.
@@ -113,13 +162,14 @@ public interface GUI extends Iterable<GUIContent> {
     @NotNull GUI addContent(final GUIContent @NotNull ... contents);
 
     /**
-     * Sets the content at the given index.
+     * Sets the given contents at the specified index.
+     * These will be then filtered using {@link #getContent(Viewer, int)}
      *
-     * @param slot    the slot
-     * @param content the content
+     * @param slot     the slot
+     * @param contents the contents
      * @return this gui
      */
-    @NotNull GUI setContent(int slot, final @NotNull GUIContent content);
+    @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
     /**
      * Removes the content from the given index.
@@ -130,10 +180,65 @@ public interface GUI extends Iterable<GUIContent> {
     @NotNull GUI unsetContent(int slot);
 
     /**
-     * Gets a copy of all the contents.
-     * To get the actual content, use the GUI in a for-enhanced loop or use {@link #iterator()}.
+     * Executes the given action when clicking outside the GUI (will not include player's inventory slots).
      *
-     * @return the contents
+     * @param action the action
+     * @return this gui
      */
-    @NotNull List<GUIContent> getContents();
+    @NotNull GUI onClickOutside(final @NotNull GUIAction action);
+
+    /**
+     * Click outside action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIAction> clickOutsideAction();
+
+    /**
+     * Executes the given action when opening this GUI.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onOpenGUI(final @NotNull GUIAction action);
+
+    /**
+     * Open gui action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIAction> openGUIAction();
+
+    /**
+     * Executes the given action when closing this GUI.
+     * This will NOT be called when an action is passed to {@link #onChangeGUI(BiGUIAction)}
+     * and another GUI is open.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onCloseGUI(final @NotNull GUIAction action);
+
+    /**
+     * Close gui action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIAction> closeGUIAction();
+
+    /**
+     * Executes the given action when opening another GUI while having this one already open.
+     * This will NOT call the action passed {@link #onCloseGUI(GUIAction)}.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onChangeGUI(final @NotNull BiGUIAction action);
+
+    /**
+     * Change gui action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<BiGUIAction> changeGUIAction();
 }

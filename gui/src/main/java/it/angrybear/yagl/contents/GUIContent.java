@@ -1,10 +1,12 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -70,9 +72,24 @@ public interface GUIContent {
     boolean hasViewRequirements(final @NotNull Viewer viewer);
 
     /**
+     * Executes the given action when clicking on this GUIContent in a GUI.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUIContent onClickItem(final @NotNull GUIItemAction action);
+
+    /**
+     * Click item action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIItemAction> clickItemAction();
+
+    /**
      * Copy this content to another one.
      *
      * @return the copy
      */
-    GUIContent copyContent();
+    @NotNull GUIContent copyContent();
 }

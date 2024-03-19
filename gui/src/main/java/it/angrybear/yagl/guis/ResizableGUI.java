@@ -21,30 +21,30 @@ public class ResizableGUI extends GUIImpl {
     }
 
     @Override
+    public @NotNull GUI setContents(int slot, GUIContent @NotNull ... contents) {
+        if (slot >= getSize() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
+        return super.setContents(slot, contents);
+    }
+
+    @Override
     public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
         int j = 0;
         main_loop:
         for (int i = 0; i < contents.length; i++) {
             GUIContent content = contents[i];
             for (; j < this.contents.size(); j++) {
-                GUIContent c = this.contents.get(j);
+                Contents c = this.contents.get(j);
                 if (c == null) {
-                    this.contents.set(j, content);
+                    this.contents.set(j, new Contents(content));
                     continue main_loop;
                 }
             }
             if (getSize() < MAX_SIZE) {
                 resize(getSize() + 9);
-                this.contents.set(j, content);
+                this.contents.set(j, new Contents(content));
             } else throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
         }
         return this;
-    }
-
-    @Override
-    public @NotNull GUI setContent(int slot, @NotNull GUIContent content) {
-        if (slot >= getSize() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
-        return super.setContent(slot, content);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ResizableGUI extends GUIImpl {
      */
     public void resize(int size) {
         checkSize(size);
-        this.contents = createList(size, this.contents);
+        this.contents = createContents(size, this.contents);
     }
 
     private void checkSize(int size) {
