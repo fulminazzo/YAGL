@@ -37,6 +37,10 @@ public class BukkitViewer extends Viewer {
                 inventory.setItem(i, o);
             }
         }
+        GUIListener.getOpenGUI(this.uniqueId).ifPresent(g -> g.changeGUIAction().ifPresent(a -> {
+            GUIListener.closeGUI(this.uniqueId);
+            a.execute(this, g, gui);
+        }));
         GUIListener.openGUI(this, gui);
         player.openInventory(inventory);
     }
