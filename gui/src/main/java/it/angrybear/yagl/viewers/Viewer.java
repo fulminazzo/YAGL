@@ -1,6 +1,7 @@
 package it.angrybear.yagl.viewers;
 
 import it.angrybear.yagl.guis.GUI;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -8,6 +9,7 @@ import java.util.UUID;
 /**
  * The viewer of a GUI, usually a player.
  */
+@Getter
 public abstract class Viewer {
     protected final UUID uniqueId;
     protected final String name;
