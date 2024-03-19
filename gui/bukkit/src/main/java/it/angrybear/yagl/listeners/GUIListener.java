@@ -6,7 +6,9 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +25,19 @@ public class GUIListener implements Listener {
     public GUIListener() {
         instance = this;
         this.openGUIs = new LinkedHashMap<>();
+    }
+
+    @EventHandler
+    void on(InventoryClickEvent event) {
+        GUI gui = this.openGUIs.get(event.getWhoClicked().getUniqueId());
+        if (gui != null && !gui.isMovable(event.getRawSlot()))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    void on(InventoryDragEvent event) {
+        if (this.openGUIs.containsKey(event.getWhoClicked().getUniqueId()))
+            event.setCancelled(true);
     }
 
     @EventHandler
