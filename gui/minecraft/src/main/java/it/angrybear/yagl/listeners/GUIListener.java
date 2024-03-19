@@ -3,6 +3,7 @@ package it.angrybear.yagl.listeners;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,10 +11,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class GUIListener implements Listener {
@@ -50,6 +55,14 @@ public class GUIListener implements Listener {
     void on(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         GUI gui = this.openGUIs.remove(player.getUniqueId());
+    }
+
+    @EventHandler
+    void on(PluginDisableEvent event) {
+        JavaPlugin plugin = JavaPlugin.getProvidingPlugin(GUIListener.class);
+        Plugin disablingPlugin = event.getPlugin();
+        if (plugin.equals(disablingPlugin))
+            this.openGUIs.keySet().stream().map(Bukkit::getPlayer).filter(Objects::nonNull).forEach(Player::closeInventory);
     }
 
     public static void openGUI(final @NotNull Viewer viewer, final @NotNull GUI gui) {
