@@ -92,9 +92,9 @@ abstract class GUIImpl implements GUI {
         for (int i = 0; i < contents.length; i++) {
             GUIContent content = contents[i];
             for (; j < this.contents.size(); j++) {
-                GUIContent c = this.contents.get(j);
+                Contents c = this.contents.get(j);
                 if (c == null) {
-                    this.contents.set(j, content);
+                    this.contents.set(j, new Contents(content));
                     continue main_loop;
                 }
             }
@@ -104,8 +104,8 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI setContent(int slot, @NotNull GUIContent content) {
-        this.contents.set(slot, content);
+    public @NotNull GUI setContents(int slot, GUIContent @NotNull ... contents) {
+        this.contents.set(slot, new Contents(contents));
         return this;
     }
 
