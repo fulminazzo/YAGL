@@ -1,10 +1,12 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The general interface to represent a GUI.
@@ -156,4 +158,49 @@ public interface GUI extends Iterable<GUIContent> {
      * @return the contents
      */
     @NotNull List<GUIContent> getContents();
+
+    /**
+     * Executes the given action when clicking outside the GUI (will not include player's inventory slots).
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onClickOutside(final @NotNull GUIAction action);
+
+    /**
+     * Click outside action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIAction> clickOutsideAction();
+
+    /**
+     * Executes the given action when opening this GUI.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onOpenGUI(final @NotNull GUIAction action);
+
+    /**
+     * Open gui action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIAction> openGUIAction();
+
+    /**
+     * Executes the given action when closing this GUI.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onCloseGUI(final @NotNull GUIAction action);
+
+    /**
+     * Close gui action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<GUIAction> closeGUIAction();
 }
