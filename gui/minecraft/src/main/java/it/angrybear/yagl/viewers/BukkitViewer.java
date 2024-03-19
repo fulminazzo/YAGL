@@ -41,6 +41,7 @@ public class BukkitViewer extends Viewer {
             GUIListener.closeGUI(this.uniqueId);
             a.execute(this, g, gui);
         }));
+        player.closeInventory();
         GUIListener.openGUI(this, gui);
         player.openInventory(inventory);
     }
