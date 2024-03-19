@@ -74,5 +74,5 @@ public interface GUIContent {
      *
      * @return the copy
      */
-    GUIContent copyContent();
+    @NotNull GUIContent copyContent();
 }

@@ -76,7 +76,7 @@ class GUIImplTest {
         }
 
         @Override
-        public GUIContent copyContent() {
+        public @NotNull GUIContent copyContent() {
             return null;
         }
     }
