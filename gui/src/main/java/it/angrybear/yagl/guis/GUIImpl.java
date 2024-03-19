@@ -24,7 +24,7 @@ abstract class GUIImpl implements GUI {
      * @param size the size
      */
     public GUIImpl(int size) {
-        if (size < 0 == size > 54) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
+        if (size < 0 || size > 54) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
         this.contents = createList(size, null);
         this.movableSlots = new HashSet<>();
     }
