@@ -1,0 +1,6 @@
+dependencies {
+    implementation(project(":gui"))
+
+    compileOnly libs.spigot
+    testImplementation libs.spigot
+}
