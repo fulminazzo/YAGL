@@ -186,10 +186,10 @@ abstract class GUIImpl implements GUI {
         return contents;
     }
 
-    protected static class Contents {
+    static class Contents {
         private final GUIContent[] contents;
 
-        protected Contents(GUIContent[] contents) {
+        protected Contents(final GUIContent @NotNull ... contents) {
             this.contents = contents;
         }
 
