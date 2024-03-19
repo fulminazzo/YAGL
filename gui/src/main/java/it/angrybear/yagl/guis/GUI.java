@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import org.jetbrains.annotations.NotNull;
@@ -191,6 +192,8 @@ public interface GUI extends Iterable<GUIContent> {
 
     /**
      * Executes the given action when closing this GUI.
+     * This will NOT be called when an action is passed to {@link #onChangeGUI(BiGUIAction)}
+     * and another GUI is open.
      *
      * @param action the action
      * @return this gui
@@ -203,4 +206,20 @@ public interface GUI extends Iterable<GUIContent> {
      * @return the action
      */
     @NotNull Optional<GUIAction> closeGUIAction();
+
+    /**
+     * Executes the given action when opening another GUI while having this one already open.
+     * This will NOT call the action passed {@link #onCloseGUI(GUIAction)}.
+     *
+     * @param action the action
+     * @return this gui
+     */
+    @NotNull GUI onChangeGUI(final @NotNull BiGUIAction action);
+
+    /**
+     * Change gui action.
+     *
+     * @return the action
+     */
+    @NotNull Optional<BiGUIAction> changeGUIAction();
 }
