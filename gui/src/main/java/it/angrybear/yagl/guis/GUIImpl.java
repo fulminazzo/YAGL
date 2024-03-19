@@ -164,7 +164,7 @@ abstract class GUIImpl implements GUI {
     @NotNull
     @Override
     public Iterator<GUIContent> iterator() {
-        return this.contents.iterator();
+        return this.contents.stream().map(Contents::getContents).flatMap(Collection::stream).iterator();
     }
 
     /**
