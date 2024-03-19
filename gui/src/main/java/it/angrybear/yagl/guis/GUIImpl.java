@@ -185,4 +185,16 @@ abstract class GUIImpl implements GUI {
                 list.set(i, copyFrom.get(i));
         return list;
     }
+
+    protected static class Contents {
+        private final GUIContent[] contents;
+
+        protected Contents(GUIContent[] contents) {
+            this.contents = contents;
+        }
+
+        public List<GUIContent> getContents() {
+            return Arrays.asList(this.contents);
+        }
+    }
 }
