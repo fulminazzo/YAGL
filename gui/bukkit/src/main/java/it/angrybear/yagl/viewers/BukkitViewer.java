@@ -34,7 +34,7 @@ public class BukkitViewer extends Viewer {
         if (player == null) throw new IllegalStateException(String.format("%s is not online", this.name));
         Inventory inventory = Bukkit.createInventory(null, gui.getSize(), MessageUtils.color(gui.getTitle()));
         for (int i = 0; i < gui.getSize(); i++) {
-            GUIContent content = gui.getContent(i);
+            GUIContent content = gui.getContent(this, i);
             if (content != null) {
                 ItemStack o = new Refl<>(content.render())
                         .invokeMethodRefl("copy", ReflectionUtils.getClass(Item.class.getCanonicalName()
