@@ -22,8 +22,17 @@ public class GUIUtils {
     public static Inventory guiToInventory(final @NotNull GUI gui) {
         String title = MessageUtils.color(gui.getTitle());
         final Inventory inventory;
-        if (title == null) inventory = Bukkit.createInventory(null, gui.getSize());
-        else inventory = Bukkit.createInventory(null, gui.getSize(), title);
+        if (title == null) {
+            if (gui instanceof TypeGUI) {
+                InventoryType type = guiToInventoryType(((TypeGUI) gui).getType());
+                inventory = Bukkit.createInventory(null, type);
+            } else inventory = Bukkit.createInventory(null, gui.getSize());
+        } else {
+            if (gui instanceof TypeGUI) {
+                InventoryType type = guiToInventoryType(((TypeGUI) gui).getType());
+                inventory = Bukkit.createInventory(null, type, title);
+            } else inventory = Bukkit.createInventory(null, gui.getSize(), title);
+        }
         return inventory;
     }
 
