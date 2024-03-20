@@ -22,6 +22,17 @@ public class MessageUtils {
         Matcher matcher = Pattern.compile("&(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
         while (matcher.find())
             message = message.replace(matcher.group(), COLOR_CHAR + matcher.group(1));
+        return parseHexColors(message);
+    }
+
+    private static String parseHexColors(String message) {
+        Matcher matcher = Pattern.compile("#(" + COLOR_REGEX + "{6})").matcher(message);
+        while (matcher.find()) {
+            String match = matcher.group();
+            String replacement = COLOR_CHAR + "x";
+            replacement += COLOR_CHAR + String.join(COLOR_CHAR, matcher.group(1).split(""));
+            message = message.replace(match, replacement);
+        }
         return message;
     }
 }

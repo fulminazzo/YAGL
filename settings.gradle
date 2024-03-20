@@ -3,4 +3,6 @@ include 'item'
 include 'common'
 include 'item:bukkit'
 include 'item:serializer'
+include 'gui'
+include 'gui:minecraft'
 
