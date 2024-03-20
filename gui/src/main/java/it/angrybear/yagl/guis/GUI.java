@@ -241,4 +241,24 @@ public interface GUI extends Iterable<GUIContent> {
      * @return the action
      */
     @NotNull Optional<BiGUIAction> changeGUIAction();
+
+    /**
+     * Creates a new {@link ResizableGUI}.
+     *
+     * @param size the size
+     * @return the gui
+     */
+    static GUI newGUI(final int size) {
+        return new ResizableGUI(size);
+    }
+
+    /**
+     * Creates a new {@link TypeGUI}.
+     *
+     * @param type the type
+     * @return the gui
+     */
+    static GUI newGUI(final GUIType type) {
+        return new TypeGUI(type);
+    }
 }
