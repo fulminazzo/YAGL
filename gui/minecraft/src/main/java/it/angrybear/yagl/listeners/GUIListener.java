@@ -13,7 +13,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -64,12 +63,6 @@ public class GUIListener implements Listener {
     @EventHandler
     void on(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        onCloseGUI(player);
-    }
-
-    @EventHandler
-    void on(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
         onCloseGUI(player);
     }
 
