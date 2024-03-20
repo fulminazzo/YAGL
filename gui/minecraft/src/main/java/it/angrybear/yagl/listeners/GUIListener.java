@@ -76,6 +76,7 @@ public class GUIListener implements Listener {
     private void onCloseGUI(Player player) {
         getOpenGUI(player.getUniqueId()).ifPresent(gui ->
                 gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
+        closeGUI(player.getUniqueId());
     }
 
     @EventHandler
