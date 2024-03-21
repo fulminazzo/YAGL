@@ -1,9 +1,16 @@
 rootProject.name = 'YAGL'
-include 'item'
 include 'common'
-include 'item:bukkit'
-include 'item:serializer'
+
+include 'item'
+include 'item:item-bukkit'
+project(':item:item-bukkit').projectDir = file('item/bukkit')
+include 'item:item-serializer'
+project(':item:item-serializer').projectDir = file('item/serializer')
+
 include 'gui'
-include 'gui:minecraft'
-include 'gui:serializer'
+include 'gui:gui-bukkit'
+project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
+
+include 'gui:gui-serializer'
+project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
