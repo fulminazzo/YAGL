@@ -40,6 +40,7 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
 
     @Override
     public ItemGUIContent setMaterial(@NotNull String material) {
+        this.item.setMaterial(material);
         return this;
     }
 
