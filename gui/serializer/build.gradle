@@ -1,8 +1,8 @@
 dependencies {
     api(project(":gui"))
-    api(project(":item:serializer"))
+    api(project(":item:item-serializer"))
 
-    testImplementation(project(":gui:minecraft"))
+    testImplementation(project(":gui:gui-bukkit"))
 
     api(libs.yamlparser)
 }
