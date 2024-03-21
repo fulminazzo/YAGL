@@ -4,11 +4,13 @@ import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 /**
  * A general functional interface accepting a {@link Viewer} and a {@link GUI}.
  */
 @FunctionalInterface
-public interface GUIAction {
+public interface GUIAction extends Serializable {
 
     /**
      * Execute.
