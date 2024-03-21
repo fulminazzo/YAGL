@@ -26,6 +26,13 @@ public abstract class Viewer {
     }
 
     /**
+     * Execute command.
+     *
+     * @param command the command
+     */
+    public abstract void executeCommand(final @NotNull String command);
+
+    /**
      * Opens gui.
      *
      * @param gui the gui
