@@ -1,5 +1,7 @@
 dependencies {
     implementation(project(":gui"))
 
+    testImplementation(project(":gui:minecraft"))
+
     api(libs.yamlparser)
 }
