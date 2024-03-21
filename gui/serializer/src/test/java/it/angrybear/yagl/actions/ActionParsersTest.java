@@ -2,14 +2,13 @@ package it.angrybear.yagl.actions;
 
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ActionParsersTest {
 
@@ -30,6 +29,8 @@ class ActionParsersTest {
         FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
         configuration.set("tmp", action);
+        configuration.save();
+        configuration = new FileConfiguration(file);
         CommandAction action1 = configuration.get("tmp", action.getClass());
         assertEquals(action, action1);
     }
