@@ -5,4 +5,5 @@ include 'item:bukkit'
 include 'item:serializer'
 include 'gui'
 include 'gui:minecraft'
+include 'gui:serializer'
 
