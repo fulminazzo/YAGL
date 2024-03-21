@@ -1,5 +1,6 @@
 dependencies {
-    implementation(project(":gui"))
+    api(project(":gui"))
+    api(project(":item:serializer"))
 
     testImplementation(project(":gui:minecraft"))
 

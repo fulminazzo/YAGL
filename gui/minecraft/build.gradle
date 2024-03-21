@@ -1,7 +1,6 @@
 dependencies {
-    implementation(project(":gui"))
-    implementation(project(":item"))
-    implementation(project(":item:bukkit"))
+    api(project(":gui"))
+    api(project(":item:bukkit"))
 
     compileOnly libs.spigot
     testImplementation libs.spigot
