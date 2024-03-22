@@ -25,10 +25,14 @@ public class PermissionRequirementChecker implements RequirementChecker {
         return viewer.hasPermission(this.permission);
     }
 
+    public boolean equals(PermissionRequirementChecker checker) {
+        return checker != null && this.permission.equalsIgnoreCase(checker.permission);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof PermissionRequirementChecker)
-            return this.permission.equalsIgnoreCase(((PermissionRequirementChecker) o).permission);
+            return equals((PermissionRequirementChecker) o);
         return super.equals(o);
     }
 }
