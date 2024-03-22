@@ -69,7 +69,7 @@ public class ItemUtils {
             item.getEnchantments().forEach(e -> {
                 NamespacedKey name = new NamespacedKey("minecraft", e.getEnchantment());
                 org.bukkit.enchantments.Enchantment enchantment = org.bukkit.enchantments.Enchantment.getByKey(name);
-                meta.addEnchant(enchantment, e.getLevel(), true);
+                if (enchantment != null) meta.addEnchant(enchantment, e.getLevel(), true);
             });
             item.getItemFlags().forEach(f -> meta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(f.name())));
             if (meta instanceof Damageable) ((Damageable) meta).setDamage(item.getDurability());
