@@ -3,7 +3,7 @@ package it.angrybear.yagl.actions;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-abstract class CommandAction {
+abstract class CommandAction implements Action {
     protected final String command;
 
     CommandAction(final @NotNull String command) {
