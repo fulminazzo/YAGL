@@ -74,16 +74,20 @@ public class GUIListener implements Listener {
 
     @EventHandler
     void on(PluginDisableEvent event) {
-        JavaPlugin plugin = JavaPlugin.getProvidingPlugin(GUIListener.class);
+        JavaPlugin plugin = getProvidingPlugin();
         Plugin disablingPlugin = event.getPlugin();
-        if (plugin.equals(disablingPlugin))
+        if (plugin.equals(disablingPlugin)) {
             this.openGUIs.keySet().stream().map(Bukkit::getPlayer).filter(Objects::nonNull).forEach(Player::closeInventory);
+            instance = null;
+        }
     }
 
     public static Optional<GUI> getOpenGUI(final @NotNull UUID uuid) {
         GUIListener listener = getInstance();
-        if (listener == null)
-            throw new IllegalStateException("GUIListener has not been initialized yet");
+        if (listener == null) {
+            listener = new GUIListener();
+            Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
+        }
         return Optional.ofNullable(listener.openGUIs.get(uuid));
     }
 
@@ -99,5 +103,9 @@ public class GUIListener implements Listener {
         if (listener == null)
             throw new IllegalStateException("GUIListener has not been initialized yet");
         listener.openGUIs.put(viewer.getUniqueId(), gui);
+    }
+
+    private static @NotNull JavaPlugin getProvidingPlugin() {
+        return JavaPlugin.getProvidingPlugin(GUIListener.class);
     }
 }
