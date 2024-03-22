@@ -1,15 +1,14 @@
 package it.angrybear.yagl.actions;
 
+import it.angrybear.yagl.SerializableFunction;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
-
 /**
  * A general functional interface accepting a {@link Viewer} and two {@link GUI}s.
  */
-public interface BiGUIAction extends Action {
+public interface BiGUIAction extends SerializableFunction {
 
     /**
      * Execute.
