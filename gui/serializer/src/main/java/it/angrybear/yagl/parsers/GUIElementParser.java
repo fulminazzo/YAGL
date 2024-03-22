@@ -44,7 +44,7 @@ abstract class GUIElementParser<C> extends CallableYAMLParser<C> {
     }
 
     @SuppressWarnings("unchecked")
-    private static <C> Class<? extends C> typeToClass(final Class<C> mainClass, final @NotNull String type) {
+    protected static <C> Class<? extends C> typeToClass(final Class<C> mainClass, final @NotNull String type) {
         String packageName = mainClass.getPackage().getName();
         final @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(packageName);
         for (Class<?> clazz : classes)
@@ -56,7 +56,8 @@ abstract class GUIElementParser<C> extends CallableYAMLParser<C> {
                 mainClass.getSimpleName(), type));
     }
 
-    private static <C> String classToType(final Class<C> mainClass, final @NotNull Class<? extends C> clazz) {
+    protected static <C> String classToType(final Class<C> mainClass, final @NotNull Class<? extends C> clazz) {
+        final String mainClassName = mainClass.getSimpleName();
         String name = clazz.getSimpleName();
         final String mainClassName = mainClass.getSimpleName();
         if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
