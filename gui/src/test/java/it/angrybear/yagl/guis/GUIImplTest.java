@@ -2,6 +2,7 @@ package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
@@ -9,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class GUIImplTest {
 
@@ -68,7 +69,7 @@ class GUIImplTest {
         }
 
         @Override
-        public @NotNull GUIContent setViewRequirements(@NotNull Predicate<? super Viewer> requirements) {
+        public @NotNull GUIContent setViewRequirements(@NotNull RequirementChecker requirements) {
             return null;
         }
 

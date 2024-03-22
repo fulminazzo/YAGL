@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * Represents the generic content of a GUI.
@@ -61,7 +60,7 @@ public interface GUIContent {
      * @param requirements the requirements
      * @return this content
      */
-    @NotNull GUIContent setViewRequirements(final @NotNull Predicate<? super Viewer> requirements);
+    @NotNull GUIContent setViewRequirements(final @NotNull RequirementChecker requirements);
 
     /**
      * Check if the given {@link Viewer} has enough requirements to view this content.

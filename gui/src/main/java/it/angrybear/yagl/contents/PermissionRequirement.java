@@ -4,13 +4,11 @@ import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Predicate;
-
 /**
  * A type of requirement that checks if the {@link Viewer} has a certain permission.
  */
 @Getter
-public class PermissionRequirement implements Predicate<Viewer> {
+public class PermissionRequirement implements RequirementChecker {
     private final String permission;
 
     /**

@@ -7,14 +7,13 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @Getter
 abstract class GUIContentImpl implements GUIContent {
     protected int priority = 0;
     protected String clickSound;
     @Getter(AccessLevel.NONE)
-    protected Predicate<? super Viewer> requirements;
+    protected RequirementChecker requirements;
 
     protected GUIItemAction clickAction;
 
@@ -31,7 +30,7 @@ abstract class GUIContentImpl implements GUIContent {
     }
 
     @Override
-    public @NotNull GUIContent setViewRequirements(@NotNull Predicate<? super Viewer> requirements) {
+    public @NotNull GUIContent setViewRequirements(@NotNull RequirementChecker requirements) {
         this.requirements = requirements;
         return this;
     }
