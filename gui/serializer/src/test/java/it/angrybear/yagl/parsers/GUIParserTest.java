@@ -5,7 +5,7 @@ import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
-import it.angrybear.yagl.contents.PermissionRequirement;
+import it.angrybear.yagl.contents.PermissionRequirementChecker;
 import it.angrybear.yagl.guis.ContentsParser;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
@@ -32,7 +32,7 @@ class GUIParserTest {
         GUIContent expectedContent = new ItemGUIContent()
                 .setMaterial("STONE")
                 .onClickItem(new GUIItemCommand("command"))
-                .setViewRequirements(new PermissionRequirement("permission"));
+                .setViewRequirements(new PermissionRequirementChecker("permission"));
         GUI expected = GUI.newGUI(9)
                 .onChangeGUI(new BiGUICommand("command"))
                 .onCloseGUI(Viewer::openGUI)

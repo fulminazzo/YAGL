@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * A type of requirement that checks if the {@link Viewer} has a certain permission.
  */
 @Getter
-public class PermissionRequirement implements RequirementChecker {
+public class PermissionRequirementChecker implements RequirementChecker {
     private final String permission;
 
     /**
@@ -16,7 +16,7 @@ public class PermissionRequirement implements RequirementChecker {
      *
      * @param permission the permission
      */
-    public PermissionRequirement(final @NotNull String permission) {
+    public PermissionRequirementChecker(final @NotNull String permission) {
         this.permission = permission;
     }
 
@@ -27,8 +27,8 @@ public class PermissionRequirement implements RequirementChecker {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof PermissionRequirement)
-            return this.permission.equalsIgnoreCase(((PermissionRequirement) o).permission);
+        if (o instanceof PermissionRequirementChecker)
+            return this.permission.equalsIgnoreCase(((PermissionRequirementChecker) o).permission);
         return super.equals(o);
     }
 }
