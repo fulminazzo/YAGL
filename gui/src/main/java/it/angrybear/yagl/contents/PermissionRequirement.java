@@ -1,0 +1,29 @@
+package it.angrybear.yagl.contents;
+
+import it.angrybear.yagl.viewers.Viewer;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Predicate;
+
+/**
+ * A type of requirement that checks if the {@link Viewer} has a certain permission.
+ */
+@Getter
+public class PermissionRequirement implements Predicate<Viewer> {
+    private final String permission;
+
+    /**
+     * Instantiates a new Permission requirement.
+     *
+     * @param permission the permission
+     */
+    public PermissionRequirement(final @NotNull String permission) {
+        this.permission = permission;
+    }
+
+    @Override
+    public boolean test(final @NotNull Viewer viewer) {
+        return viewer.hasPermission(this.permission);
+    }
+}
