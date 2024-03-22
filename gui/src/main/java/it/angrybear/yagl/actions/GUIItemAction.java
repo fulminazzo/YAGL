@@ -11,7 +11,7 @@ import java.io.Serializable;
  * A general functional interface accepting a {@link Viewer}, {@link GUI} and a {@link GUIContent}.
  */
 @FunctionalInterface
-public interface GUIItemAction extends Serializable {
+public interface GUIItemAction extends Action {
 
     /**
      * Execute.

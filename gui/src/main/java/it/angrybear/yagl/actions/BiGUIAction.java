@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * A general functional interface accepting a {@link Viewer} and two {@link GUI}s.
  */
-public interface BiGUIAction extends Serializable {
+public interface BiGUIAction extends Action {
 
     /**
      * Execute.
