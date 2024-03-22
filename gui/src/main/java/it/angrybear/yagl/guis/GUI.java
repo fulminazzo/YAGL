@@ -3,10 +3,13 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -157,9 +160,32 @@ public interface GUI extends Iterable<GUIContent> {
      * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
      *
      * @param contents the contents
+     * @return the gui
+     */
+    default @NotNull GUI addContent(final Item @NotNull ... contents) {
+        return addContent(Arrays.stream(contents).map(ItemGUIContent::new).toArray(GUIContent[]::new));
+    }
+
+    /**
+     * Tries to add all the contents in the GUI.
+     * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
+     *
+     * @param contents the contents
      * @return this gui
      */
     @NotNull GUI addContent(final GUIContent @NotNull ... contents);
+
+    /**
+     * Sets the given contents at the specified index.
+     * These will be then filtered using {@link #getContent(Viewer, int)}
+     *
+     * @param slot     the slot
+     * @param contents the contents
+     * @return the contents
+     */
+    default @NotNull GUI setContents(int slot, final Item @NotNull ... contents) {
+        return setContents(slot, Arrays.stream(contents).map(ItemGUIContent::new).toArray(GUIContent[]::new));
+    }
 
     /**
      * Sets the given contents at the specified index.
