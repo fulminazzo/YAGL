@@ -59,7 +59,9 @@ public class ItemUtils {
      */
     public static @Nullable ItemStack itemToItemStack(final @Nullable Item item) {
         if (item == null) return null;
-        ItemStack itemStack = new ItemStack(Material.valueOf(item.getMaterial()), item.getAmount());
+        String material = item.getMaterial();
+        if (material == null) throw new NullPointerException("Material cannot be null!");
+        ItemStack itemStack = new ItemStack(Material.valueOf(material.toUpperCase()), item.getAmount());
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(item.getDisplayName());
