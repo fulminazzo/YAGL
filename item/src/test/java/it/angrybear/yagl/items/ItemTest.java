@@ -46,9 +46,9 @@ class ItemTest {
         private int amount;
         private int durability;
         private String displayName = "";
-        private List<String> lore = new LinkedList<>();
-        private Set<Enchantment> enchantments = new EnchantmentSet();
-        private Set<ItemFlag> itemFlags = new LinkedHashSet<>();
+        private final List<String> lore = new LinkedList<>();
+        private final Set<Enchantment> enchantments = new EnchantmentSet();
+        private final Set<ItemFlag> itemFlags = new LinkedHashSet<>();
         private boolean unbreakable;
         private int customModelData;
 
