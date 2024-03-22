@@ -11,6 +11,13 @@ import org.jetbrains.annotations.NotNull;
 public class ResizableGUI extends GUIImpl {
 
     /**
+     * Internal constructor, used for serializing purposes.
+     */
+    ResizableGUI() {
+        this(0);
+    }
+
+    /**
      * Instantiates a new Gui.
      *
      * @param size the size
