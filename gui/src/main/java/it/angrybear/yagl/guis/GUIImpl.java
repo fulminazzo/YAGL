@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * A basic implementation of {@link GUI}.
@@ -171,7 +172,9 @@ abstract class GUIImpl implements GUI {
     @NotNull
     @Override
     public Iterator<GUIContent> iterator() {
-        return this.contents.stream().map(Contents::getContents).flatMap(Collection::stream).iterator();
+        return this.contents.stream()
+                .flatMap(c -> c == null ? Stream.of((GUIContent) null) : c.getContents().stream())
+                .iterator();
     }
 
     /**
