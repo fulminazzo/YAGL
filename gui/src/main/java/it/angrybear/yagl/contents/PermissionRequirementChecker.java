@@ -25,6 +25,11 @@ public class PermissionRequirementChecker implements RequirementChecker {
         return viewer.hasPermission(this.permission);
     }
 
+    @Override
+    public String serialize() {
+        return this.permission;
+    }
+
     public boolean equals(PermissionRequirementChecker checker) {
         return checker != null && this.permission.equalsIgnoreCase(checker.permission);
     }
