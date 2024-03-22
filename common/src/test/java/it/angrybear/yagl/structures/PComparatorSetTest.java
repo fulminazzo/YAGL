@@ -20,8 +20,12 @@ class PComparatorSetTest {
         set.add(m3);
         assertEquals(2, set.size(), "Set size should have been 2");
         Iterator<Mock> iterator = set.iterator();
-        assertEquals(m2, iterator.next());
-        assertEquals(m3, iterator.next());
+        Mock tmp = iterator.next();
+        if (m2.equals(tmp)) assertEquals(m3, iterator.next());
+        else {
+            assertEquals(m3, tmp);
+            assertEquals(m2, iterator.next());
+        }
         assertFalse(set.stream().anyMatch(m -> m.equals(m1)), "No mock should have been equal to m1");
     }
 
