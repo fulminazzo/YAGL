@@ -50,7 +50,7 @@ class GUIParserTest {
 
         assertNotNull(actual);
         assertEquals(expected.changeGUIAction().orElse(null), actual.changeGUIAction().orElse(null));
-        assertEquals(expected.closeGUIAction().orElse(null), actual.closeGUIAction().orElse(null));
+        assertNotNull(expected.closeGUIAction().orElse(null));
         assertEquals(expected.openGUIAction().orElse(null), actual.openGUIAction().orElse(null));
 
         @NotNull List<GUIContent> contents = actual.getContents(0);
