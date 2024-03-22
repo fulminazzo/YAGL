@@ -1,7 +1,9 @@
 package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.actions.BiGUIAction;
+import it.angrybear.yagl.actions.BiGUICommand;
 import it.angrybear.yagl.actions.GUIAction;
+import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
@@ -206,6 +208,16 @@ public interface GUI extends Iterable<GUIContent> {
     @NotNull GUI unsetContent(int slot);
 
     /**
+     * Forces the {@link Viewer} to execute the given command when clicking outside the GUI (will not include player's inventory slots).
+     *
+     * @param command the command
+     * @return this gui
+     */
+    default @NotNull GUI onClickOutside(final @NotNull String command) {
+        return onClickOutside(new GUICommand(command));
+    }
+
+    /**
      * Executes the given action when clicking outside the GUI (will not include player's inventory slots).
      *
      * @param action the action
@@ -219,6 +231,16 @@ public interface GUI extends Iterable<GUIContent> {
      * @return the action
      */
     @NotNull Optional<GUIAction> clickOutsideAction();
+
+    /**
+     * Forces the {@link Viewer} to execute the given command when opening this GUI.
+     *
+     * @param command the command
+     * @return this gui
+     */
+    default @NotNull GUI onOpenGUI(final @NotNull String command) {
+        return onOpenGUI(new GUICommand(command));
+    }
 
     /**
      * Executes the given action when opening this GUI.
@@ -236,6 +258,18 @@ public interface GUI extends Iterable<GUIContent> {
     @NotNull Optional<GUIAction> openGUIAction();
 
     /**
+     * Forces the {@link Viewer} to execute the given command when closing this GUI.
+     * This will NOT be called when an action is passed to {@link #onChangeGUI(BiGUIAction)}
+     * and another GUI is open.
+     *
+     * @param command the command
+     * @return this gui
+     */
+    default @NotNull GUI onCloseGUI(final @NotNull String command) {
+        return onCloseGUI(new GUICommand(command));
+    }
+
+    /**
      * Executes the given action when closing this GUI.
      * This will NOT be called when an action is passed to {@link #onChangeGUI(BiGUIAction)}
      * and another GUI is open.
@@ -251,6 +285,17 @@ public interface GUI extends Iterable<GUIContent> {
      * @return the action
      */
     @NotNull Optional<GUIAction> closeGUIAction();
+
+    /**
+     * Forces the {@link Viewer} to execute the given command when opening another GUI while having this one already open.
+     * This will NOT call the action passed {@link #onCloseGUI(GUIAction)}.
+     *
+     * @param command the command
+     * @return this gui
+     */
+    default @NotNull GUI onChangeGUI(final @NotNull String command) {
+        return onChangeGUI(new BiGUICommand(command));
+    }
 
     /**
      * Executes the given action when opening another GUI while having this one already open.
