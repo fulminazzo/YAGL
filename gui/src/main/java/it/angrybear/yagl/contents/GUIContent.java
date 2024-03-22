@@ -1,6 +1,7 @@
 package it.angrybear.yagl.contents;
 
 import it.angrybear.yagl.actions.GUIItemAction;
+import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +56,16 @@ public interface GUIContent {
     @Nullable String getClickSound();
 
     /**
+     * Allows to set a {@link PermissionRequirementChecker} with the given permission as the view requirement.
+     *
+     * @param permission the permission
+     * @return this content
+     */
+    default @NotNull GUIContent setViewRequirements(final @NotNull String permission) {
+        return setViewRequirements(new PermissionRequirementChecker(permission));
+    }
+
+    /**
      * Sets the given predicate as a checker for {@link #hasViewRequirements(Viewer)}.
      *
      * @param requirements the requirements
@@ -71,10 +82,20 @@ public interface GUIContent {
     boolean hasViewRequirements(final @NotNull Viewer viewer);
 
     /**
+     * Forces the {@link Viewer} to execute the given command when clicking on this GUIContent in a GUI.
+     *
+     * @param command the command
+     * @return this content
+     */
+    default @NotNull GUIContent onClickItem(final @NotNull String command) {
+        return onClickItem(new GUIItemCommand(command));
+    }
+
+    /**
      * Executes the given action when clicking on this GUIContent in a GUI.
      *
      * @param action the action
-     * @return this gui
+     * @return this content
      */
     @NotNull GUIContent onClickItem(final @NotNull GUIItemAction action);
 
