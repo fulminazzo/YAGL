@@ -1,11 +1,18 @@
 package it.angrybear.yagl.parsers;
 
+import it.angrybear.yagl.actions.BiGUICommand;
+import it.angrybear.yagl.actions.GUICommand;
+import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.contents.PermissionRequirement;
 import it.angrybear.yagl.guis.ContentsParser;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +25,42 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GUIParserTest {
+
+    @Test
+    void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
+        YAGLParser.addAllParsers();
+        GUIContent expectedContent = new ItemGUIContent()
+                .setMaterial("STONE")
+                .onClickItem(new GUIItemCommand("command"))
+                .setViewRequirements(new PermissionRequirement("permission"));
+        GUI expected = GUI.newGUI(9)
+                .onChangeGUI(new BiGUICommand("command"))
+                .onCloseGUI(Viewer::openGUI)
+                .onOpenGUI(new GUICommand("command"))
+                .setContents(0, expectedContent);
+        File file = new File("build/resources/test/actions-and-requirements.yml");
+        if (file.exists()) FileUtils.deleteFile(file);
+        FileUtils.createNewFile(file);
+        FileConfiguration configuration = new FileConfiguration(file);
+        configuration.set("gui", expected);
+        configuration.save();
+
+        configuration = new FileConfiguration(file);
+        GUI actual = configuration.get("gui", GUI.class);
+
+        assertNotNull(actual);
+        assertEquals(expected.changeGUIAction().orElse(null), actual.changeGUIAction().orElse(null));
+        assertEquals(expected.closeGUIAction().orElse(null), actual.closeGUIAction().orElse(null));
+        assertEquals(expected.openGUIAction().orElse(null), actual.openGUIAction().orElse(null));
+
+        @NotNull List<GUIContent> contents = actual.getContents(0);
+        assertFalse(contents.isEmpty());
+        GUIContent content = contents.get(0);
+        assertNotNull(content);
+        assertEquals(expectedContent.clickItemAction(), content.clickItemAction());
+        assertEquals((Object) new Refl<>(expectedContent).getFieldObject("requirements"),
+                new Refl<>(content).getFieldObject("requirements"));
+    }
 
     @Test
     void testSaveAndLoadResizableGUI() throws IOException {
