@@ -26,4 +26,11 @@ public class PermissionRequirement implements Predicate<Viewer> {
     public boolean test(final @NotNull Viewer viewer) {
         return viewer.hasPermission(this.permission);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PermissionRequirement)
+            return this.permission.equalsIgnoreCase(((PermissionRequirement) o).permission);
+        return super.equals(o);
+    }
 }
