@@ -5,6 +5,7 @@ import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.structures.EnchantmentSet;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -52,7 +53,7 @@ class ItemTest {
         private int customModelData;
 
         @Override
-        public Item setMaterial(String material) {
+        public Item setMaterial(@NotNull String material) {
             this.material = material;
             return this;
         }
@@ -70,13 +71,13 @@ class ItemTest {
         }
 
         @Override
-        public Item setDisplayName(String displayName) {
+        public Item setDisplayName(@NotNull String displayName) {
             this.displayName = displayName;
             return this;
         }
 
         @Override
-        public Item setLore(Collection<String> lore) {
+        public Item setLore(@NotNull Collection<String> lore) {
             this.lore.clear();
             this.lore.addAll(lore);
             return this;
@@ -94,12 +95,12 @@ class ItemTest {
         }
 
         @Override
-        public boolean isSimilar(Item item, ItemField... ignore) {
+        public boolean isSimilar(Item item, ItemField @NotNull ... ignore) {
             return false;
         }
 
         @Override
-        public <I extends Item> I copy(Class<I> clazz) {
+        public <I extends Item> I copy(@NotNull Class<I> clazz) {
             return null;
         }
     }
