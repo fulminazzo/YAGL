@@ -8,15 +8,15 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public class TypeGUI extends GUIImpl {
-    private final GUIType type;
+    private final GUIType inventoryType;
 
     /**
      * Instantiates a new Type gui.
      *
-     * @param type the type
+     * @param inventoryType the inventory type
      */
-    public TypeGUI(final @NotNull GUIType type) {
-        super(type.getSize());
-        this.type = type;
+    public TypeGUI(final @NotNull GUIType inventoryType) {
+        super(inventoryType.getSize());
+        this.inventoryType = inventoryType;
     }
 }
