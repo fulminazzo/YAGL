@@ -20,4 +20,9 @@ abstract class CommandAction implements Action {
             return getClass().equals(o.getClass()) && this.command.equals(((CommandAction) o).command);
         return super.equals(o);
     }
+
+    @Override
+    public String serialize() {
+        return this.command;
+    }
 }
