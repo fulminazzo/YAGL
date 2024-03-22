@@ -190,7 +190,7 @@ abstract class GUIImpl implements GUI {
         return contents;
     }
 
-    static class Contents implements Iterable<GUIContent> {
+    public static class Contents implements Iterable<GUIContent> {
         private final GUIContent[] contents;
 
         protected Contents(final GUIContent @NotNull ... contents) {
