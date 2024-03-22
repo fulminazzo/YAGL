@@ -31,17 +31,17 @@ public class ItemParser extends YAMLParser<Item> {
             final Item item = Item.newItem();
 
             final String material = itemSection.getString("material");
-            if (material == null) throw new NullPointerException("material cannot be null");
+            if (material == null) throw new NullPointerException("'material' cannot be null");
             item.setMaterial(material);
 
             itemSection.getOptional("amount", Integer.class).ifPresent(item::setAmount);
             itemSection.getOptional("durability", Integer.class).ifPresent(item::setDurability);
-            itemSection.getOptional("displayName", String.class).ifPresent(item::setDisplayName);
+            itemSection.getOptional("display-name", String.class).ifPresent(item::setDisplayName);
             itemSection.getOptional("lore", List.class).ifPresent(item::setLore);
             itemSection.getOptional("unbreakable", Boolean.class).ifPresent(item::setUnbreakable);
-            itemSection.getOptional("customModelData", Integer.class).ifPresent(item::setCustomModelData);
+            itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
 
-            List<String> flags = itemSection.getStringList("itemFlags");
+            List<String> flags = itemSection.getStringList("item-flags");
             if (flags == null) flags = new LinkedList<>();
             for (final String flag : flags)
                 try {
@@ -68,7 +68,7 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.set("material", i.getMaterial());
             itemSection.set("amount", i.getAmount());
             itemSection.set("durability", i.getDurability());
-            itemSection.set("displayName", i.getDisplayName());
+            itemSection.set("display-name", i.getDisplayName());
             itemSection.set("lore", i.getLore());
 
             final List<Enchantment> enchantments = new LinkedList<>(i.getEnchantments());
@@ -76,9 +76,9 @@ public class ItemParser extends YAMLParser<Item> {
             for (int j = 0; j < enchantments.size(); j++)
                 enchantmentsSection.set(String.valueOf(j), enchantments.get(j));
 
-            itemSection.set("itemFlags", i.getItemFlags().stream().map(Enum::name).collect(Collectors.toList()));
+            itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).collect(Collectors.toList()));
             itemSection.set("unbreakable", i.isUnbreakable());
-            itemSection.set("customModelData", i.getCustomModelData());
+            itemSection.set("custom-model-data", i.getCustomModelData());
         };
     }
 }
