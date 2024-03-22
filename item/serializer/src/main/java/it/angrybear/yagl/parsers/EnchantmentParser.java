@@ -15,6 +15,7 @@ public class EnchantmentParser extends YAMLParser<Enchantment> {
         super(Enchantment.class);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Enchantment> getLoader() {
         return (c, s) -> {
