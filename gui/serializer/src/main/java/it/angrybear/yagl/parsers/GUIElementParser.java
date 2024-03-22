@@ -59,8 +59,8 @@ abstract class GUIElementParser<C> extends CallableYAMLParser<C> {
     protected static <C> String classToType(final Class<C> mainClass, final @NotNull Class<? extends C> clazz) {
         final String mainClassName = mainClass.getSimpleName();
         String name = clazz.getSimpleName();
-        final String mainClassName = mainClass.getSimpleName();
-        if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
+        if (name.contains("$")) name = mainClassName;
+        else if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
         name = FileUtils.formatStringToYaml(name);
         return name.replace("-", "_").toUpperCase();
     }
