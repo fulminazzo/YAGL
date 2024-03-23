@@ -7,10 +7,15 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 public class Particle {
     private final String type;
-    private final ParticleOption option;
+    private final ParticleOption<?> option;
 
-    Particle(final @NotNull String type, final @Nullable ParticleOption option) {
+    Particle(final @NotNull String type, final @Nullable ParticleOption<?> option) {
         this.type = type;
         this.option = option;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <O> O getOption() {
+        return this.option == null ? null : (O) this.option.getOption();
     }
 }
