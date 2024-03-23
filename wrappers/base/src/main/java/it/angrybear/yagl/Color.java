@@ -2,6 +2,9 @@ package it.angrybear.yagl;
 
 import java.util.LinkedList;
 
+/**
+ * The type Color.
+ */
 public class Color {
     private static final int MAX = 255;
 
@@ -10,10 +13,25 @@ public class Color {
     private final byte green;
     private final byte blue;
 
+    /**
+     * Instantiates a new Color.
+     *
+     * @param red   the red
+     * @param green the green
+     * @param blue  the blue
+     */
     public Color(int red, int green, int blue) {
         this(MAX, red, green, blue);
     }
 
+    /**
+     * Instantiates a new Color.
+     *
+     * @param alpha the alpha
+     * @param red   the red
+     * @param green the green
+     * @param blue  the blue
+     */
     public Color(int alpha, int red, int green, int blue) {
         checkRange(alpha);
         this.alpha = (byte) alpha;
@@ -31,14 +49,31 @@ public class Color {
                     n, MAX));
     }
 
+    /**
+     * Converts this color to an RGB string.
+     *
+     * @return the string
+     */
     public String toRGB() {
         return "#" + toARGB().substring(3);
     }
 
+    /**
+     * Converts this color to an ARGB string.
+     *
+     * @return the string
+     */
     public String toARGB() {
         return String.format("#%02X%02X%02X%02X", this.alpha, this.red, this.green, this.blue).toUpperCase();
     }
 
+    /**
+     * Converts the given ARGB string to a {@link Color}.
+     * An RGB string is also accepted (the alpha value will be set to {@link #MAX}).
+     *
+     * @param argb the string
+     * @return the color
+     */
     public static Color fromARGB(String argb) {
         if (argb.startsWith("#")) argb = argb.substring(1);
         if (argb.length() != 8 && argb.length() != 6)
