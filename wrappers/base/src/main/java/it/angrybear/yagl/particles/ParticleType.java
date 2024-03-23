@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class ParticleType<P extends ParticleOption> {
     public static ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
     public static ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
