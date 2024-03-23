@@ -1,6 +1,8 @@
 rootProject.name = 'YAGL'
 include 'common'
 
+include 'wrappers'
+
 include 'item'
 include 'item:item-bukkit'
 project(':item:item-bukkit').projectDir = file('item/bukkit')
