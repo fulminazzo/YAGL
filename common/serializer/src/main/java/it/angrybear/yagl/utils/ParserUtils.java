@@ -9,7 +9,7 @@ import java.util.Set;
 public class ParserUtils {
 
     @SuppressWarnings("unchecked")
-    protected static <C> Class<? extends C> typeToClass(final Class<C> coreClass, final @NotNull String toConvert) {
+    public static <C> Class<? extends C> typeToClass(final Class<C> coreClass, final @NotNull String toConvert) {
         String packageName = coreClass.getPackage().getName();
         final @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(packageName);
         for (Class<?> clazz : classes)
@@ -21,7 +21,7 @@ public class ParserUtils {
                 coreClass.getSimpleName(), toConvert));
     }
 
-    protected static <C> String classToType(final Class<C> coreClass, final @NotNull Class<? extends C> toConvert) {
+    public static <C> String classToType(final Class<C> coreClass, final @NotNull Class<? extends C> toConvert) {
         final String mainClassName = coreClass.getSimpleName();
         String name = toConvert.getSimpleName();
         if (name.contains("$")) name = mainClassName;
