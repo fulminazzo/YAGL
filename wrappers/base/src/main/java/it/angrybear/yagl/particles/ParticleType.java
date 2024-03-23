@@ -107,21 +107,17 @@ public class ParticleType<P extends ParticleOption> {
     public static final ParticleType<?> SCRAPE = new ParticleType<>();
     public static final ParticleType<?> SONIC_BOOM = new ParticleType<>();
     public static final ParticleType<?> SCULK_SOUL = new ParticleType<>();
-    public static final ParticleType<?> SCULK_CHARGE = new ParticleType<>(FloatParticleOption.class);
+    public static final ParticleType<FloatParticleOption> SCULK_CHARGE = new ParticleType<>(FloatParticleOption.class);
     public static final ParticleType<?> SCULK_CHARGE_POP = new ParticleType<>();
-    public static final ParticleType<?> SHRIEK = new ParticleType<>(IntegerParticleOption.class);
+    public static final ParticleType<IntegerParticleOption> SHRIEK = new ParticleType<>(IntegerParticleOption.class);
     public static final ParticleType<?> CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> EGG_CRACK = new ParticleType<>();
-
-    private final Class<P> particleOption;
 
     ParticleType() {
         this(null);
     }
 
-    ParticleType(Class<P> particleOption) {
-        this.particleOption = particleOption;
-    }
+    ParticleType(Class<P> particleOption) {}
 
     public Particle createParticle() {
         return createParticle(null);
