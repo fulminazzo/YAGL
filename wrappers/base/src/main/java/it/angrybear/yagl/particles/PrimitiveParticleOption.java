@@ -1,14 +1,11 @@
 package it.angrybear.yagl.particles;
 
-import lombok.Getter;
-
 /**
  * A {@link ParticleOption} capable of holding a single object.
  *
  * @param <T> the type parameter
  */
-@Getter
-public class PrimitiveParticleOption<T> extends ParticleOption {
+public class PrimitiveParticleOption<T> extends ParticleOption<T> {
     private final T value;
 
     /**
@@ -18,5 +15,10 @@ public class PrimitiveParticleOption<T> extends ParticleOption {
      */
     public PrimitiveParticleOption(T value) {
         this.value = value;
+    }
+
+    @Override
+    public T getOption() {
+        return this.value;
     }
 }
