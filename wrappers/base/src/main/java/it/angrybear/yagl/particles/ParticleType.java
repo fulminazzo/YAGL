@@ -86,8 +86,7 @@ public class ParticleType<P extends ParticleOption<?>> {
     public static final ParticleType<?> LANDING_OBSIDIAN_TEAR = new ParticleType<>();
     public static final ParticleType<?> REVERSE_PORTAL = new ParticleType<>();
     public static final ParticleType<?> WHITE_ASH = new ParticleType<>();
-    //TODO:
-//    DUST_COLOR_TRANSITION(DustTransition.class) = new ParticleType<>();
+    public static final ParticleType<DustTransitionParticleOption> DUST_COLOR_TRANSITION = new ParticleType<>();
     //TODO:
 //    VIBRATION(Vibration.class) = new ParticleType<>();
     public static final ParticleType<?> FALLING_SPORE_BLOSSOM = new ParticleType<>();
