@@ -37,8 +37,7 @@ public class ParticleType<P extends ParticleOption<?>> {
     public static final ParticleType<?> FLAME = new ParticleType<>();
     public static final ParticleType<?> LAVA = new ParticleType<>();
     public static final ParticleType<?> CLOUD = new ParticleType<>();
-    //TODO:
-//    REDSTONE(DustOptions.class) = new ParticleType<>();
+    public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>(DustParticleOption.class);
     public static final ParticleType<?> SNOWBALL = new ParticleType<>();
     public static final ParticleType<?> SNOW_SHOVEL = new ParticleType<>();
     public static final ParticleType<?> SLIME = new ParticleType<>();
