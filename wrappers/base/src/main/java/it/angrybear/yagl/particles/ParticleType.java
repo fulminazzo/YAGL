@@ -37,7 +37,7 @@ public class ParticleType<P extends ParticleOption<?>> {
     public static final ParticleType<?> FLAME = new ParticleType<>();
     public static final ParticleType<?> LAVA = new ParticleType<>();
     public static final ParticleType<?> CLOUD = new ParticleType<>();
-    public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>(DustParticleOption.class);
+    public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>();
     public static final ParticleType<?> SNOWBALL = new ParticleType<>();
     public static final ParticleType<?> SNOW_SHOVEL = new ParticleType<>();
     public static final ParticleType<?> SLIME = new ParticleType<>();
@@ -106,17 +106,11 @@ public class ParticleType<P extends ParticleOption<?>> {
     public static final ParticleType<?> SCRAPE = new ParticleType<>();
     public static final ParticleType<?> SONIC_BOOM = new ParticleType<>();
     public static final ParticleType<?> SCULK_SOUL = new ParticleType<>();
-    public static final ParticleType<FloatParticleOption> SCULK_CHARGE = new ParticleType<>(FloatParticleOption.class);
+    public static final ParticleType<FloatParticleOption> SCULK_CHARGE = new ParticleType<>();
     public static final ParticleType<?> SCULK_CHARGE_POP = new ParticleType<>();
-    public static final ParticleType<IntegerParticleOption> SHRIEK = new ParticleType<>(IntegerParticleOption.class);
+    public static final ParticleType<IntegerParticleOption> SHRIEK = new ParticleType<>();
     public static final ParticleType<?> CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> EGG_CRACK = new ParticleType<>();
-
-    ParticleType() {
-        this(null);
-    }
-
-    ParticleType(Class<P> particleOption) {}
 
     public Particle createParticle() {
         return createParticle(null);
