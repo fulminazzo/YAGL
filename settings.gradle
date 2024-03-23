@@ -3,6 +3,8 @@ rootProject.name = 'YAGL'
 include 'common'
 include 'common:common-base'
 project(':common:common-base').projectDir = file('common/base')
+include 'common:common-bukkit'
+project(':common:common-bukkit').projectDir = file('common/bukkit')
 include 'common:common-serializer'
 project(':common:common-serializer').projectDir = file('common/serializer')
 
@@ -26,4 +28,6 @@ project(':wrappers:wrappers-serializer').projectDir = file('wrappers/serializer'
 //
 //include 'gui:gui-serializer'
 //project(':gui:gui-serializer').projectDir = file('gui/serializer')
+include 'common:bukkit'
+findProject(':common:bukkit')?.name = 'bukkit'
 
