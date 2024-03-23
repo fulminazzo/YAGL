@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class ParticleType<P extends ParticleOption> {
+public class ParticleType<P extends ParticleOption<?>> {
     public static final ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_HUGE = new ParticleType<>();
