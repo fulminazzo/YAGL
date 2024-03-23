@@ -1,5 +1,10 @@
 rootProject.name = 'YAGL'
+
 include 'common'
+include 'common:common-base'
+project(':common:common-base').projectDir = file('common/base')
+include 'common:common-serializer'
+project(':common:common-serializer').projectDir = file('common/serializer')
 
 include 'wrappers'
 include 'wrappers:wrappers-base'
