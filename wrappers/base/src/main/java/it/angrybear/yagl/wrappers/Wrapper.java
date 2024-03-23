@@ -16,7 +16,7 @@ abstract class Wrapper {
      */
     public boolean equals(final @Nullable Wrapper wrapper) {
         if (wrapper == null) return false;
-        return ReflectionUtils.equalsFields(this, wrapper);
+        return getClass().equals(wrapper.getClass()) && ReflectionUtils.equalsFields(this, wrapper);
     }
 
     @Override
