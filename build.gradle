@@ -69,6 +69,8 @@ allprojects {
 
         implementation libs.fulmicollection
 
+        if (project.name.contains("serializer")) api(libs.yamlparser)
+
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok
 
