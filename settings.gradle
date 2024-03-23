@@ -9,16 +9,16 @@ project(':wrappers:wrappers-bukkit').projectDir = file('wrappers/bukkit')
 include 'wrappers:wrappers-serializer'
 project(':wrappers:wrappers-serializer').projectDir = file('wrappers/serializer')
 
-include 'item'
-include 'item:item-bukkit'
-project(':item:item-bukkit').projectDir = file('item/bukkit')
-include 'item:item-serializer'
-project(':item:item-serializer').projectDir = file('item/serializer')
-
-include 'gui'
-include 'gui:gui-bukkit'
-project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
-
-include 'gui:gui-serializer'
-project(':gui:gui-serializer').projectDir = file('gui/serializer')
+//include 'item'
+//include 'item:item-bukkit'
+//project(':item:item-bukkit').projectDir = file('item/bukkit')
+//include 'item:item-serializer'
+//project(':item:item-serializer').projectDir = file('item/serializer')
+//
+//include 'gui'
+//include 'gui:gui-bukkit'
+//project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
+//
+//include 'gui:gui-serializer'
+//project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
