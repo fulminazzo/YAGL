@@ -74,7 +74,10 @@ allprojects {
         if (projectName.contains("serializer")) api(libs.yamlparser)
         if (projectName.contains("-") && !projectName.contains("base")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
-            api(project(":" + name + ":" + name + "-base"))
+            def id = projectName.substring(projectName.indexOf("-") + 1)
+            api(project(":${name}:${name}-base"))
+            if (name != "common")
+                api(project(":common:common-${id}"))
         }
 
         testCompileOnly libs.lombok
