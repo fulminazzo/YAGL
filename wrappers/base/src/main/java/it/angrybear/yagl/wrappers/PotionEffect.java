@@ -32,7 +32,7 @@ public class PotionEffect extends Wrapper {
      * @param duration the duration
      */
     public PotionEffect(final @NotNull String effect, final int duration) {
-        this(effect, duration, 0);
+        this(effect, duration, 1);
     }
 
     /**
