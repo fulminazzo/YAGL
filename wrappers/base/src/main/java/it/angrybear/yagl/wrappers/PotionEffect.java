@@ -58,7 +58,7 @@ public class PotionEffect extends Wrapper {
     public PotionEffect(final @NotNull String effect, final int duration, final int amplifier,
                         final boolean enableParticles, final boolean enableIcon) {
         this.effect = effect;
-        this.duration = duration;
+        setDuration(duration);
         setAmplifier(amplifier);
         this.showingParticles = enableParticles;
         this.showingIcon = enableIcon;
@@ -97,24 +97,24 @@ public class PotionEffect extends Wrapper {
     }
 
     /**
-     * Returns the amplifier as it is shown in Minecraft.
-     *
-     * @return the amplifier
-     */
-    public int getMinecraftAmplifier() {
-        return getAmplifier() + 1;
-    }
-
-    /**
      * Sets amplifier.
      *
      * @param amplifier the amplifier
      * @return this potion effect
      */
     public PotionEffect setAmplifier(final int amplifier) {
-        if (amplifier < 0) throw new IllegalArgumentException("Amplifier cannot be lower than 0");
+        if (amplifier < 1) throw new IllegalArgumentException("Amplifier cannot be lower than 1");
         this.amplifier = amplifier;
         return this;
+    }
+
+    /**
+     * Gets amplifier.
+     *
+     * @return the amplifier
+     */
+    public int getAmplifier() {
+        return this.amplifier - 1;
     }
 
     /**
