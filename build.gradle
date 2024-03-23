@@ -69,7 +69,13 @@ allprojects {
 
         implementation libs.fulmicollection
 
-        if (project.name.contains("serializer")) api(libs.yamlparser)
+        def projectName = project.name
+
+        if (projectName.contains("serializer")) api(libs.yamlparser)
+        if (projectName.contains("-") && !projectName.contains("base")) {
+            def name = projectName.substring(0, projectName.indexOf("-"))
+            api(project(":" + name + ":" + name + "-base"))
+        }
 
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok
