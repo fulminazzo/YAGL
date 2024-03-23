@@ -43,9 +43,25 @@ public class PotionEffect extends Wrapper {
      * @param amplifier the amplifier
      */
     public PotionEffect(final @NotNull String effect, final int duration, final int amplifier) {
+        this(effect, duration, amplifier, true, true);
+    }
+
+    /**
+     * Instantiates a new Potion effect.
+     *
+     * @param effect          the effect
+     * @param duration        the duration
+     * @param amplifier       the amplifier
+     * @param enableParticles show particles
+     * @param enableIcon      show icon
+     */
+    public PotionEffect(final @NotNull String effect, final int duration, final int amplifier,
+                        final boolean enableParticles, final boolean enableIcon) {
         this.effect = effect;
-        setDuration(duration);
+        this.duration = duration;
         setAmplifier(amplifier);
+        this.showingParticles = enableParticles;
+        this.showingIcon = enableIcon;
     }
 
     /**
