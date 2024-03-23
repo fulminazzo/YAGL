@@ -3,7 +3,9 @@ package it.angrybear.yagl.wrappers;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ClassUtils;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
@@ -67,5 +70,12 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
             }
             c.set(s, tmp.substring(0, Math.max(0, tmp.length() - 1)));
         };
+    }
+
+    public static void addAllParsers() {
+        @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(Wrapper.class.getPackage().getName());
+        for (Class<?> clazz : classes)
+            if (!clazz.equals(Wrapper.class) && Wrapper.class.isAssignableFrom(clazz))
+                FileConfiguration.addParsers(new WrapperParser<>((Class<? extends Wrapper>) clazz));
     }
 }

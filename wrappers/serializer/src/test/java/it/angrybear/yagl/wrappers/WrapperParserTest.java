@@ -50,7 +50,7 @@ class WrapperParserTest {
 
     @SuppressWarnings("ReassignedVariable")
     private @Nullable <T extends Wrapper> List<T> saveAndLoad(T t) throws IOException {
-        FileConfiguration.addParsers(new WrapperParser<>(t.getClass()));
+        WrapperParser.addAllParsers();
         String name = t.getClass().getSimpleName().toLowerCase();
 
         File file = new File("build/resources/test/" + name + ".yml");
