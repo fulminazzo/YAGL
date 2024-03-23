@@ -2,6 +2,10 @@ package it.angrybear.yagl.particles;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
+
 public class ParticleType<P extends ParticleOption> {
     public static ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
     public static ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
@@ -127,5 +131,36 @@ public class ParticleType<P extends ParticleOption> {
 
     public Particle createParticle(final @Nullable P particleOption) {
         return new Particle(name(), particleOption);
+    }
+
+    public String name() {
+        for (Field field : ParticleType.class.getDeclaredFields())
+            if (field.getType().equals(ParticleType.class))
+                try {
+                    ParticleType<?> p = (ParticleType<?>) field.get(ParticleType.class);
+                    if (p.equals(this)) return field.getName();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        throw new IllegalStateException("Unreachable code");
+    }
+
+    public static ParticleType<?> valueOf(final String name) {
+        for (ParticleType<?> p : values())
+            if (p.name().equalsIgnoreCase(name))
+                return p;
+        return null;
+    }
+
+    public static ParticleType<?>[] values() {
+        List<ParticleType<?>> types = new LinkedList<>();
+        for (Field field : ParticleType.class.getDeclaredFields())
+            if (field.getType().equals(ParticleType.class))
+                try {
+                    types.add((ParticleType<?>) field.get(ParticleType.class));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        return types.toArray(new ParticleType[0]);
     }
 }
