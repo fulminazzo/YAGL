@@ -109,7 +109,7 @@ public class PersistentListener implements Listener {
 
         Consumer<PersistentItem> ifPresent = e -> {
             int rawSlot = event.getRawSlot();
-            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || rawSlot < open.getSize())
+            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY))
                 cancelled(event).accept(e);
         };
 
