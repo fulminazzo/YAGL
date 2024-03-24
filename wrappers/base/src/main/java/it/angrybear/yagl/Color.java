@@ -1,6 +1,7 @@
 package it.angrybear.yagl;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 
@@ -156,6 +157,21 @@ public class Color extends ClassEnum {
         }
         if (nums.size() < 4) nums.addFirst(MAX);
         return new Color(nums.get(0), nums.get(1), nums.get(2), nums.get(3));
+    }
+
+    /**
+     * Gets the name from the corresponding static color.
+     * If this is not a static color, it returns null.
+     *
+     * @return the name
+     */
+    @Override
+    public @Nullable String name() {
+        try {
+            return super.name();
+        } catch (IllegalStateException e) {
+            return null;
+        }
     }
 
     /**
