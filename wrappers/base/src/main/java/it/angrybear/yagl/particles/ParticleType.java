@@ -103,9 +103,9 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> SCRAPE = new ParticleType<>();
     public static final ParticleType<?> SONIC_BOOM = new ParticleType<>();
     public static final ParticleType<?> SCULK_SOUL = new ParticleType<>();
-    public static final ParticleType<FloatParticleOption> SCULK_CHARGE = new ParticleType<>();
+    public static final ParticleType<PrimitiveParticleOption<Float>> SCULK_CHARGE = new ParticleType<>();
     public static final ParticleType<?> SCULK_CHARGE_POP = new ParticleType<>();
-    public static final ParticleType<IntegerParticleOption> SHRIEK = new ParticleType<>();
+    public static final ParticleType<PrimitiveParticleOption<Integer>> SHRIEK = new ParticleType<>();
     public static final ParticleType<?> CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> EGG_CRACK = new ParticleType<>();
 
