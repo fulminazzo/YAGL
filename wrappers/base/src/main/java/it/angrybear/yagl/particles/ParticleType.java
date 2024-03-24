@@ -1,10 +1,12 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.ClassEnum;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
@@ -35,7 +37,7 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> FLAME = new ParticleType<>();
     public static final ParticleType<?> LAVA = new ParticleType<>();
     public static final ParticleType<?> CLOUD = new ParticleType<>();
-    public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>();
+    public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>(DustParticleOption.class);
     public static final ParticleType<?> SNOWBALL = new ParticleType<>();
     public static final ParticleType<?> SNOW_SHOVEL = new ParticleType<>();
     public static final ParticleType<?> SLIME = new ParticleType<>();
@@ -84,7 +86,7 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> LANDING_OBSIDIAN_TEAR = new ParticleType<>();
     public static final ParticleType<?> REVERSE_PORTAL = new ParticleType<>();
     public static final ParticleType<?> WHITE_ASH = new ParticleType<>();
-    public static final ParticleType<DustTransitionParticleOption> DUST_COLOR_TRANSITION = new ParticleType<>();
+    public static final ParticleType<DustTransitionParticleOption> DUST_COLOR_TRANSITION = new ParticleType<>(DustTransitionParticleOption.class);
     //TODO:
 //    VIBRATION(Vibration.class) = new ParticleType<>();
     public static final ParticleType<?> FALLING_SPORE_BLOSSOM = new ParticleType<>();
@@ -103,11 +105,22 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> SCRAPE = new ParticleType<>();
     public static final ParticleType<?> SONIC_BOOM = new ParticleType<>();
     public static final ParticleType<?> SCULK_SOUL = new ParticleType<>();
-    public static final ParticleType<PrimitiveParticleOption<Float>> SCULK_CHARGE = new ParticleType<>();
+    public static final ParticleType<PrimitiveParticleOption<Float>> SCULK_CHARGE = new ParticleType<>((Class<PrimitiveParticleOption<Float>>) (Class<?>) PrimitiveParticleOption.class);
     public static final ParticleType<?> SCULK_CHARGE_POP = new ParticleType<>();
-    public static final ParticleType<PrimitiveParticleOption<Integer>> SHRIEK = new ParticleType<>();
+    public static final ParticleType<PrimitiveParticleOption<Integer>> SHRIEK = new ParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
     public static final ParticleType<?> CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> EGG_CRACK = new ParticleType<>();
+
+    @Getter(AccessLevel.PACKAGE)
+    private final Class<P> optionType;
+
+    public ParticleType(Class<P> optionType) {
+        this.optionType = optionType;
+    }
+
+    public ParticleType() {
+        this(null);
+    }
 
     public Particle createParticle() {
         return createParticle(null);
