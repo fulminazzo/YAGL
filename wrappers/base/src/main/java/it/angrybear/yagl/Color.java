@@ -6,6 +6,23 @@ import java.util.LinkedList;
  * The type Color.
  */
 public class Color {
+    public static final Color WHITE = fromARGB("#FFFFFFFF");
+    public static final Color SILVER = fromARGB("#FFC0C0C0");
+    public static final Color GRAY = fromARGB("#FF808080");
+    public static final Color BLACK = fromARGB("#FF000000");
+    public static final Color RED = fromARGB("#FFFF0000");
+    public static final Color MAROON = fromARGB("#FF800000");
+    public static final Color YELLOW = fromARGB("#FFFFFF00");
+    public static final Color OLIVE = fromARGB("#FF808000");
+    public static final Color LIME = fromARGB("#FF00FF00");
+    public static final Color GREEN = fromARGB("#FF008000");
+    public static final Color AQUA = fromARGB("#FF00FFFF");
+    public static final Color TEAL = fromARGB("#FF008080");
+    public static final Color BLUE = fromARGB("#FF0000FF");
+    public static final Color NAVY = fromARGB("#FF000080");
+    public static final Color FUCHSIA = fromARGB("#FFFF00FF");
+    public static final Color PURPLE = fromARGB("#FF800080");
+    public static final Color ORANGE = fromARGB("#FFFFA500");
     private static final int MAX = 255;
 
     private final byte alpha;
