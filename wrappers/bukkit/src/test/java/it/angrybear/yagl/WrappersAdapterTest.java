@@ -1,8 +1,7 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.particles.Particle;
-import it.angrybear.yagl.particles.ParticleType;
-import it.angrybear.yagl.particles.PrimitiveParticleOption;
+import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -71,6 +70,9 @@ class WrappersAdapterTest {
         for (ParticleType<?> type : ParticleType.values()) particles.add(type.createParticle());
         particles.add(ParticleType.SCULK_CHARGE.createParticle(new PrimitiveParticleOption<>(10f)));
         particles.add(ParticleType.SHRIEK.createParticle(new PrimitiveParticleOption<>(11)));
+        particles.add(ParticleType.REDSTONE.createParticle(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
+        particles.add(ParticleType.DUST_COLOR_TRANSITION.createParticle(new DustTransitionParticleOption(
+                it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
         return particles.toArray(new Particle[0]);
     }
 
