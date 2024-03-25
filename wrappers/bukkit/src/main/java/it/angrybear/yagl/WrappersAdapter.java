@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.structures.Tuple;
@@ -20,9 +21,7 @@ public class WrappersAdapter {
      */
     public static org.bukkit.potion.PotionEffect wPotionEffectToPotionEffect(final @NotNull PotionEffect potionEffect) {
         final String effect = potionEffect.getEffect();
-        final PotionEffectType type = PotionEffectType.getByName(effect.toUpperCase());
-        if (type == null)
-            throw new IllegalArgumentException(String.format("Could not find potion effect type '%s'", effect));
+        final PotionEffectType type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
         try {
             return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
                     potionEffect.isShowingParticles(), potionEffect.isShowingParticles(),
@@ -58,12 +57,13 @@ public class WrappersAdapter {
      */
     public static Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
         String raw = enchantment.getEnchantment();
-        org.bukkit.enchantments.Enchantment actual = org.bukkit.enchantments.Enchantment.getByName(raw);
-        if (actual == null)
-            try {
-                // Prevent other versions from complaining about method not found.
-                actual = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(raw));
-            } catch (Exception ignored) {}
+        org.bukkit.enchantments.Enchantment actual;
+        try {
+            actual = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(raw));
+        } catch (Exception e) {
+            // Prevent other versions from complaining about method not found.
+            actual = EnumUtils.valueOf(org.bukkit.enchantments.Enchantment.class, raw, "getByName");
+        }
         if (actual == null) throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         return new Tuple<>(actual, enchantment.getLevel());
     }
