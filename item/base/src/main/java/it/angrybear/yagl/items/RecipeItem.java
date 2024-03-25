@@ -1,35 +1,28 @@
 package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.recipes.Recipe;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Predicate;
 
 /**
  * An implementation of {@link Item} that supports a {@link Recipe}.
  */
 public interface RecipeItem extends Item {
 
-    /**
-     * Sets recipe.
-     *
-     * @param recipe the recipe
-     * @return the recipe
-     */
-    RecipeItem setRecipe(final @Nullable Recipe recipe);
+    default RecipeItem setRecipes(final Recipe @NotNull ... recipes) {
+        return clearRecipes().addRecipes(recipes);
+    }
 
-    /**
-     * Gets recipe.
-     *
-     * @return the recipe
-     */
-    @Nullable Recipe getRecipe();
+    RecipeItem addRecipes(final Recipe @NotNull ... recipes);
 
-    /**
-     * Register recipe.
-     */
-    void registerRecipe();
+    RecipeItem clearRecipes(final Predicate<Recipe> predicate);
 
-    /**
-     * Unregister recipe.
-     */
-    void unregisterRecipe();
+    default RecipeItem clearRecipes() {
+        return clearRecipes(t -> true);
+    }
+
+    void registerRecipes();
+
+    void unregisterRecipes();
 }

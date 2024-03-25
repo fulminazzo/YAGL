@@ -2,15 +2,19 @@ package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.recipes.Recipe;
 import lombok.Getter;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * An implementation of {@link RecipeItem}.
  */
 @Getter
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
-    //TODO: multiple recipes?
-    protected Recipe recipe;
+    protected final List<Recipe> recipes = new ArrayList<>();
 
     /**
      * Instantiates a new Recipe item.
@@ -39,18 +43,24 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public RecipeItem setRecipe(final @Nullable Recipe recipe) {
-        this.recipe = recipe;
+    public RecipeItem addRecipes(final Recipe @NotNull ... recipes) {
+        Collections.addAll(this.recipes, recipes);
         return this;
     }
 
     @Override
-    public void registerRecipe() {
+    public RecipeItem clearRecipes(final Predicate<Recipe> predicate) {
+        this.recipes.removeIf(predicate);
+        return this;
+    }
+
+    @Override
+    public void registerRecipes() {
         throw new IllegalStateException("Not implemented");
     }
 
     @Override
-    public void unregisterRecipe() {
+    public void unregisterRecipes() {
         throw new IllegalStateException("Not implemented");
     }
 }
