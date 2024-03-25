@@ -40,17 +40,11 @@ public class WrappersAdapter {
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticle(new Refl<>(player), particle, location, count, offsetX, offsetY, offsetZ);
-    }
-    
-    private static void spawnParticle(final @NotNull Refl<?> spawner, final @NotNull Particle particle,
-                                     Location location, int count,
-                                     double offsetX, double offsetY, double offsetZ) {
         Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
         org.bukkit.Particle actual = tuple.getKey();
         Object option = tuple.getValue();
-        if (option == null) spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ);
-        else spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ, option);
+        if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
+        else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
     }
 
     public static Tuple<org.bukkit.Particle, ?> wParticleToParticle(Particle particle) {
