@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * A wrapper to represent Minecraft enchantments.
  * Enchantments are expressed as string, so they are <b>NOT</b> checked.
  */
+@Deprecated
 @Getter
 public class Enchantment {
     private @NotNull String enchantment;

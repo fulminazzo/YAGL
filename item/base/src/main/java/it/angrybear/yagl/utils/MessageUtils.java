@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 /**
  * The type Message utils.
  */
+//TODO: move in common
 public class MessageUtils {
     private static final String COLOR_CHAR = "§";
     private static final String COLOR_REGEX = "[A-Fa-f0-9]";

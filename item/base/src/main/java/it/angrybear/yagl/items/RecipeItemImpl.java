@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
+    //TODO: multiple recipes?
     protected Recipe recipe;
 
     /**
