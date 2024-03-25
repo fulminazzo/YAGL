@@ -13,6 +13,11 @@ public class Sound extends Wrapper {
     private @NotNull String sound;
     private float volume;
     private float pitch;
+    /**
+     * The category to play the sound for.
+     * Players with the specified category set to '0' will NOT hear this sound when played.
+     */
+    private @Nullable String category;
 
     /**
      * Instantiates a new Sound.
@@ -41,9 +46,22 @@ public class Sound extends Wrapper {
      * @param pitch  the pitch
      */
     public Sound(final @NotNull String sound, final float volume, final float pitch) {
+        this(sound, volume, pitch, null);
+    }
+
+    /**
+     * Instantiates a new Sound.
+     *
+     * @param sound    the sound
+     * @param volume   the volume
+     * @param pitch    the pitch
+     * @param category the category
+     */
+    public Sound(final @NotNull String sound, final float volume, final float pitch, final @Nullable String category) {
         this.sound = sound;
         setVolume(volume);
         setPitch(pitch);
+        this.category = category;
     }
 
     /**
@@ -82,6 +100,17 @@ public class Sound extends Wrapper {
     public Sound setPitch(final float pitch) {
         if (pitch < 0) throw new IllegalArgumentException("Pitch cannot be lower than 0");
         this.pitch = pitch;
+        return this;
+    }
+
+    /**
+     * Sets category.
+     *
+     * @param category the category
+     * @return this sound
+     */
+    public Sound setCategory(final @NotNull String category) {
+        this.category = category;
         return this;
     }
 
