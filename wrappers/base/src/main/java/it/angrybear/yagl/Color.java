@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 /**
  * The type Color.
  */
+@Getter
 public class Color extends ClassEnum {
     /**
      * The constant WHITE.
