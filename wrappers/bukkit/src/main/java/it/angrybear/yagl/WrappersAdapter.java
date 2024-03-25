@@ -10,6 +10,7 @@ import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,34 @@ import java.lang.reflect.Constructor;
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
 public class WrappersAdapter {
+
+
+
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     double x, double y, double z, int count) {
+        spawnParticle(world, particle, x, y, z, count, 0, 0, 0);
+    }
+
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     Location location, int count) {
+        spawnParticle(world, particle, location, count, 0, 0, 0);
+    }
+
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     double x, double y, double z, int count,
+                                     double offsetX, double offsetY, double offsetZ) {
+        spawnParticle(world, particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ);
+    }
+
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ) {
+        Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
+        org.bukkit.Particle actual = tuple.getKey();
+        Object option = tuple.getValue();
+        if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
+        else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+    }
 
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
