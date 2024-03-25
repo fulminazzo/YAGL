@@ -5,6 +5,9 @@ import it.fulminazzo.fulmicollection.structures.Tuple;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An option used by {@link ParticleType#REDSTONE}.
+ */
 @Getter
 public class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
     private final Color color;
@@ -14,6 +17,12 @@ public class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
         this(null, -1);
     }
 
+    /**
+     * Instantiates a new Dust particle option.
+     *
+     * @param color the color
+     * @param size  the size
+     */
     public DustParticleOption(final @NotNull Color color, final float size) {
         this.color = color;
         this.size = size;
