@@ -17,9 +17,19 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
+/**
+ * A parser to serialize a generic {@link Wrapper} object.
+ *
+ * @param <W> the type parameter
+ */
 @SuppressWarnings("unchecked")
 public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
 
+    /**
+     * Instantiates a new Wrapper parser.
+     *
+     * @param clazz the class of the {@link Wrapper} to serialize
+     */
     public WrapperParser(Class<W> clazz) {
         super(clazz);
     }
@@ -72,6 +82,9 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         };
     }
 
+    /**
+     * Adds all the parsers in the {@link it.angrybear.yagl.wrappers} package as {@link WrapperParser}s.
+     */
     public static void addAllParsers() {
         @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(Wrapper.class.getPackage().getName());
         for (Class<?> clazz : classes)
