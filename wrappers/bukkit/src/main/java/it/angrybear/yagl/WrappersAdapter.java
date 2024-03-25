@@ -40,16 +40,22 @@ public class WrappersAdapter {
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
+        spawnParticle(new Refl<>(player), particle, location, count, offsetX, offsetY, offsetZ);
+    }
+    
+    private static void spawnParticle(final @NotNull Refl<?> spawner, final @NotNull Particle particle,
+                                     Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ) {
         org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         Object option = particle.getOption();
-        if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
+        if (option == null) spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ);
         else {
             Class<?> dataType = actual.getDataType();
             if (ReflectionUtils.isPrimitiveOrWrapper(dataType))
-                player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+                spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ, option);
             else try {
                 final Object finalOption = convertOption(dataType, option);
-                player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, finalOption);
+                spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ, finalOption);
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new IllegalArgumentException(String.format("Could not find constructor for data type '%s'",
                         dataType.getSimpleName()));
