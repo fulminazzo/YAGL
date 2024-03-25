@@ -70,7 +70,7 @@ public class WrappersAdapter {
     }
 
     /**
-     * Converts the given bukkit enchantment to a {@link Enchantment}.
+     * Converts the given Bukkit enchantment to a {@link Enchantment}.
      * Uses {@link org.bukkit.enchantments.Enchantment#getName()} for retro-compatibility purposes.
      *
      * @param enchantment the enchantment
@@ -81,7 +81,7 @@ public class WrappersAdapter {
     }
 
     /**
-     * Converts the given bukkit enchantment to a {@link Enchantment}.
+     * Converts the given Bukkit enchantment to a {@link Enchantment}.
      * Uses {@link org.bukkit.enchantments.Enchantment#getName()} for retro-compatibility purposes.
      *
      * @param enchantment the enchantment
