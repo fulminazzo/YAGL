@@ -71,6 +71,9 @@ public interface RecipeItem extends Item {
     RecipeItem setDisplayName(final @NotNull String displayName);
 
     @Override
+    RecipeItem setCustomModelData(final int customModelData);
+
+    @Override
     default RecipeItem addLore(final String @NotNull ... lore) {
         return (RecipeItem) Item.super.addLore(lore);
     }
