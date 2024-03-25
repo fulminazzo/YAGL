@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,12 +41,15 @@ public class ItemAdapter {
             if (lore != null) item.setLore(lore);
             meta.getEnchants().forEach((e, l) -> item.addEnchantments(WrappersAdapter.enchantToWEnchant(e, l)));
             meta.getItemFlags().forEach(f -> item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, f.name())));
-            if (meta instanceof Damageable) item.setDurability(((Damageable) meta).getDamage());
-            item.setUnbreakable(meta.isUnbreakable());
-            try {
+            invokeNoSuchMethod(() -> {
+                if (meta instanceof org.bukkit.inventory.meta.Damageable)
+                    item.setDurability(((org.bukkit.inventory.meta.Damageable) meta).getDamage());
+            }, item::getDurability);
+            invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), null);
+            invokeNoSuchMethod(() -> {
                 int modelData = meta.getCustomModelData();
                 if (modelData > 0) item.setCustomModelData(modelData);
-            } catch (NoSuchMethodError ignored) {}
+            }, null);
         }
         return item;
     }
@@ -74,15 +76,32 @@ public class ItemAdapter {
                 meta.addEnchant(tuple.getKey(), tuple.getValue(), true);
             });
             item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
-            if (meta instanceof Damageable) ((Damageable) meta).setDamage(item.getDurability());
-            meta.setUnbreakable(item.isUnbreakable());
-            try {
+            invokeNoSuchMethod(() -> {
+                if (meta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
+            }, () -> item.setDurability(item.getDurability()));
+            invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), null);
+            invokeNoSuchMethod(() -> {
                 int modelData = item.getCustomModelData();
                 if (modelData > 0) meta.setCustomModelData(modelData);
-            } catch (NoSuchMethodError ignored) {}
+            }, null);
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    /**
+     * Tries to execute the first given {@link Runnable}.
+     * If it fails for a {@link NoSuchMethodError}, the second one is called.
+     *
+     * @param get the first function
+     * @param orElse the second function
+     */
+    private static void invokeNoSuchMethod(final @NotNull Runnable get, final @Nullable Runnable orElse) {
+        try {
+            get.run();
+        } catch (NoSuchMethodError e) {
+            if (orElse != null) orElse.run();
+        }
     }
 
     public static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.Recipe recipe) {
