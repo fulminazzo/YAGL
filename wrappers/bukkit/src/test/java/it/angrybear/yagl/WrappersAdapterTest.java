@@ -81,21 +81,20 @@ class WrappersAdapterTest {
     void testSpawnParticle(Particle particle) {
         Player player = mock(Player.class);
 
-        WrappersAdapter.spawnParticle(player, particle, 0, 0, 0, 1, 0, 0, 0);
+        Location location = new Location(null, 0, 0, 0);
+        WrappersAdapter.spawnParticle(player, particle, location, 1);
 
         ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
         if (particle.getOption() == null) {
             verify(player).spawnParticle(particleArg.capture(),
-                    any(double.class), any(double.class), any(double.class),
-                    any(int.class),
+                    any(Location.class), any(int.class),
                     any(double.class), any(double.class), any(double.class));
 
             assertEquals(particle.getType(), particleArg.getValue().name());
         } else {
             ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
             verify(player).spawnParticle(particleArg.capture(),
-                    any(double.class), any(double.class), any(double.class),
-                    any(int.class),
+                    any(Location.class), any(int.class),
                     any(double.class), any(double.class), any(double.class),
                     extra.capture());
 
