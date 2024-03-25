@@ -1,9 +1,9 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.items.fields.Enchantment;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.structures.EnchantmentSet;
+import it.angrybear.yagl.wrappers.Enchantment;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;

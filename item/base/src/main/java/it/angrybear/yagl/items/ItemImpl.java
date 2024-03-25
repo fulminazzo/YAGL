@@ -1,10 +1,10 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.items.fields.Enchantment;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.structures.EnchantmentSet;
 import it.angrybear.yagl.utils.MessageUtils;
+import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;

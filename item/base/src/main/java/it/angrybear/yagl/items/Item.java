@@ -1,9 +1,9 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.items.fields.Enchantment;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.utils.MessageUtils;
+import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
