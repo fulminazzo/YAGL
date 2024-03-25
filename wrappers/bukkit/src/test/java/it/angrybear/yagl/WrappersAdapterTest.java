@@ -1,5 +1,7 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.particles.Particle;
+import it.angrybear.yagl.particles.ParticleType;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -19,6 +21,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,6 +63,30 @@ class WrappersAdapterTest {
                 .getFieldObject("byKey");
         if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
         return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
+    }
+    
+    private static Particle[] getTestParticles() {
+        List<Particle> particles = new ArrayList<>();
+        for (ParticleType<?> type : ParticleType.values()) particles.add(type.createParticle());
+        return particles.toArray(new Particle[0]);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestParticles")
+    void testSpawnParticle(Particle particle) {
+        Player player = mock(Player.class);
+
+        WrappersAdapter.spawnParticle(player, particle, 0, 0, 0, 1, 0, 0, 0);
+
+        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
+        if (particle.getOption() == null) {
+            verify(player).spawnParticle(particleArg.capture(),
+                    any(double.class), any(double.class), any(double.class),
+                    any(int.class),
+                    any(double.class), any(double.class), any(double.class));
+
+            assertEquals(particle.getType(), particleArg.getValue().name());
+        }
     }
 
     @Test

@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
@@ -15,6 +16,15 @@ import org.jetbrains.annotations.NotNull;
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
 public class WrappersAdapter {
+
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                         double x, double y, double z, int count,
+                                         double offsetX, double offsetY, double offsetZ) {
+        org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
+        Object option = particle.getOption();
+        if (option == null) player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ);
+        //TODO: option
+    }
 
     /**
      * Plays the given {@link Sound} using Bukkit methods at the player's {@link Location}.
