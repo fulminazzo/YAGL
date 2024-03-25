@@ -1,19 +1,22 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.ItemAdapter;
+import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.utils.MaterialUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
- * An implementation of {@link RecipeItemImpl} that actually implements {@link #registerRecipe()} and {@link #unregisterRecipe()}.
+ * An implementation of {@link RecipeItemImpl} that actually implements {@link #registerRecipes()} and {@link #unregisterRecipes()}.
  */
 class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
+    private final List<org.bukkit.inventory.Recipe> recipeCache = new ArrayList<>();
 
     /**
      * Instantiates a new Bukkit recipe item.
@@ -42,20 +45,23 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public void registerRecipe() {
-        if (this.recipe == null) return;
-        this.recipe.setOutput(this);
-        org.bukkit.inventory.Recipe realRecipe = ItemAdapter.recipeToMinecraft(this.recipe);
-        Bukkit.addRecipe(realRecipe);
+    public void registerRecipes() {
+        for (Recipe recipe : this.recipes) {
+            recipe.setOutput(this);
+            org.bukkit.inventory.Recipe realRecipe = ItemAdapter.recipeToMinecraft(recipe);
+            this.recipeCache.add(realRecipe);
+            Bukkit.addRecipe(realRecipe);
+        }
     }
 
     @Override
-    public void unregisterRecipe() {
+    public void unregisterRecipes() {
         Iterator<org.bukkit.inventory.Recipe> recipes = Bukkit.recipeIterator();
         while (recipes.hasNext()) {
             org.bukkit.inventory.Recipe r = recipes.next();
-            if (r.getResult().isSimilar(create())) recipes.remove();
+            if (this.recipeCache.contains(r)) recipes.remove();
         }
+        this.recipeCache.clear();
     }
 
     @Override
@@ -95,7 +101,22 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public BukkitRecipeItem setRecipe(@Nullable Recipe recipe) {
-        return (BukkitRecipeItem) super.setRecipe(recipe);
+    public BukkitRecipeItem setRecipes(Recipe @NotNull ... recipes) {
+        return (BukkitRecipeItem) super.setRecipes(recipes);
+    }
+
+    @Override
+    public BukkitRecipeItem clearRecipes() {
+        return (BukkitRecipeItem) super.clearRecipes();
+    }
+
+    @Override
+    public BukkitRecipeItem addRecipes(Recipe @NotNull ... recipes) {
+        return (BukkitRecipeItem) super.addRecipes(recipes);
+    }
+
+    @Override
+    public BukkitRecipeItem clearRecipes(Predicate<Recipe> predicate) {
+        return (BukkitRecipeItem) super.clearRecipes(predicate);
     }
 }
