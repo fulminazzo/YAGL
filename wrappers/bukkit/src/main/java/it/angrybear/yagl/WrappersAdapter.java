@@ -215,12 +215,15 @@ public class WrappersAdapter {
      * @return the color
      */
     public static @NotNull org.bukkit.Color wColorToColor(final @NotNull Color color) {
+        org.bukkit.Color actualColor;
         try {
-            return new Refl<>(org.bukkit.Color.class).invokeMethod("fromARGB",
+            actualColor = new Refl<>(org.bukkit.Color.class).invokeMethod("fromARGB",
                     color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
+            if (actualColor == null) throw new IllegalStateException("Unreachable code");
         } catch (Exception e) {
-            return org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
+            actualColor = org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
         }
+        return actualColor;
     }
 
     /**
