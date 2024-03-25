@@ -10,8 +10,14 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A parser to serialize {@link Particle}.
+ */
 public class ParticleParser extends YAMLParser<Particle> {
 
+    /**
+     * Instantiates a new Particle parser.
+     */
     public ParticleParser() {
         super(Particle.class);
     }
