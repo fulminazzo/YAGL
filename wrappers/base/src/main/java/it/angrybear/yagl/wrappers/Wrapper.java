@@ -6,6 +6,9 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A general class that represents a wrapper for another object.
+ */
 abstract class Wrapper {
 
     /**

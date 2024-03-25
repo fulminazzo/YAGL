@@ -6,17 +6,22 @@ fulmicollection = "1.4.2"
 yamlparser = "1.5.12"
 
 spigot = "1.14-R0.1-SNAPSHOT"
+spigot_latest = "1.20-R0.1-SNAPSHOT"
+#spigot = "1.8.8-R0.1-SNAPSHOT"
 
 lombok = "1.18.30"
 annotations = "24.1.0"
 junit = "5.9.1"
+mockito = "4.11.0"
 
 [libraries]
 fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }
 yamlparser = { module = "it.fulminazzo:YAMLParser", version.ref = "yamlparser" }
 
 spigot = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
+spigot_latest = { module = "org.spigotmc:spigot-api", version.ref = "spigot_latest" }
 
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 junit-platform = { module = "org.junit:junit-bom", version.ref = "junit" }
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }

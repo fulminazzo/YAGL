@@ -17,15 +17,25 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A parser to serialize a generic {@link ParticleOption} object.
+ *
+ * @param <P> the type parameter
+ */
 @SuppressWarnings("unchecked")
 public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParser<P> {
 
+    /**
+     * Instantiates a new Particle option parser.
+     *
+     * @param pClass the class of the {@link ParticleOption} to serialize
+     */
     public ParticleOptionParser(@NotNull Class<P> pClass) {
         super(pClass);
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable P> getLoader() {
+    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable P> getLoader() {
         return (c, s) -> {
             Refl<?> reflP = new Refl<>(getOClass(), new Object[0]);
 
@@ -41,7 +51,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
         };
     }
 
-    private void loadField(Refl<?> reflP, IConfiguration section, String path, Field field) {
+    private void loadField(@NotNull Refl<?> reflP, @NotNull IConfiguration section, @NotNull String path, @NotNull Field field) {
         Object object = section.get(path, field.getType());
         if (object instanceof String) {
             String string = object.toString();
@@ -52,7 +62,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable P> getDumper() {
+    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable P> getDumper() {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;
@@ -68,6 +78,9 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
         };
     }
 
+    /**
+     * Adds all the parsers in the {@link it.angrybear.yagl.particles} package as {@link ParticleOptionParser}s.
+     */
     public static void addAllParsers() {
         @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(ParticleOption.class.getPackage().getName());
         for (Class<?> clazz : classes)
@@ -75,13 +88,13 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
                 FileConfiguration.addParsers(new ParticleOptionParser<>((Class<? extends ParticleOption<?>>) clazz));
     }
 
-    private void saveField(Refl<?> reflP, IConfiguration section, String path, Field field) {
+    private void saveField(@NotNull Refl<?> reflP, @NotNull IConfiguration section, @NotNull String path, @NotNull Field field) {
         Object object = reflP.getFieldObject(field);
         if (object instanceof Float) object = object + "f";
         section.set(path, object);
     }
 
-    private List<Field> getFields(Refl<?> reflP) {
+    private @NotNull List<Field> getFields(@NotNull Refl<?> reflP) {
         return reflP.getFields(f -> !Modifier.isStatic(f.getModifiers()) && !f.isAnnotationPresent(PreventSaving.class));
     }
 }

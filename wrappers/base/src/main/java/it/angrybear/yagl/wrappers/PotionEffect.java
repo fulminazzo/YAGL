@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 public class PotionEffect extends Wrapper {
     private @NotNull String effect;
-    private int duration;
+    private double duration;
     private int amplifier;
     private boolean showingParticles;
     private boolean showingIcon;
@@ -31,7 +31,7 @@ public class PotionEffect extends Wrapper {
      * @param effect   the effect
      * @param duration the duration
      */
-    public PotionEffect(final @NotNull String effect, final int duration) {
+    public PotionEffect(final @NotNull String effect, final double duration) {
         this(effect, duration, 1);
     }
 
@@ -42,7 +42,7 @@ public class PotionEffect extends Wrapper {
      * @param duration  the duration
      * @param amplifier the amplifier
      */
-    public PotionEffect(final @NotNull String effect, final int duration, final int amplifier) {
+    public PotionEffect(final @NotNull String effect, final double duration, final int amplifier) {
         this(effect, duration, amplifier, true, true);
     }
 
@@ -54,7 +54,7 @@ public class PotionEffect extends Wrapper {
      * @param amplifier       the amplifier
      * @param enableParticles the enable particles
      */
-    public PotionEffect(final @NotNull String effect, final int duration, final int amplifier,
+    public PotionEffect(final @NotNull String effect, final double duration, final int amplifier,
                         final boolean enableParticles) {
         this(effect, duration, amplifier, enableParticles, true);
     }
@@ -68,7 +68,7 @@ public class PotionEffect extends Wrapper {
      * @param enableParticles show particles
      * @param enableIcon      show icon
      */
-    public PotionEffect(final @NotNull String effect, final int duration, final int amplifier,
+    public PotionEffect(final @NotNull String effect, final double duration, final int amplifier,
                         final boolean enableParticles, final boolean enableIcon) {
         this.effect = effect;
         setDuration(duration);
@@ -94,7 +94,7 @@ public class PotionEffect extends Wrapper {
      * @return the duration in ticks
      */
     public int getDurationInTicks() {
-        return getDuration() * 20;
+        return (int) (getDuration() * 20);
     }
 
     /**
@@ -103,7 +103,7 @@ public class PotionEffect extends Wrapper {
      * @param duration the duration
      * @return this potion effect
      */
-    public PotionEffect setDuration(final int duration) {
+    public PotionEffect setDuration(final double duration) {
         if (duration < 0) throw new IllegalArgumentException("Duration cannot be lower than 0");
         this.duration = duration;
         return this;

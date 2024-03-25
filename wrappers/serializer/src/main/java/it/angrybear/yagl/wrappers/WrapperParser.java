@@ -17,15 +17,25 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
+/**
+ * A parser to serialize a generic {@link Wrapper} object.
+ *
+ * @param <W> the type parameter
+ */
 @SuppressWarnings("unchecked")
 public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
 
-    public WrapperParser(Class<W> clazz) {
+    /**
+     * Instantiates a new Wrapper parser.
+     *
+     * @param clazz the class of the {@link Wrapper} to serialize
+     */
+    public WrapperParser(@NotNull Class<W> clazz) {
         super(clazz);
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable W> getLoader() {
+    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable W> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;
@@ -58,7 +68,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable W> getDumper() {
+    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable W> getDumper() {
         return (c, s, w) -> {
             c.set(s, null);
             if (w == null) return;
@@ -72,6 +82,9 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         };
     }
 
+    /**
+     * Adds all the parsers in the {@link it.angrybear.yagl.wrappers} package as {@link WrapperParser}s.
+     */
     public static void addAllParsers() {
         @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(Wrapper.class.getPackage().getName());
         for (Class<?> clazz : classes)

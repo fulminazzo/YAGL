@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WrapperParserTest {
 
@@ -64,8 +65,10 @@ class WrapperParserTest {
         @NotNull List<Field> fields = tRefl.getNonStaticFields();
         for (int i = 0; i < fields.size(); i++) {
             StringBuilder builder = new StringBuilder();
-            for (int j = 0; j <= i; j++)
-                builder.append(tRefl.getFieldObject(fields.get(j)).toString()).append(":");
+            for (int j = 0; j <= i; j++) {
+                Object o = tRefl.getFieldObject(fields.get(j));
+                if (o != null) builder.append(o).append(":");
+            }
             section.set(String.valueOf(i), builder.substring(0, Math.max(0, builder.length() - 1)));
         }
 
