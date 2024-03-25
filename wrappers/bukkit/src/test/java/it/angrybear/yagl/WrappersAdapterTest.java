@@ -1,10 +1,13 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,6 +20,25 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WrappersAdapterTest {
+
+    private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
+        List<PotionEffectType> potionEffects = new ArrayList<>();
+        for (Field field : PotionEffectType.class.getDeclaredFields())
+            if (field.getType().equals(PotionEffectType.class))
+                try {
+                    PotionEffectType type = (PotionEffectType) field.get(PotionEffectType.class);
+                    potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        // Register potion effects
+        Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
+                .getFieldObject("byName");
+        if (byName != null) potionEffects.forEach(e -> byName.put(e.getName().toLowerCase(), e));
+        return potionEffects.stream()
+                .map(t -> new org.bukkit.potion.PotionEffect(t, 15, 2, true, true, false))
+                .toArray(org.bukkit.potion.PotionEffect[]::new);
+    }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
         List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
@@ -36,10 +58,48 @@ class WrappersAdapterTest {
     }
 
     @ParameterizedTest
+    @MethodSource("getPotionEffects")
+    void testEnchantmentsConversion(org.bukkit.potion.PotionEffect expected) {
+        PotionEffect enchantment = WrappersAdapter.potionEffectToWPotionEffect(expected);
+        assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(enchantment));
+    }
+
+    @ParameterizedTest
     @MethodSource("getEnchantments")
     void testEnchantmentsConversion(org.bukkit.enchantments.Enchantment expected) {
         Enchantment enchantment = WrappersAdapter.enchantToWEnchant(expected);
         assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getKey());
+    }
+
+    private static class MockPotionEffect extends PotionEffectType {
+        private final String name;
+
+        protected MockPotionEffect(int id, String name) {
+            super(id);
+            this.name = name;
+        }
+
+        @Override
+        public double getDurationModifier() {
+            return 0;
+        }
+
+        @NotNull
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        @Override
+        public boolean isInstant() {
+            return false;
+        }
+
+        @NotNull
+        @Override
+        public Color getColor() {
+            return null;
+        }
     }
 
     private static class MockEnchantment extends org.bukkit.enchantments.Enchantment {

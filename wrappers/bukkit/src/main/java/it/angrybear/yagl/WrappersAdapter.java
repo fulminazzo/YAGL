@@ -1,14 +1,54 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import org.bukkit.NamespacedKey;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
 public class WrappersAdapter {
+
+    /**
+     * Converts the given wrapper {@link PotionEffect} to a {@link org.bukkit.potion.PotionEffect}.
+     *
+     * @param potionEffect the potion effect
+     * @return the potion effect
+     */
+    public static org.bukkit.potion.PotionEffect wPotionEffectToPotionEffect(final @NotNull PotionEffect potionEffect) {
+        final String effect = potionEffect.getEffect();
+        final PotionEffectType type = PotionEffectType.getByName(effect.toUpperCase());
+        if (type == null)
+            throw new IllegalArgumentException(String.format("Could not find potion effect type '%s'", effect));
+        try {
+            return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
+                    potionEffect.isShowingParticles(), potionEffect.isShowingParticles(),
+                    potionEffect.isShowingIcon());
+        } catch (NoSuchMethodError e) {
+            return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
+                    potionEffect.isShowingParticles(), potionEffect.isShowingParticles());
+        }
+    }
+
+    /**
+     * Converts the given potion effect to a {@link PotionEffect}.
+     * On older versions, {@link PotionEffect#isShowingIcon()} will be ignored.
+     *
+     * @param potionEffect the potion effect
+     * @return the potion effect
+     */
+    public static PotionEffect potionEffectToWPotionEffect(final @NotNull org.bukkit.potion.PotionEffect potionEffect) {
+        try {
+            return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / 20,
+                    potionEffect.getAmplifier() + 1, potionEffect.hasParticles(), potionEffect.hasIcon());
+        } catch (NoSuchMethodError e) {
+            return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / 20,
+                    potionEffect.getAmplifier() + 1, potionEffect.hasParticles());
+        }
+    }
 
     /**
      * Converts the given wrapper {@link Enchantment} to a {@link Tuple} containing its corresponding one and its level.
