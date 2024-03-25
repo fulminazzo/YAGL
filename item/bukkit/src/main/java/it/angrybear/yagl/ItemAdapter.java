@@ -99,7 +99,7 @@ public class ItemAdapter {
     private static void invokeNoSuchMethod(final @NotNull Runnable get, final @Nullable Runnable orElse) {
         try {
             get.run();
-        } catch (NoSuchMethodError e) {
+        } catch (NoSuchMethodError | NoClassDefFoundError e) {
             if (orElse != null) orElse.run();
         }
     }
