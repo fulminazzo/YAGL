@@ -13,20 +13,49 @@ import java.util.function.Predicate;
  */
 public interface RecipeItem extends Item {
 
+    /**
+     * Sets recipes.
+     *
+     * @param recipes the recipes
+     * @return this recipe item
+     */
     default RecipeItem setRecipes(final Recipe @NotNull ... recipes) {
         return clearRecipes().addRecipes(recipes);
     }
 
+    /**
+     * Add recipes.
+     *
+     * @param recipes the recipes
+     * @return this recipe item
+     */
     RecipeItem addRecipes(final Recipe @NotNull ... recipes);
 
+    /**
+     * Removes all the recipes that match the given {@link Predicate}.
+     *
+     * @param predicate the predicate
+     * @return this recipe item
+     */
     RecipeItem clearRecipes(final Predicate<Recipe> predicate);
 
+    /**
+     * Removes all the recipes.
+     *
+     * @return this recipe item
+     */
     default RecipeItem clearRecipes() {
         return clearRecipes(t -> true);
     }
 
+    /**
+     * Register recipes.
+     */
     void registerRecipes();
 
+    /**
+     * Unregister recipes.
+     */
     void unregisterRecipes();
 
     @Override
