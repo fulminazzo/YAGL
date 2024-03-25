@@ -21,32 +21,35 @@ import java.lang.reflect.Constructor;
  */
 public class WrappersAdapter {
 
-    /**
-     * Spawn particle.
-     *
-     * @param player   the player
-     * @param particle the particle
-     * @param x        the x
-     * @param y        the y
-     * @param z        the z
-     * @param count    the count
-     * @param offsetX  the offset x
-     * @param offsetY  the offset y
-     * @param offsetZ  the offset z
-     */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
-                                         double x, double y, double z, int count,
-                                         double offsetX, double offsetY, double offsetZ) {
+                                     double x, double y, double z, int count) {
+        spawnParticle(player, particle, x, y, z, count, 0, 0, 0);
+    }
+
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     Location location, int count) {
+        spawnParticle(player, particle, location, count, 0, 0, 0);
+    }
+
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     double x, double y, double z, int count,
+                                     double offsetX, double offsetY, double offsetZ) {
+        spawnParticle(player, particle, new Location(player.getWorld(), x, y, z), count, offsetX, offsetY, offsetZ);
+    }
+
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ) {
         org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         Object option = particle.getOption();
-        if (option == null) player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ);
+        if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
         else {
             Class<?> dataType = actual.getDataType();
             if (ReflectionUtils.isPrimitiveOrWrapper(dataType))
-                player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ, option);
+                player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
             else try {
                 final Object finalOption = convertOption(dataType, option);
-                player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ, finalOption);
+                player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, finalOption);
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new IllegalArgumentException(String.format("Could not find constructor for data type '%s'",
                         dataType.getSimpleName()));
