@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 
 /**
- * An implementation of {@link RecipeItem} and {@link BukkitItem}
+ * An implementation of {@link RecipeItem} that actually implements {@link #registerRecipes()} and {@link #unregisterRecipes()}.
  */
 public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
 
