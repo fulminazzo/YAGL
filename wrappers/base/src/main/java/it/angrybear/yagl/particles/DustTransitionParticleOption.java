@@ -4,6 +4,9 @@ import it.angrybear.yagl.Color;
 import it.fulminazzo.fulmicollection.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An option used by {@link ParticleType#DUST_COLOR_TRANSITION}.
+ */
 public class DustTransitionParticleOption extends ParticleOption<Triple<Color, Color, Float>> {
     private final Color from;
     private final Color to;
@@ -13,6 +16,13 @@ public class DustTransitionParticleOption extends ParticleOption<Triple<Color, C
         this(null, null, -1);
     }
 
+    /**
+     * Instantiates a new Dust transition particle option.
+     *
+     * @param from  the from
+     * @param color the color
+     * @param size  the size
+     */
     public DustTransitionParticleOption(final @NotNull Color from, final @NotNull Color color, final float size) {
         this.from = from;
         to = color;
