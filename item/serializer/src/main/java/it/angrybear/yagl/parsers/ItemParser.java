@@ -1,8 +1,8 @@
 package it.angrybear.yagl.parsers;
 
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.items.fields.Enchantment;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
