@@ -63,12 +63,20 @@ public class WrappersAdapter {
         int size = constructor.getParameterCount();
         if (size == 2) {
             Tuple<?, ?> t = (Tuple<?, ?>) option;
-            finalOption = new Refl<>(dataType, t.getKey(), t.getValue()).getObject();
+            finalOption = new Refl<>(dataType, prepareParameters(t.getKey(), t.getValue())).getObject();
         } else if (size == 3) {
             Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
-            finalOption = new Refl<>(dataType, t.getFirst(), t.getSecond(), t.getThird()).getObject();
+            finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond(), t.getThird())).getObject();
         } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
         return finalOption;
+    }
+
+    private static Object[] prepareParameters(final Object @NotNull ... parameters) {
+        for (int i = 0; i < parameters.length; i++) {
+            Object o = parameters[i];
+            if (o instanceof Color) parameters[i] = wColorToColor((Color) o);
+        }
+        return parameters;
     }
 
     /**
