@@ -1,6 +1,3 @@
 dependencies {
-    api(project(":item"))
-
-    compileOnly libs.spigot
-    testImplementation libs.spigot
+    api project(':wrappers:wrappers-bukkit')
 }
