@@ -78,10 +78,10 @@ allprojects {
             testImplementation libs.spigot.latest
         }
 
-        if (projectName.contains("-") && !projectName.contains("base")) {
+        if (projectName.contains("-")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
             def id = projectName.substring(projectName.indexOf("-") + 1)
-            api(project(":${name}:${name}-base"))
+            if (!projectName.contains("base")) api(project(":${name}:${name}-base"))
             if (name != "common")
                 api(project(":common:common-${id}"))
         }
