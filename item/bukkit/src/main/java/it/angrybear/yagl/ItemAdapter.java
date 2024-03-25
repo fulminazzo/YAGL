@@ -103,12 +103,12 @@ public class ItemAdapter {
 
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 
-        ShapedRecipe r;
+        Refl<ShapedRecipe> r;
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
-            r = new Refl<>(ShapedRecipe.class, namespacedKey, output).getObject();
+            r = new Refl<>(ShapedRecipe.class, namespacedKey, output);
         } catch (IllegalStateException e) {
-            r = new Refl<>(ShapedRecipe.class, output).getObject();
+            r = new Refl<>(ShapedRecipe.class, output);
         }
 
         StringBuilder charShape = new StringBuilder();
@@ -120,17 +120,16 @@ public class ItemAdapter {
             }
             charShape.append(",");
         }
-        r.shape(charShape.toString().split(","));
+        r.getObject().shape(charShape.toString().split(","));
 
         List<Item> ingredients = recipe.getIngredients();
-        Refl<?> tmp = new Refl<>(r);
-        Map<Character, Object> finalIngredients = tmp.getFieldObject("ingredients");
+        Map<Character, Object> finalIngredients = r.getFieldObject("ingredients");
 
         if (finalIngredients != null)
             for (char ch = 'A'; ch < c; ch++)
                 finalIngredients.put(ch, getItemOrRecipeChoice(ingredients.get(ch - 'A')));
 
-        return r;
+        return r.getObject();
     }
 
     private static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.ShapelessRecipe recipe) {
@@ -141,18 +140,17 @@ public class ItemAdapter {
                 .collect(Collectors.toList());
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 
-        ShapelessRecipe r;
+        Refl<ShapelessRecipe> r;
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
-            r = new Refl<>(ShapelessRecipe.class, namespacedKey, output).getObject();
+            r = new Refl<>(ShapelessRecipe.class, namespacedKey, output);
         } catch (IllegalStateException e) {
-            r = new Refl<>(ShapelessRecipe.class, output).getObject();
+            r = new Refl<>(ShapelessRecipe.class, output);
         }
 
-        Refl<?> tmp = new Refl<>(r);
-        tmp.setFieldObject("ingredients", ingredients);
+        r.setFieldObject("ingredients", ingredients);
 
-        return r;
+        return r.getObject();
     }
 
     private static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.FurnaceRecipe recipe) {
@@ -163,19 +161,17 @@ public class ItemAdapter {
         final int cookingTime = recipe.getCookingTime();
         final float experience = recipe.getExperience();
 
-        FurnaceRecipe r;
+        Refl<FurnaceRecipe> r;
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
-            r = new Refl<>(FurnaceRecipe.class, namespacedKey, output, Material.STONE, experience, cookingTime)
-                    .getObject();
+            r = new Refl<>(FurnaceRecipe.class, namespacedKey, output, Material.STONE, experience, cookingTime);
         } catch (IllegalStateException e) {
-            r = new Refl<>(FurnaceRecipe.class, output, Material.STONE).getObject();
+            r = new Refl<>(FurnaceRecipe.class, output, Material.STONE);
         }
 
-        Refl<?> tmp = new Refl<>(r);
-        tmp.setFieldObject("ingredient", ingredient);
+        r.setFieldObject("ingredient", ingredient);
 
-        return r;
+        return r.getObject();
     }
 
     private static Object getItemOrRecipeChoice(final @Nullable Item item) {
