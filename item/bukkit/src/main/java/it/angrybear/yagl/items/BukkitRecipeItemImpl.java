@@ -25,25 +25,6 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
         super();
     }
 
-    /**
-     * Instantiates a new Bukkit recipe item.
-     *
-     * @param material the material
-     */
-    public BukkitRecipeItemImpl(String material) {
-        super(material);
-    }
-
-    /**
-     * Instantiates a new Bukkit recipe item.
-     *
-     * @param material the material
-     * @param amount   the amount
-     */
-    public BukkitRecipeItemImpl(String material, int amount) {
-        super(material, amount);
-    }
-
     @Override
     public void registerRecipes() {
         for (Recipe recipe : this.recipes) {
