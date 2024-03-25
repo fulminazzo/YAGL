@@ -29,9 +29,9 @@ public class PersistentItem extends BukkitItemImpl {
     private static final List<PersistentItem> PERSISTENT_ITEMS = new ArrayList<>();
     private DeathAction deathAction;
     @Getter(AccessLevel.NONE)
-    private ClickItemAction clickAction;
+    private @Nullable ClickItemAction clickAction;
     @Getter(AccessLevel.NONE)
-    private InteractItemAction interactAction;
+    private @Nullable InteractItemAction interactAction;
 
     /**
      * Instantiates a new Persistent item.
@@ -62,7 +62,7 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull <M extends ItemMeta> ItemStack create(Class<M> itemMetaClass, Consumer<M> metaFunction) {
+    public @NotNull <M extends ItemMeta> ItemStack create(@NotNull Class<M> itemMetaClass, Consumer<M> metaFunction) {
         if (!PersistentListener.isInitialized())
             Logger.getGlobal().warning(WARNING_MESSAGE);
         return super.create(itemMetaClass, metaFunction);
@@ -74,7 +74,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param deathAction the death action
      * @return this persistent item
      */
-    public PersistentItem setDeathAction(final @NotNull DeathAction deathAction) {
+    public @NotNull PersistentItem setDeathAction(final @NotNull DeathAction deathAction) {
         this.deathAction = deathAction;
         return this;
     }
@@ -97,7 +97,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onInteract(final @Nullable InteractItemAction action) {
+    public @NotNull PersistentItem onInteract(final @Nullable InteractItemAction action) {
         this.interactAction = action;
         return this;
     }
@@ -120,7 +120,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param action the action
      * @return this persistent item
      */
-    public PersistentItem onClick(final @Nullable ClickItemAction action) {
+    public @NotNull PersistentItem onClick(final @Nullable ClickItemAction action) {
         this.clickAction = action;
         return this;
     }

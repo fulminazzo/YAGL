@@ -14,8 +14,8 @@ import java.util.List;
 public class ShapelessRecipe implements Recipe {
     private static final int MAX_SIZE = 9;
     @Getter
-    private final String id;
-    private final List<Item> ingredients;
+    private final @NotNull String id;
+    private final @NotNull List<Item> ingredients;
     @Getter
     private Item output;
 
@@ -74,7 +74,7 @@ public class ShapelessRecipe implements Recipe {
     }
 
     @Override
-    public List<Item> getIngredients() {
+    public @NotNull List<Item> getIngredients() {
         return new ArrayList<>(this.ingredients);
     }
 }

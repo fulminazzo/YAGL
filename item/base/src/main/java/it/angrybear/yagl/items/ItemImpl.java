@@ -24,9 +24,9 @@ class ItemImpl implements Item {
     private int amount;
     private int durability;
     private String displayName;
-    private final List<String> lore;
-    private final Set<Enchantment> enchantments;
-    private final Set<ItemFlag> itemFlags;
+    private final @NotNull List<String> lore;
+    private final @NotNull Set<Enchantment> enchantments;
+    private final @NotNull Set<ItemFlag> itemFlags;
     private boolean unbreakable;
     private int customModelData;
 
@@ -52,7 +52,7 @@ class ItemImpl implements Item {
      * @param material the material
      * @param amount   the amount
      */
-    public ItemImpl(final String material, final int amount) {
+    public ItemImpl(final @Nullable String material, final int amount) {
         if (material != null) setMaterial(material);
         setAmount(amount).setDisplayName("");
         this.durability = 0;
@@ -136,7 +136,7 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return Printable.convertToJson(this);
     }
 }

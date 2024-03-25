@@ -3,6 +3,7 @@ package it.angrybear.yagl.items.recipes;
 import it.angrybear.yagl.items.Item;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.List;
  */
 public class ShapedRecipe implements Recipe {
     @Getter
-    private final String id;
-    private final List<Item> ingredients;
+    private final @NotNull String id;
+    private final @NotNull List<Item> ingredients;
     @Getter
-    private final Shape shape;
+    private final @NotNull Shape shape;
     @Getter
     private Item output;
 
@@ -54,7 +55,7 @@ public class ShapedRecipe implements Recipe {
      * @param position the position
      * @param item     the item
      */
-    public void setIngredient(final int position, final Item item) {
+    public void setIngredient(final int position, final @NotNull Item item) {
         if (!this.shape.contains(position))
             throw new IllegalArgumentException(String.format("Shape %sx%s does not allow position %s",
                     this.shape.getRows(), this.shape.getColumns(), position));
@@ -63,7 +64,7 @@ public class ShapedRecipe implements Recipe {
     }
 
     @Override
-    public List<Item> getIngredients() {
+    public @NotNull List<Item> getIngredients() {
         return new LinkedList<>(this.ingredients);
     }
 
@@ -113,7 +114,7 @@ public class ShapedRecipe implements Recipe {
          * @param shape the shape
          * @return true if they have the same rows and columns
          */
-        public boolean equals(Shape shape) {
+        public boolean equals(@Nullable Shape shape) {
             if (shape == null) return false;
             return this.columns == shape.columns && this.rows == shape.rows;
         }

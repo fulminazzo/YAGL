@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 public class FurnaceRecipe implements Recipe {
     @Getter
-    private final String id;
+    private final @NotNull String id;
     @Getter(AccessLevel.NONE)
     private Item ingredient;
     private Item output;
@@ -47,7 +47,7 @@ public class FurnaceRecipe implements Recipe {
     }
 
     @Override
-    public List<Item> getIngredients() {
+    public @NotNull List<Item> getIngredients() {
         return Collections.singletonList(this.ingredient);
     }
 }

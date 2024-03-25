@@ -23,7 +23,7 @@ public class ItemParser extends YAMLParser<Item> {
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Item> getLoader() {
+    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Item> getLoader() {
         return (c, s) -> {
             final ConfigurationSection itemSection = c.getConfigurationSection(s);
             if (itemSection == null) return null;
@@ -60,7 +60,7 @@ public class ItemParser extends YAMLParser<Item> {
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Item> getDumper() {
+    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Item> getDumper() {
         return (c, s, i) -> {
             c.set(s, null);
             if (i == null) return;

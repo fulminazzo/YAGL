@@ -34,7 +34,7 @@ public class PersistentListener implements Listener {
      * This is used to prevent double calls.
      */
     private static final long INTERACT_DELAY = 10;
-    private final Map<UUID, Long> lastUsed;
+    private final @NotNull Map<UUID, Long> lastUsed;
 
     /**
      * Instantiates a new Persistent listener.
@@ -45,7 +45,7 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    protected void on(PlayerDeathEvent event) {
+    protected void on(@NotNull PlayerDeathEvent event) {
         Player player = event.getEntity();
         Map<Integer, PersistentItem> toRestore = new HashMap<>();
         ItemStack[] contents = player.getInventory().getContents();
@@ -68,7 +68,7 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    protected void on(PlayerInteractEvent event) {
+    protected void on(@NotNull PlayerInteractEvent event) {
         Player player = event.getPlayer();
         long lastUsed = this.lastUsed.getOrDefault(player.getUniqueId(), 0L);
         long now = new Date().getTime();
@@ -78,28 +78,28 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    protected void on(PlayerItemConsumeEvent event) {
+    protected void on(@NotNull PlayerItemConsumeEvent event) {
         findPersistentItem(event.getItem(), cancelled(event));
     }
 
     @EventHandler
-    protected void on(PlayerItemDamageEvent event) {
+    protected void on(@NotNull PlayerItemDamageEvent event) {
         findPersistentItem(event.getItem(), cancelled(event));
     }
 
     @EventHandler
-    protected void on(BlockPlaceEvent event) {
+    protected void on(@NotNull BlockPlaceEvent event) {
         PlayerInventory inventory = event.getPlayer().getInventory();
         findPersistentItem(inventory.getItem(inventory.getHeldItemSlot()), cancelled(event));
     }
 
     @EventHandler
-    protected void on(PlayerDropItemEvent event) {
+    protected void on(@NotNull PlayerDropItemEvent event) {
         findPersistentItem(event.getItemDrop().getItemStack(), cancelled(event));
     }
 
     @EventHandler
-    protected void on(InventoryClickEvent event) {
+    protected void on(@NotNull InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = event.getClick();
         ItemStack itemStack = event.getCurrentItem();
@@ -122,7 +122,7 @@ public class PersistentListener implements Listener {
     }
 
     @EventHandler
-    protected void on(InventoryDragEvent event) {
+    protected void on(@NotNull InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = ClickType.LEFT;
         if (clickPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
@@ -132,7 +132,7 @@ public class PersistentListener implements Listener {
             if (clickPersistentItem(i, player, type, p -> cancelled(event).accept(p))) return;
     }
 
-    private Consumer<PersistentItem> cancelled(Cancellable event) {
+    private @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
         return p -> event.setCancelled(true);
     }
 

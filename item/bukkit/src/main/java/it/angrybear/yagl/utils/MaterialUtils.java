@@ -2,6 +2,7 @@ package it.angrybear.yagl.utils;
 
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A collection of utility methods to work with {@link Material}s.
@@ -14,7 +15,7 @@ public class MaterialUtils {
      * @param rawMaterial the raw material
      * @return the material
      */
-    public static Material getMaterial(final @NotNull String rawMaterial) {
+    public static @Nullable Material getMaterial(final @NotNull String rawMaterial) {
         return getMaterial(rawMaterial, false);
     }
 
@@ -25,7 +26,7 @@ public class MaterialUtils {
      * @param throwException if true and the material is not found, an {@link IllegalArgumentException} will be thrown.
      * @return the material
      */
-    public static Material getMaterial(final @NotNull String rawMaterial, final boolean throwException) {
+    public static @Nullable Material getMaterial(final @NotNull String rawMaterial, final boolean throwException) {
         for (final Material material : Material.values())
             if (material.name().equalsIgnoreCase(rawMaterial))
                 return material;

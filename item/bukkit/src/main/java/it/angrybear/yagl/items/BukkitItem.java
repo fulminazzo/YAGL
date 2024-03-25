@@ -6,6 +6,7 @@ import it.angrybear.yagl.wrappers.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -43,11 +44,11 @@ public interface BukkitItem extends Item {
      * @param metaFunction  the item meta function
      * @return the item stack
      */
-    default <M extends ItemMeta> @NotNull ItemStack create(Class<M> itemMetaClass, final Consumer<M> metaFunction) {
+    default <M extends ItemMeta> @NotNull ItemStack create(@Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
         if (getMaterial() == null) throw new NullPointerException("Cannot create item from null material");
         ItemStack itemStack = ItemAdapter.itemToItemStack(this);
         if (itemStack == null) throw new IllegalStateException("Unreachable code");
-        if (metaFunction != null) {
+        if (itemMetaClass != null && metaFunction != null) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
                 metaFunction.accept(itemMetaClass.cast(meta));
@@ -171,7 +172,7 @@ public interface BukkitItem extends Item {
      *
      * @return the item
      */
-    static BukkitItem newItem() {
+    static @NotNull BukkitItem newItem() {
         return new BukkitItemImpl();
     }
 
@@ -180,7 +181,7 @@ public interface BukkitItem extends Item {
      *
      * @return the item
      */
-    static RecipeItem newRecipeItem() {
+    static @NotNull RecipeItem newRecipeItem() {
         return new BukkitRecipeItemImpl();
     }
 }

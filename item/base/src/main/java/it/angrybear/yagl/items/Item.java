@@ -444,7 +444,7 @@ public interface Item {
      *
      * @return the item
      */
-    static Item newItem() {
+    static @NotNull Item newItem() {
         return new ItemImpl();
     }
 
@@ -453,7 +453,7 @@ public interface Item {
      *
      * @return the item
      */
-    static RecipeItem newRecipeItem() {
+    static @NotNull RecipeItem newRecipeItem() {
         return new RecipeItemImpl();
     }
 }
