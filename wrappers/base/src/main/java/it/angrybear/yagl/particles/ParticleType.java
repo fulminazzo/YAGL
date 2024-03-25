@@ -130,6 +130,12 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
         return new Particle(name(), particleOption);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Particle) return name().equalsIgnoreCase(((Particle) o).getType());
+        return super.equals(o);
+    }
+
     public static ParticleType<?> valueOf(final @NotNull String name) {
         return valueOf(name, ParticleType.class);
     }
