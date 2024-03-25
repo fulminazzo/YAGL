@@ -1,6 +1,5 @@
 package it.angrybear.yagl.parsers;
 
-import it.angrybear.yagl.items.recipes.FurnaceRecipe;
 import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
 
