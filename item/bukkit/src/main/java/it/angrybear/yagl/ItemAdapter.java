@@ -104,6 +104,12 @@ public class ItemAdapter {
         }
     }
 
+    /**
+     * Converts the {@link it.angrybear.yagl.items.recipes.Recipe} to a Minecraft {@link Recipe}.
+     *
+     * @param recipe the recipe
+     * @return the recipe
+     */
     public static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.Recipe recipe) {
         if (recipe == null) return null;
         Recipe result;
