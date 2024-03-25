@@ -358,8 +358,7 @@ public class WrappersAdapter {
         String raw = enchantment.getEnchantment();
         org.bukkit.enchantments.Enchantment actual;
         try {
-            Class<?> clazz = Class.forName("org.bukkit.NamespacedKey");
-            Object key = new Refl<>(clazz).invokeMethod("minecraft", raw);
+            Object key = getNamespacedKey(raw);
             actual = new Refl<>(org.bukkit.enchantments.Enchantment.class).invokeMethod("getByKey", key);
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
@@ -367,6 +366,33 @@ public class WrappersAdapter {
         }
         if (actual == null) throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         return new Tuple<>(actual, enchantment.getLevel());
+    }
+
+    /**
+     * Gets the corresponding namespaced key if the current version of Minecraft supports it.
+     * Uses <i>minecraft</i> as key for {@link #getNamespacedKey(String, String)}.
+     *
+     * @param value the value
+     * @return the namespaced key
+     */
+    public static Object getNamespacedKey(final @NotNull String value) {
+        return getNamespacedKey("minecraft", value);
+    }
+
+    /**
+     * Gets the corresponding namespaced key if the current version of Minecraft supports it.
+     *
+     * @param key   the key
+     * @param value the value
+     * @return the namespaced key
+     */
+    public static Object getNamespacedKey(final @NotNull String key, final @NotNull String value) {
+        try {
+            Class<?> clazz = Class.forName("org.bukkit.NamespacedKey");
+            return new Refl<>(clazz).invokeMethod(key, value);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("NamespacedKey did not exist in this version of Minecraft");
+        }
     }
 
     /**
