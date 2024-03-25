@@ -21,15 +21,6 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
      * Instantiates a new Bukkit item.
      *
      * @param material the material
-     */
-    public BukkitItemImpl(String material) {
-        super(material);
-    }
-
-    /**
-     * Instantiates a new Bukkit item.
-     *
-     * @param material the material
      * @param amount   the amount
      */
     public BukkitItemImpl(String material, int amount) {
