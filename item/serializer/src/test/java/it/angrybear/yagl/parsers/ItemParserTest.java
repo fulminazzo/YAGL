@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ItemParserTest {
 
     @Test
     void testSaveAndLoad() throws IOException {
-        YAGLParser.addAllParsers();
+        ItemYAGLParser.addAllParsers();
 
         File output = new File("build/resources/test/item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
