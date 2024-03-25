@@ -4,7 +4,9 @@ import it.angrybear.yagl.utils.ParserUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ClassUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
+import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import it.fulminazzo.yamlparser.parsers.annotations.PreventSaving;
@@ -14,7 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Set;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParser<P> {
 
     public ParticleOptionParser(@NotNull Class<P> pClass) {
@@ -73,6 +77,13 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
                     saveField(reflP, contentsSection, f.getName(), f);
             }
         };
+    }
+
+    public static void addAllParsers() {
+        @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(ParticleOption.class.getPackage().getName());
+        for (Class<?> clazz : classes)
+            if (!clazz.equals(ParticleOption.class) && ParticleOption.class.isAssignableFrom(clazz))
+                FileConfiguration.addParsers(new ParticleOptionParser<>((Class<? extends ParticleOption>) clazz));
     }
 
     private void saveField(Refl<?> reflP, ConfigurationSection section, String path, Field field) {
