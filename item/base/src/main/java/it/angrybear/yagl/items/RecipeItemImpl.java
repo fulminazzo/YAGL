@@ -41,7 +41,6 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     @Override
     public RecipeItem setRecipe(final @Nullable Recipe recipe) {
         this.recipe = recipe;
-        if (recipe != null) recipe.setOutput(this);
         return this;
     }
 
