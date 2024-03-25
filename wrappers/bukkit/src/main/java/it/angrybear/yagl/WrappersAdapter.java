@@ -21,6 +21,19 @@ import java.lang.reflect.Constructor;
  */
 public class WrappersAdapter {
 
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                          double x, double y, double z, int count,
                                          double offsetX, double offsetY, double offsetZ) {
@@ -56,6 +69,35 @@ public class WrappersAdapter {
             finalOption = new Refl<>(dataType, t.getFirst(), t.getSecond(), t.getThird()).getObject();
         } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
         return finalOption;
+    }
+
+    /**
+     * Converts the given wrapper {@link Color} to a {@link org.bukkit.Color}.
+     *
+     * @param color the color
+     * @return the color
+     */
+    public static org.bukkit.Color wColorToColor(final @NotNull Color color) {
+        try {
+            return new Refl<>(org.bukkit.Color.class).invokeMethod("fromARGB",
+                    color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
+        } catch (Exception e) {
+            return org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
+        }
+    }
+
+    /**
+     * Converts the given {@link org.bukkit.Color} to a wrapper {@link Color}.
+     *
+     * @param color the color
+     * @return the color
+     */
+    public static Color colorToWColor(final @NotNull org.bukkit.Color color) {
+        try {
+            return new Color(new Refl<>(color).invokeMethod("getAlpha"), color.getRed(), color.getGreen(), color.getBlue());
+        } catch (Exception e) {
+            return new Color(color.getRed(), color.getGreen(), color.getBlue());
+        }
     }
 
     /**
