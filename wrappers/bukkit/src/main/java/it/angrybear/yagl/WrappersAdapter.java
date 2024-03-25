@@ -4,7 +4,6 @@ import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.structures.Tuple;
-import org.bukkit.NamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,7 +58,9 @@ public class WrappersAdapter {
         String raw = enchantment.getEnchantment();
         org.bukkit.enchantments.Enchantment actual;
         try {
-            actual = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(raw));
+            Class<?> clazz = Class.forName("org.bukkit.NamespacedKey");
+            Object key = new Refl<>(clazz).invokeMethod("minecraft", raw);
+            actual = org.bukkit.enchantments.Enchantment.getByKey(key);
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
             actual = EnumUtils.valueOf(org.bukkit.enchantments.Enchantment.class, raw, "getByName");
