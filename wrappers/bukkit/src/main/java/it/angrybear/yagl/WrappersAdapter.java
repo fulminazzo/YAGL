@@ -3,7 +3,11 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
+import it.angrybear.yagl.wrappers.Sound;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,6 +15,40 @@ import org.jetbrains.annotations.NotNull;
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
 public class WrappersAdapter {
+
+    /**
+     * Plays the given {@link Sound} using Bukkit methods at the player's {@link Location}.
+     * In older versions, {@link Sound#getCategory()} is ignored.
+     *
+     * @param player the player
+     * @param sound  the sound
+     */
+    public static void playSound(final @NotNull Player player, final @NotNull Sound sound) {
+        playSound(player, player.getLocation(), sound);
+    }
+
+    /**
+     * Plays the given {@link Sound} using Bukkit methods.
+     * In older versions, {@link Sound#getCategory()} is ignored.
+     *
+     * @param player   the player
+     * @param location the location
+     * @param sound    the sound
+     */
+    public static void playSound(final @NotNull Player player, final @NotNull Location location, final @NotNull Sound sound) {
+        final org.bukkit.Sound actual = EnumUtils.valueOf(org.bukkit.Sound.class, sound.getSound());
+        try {
+            String category = sound.getCategory();
+            if (category != null) {
+                final Object actualCategory = EnumUtils.valueOf(Class.forName("org.bukkit.SoundCategory"), category);
+                new Refl<>(player).callMethod("playSound", location, actual, actualCategory, sound.getVolume(), sound.getPitch());
+                return;
+            }
+        } catch (Exception e) {
+            // Prevent other versions from complaining about method not found.
+        }
+        player.playSound(location, actual, sound.getVolume(), sound.getPitch());
+    }
 
     /**
      * Converts the given wrapper {@link PotionEffect} to a {@link org.bukkit.potion.PotionEffect}.
