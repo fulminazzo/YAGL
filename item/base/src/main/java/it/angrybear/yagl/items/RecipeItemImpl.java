@@ -63,4 +63,34 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     public void unregisterRecipes() {
         throw new IllegalStateException("Not implemented");
     }
+
+    @Override
+    public RecipeItem setMaterial(@NotNull String material) {
+        return (RecipeItem) super.setMaterial(material);
+    }
+
+    @Override
+    public RecipeItem setAmount(int amount) {
+        return (RecipeItem) super.setAmount(amount);
+    }
+
+    @Override
+    public RecipeItem setDurability(int durability) {
+        return (RecipeItem) super.setDurability(durability);
+    }
+
+    @Override
+    public RecipeItem setDisplayName(@NotNull String displayName) {
+        return (RecipeItem) super.setDisplayName(displayName);
+    }
+
+    @Override
+    public RecipeItem setUnbreakable(boolean unbreakable) {
+        return (RecipeItem) super.setUnbreakable(unbreakable);
+    }
+
+    @Override
+    public RecipeItem setCustomModelData(int customModelData) {
+        return (RecipeItem) super.setCustomModelData(customModelData);
+    }
 }
