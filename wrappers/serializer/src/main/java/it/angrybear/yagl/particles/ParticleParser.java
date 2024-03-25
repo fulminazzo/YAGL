@@ -1,5 +1,6 @@
 package it.angrybear.yagl.particles;
 
+import it.angrybear.yagl.utils.EnumUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -22,10 +23,7 @@ public class ParticleParser extends YAMLParser<Particle> {
             if (particleSection == null) return null;
             String type = particleSection.getString("type");
             if (type == null) throw new NullPointerException("'type' cannot be null");
-            ParticleType<?> particleType = ParticleType.valueOf(type);
-            if (particleType == null)
-                throw new IllegalArgumentException(String.format("Could not find %s '%s'",
-                        ParticleType.class.getSimpleName(), type));
+            ParticleType<?> particleType = EnumUtils.valueOf(ParticleType.class, type);
 
             ParticleOption<?> option = null;
 
