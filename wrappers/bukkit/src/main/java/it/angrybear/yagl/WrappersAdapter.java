@@ -23,22 +23,64 @@ import java.lang.reflect.Constructor;
  */
 public class WrappersAdapter {
 
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
         spawnParticle(world, particle, x, y, z, count, 0, 0, 0);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count) {
         spawnParticle(world, particle, location, count, 0, 0, 0);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      double x, double y, double z, int count,
                                      double offsetX, double offsetY, double offsetZ) {
         spawnParticle(world, particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
@@ -49,22 +91,64 @@ public class WrappersAdapter {
         else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
         spawnParticle(player, particle, x, y, z, count, 0, 0, 0);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count) {
         spawnParticle(player, particle, location, count, 0, 0, 0);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z, int count,
                                      double offsetX, double offsetY, double offsetZ) {
         spawnParticle(player, particle, new Location(player.getWorld(), x, y, z), count, offsetX, offsetY, offsetZ);
     }
 
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
@@ -75,6 +159,13 @@ public class WrappersAdapter {
         else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
     }
 
+    /**
+     * Converts the given {@link Particle} to a tuple containing the corresponding {@link org.bukkit.Particle} and
+     * the parsed {@link it.angrybear.yagl.particles.ParticleOption} (if present).
+     *
+     * @param particle the particle
+     * @return the tuple
+     */
     public static @NotNull Tuple<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
         org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         Object option = particle.getOption();
