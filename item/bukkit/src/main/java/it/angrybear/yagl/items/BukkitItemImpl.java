@@ -68,7 +68,12 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
     }
 
     @Override
+    public BukkitItem setCustomModelData(int customModelData) {
+        return (BukkitItem) super.setCustomModelData(customModelData);
+    }
+
+    @Override
     public BukkitItem copy() {
-        return (BukkitItem) super.copy();
+        return super.copy(BukkitItem.class);
     }
 }
