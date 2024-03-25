@@ -1,5 +1,6 @@
 package it.angrybear.yagl.particles;
 
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,5 +18,11 @@ public class Particle {
     @SuppressWarnings("unchecked")
     public <O> O getOption() {
         return this.option == null ? null : (O) this.option.getOption();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Particle) return ReflectionUtils.equalsFields(this, o);
+        return super.equals(o);
     }
 }
