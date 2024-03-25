@@ -60,7 +60,7 @@ public class WrappersAdapter {
         try {
             Class<?> clazz = Class.forName("org.bukkit.NamespacedKey");
             Object key = new Refl<>(clazz).invokeMethod("minecraft", raw);
-            actual = org.bukkit.enchantments.Enchantment.getByKey(key);
+            actual = new Refl<>(org.bukkit.enchantments.Enchantment.class).invokeMethod("getByKey", key);
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
             actual = EnumUtils.valueOf(org.bukkit.enchantments.Enchantment.class, raw, "getByName");
