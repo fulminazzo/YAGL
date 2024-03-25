@@ -96,6 +96,11 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
+    public BukkitRecipeItem setCustomModelData(int customModelData) {
+        return (BukkitRecipeItem) super.setCustomModelData(customModelData);
+    }
+
+    @Override
     public BukkitRecipeItem copy() {
         return super.copy(BukkitRecipeItemImpl.class);
     }
