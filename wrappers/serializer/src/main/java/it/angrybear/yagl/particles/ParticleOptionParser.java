@@ -17,9 +17,19 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A parser to serialize a generic {@link ParticleOption} object.
+ *
+ * @param <P> the type parameter
+ */
 @SuppressWarnings("unchecked")
 public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParser<P> {
 
+    /**
+     * Instantiates a new Particle option parser.
+     *
+     * @param pClass the class of the {@link ParticleOption} to serialize
+     */
     public ParticleOptionParser(@NotNull Class<P> pClass) {
         super(pClass);
     }
@@ -68,6 +78,9 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
         };
     }
 
+    /**
+     * Adds all the parsers in the {@link it.angrybear.yagl.particles} package as {@link ParticleOptionParser}s.
+     */
     public static void addAllParsers() {
         @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(ParticleOption.class.getPackage().getName());
         for (Class<?> clazz : classes)
