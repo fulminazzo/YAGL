@@ -1,8 +1,7 @@
-package it.angrybear.yagl.utils;
+package it.angrybear.yagl;
 
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.items.fields.Enchantment;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Material;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * A collection of utilities for {@link Item}.
  */
-public class ItemUtils {
+public class ItemAdapter {
     private static final String ID_KEY = "yagl";
 
     /**
@@ -131,7 +130,7 @@ public class ItemUtils {
         final NamespacedKey namespacedKey = new NamespacedKey(ID_KEY, recipe.getId());
 
         final List<Object> ingredients = recipe.getIngredients().stream()
-                .map(ItemUtils::getItemOrRecipeChoice)
+                .map(ItemAdapter::getItemOrRecipeChoice)
                 .collect(Collectors.toList());
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 

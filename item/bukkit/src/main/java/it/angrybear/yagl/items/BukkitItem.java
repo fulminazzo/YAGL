@@ -1,6 +1,6 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.utils.ItemUtils;
+import it.angrybear.yagl.ItemAdapter;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +64,7 @@ public interface BukkitItem extends Item {
      */
     default <M extends ItemMeta> @NotNull ItemStack create(Class<M> itemMetaClass, final Consumer<M> metaFunction) {
         if (getMaterial() == null) throw new NullPointerException("Cannot create item from null material");
-        ItemStack itemStack = ItemUtils.itemToItemStack(this);
+        ItemStack itemStack = ItemAdapter.itemToItemStack(this);
         if (itemStack == null) throw new IllegalStateException("Unreachable code");
         if (metaFunction != null) {
             ItemMeta meta = itemStack.getItemMeta();

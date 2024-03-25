@@ -1,7 +1,7 @@
 package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.recipes.Recipe;
-import it.angrybear.yagl.utils.ItemUtils;
+import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.utils.MaterialUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +44,7 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     @Override
     public void registerRecipe() {
         if (this.recipe == null) return;
-        org.bukkit.inventory.Recipe realRecipe = ItemUtils.recipeToMinecraft(this.recipe);
+        org.bukkit.inventory.Recipe realRecipe = ItemAdapter.recipeToMinecraft(this.recipe);
         Bukkit.addRecipe(realRecipe);
     }
 
