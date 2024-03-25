@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * The type Enum utils.
  */
-public class EnumUtils {//
+public class EnumUtils {
 
     /**
      * Uses the given class method <code>valueOf</code> to obtain the corresponding value with the given name.
@@ -45,7 +45,11 @@ public class EnumUtils {//
                     if (object != null) break;
                 } catch (RuntimeException e) {
                     Throwable throwable = ExceptionUtils.unwrapRuntimeException(e);
-                    if (!(throwable instanceof IllegalArgumentException)) ExceptionUtils.throwException(throwable);
+                    if (throwable instanceof IllegalArgumentException) {
+                        String message = throwable.getMessage();
+                        if (message.contains(name.toUpperCase())) continue;
+                    }
+                    ExceptionUtils.throwException(throwable);
                 }
             if (object == null) throw new IllegalArgumentException();
             return object;

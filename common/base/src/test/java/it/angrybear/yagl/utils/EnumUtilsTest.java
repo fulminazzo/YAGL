@@ -19,7 +19,7 @@ class EnumUtilsTest {
 
     @Test
     void testInvalidMethod() {
-        assertThrowsExactly(RuntimeException.class, () -> EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(),
+        assertThrows(Exception.class, () -> EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(),
                 "value", "invalid", "valueOf"));
     }
 
