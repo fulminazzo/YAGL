@@ -130,7 +130,7 @@ class WrappersAdapterTest {
         private final String name;
 
         protected MockPotionEffect(int id, String name) {
-            super(id);
+            super(id, NamespacedKey.minecraft(name));
             this.name = name;
         }
 
