@@ -377,6 +377,7 @@ public interface Item {
 
     /**
      * Gets custom model data.
+     *
      * @return the custom model data
      * @since Minecraft 1.14
      */
