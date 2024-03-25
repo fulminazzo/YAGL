@@ -38,9 +38,9 @@ public interface BukkitItemAction {
     /**
      * Run action item action.
      *
-     * @param action     the action
-     * @param player     the player
-     * @param itemStack  the item stack
+     * @param action         the action
+     * @param player         the player
+     * @param itemStack      the item stack
      * @param interactAction the interact action
      */
     static void runInteractItemAction(final @NotNull InteractItemAction action,
