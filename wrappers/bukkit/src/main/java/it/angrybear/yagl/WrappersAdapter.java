@@ -186,7 +186,7 @@ public class WrappersAdapter {
         }
     }
 
-    private static @Nullable Object convertOption(Class<?> dataType, Object option) {
+    private static @Nullable Object convertOption(@NotNull Class<?> dataType, Object option) {
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
         int size = constructor.getParameterCount();
@@ -200,7 +200,7 @@ public class WrappersAdapter {
         return finalOption;
     }
 
-    private static @NotNull Object[] prepareParameters(final Object @NotNull ... parameters) {
+    private static Object @NotNull [] prepareParameters(final Object @NotNull ... parameters) {
         for (int i = 0; i < parameters.length; i++) {
             Object o = parameters[i];
             if (o instanceof Color) parameters[i] = wColorToColor((Color) o);
