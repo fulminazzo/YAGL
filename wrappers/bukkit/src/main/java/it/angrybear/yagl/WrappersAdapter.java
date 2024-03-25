@@ -14,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 
@@ -22,15 +23,13 @@ import java.lang.reflect.Constructor;
  */
 public class WrappersAdapter {
 
-
-
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
         spawnParticle(world, particle, x, y, z, count, 0, 0, 0);
     }
 
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
-                                     Location location, int count) {
+                                     final @NotNull Location location, int count) {
         spawnParticle(world, particle, location, count, 0, 0, 0);
     }
 
@@ -41,7 +40,7 @@ public class WrappersAdapter {
     }
 
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
-                                     Location location, int count,
+                                     final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
         Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
         org.bukkit.Particle actual = tuple.getKey();
@@ -56,7 +55,7 @@ public class WrappersAdapter {
     }
 
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
-                                     Location location, int count) {
+                                     final @NotNull Location location, int count) {
         spawnParticle(player, particle, location, count, 0, 0, 0);
     }
 
@@ -67,7 +66,7 @@ public class WrappersAdapter {
     }
 
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
-                                     Location location, int count,
+                                     final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
         Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
         org.bukkit.Particle actual = tuple.getKey();
@@ -76,7 +75,7 @@ public class WrappersAdapter {
         else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
     }
 
-    public static Tuple<org.bukkit.Particle, ?> wParticleToParticle(Particle particle) {
+    public static @NotNull Tuple<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
         org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         Object option = particle.getOption();
         if (option == null) return new Tuple<>(actual, null);
@@ -96,7 +95,7 @@ public class WrappersAdapter {
         }
     }
 
-    private static Object convertOption(Class<?> dataType, Object option) {
+    private static @Nullable Object convertOption(Class<?> dataType, Object option) {
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
         int size = constructor.getParameterCount();
@@ -110,7 +109,7 @@ public class WrappersAdapter {
         return finalOption;
     }
 
-    private static Object[] prepareParameters(final Object @NotNull ... parameters) {
+    private static @NotNull Object[] prepareParameters(final Object @NotNull ... parameters) {
         for (int i = 0; i < parameters.length; i++) {
             Object o = parameters[i];
             if (o instanceof Color) parameters[i] = wColorToColor((Color) o);
@@ -124,7 +123,7 @@ public class WrappersAdapter {
      * @param color the color
      * @return the color
      */
-    public static org.bukkit.Color wColorToColor(final @NotNull Color color) {
+    public static @NotNull org.bukkit.Color wColorToColor(final @NotNull Color color) {
         try {
             return new Refl<>(org.bukkit.Color.class).invokeMethod("fromARGB",
                     color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
@@ -139,7 +138,7 @@ public class WrappersAdapter {
      * @param color the color
      * @return the color
      */
-    public static Color colorToWColor(final @NotNull org.bukkit.Color color) {
+    public static @NotNull Color colorToWColor(final @NotNull org.bukkit.Color color) {
         try {
             return new Color(new Refl<>(color).invokeMethod("getAlpha"), color.getRed(), color.getGreen(), color.getBlue());
         } catch (Exception e) {
@@ -225,7 +224,7 @@ public class WrappersAdapter {
      * @param potionEffect the potion effect
      * @return the potion effect
      */
-    public static org.bukkit.potion.PotionEffect wPotionEffectToPotionEffect(final @NotNull PotionEffect potionEffect) {
+    public static @NotNull org.bukkit.potion.PotionEffect wPotionEffectToPotionEffect(final @NotNull PotionEffect potionEffect) {
         final String effect = potionEffect.getEffect();
         final PotionEffectType type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
         try {
@@ -245,7 +244,7 @@ public class WrappersAdapter {
      * @param potionEffect the potion effect
      * @return the potion effect
      */
-    public static PotionEffect potionEffectToWPotionEffect(final @NotNull org.bukkit.potion.PotionEffect potionEffect) {
+    public static @NotNull PotionEffect potionEffectToWPotionEffect(final @NotNull org.bukkit.potion.PotionEffect potionEffect) {
         try {
             return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / 20,
                     potionEffect.getAmplifier() + 1, potionEffect.hasParticles(), potionEffect.hasIcon());
@@ -261,7 +260,7 @@ public class WrappersAdapter {
      * @param enchantment the enchantment
      * @return the tuple
      */
-    public static Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
+    public static @NotNull Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
         String raw = enchantment.getEnchantment();
         org.bukkit.enchantments.Enchantment actual;
         try {
@@ -283,7 +282,7 @@ public class WrappersAdapter {
      * @param enchantment the enchantment
      * @return the enchantment
      */
-    public static Enchantment enchantToWEnchant(org.bukkit.enchantments.Enchantment enchantment) {
+    public static @NotNull Enchantment enchantToWEnchant(final @NotNull org.bukkit.enchantments.Enchantment enchantment) {
         return enchantToWEnchant(enchantment, 1);
     }
 
@@ -295,7 +294,7 @@ public class WrappersAdapter {
      * @param level       the level
      * @return the enchantment
      */
-    public static Enchantment enchantToWEnchant(org.bukkit.enchantments.Enchantment enchantment, int level) {
+    public static @NotNull Enchantment enchantToWEnchant(final @NotNull org.bukkit.enchantments.Enchantment enchantment, final int level) {
         return new Enchantment(enchantment.getName(), level);
     }
 }
