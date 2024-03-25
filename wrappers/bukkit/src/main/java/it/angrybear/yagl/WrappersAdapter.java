@@ -161,7 +161,7 @@ public class WrappersAdapter {
 
     /**
      * Converts the given {@link Particle} to a tuple containing the corresponding {@link org.bukkit.Particle} and
-     * the parsed {@link it.angrybear.yagl.particles.ParticleOption} (if present).
+     * the parsed particle option (if present).
      *
      * @param particle the particle
      * @return the tuple
