@@ -72,6 +72,12 @@ allprojects {
         def projectName = project.name
 
         if (projectName.contains("serializer")) api(libs.yamlparser)
+
+        if (projectName.contains("bukkit")) {
+            compileOnly libs.spigot
+            testImplementation libs.spigot
+        }
+
         if (projectName.contains("-") && !projectName.contains("base")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
             def id = projectName.substring(projectName.indexOf("-") + 1)
