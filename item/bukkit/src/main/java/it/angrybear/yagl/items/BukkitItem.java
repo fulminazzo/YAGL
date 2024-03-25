@@ -1,6 +1,8 @@
 package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.ItemAdapter;
+import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.wrappers.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -12,27 +14,6 @@ import java.util.function.Consumer;
  * An implementation of {@link Item} for Bukkit.
  */
 public interface BukkitItem extends Item {
-
-    @Override
-    BukkitItem setMaterial(@NotNull String material);
-
-    @Override
-    BukkitItem setAmount(final int amount);
-
-    @Override
-    BukkitItem setDurability(final int durability);
-
-    @Override
-    BukkitItem setDisplayName(final @NotNull String displayName);
-
-    @Override
-    BukkitItem setLore(final @NotNull Collection<String> lore);
-
-    @Override
-    BukkitItem setUnbreakable(final boolean unbreakable);
-
-    @Override
-    BukkitItem copy();
 
     /**
      * Compares the given {@link ItemStack} with the one created from {@link #create()}.
@@ -75,6 +56,115 @@ public interface BukkitItem extends Item {
         }
         return itemStack;
     }
+
+    @Override
+    default BukkitItem addLore(final String @NotNull ... lore) {
+        return (BukkitItem) Item.super.addLore(lore);
+    }
+
+    @Override
+    default BukkitItem addLore(final @NotNull Collection<String> lore) {
+        return (BukkitItem) Item.super.addLore(lore);
+    }
+
+    @Override
+    default BukkitItem removeLore(final String @NotNull ... lore) {
+        return (BukkitItem) Item.super.removeLore(lore);
+    }
+
+    @Override
+    default BukkitItem removeLore(final @NotNull Collection<String> lore) {
+        return (BukkitItem) Item.super.removeLore(lore);
+    }
+
+    @Override
+    default BukkitItem setLore(final String @NotNull ... lore) {
+        return (BukkitItem) Item.super.setLore(lore);
+    }
+
+    @Override
+    default BukkitItem addEnchantment(final @NotNull String enchantment, final int level) {
+        return (BukkitItem) Item.super.addEnchantment(enchantment, level);
+    }
+
+    @Override
+    default BukkitItem addEnchantments(final String @NotNull ... enchantments) {
+        return (BukkitItem) Item.super.addEnchantments(enchantments);
+    }
+
+    @Override
+    default BukkitItem addEnchantments(final Enchantment @NotNull ... enchantments) {
+        return (BukkitItem) Item.super.addEnchantments(enchantments);
+    }
+
+    @Override
+    default BukkitItem addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
+        return (BukkitItem) Item.super.addEnchantments(enchantments);
+    }
+
+    @Override
+    default BukkitItem removeEnchantment(final @NotNull String enchantment, final int level) {
+        return (BukkitItem) Item.super.removeEnchantment(enchantment, level);
+    }
+
+    @Override
+    default BukkitItem removeEnchantments(final String @NotNull ... enchantments) {
+        return (BukkitItem) Item.super.removeEnchantments(enchantments);
+    }
+
+    @Override
+    default BukkitItem removeEnchantments(final Enchantment @NotNull ... enchantments) {
+        return (BukkitItem) Item.super.removeEnchantments(enchantments);
+    }
+
+    @Override
+    default BukkitItem removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
+        return (BukkitItem) Item.super.removeEnchantments(enchantments);
+    }
+
+    @Override
+    default BukkitItem addItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return (BukkitItem) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default BukkitItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+        return (BukkitItem) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default BukkitItem removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return (BukkitItem) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    default BukkitItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+        return (BukkitItem) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    BukkitItem setCustomModelData(final int customModelData);
+
+    @Override
+    BukkitItem setMaterial(@NotNull String material);
+
+    @Override
+    BukkitItem setAmount(final int amount);
+
+    @Override
+    BukkitItem setDurability(final int durability);
+
+    @Override
+    BukkitItem setDisplayName(final @NotNull String displayName);
+
+    @Override
+    BukkitItem setLore(final @NotNull Collection<String> lore);
+
+    @Override
+    BukkitItem setUnbreakable(final boolean unbreakable);
+
+    @Override
+    BukkitItem copy();
 
     /**
      * Creates a new item to be used.
