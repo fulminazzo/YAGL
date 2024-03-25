@@ -23,7 +23,7 @@ public class ParticleParser extends YAMLParser<Particle> {
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Particle> getLoader() {
+    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Particle> getLoader() {
         return (c, s) -> {
             ConfigurationSection particleSection = c.getConfigurationSection(s);
             if (particleSection == null) return null;
@@ -41,7 +41,7 @@ public class ParticleParser extends YAMLParser<Particle> {
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Particle> getDumper() {
+    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Particle> getDumper() {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;

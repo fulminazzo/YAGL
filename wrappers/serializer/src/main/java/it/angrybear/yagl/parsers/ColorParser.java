@@ -21,7 +21,7 @@ public class ColorParser extends YAMLParser<Color> {
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Color> getLoader() {
+    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable Color> getLoader() {
         return (c, s) -> {
             String name = c.getString(s);
             if (name == null) return null;
@@ -32,7 +32,7 @@ public class ColorParser extends YAMLParser<Color> {
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Color> getDumper() {
+    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Color> getDumper() {
         return (c, s, o) -> {
             c.set(s, null);
             if (o == null) return;

@@ -30,12 +30,12 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
      *
      * @param clazz the class of the {@link Wrapper} to serialize
      */
-    public WrapperParser(Class<W> clazz) {
+    public WrapperParser(@NotNull Class<W> clazz) {
         super(clazz);
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable W> getLoader() {
+    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable W> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;
@@ -68,7 +68,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable W> getDumper() {
+    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable W> getDumper() {
         return (c, s, w) -> {
             c.set(s, null);
             if (w == null) return;
