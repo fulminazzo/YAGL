@@ -9,6 +9,10 @@ public class DustTransitionParticleOption extends ParticleOption<Triple<Color, C
     private final Color to;
     private final float size;
 
+    private DustTransitionParticleOption() {
+        this(null, null, -1);
+    }
+
     public DustTransitionParticleOption(final @NotNull Color from, final @NotNull Color color, final float size) {
         this.from = from;
         to = color;

@@ -10,6 +10,10 @@ public class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
     private final Color color;
     private final float size;
 
+    private DustParticleOption() {
+        this(null, -1);
+    }
+
     public DustParticleOption(final @NotNull Color color, final float size) {
         this.color = color;
         this.size = size;

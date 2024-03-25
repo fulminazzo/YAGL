@@ -8,6 +8,10 @@ package it.angrybear.yagl.particles;
 public class PrimitiveParticleOption<T> extends ParticleOption<T> {
     private final T value;
 
+    private PrimitiveParticleOption() {
+        this(null);
+    }
+
     /**
      * Instantiates a new Primitive particle option.
      *
