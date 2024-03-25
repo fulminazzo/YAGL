@@ -171,7 +171,7 @@ class WrappersAdapterTest {
         private final String name;
 
         protected MockPotionEffect(int id, String name) {
-            super(id, NamespacedKey.minecraft(name));
+            super(id, NamespacedKey.minecraft(name.toLowerCase()));
             this.name = name;
         }
 
