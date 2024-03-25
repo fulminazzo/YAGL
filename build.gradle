@@ -75,7 +75,7 @@ allprojects {
 
         if (projectName.contains("bukkit")) {
             compileOnly libs.spigot
-            testImplementation libs.spigot
+            testImplementation libs.spigot.latest
         }
 
         if (projectName.contains("-") && !projectName.contains("base")) {
