@@ -1,6 +1,5 @@
 package it.angrybear.yagl;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,7 +8,6 @@ import java.util.LinkedList;
 /**
  * The type Color.
  */
-@Getter
 public class Color extends ClassEnum {
     /**
      * The constant WHITE.
@@ -79,7 +77,7 @@ public class Color extends ClassEnum {
      * The constant ORANGE.
      */
     public static final Color ORANGE = fromARGB("#FFFFA500");
-    private static final int MAX = 255;
+    private static final int MASK = 255;
 
     private final byte alpha;
     private final byte red;
@@ -94,7 +92,7 @@ public class Color extends ClassEnum {
      * @param blue  the blue
      */
     public Color(int red, int green, int blue) {
-        this(MAX, red, green, blue);
+        this(MASK, red, green, blue);
     }
 
     /**
@@ -116,10 +114,46 @@ public class Color extends ClassEnum {
         this.blue = (byte) blue;
     }
 
+    /**
+     * Gets alpha.
+     *
+     * @return the alpha
+     */
+    public int getAlpha() {
+        return this.alpha & MASK;
+    }
+
+    /**
+     * Gets red.
+     *
+     * @return the red
+     */
+    public int getRed() {
+        return this.red & MASK;
+    }
+
+    /**
+     * Gets green.
+     *
+     * @return the green
+     */
+    public int getGreen() {
+        return this.green & MASK;
+    }
+
+    /**
+     * Gets blue.
+     *
+     * @return the blue
+     */
+    public int getBlue() {
+        return this.blue & MASK;
+    }
+
     private void checkRange(int n) {
-        if (n < 0 || n > MAX)
+        if (n < 0 || n > MASK)
             throw new IllegalArgumentException(String.format("'%s' is not contained between 0 and %s",
-                    n, MAX));
+                    n, MASK));
     }
 
     /**
@@ -142,7 +176,7 @@ public class Color extends ClassEnum {
 
     /**
      * Converts the given ARGB string to a {@link Color}.
-     * An RGB string is also accepted (the alpha value will be set to {@link #MAX}).
+     * An RGB string is also accepted (the alpha value will be set to {@link #MASK}).
      *
      * @param argb the string
      * @return the color
@@ -153,11 +187,11 @@ public class Color extends ClassEnum {
             throw new IllegalArgumentException(String.format("Invalid ARGB string provided '%s'", argb));
         LinkedList<Integer> nums = new LinkedList<>();
         while (!argb.isEmpty()) {
-            int n = Integer.parseInt(argb.substring(0, 2), 16);
+            int n = Integer.parseUnsignedInt(argb.substring(0, 2), 16);
             argb = argb.substring(2);
             nums.add(n);
         }
-        if (nums.size() < 4) nums.addFirst(MAX);
+        if (nums.size() < 4) nums.addFirst(MASK);
         return new Color(nums.get(0), nums.get(1), nums.get(2), nums.get(3));
     }
 
