@@ -6,12 +6,15 @@ import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Constructor;
 
 /**
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
@@ -28,7 +31,31 @@ public class WrappersAdapter {
             Class<?> dataType = actual.getDataType();
             if (ReflectionUtils.isPrimitiveOrWrapper(dataType))
                 player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ, option);
+            else try {
+                final Object finalOption = convertOption(dataType, option);
+                player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ, finalOption);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new IllegalArgumentException(String.format("Could not find constructor for data type '%s'",
+                        dataType.getSimpleName()));
+            } catch (ClassCastException e) {
+                throw new IllegalArgumentException(String.format("Invalid option '%s' for '%s'",
+                        option.getClass().getSimpleName(), actual.name()));
+            }
         }
+    }
+
+    private static Object convertOption(Class<?> dataType, Object option) {
+        final Object finalOption;
+        Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
+        int size = constructor.getParameterCount();
+        if (size == 2) {
+            Tuple<?, ?> t = (Tuple<?, ?>) option;
+            finalOption = new Refl<>(dataType, t.getKey(), t.getValue()).getObject();
+        } else if (size == 3) {
+            Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
+            finalOption = new Refl<>(dataType, t.getFirst(), t.getSecond(), t.getThird()).getObject();
+        } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
+        return finalOption;
     }
 
     /**
