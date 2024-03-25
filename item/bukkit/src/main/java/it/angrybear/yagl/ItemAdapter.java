@@ -3,12 +3,17 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.utils.EnumUtils;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.Tuple;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,23 +34,21 @@ public class ItemAdapter {
      */
     public static @Nullable Item itemStackToItem(final @Nullable ItemStack itemStack) {
         if (itemStack == null) return null;
-        Item item = BukkitItem.newItem()
-                .setMaterial(itemStack.getType().name())
-                .setAmount(itemStack.getAmount());
+        Item item = BukkitItem.newItem().setMaterial(itemStack.getType().name()).setAmount(itemStack.getAmount());
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             String displayName = meta.getDisplayName();
             if (displayName != null) item.setDisplayName(displayName);
             List<String> lore = meta.getLore();
             if (lore != null) item.setLore(lore);
-            meta.getEnchants().forEach((e, l) -> item.addEnchantments(new Enchantment(e.getKey().getKey(), l)));
-            meta.getItemFlags().forEach(f -> item.addItemFlags(ItemFlag.valueOf(f.name())));
+            meta.getEnchants().forEach((e, l) -> item.addEnchantments(WrappersAdapter.enchantToWEnchant(e, l)));
+            meta.getItemFlags().forEach(f -> item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, f.name())));
             if (meta instanceof Damageable) item.setDurability(((Damageable) meta).getDamage());
             item.setUnbreakable(meta.isUnbreakable());
             try {
                 int modelData = meta.getCustomModelData();
                 if (modelData > 0) item.setCustomModelData(modelData);
-            } catch (Exception ignored) {}
+            } catch (NoSuchMethodError ignored) {}
         }
         return item;
     }
@@ -60,23 +63,24 @@ public class ItemAdapter {
         if (item == null) return null;
         String material = item.getMaterial();
         if (material == null) throw new NullPointerException("Material cannot be null!");
-        ItemStack itemStack = new ItemStack(Material.valueOf(material.toUpperCase()), item.getAmount());
+        ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
+
         ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         if (meta != null) {
             meta.setDisplayName(item.getDisplayName());
             meta.setLore(item.getLore());
             item.getEnchantments().forEach(e -> {
-                NamespacedKey name = new NamespacedKey("minecraft", e.getEnchantment());
-                org.bukkit.enchantments.Enchantment enchantment = org.bukkit.enchantments.Enchantment.getByKey(name);
-                if (enchantment != null) meta.addEnchant(enchantment, e.getLevel(), true);
+                @NotNull Tuple<Enchantment, Integer> tuple = WrappersAdapter.wEnchantToEnchant(e);
+                meta.addEnchant(tuple.getKey(), tuple.getValue(), true);
             });
-            item.getItemFlags().forEach(f -> meta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(f.name())));
+            item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
             if (meta instanceof Damageable) ((Damageable) meta).setDamage(item.getDurability());
             meta.setUnbreakable(item.isUnbreakable());
             try {
                 int modelData = item.getCustomModelData();
                 if (modelData > 0) meta.setCustomModelData(modelData);
-            } catch (Exception ignored) {}
+            } catch (NoSuchMethodError ignored) {}
             itemStack.setItemMeta(meta);
         }
         return itemStack;
