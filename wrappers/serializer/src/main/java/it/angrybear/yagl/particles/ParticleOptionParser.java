@@ -32,17 +32,26 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
             Refl<?> reflP = new Refl<>(clazz, new Object[0]);
 
             @NotNull List<Field> fields = getFields(reflP);
-            if (fields.size() == 1) {
-                Field field = fields.get(0);
-                reflP.setFieldObject(field, section.get("contents", field.getType()));
-            } else {
+            if (fields.size() == 1)
+                loadField(reflP, section, "contents", fields.get(0));
+            else {
                 ConfigurationSection contentsSection = section.getConfigurationSection("contents");
                 if (contentsSection != null) for (Field f : fields)
-                    reflP.setFieldObject(f, contentsSection.get(f.getName(), f.getType()));
+                    loadField(reflP, contentsSection, f.getName(), f);
             }
 
             return (P) reflP.getObject();
         };
+    }
+
+    private void loadField(Refl<?> reflP, ConfigurationSection section, String path, Field field) {
+        Object object = section.get(path, field.getType());
+        if (object instanceof String) {
+            String string = object.toString();
+            if (string.toLowerCase().matches("\\d+\\.\\d+f"))
+                object = Float.valueOf(string.substring(0, string.length() - 1));
+        }
+        reflP.setFieldObject(field.getName(), object);
     }
 
     @Override
@@ -57,13 +66,19 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
             Refl<?> reflP = new Refl<>(p);
             @NotNull List<Field> fields = getFields(reflP);
             if (fields.size() == 1)
-                section.set("contents", reflP.getFieldObject(fields.get(0)));
+                saveField(reflP, section, "contents", fields.get(0));
             else {
                 ConfigurationSection contentsSection = section.createSection("contents");
                 for (Field f : fields)
-                    contentsSection.set(f.getName(), reflP.getFieldObject(f));
+                    saveField(reflP, contentsSection, f.getName(), f);
             }
         };
+    }
+
+    private void saveField(Refl<?> reflP, ConfigurationSection section, String path, Field field) {
+        Object object = reflP.getFieldObject(field);
+        if (object instanceof Float) object = object + "f";
+        section.set(path, object);
     }
 
     private List<Field> getFields(Refl<?> reflP) {
