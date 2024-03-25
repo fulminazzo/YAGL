@@ -1,5 +1,0 @@
-dependencies {
-    api(project(":item"))
-
-    api(libs.yamlparser)
-}
