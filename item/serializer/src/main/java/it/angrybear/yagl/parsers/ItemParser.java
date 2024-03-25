@@ -16,8 +16,14 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * A parser to serialize {@link Item}.
+ */
 public class ItemParser extends YAMLParser<Item> {
 
+    /**
+     * Instantiates a new Item parser.
+     */
     public ItemParser() {
         super(Item.class);
     }
