@@ -46,16 +46,23 @@ public class WrappersAdapter {
     private static void spawnParticle(final @NotNull Refl<?> spawner, final @NotNull Particle particle,
                                      Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
+        Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
+        org.bukkit.Particle actual = tuple.getKey();
+        Object option = tuple.getValue();
+        if (option == null) spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ);
+        else spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ, option);
+    }
+
+    public static Tuple<org.bukkit.Particle, ?> wParticleToParticle(Particle particle) {
         org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         Object option = particle.getOption();
-        if (option == null) spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ);
+        if (option == null) return new Tuple<>(actual, null);
         else {
             Class<?> dataType = actual.getDataType();
-            if (ReflectionUtils.isPrimitiveOrWrapper(dataType))
-                spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ, option);
+            if (ReflectionUtils.isPrimitiveOrWrapper(dataType)) return new Tuple<>(actual, option);
             else try {
                 final Object finalOption = convertOption(dataType, option);
-                spawner.callMethod("spawnParticle", actual, location, count, offsetX, offsetY, offsetZ, finalOption);
+                return new Tuple<>(actual, finalOption);
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new IllegalArgumentException(String.format("Could not find constructor for data type '%s'",
                         dataType.getSimpleName()));
