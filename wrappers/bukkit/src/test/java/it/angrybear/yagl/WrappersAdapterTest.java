@@ -2,6 +2,7 @@ package it.angrybear.yagl;
 
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.particles.ParticleType;
+import it.angrybear.yagl.particles.PrimitiveParticleOption;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -21,9 +22,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -68,6 +69,8 @@ class WrappersAdapterTest {
     private static Particle[] getTestParticles() {
         List<Particle> particles = new ArrayList<>();
         for (ParticleType<?> type : ParticleType.values()) particles.add(type.createParticle());
+        particles.add(ParticleType.SCULK_CHARGE.createParticle(new PrimitiveParticleOption<>(10f)));
+        particles.add(ParticleType.SHRIEK.createParticle(new PrimitiveParticleOption<>(11)));
         return particles.toArray(new Particle[0]);
     }
 
@@ -86,6 +89,16 @@ class WrappersAdapterTest {
                     any(double.class), any(double.class), any(double.class));
 
             assertEquals(particle.getType(), particleArg.getValue().name());
+        } else {
+            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
+            verify(player).spawnParticle(particleArg.capture(),
+                    any(double.class), any(double.class), any(double.class),
+                    any(int.class),
+                    any(double.class), any(double.class), any(double.class),
+                    extra.capture());
+
+            assertEquals(particle.getType(), particleArg.getValue().name());
+            assertNotNull(extra.getValue());
         }
     }
 

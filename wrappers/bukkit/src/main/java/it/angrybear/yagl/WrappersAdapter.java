@@ -7,6 +7,7 @@ import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -23,7 +24,11 @@ public class WrappersAdapter {
         org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         Object option = particle.getOption();
         if (option == null) player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ);
-        //TODO: option
+        else {
+            Class<?> dataType = actual.getDataType();
+            if (ReflectionUtils.isPrimitiveOrWrapper(dataType))
+                player.spawnParticle(actual, x, y, z, count, offsetX, offsetY, offsetZ, option);
+        }
     }
 
     /**
