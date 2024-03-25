@@ -8,8 +8,14 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A parser to serialize {@link Color}.
+ */
 public class ColorParser extends YAMLParser<Color> {
 
+    /**
+     * Instantiates a new Color parser.
+     */
     public ColorParser() {
         super(Color.class);
     }
