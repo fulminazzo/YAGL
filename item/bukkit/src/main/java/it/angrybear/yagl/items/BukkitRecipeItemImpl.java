@@ -2,8 +2,9 @@ package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.items.recipes.Recipe;
-import it.angrybear.yagl.utils.MaterialUtils;
+import it.angrybear.yagl.utils.EnumUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
 
     @Override
     public BukkitRecipeItem setMaterial(@NotNull String material) {
-        MaterialUtils.getMaterial(material, true);
+        EnumUtils.valueOf(Material.class, material);
         return (BukkitRecipeItem) super.setMaterial(material);
     }
 

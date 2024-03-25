@@ -1,6 +1,7 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.utils.MaterialUtils;
+import it.angrybear.yagl.utils.EnumUtils;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -29,7 +30,7 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
 
     @Override
     public BukkitItem setMaterial(@NotNull String material) {
-        MaterialUtils.getMaterial(material, true);
+        EnumUtils.valueOf(Material.class, material);
         return (BukkitItem) super.setMaterial(material);
     }
 
