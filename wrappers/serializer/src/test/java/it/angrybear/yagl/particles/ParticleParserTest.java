@@ -1,7 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
-import it.angrybear.yagl.parsers.ColorParser;
+import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,10 +20,13 @@ class ParticleParserTest {
         return ParticleType.values();
     }
 
+    @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource("getTestOptions")
     void testTypes(ParticleType<?> type) throws IOException {
         Particle expected = type.createParticle();
+        if (type.equals(ParticleType.BLOCK_CRACK) || type.equals(ParticleType.BLOCK_DUST) || type.equals(ParticleType.FALLING_DUST))
+            expected = ((ParticleType<BlockDataOption>) type).createParticle(new BlockDataOption("oak_log[axis=y]"));
         if (type.equals(ParticleType.SHRIEK))
             expected = ParticleType.SHRIEK.createParticle(new PrimitiveParticleOption<>(3));
         if (type.equals(ParticleType.SCULK_CHARGE))
@@ -34,9 +37,7 @@ class ParticleParserTest {
             expected = ParticleType.DUST_COLOR_TRANSITION.createParticle(
                     new DustTransitionParticleOption(Color.WHITE, Color.BLACK, 5.0f));
 
-        FileConfiguration.addParsers(new ColorParser());
-        ParticleOptionParser.addAllParsers();
-        FileConfiguration.addParsers(new ParticleParser());
+        WrappersYAGLParser.addAllParsers();
 
         File file = new File("build/resources/test/particles.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
