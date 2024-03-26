@@ -44,18 +44,15 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> HEART = new ParticleType<>();
     //TODO:
 //    ITEM_CRACK(ItemStack.class) = new ParticleType<>();
-    //TODO:
-//    BLOCK_CRACK(BlockData.class) = new ParticleType<>();
-    //TODO:
-//    BLOCK_DUST(BlockData.class) = new ParticleType<>();
+    public static final ParticleType<BlockDataOption> BLOCK_CRACK = new ParticleType<>(BlockDataOption.class);
+    public static final ParticleType<BlockDataOption> BLOCK_DUST = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<?> WATER_DROP = new ParticleType<>();
     public static final ParticleType<?> MOB_APPEARANCE = new ParticleType<>();
     public static final ParticleType<?> DRAGON_BREATH = new ParticleType<>();
     public static final ParticleType<?> END_ROD = new ParticleType<>();
     public static final ParticleType<?> DAMAGE_INDICATOR = new ParticleType<>();
     public static final ParticleType<?> SWEEP_ATTACK = new ParticleType<>();
-    //TODO:
-//    FALLING_DUST(BlockData.class) = new ParticleType<>();
+    public static final ParticleType<BlockDataOption> FALLING_DUST = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<?> TOTEM = new ParticleType<>();
     public static final ParticleType<?> SPIT = new ParticleType<>();
     public static final ParticleType<?> SQUID_INK = new ParticleType<>();
@@ -114,12 +111,12 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     @Getter(AccessLevel.PACKAGE)
     private final Class<P> optionType;
 
-    public ParticleType(Class<P> optionType) {
-        this.optionType = optionType;
+    private ParticleType() {
+        this(null);
     }
 
-    public ParticleType() {
-        this(null);
+    private ParticleType(Class<P> optionType) {
+        this.optionType = optionType;
     }
 
     public Particle createParticle() {
