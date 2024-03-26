@@ -193,6 +193,8 @@ public class WrappersAdapter {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
             Material material = EnumUtils.valueOf(Material.class, blockDataOption.getMaterial());
+            if (!material.isBlock())
+                throw new IllegalArgumentException(String.format("Cannot use non-block material '%s' as block data", material));
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
         }
