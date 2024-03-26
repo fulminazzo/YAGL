@@ -12,6 +12,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -57,10 +58,13 @@ public class ItemParser extends YAMLParser<Item> {
                     Logger.getGlobal().warning(String.format("Could not find Item Flag '%s'", flag));
                 }
 
-            final ConfigurationSection enchantmentsSection = itemSection.getConfigurationSection("enchantments");
-            if (enchantmentsSection != null)
-                for (final String enchant : enchantmentsSection.getKeys())
-                    item.addEnchantments(enchantmentsSection.get(enchant, Enchantment.class));
+            final List<Object> enchantments = itemSection.getList("enchantments", Object.class);
+            if (enchantments != null)
+                for (int j = 0; j < enchantments.size(); j++) {
+                    ConfigurationSection section = new ConfigurationSection(itemSection, String.valueOf(j));
+                    section.set("tmp", enchantments.get(j));
+                    item.addEnchantments(section.get("tmp", Enchantment.class));
+                }
 
             return item;
         };
@@ -79,9 +83,13 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
 
             final List<Enchantment> enchantments = new LinkedList<>(i.getEnchantments());
-            final ConfigurationSection enchantmentsSection = itemSection.createSection("enchantments");
-            for (int j = 0; j < enchantments.size(); j++)
-                enchantmentsSection.set(String.valueOf(j), enchantments.get(j));
+            List<Object> enchantsToSave = new ArrayList<>();
+            for (int j = 0; j < enchantments.size(); j++) {
+                ConfigurationSection section = new ConfigurationSection(itemSection, String.valueOf(j));
+                section.set("tmp", enchantments.get(j));
+                enchantsToSave.add(section.getObject("tmp"));
+            }
+            itemSection.set("enchantments", enchantsToSave);
 
             itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).collect(Collectors.toList()));
             itemSection.set("unbreakable", i.isUnbreakable());
