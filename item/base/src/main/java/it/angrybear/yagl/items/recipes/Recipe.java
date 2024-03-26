@@ -28,8 +28,9 @@ public interface Recipe {
      * Sets output.
      *
      * @param item the item
+     * @return this recipe
      */
-    void setOutput(final @NotNull Item item);
+    Recipe setOutput(final @NotNull Item item);
 
     /**
      * Gets output.
