@@ -6,7 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//TODO: javadoc
+/**
+ * An option used by {@link ParticleType#BLOCK_CRACK}, {@link ParticleType#BLOCK_DUST} and {@link ParticleType#FALLING_DUST}.
+ */
 public class BlockDataOption extends ParticleOption<String> {
     private static final String NBT_REGEX = "^([^\\[]*)(?:\\[(.*)])?$";
     @Getter
@@ -60,7 +62,6 @@ public class BlockDataOption extends ParticleOption<String> {
     public String getOption() {
         String output = this.material;
         if (!this.nbt.isEmpty()) output += String.format("[%s]", this.nbt);
-        System.out.println("Returning option" + output);
         return output;
     }
 }
