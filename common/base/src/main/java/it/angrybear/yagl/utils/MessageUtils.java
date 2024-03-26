@@ -35,4 +35,16 @@ public class MessageUtils {
         }
         return message;
     }
+
+    public static String decolor(String message) {
+        return decolor(message, "&");
+    }
+
+    public static String decolor(String message, String character) {
+        if (message == null) return null;
+        Matcher matcher = Pattern.compile(COLOR_CHAR + "(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
+        while (matcher.find())
+            message = message.replace(matcher.group(), character + matcher.group(1));
+        return message;
+    }
 }
