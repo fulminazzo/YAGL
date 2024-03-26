@@ -42,9 +42,22 @@ public class MessageUtils {
 
     public static String decolor(String message, String character) {
         if (message == null) return null;
+        message = unparseHexColors(message);
         Matcher matcher = Pattern.compile(COLOR_CHAR + "(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
         while (matcher.find())
             message = message.replace(matcher.group(), character + matcher.group(1));
+        return message;
+    }
+
+    private static String unparseHexColors(String message) {
+        Matcher matcher = Pattern.compile(COLOR_CHAR + "x((?:" + COLOR_CHAR + COLOR_REGEX + "){6})").matcher(message);
+        while (matcher.find()) {
+            String match = matcher.group();
+            String replacement = "#";
+            String repl = matcher.group(1).toUpperCase();
+            replacement += String.join("", repl.split(COLOR_CHAR));
+            message = message.replace(match, replacement);
+        }
         return message;
     }
 }
