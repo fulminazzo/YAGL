@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 public class BlockDataOption extends ParticleOption<String> {
     private static final String NBT_REGEX = "^([^\\[]*)(?:\\[(.*)])?$";
     @Getter
-    private final String material;
-    private final String nbt;
+    private final @NotNull String material;
+    private final @NotNull String nbt;
 
     /**
      * Instantiates a new Block data option.
