@@ -186,7 +186,7 @@ public class WrappersAdapter {
         }
     }
 
-    private static @Nullable Object convertOption(@NotNull Class<?> dataType, Object option) {
+    private static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
         int size = constructor.getParameterCount();
