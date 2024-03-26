@@ -29,8 +29,7 @@ class ParticleOptionParserTest {
     @ParameterizedTest
     @MethodSource("getTestOptions")
     void testOptions(ParticleOption<?> expected) throws IOException {
-        FileConfiguration.addParsers(new ColorParser());
-        ParticleOptionParser.addAllParsers();
+        WrappersYAGLParser.addAllParsers();
 
         File file = new File("build/resources/test/options.yml");
         if (file.exists()) FileUtils.deleteFile(file);
