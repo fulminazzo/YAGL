@@ -1,7 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
-import it.angrybear.yagl.parsers.ColorParser;
+import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +21,8 @@ class ParticleOptionParserTest {
                 new PrimitiveParticleOption<>(3f),
                 new PrimitiveParticleOption<>("Aint happening"),
                 new DustParticleOption(Color.WHITE, 3f),
-                new DustTransitionParticleOption(Color.BLACK, Color.WHITE, 3f)
+                new DustTransitionParticleOption(Color.BLACK, Color.WHITE, 3f),
+                new BlockDataOption("oak_fence", "east=false,north=false,south=false,waterlogged=false,west=false")
         };
     }
 
