@@ -33,7 +33,7 @@ public class ShapedRecipe implements Recipe {
     }
 
     @Override
-    public ShapedRecipe setOutput(final @NotNull Item output) {
+    public @NotNull ShapedRecipe setOutput(final @NotNull Item output) {
         this.output = output.copy(Item.class);
         return this;
     }
@@ -46,7 +46,7 @@ public class ShapedRecipe implements Recipe {
      * @param columns the columns
      * @return this recipe
      */
-    public ShapedRecipe setShape(final int rows, final int columns) {
+    public @NotNull ShapedRecipe setShape(final int rows, final int columns) {
         this.shape.setRows(rows);
         this.shape.setColumns(columns);
         return this;
@@ -59,7 +59,7 @@ public class ShapedRecipe implements Recipe {
      * @param item     the item
      * @return this recipe
      */
-    public ShapedRecipe setIngredient(final int position, final @NotNull Item item) {
+    public @NotNull ShapedRecipe setIngredient(final int position, final @NotNull Item item) {
         if (!this.shape.contains(position))
             throw new IllegalArgumentException(String.format("Shape %sx%s does not allow position %s",
                     this.shape.getRows(), this.shape.getColumns(), position));

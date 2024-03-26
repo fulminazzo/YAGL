@@ -38,13 +38,13 @@ public class FurnaceRecipe implements Recipe {
      * @param ingredient the ingredient
      * @return this recipe
      */
-    public FurnaceRecipe setIngredient(final @NotNull Item ingredient) {
+    public @NotNull FurnaceRecipe setIngredient(final @NotNull Item ingredient) {
         this.ingredient = ingredient.copy(Item.class);
         return this;
     }
 
     @Override
-    public FurnaceRecipe setOutput(final @NotNull Item output) {
+    public @NotNull FurnaceRecipe setOutput(final @NotNull Item output) {
         this.output = output.copy(Item.class);
         return this;
     }

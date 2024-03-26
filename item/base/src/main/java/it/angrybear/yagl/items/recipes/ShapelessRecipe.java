@@ -30,7 +30,7 @@ public class ShapelessRecipe implements Recipe {
     }
 
     @Override
-    public ShapelessRecipe setOutput(final @NotNull Item output) {
+    public @NotNull ShapelessRecipe setOutput(final @NotNull Item output) {
         this.output = output.copy(Item.class);
         return this;
     }
@@ -41,7 +41,7 @@ public class ShapelessRecipe implements Recipe {
      * @param items the items
      * @return this recipe
      */
-    public ShapelessRecipe addIngredients(final Item @NotNull ... items) {
+    public @NotNull ShapelessRecipe addIngredients(final Item @NotNull ... items) {
         for (final Item item : items) addIngredient(item);
         return this;
     }
@@ -53,7 +53,7 @@ public class ShapelessRecipe implements Recipe {
      * @param item the item
      * @return this recipe
      */
-    public ShapelessRecipe addIngredient(final @NotNull Item item) {
+    public @NotNull ShapelessRecipe addIngredient(final @NotNull Item item) {
         if (this.ingredients.size() >= MAX_SIZE)
             throw new IllegalStateException(String.format("Cannot add ingredient to ingredients as maximum size of %s has been reached", MAX_SIZE));
         this.ingredients.add(item.copy(Item.class));
@@ -66,7 +66,7 @@ public class ShapelessRecipe implements Recipe {
      * @param items the items
      * @return this recipe
      */
-    public ShapelessRecipe removeIngredients(final Item @NotNull ... items) {
+    public @NotNull ShapelessRecipe removeIngredients(final Item @NotNull ... items) {
         for (final Item item : items) removeIngredient(item);
         return this;
     }
@@ -77,7 +77,7 @@ public class ShapelessRecipe implements Recipe {
      * @param item the item
      * @return this recipe
      */
-    public ShapelessRecipe removeIngredient(final @NotNull Item item) {
+    public @NotNull ShapelessRecipe removeIngredient(final @NotNull Item item) {
         this.ingredients.removeIf(i -> i.equals(item));
         return this;
     }
