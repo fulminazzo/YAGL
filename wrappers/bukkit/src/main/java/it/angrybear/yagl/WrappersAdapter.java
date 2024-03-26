@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.particles.BlockDataOption;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
@@ -10,6 +11,7 @@ import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -187,6 +189,13 @@ public class WrappersAdapter {
     }
 
     private static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
+        if (dataType.getSimpleName().equals("BlockData")) {
+            String raw = option.toString();
+            BlockDataOption blockDataOption = new BlockDataOption(raw);
+            Material material = EnumUtils.valueOf(Material.class, blockDataOption.getMaterial());
+            String nbt = blockDataOption.getNBT().trim();
+            return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
+        }
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
         int size = constructor.getParameterCount();
