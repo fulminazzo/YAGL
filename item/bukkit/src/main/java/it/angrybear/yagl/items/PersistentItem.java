@@ -62,7 +62,7 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull <M extends ItemMeta> ItemStack create(@NotNull Class<M> itemMetaClass, Consumer<M> metaFunction) {
+    public @NotNull <M extends ItemMeta> ItemStack create(@Nullable Class<M> itemMetaClass, Consumer<M> metaFunction) {
         if (!PersistentListener.isInitialized())
             Logger.getGlobal().warning(WARNING_MESSAGE);
         return super.create(itemMetaClass, metaFunction);
