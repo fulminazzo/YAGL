@@ -111,12 +111,12 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     @Getter(AccessLevel.PACKAGE)
     private final Class<P> optionType;
 
-    public ParticleType(Class<P> optionType) {
-        this.optionType = optionType;
+    private ParticleType() {
+        this(null);
     }
 
-    public ParticleType() {
-        this(null);
+    private ParticleType(Class<P> optionType) {
+        this.optionType = optionType;
     }
 
     public Particle createParticle() {
