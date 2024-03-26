@@ -22,7 +22,9 @@ public class BlockDataOption extends ParticleOption<String> {
         Matcher matcher = Pattern.compile(BlockDataOption.NBT_REGEX).matcher(blockData);
         if (matcher.matches()) {
             this.material = parseMaterial(matcher.group(1));
-            this.nbt = matcher.groupCount() > 1 ? matcher.group(2) : "";
+            String nbt = matcher.group(2);
+            if (nbt == null) nbt = "";
+            this.nbt = nbt.trim();
         } else throw new IllegalArgumentException(String.format("Invalid block data '%s'", blockData));
     }
 
