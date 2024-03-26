@@ -2,6 +2,7 @@ package it.angrybear.yagl.parsers;
 
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
@@ -74,8 +75,8 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.set("material", i.getMaterial());
             itemSection.set("amount", i.getAmount());
             itemSection.set("durability", i.getDurability());
-            itemSection.set("display-name", i.getDisplayName());
-            itemSection.set("lore", i.getLore());
+            itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
+            itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
 
             final List<Enchantment> enchantments = new LinkedList<>(i.getEnchantments());
             final ConfigurationSection enchantmentsSection = itemSection.createSection("enchantments");
