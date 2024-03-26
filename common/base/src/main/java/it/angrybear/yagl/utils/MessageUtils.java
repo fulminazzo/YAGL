@@ -36,10 +36,23 @@ public class MessageUtils {
         return message;
     }
 
+    /**
+     * "Decolors" the given string by replacing all valid colors characters with the format <i>&amp;&lt;color&gt;</i>.
+     *
+     * @param message the message
+     * @return the string
+     */
     public static String decolor(String message) {
         return decolor(message, "&");
     }
 
+    /**
+     * "Decolors" the given string by replacing all valid colors characters with the format <i>&lt;character&gt;&lt;color&gt;</i>.
+     *
+     * @param message   the message
+     * @param character the character
+     * @return the string
+     */
     public static String decolor(String message, String character) {
         if (message == null) return null;
         message = unparseHexColors(message);
