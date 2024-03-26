@@ -29,8 +29,7 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     @Override
     public void registerRecipes() {
         for (Recipe recipe : this.recipes) {
-            recipe.setOutput(this);
-            org.bukkit.inventory.Recipe realRecipe = ItemAdapter.recipeToMinecraft(recipe);
+            org.bukkit.inventory.Recipe realRecipe = ItemAdapter.recipeToMinecraft(recipe.setOutput(this));
             this.recipeCache.add(realRecipe);
             Bukkit.addRecipe(realRecipe);
         }
