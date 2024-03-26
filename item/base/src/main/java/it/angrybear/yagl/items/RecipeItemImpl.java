@@ -1,7 +1,6 @@
 package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.recipes.Recipe;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.function.Predicate;
 /**
  * An implementation of {@link RecipeItem}.
  */
-@Getter
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
     protected final List<Recipe> recipes = new ArrayList<>();
 
