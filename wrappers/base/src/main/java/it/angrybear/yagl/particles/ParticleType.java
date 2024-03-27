@@ -1,13 +1,9 @@
 package it.angrybear.yagl.particles;
 
-import it.angrybear.yagl.ClassEnum;
-import lombok.AccessLevel;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({"unused", "unchecked"})
-public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
+public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_HUGE = new ParticleType<>();
@@ -108,29 +104,12 @@ public class ParticleType<P extends ParticleOption<?>> extends ClassEnum {
     public static final ParticleType<?> CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> EGG_CRACK = new ParticleType<>();
 
-    @Getter(AccessLevel.PACKAGE)
-    private final Class<P> optionType;
-
     private ParticleType() {
         this(null);
     }
 
     private ParticleType(Class<P> optionType) {
-        this.optionType = optionType;
-    }
-
-    public Particle createParticle() {
-        return createParticle(null);
-    }
-
-    public Particle createParticle(final @Nullable P particleOption) {
-        return new Particle(name(), particleOption);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Particle) return name().equalsIgnoreCase(((Particle) o).getType());
-        return super.equals(o);
+        super(optionType);
     }
 
     public static ParticleType<?> valueOf(final @NotNull String name) {
