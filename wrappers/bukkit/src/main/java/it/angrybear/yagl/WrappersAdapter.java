@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
+import java.util.function.Function;
 
 /**
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
@@ -169,11 +170,17 @@ public class WrappersAdapter {
      * @return the tuple
      */
     public static @NotNull Tuple<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
-        org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
+        return wParticleToGeneral(particle, org.bukkit.Particle.class, org.bukkit.Particle::getDataType);
+    }
+
+    private static <T extends Enum<?>> @NotNull Tuple<T, ?> wParticleToGeneral(final @NotNull Particle particle,
+                                                                               final @NotNull Class<T> tClass,
+                                                                               final @NotNull Function<T, Class<?>> dataTypeGetter) {
+        T actual = EnumUtils.valueOf(tClass, particle.getType());
         Object option = particle.getOption();
-        if (option == null) return new Tuple<>(actual, null);
+        Class<?> dataType = dataTypeGetter.apply(actual);
+        if (option == null || dataType == null) return new Tuple<>(actual, null);
         else {
-            Class<?> dataType = actual.getDataType();
             if (ReflectionUtils.isPrimitiveOrWrapper(dataType)) return new Tuple<>(actual, option);
             else try {
                 final Object finalOption = convertOption(dataType, option);
