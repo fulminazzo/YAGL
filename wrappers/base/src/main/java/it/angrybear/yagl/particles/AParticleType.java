@@ -10,10 +10,6 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     @Getter(AccessLevel.PACKAGE)
     private final Class<P> optionType;
 
-    AParticleType() {
-        this(null);
-    }
-
     AParticleType(Class<P> optionType) {
         this.optionType = optionType;
     }
