@@ -174,6 +174,29 @@ public class WrappersAdapter {
         return wParticleToGeneral(particle, org.bukkit.Particle.class, org.bukkit.Particle::getDataType);
     }
 
+    public static void spawnEffect(final @NotNull World world, final @NotNull Particle particle,
+                                   double x, double y, double z) {
+        spawnEffect(world, particle, new Location(world, x, y, z));
+    }
+
+    public static void spawnEffect(final @NotNull World world, final @NotNull Particle particle,
+                                   final @NotNull Location location) {
+        world.getPlayers().forEach(p -> spawnEffect(p, particle, location));
+    }
+
+    public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
+                                     double x, double y, double z) {
+        spawnEffect(player, particle, new Location(player.getWorld(), x, y, z));
+    }
+
+    public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
+                                   final @NotNull Location location) {
+        Tuple<Effect, ?> tuple = wParticleToEffect(particle);
+        Effect actual = tuple.getKey();
+        Object option = tuple.getValue();
+        player.playEffect(location, actual, option);
+    }
+
     /**
      * Converts the given {@link Particle} to a tuple containing the corresponding {@link Effect} and
      * the parsed particle option (if present).
