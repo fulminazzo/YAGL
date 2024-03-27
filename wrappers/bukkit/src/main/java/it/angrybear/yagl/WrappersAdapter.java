@@ -174,21 +174,53 @@ public class WrappersAdapter {
         return wParticleToGeneral(particle, org.bukkit.Particle.class, org.bukkit.Particle::getDataType);
     }
 
+    /**
+     * Spawn effect.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     */
     public static void spawnEffect(final @NotNull World world, final @NotNull Particle particle,
                                    double x, double y, double z) {
         spawnEffect(world, particle, new Location(world, x, y, z));
     }
 
+    /**
+     * Spawn effect.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param location the location
+     */
     public static void spawnEffect(final @NotNull World world, final @NotNull Particle particle,
                                    final @NotNull Location location) {
         world.getPlayers().forEach(p -> spawnEffect(p, particle, location));
     }
 
+    /**
+     * Spawn effect.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     */
     public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z) {
         spawnEffect(player, particle, new Location(player.getWorld(), x, y, z));
     }
 
+    /**
+     * Spawn effect.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param location the location
+     */
     public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
                                    final @NotNull Location location) {
         Tuple<Effect, ?> tuple = wParticleToEffect(particle);
