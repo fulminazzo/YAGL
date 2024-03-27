@@ -10,6 +10,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -171,6 +172,17 @@ public class WrappersAdapter {
      */
     public static @NotNull Tuple<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
         return wParticleToGeneral(particle, org.bukkit.Particle.class, org.bukkit.Particle::getDataType);
+    }
+
+    /**
+     * Converts the given {@link Particle} to a tuple containing the corresponding {@link Effect} and
+     * the parsed particle option (if present).
+     *
+     * @param particle the particle
+     * @return the tuple
+     */
+    public static @NotNull Tuple<Effect, ?> wParticleToEffect(final @NotNull Particle particle) {
+        return wParticleToGeneral(particle, Effect.class, Effect::getData);
     }
 
     private static <T extends Enum<?>> @NotNull Tuple<T, ?> wParticleToGeneral(final @NotNull Particle particle,
