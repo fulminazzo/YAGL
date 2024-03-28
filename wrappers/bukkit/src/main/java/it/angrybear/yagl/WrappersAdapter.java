@@ -14,6 +14,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -272,6 +273,7 @@ public class WrappersAdapter {
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
         }
+        if (dataType.equals(BlockFace.class)) return EnumUtils.valueOf(BlockFace.class, option.toString());
         if (option instanceof Color) return wColorToColor((Color) option);
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
