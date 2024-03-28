@@ -2,28 +2,17 @@ package it.angrybear.yagl.particles;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 @SuppressWarnings({"unused", "unchecked"})
 public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
 //    public static final LegacyParticleType<?> SMOKE = new LegacyParticleType<>(BlockFace.class);
 //    public static final LegacyParticleType<?> POTION_BREAK = new LegacyParticleType<>(Potion.class);
-    public static final LegacyParticleType<ColorParticleOption> INSTANT_POTION_BREAK = new LegacyParticleType<>(ColorParticleOption.class);
     public static final LegacyParticleType<?> ENDER_SIGNAL = new LegacyParticleType<>();
     public static final LegacyParticleType<?> MOBSPAWNER_FLAMES = new LegacyParticleType<>();
     public static final LegacyParticleType<PrimitiveParticleOption<Integer>> VILLAGER_PLANT_GROW = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
     public static final LegacyParticleType<?> DRAGON_BREATH = new LegacyParticleType<>();
     public static final LegacyParticleType<?> END_GATEWAY_SPAWN = new LegacyParticleType<>();
-    public static final LegacyParticleType<PrimitiveParticleOption<Boolean>> COMPOSTER_FILL_ATTEMPT = new LegacyParticleType<>((Class<PrimitiveParticleOption<Boolean>>) (Class<?>) PrimitiveParticleOption.class);
-    public static final LegacyParticleType<?> LAVA_INTERACT = new LegacyParticleType<>();
-    public static final LegacyParticleType<?> REDSTONE_TORCH_BURNOUT = new LegacyParticleType<>();
-    public static final LegacyParticleType<?> END_PORTAL_FRAME_FILL = new LegacyParticleType<>();
-    public static final LegacyParticleType<?> DRIPPING_DRIPSTONE = new LegacyParticleType<>();
-    public static final LegacyParticleType<PrimitiveParticleOption<Integer>> BONE_MEAL_USE = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
-    public static final LegacyParticleType<?> ENDER_DRAGON_DESTROY_BLOCK = new LegacyParticleType<>();
-    public static final LegacyParticleType<?> SPONGE_DRY = new LegacyParticleType<>();
-//    public static final LegacyParticleType<?> ELECTRIC_SPARK = new LegacyParticleType<>(Axis.class);
-    public static final LegacyParticleType<?> COPPER_WAX_ON = new LegacyParticleType<>();
-    public static final LegacyParticleType<?> COPPER_WAX_OFF = new LegacyParticleType<>();
-    public static final LegacyParticleType<?> OXIDISED_COPPER_SCRAPE = new LegacyParticleType<>();
     public static final LegacyParticleType<?> FIREWORKS_SPARK = new LegacyParticleType<>();
     public static final LegacyParticleType<?> CRIT = new LegacyParticleType<>();
     public static final LegacyParticleType<?> MAGIC_CRIT = new LegacyParticleType<>();
@@ -59,6 +48,25 @@ public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleTy
 //    public static final LegacyParticleType<?> ITEM_BREAK = new LegacyParticleType<>(Material.class);
 //    public static final LegacyParticleType<?> TILE_BREAK = new LegacyParticleType<>(MaterialData.class);
 //    public static final LegacyParticleType<?> TILE_DUST = new LegacyParticleType<>(MaterialData.class);
+    /*
+        Minecraft 1.20+
+     */
+    public static final LegacyParticleType<PrimitiveParticleOption<Boolean>> COMPOSTER_FILL_ATTEMPT = new LegacyParticleType<>((Class<PrimitiveParticleOption<Boolean>>) (Class<?>) PrimitiveParticleOption.class);
+    public static final LegacyParticleType<?> LAVA_INTERACT = new LegacyParticleType<>();
+    public static final LegacyParticleType<?> REDSTONE_TORCH_BURNOUT = new LegacyParticleType<>();
+    public static final LegacyParticleType<?> END_PORTAL_FRAME_FILL = new LegacyParticleType<>();
+    public static final LegacyParticleType<?> DRIPPING_DRIPSTONE = new LegacyParticleType<>();
+    public static final LegacyParticleType<PrimitiveParticleOption<Integer>> BONE_MEAL_USE = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
+    public static final LegacyParticleType<?> ENDER_DRAGON_DESTROY_BLOCK = new LegacyParticleType<>();
+    public static final LegacyParticleType<?> SPONGE_DRY = new LegacyParticleType<>();
+    //    public static final LegacyParticleType<?> ELECTRIC_SPARK = new LegacyParticleType<>(Axis.class);
+    public static final LegacyParticleType<?> COPPER_WAX_ON = new LegacyParticleType<>();
+    public static final LegacyParticleType<?> COPPER_WAX_OFF = new LegacyParticleType<>();
+    public static final LegacyParticleType<ColorParticleOption> INSTANT_POTION_BREAK = new LegacyParticleType<>(ColorParticleOption.class);
+    public static final LegacyParticleType<?> OXIDISED_COPPER_SCRAPE = new LegacyParticleType<>();
+
+    private static int COUNTER = 0;
+    private final int ord = COUNTER++;
 
     private LegacyParticleType() {
         this(null);
@@ -70,6 +78,10 @@ public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleTy
 
     public static LegacyParticleType<?> valueOf(final @NotNull String name) {
         return valueOf(name, LegacyParticleType.class);
+    }
+
+    public static LegacyParticleType<?>[] legacyValues() {
+        return Arrays.copyOf(values(), COMPOSTER_FILL_ATTEMPT.ord);
     }
 
     public static LegacyParticleType<?>[] values() {
