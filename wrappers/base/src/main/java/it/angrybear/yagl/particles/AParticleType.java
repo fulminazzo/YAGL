@@ -14,11 +14,11 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
         this.optionType = optionType;
     }
 
-    public Particle createParticle() {
-        return createParticle(null);
+    public Particle create() {
+        return create(null);
     }
 
-    public Particle createParticle(final @Nullable P particleOption) {
+    public Particle create(final @Nullable P particleOption) {
         return new Particle(name(), particleOption);
     }
 

@@ -26,12 +26,12 @@ public class LegacyWrappersAdapterTest {
 
     private static Particle[] getTestLegacyParticles() {
         List<Particle> particles = new ArrayList<>();
-        for (LegacyParticleType<?> type : LegacyParticleType.legacyValues()) particles.add(type.createParticle());
-        particles.add(LegacyParticleType.VILLAGER_PLANT_GROW.createParticle(new PrimitiveParticleOption<>(10)));
-        particles.add(LegacyParticleType.SMOKE.createParticle(new PrimitiveParticleOption<>(BlockFace.NORTH.name())));
-        particles.add(LegacyParticleType.ITEM_BREAK.createParticle(new PrimitiveParticleOption<>(Material.STONE.name())));
-        particles.add(LegacyParticleType.TILE_BREAK.createParticle(new MaterialDataOption(Material.STONE.name())));
-        particles.add(LegacyParticleType.TILE_DUST.createParticle(new MaterialDataOption(Material.STONE.name(), 10)));
+        for (LegacyParticleType<?> type : LegacyParticleType.legacyValues()) particles.add(type.create());
+        particles.add(LegacyParticleType.VILLAGER_PLANT_GROW.create(new PrimitiveParticleOption<>(10)));
+        particles.add(LegacyParticleType.SMOKE.create(new PrimitiveParticleOption<>(BlockFace.NORTH.name())));
+        particles.add(LegacyParticleType.ITEM_BREAK.create(new PrimitiveParticleOption<>(Material.STONE.name())));
+        particles.add(LegacyParticleType.TILE_BREAK.create(new MaterialDataOption(Material.STONE.name())));
+        particles.add(LegacyParticleType.TILE_DUST.create(new MaterialDataOption(Material.STONE.name(), 10)));
         return particles.toArray(new Particle[0]);
     }
 

@@ -24,17 +24,17 @@ class ParticleParserTest {
     @ParameterizedTest
     @MethodSource("getTestOptions")
     void testTypes(ParticleType<?> type) throws IOException {
-        Particle expected = type.createParticle();
+        Particle expected = type.create();
         if (type.equals(ParticleType.BLOCK_CRACK) || type.equals(ParticleType.BLOCK_DUST) || type.equals(ParticleType.FALLING_DUST))
-            expected = ((ParticleType<BlockDataOption>) type).createParticle(new BlockDataOption("oak_log[axis=y]"));
+            expected = ((ParticleType<BlockDataOption>) type).create(new BlockDataOption("oak_log[axis=y]"));
         if (type.equals(ParticleType.SHRIEK))
-            expected = ParticleType.SHRIEK.createParticle(new PrimitiveParticleOption<>(3));
+            expected = ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(3));
         if (type.equals(ParticleType.SCULK_CHARGE))
-            expected = ParticleType.SCULK_CHARGE.createParticle(new PrimitiveParticleOption<>(2.0f));
+            expected = ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(2.0f));
         if (type.equals(ParticleType.REDSTONE))
-            expected = ParticleType.REDSTONE.createParticle(new DustParticleOption(Color.RED, 4.0f));
+            expected = ParticleType.REDSTONE.create(new DustParticleOption(Color.RED, 4.0f));
         if (type.equals(ParticleType.DUST_COLOR_TRANSITION))
-            expected = ParticleType.DUST_COLOR_TRANSITION.createParticle(
+            expected = ParticleType.DUST_COLOR_TRANSITION.create(
                     new DustTransitionParticleOption(Color.WHITE, Color.BLACK, 5.0f));
 
         WrappersYAGLParser.addAllParsers();

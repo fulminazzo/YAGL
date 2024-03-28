@@ -67,25 +67,25 @@ class WrappersAdapterTest {
 
     private static Particle[] getTestParticles() {
         List<Particle> particles = new ArrayList<>();
-        for (ParticleType<?> type : ParticleType.values()) particles.add(type.createParticle());
-        particles.add(ParticleType.SCULK_CHARGE.createParticle(new PrimitiveParticleOption<>(10f)));
-        particles.add(ParticleType.SHRIEK.createParticle(new PrimitiveParticleOption<>(11)));
-        particles.add(ParticleType.REDSTONE.createParticle(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
-        particles.add(ParticleType.DUST_COLOR_TRANSITION.createParticle(new DustTransitionParticleOption(
+        for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
+        particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
+        particles.add(ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(11)));
+        particles.add(ParticleType.REDSTONE.create(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
+        particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(
                 it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
-        particles.add(ParticleType.VIBRATION.createParticle(new PrimitiveParticleOption<>(
+        particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
                 new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
         return particles.toArray(new Particle[0]);
     }
 
     private static Particle[] getTestLegacyParticles() {
         List<Particle> particles = new ArrayList<>();
-        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.createParticle());
+        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.create());
         for (LegacyParticleType<?> type : LegacyParticleType.legacyValues())
             particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
-        particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.createParticle(new PrimitiveParticleOption<>(true)));
-        particles.add(LegacyParticleType.BONE_MEAL_USE.createParticle(new PrimitiveParticleOption<>(1)));
-        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.createParticle(new ColorParticleOption(it.angrybear.yagl.Color.AQUA)));
+        particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.create(new PrimitiveParticleOption<>(true)));
+        particles.add(LegacyParticleType.BONE_MEAL_USE.create(new PrimitiveParticleOption<>(1)));
+        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.create(new ColorParticleOption(it.angrybear.yagl.Color.AQUA)));
         return particles.toArray(new Particle[0]);
     }
 
