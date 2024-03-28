@@ -274,6 +274,7 @@ public class WrappersAdapter {
             Integer data = tuple.getValue();
             return material.getNewData((byte) (data == null ? 0 : data));
         }
+        if (dataType.getCanonicalName().equalsIgnoreCase("org.bukkit.Vibration")) return option;
         if (dataType.getSimpleName().equals("BlockData")) {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
