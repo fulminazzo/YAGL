@@ -59,7 +59,7 @@ public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final LegacyParticleType<PrimitiveParticleOption<Integer>> BONE_MEAL_USE = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
     public static final LegacyParticleType<?> ENDER_DRAGON_DESTROY_BLOCK = new LegacyParticleType<>();
     public static final LegacyParticleType<?> SPONGE_DRY = new LegacyParticleType<>();
-    //    public static final LegacyParticleType<?> ELECTRIC_SPARK = new LegacyParticleType<>(Axis.class);
+    public static final LegacyParticleType<PrimitiveParticleOption<String>> ELECTRIC_SPARK = new LegacyParticleType<>((Class<PrimitiveParticleOption<String>>) (Class<?>) PrimitiveParticleOption.class);
     public static final LegacyParticleType<?> COPPER_WAX_ON = new LegacyParticleType<>();
     public static final LegacyParticleType<?> COPPER_WAX_OFF = new LegacyParticleType<>();
     public static final LegacyParticleType<ColorParticleOption> INSTANT_POTION_BREAK = new LegacyParticleType<>(ColorParticleOption.class);
