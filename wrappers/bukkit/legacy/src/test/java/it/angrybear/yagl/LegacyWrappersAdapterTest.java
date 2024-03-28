@@ -5,6 +5,8 @@ import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.particles.PrimitiveParticleOption;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,7 +27,8 @@ public class LegacyWrappersAdapterTest {
         List<Particle> particles = new ArrayList<>();
         for (LegacyParticleType<?> type : LegacyParticleType.legacyValues()) particles.add(type.createParticle());
         particles.add(LegacyParticleType.VILLAGER_PLANT_GROW.createParticle(new PrimitiveParticleOption<>(10)));
-        particles.add(LegacyParticleType.SMOKE.createParticle(new PrimitiveParticleOption<>("NORTH")));
+        particles.add(LegacyParticleType.SMOKE.createParticle(new PrimitiveParticleOption<>(BlockFace.NORTH.name())));
+        particles.add(LegacyParticleType.ITEM_BREAK.createParticle(new PrimitiveParticleOption<>(Material.STONE.name())));
         return particles.toArray(new Particle[0]);
     }
 
