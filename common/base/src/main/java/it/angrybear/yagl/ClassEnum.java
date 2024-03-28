@@ -4,8 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An abstract class that allows to "convert" classes to enums by providing the most three common methods:
@@ -13,6 +15,26 @@ import java.util.List;
  */
 @SuppressWarnings("unchecked")
 public abstract class ClassEnum {
+    private static final Map<Class<?>, Integer> CLASSES_ORDINALS = new HashMap<>();
+    private final int index;
+
+    /**
+     * Instantiates a new Class enum.
+     */
+    public ClassEnum() {
+        final Class<?> clazz = getClass();
+        this.index = CLASSES_ORDINALS.getOrDefault(clazz, 0);
+        CLASSES_ORDINALS.put(clazz, this.index + 1);
+    }
+
+    /**
+     * Returns the index of the current object.
+     *
+     * @return the index
+     */
+    public int ordinal() {
+        return this.index;
+    }
 
     /**
      * Gets the name of the current object.
