@@ -272,6 +272,7 @@ public class WrappersAdapter {
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
         }
+        if (option instanceof Color) return wColorToColor((Color) option);
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
         int size = constructor.getParameterCount();
