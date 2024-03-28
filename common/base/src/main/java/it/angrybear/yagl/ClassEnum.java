@@ -1,6 +1,7 @@
 package it.angrybear.yagl;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -52,6 +53,19 @@ public abstract class ClassEnum {
                     throw new RuntimeException(e);
                 }
         throw new IllegalStateException("Unreachable code");
+    }
+
+    /**
+     * Gets the object from its index, returned by {@link #ordinal()}..
+     *
+     * @param <T>   the type parameter
+     * @param index the index
+     * @param clazz the clazz
+     * @return the t
+     */
+    protected static <T extends ClassEnum> T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index,
+                                                     final @NotNull Class<T> clazz) {
+        return values(clazz)[index];
     }
 
     /**
