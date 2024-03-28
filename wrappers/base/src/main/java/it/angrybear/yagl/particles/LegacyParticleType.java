@@ -45,7 +45,7 @@ public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final LegacyParticleType<?> VILLAGER_THUNDERCLOUD = new LegacyParticleType<>();
     public static final LegacyParticleType<?> HAPPY_VILLAGER = new LegacyParticleType<>();
     public static final LegacyParticleType<?> LARGE_SMOKE = new LegacyParticleType<>();
-//    public static final LegacyParticleType<?> ITEM_BREAK = new LegacyParticleType<>(Material.class);
+    public static final LegacyParticleType<PrimitiveParticleOption<String>> ITEM_BREAK = new LegacyParticleType<>((Class<PrimitiveParticleOption<String>>) (Class<?>) PrimitiveParticleOption.class);
 //    public static final LegacyParticleType<?> TILE_BREAK = new LegacyParticleType<>(MaterialData.class);
 //    public static final LegacyParticleType<?> TILE_DUST = new LegacyParticleType<>(MaterialData.class);
     /*
