@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -72,6 +73,8 @@ class WrappersAdapterTest {
         particles.add(ParticleType.REDSTONE.createParticle(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
         particles.add(ParticleType.DUST_COLOR_TRANSITION.createParticle(new DustTransitionParticleOption(
                 it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
+        particles.add(ParticleType.VIBRATION.createParticle(new PrimitiveParticleOption<>(
+                new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
         return particles.toArray(new Particle[0]);
     }
 
