@@ -1,8 +1,10 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.ClassEnum;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
@@ -15,7 +17,12 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     }
 
     public Particle create() {
-        return create(null);
+        return create((P) null);
+    }
+
+    public Particle create(Object @NotNull ... objects) {
+        if (objects.length == 0) return create();
+        else return create(new Refl<>(getOptionType(), objects).getObject());
     }
 
     public Particle create(final @Nullable P particleOption) {
