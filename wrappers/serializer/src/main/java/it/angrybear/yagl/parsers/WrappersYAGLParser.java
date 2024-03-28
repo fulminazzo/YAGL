@@ -1,6 +1,5 @@
 package it.angrybear.yagl.parsers;
 
-import it.angrybear.yagl.particles.BlockDataOptionParser;
 import it.angrybear.yagl.particles.ParticleOptionParser;
 import it.angrybear.yagl.particles.ParticleParser;
 import it.angrybear.yagl.wrappers.WrapperParser;
@@ -16,8 +15,7 @@ public class WrappersYAGLParser {
      */
     public static void addAllParsers() {
         YAGLParser.addAllParsers();
-        FileConfiguration.addParsers(new ParticleParser());
-        FileConfiguration.addParsers(new BlockDataOptionParser());
+        FileConfiguration.addParsers(ParticleParser.class.getPackage().getName());
         ParticleOptionParser.addAllParsers();
         WrapperParser.addAllParsers();
     }
