@@ -23,7 +23,8 @@ class ParticleOptionParserTest {
                 new ColorParticleOption(Color.RED),
                 new DustParticleOption(Color.WHITE, 3f),
                 new DustTransitionParticleOption(Color.BLACK, Color.WHITE, 3f),
-                new BlockDataOption("oak_fence", "east=false,north=false,south=false,waterlogged=false,west=false")
+                new BlockDataOption("oak_fence", "east=false,north=false,south=false,waterlogged=false,west=false"),
+                new MaterialDataOption("oak_fence", 2),
         };
     }
 
