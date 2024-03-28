@@ -76,6 +76,10 @@ public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleTy
         super(optionType);
     }
 
+    public static LegacyParticleType<?> valueOf(final int index) {
+        return valueOf(index, LegacyParticleType.class);
+    }
+
     public static LegacyParticleType<?> valueOf(final @NotNull String name) {
         return valueOf(name, LegacyParticleType.class);
     }
