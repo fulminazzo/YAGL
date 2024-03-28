@@ -78,7 +78,7 @@ allprojects {
             testImplementation libs.spigot.latest
         }
 
-        if (projectName.contains("-") && !projectName.contains("base")) {
+        if (projectName.contains("-") && !projectName.contains("base") && !projectName.contains("legacy")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
             def id = projectName.substring(projectName.indexOf("-") + 1)
             api(project(":${name}:${name}-base"))

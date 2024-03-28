@@ -10,15 +10,18 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
+import java.util.function.Function;
 
 /**
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
@@ -169,11 +172,83 @@ public class WrappersAdapter {
      * @return the tuple
      */
     public static @NotNull Tuple<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
-        org.bukkit.Particle actual = EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
+        return wParticleToGeneral(particle, org.bukkit.Particle.class, org.bukkit.Particle::getDataType);
+    }
+
+    /**
+     * Spawn effect.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     */
+    public static void spawnEffect(final @NotNull World world, final @NotNull Particle particle,
+                                   double x, double y, double z) {
+        spawnEffect(world, particle, new Location(world, x, y, z));
+    }
+
+    /**
+     * Spawn effect.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param location the location
+     */
+    public static void spawnEffect(final @NotNull World world, final @NotNull Particle particle,
+                                   final @NotNull Location location) {
+        world.getPlayers().forEach(p -> spawnEffect(p, particle, location));
+    }
+
+    /**
+     * Spawn effect.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     */
+    public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
+                                     double x, double y, double z) {
+        spawnEffect(player, particle, new Location(player.getWorld(), x, y, z));
+    }
+
+    /**
+     * Spawn effect.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param location the location
+     */
+    public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
+                                   final @NotNull Location location) {
+        Tuple<Effect, ?> tuple = wParticleToEffect(particle);
+        Effect actual = tuple.getKey();
+        Object option = tuple.getValue();
+        player.playEffect(location, actual, option);
+    }
+
+    /**
+     * Converts the given {@link Particle} to a tuple containing the corresponding {@link Effect} and
+     * the parsed particle option (if present).
+     *
+     * @param particle the particle
+     * @return the tuple
+     */
+    public static @NotNull Tuple<Effect, ?> wParticleToEffect(final @NotNull Particle particle) {
+        return wParticleToGeneral(particle, Effect.class, Effect::getData);
+    }
+
+    private static <T extends Enum<?>> @NotNull Tuple<T, ?> wParticleToGeneral(final @NotNull Particle particle,
+                                                                               final @NotNull Class<T> tClass,
+                                                                               final @NotNull Function<T, Class<?>> dataTypeGetter) {
+        T actual = EnumUtils.valueOf(tClass, particle.getType());
         Object option = particle.getOption();
-        if (option == null) return new Tuple<>(actual, null);
+        Class<?> dataType = dataTypeGetter.apply(actual);
+        if (option == null || dataType == null) return new Tuple<>(actual, null);
         else {
-            Class<?> dataType = actual.getDataType();
             if (ReflectionUtils.isPrimitiveOrWrapper(dataType)) return new Tuple<>(actual, option);
             else try {
                 final Object finalOption = convertOption(dataType, option);
@@ -189,6 +264,16 @@ public class WrappersAdapter {
     }
 
     private static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
+        if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
+        if (dataType.equals(MaterialData.class)) {
+            if (!(option instanceof Tuple))
+                throw new IllegalArgumentException(String.format("Expected %s but got %s",
+                        Tuple.class.getSimpleName(), option.getClass().getSimpleName()));
+            Tuple<String, Integer> tuple = (Tuple<String, Integer>) option;
+            Material material = EnumUtils.valueOf(Material.class, tuple.getKey());
+            Integer data = tuple.getValue();
+            return material.getNewData((byte) (data == null ? 0 : data));
+        }
         if (dataType.getSimpleName().equals("BlockData")) {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
@@ -198,6 +283,7 @@ public class WrappersAdapter {
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
         }
+        if (option instanceof Color) return wColorToColor((Color) option);
         final Object finalOption;
         Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
         int size = constructor.getParameterCount();
