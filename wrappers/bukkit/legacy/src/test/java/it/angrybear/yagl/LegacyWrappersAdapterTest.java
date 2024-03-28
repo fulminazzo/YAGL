@@ -1,6 +1,7 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.particles.LegacyParticleType;
+import it.angrybear.yagl.particles.MaterialDataOption;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.particles.PrimitiveParticleOption;
 import org.bukkit.Effect;
@@ -29,6 +30,8 @@ public class LegacyWrappersAdapterTest {
         particles.add(LegacyParticleType.VILLAGER_PLANT_GROW.createParticle(new PrimitiveParticleOption<>(10)));
         particles.add(LegacyParticleType.SMOKE.createParticle(new PrimitiveParticleOption<>(BlockFace.NORTH.name())));
         particles.add(LegacyParticleType.ITEM_BREAK.createParticle(new PrimitiveParticleOption<>(Material.STONE.name())));
+        particles.add(LegacyParticleType.TILE_BREAK.createParticle(new MaterialDataOption(Material.STONE.name())));
+        particles.add(LegacyParticleType.TILE_DUST.createParticle(new MaterialDataOption(Material.STONE.name(), 10)));
         return particles.toArray(new Particle[0]);
     }
 
