@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -264,6 +265,15 @@ public class WrappersAdapter {
 
     private static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
         if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
+        if (dataType.equals(MaterialData.class)) {
+            if (!(option instanceof Tuple))
+                throw new IllegalArgumentException(String.format("Expected %s but got %s",
+                        Tuple.class.getSimpleName(), option.getClass().getSimpleName()));
+            Tuple<String, Integer> tuple = (Tuple<String, Integer>) option;
+            Material material = EnumUtils.valueOf(Material.class, tuple.getKey());
+            Integer data = tuple.getValue();
+            return material.getNewData((byte) (data == null ? 0 : data));
+        }
         if (dataType.getSimpleName().equals("BlockData")) {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
