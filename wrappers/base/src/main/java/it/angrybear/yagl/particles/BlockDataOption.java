@@ -21,7 +21,7 @@ public class BlockDataOption extends ParticleOption<String> {
      * @param blockData the raw block data
      */
     public BlockDataOption(final @NotNull String blockData) {
-        Matcher matcher = Pattern.compile(BlockDataOption.NBT_REGEX).matcher(blockData);
+        Matcher matcher = Pattern.compile(NBT_REGEX).matcher(blockData);
         if (matcher.matches()) {
             this.material = parseMaterial(matcher.group(1));
             String nbt = matcher.group(2);
@@ -50,7 +50,7 @@ public class BlockDataOption extends ParticleOption<String> {
         return this.nbt;
     }
 
-    private String parseMaterial(@NotNull String material) {
+    static String parseMaterial(@NotNull String material) {
         material = material.toLowerCase();
         if (material.startsWith("minecraft:")) material = material.substring("minecraft:".length());
         if (material.trim().isEmpty() || Pattern.compile("[\r\n\t :]").matcher(material).find())
