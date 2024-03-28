@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
 //    public static final LegacyParticleType<?> SMOKE = new LegacyParticleType<>(BlockFace.class);
 //    public static final LegacyParticleType<?> POTION_BREAK = new LegacyParticleType<>(Potion.class);
-//    public static final LegacyParticleType<?> INSTANT_POTION_BREAK = new LegacyParticleType<>(Color.class);
+    public static final LegacyParticleType<ColorParticleOption> INSTANT_POTION_BREAK = new LegacyParticleType<>(ColorParticleOption.class);
     public static final LegacyParticleType<?> ENDER_SIGNAL = new LegacyParticleType<>();
     public static final LegacyParticleType<?> MOBSPAWNER_FLAMES = new LegacyParticleType<>();
     public static final LegacyParticleType<PrimitiveParticleOption<Integer>> VILLAGER_PLANT_GROW = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
