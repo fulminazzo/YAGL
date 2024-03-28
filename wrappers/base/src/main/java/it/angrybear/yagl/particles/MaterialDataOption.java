@@ -26,8 +26,8 @@ public class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
         if (matcher.matches()) {
             this.material = BlockDataOption.parseMaterial(matcher.group(1));
             String nbt = matcher.group(2);
-            if (nbt == null) nbt = "";
-            this.data = Integer.parseInt(nbt.trim());
+            if (nbt == null || nbt.trim().isEmpty()) this.data = null;
+            else this.data = Integer.parseInt(nbt.trim());
         } else throw new IllegalArgumentException(String.format("Invalid material data '%s'", materialData));
     }
 
