@@ -112,6 +112,10 @@ public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> 
         super(optionType);
     }
 
+    public static ParticleType<?> valueOf(final int index) {
+        return valueOf(index, ParticleType.class);
+    }
+
     public static ParticleType<?> valueOf(final @NotNull String name) {
         return valueOf(name, ParticleType.class);
     }
