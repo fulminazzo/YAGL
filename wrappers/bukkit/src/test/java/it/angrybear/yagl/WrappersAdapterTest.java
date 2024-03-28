@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -83,6 +82,7 @@ class WrappersAdapterTest {
             particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
         particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.createParticle(new PrimitiveParticleOption<>(true)));
         particles.add(LegacyParticleType.BONE_MEAL_USE.createParticle(new PrimitiveParticleOption<>(1)));
+        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.createParticle(new ColorParticleOption(it.angrybear.yagl.Color.AQUA)));
         return particles.toArray(new Particle[0]);
     }
 
