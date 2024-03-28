@@ -80,8 +80,15 @@ public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> 
     public static final ParticleType<?> REVERSE_PORTAL = new ParticleType<>();
     public static final ParticleType<?> WHITE_ASH = new ParticleType<>();
     public static final ParticleType<DustTransitionParticleOption> DUST_COLOR_TRANSITION = new ParticleType<>(DustTransitionParticleOption.class);
-    //TODO:
-//    VIBRATION(Vibration.class) = new ParticleType<>();
+    /**
+     * Because of the little use case that Vibration has
+     * at the time of writing this comment, there is no
+     * specific {@link ParticleOption} for it.
+     * One can use a {@link PrimitiveParticleOption} and
+     * pass the actual Vibration object to it.
+     * @implNote it will not be serialized automatically.
+     */
+    public static final ParticleType<PrimitiveParticleOption<Object>> VIBRATION = new ParticleType<>((Class<PrimitiveParticleOption<Object>>) (Class<?>) PrimitiveParticleOption.class);
     public static final ParticleType<?> FALLING_SPORE_BLOSSOM = new ParticleType<>();
     public static final ParticleType<?> SPORE_BLOSSOM_AIR = new ParticleType<>();
     public static final ParticleType<?> SMALL_FLAME = new ParticleType<>();
