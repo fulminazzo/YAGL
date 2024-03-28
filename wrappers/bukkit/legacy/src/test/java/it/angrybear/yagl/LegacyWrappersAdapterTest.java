@@ -25,6 +25,7 @@ public class LegacyWrappersAdapterTest {
         List<Particle> particles = new ArrayList<>();
         for (LegacyParticleType<?> type : LegacyParticleType.legacyValues()) particles.add(type.createParticle());
         particles.add(LegacyParticleType.VILLAGER_PLANT_GROW.createParticle(new PrimitiveParticleOption<>(10)));
+        particles.add(LegacyParticleType.SMOKE.createParticle(new PrimitiveParticleOption<>("NORTH")));
         return particles.toArray(new Particle[0]);
     }
 
