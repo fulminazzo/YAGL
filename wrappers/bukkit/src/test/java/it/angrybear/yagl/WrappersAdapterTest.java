@@ -64,7 +64,7 @@ class WrappersAdapterTest {
         if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
         return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
     }
-    
+
     private static Particle[] getTestParticles() {
         List<Particle> particles = new ArrayList<>();
         for (ParticleType<?> type : ParticleType.values()) particles.add(type.createParticle());
@@ -74,6 +74,38 @@ class WrappersAdapterTest {
         particles.add(ParticleType.DUST_COLOR_TRANSITION.createParticle(new DustTransitionParticleOption(
                 it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
         return particles.toArray(new Particle[0]);
+    }
+
+    private static Particle[] getTestLegacyParticles() {
+        List<Particle> particles = new ArrayList<>();
+        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.createParticle());
+        for (LegacyParticleType<?> type : LegacyParticleType.legacyValues())
+            particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
+        particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.createParticle(new PrimitiveParticleOption<>(true)));
+        particles.add(LegacyParticleType.BONE_MEAL_USE.createParticle(new PrimitiveParticleOption<>(1)));
+        return particles.toArray(new Particle[0]);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestLegacyParticles")
+    void testSpawnEffect(Particle particle) {
+        Player player = mock(Player.class);
+
+        Location location = new Location(null, 0, 0, 0);
+        WrappersAdapter.spawnEffect(player, particle, location);
+
+        ArgumentCaptor<Effect> effectArg = ArgumentCaptor.forClass(Effect.class);
+        if (particle.getOption() == null) {
+            verify(player).playEffect(any(Location.class), effectArg.capture(), any());
+
+            assertEquals(particle.getType(), effectArg.getValue().name());
+        } else {
+            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
+            verify(player).playEffect(any(Location.class), effectArg.capture(), extra.capture());
+
+            assertEquals(particle.getType(), effectArg.getValue().name());
+            assertNotNull(extra.getValue());
+        }
     }
 
     @ParameterizedTest
