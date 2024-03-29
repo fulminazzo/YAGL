@@ -8,6 +8,7 @@ import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Color;
 import org.bukkit.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFactory;
@@ -116,6 +117,11 @@ class WrappersAdapterTest {
     @ParameterizedTest
     @MethodSource("getTestParticles")
     void testSpawnParticle(Particle particle) {
+        // Initialize Bukkit variables
+        Server server = mock(Server.class);
+        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
+
         Player player = mock(Player.class);
 
         Location location = new Location(null, 0, 0, 0);
