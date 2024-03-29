@@ -78,6 +78,9 @@ class WrappersAdapterTest {
                 it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
         particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
                 new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
+        particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
+        particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
+        particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
         return particles.toArray(new Particle[0]);
     }
 
@@ -152,7 +155,6 @@ class WrappersAdapterTest {
         ItemFactory factory = mock(ItemFactory.class);
         Server server = mock(Server.class);
         when(server.getItemFactory()).thenReturn(factory);
-
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
         Particle particle = ParticleType.ITEM_CRACK.create(mock(Item.class));
