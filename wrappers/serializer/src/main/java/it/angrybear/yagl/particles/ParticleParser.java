@@ -36,7 +36,7 @@ public class ParticleParser extends YAMLParser<Particle> {
             Class<? extends ParticleOption<?>> optionType = particleType.getOptionType();
             if (optionType != null) option = particleSection.get("option", optionType);
 
-            return new Refl<>(particleType).invokeMethod("createParticle", option);
+            return new Refl<>(particleType).invokeMethod("create", option);
         };
     }
 
