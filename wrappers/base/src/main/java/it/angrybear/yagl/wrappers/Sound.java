@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 public class Sound extends Wrapper {
-    private @NotNull String sound;
+    private @NotNull String name;
     private float volume;
     private float pitch;
     /**
@@ -22,43 +22,43 @@ public class Sound extends Wrapper {
     /**
      * Instantiates a new Sound.
      *
-     * @param sound the sound
+     * @param name the sound
      */
-    public Sound(final @NotNull String sound) {
-        this(sound, 1.0F);
+    public Sound(final @NotNull String name) {
+        this(name, 1.0F);
     }
 
     /**
      * Instantiates a new Sound.
      *
-     * @param sound  the sound
+     * @param name  the sound
      * @param volume the volume
      */
-    public Sound(final @NotNull String sound, final float volume) {
-        this(sound, volume, 1.0F);
+    public Sound(final @NotNull String name, final float volume) {
+        this(name, volume, 1.0F);
     }
 
     /**
      * Instantiates a new Sound.
      *
-     * @param sound  the sound
+     * @param name  the sound
      * @param volume the volume
      * @param pitch  the pitch
      */
-    public Sound(final @NotNull String sound, final float volume, final float pitch) {
-        this(sound, volume, pitch, null);
+    public Sound(final @NotNull String name, final float volume, final float pitch) {
+        this(name, volume, pitch, null);
     }
 
     /**
      * Instantiates a new Sound.
      *
-     * @param sound    the sound
+     * @param name    the sound
      * @param volume   the volume
      * @param pitch    the pitch
      * @param category the category
      */
-    public Sound(final @NotNull String sound, final float volume, final float pitch, final @Nullable String category) {
-        this.sound = sound;
+    public Sound(final @NotNull String name, final float volume, final float pitch, final @Nullable String category) {
+        this.name = name;
         setVolume(volume);
         setPitch(pitch);
         this.category = category;
@@ -67,11 +67,11 @@ public class Sound extends Wrapper {
     /**
      * Sets sound.
      *
-     * @param sound the sound
+     * @param name the sound
      * @return this sound
      */
-    public Sound setSound(final @NotNull String sound) {
-        this.sound = sound;
+    public Sound setName(final @NotNull String name) {
+        this.name = name;
         return this;
     }
 
