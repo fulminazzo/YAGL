@@ -187,7 +187,7 @@ class WrappersAdapterTest {
         verify(player).playSound(any(Location.class), soundArg.capture(),
                 categoryArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getSound(), soundArg.getValue().name());
+        assertEquals(sound.getName(), soundArg.getValue().name());
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
@@ -212,7 +212,7 @@ class WrappersAdapterTest {
         verify(player).playSound(any(Location.class), soundArg.capture(),
                 categoryArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getSound(), soundArg.getValue());
+        assertEquals(sound.getName(), soundArg.getValue());
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
