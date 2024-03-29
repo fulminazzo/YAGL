@@ -25,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -498,14 +500,21 @@ public class WrappersAdapter {
      */
     public static @NotNull Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
         String raw = enchantment.getName();
-        org.bukkit.enchantments.Enchantment actual;
+        org.bukkit.enchantments.Enchantment actual = null;
         try {
             Object key = getNamespacedKey(raw);
             actual = new Refl<>(org.bukkit.enchantments.Enchantment.class).invokeMethod("getByKey", key);
             if (actual == null) throw new Exception("Cannot find from getKey");
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
-            actual = EnumUtils.valueOf(org.bukkit.enchantments.Enchantment.class, raw, "getByName");
+            Map<String, org.bukkit.enchantments.Enchantment> byName = new Refl<>(org.bukkit.enchantments.Enchantment.class).getFieldObject("byName");
+            if (byName != null)
+                for (String key : byName.keySet())
+                    if (key.equalsIgnoreCase(raw)) {
+                        actual = byName.get(key);
+                        break;
+                    }
+            if (actual == null) throw new IllegalStateException(String.format("Could not find enchantment '%s'", raw));
         }
         return new Tuple<>(actual, enchantment.getLevel());
     }
