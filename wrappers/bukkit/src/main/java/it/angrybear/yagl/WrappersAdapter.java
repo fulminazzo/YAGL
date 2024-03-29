@@ -5,6 +5,7 @@ import it.angrybear.yagl.particles.BlockDataOption;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.angrybear.yagl.wrappers.Potion;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -462,6 +464,27 @@ public class WrappersAdapter {
             return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / 20,
                     potionEffect.getAmplifier() + 1, potionEffect.hasParticles());
         }
+    }
+
+    /**
+     * Converts the given wrapper {@link Potion} to a Bukkit potion.
+     *
+     * @param potion the potion
+     * @return the potion
+     */
+    public static @NotNull org.bukkit.potion.Potion wPotionToPotion(final @NotNull Potion potion) {
+        return new org.bukkit.potion.Potion(EnumUtils.valueOf(PotionType.class, potion.getType()),
+                potion.getLevel(), potion.isSplash(), potion.isExtended());
+    }
+
+    /**
+     * Converts the given Bukkit potion to a wrapper {@link Potion}.
+     *
+     * @param potion the potion
+     * @return the potion
+     */
+    public static @NotNull Potion potionToWPotion(final @NotNull org.bukkit.potion.Potion potion) {
+        return new Potion(potion.getType().name(), potion.getLevel(), potion.isSplash(), potion.hasExtendedDuration());
     }
 
     /**
