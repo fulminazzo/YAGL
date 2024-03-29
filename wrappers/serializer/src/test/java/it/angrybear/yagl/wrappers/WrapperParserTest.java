@@ -20,6 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class WrapperParserTest {
 
     @Test
+    void testSaveAndLoadPotion() throws IOException {
+        Wrapper expected = new Potion("strength");
+        List<Wrapper> actual = saveAndLoad(expected);
+        assertNotNull(actual);
+        assertEquals(expected.getClass().getDeclaredConstructors().length, actual.size());
+        for (Wrapper w : actual)
+            assertEquals(expected, w);
+    }
+
+    @Test
     void testSaveAndLoadEnchantment() throws IOException {
         Wrapper expected = new Enchantment("unbreaking");
         List<Wrapper> actual = saveAndLoad(expected);
