@@ -295,7 +295,7 @@ class WrappersAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getPotionEffects")
-    void testEnchantmentsConversion(org.bukkit.potion.PotionEffect expected) {
+    void testPotionsConversion(org.bukkit.potion.PotionEffect expected) {
         PotionEffect enchantment = WrappersAdapter.potionEffectToWPotionEffect(expected);
         assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(enchantment));
     }
