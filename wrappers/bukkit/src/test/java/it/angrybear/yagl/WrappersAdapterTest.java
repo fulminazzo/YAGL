@@ -129,9 +129,7 @@ class WrappersAdapterTest {
     @MethodSource("getTestParticles")
     void testSpawnParticle(Particle particle) {
         // Initialize Bukkit variables
-        Server server = mock(Server.class);
-        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
-        new Refl<>(Bukkit.class).setFieldObject("server", server);
+        initializeBlockData();
 
         Player player = mock(Player.class);
 
@@ -161,9 +159,7 @@ class WrappersAdapterTest {
     @MethodSource("getTestParticles")
     void testWorldSpawnParticle(Particle particle) {
         // Initialize Bukkit variables
-        Server server = mock(Server.class);
-        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
-        new Refl<>(Bukkit.class).setFieldObject("server", server);
+        initializeBlockData();
 
         World world = mock(World.class);
 
@@ -345,6 +341,12 @@ class WrappersAdapterTest {
         Executable executable = () -> WrappersAdapter.convertOption(BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
         else assertThrowsExactly(IllegalArgumentException.class, executable);
+    }
+
+    private static void initializeBlockData() {
+        Server server = mock(Server.class);
+        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
     }
 
     private static class MockPotionEffect extends PotionEffectType {
