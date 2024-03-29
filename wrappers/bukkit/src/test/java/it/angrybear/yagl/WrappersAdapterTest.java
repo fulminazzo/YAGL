@@ -338,6 +338,7 @@ class WrappersAdapterTest {
     @ParameterizedTest
     @EnumSource(Material.class)
     void testAllBlockData(Material material) {
+        initializeBlockData();
         Executable executable = () -> WrappersAdapter.convertOption(BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
         else assertThrowsExactly(IllegalArgumentException.class, executable);
