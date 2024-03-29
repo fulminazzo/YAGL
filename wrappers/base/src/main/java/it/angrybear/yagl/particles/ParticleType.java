@@ -38,8 +38,10 @@ public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> 
     public static final ParticleType<?> SNOW_SHOVEL = new ParticleType<>();
     public static final ParticleType<?> SLIME = new ParticleType<>();
     public static final ParticleType<?> HEART = new ParticleType<>();
-    //TODO:
-//    ITEM_CRACK(ItemStack.class) = new ParticleType<>();
+    /**
+     * This particle type requires the <i>item:base</i> module to be added.
+     */
+    public static final ParticleType<ItemParticleOption> ITEM_CRACK = new ParticleType<>(ItemParticleOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_CRACK = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_DUST = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<?> WATER_DROP = new ParticleType<>();
