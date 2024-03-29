@@ -90,6 +90,13 @@ public class LegacyWrappersAdapterTest {
                 WrappersAdapter.potionEffectToWPotionEffect(potionEffect));
     }
 
+    @Test
+    void testPotionConversion() {
+        Potion expected = new Potion(PotionType.JUMP.name(), 1, true, false);
+        org.bukkit.potion.Potion potion = WrappersAdapter.wPotionToPotion(expected);
+        assertEquals(expected, WrappersAdapter.potionToWPotion(potion));
+    }
+
     @ParameterizedTest
     @MethodSource("getColors")
     void testColorConversion(it.angrybear.yagl.Color expected) {
