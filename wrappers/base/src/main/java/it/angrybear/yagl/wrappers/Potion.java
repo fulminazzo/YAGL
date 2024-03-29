@@ -72,13 +72,13 @@ public class Potion extends Wrapper {
     }
 
     /**
-     * Sets amplifier.
+     * Sets level.
      *
-     * @param level the amplifier
+     * @param level the level
      * @return this potion
      */
     public Potion setLevel(final int level) {
-        if (level < 1) throw new IllegalArgumentException("Amplifier cannot be lower than 1");
+        if (level < 1 || level > 2) throw new IllegalArgumentException("level must be between 1 and 2");
         this.level = level;
         return this;
     }
