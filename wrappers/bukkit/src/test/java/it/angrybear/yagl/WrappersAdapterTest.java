@@ -17,7 +17,9 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 
@@ -335,6 +337,14 @@ class WrappersAdapterTest {
     @Test
     void testInvalidOptionForMaterialData() {
         assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MaterialData.class, "string"));
+    }
+
+    @ParameterizedTest
+    @EnumSource(Material.class)
+    void testAllBlockData(Material material) {
+        Executable executable = () -> WrappersAdapter.convertOption(BlockData.class, material.name());
+        if (material.isBlock()) assertDoesNotThrow(executable);
+        else assertThrowsExactly(IllegalArgumentException.class, executable);
     }
 
     private static class MockPotionEffect extends PotionEffectType {
