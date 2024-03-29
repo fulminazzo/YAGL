@@ -13,6 +13,7 @@ import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -329,6 +330,11 @@ class WrappersAdapterTest {
     void testColorConversion(it.angrybear.yagl.Color expected) {
         Color color = WrappersAdapter.wColorToColor(expected);
         assertEquals(expected, WrappersAdapter.colorToWColor(color));
+    }
+
+    @Test
+    void testInvalidOptionForMaterialData() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MaterialData.class, "string"));
     }
 
     private static class MockPotionEffect extends PotionEffectType {
