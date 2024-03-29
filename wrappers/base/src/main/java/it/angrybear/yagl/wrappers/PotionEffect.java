@@ -169,15 +169,4 @@ public class PotionEffect extends Wrapper {
         this.showingIcon = false;
         return this;
     }
-
-    /**
-     * Compare this potion effect with the given one
-     *
-     * @param potionEffect the potion effect
-     * @return true, if they have the same potion effect
-     */
-    public boolean isSimilar(final @Nullable PotionEffect potionEffect) {
-        if (potionEffect == null) return false;
-        return this.effect.equalsIgnoreCase(potionEffect.getEffect());
-    }
 }

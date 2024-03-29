@@ -113,15 +113,4 @@ public class Sound extends Wrapper {
         this.category = category;
         return this;
     }
-
-    /**
-     * Compare this sound with the given one
-     *
-     * @param sound the sound
-     * @return true, if they have the same sound (despite volumes and pitches)
-     */
-    public boolean isSimilar(final @Nullable Sound sound) {
-        if (sound == null) return false;
-        return this.sound.equalsIgnoreCase(sound.getSound());
-    }
 }
