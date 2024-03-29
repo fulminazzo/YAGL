@@ -46,7 +46,13 @@ class ParticleTypeTest {
 
     @ParameterizedTest
     @MethodSource("getTests")
-    void testEnumMethods(ParticleType<?> obj) {
+    void testValueId(ParticleType<?> obj) {
+        assertEquals(obj, ParticleType.valueOf(obj.ordinal()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTests")
+    void testValueName(ParticleType<?> obj) {
         assertEquals(obj, ParticleType.valueOf(obj.name()));
     }
 }
