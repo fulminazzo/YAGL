@@ -32,6 +32,10 @@ import static org.mockito.Mockito.*;
 
 class WrappersAdapterTest {
 
+    private static it.angrybear.yagl.Color[] getColors() {
+        return it.angrybear.yagl.Color.values();
+    }
+
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
         List<PotionEffectType> potionEffects = new ArrayList<>();
         for (Field field : PotionEffectType.class.getDeclaredFields())
@@ -287,6 +291,13 @@ class WrappersAdapterTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
                 ParticleType.REDSTONE.create(it.angrybear.yagl.Color.RED, 3f), org.bukkit.Particle.class,
                 (Function<?, Class<?>>) s -> Item.class));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getColors")
+    void testColorConversion(it.angrybear.yagl.Color expected) {
+        Color color = WrappersAdapter.wColorToColor(expected);
+        assertEquals(expected, WrappersAdapter.colorToWColor(color));
     }
 
     private static class MockPotionEffect extends PotionEffectType {
