@@ -236,6 +236,14 @@ class WrappersAdapterTest {
     }
 
     @Test
+    void testInvalidClassProvided() {
+        Refl<?> refl = new Refl<>(WrappersAdapter.class);
+        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
+                ParticleType.DUST_COLOR_TRANSITION.create(it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.RED, 3f),
+                org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.REDSTONE.getDataType()));
+    }
+
+    @Test
     void testNoConstructorDataTypeProvided() {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
