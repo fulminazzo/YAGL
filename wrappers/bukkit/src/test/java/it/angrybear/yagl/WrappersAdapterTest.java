@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Enchantment;
@@ -9,6 +10,7 @@ import org.bukkit.Color;
 import org.bukkit.*;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -136,6 +137,37 @@ class WrappersAdapterTest {
             assertEquals(particle.getType(), particleArg.getValue().name());
             assertNotNull(extra.getValue());
         }
+    }
+
+    @Test
+    void testSpawnItemCrack() {
+        // Initialize Bukkit variables
+        ItemFactory factory = mock(ItemFactory.class);
+        Server server = mock(Server.class);
+        when(server.getItemFactory()).thenReturn(factory);
+
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
+
+        Particle particle = ParticleType.ITEM_CRACK.create(mock(Item.class));
+        Player player = mock(Player.class);
+
+        Location location = new Location(null, 0, 0, 0);
+        WrappersAdapter.spawnParticle(player, particle, location, 1);
+
+        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
+        ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
+        verify(player).spawnParticle(particleArg.capture(),
+                any(Location.class), any(int.class),
+                any(double.class), any(double.class), any(double.class),
+                extra.capture());
+
+        assertEquals(particle.getType(), particleArg.getValue().name());
+
+        ItemStack expected = new ItemStack(Material.STONE, 7);
+        assertInstanceOf(ItemStack.class, extra.getValue());
+        ItemStack actual = (ItemStack) extra.getValue();
+        assertEquals(expected.getType(), actual.getType());
+        assertEquals(expected.getAmount(), actual.getAmount());
     }
 
     @Test
