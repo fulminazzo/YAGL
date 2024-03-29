@@ -8,6 +8,7 @@ package it.angrybear.yagl.particles;
 public class PrimitiveParticleOption<T> extends ParticleOption<T> {
     private final T value;
 
+    @SuppressWarnings("unused")
     private PrimitiveParticleOption() {
         this(null);
     }

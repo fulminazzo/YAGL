@@ -12,6 +12,7 @@ public class DustTransitionParticleOption extends ParticleOption<Triple<Color, C
     private final Color to;
     private final float size;
 
+    @SuppressWarnings("unused")
     private DustTransitionParticleOption() {
         this(null, null, -1);
     }
