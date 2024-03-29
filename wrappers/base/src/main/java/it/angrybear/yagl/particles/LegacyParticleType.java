@@ -7,7 +7,7 @@ import java.util.Arrays;
 @SuppressWarnings({"unused", "unchecked"})
 public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final LegacyParticleType<PrimitiveParticleOption<String>> SMOKE = new LegacyParticleType<>((Class<PrimitiveParticleOption<String>>) (Class<?>) PrimitiveParticleOption.class);
-//    public static final LegacyParticleType<?> POTION_BREAK = new LegacyParticleType<>(Potion.class);
+    public static final LegacyParticleType<PotionParticleOption> POTION_BREAK = new LegacyParticleType<>(PotionParticleOption.class);
     public static final LegacyParticleType<?> ENDER_SIGNAL = new LegacyParticleType<>();
     public static final LegacyParticleType<?> MOBSPAWNER_FLAMES = new LegacyParticleType<>();
     public static final LegacyParticleType<PrimitiveParticleOption<Integer>> VILLAGER_PLANT_GROW = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
