@@ -1,9 +1,11 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.angrybear.yagl.wrappers.Potion;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,7 +28,8 @@ class ParticleOptionParserTest {
                 new DustTransitionParticleOption(Color.BLACK, Color.WHITE, 3f),
                 new BlockDataOption("oak_fence", "east=false,north=false,south=false,waterlogged=false,west=false"),
                 new MaterialDataOption("oak_fence", 2),
-                new PotionParticleOption(new Potion("strength", 2, true))
+                new PotionParticleOption(new Potion("strength", 2, true)),
+                new ItemParticleOption(new Item("STONE")),
         };
     }
 
@@ -34,6 +37,7 @@ class ParticleOptionParserTest {
     @MethodSource("getTestOptions")
     void testOptions(ParticleOption<?> expected) throws IOException {
         WrappersYAGLParser.addAllParsers();
+        FileConfiguration.addParsers(new CallableYAMLParser<>(Item.class, s -> new Item()));
 
         File file = new File("build/resources/test/options.yml");
         if (file.exists()) FileUtils.deleteFile(file);
