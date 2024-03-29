@@ -30,8 +30,6 @@ public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption> {
 
     @Override
     protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption> getDumper() {
-        return (c, s, o) -> {
-            c.set(s, o == null ? null : o.getOption());
-        };
+        return (c, s, o) -> c.set(s, o == null ? null : o.getOption());
     }
 }
