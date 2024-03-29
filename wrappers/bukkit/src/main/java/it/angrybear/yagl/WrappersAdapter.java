@@ -267,7 +267,7 @@ public class WrappersAdapter {
         }
     }
 
-    private static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
+    static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
         if (option instanceof Item) return itemToItemStack((Item) option);
         if (option instanceof Potion) return wPotionToPotion((Potion) option);
         if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
