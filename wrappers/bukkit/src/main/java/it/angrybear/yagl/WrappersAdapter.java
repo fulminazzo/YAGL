@@ -379,7 +379,7 @@ public class WrappersAdapter {
      * @param sound    the sound
      */
     public static void playSound(final @NotNull Player player, final @NotNull Location location, final @NotNull Sound sound) {
-        final org.bukkit.Sound actual = EnumUtils.valueOf(org.bukkit.Sound.class, sound.getSound());
+        final org.bukkit.Sound actual = EnumUtils.valueOf(org.bukkit.Sound.class, sound.getName());
         try {
             String category = sound.getCategory();
             if (category != null) {
@@ -417,7 +417,7 @@ public class WrappersAdapter {
      * @param sound    the sound
      */
     public static void playCustomSound(final @NotNull Player player, final @NotNull Location location, final @NotNull Sound sound) {
-        final String actual = sound.getSound();
+        final String actual = sound.getName();
         try {
             String category = sound.getCategory();
             if (category != null) {
@@ -438,7 +438,7 @@ public class WrappersAdapter {
      * @return the potion effect
      */
     public static @NotNull org.bukkit.potion.PotionEffect wPotionEffectToPotionEffect(final @NotNull PotionEffect potionEffect) {
-        final String effect = potionEffect.getEffect();
+        final String effect = potionEffect.getName();
         final PotionEffectType type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
         try {
             return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
@@ -474,7 +474,7 @@ public class WrappersAdapter {
      * @return the potion
      */
     public static @NotNull org.bukkit.potion.Potion wPotionToPotion(final @NotNull Potion potion) {
-        return new org.bukkit.potion.Potion(EnumUtils.valueOf(PotionType.class, potion.getType()),
+        return new org.bukkit.potion.Potion(EnumUtils.valueOf(PotionType.class, potion.getName()),
                 potion.getLevel(), potion.isSplash(), potion.isExtended());
     }
 
@@ -495,7 +495,7 @@ public class WrappersAdapter {
      * @return the tuple
      */
     public static @NotNull Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
-        String raw = enchantment.getEnchantment();
+        String raw = enchantment.getName();
         org.bukkit.enchantments.Enchantment actual;
         try {
             Object key = getNamespacedKey(raw);
