@@ -387,6 +387,8 @@ public class WrappersAdapter {
                 new Refl<>(player).callMethod("playSound", location, actual, actualCategory, sound.getVolume(), sound.getPitch());
                 return;
             }
+        } catch (IllegalArgumentException e) {
+            throw e;
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
         }
