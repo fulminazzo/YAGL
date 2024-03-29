@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public class Potion extends Wrapper {
-    private @NotNull String type;
+    private @NotNull String name;
     @Getter
     private int level;
     private boolean splash;
@@ -18,43 +18,43 @@ public class Potion extends Wrapper {
     /**
      * Instantiates a new Potion.
      *
-     * @param type the type
+     * @param name the type
      */
-    public Potion(final @NotNull String type) {
-        this(type, 1);
+    public Potion(final @NotNull String name) {
+        this(name, 1);
     }
 
     /**
      * Instantiates a new Potion.
      *
-     * @param type  the type
+     * @param name  the type
      * @param level the level
      */
-    public Potion(final @NotNull String type, final int level) {
-        this(type, level, false, false);
+    public Potion(final @NotNull String name, final int level) {
+        this(name, level, false, false);
     }
 
     /**
      * Instantiates a new Potion.
      *
-     * @param type   the type
+     * @param name   the type
      * @param level  the level
      * @param splash the splash
      */
-    public Potion(final @NotNull String type, final int level, final boolean splash) {
-        this(type, level, splash, false);
+    public Potion(final @NotNull String name, final int level, final boolean splash) {
+        this(name, level, splash, false);
     }
 
     /**
      * Instantiates a new Potion.
      *
-     * @param type     the type
+     * @param name     the type
      * @param level    the level
      * @param splash   the splash
      * @param extended the extended
      */
-    public Potion(final @NotNull String type, final int level, final boolean splash, final boolean extended) {
-        this.type = type;
+    public Potion(final @NotNull String name, final int level, final boolean splash, final boolean extended) {
+        this.name = name;
         setLevel(level);
         this.splash = splash;
         this.extended = extended;
@@ -63,11 +63,11 @@ public class Potion extends Wrapper {
     /**
      * Sets type.
      *
-     * @param type the type
+     * @param name the type
      * @return the type
      */
-    public Potion setType(final @NotNull String type) {
-        this.type = type;
+    public Potion setName(final @NotNull String name) {
+        this.name = name;
         return this;
     }
 
