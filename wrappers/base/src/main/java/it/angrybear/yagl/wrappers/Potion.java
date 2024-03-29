@@ -10,12 +10,6 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class Potion extends Wrapper {
     private @NotNull String type;
-    /**
-     * -- GETTER --
-     *  Gets amplifier.
-     *
-     * @return the amplifier
-     */
     @Getter
     private int level;
     private boolean splash;
