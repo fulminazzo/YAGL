@@ -78,6 +78,7 @@ class WrappersAdapterTest {
                 it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
         particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
                 new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
+        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(Item.class))));
         particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
