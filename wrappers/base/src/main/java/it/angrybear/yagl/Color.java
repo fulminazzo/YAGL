@@ -213,6 +213,16 @@ public class Color extends ClassEnum {
     /**
      * Gets the corresponding static color
      *
+     * @param index the index
+     * @return the color
+     */
+    public static Color valueOf(final int index) {
+        return valueOf(index, Color.class);
+    }
+
+    /**
+     * Gets the corresponding static color
+     *
      * @param color the color name
      * @return the color
      */
