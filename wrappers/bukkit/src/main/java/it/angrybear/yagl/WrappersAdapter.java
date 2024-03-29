@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.particles.BlockDataOption;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.utils.EnumUtils;
@@ -15,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -304,6 +306,21 @@ public class WrappersAdapter {
             if (o instanceof Color) parameters[i] = wColorToColor((Color) o);
         }
         return parameters;
+    }
+
+    /**
+     * Converts the given {@link Item} to an {@link ItemStack}.
+     *
+     * @param item the item
+     * @return the item stack
+     */
+    public static @Nullable ItemStack itemToItemStack(final @Nullable Item item) {
+        try {
+            Class<?> clazz = Class.forName("it.angrybear.yagl.utils.ItemUtils");
+            return new Refl<>(clazz).invokeMethod("itemToItemStack", item);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Could not find ItemUtils class. This function requires the 'item:bukkit' module to be added");
+        }
     }
 
     /**
