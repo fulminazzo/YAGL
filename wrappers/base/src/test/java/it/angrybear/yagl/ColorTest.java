@@ -47,4 +47,9 @@ class ColorTest {
             assertThrowsExactly(IllegalArgumentException.class, () -> new Refl<>(Color.class, (Object[]) params));
         }
     }
+
+    @Test
+    void testInvalidARGB() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> Color.fromARGB("invalid"));
+    }
 }
