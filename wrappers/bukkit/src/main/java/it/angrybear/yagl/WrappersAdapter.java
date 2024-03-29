@@ -266,6 +266,7 @@ public class WrappersAdapter {
     }
 
     private static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
+        if (option instanceof Item) return itemToItemStack((Item) option);
         if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
         if (dataType.equals(MaterialData.class)) {
             if (!(option instanceof Tuple))
