@@ -227,6 +227,14 @@ class WrappersAdapterTest {
     }
 
     @Test
+    void testPlaySoundInvalidCategory() {
+        Player player = mock(Player.class);
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                WrappersAdapter.playSound(player, new it.angrybear.yagl.wrappers.Sound(Sound.BLOCK_AZALEA_FALL.name(),
+                        1f, 1f, "hostiles")));
+    }
+
+    @Test
     void testCustomPlaySound() {
         it.angrybear.yagl.wrappers.Sound sound = new it.angrybear.yagl.wrappers.Sound(
                 "custom_sound",10, 2, SoundCategory.BLOCKS.name());
