@@ -502,11 +502,11 @@ public class WrappersAdapter {
         try {
             Object key = getNamespacedKey(raw);
             actual = new Refl<>(org.bukkit.enchantments.Enchantment.class).invokeMethod("getByKey", key);
+            if (actual == null) throw new Exception("Cannot find from getKey");
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
             actual = EnumUtils.valueOf(org.bukkit.enchantments.Enchantment.class, raw, "getByName");
         }
-        if (actual == null) throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         return new Tuple<>(actual, enchantment.getLevel());
     }
 
