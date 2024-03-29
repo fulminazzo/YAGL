@@ -10,37 +10,37 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 public class Enchantment extends Wrapper {
-    private @NotNull String enchantment;
+    private @NotNull String name;
     private int level;
 
     /**
      * Instantiates a new Enchantment.
      *
-     * @param enchantment the enchantment
+     * @param name the enchantment
      */
-    public Enchantment(final @NotNull String enchantment) {
-        this(enchantment, 1);
+    public Enchantment(final @NotNull String name) {
+        this(name, 1);
     }
 
     /**
      * Instantiates a new Enchantment.
      *
-     * @param enchantment the enchantment
+     * @param name the enchantment
      * @param level       the level (1 is the lowest)
      */
-    public Enchantment(final @NotNull String enchantment, final int level) {
-        this.enchantment = enchantment;
+    public Enchantment(final @NotNull String name, final int level) {
+        this.name = name;
         setLevel(level);
     }
 
     /**
      * Sets enchantment.
      *
-     * @param enchantment the enchantment
+     * @param name the enchantment
      * @return this enchantment
      */
-    public Enchantment setEnchantment(final @NotNull String enchantment) {
-        this.enchantment = enchantment;
+    public Enchantment setName(final @NotNull String name) {
+        this.name = name;
         return this;
     }
 
@@ -64,6 +64,6 @@ public class Enchantment extends Wrapper {
      */
     public boolean compareLevels(final @Nullable Enchantment enchantment) {
         if (enchantment == null) return false;
-        return this.enchantment.equalsIgnoreCase(enchantment.getEnchantment()) && this.level <= enchantment.getLevel();
+        return this.name.equalsIgnoreCase(enchantment.getName()) && this.level <= enchantment.getLevel();
     }
 }
