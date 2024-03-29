@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -232,6 +233,14 @@ class WrappersAdapterTest {
     void testEnchantmentsConversion(org.bukkit.enchantments.Enchantment expected) {
         Enchantment enchantment = WrappersAdapter.enchantToWEnchant(expected);
         assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getKey());
+    }
+
+    @Test
+    void testNoConstructorDataTypeProvided() {
+        Refl<?> refl = new Refl<>(WrappersAdapter.class);
+        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
+                ParticleType.REDSTONE.create(it.angrybear.yagl.Color.RED, 3f), org.bukkit.Particle.class,
+                (Function<?, Class<?>>) s -> Item.class));
     }
 
     private static class MockPotionEffect extends PotionEffectType {
