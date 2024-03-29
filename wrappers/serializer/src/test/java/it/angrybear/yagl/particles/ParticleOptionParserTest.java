@@ -2,6 +2,7 @@ package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
+import it.angrybear.yagl.wrappers.Potion;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,7 @@ class ParticleOptionParserTest {
                 new DustTransitionParticleOption(Color.BLACK, Color.WHITE, 3f),
                 new BlockDataOption("oak_fence", "east=false,north=false,south=false,waterlogged=false,west=false"),
                 new MaterialDataOption("oak_fence", 2),
+                new PotionParticleOption(new Potion("strength", 2, true))
         };
     }
 
