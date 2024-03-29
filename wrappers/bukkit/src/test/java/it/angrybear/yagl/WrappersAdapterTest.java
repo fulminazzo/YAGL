@@ -154,6 +154,37 @@ class WrappersAdapterTest {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("getTestParticles")
+    void testWorldSpawnParticle(Particle particle) {
+        // Initialize Bukkit variables
+        Server server = mock(Server.class);
+        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
+
+        World world = mock(World.class);
+
+        WrappersAdapter.spawnParticle(world, particle, 0, 0, 0, 1);
+
+        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
+        if (particle.getOption() == null) {
+            verify(world).spawnParticle(particleArg.capture(),
+                    any(Location.class), any(int.class),
+                    any(double.class), any(double.class), any(double.class));
+
+            assertEquals(particle.getType(), particleArg.getValue().name());
+        } else {
+            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
+            verify(world).spawnParticle(particleArg.capture(),
+                    any(Location.class), any(int.class),
+                    any(double.class), any(double.class), any(double.class),
+                    extra.capture());
+
+            assertEquals(particle.getType(), particleArg.getValue().name());
+            assertNotNull(extra.getValue());
+        }
+    }
+
     @Test
     void testSpawnItemCrack() {
         // Initialize Bukkit variables
