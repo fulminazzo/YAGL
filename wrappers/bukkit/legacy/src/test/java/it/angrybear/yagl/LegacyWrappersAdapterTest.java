@@ -26,6 +26,10 @@ import static org.mockito.Mockito.*;
 
 public class LegacyWrappersAdapterTest {
 
+    private static it.angrybear.yagl.Color[] getColors() {
+        return it.angrybear.yagl.Color.values();
+    }
+
     private static Particle[] getTestLegacyParticles() {
         List<Particle> particles = new ArrayList<>();
         for (LegacyParticleType<?> type : LegacyParticleType.legacyValues()) particles.add(type.create());
@@ -84,5 +88,12 @@ public class LegacyWrappersAdapterTest {
         org.bukkit.potion.PotionEffect potionEffect = new org.bukkit.potion.PotionEffect(type, 10 * 20, 0, false, false);
         assertEquals(new PotionEffect(type.getName(), 10, 1, false, true),
                 WrappersAdapter.potionEffectToWPotionEffect(potionEffect));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getColors")
+    void testColorConversion(it.angrybear.yagl.Color expected) {
+        org.bukkit.Color color = WrappersAdapter.wColorToColor(expected);
+        assertEquals(expected, WrappersAdapter.colorToWColor(color));
     }
 }
