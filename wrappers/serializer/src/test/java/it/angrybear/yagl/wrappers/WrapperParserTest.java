@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.SerializeUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.exceptions.YAMLException;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,8 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class WrapperParserTest {
 
@@ -59,6 +59,12 @@ class WrapperParserTest {
             assertEquals(expected, w);
     }
 
+    @Test
+    void testSaveAndLoadInvalidWrapper() {
+        Wrapper expected = new MockWrapper();
+        assertThrowsExactly(YAMLException.class, () -> saveAndLoad(expected));
+    }
+
     @SuppressWarnings("ReassignedVariable")
     private @Nullable <T extends Wrapper> List<T> saveAndLoad(T t) throws IOException {
         WrapperParser.addAllParsers();
@@ -87,5 +93,14 @@ class WrapperParserTest {
 
         configuration = new FileConfiguration(file);
         return (List<T>) configuration.getList(name, t.getClass());
+    }
+
+    private static class MockWrapper extends Wrapper {
+        private final String name = "mock";
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
     }
 }
