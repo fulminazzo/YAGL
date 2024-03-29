@@ -293,6 +293,27 @@ class WrappersAdapterTest {
         assertEquals(sound.getCategory(), categoryArg.getValue().name());
     }
 
+    @Test
+    void testCustomPlaySoundNoCategory() {
+        it.angrybear.yagl.wrappers.Sound sound = new it.angrybear.yagl.wrappers.Sound(
+                "custom_sound",10, 2);
+        Player player = mock(Player.class);
+
+        when(player.getLocation()).thenReturn(new Location(null, 0, 1, 0));
+
+        WrappersAdapter.playCustomSound(player, sound);
+
+        ArgumentCaptor<String> soundArg = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Float> volumeArg = ArgumentCaptor.forClass(Float.class);
+        ArgumentCaptor<Float> pitchArg = ArgumentCaptor.forClass(Float.class);
+        verify(player).playSound(any(Location.class), soundArg.capture(), volumeArg.capture(), pitchArg.capture());
+
+        assertEquals(sound.getName(), soundArg.getValue());
+
+        assertEquals(sound.getVolume(), volumeArg.getValue());
+        assertEquals(sound.getPitch(), pitchArg.getValue());
+    }
+
     @ParameterizedTest
     @MethodSource("getPotionEffects")
     void testPotionsConversion(org.bukkit.potion.PotionEffect expected) {
