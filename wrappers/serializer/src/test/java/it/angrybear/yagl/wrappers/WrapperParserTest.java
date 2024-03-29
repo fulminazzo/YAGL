@@ -65,6 +65,12 @@ class WrapperParserTest {
         assertThrowsExactly(YAMLException.class, () -> saveAndLoad(expected));
     }
 
+    @Test
+    void testSaveAndLoadInvalidFieldsWrapper() {
+        Wrapper expected = new MockFieldWrapper(new RuntimeException());
+        assertThrowsExactly(IllegalArgumentException.class, () -> saveAndLoad(expected));
+    }
+
     @SuppressWarnings("ReassignedVariable")
     private @Nullable <T extends Wrapper> List<T> saveAndLoad(T t) throws IOException {
         WrapperParser.addAllParsers();
@@ -101,6 +107,19 @@ class WrapperParserTest {
         @Override
         public String getName() {
             return this.name;
+        }
+    }
+
+    private static class MockFieldWrapper extends Wrapper {
+        private final Exception exception;
+
+        public MockFieldWrapper(Exception exception) {
+            this.exception = exception;
+        }
+
+        @Override
+        public String getName() {
+            return "mock";
         }
     }
 }
