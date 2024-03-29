@@ -308,6 +308,17 @@ class WrappersAdapterTest {
     }
 
     @Test
+    void testEnchantmentConversionByName() {
+        org.bukkit.enchantments.Enchantment expected = new MockEnchantment(org.bukkit.enchantments.Enchantment.ARROW_FIRE.getKey());
+        // Register enchantments
+        Map<String, org.bukkit.enchantments.Enchantment> byName = new Refl<>(org.bukkit.enchantments.Enchantment.class)
+                .getFieldObject("byName");
+        if (byName != null) byName.put(expected.getName(), expected);
+        Enchantment enchantment = new Enchantment(expected.getName());
+        assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getKey());
+    }
+
+    @Test
     void testInvalidClassProvided() {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
