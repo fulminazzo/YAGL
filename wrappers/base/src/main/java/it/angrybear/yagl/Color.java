@@ -258,4 +258,11 @@ public class Color extends ClassEnum {
         if (o instanceof Color) return equals((Color) o);
         return super.equals(o);
     }
+
+    @Override
+    public String toString() {
+        String name = name();
+        if (name != null) return name;
+        return super.toString();
+    }
 }
