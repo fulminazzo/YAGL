@@ -10,6 +10,13 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class Potion extends Wrapper {
     private @NotNull String type;
+    /**
+     * -- GETTER --
+     *  Gets amplifier.
+     *
+     * @return the amplifier
+     */
+    @Getter
     private int level;
     private boolean splash;
     private boolean extended;
@@ -80,15 +87,6 @@ public class Potion extends Wrapper {
         if (level < 1) throw new IllegalArgumentException("Amplifier cannot be lower than 1");
         this.level = level;
         return this;
-    }
-
-    /**
-     * Gets amplifier.
-     *
-     * @return the amplifier
-     */
-    public int getLevel() {
-        return this.level - 1;
     }
 
     /**
