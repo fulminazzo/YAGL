@@ -73,4 +73,16 @@ public class LegacyWrappersAdapterTest {
         assertEquals(new org.bukkit.potion.PotionEffect(type, 10 * 20, 0, false, false),
                 WrappersAdapter.wPotionEffectToPotionEffect(potionEffect));
     }
+
+    @Test
+    void testPotionEffectToWPotionEffect() {
+        String name = "INCREASE_DAMAGE";
+        PotionEffectType type = mock(PotionEffectType.class);
+        when(type.getName()).thenReturn(name);
+        Map<String, PotionEffectType> map = new Refl<>(PotionEffectType.class).getFieldObject("byName");
+        map.put(name.toLowerCase(), type);
+        org.bukkit.potion.PotionEffect potionEffect = new org.bukkit.potion.PotionEffect(type, 10 * 20, 0, false, false);
+        assertEquals(new PotionEffect(type.getName(), 10, 1, false, true),
+                WrappersAdapter.potionEffectToWPotionEffect(potionEffect));
+    }
 }
