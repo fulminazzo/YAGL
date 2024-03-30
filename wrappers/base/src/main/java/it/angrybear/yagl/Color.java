@@ -205,7 +205,7 @@ public class Color extends ClassEnum {
     public @Nullable String name() {
         try {
             return super.name();
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }
