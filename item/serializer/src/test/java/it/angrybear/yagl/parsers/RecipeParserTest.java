@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +34,9 @@ class RecipeParserTest {
 
         recipes.add(new ShapelessRecipe("sl-recipe1"));
         ShapelessRecipe shapelessRecipe = new ShapelessRecipe("sl-recipe2");
-        for (int i = 0; i < 9; i++) shapelessRecipe.addIngredient(mock);
+        Item[] tmp = new Item[9];
+        Arrays.fill(tmp, mock);
+        shapelessRecipe.addIngredients(tmp);
         shapelessRecipe.setOutput(mock);
         recipes.add(shapelessRecipe);
 
