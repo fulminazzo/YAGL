@@ -14,14 +14,6 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public abstract class ClassEnum {
     private static final Map<Class<?>, EnumCache<?>> CACHE_MAP = new HashMap<>();
-    private final int index;
-
-    /**
-     * Instantiates a new Class enum.
-     */
-    public ClassEnum() {
-        this.index = getCache().getAndIncrementOrdinal();
-    }
 
     /**
      * Returns the index of the current object.
@@ -88,16 +80,10 @@ public abstract class ClassEnum {
     private static class EnumCache<T extends ClassEnum> {
         private final Class<T> clazz;
         private final Map<String, T> values;
-        private int ordinal;
 
         private EnumCache(Class<T> clazz) {
             this.clazz = clazz;
             this.values = new LinkedHashMap<>();
-            this.ordinal = 0;
-        }
-
-        public int getAndIncrementOrdinal() {
-            return this.ordinal++;
         }
 
         public int ordinal(final @NotNull T t) {
