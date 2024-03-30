@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A general class that represents a wrapper for another object.
  */
-abstract class Wrapper {
+public abstract class Wrapper {
 
     /**
      * Gets name.
