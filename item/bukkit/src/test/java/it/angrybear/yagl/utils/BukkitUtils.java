@@ -32,6 +32,7 @@ public class BukkitUtils {
                     return recipe;
             return null;
         });
+        when(server.addRecipe(any())).thenAnswer(r -> RECIPES.add(r.getArgument(0)));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
     }
 
