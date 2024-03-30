@@ -123,5 +123,21 @@ public abstract class ClassEnum {
         public int getAndIncrementOrdinal() {
             return this.ordinal++;
         }
+
+        public T[] values() {
+            if (this.values.isEmpty()) fillValues();
+            return this.values.values().toArray((T[]) Array.newInstance(this.clazz, 0));
+        }
+
+        private void fillValues() {
+            for (Field field : this.clazz.getDeclaredFields())
+                if (field.getType().equals(this.clazz))
+                    try {
+                        field.setAccessible(true);
+                        this.values.put(field.getName().toUpperCase(), (T) field.get(this.clazz));
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+        }
     }
 }
