@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class BukkitUtils {
             return null;
         });
         when(server.addRecipe(any())).thenAnswer(r -> RECIPES.add(r.getArgument(0)));
+        when(server.recipeIterator()).thenAnswer(r -> RECIPES.iterator());
         new Refl<>(Bukkit.class).setFieldObject("server", server);
     }
 
