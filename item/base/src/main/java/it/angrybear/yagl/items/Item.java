@@ -162,7 +162,7 @@ public interface Item {
      * @return true if it does
      */
     default boolean hasEnchantment(final @NotNull String enchantment) {
-        return getEnchantments().stream().anyMatch(e -> e.getEnchantment().equalsIgnoreCase(enchantment));
+        return getEnchantments().stream().anyMatch(e -> e.getName().equalsIgnoreCase(enchantment));
     }
 
     /**
@@ -182,7 +182,7 @@ public interface Item {
      * @return the enchantment level
      */
     default int getEnchantmentLevel(final @NotNull Enchantment enchantment) {
-        return getEnchantmentLevel(enchantment.getEnchantment());
+        return getEnchantmentLevel(enchantment.getName());
     }
 
     /**
@@ -192,7 +192,7 @@ public interface Item {
      * @return the enchantment level
      */
     default int getEnchantmentLevel(final @NotNull String enchantment) {
-        return getEnchantments().stream().filter(e -> e.getEnchantment().equalsIgnoreCase(enchantment)).map(Enchantment::getLevel).findFirst().orElse(-1);
+        return getEnchantments().stream().filter(e -> e.getName().equalsIgnoreCase(enchantment)).map(Enchantment::getLevel).findFirst().orElse(-1);
     }
 
     /**
