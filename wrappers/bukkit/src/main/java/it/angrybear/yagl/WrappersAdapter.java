@@ -541,7 +541,7 @@ public class WrappersAdapter {
     public static Object getNamespacedKey(final @NotNull String key, final @NotNull String value) {
         try {
             Class<?> clazz = Class.forName("org.bukkit.NamespacedKey");
-            return new Refl<>(clazz).invokeMethod(key, value);
+            return new Refl<>(clazz, key, value).getObject();
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException("NamespacedKey did not exist in this version of Minecraft");
         }
