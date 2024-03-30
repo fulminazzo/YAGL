@@ -5,10 +5,7 @@ import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * An abstract class that allows to "convert" classes to enums by providing the most three common methods:
@@ -110,5 +107,21 @@ public abstract class ClassEnum {
         for (int i = 0; i < types.size(); i++)
             ts[i] = types.get(i);
         return ts;
+    }
+
+    private static class EnumCache<T extends ClassEnum> {
+        private final Class<T> clazz;
+        private final Map<String, T> values;
+        private int ordinal;
+
+        private EnumCache(Class<T> clazz) {
+            this.clazz = clazz;
+            this.values = new LinkedHashMap<>();
+            this.ordinal = 0;
+        }
+
+        public int getAndIncrementOrdinal() {
+            return this.ordinal++;
+        }
     }
 }
