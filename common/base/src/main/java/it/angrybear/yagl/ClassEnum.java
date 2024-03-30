@@ -92,7 +92,7 @@ public abstract class ClassEnum {
             for (int i = 0; i < values.size(); i++)
                 if (t.hashCode() == values.get(i).hashCode())
                     return i;
-            throw new IllegalArgumentException(String.format("Could not find ordinal of object '%s'", t));
+            throw new IllegalArgumentException(String.format("Could not find ordinal of object '%s'", printObject(t)));
         }
 
         public String name(final @NotNull T t) {
@@ -100,7 +100,7 @@ public abstract class ClassEnum {
             for (String k : this.values.keySet())
                 if (t.hashCode() == this.values.get(k).hashCode())
                     return k;
-            throw new IllegalArgumentException(String.format("Could not find name of object '%s'", t));
+            throw new IllegalArgumentException(String.format("Could not find name of object '%s'", printObject(t)));
         }
 
         public T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
@@ -117,6 +117,11 @@ public abstract class ClassEnum {
         public T[] values() {
             checkValues();
             return this.values.values().toArray((T[]) Array.newInstance(this.clazz, 0));
+        }
+
+        @NotNull
+        private static <T extends ClassEnum> String printObject(@NotNull T t) {
+            return t.getClass().getCanonicalName() + "@" + t.hashCode();
         }
 
         private void checkValues() {
