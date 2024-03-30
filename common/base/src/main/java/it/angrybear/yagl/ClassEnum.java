@@ -124,6 +124,13 @@ public abstract class ClassEnum {
             return this.ordinal++;
         }
 
+        public String name(final @NotNull T t) {
+            for (String k : this.values.keySet())
+                if (t.hashCode() == this.values.get(k).hashCode())
+                    return k;
+            throw new IllegalStateException(String.format("Could not find name of object '%s'", t));
+        }
+
         public T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
             if (this.values.isEmpty()) fillValues();
             for (T t : this.values.values()) if (t.ordinal() == index) return t;
