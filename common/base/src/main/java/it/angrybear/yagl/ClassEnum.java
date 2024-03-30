@@ -38,20 +38,11 @@ public abstract class ClassEnum {
      * @return the name
      */
     public String name() {
-        Class<?> clazz = getClass();
-        for (Field field : clazz.getDeclaredFields())
-            if (field.getType().equals(clazz))
-                try {
-                    Object o = field.get(clazz);
-                    if (o.equals(this)) return field.getName();
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        throw new IllegalStateException("Unreachable code");
+        return getCache().name(this);
     }
 
     /**
-     * Gets the object from its index, returned by {@link #ordinal()}..
+     * Gets the field from its index, returned by {@link #ordinal()}..
      *
      * @param <T>   the type parameter
      * @param index the index
@@ -60,51 +51,30 @@ public abstract class ClassEnum {
      */
     protected static <T extends ClassEnum> T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index,
                                                      final @NotNull Class<T> clazz) {
-        return values(clazz)[index];
+        return getCache(clazz).valueOf(index);
     }
 
     /**
-     * Gets the object from its name.
+     * Gets the field from its name.
      *
      * @param <T>   the type parameter
      * @param name  the name
      * @param clazz the clazz
-     * @return the object
+     * @return the field
      */
     protected static <T extends ClassEnum> T valueOf(final @NotNull String name, final @NotNull Class<T> clazz) {
-        for (Field field : clazz.getDeclaredFields())
-            if (field.getType().equals(clazz))
-                try {
-                    field.setAccessible(true);
-                    T t = (T) field.get(clazz);
-                    if (t.name().equalsIgnoreCase(name)) return t;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        return null;
+        return getCache(clazz).valueOf(name);
     }
 
     /**
-     * Gets all the object in an array.
+     * Gets all the fields in an array.
      *
      * @param <T>   the type parameter
      * @param clazz the clazz
-     * @return the objects
+     * @return the fields
      */
     protected static <T extends ClassEnum> T[] values(final @NotNull Class<T> clazz) {
-        List<T> types = new LinkedList<>();
-        for (Field field : clazz.getDeclaredFields())
-            if (field.getType().equals(clazz))
-                try {
-                    field.setAccessible(true);
-                    types.add((T) field.get(clazz));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        T[] ts = (T[]) Array.newInstance(clazz, types.size());
-        for (int i = 0; i < types.size(); i++)
-            ts[i] = types.get(i);
-        return ts;
+        return getCache(clazz).values();
     }
 
     private <T extends ClassEnum> EnumCache<T> getCache() {
