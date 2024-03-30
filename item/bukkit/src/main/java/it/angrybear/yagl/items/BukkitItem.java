@@ -3,6 +3,7 @@ package it.angrybear.yagl.items;
 import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.wrappers.Enchantment;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,16 @@ public interface BukkitItem extends Item {
             }
         }
         return itemStack;
+    }
+
+    /**
+     * Sets material.
+     *
+     * @param material the material
+     * @return this item
+     */
+    default BukkitItem setMaterial(final @NotNull Material material) {
+        return setMaterial(material.name());
     }
 
     @Override
