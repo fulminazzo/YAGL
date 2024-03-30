@@ -20,9 +20,7 @@ public abstract class ClassEnum {
      * Instantiates a new Class enum.
      */
     public ClassEnum() {
-        final Class<?> clazz = getClass();
-        this.index = CLASSES_ORDINALS.getOrDefault(clazz, 0);
-        CLASSES_ORDINALS.put(clazz, this.index + 1);
+        this.index = getCache().getAndIncrementOrdinal();
     }
 
     /**
@@ -107,6 +105,10 @@ public abstract class ClassEnum {
         for (int i = 0; i < types.size(); i++)
             ts[i] = types.get(i);
         return ts;
+    }
+
+    private EnumCache<? extends ClassEnum> getCache() {
+        return getCache(getClass());
     }
 
     private static <T extends ClassEnum> EnumCache<T> getCache(final @NotNull Class<T> clazz) {
