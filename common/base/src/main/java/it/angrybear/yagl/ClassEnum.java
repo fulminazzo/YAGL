@@ -13,7 +13,7 @@ import java.util.*;
  */
 @SuppressWarnings("unchecked")
 public abstract class ClassEnum {
-    private static final Map<Class<?>, Integer> CLASSES_ORDINALS = new HashMap<>();
+    private static final Map<Class<?>, EnumCache<?>> CACHE_MAP = new HashMap<>();
     private final int index;
 
     /**
@@ -107,6 +107,10 @@ public abstract class ClassEnum {
         for (int i = 0; i < types.size(); i++)
             ts[i] = types.get(i);
         return ts;
+    }
+
+    private static <T extends ClassEnum> EnumCache<T> getCache(final @NotNull Class<T> clazz) {
+        return (EnumCache<T>) CACHE_MAP.computeIfAbsent(clazz, c -> new EnumCache<>((Class<T>) c));
     }
 
     private static class EnumCache<T extends ClassEnum> {
