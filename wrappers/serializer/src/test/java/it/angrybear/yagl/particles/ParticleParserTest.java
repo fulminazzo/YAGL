@@ -2,6 +2,7 @@ package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
+import it.angrybear.yagl.wrappers.Potion;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,6 +40,27 @@ class ParticleParserTest {
         if (type.equals(ParticleType.DUST_COLOR_TRANSITION))
             expected = ParticleType.DUST_COLOR_TRANSITION.create(
                     new DustTransitionParticleOption(Color.WHITE, Color.BLACK, 5.0f));
+        if (type.equals(LegacyParticleType.SMOKE))
+            expected = LegacyParticleType.SMOKE.create("NORTH");
+        if (type.equals(LegacyParticleType.POTION_BREAK))
+            expected = LegacyParticleType.POTION_BREAK.create(new Potion("strength", 2));
+        if (type.equals(LegacyParticleType.VILLAGER_PLANT_GROW))
+            expected = LegacyParticleType.VILLAGER_PLANT_GROW.create(10);
+        if (type.equals(LegacyParticleType.ITEM_BREAK))
+            expected = LegacyParticleType.ITEM_BREAK.create("DIAMOND_SWORD");
+        if (type.equals(LegacyParticleType.TILE_BREAK))
+            expected = LegacyParticleType.TILE_BREAK.create(new MaterialDataOption("stone", 1));
+        if (type.equals(LegacyParticleType.TILE_DUST))
+            expected = LegacyParticleType.TILE_DUST.create(new MaterialDataOption("stone", 1));
+        if (type.equals(LegacyParticleType.COMPOSTER_FILL_ATTEMPT))
+            expected = LegacyParticleType.COMPOSTER_FILL_ATTEMPT.create(true);
+        if (type.equals(LegacyParticleType.BONE_MEAL_USE))
+            expected = LegacyParticleType.BONE_MEAL_USE.create(7);
+        if (type.equals(LegacyParticleType.ELECTRIC_SPARK))
+            expected = LegacyParticleType.ELECTRIC_SPARK.create("X");
+        if (type.equals(LegacyParticleType.INSTANT_POTION_BREAK))
+            expected = LegacyParticleType.INSTANT_POTION_BREAK.create(Color.PURPLE);
+
 
         WrappersYAGLParser.addAllParsers();
 
