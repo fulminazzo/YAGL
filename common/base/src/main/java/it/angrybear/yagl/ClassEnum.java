@@ -101,6 +101,7 @@ public abstract class ClassEnum {
         }
 
         public String name(final @NotNull T t) {
+            if (this.values.isEmpty()) fillValues();
             for (String k : this.values.keySet())
                 if (t.hashCode() == this.values.get(k).hashCode())
                     return k;
