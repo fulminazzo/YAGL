@@ -61,8 +61,8 @@ class ParticleParserTest {
         if (type.equals(LegacyParticleType.INSTANT_POTION_BREAK))
             expected = LegacyParticleType.INSTANT_POTION_BREAK.create(Color.PURPLE);
 
-
-        WrappersYAGLParser.addAllParsers();
+        if (FileConfiguration.getParser(Particle.class) == null)
+            WrappersYAGLParser.addAllParsers();
 
         File file = new File("build/resources/test/particles.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
