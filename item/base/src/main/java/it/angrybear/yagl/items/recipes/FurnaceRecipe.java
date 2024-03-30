@@ -3,7 +3,6 @@ package it.angrybear.yagl.items.recipes;
 import it.angrybear.yagl.items.Item;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -13,7 +12,6 @@ import java.util.List;
  * An implementation of {@link Recipe} to express any recipe in the furnace in Minecraft.
  */
 @Getter
-@Setter
 public class FurnaceRecipe implements Recipe {
     @Getter
     private final @NotNull String id;
@@ -40,6 +38,28 @@ public class FurnaceRecipe implements Recipe {
      */
     public @NotNull FurnaceRecipe setIngredient(final @NotNull Item ingredient) {
         this.ingredient = ingredient.copy(Item.class);
+        return this;
+    }
+
+    /**
+     * Sets experience.
+     *
+     * @param experience the experience
+     * @return this recipe
+     */
+    public @NotNull FurnaceRecipe setExperience(final float experience) {
+        this.experience = experience;
+        return this;
+    }
+
+    /**
+     * Sets cooking time.
+     *
+     * @param cookingTime the cooking time
+     * @return this recipe
+     */
+    public @NotNull FurnaceRecipe setCookingTime(final int cookingTime) {
+        this.cookingTime = cookingTime;
         return this;
     }
 
