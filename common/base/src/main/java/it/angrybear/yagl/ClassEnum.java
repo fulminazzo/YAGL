@@ -124,6 +124,12 @@ public abstract class ClassEnum {
             return this.ordinal++;
         }
 
+        public T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
+            if (this.values.isEmpty()) fillValues();
+            for (T t : this.values.values()) if (t.ordinal() == index) return t;
+            throw new IllegalArgumentException(String.format("Could not find %s with index '%s'", this.clazz.getSimpleName().toLowerCase(), index));
+        }
+
         public T valueOf(final @NotNull String name) {
             if (this.values.isEmpty()) fillValues();
             return this.values.get(name.toUpperCase());
