@@ -107,8 +107,8 @@ public abstract class ClassEnum {
         return ts;
     }
 
-    private EnumCache<? extends ClassEnum> getCache() {
-        return getCache(getClass());
+    private <T extends ClassEnum> EnumCache<T> getCache() {
+        return getCache((Class<T>) getClass());
     }
 
     private static <T extends ClassEnum> EnumCache<T> getCache(final @NotNull Class<T> clazz) {
