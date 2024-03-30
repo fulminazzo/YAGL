@@ -124,6 +124,11 @@ public abstract class ClassEnum {
             return this.ordinal++;
         }
 
+        public T valueOf(final @NotNull String name) {
+            if (this.values.isEmpty()) fillValues();
+            return this.values.get(name.toUpperCase());
+        }
+
         public T[] values() {
             if (this.values.isEmpty()) fillValues();
             return this.values.values().toArray((T[]) Array.newInstance(this.clazz, 0));
