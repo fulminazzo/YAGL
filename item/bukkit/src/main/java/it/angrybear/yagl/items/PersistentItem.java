@@ -1,6 +1,5 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.actions.BukkitItemAction;
 import it.angrybear.yagl.actions.ClickItemAction;
 import it.angrybear.yagl.actions.InteractItemAction;
 import it.angrybear.yagl.items.fields.ItemFlag;
@@ -67,8 +66,7 @@ public class PersistentItem extends BukkitItemImpl {
 
     @Override
     public @NotNull <M extends ItemMeta> ItemStack create(@Nullable Class<M> itemMetaClass, Consumer<M> metaFunction) {
-        if (!PersistentListener.isInitialized())
-            Logger.getGlobal().warning(WARNING_MESSAGE);
+        if (!PersistentListener.isInitialized()) Logger.getGlobal().warning(WARNING_MESSAGE);
         return super.create(itemMetaClass, metaFunction);
     }
 
@@ -91,7 +89,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param interactAction the interact action
      */
     public void interact(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull Action interactAction) {
-        if (this.interactAction != null) BukkitItemAction.runInteractItemAction(this.interactAction, player, itemStack, interactAction);
+        if (this.interactAction != null) this.interactAction.execute(player, itemStack, interactAction);
     }
 
     /**
@@ -114,7 +112,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param clickType the click type
      */
     public void click(final @NotNull Player player, final @NotNull ItemStack itemStack, final @NotNull ClickType clickType) {
-        if (this.clickAction != null) BukkitItemAction.runClickItemAction(this.clickAction, player, itemStack, clickType);
+        if (this.clickAction != null) this.clickAction.execute(player, itemStack, clickType);
     }
 
     /**
