@@ -78,28 +78,32 @@ public class ShapedRecipe implements Recipe {
      */
     @Getter
     public static class Shape {
+        static final int MIN_COLUMNS = 1, MAX_COLUMNS = 3;
+        static final int MIN_ROWS = 1, MAX_ROWS = 3;
         private int rows;
         private int columns;
 
         /**
          * Sets columns.
+         * Should be between {@link #MIN_COLUMNS} and {@link #MAX_COLUMNS}.
          *
          * @param columns the columns
          */
-        public void setColumns(int columns) {
-            if (columns < 1 || columns > 3)
-                throw new IllegalArgumentException("Columns size should be between 1 and 3");
+        public void setColumns(final int columns) {
+            if (columns < MIN_COLUMNS || columns > MAX_COLUMNS)
+                throw new IllegalArgumentException(String.format("Columns size should be between %s and %s", MIN_COLUMNS, MAX_COLUMNS));
             this.columns = columns;
         }
 
         /**
          * Sets rows.
+         * Should be between {@link #MIN_ROWS} and {@link #MAX_ROWS}.
          *
          * @param rows the rows
          */
-        public void setRows(int rows) {
-            if (rows < 1 || rows > 3)
-                throw new IllegalArgumentException("Rows size should be between 1 and 3");
+        public void setRows(final int rows) {
+            if (rows < MIN_ROWS || rows > MAX_ROWS)
+                throw new IllegalArgumentException(String.format("Rows size should be between %s and %s", MIN_ROWS, MAX_ROWS));
             this.rows = rows;
         }
 
