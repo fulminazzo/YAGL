@@ -29,7 +29,12 @@ public class ParticleParser extends YAMLParser<Particle> {
             if (particleSection == null) return null;
             String type = particleSection.getString("type");
             if (type == null) throw new NullPointerException("'type' cannot be null");
-            ParticleType<?> particleType = EnumUtils.valueOf(ParticleType.class, type);
+            AParticleType<?> particleType;
+            try {
+                particleType = EnumUtils.valueOf(LegacyParticleType.class, type);
+            } catch (IllegalArgumentException e) {
+                particleType = EnumUtils.valueOf(ParticleType.class, type);
+            }
 
             ParticleOption<?> option = null;
 
