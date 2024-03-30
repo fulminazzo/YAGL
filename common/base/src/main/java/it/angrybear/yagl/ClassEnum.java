@@ -100,6 +100,15 @@ public abstract class ClassEnum {
             return this.ordinal++;
         }
 
+        public int ordinal(final @NotNull T t) {
+            if (this.values.isEmpty()) fillValues();
+            List<T> values = new LinkedList<>(this.values.values());
+            for (int i = 0; i < values.size(); i++)
+                if (t.hashCode() == values.get(i).hashCode())
+                    return i;
+            throw new IllegalStateException(String.format("Could not find ordinal of object '%s'", t));
+        }
+
         public String name(final @NotNull T t) {
             if (this.values.isEmpty()) fillValues();
             for (String k : this.values.keySet())
