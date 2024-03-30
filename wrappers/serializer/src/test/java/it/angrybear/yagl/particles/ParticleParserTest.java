@@ -10,20 +10,23 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ParticleParserTest {
 
-    private static ParticleType<?>[] getTestOptions() {
-        return ParticleType.values();
+    private static AParticleType<?>[] getTestOptions() {
+        return Stream.concat(Arrays.stream(ParticleType.values()), Arrays.stream(LegacyParticleType.values()))
+                .toArray(AParticleType[]::new);
     }
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource("getTestOptions")
-    void testTypes(ParticleType<?> type) throws IOException {
+    void testTypes(AParticleType<?> type) throws IOException {
         Particle expected = type.create();
         if (type.equals(ParticleType.BLOCK_CRACK) || type.equals(ParticleType.BLOCK_DUST) || type.equals(ParticleType.FALLING_DUST))
             expected = ((ParticleType<BlockDataOption>) type).create(new BlockDataOption("oak_log[axis=y]"));
