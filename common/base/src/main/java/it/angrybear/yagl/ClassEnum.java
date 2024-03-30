@@ -101,7 +101,7 @@ public abstract class ClassEnum {
         }
 
         public int ordinal(final @NotNull T t) {
-            if (this.values.isEmpty()) fillValues();
+            checkValues();
             List<T> values = new LinkedList<>(this.values.values());
             for (int i = 0; i < values.size(); i++)
                 if (t.hashCode() == values.get(i).hashCode())
@@ -110,7 +110,7 @@ public abstract class ClassEnum {
         }
 
         public String name(final @NotNull T t) {
-            if (this.values.isEmpty()) fillValues();
+            checkValues();
             for (String k : this.values.keySet())
                 if (t.hashCode() == this.values.get(k).hashCode())
                     return k;
@@ -118,22 +118,23 @@ public abstract class ClassEnum {
         }
 
         public T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
-            if (this.values.isEmpty()) fillValues();
+            checkValues();
             for (T t : this.values.values()) if (t.ordinal() == index) return t;
             throw new IllegalArgumentException(String.format("Could not find %s with index '%s'", this.clazz.getSimpleName().toLowerCase(), index));
         }
 
         public T valueOf(final @NotNull String name) {
-            if (this.values.isEmpty()) fillValues();
+            checkValues();
             return this.values.get(name.toUpperCase());
         }
 
         public T[] values() {
-            if (this.values.isEmpty()) fillValues();
+            checkValues();
             return this.values.values().toArray((T[]) Array.newInstance(this.clazz, 0));
         }
 
-        private void fillValues() {
+        private void checkValues() {
+            if (!this.values.isEmpty()) return;
             for (Field field : this.clazz.getDeclaredFields())
                 if (field.getType().equals(this.clazz))
                     try {
