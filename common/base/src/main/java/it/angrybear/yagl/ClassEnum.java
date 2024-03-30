@@ -29,7 +29,7 @@ public abstract class ClassEnum {
      * @return the index
      */
     public int ordinal() {
-        return this.index;
+        return getCache().ordinal(this);
     }
 
     /**
