@@ -105,9 +105,9 @@ class PersistentListenerTest {
                 new PlayerItemDamageEvent(player, itemStack, 10),
                 new BlockPlaceEvent(block, mock(BlockState.class), block, itemStack, player, true, EquipmentSlot.OFF_HAND),
                 new PlayerDropItemEvent(player, item),
-                new InventoryDragEvent(view, itemStack, new ItemStack(Material.STONE), false, new HashMap<>()),
+                new InventoryDragEvent(view, itemStack, new ItemStack(Material.AIR), false, new HashMap<>()),
                 new InventoryDragEvent(view, null, itemStack, false, new HashMap<>()),
-                new InventoryDragEvent(view, null, new ItemStack(Material.STONE), false, new HashMap<>(){{
+                new InventoryDragEvent(view, null, new ItemStack(Material.AIR), false, new HashMap<>(){{
                     put(18, itemStack);
                 }}),
         };
