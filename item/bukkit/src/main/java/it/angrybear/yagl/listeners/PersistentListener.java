@@ -34,6 +34,7 @@ public class PersistentListener implements Listener {
      * This is used to prevent double calls.
      */
     private static final long INTERACT_DELAY = 10;
+    private static final int SLEEP_TIME = 50;
     private final @NotNull Map<UUID, Long> lastUsed;
 
     /**
@@ -62,7 +63,7 @@ public class PersistentListener implements Listener {
         // Wait before restoring player contents.
         new Thread(() -> {
             try {
-                Thread.sleep(50);
+                Thread.sleep(SLEEP_TIME);
                 toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
             } catch (InterruptedException ignored) {
             }
