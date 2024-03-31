@@ -52,12 +52,14 @@ public class PersistentListener implements Listener {
         for (int i = 0; i < contents.length; i++) {
             int finalI = i;
             final ItemStack item = contents[i];
+            // Save every PersistentItem with the MAINTAIN action, remove if they have DISAPPEAR.
             findPersistentItem(item, p -> {
                 if (p.getDeathAction() == DeathAction.MAINTAIN) toRestore.put(finalI, p);
-                event.getDrops().remove(item);
+                if (p.getDeathAction() == DeathAction.DISAPPEAR) event.getDrops().remove(item);
             });
         }
         if (toRestore.isEmpty()) return;
+        // Wait before restoring player contents.
         new Thread(() -> {
             try {
                 Thread.sleep(50);
@@ -72,6 +74,7 @@ public class PersistentListener implements Listener {
         Player player = event.getPlayer();
         long lastUsed = this.lastUsed.getOrDefault(player.getUniqueId(), 0L);
         long now = new Date().getTime();
+        // Check that a double click is not happening.
         if (now < lastUsed + INTERACT_DELAY) return;
         this.lastUsed.put(player.getUniqueId(), now);
         interactedWithPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
@@ -113,8 +116,11 @@ public class PersistentListener implements Listener {
                 cancelled(event).accept(e);
         };
 
+        // Check current item.
         if (clickedWithPersistentItem(itemStack, player, type, ifPresent)) return;
+        // Check cursor.
         if (clickedWithPersistentItem(event.getCursor(), player, type, ifPresent)) return;
+        // Check if a number has been used from the keyboard to move the item.
         if (type.equals(ClickType.NUMBER_KEY)) {
             itemStack = playerInventory.getItem(event.getHotbarButton());
             clickedWithPersistentItem(itemStack, player, type, ifPresent);
@@ -129,7 +135,8 @@ public class PersistentListener implements Listener {
         if (clickedWithPersistentItem(event.getOldCursor(), player, type, cancelled(event))) return;
         Collection<ItemStack> items = event.getNewItems().values();
         for (ItemStack i : items)
-            if (clickedWithPersistentItem(i, player, type, p -> cancelled(event).accept(p))) return;
+            // Check every item from the new items, cancel on first one.
+            if (clickedWithPersistentItem(i, player, type, cancelled(event))) return;
     }
 
     private @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
@@ -171,7 +178,7 @@ public class PersistentListener implements Listener {
     /**
      * Checks if the current listener has been initialized at least once.
      *
-     * @return the boolean
+     * @return true if it is {@link #INITIALIZED}
      */
     public static boolean isInitialized() {
         return INITIALIZED;
