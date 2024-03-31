@@ -55,18 +55,7 @@ class PersistentListenerTest {
     }
 
     private static InventoryClickEvent[] inventoryClickEvents() {
-        Inventory inventory = mockInventory(9);
-        inventory.setItem(0, maintain.create());
-        Player player = getPlayer();
-
-        InventoryView view = getInventoryView();
-        when(view.getPlayer()).thenReturn(player);
-        when(view.getCursor()).thenAnswer(i -> cursor);
-        when(player.getOpenInventory()).thenReturn(view);
-        Inventory playerInv = player.getInventory();
-        when(view.getTopInventory()).thenReturn(inventory);
-        when(view.getBottomInventory()).thenReturn(playerInv);
-        when(view.getItem(any(int.class))).thenAnswer(i -> inventory.getItem(i.getArgument(0)));
+        InventoryView view = setupInventoryClickEventView();
 
         return new InventoryClickEvent[]{
                 new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
@@ -188,6 +177,26 @@ class PersistentListenerTest {
         Inventory inventory = mock(Inventory.class);
         InventoryView view = mock(InventoryView.class);
         when(view.getTopInventory()).thenReturn(inventory);
+        return view;
+    }
+
+    private static InventoryView setupInventoryClickEventView() {
+        Inventory inventory = mockInventory(9);
+        inventory.setItem(0, maintain.create());
+        Player player = getPlayer();
+
+        InventoryView view = getInventoryView();
+        when(view.getPlayer()).thenReturn(player);
+        when(view.getCursor()).thenAnswer(i -> cursor);
+        when(player.getOpenInventory()).thenReturn(view);
+        Inventory playerInv = player.getInventory();
+        when(view.getTopInventory()).thenReturn(inventory);
+        when(view.getBottomInventory()).thenReturn(playerInv);
+        when(view.getItem(any(int.class))).thenAnswer(i -> {
+            int slot = i.getArgument(0);
+            if (slot >= inventory.getSize()) return playerInv.getItem(slot);
+            return inventory.getItem(slot);
+        });
         return view;
     }
 }
