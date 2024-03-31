@@ -36,6 +36,7 @@ class PersistentListenerTest {
         Player player = getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
         contents[3] = this.maintain.create();
+        contents[4] = this.disappear.create();
         List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
 
         PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
