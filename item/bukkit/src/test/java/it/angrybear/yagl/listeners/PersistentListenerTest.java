@@ -49,14 +49,17 @@ class PersistentListenerTest {
     }
 
     private static Cancellable[] cancellableEvents() {
+        Player player = getPlayer();
+        ItemStack itemStack = maintain.create();
+        player.getInventory().setItem(0, itemStack);
         Block block = mock(Block.class);
         Item item = mock(Item.class);
-        when(item.getItemStack()).thenReturn(maintain.create());
+        when(item.getItemStack()).thenReturn(itemStack);
         return new Cancellable[]{
-                new PlayerItemConsumeEvent(getPlayer(), maintain.create(), EquipmentSlot.OFF_HAND),
-                new PlayerItemDamageEvent(getPlayer(), maintain.create(), 10),
-                new BlockPlaceEvent(block, mock(BlockState.class), block, maintain.create(), getPlayer(), true, EquipmentSlot.OFF_HAND),
-                new PlayerDropItemEvent(getPlayer(), item)
+                new PlayerItemConsumeEvent(player, itemStack, EquipmentSlot.OFF_HAND),
+                new PlayerItemDamageEvent(player, itemStack, 10),
+                new BlockPlaceEvent(block, mock(BlockState.class), block, itemStack, player, true, EquipmentSlot.OFF_HAND),
+                new PlayerDropItemEvent(player, item)
         };
     }
 
