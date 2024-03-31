@@ -34,7 +34,7 @@ public class PersistentListener implements Listener {
      * This is used to prevent double calls.
      */
     private static final long INTERACT_DELAY = 10;
-    private static final int SLEEP_TIME = 50;
+    static final int SLEEP_TIME = 50;
     private final @NotNull Map<UUID, Long> lastUsed;
 
     /**
