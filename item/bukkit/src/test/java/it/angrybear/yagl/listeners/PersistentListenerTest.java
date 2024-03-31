@@ -14,7 +14,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -37,6 +37,7 @@ class PersistentListenerTest {
     private static PersistentItem maintain, disappear;
     private static PersistentListener listener;
     private boolean clicked;
+    private static ItemStack cursor;
 
     @BeforeAll
     static void setAllUp() {
@@ -50,6 +51,39 @@ class PersistentListenerTest {
     void setUp() {
         this.clicked = false;
         maintain.onClick((i, c, a) -> clicked = true);
+    }
+
+    private static InventoryClickEvent[] inventoryClickEvents() {
+        Inventory inventory = mockInventory(9);
+        inventory.setItem(0, maintain.create());
+        Player player = getPlayer();
+
+        InventoryView view = getInventoryView();
+        when(view.getPlayer()).thenReturn(player);
+        when(view.getCursor()).thenAnswer(i -> cursor);
+        when(player.getOpenInventory()).thenReturn(view);
+        Inventory playerInv = player.getInventory();
+        when(view.getTopInventory()).thenReturn(inventory);
+        when(view.getBottomInventory()).thenReturn(playerInv);
+        when(view.getItem(any(int.class))).thenAnswer(i -> inventory.getItem(i.getArgument(0)));
+
+        return new InventoryClickEvent[]{
+                new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
+                new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 2, ClickType.LEFT, InventoryAction.CLONE_STACK),
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("inventoryClickEvents")
+    void simulateInventoryClick(InventoryClickEvent event) {
+        if (event.getRawSlot() == 2) cursor = maintain.create();
+        else cursor = null;
+
+        assertFalse(this.clicked);
+        assertFalse(event.isCancelled());
+        listener.on(event);
+        assertTrue(event.isCancelled());
+        assertTrue(this.clicked);
     }
 
     private static Cancellable[] cancellableEvents() {
@@ -128,16 +162,23 @@ class PersistentListenerTest {
 
     private static Player getPlayer() {
         UUID uuid = UUID.randomUUID();
-        ItemStack[] contents = new ItemStack[36];
+
+        Player player = mock(Player.class);
+        PlayerInventory inventory = mockInventory(36);
+        when(player.getInventory()).thenReturn(inventory);
+        when(player.getUniqueId()).thenReturn(uuid);
+        return player;
+    }
+
+    private static PlayerInventory mockInventory(int size) {
+        ItemStack[] contents = new ItemStack[size];
         PlayerInventory inventory = mock(PlayerInventory.class);
+        when(inventory.getSize()).thenReturn(contents.length);
         when(inventory.getContents()).thenReturn(contents);
         doAnswer(i -> contents[(int) i.getArgument(0)] = i.getArgument(1)).when(inventory).setItem(any(int.class), any(ItemStack.class));
         when(inventory.getItem(any(int.class))).thenAnswer(i -> contents[(int) i.getArgument(0)]);
         when(inventory.getHeldItemSlot()).thenReturn(0);
-        Player player = mock(Player.class);
-        when(player.getInventory()).thenReturn(inventory);
-        when(player.getUniqueId()).thenReturn(uuid);
-        return player;
+        return inventory;
     }
 
     private static InventoryView getInventoryView() {
