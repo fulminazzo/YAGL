@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class ItemAdapterTest {
 
@@ -94,5 +94,10 @@ class ItemAdapterTest {
 
         for (Field field : r1.getNonStaticFields())
             assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));
+    }
+
+    @Test
+    void testInvalidRecipeType() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> ItemAdapter.recipeToMinecraft(mock(it.angrybear.yagl.items.recipes.Recipe.class)));
     }
 }
