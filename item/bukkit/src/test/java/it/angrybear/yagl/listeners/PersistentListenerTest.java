@@ -4,13 +4,14 @@ import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -24,27 +25,27 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class PersistentListenerTest {
-    private PersistentItem maintain, disappear;
-    private PersistentListener listener;
+    private static PersistentItem maintain, disappear;
+    private static PersistentListener listener;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setAllUp() {
         BukkitUtils.setupServer();
-        this.maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
-        this.disappear = new PersistentItem(Material.GOLDEN_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
-        this.listener = new PersistentListener();
+        maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
+        disappear = new PersistentItem(Material.GOLDEN_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
+        listener = new PersistentListener();
     }
 
     @Test
     void simulatePlayerDeath() throws InterruptedException {
         Player player = getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
-        contents[3] = this.maintain.create();
-        contents[4] = this.disappear.create();
+        contents[3] = maintain.create();
+        contents[4] = disappear.create();
         List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
 
         PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
-        this.listener.on(event);
+        listener.on(event);
         // Simulate removal of contents
         Arrays.fill(contents, null);
 
@@ -53,28 +54,28 @@ class PersistentListenerTest {
         for (ItemStack i : drops) assertNull(i);
 
         List<ItemStack> copy = Arrays.asList(contents);
-        assertTrue(copy.contains(this.maintain.create()), "The contents should contain the maintain item");
-        assertFalse(copy.contains(this.disappear.create()), "The contents should not contain the disappear item");
+        assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
+        assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
     }
 
     @Test
     void simulateInteractEvent() {
         AtomicBoolean value = new AtomicBoolean(false);
-        this.maintain.onInteract((i, p, a) -> value.set(true));
+        maintain.onInteract((i, p, a) -> value.set(true));
 
         Player player = getPlayer();
-        PlayerInteractEvent event = new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, this.maintain.create(),
-                null, null, null);
-        this.listener.on(event);
+        PlayerInteractEvent event = new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, maintain.create(),
+                null, BlockFace.DOWN, null);
+        listener.on(event);
         assertTrue(value.get());
 
         // Simulate rapid click
         value.set(false);
-        this.listener.on(event);
+        listener.on(event);
         assertFalse(value.get());
     }
 
-    private Player getPlayer() {
+    private static Player getPlayer() {
         UUID uuid = UUID.randomUUID();
         ItemStack[] contents = new ItemStack[36];
         PlayerInventory inventory = mock(PlayerInventory.class);
