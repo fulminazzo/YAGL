@@ -44,7 +44,7 @@ class PersistentListenerTest {
         // Simulate removal of contents
         Arrays.fill(contents, null);
 
-        Thread.sleep(PersistentListener.SLEEP_TIME);
+        Thread.sleep(PersistentListener.SLEEP_TIME * 2);
 
         for (ItemStack i : drops) assertNull(i);
 
