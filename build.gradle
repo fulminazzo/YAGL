@@ -97,8 +97,6 @@ allprojects {
         testImplementation libs.mockito
     }
 
-    //TODO: remove
-    if (!"${project.name}".contains("wrappers"))
     test {
         useJUnitPlatform()
     }
