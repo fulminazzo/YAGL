@@ -51,6 +51,7 @@ class PersistentListenerTest {
     void setUp() {
         this.clicked = false;
         maintain.onClick((i, c, a) -> clicked = true);
+        cursor = null;
     }
 
     private static InventoryClickEvent[] inventoryClickEvents() {
@@ -78,7 +79,6 @@ class PersistentListenerTest {
     @MethodSource("inventoryClickEvents")
     void simulateInventoryClick(InventoryClickEvent event) {
         if (event.getRawSlot() == 2) cursor = maintain.create();
-        else cursor = null;
 
         assertFalse(this.clicked);
         assertFalse(event.isCancelled());
@@ -116,9 +116,10 @@ class PersistentListenerTest {
     @ParameterizedTest
     @MethodSource("cancellableEvents")
     void simulateCancellableEvent(Cancellable event) {
-        assertFalse(event.isCancelled());
+        assertFalse(this.clicked, "Expected clicked to be false");
+        assertFalse(event.isCancelled(), "Expected event to not be cancelled");
         new Refl<>(listener).callMethod("on", event);
-        assertTrue(event.isCancelled());
+        assertTrue(event.isCancelled(), "Expected event to be cancelled");
         if (event instanceof InventoryDragEvent)
             assertTrue(this.clicked, "Click action was not executed");
     }
