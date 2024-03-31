@@ -20,10 +20,10 @@ class ItemTest {
         Enchantment e1 = new Enchantment("mock-e", 1);
         item.addEnchantments(e1);
 
-        Enchantment e2 = new Enchantment("mock-e", 0);
+        Enchantment e2 = new Enchantment("mock-e", 2);
         item.addEnchantments(e2);
         assertEquals(1, item.getEnchantments().size(), "There should be only 1 enchantment");
-        assertEquals(1, item.getEnchantmentLevel("mock-e"));
+        assertEquals(2, item.getEnchantmentLevel("mock-e"));
 
         Enchantment e3 = new Enchantment("mock-e", 4);
         item.addEnchantments(e3);
@@ -37,7 +37,7 @@ class ItemTest {
         String[] enchantments = new String[]{"ench1", "ench2", "ench3"};
         item.addEnchantments(enchantments);
         for (String e : enchantments)
-            assertEquals(0, item.getEnchantmentLevel(e));
+            assertEquals(1, item.getEnchantmentLevel(e));
     }
 
     @Getter
