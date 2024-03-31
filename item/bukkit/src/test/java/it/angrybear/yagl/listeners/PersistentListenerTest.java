@@ -113,6 +113,7 @@ class PersistentListenerTest {
         PlayerInventory inventory = mock(PlayerInventory.class);
         when(inventory.getContents()).thenReturn(contents);
         doAnswer(i -> contents[(int) i.getArgument(0)] = i.getArgument(1)).when(inventory).setItem(any(int.class), any(ItemStack.class));
+        when(inventory.getItem(any(int.class))).thenAnswer(i -> contents[(int) i.getArgument(0)]);
         Player player = mock(Player.class);
         when(player.getInventory()).thenReturn(inventory);
         when(player.getUniqueId()).thenReturn(uuid);
