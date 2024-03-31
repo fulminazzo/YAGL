@@ -53,6 +53,20 @@ public class ShapedRecipe extends RecipeImpl {
     }
 
     /**
+     * Sets all the given ingredients using {@link #setIngredient(int, Item)},
+     * where the first number is the index of the item.
+     * If the array is too big, an {@link IllegalArgumentException} will be thrown
+     * (but the ingredients will still be put in place).
+     *
+     * @param items the items
+     * @return this recipe
+     */
+    public @NotNull ShapedRecipe setIngredients(final Item @NotNull ... items) {
+        for (int i = 0; i < items.length; i++) setIngredient(i, items[i]);
+        return this;
+    }
+
+    /**
      * Sets ingredient.
      *
      * @param position the position
