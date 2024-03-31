@@ -1,16 +1,18 @@
 package it.angrybear.yagl.items;
 
+import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class PersistentItemTest {
@@ -18,6 +20,18 @@ class PersistentItemTest {
     @BeforeEach
     void setUp() {
         BukkitUtils.setupServer();
+    }
+
+    @Test
+    void testGetPersistentItem() {
+        BukkitUtils.setupEnchantments();
+        PersistentItem expected = new PersistentItem(Material.DIAMOND_SWORD, 1)
+                .addLore("Extremely deep lore").setDisplayName("Cool sword")
+                .addEnchantment("flame", 3).addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                .setCustomModelData(3);
+        ItemStack itemStack = expected.create();
+
+        assertEquals(expected, PersistentItem.getPersistentItem(itemStack));
     }
 
     @Test
