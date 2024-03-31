@@ -18,7 +18,7 @@ class BukkitRecipeItemImplTest {
         final String id = "test";
         final NamespacedKey key = new NamespacedKey("yagl", id);
 
-        RecipeItem recipeItem = BukkitItem.newRecipeItem(Material.STONE);
+        BukkitRecipeItem recipeItem = BukkitItem.newRecipeItem(Material.STONE);
         recipeItem.setRecipes(new ShapelessRecipe(id).addIngredient(Item.newItem("STONE")));
 
         assertNull(Bukkit.getRecipe(key));
