@@ -115,11 +115,9 @@ class ItemAdapterTest {
         recipe.setShape(size / 2, size / 2);
         for (int i = 0; i < size; i++) recipe.setIngredient(i, BukkitItem.newItem(craftMaterial));
 
-        List<Item> ingredients = new Refl<>(recipe).getFieldObject("ingredients");
-        assertNotNull(ingredients);
-        assertEquals(size, ingredients.size(), "Invalid ingredients size");
-        for (int i = 0; i < size; i++)
-            assertEquals(craftMaterial.name(), ingredients.get(i).getMaterial(), String.format("Expected material %s", craftMaterial.name()));
+        assertEquals(size, recipe.size(), "Invalid recipe size");
+        for (Item item : recipe)
+            assertEquals(craftMaterial.name(), item.getMaterial(), String.format("Expected material %s", craftMaterial.name()));
 
         Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
