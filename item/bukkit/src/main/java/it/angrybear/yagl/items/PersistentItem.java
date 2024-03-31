@@ -40,7 +40,16 @@ public class PersistentItem extends BukkitItemImpl {
      * Instantiates a new Persistent item.
      */
     public PersistentItem() {
-        this(null);
+        this((String) null);
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     *
+     * @param material the material
+     */
+    public PersistentItem(final @NotNull Material material) {
+        this(material.name(), 1);
     }
 
     /**
@@ -50,6 +59,16 @@ public class PersistentItem extends BukkitItemImpl {
      */
     public PersistentItem(final @Nullable String material) {
         this(material, 1);
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
+    public PersistentItem(final @NotNull Material material, final int amount) {
+        this(material.name(), amount);
     }
 
     /**
