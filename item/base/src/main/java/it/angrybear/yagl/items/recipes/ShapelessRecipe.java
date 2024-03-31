@@ -1,7 +1,6 @@
 package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -11,13 +10,9 @@ import java.util.List;
  * An implementation of {@link Recipe} to express the shapeless recipes in Minecraft.
  * An example of shapeless recipe is the yellow dye, which can be obtained by placing the flower in any position.
  */
-public class ShapelessRecipe implements Recipe {
+public class ShapelessRecipe extends RecipeImpl {
     private static final int MAX_SIZE = 9;
-    @Getter
-    private final @NotNull String id;
     private final @NotNull List<Item> ingredients;
-    @Getter
-    private Item output;
 
     private ShapelessRecipe() {
         this("pending");
@@ -29,7 +24,7 @@ public class ShapelessRecipe implements Recipe {
      * @param id the id
      */
     public ShapelessRecipe(final @NotNull String id) {
-        this.id = id;
+        super(id);
         this.ingredients = new ArrayList<>();
     }
 

@@ -12,12 +12,9 @@ import java.util.List;
  * An implementation of {@link Recipe} to express any recipe in the furnace in Minecraft.
  */
 @Getter
-public class FurnaceRecipe implements Recipe {
-    @Getter
-    private final @NotNull String id;
+public class FurnaceRecipe extends RecipeImpl {
     @Getter(AccessLevel.NONE)
     private Item ingredient;
-    private Item output;
     private float experience;
     private int cookingTime;
 
@@ -31,7 +28,7 @@ public class FurnaceRecipe implements Recipe {
      * @param id the id
      */
     public FurnaceRecipe(final @NotNull String id) {
-        this.id = id;
+        super(id);
     }
 
     /**
