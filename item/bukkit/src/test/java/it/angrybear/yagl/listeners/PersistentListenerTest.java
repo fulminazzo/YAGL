@@ -2,17 +2,29 @@ package it.angrybear.yagl.listeners;
 
 import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -34,6 +46,26 @@ class PersistentListenerTest {
         maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
         disappear = new PersistentItem(Material.GOLDEN_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
         listener = new PersistentListener();
+    }
+
+    private static Cancellable[] cancellableEvents() {
+        Block block = mock(Block.class);
+        Item item = mock(Item.class);
+        when(item.getItemStack()).thenReturn(maintain.create());
+        return new Cancellable[]{
+                new PlayerItemConsumeEvent(getPlayer(), maintain.create(), EquipmentSlot.OFF_HAND),
+                new PlayerItemDamageEvent(getPlayer(), maintain.create(), 10),
+                new BlockPlaceEvent(block, mock(BlockState.class), block, maintain.create(), getPlayer(), true, EquipmentSlot.OFF_HAND),
+                new PlayerDropItemEvent(getPlayer(), item)
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("cancellableEvents")
+    void simulateCancellableEvent(Cancellable event) {
+        assertFalse(event.isCancelled());
+        new Refl<>(listener).callMethod("on", event);
+        assertTrue(event.isCancelled());
     }
 
     @Test
