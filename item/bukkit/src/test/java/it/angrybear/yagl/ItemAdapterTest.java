@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -94,6 +95,41 @@ class ItemAdapterTest {
 
         for (Field field : r1.getNonStaticFields())
             assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));
+    }
+
+    @Test
+    void testResizeRecipe() {
+        final String id = "test";
+        final Material craftMaterial = Material.REDSTONE;
+        final BukkitItem returnItem = BukkitItem.newItem(Material.REDSTONE_BLOCK);
+        final int size = 4;
+
+        ShapedRecipe expected = new ShapedRecipe(new NamespacedKey("yagl", id), returnItem.create());
+        expected.shape("AB", "CD");
+        for (int i = 0; i < size; i++) expected.setIngredient((char) ('A' + i), new RecipeChoice.ExactChoice(new ItemStack(craftMaterial)));
+
+        it.angrybear.yagl.items.recipes.ShapedRecipe recipe = new it.angrybear.yagl.items.recipes.ShapedRecipe(id)
+                .setOutput(returnItem).setShape(3, 3);
+        for (int i = 0; i < 9; i++) recipe.setIngredient(i, BukkitItem.newItem(Material.COBBLESTONE));
+
+        recipe.setShape(size / 2, size / 2);
+        for (int i = 0; i < size; i++) recipe.setIngredient(i, BukkitItem.newItem(craftMaterial));
+
+        List<Item> ingredients = new Refl<>(recipe).getFieldObject("ingredients");
+        assertNotNull(ingredients);
+        assertEquals(size, ingredients.size(), "Invalid ingredients size");
+        for (int i = 0; i < size; i++)
+            assertEquals(craftMaterial.name(), ingredients.get(i).getMaterial(), String.format("Expected material %s", craftMaterial.name()));
+
+        Refl<?> r1 = new Refl<>(expected);
+        Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
+
+        for (Field field : r1.getNonStaticFields()) {
+            Object obj1 = r1.getFieldObject(field), obj2 = r2.getFieldObject(field);
+            if (obj1 != null && obj1.getClass().isArray())
+                assertArrayEquals((Object[]) obj1, (Object[]) obj2);
+            else assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));
+        }
     }
 
     @Test
