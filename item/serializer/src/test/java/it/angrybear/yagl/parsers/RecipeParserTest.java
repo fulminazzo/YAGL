@@ -55,17 +55,17 @@ class RecipeParserTest {
     @MethodSource("getRecipes")
     void testRecipe(Recipe recipe) throws IOException {
         YAGLParser.addAllParsers();
+        final String path = FileUtils.formatStringToYaml(recipe.getClass().getSimpleName());
 
         File output = new File("build/resources/test/recipe.yml");
-        if (output.exists()) FileUtils.deleteFile(output);
-        FileUtils.createNewFile(output);
+        if (!output.exists()) FileUtils.createNewFile(output);
 
         FileConfiguration configuration = new FileConfiguration(output);
-        configuration.set("recipe", recipe);
+        configuration.set(path, recipe);
         configuration.save();
 
         configuration = new FileConfiguration(output);
-        Recipe recipe2 = configuration.get("recipe", recipe.getClass());
+        Recipe recipe2 = configuration.get(path, Recipe.class);
 
         for (final Field field : recipe.getClass().getDeclaredFields())
             try {
