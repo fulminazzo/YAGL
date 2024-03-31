@@ -3,12 +3,13 @@ package it.angrybear.yagl.items.recipes;
 import it.angrybear.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * A wrapper for Minecraft recipes.
  */
-public interface Recipe {
+public interface Recipe extends Iterable<Item> {
 
     /**
      * Gets id.
@@ -48,4 +49,8 @@ public interface Recipe {
         return getIngredients().size();
     }
 
+    @Override
+    default @NotNull Iterator<Item> iterator() {
+        return getIngredients().iterator();
+    }
 }
