@@ -32,7 +32,7 @@ class PersistentListenerTest {
     }
 
     @Test
-    void simulatePlayerDeath() {
+    void simulatePlayerDeath() throws InterruptedException {
         Player player = getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
         contents[3] = this.maintain.create();
@@ -41,6 +41,10 @@ class PersistentListenerTest {
 
         PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
         this.listener.on(event);
+        // Simulate removal of contents
+        Arrays.fill(contents, null);
+
+        Thread.sleep(PersistentListener.SLEEP_TIME);
 
         for (ItemStack i : drops) assertNull(i);
 
