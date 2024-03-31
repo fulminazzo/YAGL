@@ -14,11 +14,13 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,10 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,7 +58,12 @@ class PersistentListenerTest {
                 new PlayerItemConsumeEvent(player, itemStack, EquipmentSlot.OFF_HAND),
                 new PlayerItemDamageEvent(player, itemStack, 10),
                 new BlockPlaceEvent(block, mock(BlockState.class), block, itemStack, player, true, EquipmentSlot.OFF_HAND),
-                new PlayerDropItemEvent(player, item)
+                new PlayerDropItemEvent(player, item),
+                new InventoryDragEvent(mock(InventoryView.class), itemStack, new ItemStack(Material.STONE), false, new HashMap<>()),
+                new InventoryDragEvent(mock(InventoryView.class), null, itemStack, false, new HashMap<>()),
+                new InventoryDragEvent(mock(InventoryView.class), null, new ItemStack(Material.STONE), false, new HashMap<>(){{
+                    put(18, itemStack);
+                }}),
         };
     }
 
