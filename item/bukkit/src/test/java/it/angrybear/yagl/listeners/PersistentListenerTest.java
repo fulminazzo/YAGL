@@ -19,10 +19,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,19 +46,25 @@ class PersistentListenerTest {
 
     private static Cancellable[] cancellableEvents() {
         Player player = getPlayer();
+
         ItemStack itemStack = maintain.create();
         player.getInventory().setItem(0, itemStack);
+
         Block block = mock(Block.class);
+
         Item item = mock(Item.class);
         when(item.getItemStack()).thenReturn(itemStack);
+
+        InventoryView view = getInventoryView();
+
         return new Cancellable[]{
                 new PlayerItemConsumeEvent(player, itemStack, EquipmentSlot.OFF_HAND),
                 new PlayerItemDamageEvent(player, itemStack, 10),
                 new BlockPlaceEvent(block, mock(BlockState.class), block, itemStack, player, true, EquipmentSlot.OFF_HAND),
                 new PlayerDropItemEvent(player, item),
-                new InventoryDragEvent(mock(InventoryView.class), itemStack, new ItemStack(Material.STONE), false, new HashMap<>()),
-                new InventoryDragEvent(mock(InventoryView.class), null, itemStack, false, new HashMap<>()),
-                new InventoryDragEvent(mock(InventoryView.class), null, new ItemStack(Material.STONE), false, new HashMap<>(){{
+                new InventoryDragEvent(view, itemStack, new ItemStack(Material.STONE), false, new HashMap<>()),
+                new InventoryDragEvent(view, null, itemStack, false, new HashMap<>()),
+                new InventoryDragEvent(view, null, new ItemStack(Material.STONE), false, new HashMap<>(){{
                     put(18, itemStack);
                 }}),
         };
@@ -126,5 +129,12 @@ class PersistentListenerTest {
         when(player.getInventory()).thenReturn(inventory);
         when(player.getUniqueId()).thenReturn(uuid);
         return player;
+    }
+
+    private static InventoryView getInventoryView() {
+        Inventory inventory = mock(Inventory.class);
+        InventoryView view = mock(InventoryView.class);
+        when(view.getTopInventory()).thenReturn(inventory);
+        return view;
     }
 }
