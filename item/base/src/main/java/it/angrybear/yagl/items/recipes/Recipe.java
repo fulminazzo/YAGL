@@ -15,14 +15,14 @@ public interface Recipe {
      *
      * @return the id
      */
-    String getId();
+    @NotNull String getId();
 
     /**
      * Gets ingredients.
      *
      * @return the ingredients
      */
-    List<Item> getIngredients();
+    @NotNull List<Item> getIngredients();
 
     /**
      * Sets output.
@@ -30,14 +30,14 @@ public interface Recipe {
      * @param item the item
      * @return this recipe
      */
-    Recipe setOutput(final @NotNull Item item);
+    @NotNull Recipe setOutput(final @NotNull Item item);
 
     /**
      * Gets output.
      *
      * @return the output
      */
-    Item getOutput();
+    @NotNull Item getOutput();
 
     /**
      * Gets the amount of ingredients of this recipe.
