@@ -44,7 +44,7 @@ public interface Recipe {
      *
      * @return the size
      */
-    default int getSize() {
+    default int size() {
         return getIngredients().size();
     }
 
