@@ -74,7 +74,7 @@ public class PersistentListener implements Listener {
         long now = new Date().getTime();
         if (now < lastUsed + INTERACT_DELAY) return;
         this.lastUsed.put(player.getUniqueId(), now);
-        interactPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
+        interactedWithPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
     }
 
     @EventHandler
@@ -113,11 +113,11 @@ public class PersistentListener implements Listener {
                 cancelled(event).accept(e);
         };
 
-        if (clickPersistentItem(itemStack, player, type, ifPresent)) return;
-        if (clickPersistentItem(event.getCursor(), player, type, ifPresent)) return;
+        if (clickedWithPersistentItem(itemStack, player, type, ifPresent)) return;
+        if (clickedWithPersistentItem(event.getCursor(), player, type, ifPresent)) return;
         if (type.equals(ClickType.NUMBER_KEY)) {
             itemStack = playerInventory.getItem(event.getHotbarButton());
-            clickPersistentItem(itemStack, player, type, ifPresent);
+            clickedWithPersistentItem(itemStack, player, type, ifPresent);
         }
     }
 
@@ -125,31 +125,31 @@ public class PersistentListener implements Listener {
     protected void on(@NotNull InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = ClickType.LEFT;
-        if (clickPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
-        if (clickPersistentItem(event.getOldCursor(), player, type, cancelled(event))) return;
+        if (clickedWithPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
+        if (clickedWithPersistentItem(event.getOldCursor(), player, type, cancelled(event))) return;
         Collection<ItemStack> items = event.getNewItems().values();
         for (ItemStack i : items)
-            if (clickPersistentItem(i, player, type, p -> cancelled(event).accept(p))) return;
+            if (clickedWithPersistentItem(i, player, type, p -> cancelled(event).accept(p))) return;
     }
 
     private @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
         return p -> event.setCancelled(true);
     }
 
-    private boolean interactPersistentItem(final @Nullable ItemStack itemStack,
-                                           final @NotNull Player player,
-                                           final @NotNull Action interactAction,
-                                           final @Nullable Consumer<PersistentItem> ifPresent) {
+    private boolean interactedWithPersistentItem(final @Nullable ItemStack itemStack,
+                                                 final @NotNull Player player,
+                                                 final @NotNull Action interactAction,
+                                                 final @Nullable Consumer<PersistentItem> ifPresent) {
         return findPersistentItem(itemStack, p -> {
             if (itemStack != null) p.interact(player, itemStack, interactAction);
             if (ifPresent != null) ifPresent.accept(p);
         });
     }
 
-    private boolean clickPersistentItem(final @Nullable ItemStack itemStack,
-                                        final @NotNull Player player,
-                                        final @NotNull ClickType clickType,
-                                        final @Nullable Consumer<PersistentItem> ifPresent) {
+    private boolean clickedWithPersistentItem(final @Nullable ItemStack itemStack,
+                                              final @NotNull Player player,
+                                              final @NotNull ClickType clickType,
+                                              final @Nullable Consumer<PersistentItem> ifPresent) {
         return findPersistentItem(itemStack, p -> {
             if (itemStack != null) p.click(player, itemStack, clickType);
             if (ifPresent != null) ifPresent.accept(p);
