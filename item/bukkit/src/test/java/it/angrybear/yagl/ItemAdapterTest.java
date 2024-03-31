@@ -6,15 +6,13 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ItemAdapterTest {
@@ -37,6 +35,38 @@ class ItemAdapterTest {
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
 
         assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
+    }
+
+    @Test
+    void testShapedRecipeConversion() {
+        ShapedRecipe expected = new ShapedRecipe(new NamespacedKey("yagl", "test"),
+                new ItemStack(Material.STONE));
+        expected.shape("ABC", "DEF");
+        expected.setIngredient('A', new RecipeChoice.ExactChoice(new ItemStack(Material.DIAMOND)));
+        expected.setIngredient('B', new RecipeChoice.ExactChoice(new ItemStack(Material.EMERALD)));
+        expected.setIngredient('C', new RecipeChoice.ExactChoice(new ItemStack(Material.STONE)));
+        expected.setIngredient('D', new RecipeChoice.ExactChoice(new ItemStack(Material.OAK_LEAVES)));
+        expected.setIngredient('E', new RecipeChoice.ExactChoice(new ItemStack(Material.COBBLED_DEEPSLATE)));
+        expected.setIngredient('F', new RecipeChoice.ExactChoice(new ItemStack(Material.LAPIS_BLOCK)));
+
+        it.angrybear.yagl.items.recipes.ShapedRecipe recipe = new it.angrybear.yagl.items.recipes.ShapedRecipe("test")
+                .setOutput(Item.newItem().setMaterial("STONE")).setShape(2, 3)
+                .setIngredient(0, Item.newItem().setMaterial("DIAMOND"))
+                .setIngredient(1, Item.newItem().setMaterial("EMERALD"))
+                .setIngredient(2, Item.newItem().setMaterial("STONE"))
+                .setIngredient(3, Item.newItem().setMaterial("OAK_LEAVES"))
+                .setIngredient(4, Item.newItem().setMaterial("COBBLED_DEEPSLATE"))
+                .setIngredient(5, Item.newItem().setMaterial("LAPIS_BLOCK"));
+
+        Refl<?> r1 = new Refl<>(expected);
+        Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
+
+        for (Field field : r1.getNonStaticFields()) {
+            Object obj1 = r1.getFieldObject(field), obj2 = r2.getFieldObject(field);
+            if (obj1 != null && obj1.getClass().isArray())
+                assertArrayEquals((Object[]) obj1, (Object[]) obj2);
+            else assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));
+        }
     }
 
     @Test
