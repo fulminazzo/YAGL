@@ -38,4 +38,14 @@ public interface Recipe {
      * @return the output
      */
     Item getOutput();
+
+    /**
+     * Gets the amount of ingredients of this recipe.
+     *
+     * @return the size
+     */
+    default int getSize() {
+        return getIngredients().size();
+    }
+
 }
