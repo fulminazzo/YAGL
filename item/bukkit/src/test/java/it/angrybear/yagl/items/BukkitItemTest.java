@@ -20,8 +20,7 @@ class BukkitItemTest {
         ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.CHANNELING, 1, true);
         expected.setItemMeta(meta);
 
-        ItemStack actual = BukkitItem.newItem()
-                .setMaterial(Material.ENCHANTED_BOOK.name())
+        ItemStack actual = BukkitItem.newItem(Material.ENCHANTED_BOOK)
                 .create(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.CHANNELING, 1, true));
 
         assertEquals(expected, actual);
