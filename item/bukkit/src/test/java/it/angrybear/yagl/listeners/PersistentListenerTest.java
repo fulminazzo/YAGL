@@ -5,7 +5,9 @@ import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,6 +55,23 @@ class PersistentListenerTest {
         List<ItemStack> copy = Arrays.asList(contents);
         assertTrue(copy.contains(this.maintain.create()), "The contents should contain the maintain item");
         assertFalse(copy.contains(this.disappear.create()), "The contents should not contain the disappear item");
+    }
+
+    @Test
+    void simulateInteractEvent() {
+        AtomicBoolean value = new AtomicBoolean(false);
+        this.maintain.onInteract((i, p, a) -> value.set(true));
+
+        Player player = getPlayer();
+        PlayerInteractEvent event = new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, this.maintain.create(),
+                null, null, null);
+        this.listener.on(event);
+        assertTrue(value.get());
+
+        // Simulate rapid click
+        value.set(false);
+        this.listener.on(event);
+        assertFalse(value.get());
     }
 
     private Player getPlayer() {
