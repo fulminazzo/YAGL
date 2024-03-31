@@ -49,6 +49,11 @@ public class ShapedRecipe extends RecipeImpl {
     public @NotNull ShapedRecipe setShape(final int rows, final int columns) {
         this.shape.setRows(rows);
         this.shape.setColumns(columns);
+
+        int size;
+        while ((size = this.ingredients.size()) > rows * columns)
+            this.ingredients.remove(size - 1);
+
         return this;
     }
 
