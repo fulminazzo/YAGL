@@ -1,6 +1,6 @@
 package it.angrybear.yagl.items;
 
-import it.angrybear.yagl.utils.BukkitUtils;
+import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +14,7 @@ class BukkitItemTest {
 
     @Test
     void testMetaCreation() {
-        BukkitUtils.setupItemFactory();
+        BukkitUtils.setupServer();
         ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = expected.getItemMeta();
         ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.CHANNELING, 1, true);

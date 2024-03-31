@@ -1,7 +1,7 @@
 package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
-import it.angrybear.yagl.utils.BukkitUtils;
+import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,8 @@ class BukkitRecipeItemImplTest {
 
     @Test
     void testRegisterAndUnregisterRecipe() {
-        BukkitUtils.setupItemFactory();
+        BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
         final String id = "test";
         final NamespacedKey key = new NamespacedKey("yagl", id);
 
