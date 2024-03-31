@@ -199,14 +199,18 @@ class PersistentListenerTest {
         Inventory inventory = mockInventory(9);
         inventory.setItem(0, maintain.create());
         Player player = getPlayer();
+        player.getInventory().setItem(0, maintain.create());
 
         InventoryView view = getInventoryView();
         when(view.getPlayer()).thenReturn(player);
-        when(view.getCursor()).thenAnswer(i -> cursor);
         when(player.getOpenInventory()).thenReturn(view);
-        Inventory playerInv = player.getInventory();
+
+        when(view.getCursor()).thenAnswer(i -> cursor);
+
         when(view.getTopInventory()).thenReturn(inventory);
+        Inventory playerInv = player.getInventory();
         when(view.getBottomInventory()).thenReturn(playerInv);
+
         when(view.getItem(any(int.class))).thenAnswer(i -> {
             int slot = i.getArgument(0);
             if (slot >= inventory.getSize()) return playerInv.getItem(slot);
