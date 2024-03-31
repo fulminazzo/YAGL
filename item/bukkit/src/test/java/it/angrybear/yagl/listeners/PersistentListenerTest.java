@@ -16,8 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class PersistentListenerTest {
     private PersistentItem maintain, disappear;
@@ -57,6 +57,7 @@ class PersistentListenerTest {
         ItemStack[] contents = new ItemStack[36];
         PlayerInventory inventory = mock(PlayerInventory.class);
         when(inventory.getContents()).thenReturn(contents);
+        doAnswer(i -> contents[(int) i.getArgument(0)] = i.getArgument(1)).when(inventory).setItem(any(int.class), any(ItemStack.class));
         Player player = mock(Player.class);
         when(player.getInventory()).thenReturn(inventory);
         return player;
