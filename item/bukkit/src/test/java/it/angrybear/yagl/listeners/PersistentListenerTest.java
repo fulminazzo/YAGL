@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.*;
 class PersistentListenerTest {
     private static PersistentItem maintain, disappear;
     private static PersistentListener listener;
+    private boolean clicked;
 
     @BeforeAll
     static void setAllUp() {
@@ -42,6 +44,12 @@ class PersistentListenerTest {
         maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
         disappear = new PersistentItem(Material.GOLDEN_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
         listener = new PersistentListener();
+    }
+
+    @BeforeEach
+    void setUp() {
+        this.clicked = false;
+        maintain.onClick((i, c, a) -> clicked = true);
     }
 
     private static Cancellable[] cancellableEvents() {
@@ -76,6 +84,7 @@ class PersistentListenerTest {
         assertFalse(event.isCancelled());
         new Refl<>(listener).callMethod("on", event);
         assertTrue(event.isCancelled());
+        if (event instanceof InventoryDragEvent) assertTrue(this.clicked);
     }
 
     @Test
