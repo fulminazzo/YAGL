@@ -119,7 +119,8 @@ class PersistentListenerTest {
         assertFalse(event.isCancelled());
         new Refl<>(listener).callMethod("on", event);
         assertTrue(event.isCancelled());
-        if (event instanceof InventoryDragEvent) assertTrue(this.clicked);
+        if (event instanceof InventoryDragEvent)
+            assertTrue(this.clicked, "Click action was not executed");
     }
 
     @Test
