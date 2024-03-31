@@ -84,7 +84,7 @@ allprojects {
             def name = projectName.substring(0, projectName.indexOf("-"))
             def id = projectName.substring(projectName.indexOf("-") + 1)
             if (!projectName.contains("base")) api(project(":${name}:${name}-base"))
-            if (name != "common")
+            if (name != "common" && id != "legacy")
                 api(project(":common:common-${id}"))
         }
 
