@@ -7,12 +7,34 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BukkitItemTest {
+
+    private static Item[] getTestMaterialItems() {
+        return new Item[]{
+                BukkitItem.newItem().setMaterial("DIAMOND_SWORD"),
+                BukkitItem.newItem().setMaterial(Material.DIAMOND_SWORD),
+                BukkitItem.newItem("DIAMOND_SWORD"),
+                BukkitItem.newItem(Material.DIAMOND_SWORD),
+                BukkitItem.newRecipeItem().setMaterial("DIAMOND_SWORD"),
+                BukkitItem.newRecipeItem().setMaterial(Material.DIAMOND_SWORD),
+                BukkitItem.newRecipeItem("DIAMOND_SWORD"),
+                BukkitItem.newRecipeItem(Material.DIAMOND_SWORD),
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestMaterialItems")
+    void testSetMaterial(Item actual) {
+        Item expected = Item.newItem().setMaterial("DIAMOND_SWORD");
+        assertEquals(expected.getMaterial(), actual.getMaterial());
+    }
 
     @Test
     void testIsSimilar() {
