@@ -70,11 +70,11 @@ class PersistentListenerTest {
     void simulateInventoryClick(InventoryClickEvent event) {
         if (event.getRawSlot() == 2) cursor = maintain.create();
 
-        assertFalse(this.clicked);
-        assertFalse(event.isCancelled());
+        assertFalse(this.clicked, "Clicked should be initialized as false");
+        assertFalse(event.isCancelled(), "Event should not be cancelled");
         listener.on(event);
-        assertTrue(event.isCancelled());
-        assertTrue(this.clicked);
+        assertTrue(event.isCancelled(), "Event should have been cancelled by now");
+        assertTrue(this.clicked, "Clicked should have changed");
     }
 
     @Test
