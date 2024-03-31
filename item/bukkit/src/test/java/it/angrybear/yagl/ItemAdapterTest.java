@@ -6,6 +6,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -46,6 +47,23 @@ class ItemAdapterTest {
 
         it.angrybear.yagl.items.recipes.ShapelessRecipe recipe = new it.angrybear.yagl.items.recipes.ShapelessRecipe("test")
                 .setOutput(Item.newItem().setMaterial("STONE")).addIngredient(Item.newItem().setMaterial("GRASS"));
+
+        Refl<?> r1 = new Refl<>(expected);
+        Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
+
+        for (Field field : r1.getNonStaticFields())
+            assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));
+    }
+
+    @Test
+    void testFurnaceRecipeConversion() {
+        FurnaceRecipe expected = new FurnaceRecipe(new NamespacedKey("yagl", "test"),
+                new ItemStack(Material.STONE), Material.COAL, 10, 20);
+        new Refl<>(expected).setFieldObject("ingredient", new RecipeChoice.ExactChoice(new ItemStack(Material.COAL)));
+
+        it.angrybear.yagl.items.recipes.FurnaceRecipe recipe = new it.angrybear.yagl.items.recipes.FurnaceRecipe("test")
+                .setOutput(Item.newItem().setMaterial("STONE")).setIngredient(Item.newItem().setMaterial("COAL"))
+                .setExperience(10).setCookingTime(20);
 
         Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
