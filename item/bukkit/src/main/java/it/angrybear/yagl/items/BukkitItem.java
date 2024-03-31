@@ -188,11 +188,51 @@ public interface BukkitItem extends Item {
     }
 
     /**
+     * Creates a new item to be used with the given material.
+     *
+     * @param material the material
+     * @return the item
+     */
+    static @NotNull BukkitItem newItem(final @NotNull String material) {
+        return newItem().setMaterial(material);
+    }
+
+    /**
+     * Creates a new item to be used with the given material.
+     *
+     * @param material the material
+     * @return the item
+     */
+    static @NotNull BukkitItem newItem(final @NotNull Material material) {
+        return newItem(material.name());
+    }
+
+    /**
      * Creates a new recipe item to be used.
      *
      * @return the item
      */
-    static @NotNull RecipeItem newRecipeItem() {
+    static @NotNull BukkitRecipeItem newRecipeItem() {
         return new BukkitRecipeItemImpl();
+    }
+
+    /**
+     * Creates a new recipe item to be used with the given material.
+     *
+     * @param material the material
+     * @return the item
+     */
+    static @NotNull BukkitRecipeItem newRecipeItem(final @NotNull String material) {
+        return newRecipeItem().setMaterial(material);
+    }
+
+    /**
+     * Creates a new recipe item to be used with the given material.
+     *
+     * @param material the material
+     * @return the item
+     */
+    static @NotNull BukkitRecipeItem newRecipeItem(final @NotNull Material material) {
+        return newRecipeItem(material.name());
     }
 }
