@@ -1,5 +1,6 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.items.MovablePersistentItem;
 import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -74,6 +75,20 @@ class PersistentListenerTest {
         listener.on(event);
         assertTrue(event.isCancelled());
         assertTrue(this.clicked);
+    }
+
+    @Test
+    void testMovableItem() {
+        MovablePersistentItem persistentItem = new MovablePersistentItem(Material.DIAMOND);
+        InventoryView view = setupInventoryClickEventView();
+        int slot = view.getTopInventory().getSize();
+        view.getBottomInventory().setItem(0, persistentItem.create());
+
+        InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.LEFT, InventoryAction.CLONE_STACK);
+        assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
+        assertFalse(event.isCancelled(), "Event should not be cancelled");
+        listener.on(event);
+        assertFalse(event.isCancelled(), "Event should not be cancelled");
     }
 
     private static Cancellable[] cancellableEvents() {
