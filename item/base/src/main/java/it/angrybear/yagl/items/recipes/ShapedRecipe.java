@@ -21,6 +21,10 @@ public class ShapedRecipe implements Recipe {
     @Getter
     private Item output;
 
+    private ShapedRecipe() {
+        this("pending");
+    }
+
     /**
      * Instantiates a new Shaped recipe.
      *

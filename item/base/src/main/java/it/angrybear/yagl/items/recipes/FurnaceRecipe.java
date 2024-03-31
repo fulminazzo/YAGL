@@ -21,6 +21,10 @@ public class FurnaceRecipe implements Recipe {
     private float experience;
     private int cookingTime;
 
+    private FurnaceRecipe() {
+        this("pending");
+    }
+
     /**
      * Instantiates a new Furnace recipe.
      *

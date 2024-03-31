@@ -19,6 +19,10 @@ public class ShapelessRecipe implements Recipe {
     @Getter
     private Item output;
 
+    private ShapelessRecipe() {
+        this("pending");
+    }
+
     /**
      * Instantiates a new Shapeless recipe.
      *
