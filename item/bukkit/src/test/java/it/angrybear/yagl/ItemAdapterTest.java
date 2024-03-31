@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -25,7 +26,7 @@ class ItemAdapterTest {
     @Test
     void testItemConversion() {
         BukkitUtils.setupEnchantments();
-        Item expected = Item.newItem().setMaterial("STONE").setAmount(2).setDurability(15)
+        Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("flame", 10)
                 .addEnchantment("infinity", 20)
@@ -42,21 +43,14 @@ class ItemAdapterTest {
         ShapedRecipe expected = new ShapedRecipe(new NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE));
         expected.shape("ABC", "DEF");
-        expected.setIngredient('A', new RecipeChoice.ExactChoice(new ItemStack(Material.DIAMOND)));
-        expected.setIngredient('B', new RecipeChoice.ExactChoice(new ItemStack(Material.EMERALD)));
-        expected.setIngredient('C', new RecipeChoice.ExactChoice(new ItemStack(Material.STONE)));
-        expected.setIngredient('D', new RecipeChoice.ExactChoice(new ItemStack(Material.OAK_LEAVES)));
-        expected.setIngredient('E', new RecipeChoice.ExactChoice(new ItemStack(Material.COBBLED_DEEPSLATE)));
-        expected.setIngredient('F', new RecipeChoice.ExactChoice(new ItemStack(Material.LAPIS_BLOCK)));
+        Material[] materials = new Material[]{Material.IRON_INGOT, Material.GOLD_INGOT, Material.REDSTONE,
+                Material.DIAMOND, Material.EMERALD, Material.LAPIS_LAZULI};
+        for (int i = 0; i < materials.length; i++)
+            expected.setIngredient((char) ('A' + i), new RecipeChoice.ExactChoice(new ItemStack(materials[i])));
 
         it.angrybear.yagl.items.recipes.ShapedRecipe recipe = new it.angrybear.yagl.items.recipes.ShapedRecipe("test")
-                .setOutput(Item.newItem().setMaterial("STONE")).setShape(2, 3)
-                .setIngredient(0, Item.newItem().setMaterial("DIAMOND"))
-                .setIngredient(1, Item.newItem().setMaterial("EMERALD"))
-                .setIngredient(2, Item.newItem().setMaterial("STONE"))
-                .setIngredient(3, Item.newItem().setMaterial("OAK_LEAVES"))
-                .setIngredient(4, Item.newItem().setMaterial("COBBLED_DEEPSLATE"))
-                .setIngredient(5, Item.newItem().setMaterial("LAPIS_BLOCK"));
+                .setOutput(Item.newItem("STONE")).setShape(2, 3);
+        for (int i = 0; i < materials.length; i++) recipe.setIngredient(i, BukkitItem.newItem(materials[i]));
 
         Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
@@ -76,7 +70,7 @@ class ItemAdapterTest {
         expected.addIngredient(new RecipeChoice.ExactChoice(new ItemStack(Material.GRASS)));
 
         it.angrybear.yagl.items.recipes.ShapelessRecipe recipe = new it.angrybear.yagl.items.recipes.ShapelessRecipe("test")
-                .setOutput(Item.newItem().setMaterial("STONE")).addIngredient(Item.newItem().setMaterial("GRASS"));
+                .setOutput(Item.newItem("STONE")).addIngredient(Item.newItem("GRASS"));
 
         Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
@@ -92,7 +86,7 @@ class ItemAdapterTest {
         new Refl<>(expected).setFieldObject("ingredient", new RecipeChoice.ExactChoice(new ItemStack(Material.COAL)));
 
         it.angrybear.yagl.items.recipes.FurnaceRecipe recipe = new it.angrybear.yagl.items.recipes.FurnaceRecipe("test")
-                .setOutput(Item.newItem().setMaterial("STONE")).setIngredient(Item.newItem().setMaterial("COAL"))
+                .setOutput(Item.newItem("STONE")).setIngredient(Item.newItem("COAL"))
                 .setExperience(10).setCookingTime(20);
 
         Refl<?> r1 = new Refl<>(expected);
