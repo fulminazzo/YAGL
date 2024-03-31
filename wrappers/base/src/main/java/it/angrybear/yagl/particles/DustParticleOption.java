@@ -2,13 +2,11 @@ package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
 import it.fulminazzo.fulmicollection.structures.Tuple;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * An option used by {@link ParticleType#REDSTONE}.
  */
-@Getter
 public class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
     private final Color color;
     private final float size;

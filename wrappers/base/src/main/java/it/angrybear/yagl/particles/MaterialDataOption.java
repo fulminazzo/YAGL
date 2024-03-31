@@ -1,7 +1,6 @@
 package it.angrybear.yagl.particles;
 
 import it.fulminazzo.fulmicollection.structures.Tuple;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -10,7 +9,6 @@ import java.util.regex.Pattern;
 /**
  * An option used by {@link LegacyParticleType#TILE_BREAK} and {@link LegacyParticleType#TILE_DUST}.
  */
-@Getter
 public class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
     private static final String REGEX = "^([^\\[]*)(?:\\[(\\d+)])?$";
     private final @NotNull String material;
