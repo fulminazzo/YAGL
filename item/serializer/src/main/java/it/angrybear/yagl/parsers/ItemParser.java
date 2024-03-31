@@ -4,6 +4,7 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.RecipeItem;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.items.recipes.Recipe;
+import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -56,11 +56,7 @@ public class ItemParser extends YAMLParser<Item> {
             List<String> flags = itemSection.getStringList("item-flags");
             if (flags == null) flags = new LinkedList<>();
             for (final String flag : flags)
-                try {
-                    item.addItemFlags(ItemFlag.valueOf(flag.toUpperCase()));
-                } catch (IllegalArgumentException e) {
-                    Logger.getGlobal().warning(String.format("Could not find Item Flag '%s'", flag));
-                }
+                item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, flag));
 
             final List<Object> enchantments = itemSection.getList("enchantments", Object.class);
             if (enchantments != null)
