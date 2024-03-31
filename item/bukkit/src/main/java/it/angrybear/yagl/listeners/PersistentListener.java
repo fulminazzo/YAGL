@@ -55,8 +55,10 @@ public class PersistentListener implements Listener {
             final ItemStack item = contents[i];
             // Save every PersistentItem with the MAINTAIN action, remove if they have DISAPPEAR.
             findPersistentItem(item, p -> {
-                if (p.getDeathAction() == DeathAction.MAINTAIN) toRestore.put(finalI, p);
-                if (p.getDeathAction() == DeathAction.DISAPPEAR) event.getDrops().remove(item);
+                DeathAction deathAction = p.getDeathAction();
+                if (deathAction == null) return;
+                if (deathAction == DeathAction.MAINTAIN) toRestore.put(finalI, p);
+                event.getDrops().remove(item);
             });
         }
         if (toRestore.isEmpty()) return;
