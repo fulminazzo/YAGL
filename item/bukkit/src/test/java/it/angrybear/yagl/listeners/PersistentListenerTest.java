@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,12 +55,14 @@ class PersistentListenerTest {
     }
 
     private Player getPlayer() {
+        UUID uuid = UUID.randomUUID();
         ItemStack[] contents = new ItemStack[36];
         PlayerInventory inventory = mock(PlayerInventory.class);
         when(inventory.getContents()).thenReturn(contents);
         doAnswer(i -> contents[(int) i.getArgument(0)] = i.getArgument(1)).when(inventory).setItem(any(int.class), any(ItemStack.class));
         Player player = mock(Player.class);
         when(player.getInventory()).thenReturn(inventory);
+        when(player.getUniqueId()).thenReturn(uuid);
         return player;
     }
 }
