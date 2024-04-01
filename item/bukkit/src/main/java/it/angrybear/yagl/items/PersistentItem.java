@@ -293,6 +293,6 @@ public class PersistentItem extends BukkitItemImpl {
 
     @Override
     public PersistentItem copy() {
-        return (PersistentItem) super.copy();
+        return super.copy(PersistentItem.class);
     }
 }
