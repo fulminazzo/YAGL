@@ -59,6 +59,18 @@ class PersistentListenerTest {
         cursor = null;
     }
 
+    private static InventoryView setupInventoryClickEventView() {
+        Inventory inventory = new MockInventory(9);
+        inventory.setItem(0, maintain.create());
+
+        Player player = getPlayer();
+        player.getInventory().setItem(0, maintain.create());
+
+        InventoryView view = new MockInventoryView(player.getInventory(), inventory);
+        when(player.getOpenInventory()).thenReturn(view);
+        return view;
+    }
+
     private static InventoryClickEvent[] inventoryClickEvents() {
         InventoryView view = setupInventoryClickEventView();
 
@@ -179,29 +191,5 @@ class PersistentListenerTest {
         when(player.getInventory()).thenReturn(inventory);
         when(player.getUniqueId()).thenReturn(uuid);
         return player;
-    }
-
-    private static InventoryView setupInventoryClickEventView() {
-        Inventory inventory = new MockInventory(9);
-        inventory.setItem(0, maintain.create());
-        Player player = getPlayer();
-        player.getInventory().setItem(0, maintain.create());
-
-        InventoryView view = new MockInventoryView(player.getInventory(), 9);
-        when(view.getPlayer()).thenReturn(player);
-        when(player.getOpenInventory()).thenReturn(view);
-
-        when(view.getCursor()).thenAnswer(i -> cursor);
-
-        when(view.getTopInventory()).thenReturn(inventory);
-        Inventory playerInv = player.getInventory();
-        when(view.getBottomInventory()).thenReturn(playerInv);
-
-        when(view.getItem(any(int.class))).thenAnswer(i -> {
-            int slot = i.getArgument(0);
-            if (slot >= inventory.getSize()) return playerInv.getItem(slot);
-            return inventory.getItem(slot);
-        });
-        return view;
     }
 }
