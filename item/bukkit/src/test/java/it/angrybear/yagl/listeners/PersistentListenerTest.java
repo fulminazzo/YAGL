@@ -5,6 +5,8 @@ import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -171,32 +173,21 @@ class PersistentListenerTest {
         UUID uuid = UUID.randomUUID();
 
         Player player = mock(Player.class);
-        PlayerInventory inventory = mockInventory(36);
+        PlayerInventory inventory = new MockPlayerInventory();
         when(player.getInventory()).thenReturn(inventory);
         when(player.getUniqueId()).thenReturn(uuid);
         return player;
     }
 
-    private static PlayerInventory mockInventory(int size) {
-        ItemStack[] contents = new ItemStack[size];
-        PlayerInventory inventory = mock(PlayerInventory.class);
-        when(inventory.getSize()).thenReturn(contents.length);
-        when(inventory.getContents()).thenReturn(contents);
-        doAnswer(i -> contents[(int) i.getArgument(0)] = i.getArgument(1)).when(inventory).setItem(any(int.class), any(ItemStack.class));
-        when(inventory.getItem(any(int.class))).thenAnswer(i -> contents[(int) i.getArgument(0)]);
-        when(inventory.getHeldItemSlot()).thenReturn(0);
-        return inventory;
-    }
-
     private static InventoryView getInventoryView() {
-        Inventory inventory = mock(Inventory.class);
+        Inventory inventory = new MockInventory(9);
         InventoryView view = mock(InventoryView.class);
         when(view.getTopInventory()).thenReturn(inventory);
         return view;
     }
 
     private static InventoryView setupInventoryClickEventView() {
-        Inventory inventory = mockInventory(9);
+        Inventory inventory = new MockInventory(9);
         inventory.setItem(0, maintain.create());
         Player player = getPlayer();
         player.getInventory().setItem(0, maintain.create());
