@@ -135,6 +135,11 @@ class BukkitItemTest {
         if (Number.class.isAssignableFrom(clazz)) return 1;
         if (String.class.isAssignableFrom(clazz)) return "STONE";
         if (Boolean.class.isAssignableFrom(clazz)) return false;
+        if (clazz.isEnum()) {
+            Enum<?>[] enums = new Refl<>(clazz).invokeMethod("values");
+            if (enums == null) return null;
+            return enums[0];
+        }
         if (clazz.isArray()) return Array.newInstance(clazz.componentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         return mock(clazz);
