@@ -139,6 +139,6 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
 
     @Override
     default BukkitRecipeItem copy() {
-        return (BukkitRecipeItem) RecipeItem.super.copy();
+        return RecipeItem.super.copy(BukkitRecipeItem.class);
     }
 }
