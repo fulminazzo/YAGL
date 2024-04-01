@@ -1,5 +1,6 @@
 package it.angrybear.yagl.items;
 
+import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,9 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BukkitItemTest {
 
@@ -67,5 +71,39 @@ class BukkitItemTest {
                 .create(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.CHANNELING, 1, true));
 
         assertEquals(expected, actual);
+    }
+
+    private static Item mockItem(Item item) {
+        return item.setMaterial("STONE").setAmount(2).setDurability(15)
+                .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
+                .addEnchantment("enchant1", 10).addEnchantment("enchant2", 20)
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
+                .setUnbreakable(true)
+                .setCustomModelData(7);
+    }
+
+    private static Item[] testItems() {
+        return new Item[]{
+                mockItem(Item.newItem()), mockItem(Item.newRecipeItem()),
+                mockItem(BukkitItem.newItem()), mockItem(BukkitItem.newRecipeItem()),
+                mockItem(new PersistentItem()), mockItem(new MovablePersistentItem())
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("testItems")
+    void testItemsReturnType(Item item) {
+        Class<?> expected = item.getClass();
+        if (expected.getSimpleName().endsWith("Impl"))
+            expected = expected.getInterfaces()[0];
+
+        for (Method method : item.getClass().getDeclaredMethods()) {
+            Class<?> returnType = method.getReturnType();
+            if (Item.class.isAssignableFrom(returnType))
+                assertEquals(expected, returnType, String.format("Method '%s(%s)' of class '%s' did not return itself",
+                        method.getName(), Arrays.stream(method.getParameterTypes())
+                                .map(Class::getSimpleName).collect(Collectors.joining(", ")),
+                        item.getClass().getSimpleName()));
+        }
     }
 }
