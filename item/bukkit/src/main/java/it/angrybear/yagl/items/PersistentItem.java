@@ -159,13 +159,6 @@ public class PersistentItem extends BukkitItemImpl {
         return null;
     }
 
-    /**
-     * Clear persistent items.
-     */
-    public void clearPersistentItems() {
-        PERSISTENT_ITEMS.clear();
-    }
-
     @Override
     public PersistentItem setMaterial(@NotNull Material material) {
         return (PersistentItem) super.setMaterial(material);
@@ -294,5 +287,12 @@ public class PersistentItem extends BukkitItemImpl {
     @Override
     public PersistentItem copy() {
         return super.copy(PersistentItem.class);
+    }
+
+    /**
+     * Clear persistent items.
+     */
+    public static void clearPersistentItems() {
+        PERSISTENT_ITEMS.clear();
     }
 }
