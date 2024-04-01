@@ -99,7 +99,7 @@ class BukkitItemTest {
 
         for (Method method : item.getClass().getDeclaredMethods()) {
             Class<?> returnType = method.getReturnType();
-            if (Item.class.isAssignableFrom(returnType))
+            if (Item.class.isAssignableFrom(returnType) && !method.isBridge())
                 assertEquals(expected, returnType, String.format("Method '%s(%s)' of class '%s' did not return itself",
                         method.getName(), Arrays.stream(method.getParameterTypes())
                                 .map(Class::getSimpleName).collect(Collectors.joining(", ")),
