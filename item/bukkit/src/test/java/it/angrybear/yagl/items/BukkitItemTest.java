@@ -21,8 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class BukkitItemTest {
@@ -120,7 +119,10 @@ class BukkitItemTest {
                 method.setAccessible(true);
                 Object o = method.invoke(item, mockParameters);
 
-                assertEquals(item.hashCode(), o.hashCode(), errorMessage);
+                if (method.getName().equals("copy"))
+                    assertInstanceOf(item.getClass(), o, String.format("Returned object from %s call should have been %s but was %s",
+                            methodString, item.getClass(), o.getClass()));
+                else assertEquals(item.hashCode(), o.hashCode(), errorMessage);
             } catch (Exception e) {
                 System.err.printf("An exception occurred while testing method '%s'%n", methodString);
                 ExceptionUtils.throwException(e);
