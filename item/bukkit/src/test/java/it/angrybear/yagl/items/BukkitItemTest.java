@@ -90,9 +90,12 @@ class BukkitItemTest {
 
     private static Item[] testItems() {
         return new Item[]{
-                mockItem(Item.newItem()), mockItem(Item.newRecipeItem()),
-                mockItem(BukkitItem.newItem()), mockItem(BukkitItem.newRecipeItem()),
-                mockItem(new PersistentItem()), mockItem(new MovablePersistentItem())
+                mockItem(Item.newItem()),
+                mockItem(Item.newRecipeItem()),
+                mockItem(BukkitItem.newItem()),
+                mockItem(BukkitItem.newRecipeItem()),
+                mockItem(new PersistentItem()),
+                mockItem(new MovablePersistentItem())
         };
     }
 
@@ -109,8 +112,6 @@ class BukkitItemTest {
                 final Class<?> returnType = method.getReturnType();
                 if (!Item.class.isAssignableFrom(returnType)) continue;
                 if (method.equals(Item.class.getMethod("copy", Class.class))) continue;
-                //TODO:
-                if (method.equals(Item.class.getMethod("copy"))) continue;
 
                 String errorMessage = String.format("Method '%s' of class '%s' did not return itself",
                         methodString, item.getClass().getSimpleName());
