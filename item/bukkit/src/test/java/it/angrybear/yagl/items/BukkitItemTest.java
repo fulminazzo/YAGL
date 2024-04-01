@@ -133,7 +133,7 @@ class BukkitItemTest {
     private Object mockParameter(Class<?> clazz) {
         clazz = ReflectionUtils.getWrapperClass(clazz);
         if (Number.class.isAssignableFrom(clazz)) return 1;
-        if (String.class.isAssignableFrom(clazz)) return "";
+        if (String.class.isAssignableFrom(clazz)) return "STONE";
         if (Boolean.class.isAssignableFrom(clazz)) return false;
         if (clazz.isArray()) return Array.newInstance(clazz.componentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
