@@ -34,7 +34,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -190,6 +189,7 @@ class PersistentListenerTest {
         PlayerInventory inventory = new MockPlayerInventory(player);
         when(player.getInventory()).thenReturn(inventory);
         when(player.getUniqueId()).thenReturn(uuid);
+        when(player.getItemOnCursor()).thenAnswer(i -> cursor);
         return player;
     }
 }
