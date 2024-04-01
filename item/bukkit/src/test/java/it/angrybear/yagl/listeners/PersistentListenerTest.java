@@ -6,6 +6,7 @@ import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -105,7 +106,7 @@ class PersistentListenerTest {
         Item item = mock(Item.class);
         when(item.getItemStack()).thenReturn(itemStack);
 
-        InventoryView view = getInventoryView();
+        InventoryView view = new MockInventoryView(player.getInventory(), 9);
 
         return new Cancellable[]{
                 new PlayerItemConsumeEvent(player, itemStack, EquipmentSlot.OFF_HAND),
@@ -180,20 +181,13 @@ class PersistentListenerTest {
         return player;
     }
 
-    private static InventoryView getInventoryView() {
-        Inventory inventory = new MockInventory(9);
-        InventoryView view = mock(InventoryView.class);
-        when(view.getTopInventory()).thenReturn(inventory);
-        return view;
-    }
-
     private static InventoryView setupInventoryClickEventView() {
         Inventory inventory = new MockInventory(9);
         inventory.setItem(0, maintain.create());
         Player player = getPlayer();
         player.getInventory().setItem(0, maintain.create());
 
-        InventoryView view = getInventoryView();
+        InventoryView view = new MockInventoryView(player.getInventory(), 9);
         when(view.getPlayer()).thenReturn(player);
         when(player.getOpenInventory()).thenReturn(view);
 
