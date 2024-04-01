@@ -18,7 +18,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
      * Instantiates a new Recipe item.
      */
     public RecipeItemImpl() {
-        super();
+        this(null);
     }
 
     /**
@@ -27,7 +27,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
      * @param material the material
      */
     public RecipeItemImpl(String material) {
-        super(material);
+        this(material, 1);
     }
 
     /**
