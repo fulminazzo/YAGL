@@ -76,7 +76,7 @@ class BukkitItemTest {
     private static Item mockItem(Item item) {
         return item.setMaterial("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
-                .addEnchantment("enchant1", 10).addEnchantment("enchant2", 20)
+                .addEnchantment("flame", 10).addEnchantment("unbreaking", 20)
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
                 .setUnbreakable(true)
                 .setCustomModelData(7);
