@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -67,11 +66,6 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public BukkitRecipeItem setLore(final @NotNull Collection<String> lore) {
-        return (BukkitRecipeItem) super.setLore(lore);
-    }
-
-    @Override
     public BukkitRecipeItem setUnbreakable(final boolean unbreakable) {
         return (BukkitRecipeItem) super.setUnbreakable(unbreakable);
     }
@@ -79,21 +73,6 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     @Override
     public BukkitRecipeItem setCustomModelData(int customModelData) {
         return (BukkitRecipeItem) super.setCustomModelData(customModelData);
-    }
-
-    @Override
-    public BukkitRecipeItem copy() {
-        return super.copy(BukkitRecipeItemImpl.class);
-    }
-
-    @Override
-    public BukkitRecipeItem setRecipes(Recipe @NotNull ... recipes) {
-        return (BukkitRecipeItem) super.setRecipes(recipes);
-    }
-
-    @Override
-    public BukkitRecipeItem clearRecipes() {
-        return (BukkitRecipeItem) super.clearRecipes();
     }
 
     @Override
