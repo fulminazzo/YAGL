@@ -34,7 +34,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PersistentListenerTest {
     private static PersistentItem maintain, disappear;
@@ -173,7 +174,7 @@ class PersistentListenerTest {
         UUID uuid = UUID.randomUUID();
 
         Player player = mock(Player.class);
-        PlayerInventory inventory = new MockPlayerInventory();
+        PlayerInventory inventory = new MockPlayerInventory(player);
         when(player.getInventory()).thenReturn(inventory);
         when(player.getUniqueId()).thenReturn(uuid);
         return player;
