@@ -76,11 +76,14 @@ allprojects {
 
         if (projectName.contains("serializer")) api(libs.yamlparser)
 
-        if (projectName.contains("bukkit") || projectName.contains("legacy")) {
+        if (projectName.contains("bukkit")) {
             compileOnly libs.spigot
             testImplementation libs.spigot.latest
             testImplementation "it.fulminazzo:JBukkit:1.0"
         }
+
+        if (projectName.contains("legacy"))
+            testImplementation "it.fulminazzo:JBukkit:1.0"
 
         if (projectName.contains("-")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
