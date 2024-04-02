@@ -16,7 +16,7 @@ class ItemTest {
 
     @Test
     void testAddEnchantment() {
-        Item item = new MockItem();
+        Item item = new MockItem("STONE");
         Enchantment e1 = new Enchantment("mock-e", 1);
         item.addEnchantments(e1);
 
@@ -33,7 +33,7 @@ class ItemTest {
 
     @Test
     void testGetEnchantmentLevel() {
-        Item item = new MockItem();
+        Item item = new MockItem("STONE");
         String[] enchantments = new String[]{"ench1", "ench2", "ench3"};
         item.addEnchantments(enchantments);
         for (String e : enchantments)
@@ -51,6 +51,10 @@ class ItemTest {
         private final Set<ItemFlag> itemFlags = new LinkedHashSet<>();
         private boolean unbreakable;
         private int customModelData;
+
+        public MockItem(String material) {
+            this.material = material;
+        }
 
         @Override
         public Item setMaterial(@NotNull String material) {
@@ -97,11 +101,6 @@ class ItemTest {
         @Override
         public boolean isSimilar(Item item, ItemField @NotNull ... ignore) {
             return false;
-        }
-
-        @Override
-        public <I extends Item> I copy(@NotNull Class<I> clazz) {
-            return null;
         }
     }
 }
