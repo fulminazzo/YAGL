@@ -108,21 +108,14 @@ class WrappersAdapterTest {
     void testSpawnEffect(Particle particle) {
         Player player = mock(Player.class);
 
-        Location location = new Location(null, 0, 0, 0);
-        WrappersAdapter.spawnEffect(player, particle, location);
-
-        ArgumentCaptor<Effect> effectArg = ArgumentCaptor.forClass(Effect.class);
-        if (particle.getOption() == null) {
-            verify(player).playEffect(any(Location.class), effectArg.capture(), any());
-
-            assertEquals(particle.getType(), effectArg.getValue().name());
-        } else {
-            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-            verify(player).playEffect(any(Location.class), effectArg.capture(), extra.capture());
-
-            assertEquals(particle.getType(), effectArg.getValue().name());
-            assertNotNull(extra.getValue());
-        }
+        TestUtils.testMultipleMethods(WrappersAdapter.class, m -> m.getName().equals("spawnEffect") && m.getParameterTypes()[0].equals(Player.class),
+                a -> {
+            ArgumentCaptor<?> arg = a[1];
+            Object value = arg.getValue();
+            assertInstanceOf(Effect.class, value);
+            assertEquals(particle.getType(), ((Effect) value).name());
+            if (particle.getOption() != null) assertNotNull(a[a.length - 1].getValue());
+        }, new Object[]{player, particle}, player, "playEffect", Location.class, Effect.class, Object.class);
     }
 
     @ParameterizedTest
