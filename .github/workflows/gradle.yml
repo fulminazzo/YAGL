@@ -54,9 +54,9 @@ jobs:
         env:
           BRANCH: ${{ github.ref_name }}
         run: |-
+          if [[ $(git ls-remote | grep badges) ]]; then git pull origin badges; fi
           git checkout -b badges
           git merge $BRANCH
-          if [[ $(git ls-remote | grep badges) ]]; then git pull origin badges; fi
         shell: bash
 
       - name: Test with Gradle Wrapper
