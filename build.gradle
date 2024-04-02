@@ -101,6 +101,8 @@ allprojects {
         useJUnitPlatform()
     }
 
+    if (project.name.equals("testing")) return;
+
     processResources {
         def props = [
                 version: rootProject.version, name: rootProject.name,
