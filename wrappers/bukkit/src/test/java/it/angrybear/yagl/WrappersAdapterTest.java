@@ -24,9 +24,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -49,17 +47,31 @@ class WrappersAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getTestLegacyParticles")
-    void testSpawnEffect(Particle particle) {
+    void testSpawnPlayerEffect(Particle particle) {
         Player player = mock(Player.class);
 
-        TestUtils.testMultipleMethods(WrappersAdapter.class, m -> m.getName().equals("spawnEffect") && m.getParameterTypes()[0].equals(Player.class),
+        testSpawnEffect(Player.class, player, player, particle);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestLegacyParticles")
+    void testSpawnWorldEffect(Particle particle) {
+        Player player = mock(Player.class);
+        World world = mock(World.class);
+        when(world.getPlayers()).thenReturn(Collections.singletonList(player));
+
+        testSpawnEffect(World.class, world, player, particle);
+    }
+
+    private <T> void testSpawnEffect(Class<T> targetClass, T target, Object executor, Particle particle) {
+        TestUtils.testMultipleMethods(WrappersAdapter.class, m -> m.getName().equals("spawnEffect") && m.getParameterTypes()[0].equals(targetClass),
                 a -> {
-            ArgumentCaptor<?> arg = a[1];
-            Object value = arg.getValue();
-            assertInstanceOf(Effect.class, value);
-            assertEquals(particle.getType(), ((Effect) value).name());
-            if (particle.getOption() != null) assertNotNull(a[a.length - 1].getValue());
-        }, new Object[]{player, particle}, player, "playEffect", Location.class, Effect.class, Object.class);
+                    ArgumentCaptor<?> arg = a[1];
+                    Object value = arg.getValue();
+                    assertInstanceOf(Effect.class, value);
+                    assertEquals(particle.getType(), ((Effect) value).name());
+                    if (particle.getOption() != null) assertNotNull(a[a.length - 1].getValue());
+                }, new Object[]{target, particle}, executor, "playEffect", Location.class, Effect.class, Object.class);
     }
 
     private static Particle[] getTestParticles() {
