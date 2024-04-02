@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,61 +81,47 @@ class WrappersAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getTestParticles")
-    void testSpawnParticle(Particle particle) {
-        // Initialize Bukkit variables
-        initializeBlockData();
-
-        Player player = mock(Player.class);
-
-        Location location = new Location(null, 0, 0, 0);
-        WrappersAdapter.spawnParticle(player, particle, location, 1);
-
-        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
-        if (particle.getOption() == null) {
-            verify(player).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class));
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
-        } else {
-            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-            verify(player).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class),
-                    extra.capture());
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
-            assertNotNull(extra.getValue());
-        }
+    void testPlayerSpawnParticle(Particle particle) {
+        testSpawnParticle(Player.class, particle);
     }
 
     @ParameterizedTest
     @MethodSource("getTestParticles")
     void testWorldSpawnParticle(Particle particle) {
+        testSpawnParticle(World.class, particle);
+    }
+
+    private <T> void testSpawnParticle(Class<T> targetClass, Particle particle) {
         // Initialize Bukkit variables
         initializeBlockData();
 
-        World world = mock(World.class);
+        T target = mock(targetClass);
 
-        WrappersAdapter.spawnParticle(world, particle, 0, 0, 0, 1);
+        final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator;
+        final Class<?> @NotNull [] invokedMethodParamTypes;
 
-        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
         if (particle.getOption() == null) {
-            verify(world).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class));
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
+            captorsValidator = a -> {
+                Object value = a[0].getValue();
+                assertInstanceOf(org.bukkit.Particle.class, value);
+                assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
+            };
+            invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
+                    double.class, double.class, double.class};
         } else {
-            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-            verify(world).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class),
-                    extra.capture());
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
-            assertNotNull(extra.getValue());
+            captorsValidator = a -> {
+                Object value = a[0].getValue();
+                assertInstanceOf(org.bukkit.Particle.class, value);
+                assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
+                assertNotNull(a[a.length - 1].getValue());
+            };
+            invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
+                    double.class, double.class, double.class, Object.class};
         }
+
+        TestUtils.testMultipleMethods(WrappersAdapter.class,
+                m -> m.getName().equals("spawnParticle") && m.getParameterTypes()[0].isAssignableFrom(target.getClass()),
+                captorsValidator, new Object[]{target, particle}, target, "spawnParticle", invokedMethodParamTypes);
     }
 
     @Test
