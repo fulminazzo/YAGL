@@ -82,14 +82,14 @@ allprojects {
             testImplementation "it.fulminazzo:JBukkit:1.0"
         }
 
-        if (projectName.contains("legacy"))
+        if (projectName.contains("legacy") || projectName.contains("obsolete"))
             testImplementation "it.fulminazzo.JBukkit:legacy:1.0"
 
         if (projectName.contains("-")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
             def id = projectName.substring(projectName.indexOf("-") + 1)
             if (!projectName.contains("base")) api(project(":${name}:${name}-base"))
-            if (name != "common" && id != "legacy")
+            if (name != "common" && id != "legacy" && id != "obsolete")
                 api(project(":common:common-${id}"))
         }
 
