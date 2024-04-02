@@ -64,4 +64,9 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
         if (o instanceof Particle) return name().equalsIgnoreCase(((Particle) o).getType());
         return super.equals(o);
     }
+
+    @Override
+    public String toString() {
+        return name();
+    }
 }
