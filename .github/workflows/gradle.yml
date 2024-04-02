@@ -49,18 +49,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5
 
-      - name: Checkout to badges branch
-        run: 'git checkout -b badges'
-        shell: bash
-
-      - name: Merge from current branch
+      - name: Checkout to badges Branch and Merge from Current
         if: ${{ github.ref_name != 'badges' }}
         env:
           BRANCH: ${{ github.ref_name }}
-        run: |- 
-          git merge $BRANCH
+        run: |-
           export BRANCHES=$(git branch -r)
-          test $(echo $BRANCHES | grep badges) && git pull origin badges
+          git checkout -b badges
+          git merge $BRANCH
+          if [[ $(echo $BRANCHES | grep badges) ]]; then git pull origin badges; fi
         shell: bash
 
       - name: Test with Gradle Wrapper
