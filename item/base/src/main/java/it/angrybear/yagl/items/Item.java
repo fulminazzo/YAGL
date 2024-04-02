@@ -421,9 +421,7 @@ public interface Item {
         if (clazz.isInterface())
             try {
                 clazz = ReflectionUtils.getClass(clazz.getCanonicalName() + "Impl");
-            } catch (Exception ignored) {
-
-            }
+            } catch (Exception ignored) {}
 
         Refl<I> item = new Refl<>(clazz, new Object[0]);
         for (final Field field : item.getNonStaticFields())
