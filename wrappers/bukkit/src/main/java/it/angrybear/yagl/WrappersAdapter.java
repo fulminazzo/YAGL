@@ -380,20 +380,7 @@ public class WrappersAdapter {
      * @param sound    the sound
      */
     public static void playSound(final @NotNull Player player, final @NotNull Location location, final @NotNull Sound sound) {
-        final org.bukkit.Sound actual = EnumUtils.valueOf(org.bukkit.Sound.class, sound.getName());
-        try {
-            String category = sound.getCategory();
-            if (category != null) {
-                final Object actualCategory = EnumUtils.valueOf(Class.forName("org.bukkit.SoundCategory"), category);
-                new Refl<>(player).callMethod("playSound", location, actual, actualCategory, sound.getVolume(), sound.getPitch());
-                return;
-            }
-        } catch (IllegalArgumentException e) {
-            throw e;
-        } catch (Exception e) {
-            // Prevent other versions from complaining about method not found.
-        }
-        player.playSound(location, actual, sound.getVolume(), sound.getPitch());
+        playInternalSound(player, location, sound, s -> EnumUtils.valueOf(org.bukkit.Sound.class, s.getName()));
     }
 
     /**
@@ -420,20 +407,24 @@ public class WrappersAdapter {
      * @param sound    the sound
      */
     public static void playCustomSound(final @NotNull Player player, final @NotNull Location location, final @NotNull Sound sound) {
-        final String actual = sound.getName();
+        playInternalSound(player, location, sound, Sound::getName);
+    }
+
+    private static <T> void playInternalSound(final @NotNull Player player, final @NotNull Location location,
+                                              final @NotNull Sound sound, final @NotNull Function<Sound, T> actualSound) {
+        final Refl<Player> playerRefl = new Refl<>(player);
+        final T actual = actualSound.apply(sound);
         try {
             String category = sound.getCategory();
             if (category != null) {
                 final Object actualCategory = EnumUtils.valueOf(Class.forName("org.bukkit.SoundCategory"), category);
-                new Refl<>(player).callMethod("playSound", location, actual, actualCategory, sound.getVolume(), sound.getPitch());
+                playerRefl.callMethod("playSound", location, actual, actualCategory, sound.getVolume(), sound.getPitch());
                 return;
             }
-        } catch (IllegalArgumentException e) {
-            throw e;
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             // Prevent other versions from complaining about method not found.
         }
-        player.playSound(location, actual, sound.getVolume(), sound.getPitch());
+        playerRefl.callMethod("playSound", location, actual, sound.getVolume(), sound.getPitch());
     }
 
     /**
