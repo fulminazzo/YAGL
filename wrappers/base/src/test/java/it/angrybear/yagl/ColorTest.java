@@ -10,6 +10,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class ColorTest {
 
     @Test
+    void testValueOfIndex() {
+        Color[] values = Color.values();
+        for (int i = 0; i < values.length; i++) {
+            Color expected = values[i], actual = Color.valueOf(i);
+            assertEquals(expected, actual, String.format("Expected '%s' but got '%s' at index '%s'",
+                    expected, actual, i));
+        }
+    }
+
+    @Test
     void testGetterMethods() {
         Color color = Color.RED;
         assertEquals(255, color.getAlpha());
