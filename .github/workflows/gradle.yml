@@ -57,7 +57,7 @@ jobs:
         if: ${{ github.ref_name != 'badges' }}
         env:
           BRANCH: ${{ github.ref_name }}
-        run: |-
+        run: |- 
           git merge $BRANCH
           git pull origin badges
         shell: bash
