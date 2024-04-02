@@ -64,7 +64,7 @@ public class TestUtils {
         }
     }
 
-    private static Object mockParameter(Class<?> clazz) {
+    public static Object mockParameter(Class<?> clazz) {
         clazz = ReflectionUtils.getWrapperClass(clazz);
         if (Number.class.isAssignableFrom(clazz)) return 1;
         if (String.class.isAssignableFrom(clazz)) return "STONE";
