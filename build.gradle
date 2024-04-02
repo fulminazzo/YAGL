@@ -76,7 +76,7 @@ allprojects {
 
         if (projectName.contains("serializer")) api(libs.yamlparser)
 
-        if (projectName.contains("bukkit")) {
+        if (projectName.contains("bukkit") || projectName.contains("legacy")) {
             compileOnly libs.spigot
             testImplementation libs.spigot.latest
             testImplementation "it.fulminazzo:JBukkit:1.0"
