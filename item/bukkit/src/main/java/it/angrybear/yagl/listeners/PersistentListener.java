@@ -67,8 +67,7 @@ public class PersistentListener implements Listener {
             try {
                 Thread.sleep(SLEEP_TIME);
                 toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         }).start();
     }
 
