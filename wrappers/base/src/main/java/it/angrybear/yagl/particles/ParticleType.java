@@ -88,7 +88,7 @@ public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> 
      * specific {@link ParticleOption} for it.
      * One can use a {@link PrimitiveParticleOption} and
      * pass the actual Vibration object to it.
-     * @implNote it will not be serialized automatically.
+     * <b>NOTE</b> it will not be serialized automatically.
      */
     public static final ParticleType<PrimitiveParticleOption<Object>> VIBRATION = new ParticleType<>((Class<PrimitiveParticleOption<Object>>) (Class<?>) PrimitiveParticleOption.class);
     public static final ParticleType<?> FALLING_SPORE_BLOSSOM = new ParticleType<>();
