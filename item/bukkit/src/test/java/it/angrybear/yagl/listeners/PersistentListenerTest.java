@@ -126,7 +126,7 @@ class PersistentListenerTest {
                 new PlayerDropItemEvent(player, item),
                 new InventoryDragEvent(view, itemStack, new ItemStack(Material.AIR), false, new HashMap<>()),
                 new InventoryDragEvent(view, null, itemStack, false, new HashMap<>()),
-                new InventoryDragEvent(view, null, new ItemStack(Material.AIR), false, new HashMap<>(){{
+                new InventoryDragEvent(view, null, new ItemStack(Material.AIR), false, new HashMap<Integer, ItemStack>(){{
                     put(18, itemStack);
                 }}),
         };
