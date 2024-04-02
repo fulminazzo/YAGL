@@ -10,9 +10,16 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class ItemTest {
+
+    @Test
+    void invalidConstructorItemClassShouldReturnItemImpl() {
+        Item item = new MockItem("STONE").copy();
+        assertInstanceOf(ItemImpl.class, item);
+    }
 
     @Test
     void testAddEnchantment() {
