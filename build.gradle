@@ -93,6 +93,9 @@ allprojects {
                 api(project(":common:common-${id}"))
         }
 
+        if (!projectName.contains("-"))
+            subprojects.each {api project(it.path)}
+
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok
 
@@ -176,5 +179,5 @@ allprojects {
 }
 
 dependencies {
-    subprojects.each {api project(it.path)}
+
 }
