@@ -6,12 +6,12 @@ import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Color;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,44 +36,30 @@ import static org.mockito.Mockito.*;
 
 class WrappersAdapterTest {
 
-    private static it.angrybear.yagl.Color[] getColors() {
-        return it.angrybear.yagl.Color.values();
+    private static Particle[] getTestLegacyParticles() {
+        List<Particle> particles = new ArrayList<>();
+        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.create());
+        for (LegacyParticleType<?> type : LegacyParticleType.legacyValues())
+            particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
+        particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.create(new PrimitiveParticleOption<>(true)));
+        particles.add(LegacyParticleType.BONE_MEAL_USE.create(new PrimitiveParticleOption<>(1)));
+        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.create(new ColorParticleOption(it.angrybear.yagl.Color.AQUA)));
+        return particles.toArray(new Particle[0]);
     }
 
-    private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
-        List<PotionEffectType> potionEffects = new ArrayList<>();
-        for (Field field : PotionEffectType.class.getDeclaredFields())
-            if (field.getType().equals(PotionEffectType.class))
-                try {
-                    PotionEffectType type = (PotionEffectType) field.get(PotionEffectType.class);
-                    potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        // Register potion effects
-        Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
-                .getFieldObject("byName");
-        if (byName != null) potionEffects.forEach(e -> byName.put(e.getName().toLowerCase(), e));
-        return potionEffects.stream()
-                .map(t -> new org.bukkit.potion.PotionEffect(t, 15, 2, true, true, false))
-                .toArray(org.bukkit.potion.PotionEffect[]::new);
-    }
+    @ParameterizedTest
+    @MethodSource("getTestLegacyParticles")
+    void testSpawnEffect(Particle particle) {
+        Player player = mock(Player.class);
 
-    private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
-        List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
-        for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
-            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class))
-                try {
-                    org.bukkit.enchantments.Enchantment enchant = (org.bukkit.enchantments.Enchantment) field.get(org.bukkit.enchantments.Enchantment.class);
-                    enchantments.add(new MockEnchantment(enchant.getKey()));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        // Register enchantments
-        Map<NamespacedKey, org.bukkit.enchantments.Enchantment> byKey = new Refl<>(org.bukkit.enchantments.Enchantment.class)
-                .getFieldObject("byKey");
-        if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
-        return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
+        TestUtils.testMultipleMethods(WrappersAdapter.class, m -> m.getName().equals("spawnEffect") && m.getParameterTypes()[0].equals(Player.class),
+                a -> {
+            ArgumentCaptor<?> arg = a[1];
+            Object value = arg.getValue();
+            assertInstanceOf(Effect.class, value);
+            assertEquals(particle.getType(), ((Effect) value).name());
+            if (particle.getOption() != null) assertNotNull(a[a.length - 1].getValue());
+        }, new Object[]{player, particle}, player, "playEffect", Location.class, Effect.class, Object.class);
     }
 
     private static Particle[] getTestParticles() {
@@ -92,121 +79,69 @@ class WrappersAdapterTest {
         return particles.toArray(new Particle[0]);
     }
 
-    private static Particle[] getTestLegacyParticles() {
-        List<Particle> particles = new ArrayList<>();
-        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.create());
-        for (LegacyParticleType<?> type : LegacyParticleType.legacyValues())
-            particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
-        particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.create(new PrimitiveParticleOption<>(true)));
-        particles.add(LegacyParticleType.BONE_MEAL_USE.create(new PrimitiveParticleOption<>(1)));
-        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.create(new ColorParticleOption(it.angrybear.yagl.Color.AQUA)));
-        return particles.toArray(new Particle[0]);
-    }
-
-    @ParameterizedTest
-    @MethodSource("getTestLegacyParticles")
-    void testSpawnEffect(Particle particle) {
-        Player player = mock(Player.class);
-
-        Location location = new Location(null, 0, 0, 0);
-        WrappersAdapter.spawnEffect(player, particle, location);
-
-        ArgumentCaptor<Effect> effectArg = ArgumentCaptor.forClass(Effect.class);
-        if (particle.getOption() == null) {
-            verify(player).playEffect(any(Location.class), effectArg.capture(), any());
-
-            assertEquals(particle.getType(), effectArg.getValue().name());
-        } else {
-            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-            verify(player).playEffect(any(Location.class), effectArg.capture(), extra.capture());
-
-            assertEquals(particle.getType(), effectArg.getValue().name());
-            assertNotNull(extra.getValue());
-        }
-    }
-
     @ParameterizedTest
     @MethodSource("getTestParticles")
-    void testSpawnParticle(Particle particle) {
-        // Initialize Bukkit variables
-        initializeBlockData();
-
-        Player player = mock(Player.class);
-
-        Location location = new Location(null, 0, 0, 0);
-        WrappersAdapter.spawnParticle(player, particle, location, 1);
-
-        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
-        if (particle.getOption() == null) {
-            verify(player).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class));
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
-        } else {
-            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-            verify(player).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class),
-                    extra.capture());
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
-            assertNotNull(extra.getValue());
-        }
+    void testPlayerSpawnParticle(Particle particle) {
+        testSpawnParticle(Player.class, particle);
     }
 
     @ParameterizedTest
     @MethodSource("getTestParticles")
     void testWorldSpawnParticle(Particle particle) {
+        testSpawnParticle(World.class, particle);
+    }
+
+    private <T> void testSpawnParticle(Class<T> targetClass, Particle particle) {
         // Initialize Bukkit variables
         initializeBlockData();
 
-        World world = mock(World.class);
+        T target = mock(targetClass);
 
-        WrappersAdapter.spawnParticle(world, particle, 0, 0, 0, 1);
+        final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator;
+        final Class<?> @NotNull [] invokedMethodParamTypes;
 
-        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
         if (particle.getOption() == null) {
-            verify(world).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class));
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
+            captorsValidator = a -> {
+                Object value = a[0].getValue();
+                assertInstanceOf(org.bukkit.Particle.class, value);
+                assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
+            };
+            invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
+                    double.class, double.class, double.class};
         } else {
-            ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-            verify(world).spawnParticle(particleArg.capture(),
-                    any(Location.class), any(int.class),
-                    any(double.class), any(double.class), any(double.class),
-                    extra.capture());
-
-            assertEquals(particle.getType(), particleArg.getValue().name());
-            assertNotNull(extra.getValue());
+            captorsValidator = a -> {
+                Object value = a[0].getValue();
+                assertInstanceOf(org.bukkit.Particle.class, value);
+                assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
+                assertNotNull(a[a.length - 1].getValue());
+            };
+            invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
+                    double.class, double.class, double.class, Object.class};
         }
+
+        TestUtils.testMultipleMethods(WrappersAdapter.class,
+                m -> m.getName().equals("spawnParticle") && m.getParameterTypes()[0].isAssignableFrom(target.getClass()),
+                captorsValidator, new Object[]{target, particle}, target, "spawnParticle", invokedMethodParamTypes);
     }
 
     @Test
-    void testSpawnItemCrack() {
+    void testSpawnItemCrack() throws NoSuchMethodException {
         // Initialize Bukkit variables
-        ItemFactory factory = mock(ItemFactory.class);
-        Server server = mock(Server.class);
-        when(server.getItemFactory()).thenReturn(factory);
-        new Refl<>(Bukkit.class).setFieldObject("server", server);
+        BukkitUtils.setupServer();
 
         Particle particle = ParticleType.ITEM_CRACK.create(mock(Item.class));
         Player player = mock(Player.class);
 
-        Location location = new Location(null, 0, 0, 0);
-        WrappersAdapter.spawnParticle(player, particle, location, 1);
+        ArgumentCaptor<?> @NotNull [] captors = TestUtils.testSingleMethod(WrappersAdapter.class,
+                WrappersAdapter.class.getMethod("spawnParticle", Player.class, Particle.class, Location.class, int.class),
+                new Object[]{player, particle}, player, "spawnParticle",
+                org.bukkit.Particle.class, Location.class, int.class, double.class, double.class, double.class, Object.class);
 
-        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
-        ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-        verify(player).spawnParticle(particleArg.capture(),
-                any(Location.class), any(int.class),
-                any(double.class), any(double.class), any(double.class),
-                extra.capture());
+        Object value = captors[0].getValue();
+        assertInstanceOf(org.bukkit.Particle.class, value);
+        assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
 
-        assertEquals(particle.getType(), particleArg.getValue().name());
-
+        ArgumentCaptor<?> extra = captors[captors.length - 1];
         ItemStack expected = new ItemStack(Material.STONE, 7);
         assertInstanceOf(ItemStack.class, extra.getValue());
         ItemStack actual = (ItemStack) extra.getValue();
@@ -314,11 +249,47 @@ class WrappersAdapterTest {
         assertEquals(sound.getPitch(), pitchArg.getValue());
     }
 
+    private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
+        List<PotionEffectType> potionEffects = new ArrayList<>();
+        for (Field field : PotionEffectType.class.getDeclaredFields())
+            if (field.getType().equals(PotionEffectType.class))
+                try {
+                    PotionEffectType type = (PotionEffectType) field.get(PotionEffectType.class);
+                    potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        // Register potion effects
+        Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
+                .getFieldObject("byName");
+        if (byName != null) potionEffects.forEach(e -> byName.put(e.getName().toLowerCase(), e));
+        return potionEffects.stream()
+                .map(t -> new org.bukkit.potion.PotionEffect(t, 15, 2, true, true, false))
+                .toArray(org.bukkit.potion.PotionEffect[]::new);
+    }
+
     @ParameterizedTest
     @MethodSource("getPotionEffects")
     void testPotionsConversion(org.bukkit.potion.PotionEffect expected) {
         PotionEffect enchantment = WrappersAdapter.potionEffectToWPotionEffect(expected);
         assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(enchantment));
+    }
+
+    private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
+        List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
+        for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
+            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class))
+                try {
+                    org.bukkit.enchantments.Enchantment enchant = (org.bukkit.enchantments.Enchantment) field.get(org.bukkit.enchantments.Enchantment.class);
+                    enchantments.add(new MockEnchantment(enchant.getKey()));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        // Register enchantments
+        Map<NamespacedKey, org.bukkit.enchantments.Enchantment> byKey = new Refl<>(org.bukkit.enchantments.Enchantment.class)
+                .getFieldObject("byKey");
+        if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
+        return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
     }
 
     @ParameterizedTest
@@ -353,6 +324,10 @@ class WrappersAdapterTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
                 ParticleType.REDSTONE.create(it.angrybear.yagl.Color.RED, 3f), org.bukkit.Particle.class,
                 (Function<?, Class<?>>) s -> Item.class));
+    }
+
+    private static it.angrybear.yagl.Color[] getColors() {
+        return it.angrybear.yagl.Color.values();
     }
 
     @ParameterizedTest

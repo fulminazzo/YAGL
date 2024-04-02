@@ -5,23 +5,113 @@ import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mockito.ArgumentCaptor;
+import org.mockito.exceptions.misusing.NotAMockException;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.reset;
 
 /**
  * The type Test utils.
  */
 public class TestUtils {
+
+    /**
+     * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
+     * Each one of them is first invoked using {@link #testSingleMethod(Object, Method, Object[], Object, String, Class[])}.
+     * Then, it uses <i>captorsValidator</i> to validate the passed parameters.
+     *
+     * @param executor                the executor
+     * @param methodFinder            the method finder
+     * @param captorsValidator        the captors validator
+     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
+     * @param target                  the target
+     * @param invokedMethod           the invoked method
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>. These will also be the types of the returned captors
+     */
+    public static void testMultipleMethods(final @NotNull Object executor, final @NotNull Predicate<Method> methodFinder,
+                                           final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator,
+                                           final Object @NotNull [] staticObjects,
+                                           final @NotNull Object target, final String invokedMethod,
+                                           final Class<?> @NotNull ... invokedMethodParamTypes) {
+        @NotNull List<Method> methods = new Refl<>(executor).getMethods(methodFinder);
+        if (methods.isEmpty()) throw new IllegalArgumentException("Could not find any method matching the given arguments.");
+
+        for (final Method method : methods) {
+            ArgumentCaptor<?> @NotNull [] captors = testSingleMethod(executor, method, staticObjects, target, invokedMethod, invokedMethodParamTypes);
+            captorsValidator.accept(captors);
+            // Clean up
+            try {reset(executor);}
+            catch (NotAMockException ignored) {}
+            try {reset(target);}
+            catch (NotAMockException ignored) {}
+        }
+    }
+
+    /**
+     * Allows to test the given <i>targetMethod</i>.
+     * It verifies that the <i>executor</i> invokes <i>targetMethod</i> and that,
+     * upon execution, <i>target</i> invokes <i>invokedMethod</i>.
+     *
+     * @param executor                the executor
+     * @param targetMethod            the target method
+     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
+     * @param target                  the target
+     * @param invokedMethod           the invoked method
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>. These will also be the types of the returned captors
+     * @return the argument captors of the invoked parameters
+     */
+    public static ArgumentCaptor<?> @NotNull [] testSingleMethod(final @NotNull Object executor, final @NotNull Method targetMethod,
+                                                                 final Object @NotNull [] staticObjects,
+                                                                 final @NotNull Object target, final String invokedMethod,
+                                                                 final Class<?> @NotNull ... invokedMethodParamTypes) {
+        // Prepare argument captors
+        final ArgumentCaptor<?>[] captors = initializeCaptors(invokedMethodParamTypes);
+        try {
+            // Execute target method
+            final Object[] parameters = initializeParameters(targetMethod.getParameterTypes(), staticObjects);
+            targetMethod.setAccessible(true);
+            targetMethod.invoke(executor, parameters);
+
+            // Verify execution with mock
+            new Refl<>(verify(target)).invokeMethod(invokedMethod, invokedMethodParamTypes,
+                    Arrays.stream(captors).map(ArgumentCaptor::capture).toArray(Object[]::new));
+
+            return captors;
+        } catch (Exception e) {
+            System.err.printf("An exception occurred while testing method '%s'%n", methodToString(targetMethod));
+            System.err.printf("target: '%s'%n", target.getClass().getCanonicalName());
+            System.err.printf("Invoked method parameter types: '%s'%n", Arrays.toString(invokedMethodParamTypes));
+            System.err.printf("Captors: '%s'%n", Arrays.toString(captors));
+            ExceptionUtils.throwException(e);
+            throw new IllegalStateException("Unreachable code");
+        }
+    }
+
+    private static Object[] initializeParameters(final Class<?> @NotNull [] classes, final Object @NotNull ... staticObjects) {
+        return Arrays.stream(classes).map(c -> initializeSingle(c, staticObjects)).toArray(Object[]::new);
+    }
+
+    private static Object initializeSingle(final Class<?> clazz, final Object @NotNull ... staticObjects) {
+        for (Object o : staticObjects) if (clazz.isAssignableFrom(o.getClass())) return o;
+        return TestUtils.mockParameter(clazz);
+    }
+
+    private static ArgumentCaptor<?>[] initializeCaptors(final Class<?> @NotNull [] classes) {
+        return Arrays.stream(classes).map(ArgumentCaptor::forClass).toArray(ArgumentCaptor[]::new);
+    }
 
     /**
      * Many objects have setter, adder or remover methods which return the object itself,
@@ -39,8 +129,7 @@ public class TestUtils {
 
         for (Method method : refl.getNonStaticMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
-            final String methodString = String.format("%s(%s)", method.getName(), Arrays.stream(parameters)
-                    .map(Class::getSimpleName).collect(Collectors.joining(", ")));
+            final String methodString = methodToString(method);
             try {
                 final Class<?> returnType = method.getReturnType();
                 if (!clazz.isAssignableFrom(returnType)) continue;
@@ -77,5 +166,10 @@ public class TestUtils {
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         return mock(clazz);
+    }
+
+    private static String methodToString(final @NotNull Method method) {
+        return String.format("%s(%s)", method.getName(), Arrays.stream(method.getParameterTypes())
+                .map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }
 }
