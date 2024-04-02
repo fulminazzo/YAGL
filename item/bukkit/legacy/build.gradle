@@ -1,5 +1,5 @@
 dependencies {
     api project(":item:item-bukkit")
 
-    testImplementation libs.spigot.legacy
+    testImplementation libs.spigot.obsolete
 }
