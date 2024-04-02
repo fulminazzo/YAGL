@@ -6,8 +6,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -16,6 +19,20 @@ class ParticleTypeTest {
 
     private static ParticleType<?>[] getTests() {
         return ParticleType.values();
+    }
+
+    private static Object[][] getEqualityTestParticles() {
+        List<Particle[]> particles = new LinkedList<>();
+        for (AParticleType<?> type : Stream.concat(Arrays.stream(ParticleType.values()),
+                Arrays.stream(LegacyParticleType.values())).collect(Collectors.toList()))
+            particles.add(new Particle[]{type.create(), new Particle(type.name(), null)});
+        return particles.toArray(new Particle[0][2]);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEqualityTestParticles")
+    void testEqualityOfParticleTypes(Particle actual, Particle expected) {
+        assertEquals(expected, actual);
     }
 
     private static Object[][] getTestParticles() {
