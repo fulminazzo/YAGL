@@ -52,12 +52,8 @@ public class PredicateSet<E> extends AbstractSet<E> implements Serializable {
      * @return true if it was added
      */
     public boolean add(E e, boolean replace) {
-        if (replace) {
-            this.internal.add(e);
-            return true;
-        }
         E internalE = getInternal(e);
-        if (internalE == null || this.addTest.test(internalE, e)) {
+        if (internalE == null || (this.addTest.test(internalE, e) || replace)) {
             if (internalE != null) this.internal.remove(internalE);
             this.internal.add(e);
             return true;
