@@ -77,14 +77,13 @@ public class TestUtils {
                                                                  final Object @NotNull [] staticObjects,
                                                                  final @NotNull Object target, final String invokedMethod,
                                                                  final Class<?> @NotNull ... invokedMethodParamTypes) {
+        // Prepare argument captors
+        final ArgumentCaptor<?>[] captors = initializeCaptors(invokedMethodParamTypes);
         try {
             // Execute target method
             final Object[] parameters = initializeParameters(targetMethod.getParameterTypes(), staticObjects);
             targetMethod.setAccessible(true);
             targetMethod.invoke(executor, parameters);
-
-            // Prepare argument captors
-            final ArgumentCaptor<?>[] captors = initializeCaptors(invokedMethodParamTypes);
 
             // Verify execution with mock
             new Refl<>(verify(target)).invokeMethod(invokedMethod, Arrays.stream(captors)
@@ -93,6 +92,9 @@ public class TestUtils {
             return captors;
         } catch (Exception e) {
             System.err.printf("An exception occurred while testing method '%s'%n", methodToString(targetMethod));
+            System.err.printf("target: '%s'%n", target.getClass().getCanonicalName());
+            System.err.printf("Invoked method parameter types: '%s'%n", Arrays.toString(invokedMethodParamTypes));
+            System.err.printf("Captors: '%s'%n", Arrays.toString(captors));
             ExceptionUtils.throwException(e);
             throw new IllegalStateException("Unreachable code");
         }
