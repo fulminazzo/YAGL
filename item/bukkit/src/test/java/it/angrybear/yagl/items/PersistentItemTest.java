@@ -23,6 +23,18 @@ class PersistentItemTest {
     }
 
     @Test
+    void testClearPersistentItem() {
+        // Clear previous
+        PersistentItem.clearPersistentItems();
+
+        PersistentItem persistentItem = new PersistentItem(Material.STONE);
+        ItemStack itemStack = persistentItem.create();
+        PersistentItem.clearPersistentItems();
+
+        assertNull(PersistentItem.getPersistentItem(itemStack));
+    }
+
+    @Test
     void testGetPersistentItem() {
         BukkitUtils.setupEnchantments();
         PersistentItem expected = new PersistentItem(Material.DIAMOND_SWORD, 1)
