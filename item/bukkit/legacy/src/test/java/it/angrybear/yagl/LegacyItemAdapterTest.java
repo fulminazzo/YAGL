@@ -6,8 +6,10 @@ import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,8 +30,8 @@ class LegacyItemAdapterTest {
         BukkitUtils.setupEnchantments();
         Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
-                .addEnchantment("ARROW_FIRE", 10)
                 .addEnchantment("ARROW_INFINITE", 20)
+                .addEnchantment("ARROW_FIRE", 10)
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
                 .setUnbreakable(true);
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
@@ -78,8 +80,8 @@ class LegacyItemAdapterTest {
 
     @Test
     void testFurnaceRecipeConversion() {
-        FurnaceRecipe expected = new FurnaceRecipe(new ItemStack(Material.STONE), Material.COAL, 10, 20);
-        new Refl<>(expected).setFieldObject("ingredient", new ItemStack(Material.COAL).getData());
+        FurnaceRecipe expected = new FurnaceRecipe(new ItemStack(Material.STONE), Material.COAL);
+        new Refl<>(expected).setFieldObject("ingredient", new ItemStack(Material.COAL));
 
         it.angrybear.yagl.items.recipes.FurnaceRecipe recipe = new it.angrybear.yagl.items.recipes.FurnaceRecipe("test")
                 .setOutput(Item.newItem("STONE")).setIngredient(Item.newItem("COAL"))
