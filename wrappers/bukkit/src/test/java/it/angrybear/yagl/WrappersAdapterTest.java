@@ -35,63 +35,6 @@ import static org.mockito.Mockito.*;
 
 class WrappersAdapterTest {
 
-    private static it.angrybear.yagl.Color[] getColors() {
-        return it.angrybear.yagl.Color.values();
-    }
-
-    private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
-        List<PotionEffectType> potionEffects = new ArrayList<>();
-        for (Field field : PotionEffectType.class.getDeclaredFields())
-            if (field.getType().equals(PotionEffectType.class))
-                try {
-                    PotionEffectType type = (PotionEffectType) field.get(PotionEffectType.class);
-                    potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        // Register potion effects
-        Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
-                .getFieldObject("byName");
-        if (byName != null) potionEffects.forEach(e -> byName.put(e.getName().toLowerCase(), e));
-        return potionEffects.stream()
-                .map(t -> new org.bukkit.potion.PotionEffect(t, 15, 2, true, true, false))
-                .toArray(org.bukkit.potion.PotionEffect[]::new);
-    }
-
-    private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
-        List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
-        for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
-            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class))
-                try {
-                    org.bukkit.enchantments.Enchantment enchant = (org.bukkit.enchantments.Enchantment) field.get(org.bukkit.enchantments.Enchantment.class);
-                    enchantments.add(new MockEnchantment(enchant.getKey()));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-        // Register enchantments
-        Map<NamespacedKey, org.bukkit.enchantments.Enchantment> byKey = new Refl<>(org.bukkit.enchantments.Enchantment.class)
-                .getFieldObject("byKey");
-        if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
-        return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
-    }
-
-    private static Particle[] getTestParticles() {
-        List<Particle> particles = new ArrayList<>();
-        for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
-        particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
-        particles.add(ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(11)));
-        particles.add(ParticleType.REDSTONE.create(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
-        particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(
-                it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
-        particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
-                new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
-        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(Item.class))));
-        particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
-        particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
-        particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
-        return particles.toArray(new Particle[0]);
-    }
-
     private static Particle[] getTestLegacyParticles() {
         List<Particle> particles = new ArrayList<>();
         for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.create());
@@ -116,6 +59,23 @@ class WrappersAdapterTest {
             assertEquals(particle.getType(), ((Effect) value).name());
             if (particle.getOption() != null) assertNotNull(a[a.length - 1].getValue());
         }, new Object[]{player, particle}, player, "playEffect", Location.class, Effect.class, Object.class);
+    }
+
+    private static Particle[] getTestParticles() {
+        List<Particle> particles = new ArrayList<>();
+        for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
+        particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
+        particles.add(ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(11)));
+        particles.add(ParticleType.REDSTONE.create(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
+        particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(
+                it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
+        particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
+                new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
+        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(Item.class))));
+        particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
+        particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
+        particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
+        return particles.toArray(new Particle[0]);
     }
 
     @ParameterizedTest
@@ -307,11 +267,47 @@ class WrappersAdapterTest {
         assertEquals(sound.getPitch(), pitchArg.getValue());
     }
 
+    private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
+        List<PotionEffectType> potionEffects = new ArrayList<>();
+        for (Field field : PotionEffectType.class.getDeclaredFields())
+            if (field.getType().equals(PotionEffectType.class))
+                try {
+                    PotionEffectType type = (PotionEffectType) field.get(PotionEffectType.class);
+                    potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        // Register potion effects
+        Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
+                .getFieldObject("byName");
+        if (byName != null) potionEffects.forEach(e -> byName.put(e.getName().toLowerCase(), e));
+        return potionEffects.stream()
+                .map(t -> new org.bukkit.potion.PotionEffect(t, 15, 2, true, true, false))
+                .toArray(org.bukkit.potion.PotionEffect[]::new);
+    }
+
     @ParameterizedTest
     @MethodSource("getPotionEffects")
     void testPotionsConversion(org.bukkit.potion.PotionEffect expected) {
         PotionEffect enchantment = WrappersAdapter.potionEffectToWPotionEffect(expected);
         assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(enchantment));
+    }
+
+    private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
+        List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
+        for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
+            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class))
+                try {
+                    org.bukkit.enchantments.Enchantment enchant = (org.bukkit.enchantments.Enchantment) field.get(org.bukkit.enchantments.Enchantment.class);
+                    enchantments.add(new MockEnchantment(enchant.getKey()));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+        // Register enchantments
+        Map<NamespacedKey, org.bukkit.enchantments.Enchantment> byKey = new Refl<>(org.bukkit.enchantments.Enchantment.class)
+                .getFieldObject("byKey");
+        if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
+        return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
     }
 
     @ParameterizedTest
@@ -346,6 +342,10 @@ class WrappersAdapterTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
                 ParticleType.REDSTONE.create(it.angrybear.yagl.Color.RED, 3f), org.bukkit.Particle.class,
                 (Function<?, Class<?>>) s -> Item.class));
+    }
+
+    private static it.angrybear.yagl.Color[] getColors() {
+        return it.angrybear.yagl.Color.values();
     }
 
     @ParameterizedTest
