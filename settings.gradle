@@ -34,3 +34,4 @@ project(':item:item-serializer').projectDir = file('item/serializer')
 //include 'gui:gui-serializer'
 //project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
+include 'testing'
