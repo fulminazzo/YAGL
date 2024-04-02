@@ -6,6 +6,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
+import org.mockito.exceptions.misusing.NotAMockException;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -26,6 +27,38 @@ import static org.mockito.Mockito.reset;
  * The type Test utils.
  */
 public class TestUtils {
+
+    /**
+     * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
+     * Each one of them is first invoked using {@link #testSingleMethod(Object, Method, Object[], Object, String, Class[])}.
+     * Then, it uses <i>captorsValidator</i> to validate the passed parameters.
+     *
+     * @param executor                the executor
+     * @param methodFinder            the method finder
+     * @param captorsValidator        the captors validator
+     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
+     * @param target                  the target
+     * @param invokedMethod           the invoked method
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>. These will also be the types of the returned captors
+     */
+    public static void testMultipleMethods(final @NotNull Object executor, final @NotNull Predicate<Method> methodFinder,
+                                           final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator,
+                                           final Object @NotNull [] staticObjects,
+                                           final @NotNull Object target, final String invokedMethod,
+                                           final Class<?> @NotNull ... invokedMethodParamTypes) {
+        @NotNull List<Method> methods = new Refl<>(executor).getMethods(methodFinder);
+        if (methods.isEmpty()) throw new IllegalArgumentException("Could not find any method matching the given arguments.");
+
+        for (final Method method : methods) {
+            ArgumentCaptor<?> @NotNull [] captors = testSingleMethod(executor, method, staticObjects, target, invokedMethod, invokedMethodParamTypes);
+            captorsValidator.accept(captors);
+            // Clean up
+            try {reset(executor);}
+            catch (NotAMockException ignored) {}
+            try {reset(target);}
+            catch (NotAMockException ignored) {}
+        }
+    }
 
     /**
      * Allows to test the given <i>targetMethod</i>.
