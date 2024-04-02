@@ -8,6 +8,8 @@ plugins {
 group = 'it.angrybear'
 version = '4.0'
 
+def TEST_MODULE = "testing"
+
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -91,17 +93,14 @@ allprojects {
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok
 
-        testImplementation platform(libs.junit.platform)
-        testImplementation 'org.junit.jupiter:junit-jupiter'
-        testImplementation 'org.junit.jupiter:junit-jupiter-params'
-        testImplementation libs.mockito
+        if (!project.name.equals(TEST_MODULE)) testImplementation project(":" + TEST_MODULE)
     }
 
     test {
         useJUnitPlatform()
     }
 
-    if (project.name.equals("testing")) return;
+    if (project.name.equals(TEST_MODULE)) return;
 
     processResources {
         def props = [
