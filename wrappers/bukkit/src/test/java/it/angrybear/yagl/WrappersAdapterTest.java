@@ -125,25 +125,23 @@ class WrappersAdapterTest {
     }
 
     @Test
-    void testSpawnItemCrack() {
+    void testSpawnItemCrack() throws NoSuchMethodException {
         // Initialize Bukkit variables
         BukkitUtils.setupServer();
 
         Particle particle = ParticleType.ITEM_CRACK.create(mock(Item.class));
         Player player = mock(Player.class);
 
-        Location location = new Location(null, 0, 0, 0);
-        WrappersAdapter.spawnParticle(player, particle, location, 1);
+        ArgumentCaptor<?> @NotNull [] captors = TestUtils.testSingleMethod(WrappersAdapter.class,
+                WrappersAdapter.class.getMethod("spawnParticle", Player.class, Particle.class, Location.class, int.class),
+                new Object[]{player, particle}, player, "spawnParticle",
+                org.bukkit.Particle.class, Location.class, int.class, double.class, double.class, double.class, Object.class);
 
-        ArgumentCaptor<org.bukkit.Particle> particleArg = ArgumentCaptor.forClass(org.bukkit.Particle.class);
-        ArgumentCaptor<?> extra = ArgumentCaptor.forClass(Object.class);
-        verify(player).spawnParticle(particleArg.capture(),
-                any(Location.class), any(int.class),
-                any(double.class), any(double.class), any(double.class),
-                extra.capture());
+        Object value = captors[0].getValue();
+        assertInstanceOf(org.bukkit.Particle.class, value);
+        assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
 
-        assertEquals(particle.getType(), particleArg.getValue().name());
-
+        ArgumentCaptor<?> extra = captors[captors.length - 1];
         ItemStack expected = new ItemStack(Material.STONE, 7);
         assertInstanceOf(ItemStack.class, extra.getValue());
         ItemStack actual = (ItemStack) extra.getValue();
