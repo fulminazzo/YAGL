@@ -1,0 +1,5 @@
+dependencies {
+    api project(":wrappers:wrappers-bukkit")
+
+    testImplementation libs.spigot.obsolete
+}

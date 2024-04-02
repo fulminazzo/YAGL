@@ -15,6 +15,8 @@ include 'wrappers:wrappers-bukkit'
 project(':wrappers:wrappers-bukkit').projectDir = file('wrappers/bukkit')
 include ':wrappers:wrappers-bukkit:wrappers-legacy'
 project(':wrappers:wrappers-bukkit:wrappers-legacy').projectDir = file('wrappers/bukkit/legacy')
+include ':wrappers:wrappers-bukkit:wrappers-obsolete'
+project(':wrappers:wrappers-bukkit:wrappers-obsolete').projectDir = file('wrappers/bukkit/obsolete')
 include 'wrappers:wrappers-serializer'
 project(':wrappers:wrappers-serializer').projectDir = file('wrappers/serializer')
 
