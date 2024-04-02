@@ -83,7 +83,7 @@ allprojects {
         }
 
         if (projectName.contains("legacy"))
-            testImplementation "it.fulminazzo:JBukkit:1.0"
+            testImplementation "it.fulminazzo.JBukkit:legacy:1.0"
 
         if (projectName.contains("-")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
