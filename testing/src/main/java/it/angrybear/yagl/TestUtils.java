@@ -74,7 +74,7 @@ public class TestUtils {
             if (enums == null) return null;
             return enums[0];
         }
-        if (clazz.isArray()) return Array.newInstance(clazz.componentType(), 0);
+        if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         return mock(clazz);
     }
