@@ -86,8 +86,8 @@ public class TestUtils {
             targetMethod.invoke(executor, parameters);
 
             // Verify execution with mock
-            new Refl<>(verify(target)).invokeMethod(invokedMethod, Arrays.stream(captors)
-                    .map(ArgumentCaptor::capture).toArray(Object[]::new));
+            new Refl<>(verify(target)).invokeMethod(invokedMethod, invokedMethodParamTypes,
+                    Arrays.stream(captors).map(ArgumentCaptor::capture).toArray(Object[]::new));
 
             return captors;
         } catch (Exception e) {
