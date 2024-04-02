@@ -39,8 +39,7 @@ public class TestUtils {
 
         for (Method method : refl.getNonStaticMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
-            final String methodString = String.format("%s(%s)", method.getName(), Arrays.stream(parameters)
-                    .map(Class::getSimpleName).collect(Collectors.joining(", ")));
+            final String methodString = methodToString(method);
             try {
                 final Class<?> returnType = method.getReturnType();
                 if (!clazz.isAssignableFrom(returnType)) continue;
@@ -77,5 +76,10 @@ public class TestUtils {
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         return mock(clazz);
+    }
+
+    private static String methodToString(final @NotNull Method method) {
+        return String.format("%s(%s)", method.getName(), Arrays.stream(method.getParameterTypes())
+                .map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }
 }
