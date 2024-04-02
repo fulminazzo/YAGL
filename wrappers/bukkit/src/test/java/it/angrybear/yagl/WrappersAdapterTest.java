@@ -6,12 +6,12 @@ import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Color;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
@@ -140,10 +140,7 @@ class WrappersAdapterTest {
     @Test
     void testSpawnItemCrack() {
         // Initialize Bukkit variables
-        ItemFactory factory = mock(ItemFactory.class);
-        Server server = mock(Server.class);
-        when(server.getItemFactory()).thenReturn(factory);
-        new Refl<>(Bukkit.class).setFieldObject("server", server);
+        BukkitUtils.setupServer();
 
         Particle particle = ParticleType.ITEM_CRACK.create(mock(Item.class));
         Player player = mock(Player.class);
