@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'jacoco-report-aggregation'
     id 'com.github.johnrengelman.shadow' version libs.versions.shadow
     id 'io.freefair.lombok' version libs.versions.delombok
 }
@@ -13,6 +14,7 @@ def TEST_MODULE = "testing"
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
+    apply plugin: 'jacoco-report-aggregation'
     apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'io.freefair.lombok'
 
@@ -178,6 +180,15 @@ allprojects {
     }
 }
 
-dependencies {
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
 
+testCodeCoverageReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = true
+        csv.required = true
+    }
 }
