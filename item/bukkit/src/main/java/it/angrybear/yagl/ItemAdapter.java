@@ -45,7 +45,8 @@ public class ItemAdapter {
                 if (meta instanceof org.bukkit.inventory.meta.Damageable)
                     item.setDurability(((org.bukkit.inventory.meta.Damageable) meta).getDamage());
             }, item::getDurability);
-            invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), null);
+            invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), () ->
+                    item.setUnbreakable(meta.spigot().isUnbreakable()));
             invokeNoSuchMethod(() -> {
                 int modelData = meta.getCustomModelData();
                 if (modelData > 0) item.setCustomModelData(modelData);
@@ -79,7 +80,8 @@ public class ItemAdapter {
             invokeNoSuchMethod(() -> {
                 if (meta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
             }, () -> item.setDurability(item.getDurability()));
-            invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), null);
+            invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->
+                    meta.spigot().setUnbreakable(item.isUnbreakable()));
             invokeNoSuchMethod(() -> {
                 int modelData = item.getCustomModelData();
                 if (modelData > 0) meta.setCustomModelData(modelData);
