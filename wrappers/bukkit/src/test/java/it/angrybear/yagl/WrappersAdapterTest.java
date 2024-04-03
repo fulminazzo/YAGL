@@ -88,7 +88,7 @@ class WrappersAdapterTest {
                 Color.RED, Color.BLUE, 12f)));
         particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
                 new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
-        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(AbstractItem.class))));
+        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption<>(mock(AbstractItem.class))));
         particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
