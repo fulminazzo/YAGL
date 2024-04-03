@@ -7,6 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnumUtilsTest {
 
     @Test
+    void shouldThrowRealException() {
+        assertThrowsExactly(ArithmeticException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any"));
+    }
+
+    @Test
     void testValid() {
         assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase()));
     }
@@ -37,6 +42,13 @@ class EnumUtilsTest {
 
         public static void invalid(String name) {
 
+        }
+    }
+
+    private static class MockClassEnum {
+
+        public static MockClassEnum valueOf(String name) {
+            throw new ArithmeticException("Just a mock");
         }
     }
 }
