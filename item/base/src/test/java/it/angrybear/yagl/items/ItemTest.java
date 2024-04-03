@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
 
@@ -46,6 +45,17 @@ class ItemTest {
         for (String e : enchantments) {
             assertEquals(1, item.getEnchantmentLevel(e));
             assertEquals(1, item.getEnchantmentLevel(new Enchantment(e)));
+        }
+    }
+
+    @Test
+    void testHasEnchantment() {
+        Item item = new MockItem("STONE");
+        String[] enchantments = new String[]{"ench1", "ench2", "ench3"};
+        item.addEnchantments(enchantments);
+        for (String e : enchantments) {
+            assertTrue(item.hasEnchantment(e));
+            assertTrue(item.hasEnchantment(new Enchantment(e)));
         }
     }
 
