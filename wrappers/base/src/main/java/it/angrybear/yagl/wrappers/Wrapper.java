@@ -39,7 +39,8 @@ public abstract class Wrapper extends FieldEquable {
         StackTraceElement[] trace = Thread.currentThread().getStackTrace();
         // The first element should be the getStackTrace invocation, the second and third the 'check' methods.
         // So we are looking for the third.
-        String method = trace[3].getMethodName().toLowerCase();
+        String method = trace[2].getMethodName().toLowerCase();
+        if (method.equals("check")) method = trace[3].getMethodName().toLowerCase();
         if (method.startsWith("set") || method.startsWith("get")) method = method.substring(3);
         Field field = ReflectionUtils.getField(object, method);
         if (field.isAnnotationPresent(Range.class)) {
