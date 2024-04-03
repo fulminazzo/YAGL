@@ -8,7 +8,7 @@ class EnumUtilsTest {
 
     @Test
     void shouldThrowRealException() {
-        assertThrowsExactly(ArithmeticException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any"));
+        assertThrowsExactly(RuntimeException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any"));
     }
 
     @Test
@@ -47,8 +47,8 @@ class EnumUtilsTest {
 
     private static class MockClassEnum {
 
-        public static MockClassEnum valueOf(String name) {
-            throw new ArithmeticException("Just a mock");
+        public static MockClassEnum valueOf(String name) throws IllegalAccessException {
+            throw new IllegalAccessException("Just a mock");
         }
     }
 }
