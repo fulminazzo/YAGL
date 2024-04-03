@@ -256,7 +256,7 @@ public class Color extends ClassEnum {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Color) return equals((Color) o);
-        return super.equals(o);
+        return false;
     }
 
     @Override
