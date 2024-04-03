@@ -7,6 +7,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShapeTest {
 
     @Test
+    void shapesShouldOnlyEqualWithSameRowsAndColumns() {
+        ShapedRecipe.Shape s1 = new ShapedRecipe.Shape(3, 2);
+        ShapedRecipe.Shape s2 = new ShapedRecipe.Shape(3, 2);
+        ShapedRecipe.Shape s3 = new ShapedRecipe.Shape(2, 3);
+
+        assertEquals(s1, s2);
+        assertEquals(s1.hashCode(), s2.hashCode());
+        assertNotEquals(s1, s3);
+        assertNotEquals(s1.hashCode(), s3.hashCode());
+    }
+
+    @Test
     void testColumnsBounds() {
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 new ShapedRecipe.Shape().setColumns(ShapedRecipe.Shape.MIN_COLUMNS - 1));
