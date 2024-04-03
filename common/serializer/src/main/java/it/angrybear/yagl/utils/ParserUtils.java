@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class ParserUtils {
+public final class ParserUtils {
 
     @SuppressWarnings("unchecked")
     public static <C> Class<? extends C> typeToClass(final Class<C> coreClass, final @NotNull String toConvert) {
@@ -17,7 +17,7 @@ public class ParserUtils {
                 Class<? extends C> guiClazz = (Class<? extends C>) clazz;
                 if (classToType(coreClass, guiClazz).equals(toConvert)) return guiClazz;
             }
-        throw new RuntimeException(String.format("Could not find corresponding %s class from type '%s'",
+        throw new IllegalArgumentException(String.format("Could not find corresponding %s class from type '%s'",
                 coreClass.getSimpleName(), toConvert));
     }
 
