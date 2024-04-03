@@ -10,8 +10,10 @@ import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,7 +23,8 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ItemAdapterTest {
 
@@ -61,6 +64,34 @@ class ItemAdapterTest {
         ItemStack itemStack = new ItemStack(Material.STONE);
         itemStack.setItemMeta(null);
         assertEquals(BukkitItem.newItem(Material.STONE), ItemAdapter.itemStackToItem(itemStack));
+    }
+
+    @Test
+    void testNullItemConversionShouldReturnNull() {
+        assertNull(ItemAdapter.itemToItemStack(null));
+    }
+
+    @Test
+    void testItemConversionWithNoMaterial() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> ItemAdapter.itemToItemStack(Item.newItem()));
+    }
+
+    @Test
+    void testNotDamageableItemMeta() {
+        when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(new MockItemMeta()));
+        assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(BukkitItem.newItem(Material.STONE)));
+    }
+
+    @Test
+    void testNullItemMeta() {
+        when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(null));
+        assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(BukkitItem.newItem(Material.STONE)));
+    }
+
+    private ItemFactory mockItemFactory(ItemMeta meta) {
+        ItemFactory itemFactory = mock(ItemFactory.class);
+        when(itemFactory.getItemMeta(any(Material.class))).thenReturn(meta);
+        return itemFactory;
     }
 
     @Test
