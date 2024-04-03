@@ -8,7 +8,6 @@ import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import org.bukkit.Bukkit;
@@ -26,7 +25,8 @@ import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ItemAdapterTest {
 
@@ -114,10 +114,12 @@ class ItemAdapterTest {
                 Material.DIAMOND, Material.EMERALD, Material.LAPIS_LAZULI};
         for (int i = 0; i < materials.length; i++)
             expected.setIngredient((char) ('A' + i), new RecipeChoice.ExactChoice(new ItemStack(materials[i])));
+        expected.setIngredient((char) ('A' + 3), (RecipeChoice) null);
 
         ShapedRecipe recipe = new ShapedRecipe("test")
                 .setOutput(Item.newItem("STONE")).setShape(2, 3);
         for (int i = 0; i < materials.length; i++) recipe.setIngredient(i, BukkitItem.newItem(materials[i]));
+        recipe.setIngredient(3, null);
 
         Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
