@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ClassEnumTest {
 
@@ -23,6 +26,19 @@ class ClassEnumTest {
             assertEquals(i, actual.ordinal());
             assertEquals(expected, actual);
         }
+    }
+
+    @Test
+    void testInvalidOrdinal() {
+        First INVALID = mock(First.class);
+        when(INVALID.name()).thenCallRealMethod();
+        when(INVALID.ordinal()).thenCallRealMethod();
+        assertThrowsExactly(IllegalArgumentException.class, INVALID::ordinal);
+    }
+
+    @Test
+    void testInvalidValueOfIndex() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> First.valueOf(4, First.class));
     }
 
     private static class First extends ClassEnum {
