@@ -8,6 +8,7 @@ import java.util.LinkedList;
 /**
  * The type Color.
  */
+@SuppressWarnings("unused")
 public class Color extends ClassEnum {
     /**
      * The constant WHITE.
