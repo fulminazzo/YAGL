@@ -16,6 +16,8 @@ public class Sound extends Wrapper {
     /**
      * The category to play the sound for.
      * Players with the specified category set to '0' will NOT hear this sound when played.
+     *
+     * @return the category
      */
     private @Nullable String category;
 
@@ -31,7 +33,7 @@ public class Sound extends Wrapper {
     /**
      * Instantiates a new Sound.
      *
-     * @param name  the sound
+     * @param name   the sound
      * @param volume the volume
      */
     public Sound(final @NotNull String name, final float volume) {
@@ -41,7 +43,7 @@ public class Sound extends Wrapper {
     /**
      * Instantiates a new Sound.
      *
-     * @param name  the sound
+     * @param name   the sound
      * @param volume the volume
      * @param pitch  the pitch
      */
@@ -52,7 +54,7 @@ public class Sound extends Wrapper {
     /**
      * Instantiates a new Sound.
      *
-     * @param name    the sound
+     * @param name     the sound
      * @param volume   the volume
      * @param pitch    the pitch
      * @param category the category
