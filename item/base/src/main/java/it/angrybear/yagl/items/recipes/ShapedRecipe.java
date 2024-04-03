@@ -97,8 +97,10 @@ public class ShapedRecipe extends RecipeImpl {
      */
     @Getter
     public static class Shape {
-        static final int MIN_COLUMNS = 1, MAX_COLUMNS = 3;
-        static final int MIN_ROWS = 1, MAX_ROWS = 3;
+        static final int MIN_COLUMNS = 1;
+        static final int MAX_COLUMNS = 3;
+        static final int MIN_ROWS = 1;
+        static final int MAX_ROWS = 3;
         private int rows;
         private int columns;
 

@@ -56,7 +56,8 @@ class ItemAdapterTest {
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
         for (Field field : r1.getNonStaticFields()) {
-            Object obj1 = r1.getFieldObject(field), obj2 = r2.getFieldObject(field);
+            Object obj1 = r1.getFieldObject(field);
+            Object obj2 = r2.getFieldObject(field);
             if (obj1 != null && obj1.getClass().isArray())
                 assertArrayEquals((Object[]) obj1, (Object[]) obj2);
             else assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));
@@ -122,7 +123,8 @@ class ItemAdapterTest {
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
         for (Field field : r1.getNonStaticFields()) {
-            Object obj1 = r1.getFieldObject(field), obj2 = r2.getFieldObject(field);
+            Object obj1 = r1.getFieldObject(field);
+            Object obj2 = r2.getFieldObject(field);
             if (obj1 != null && obj1.getClass().isArray())
                 assertArrayEquals((Object[]) obj1, (Object[]) obj2);
             else assertEquals((Object) r1.getFieldObject(field), r2.getFieldObject(field));

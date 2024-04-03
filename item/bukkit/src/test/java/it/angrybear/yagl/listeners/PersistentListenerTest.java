@@ -38,7 +38,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PersistentListenerTest {
-    private static PersistentItem maintain, disappear;
+    private static PersistentItem maintain;
+    private static PersistentItem disappear;
     private static PersistentListener listener;
     private boolean clicked;
     private static ItemStack cursor;

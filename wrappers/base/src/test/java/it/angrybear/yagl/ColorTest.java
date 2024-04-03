@@ -13,7 +13,8 @@ class ColorTest {
     void testValueOfIndex() {
         Color[] values = Color.values();
         for (int i = 0; i < values.length; i++) {
-            Color expected = values[i], actual = Color.valueOf(i);
+            Color expected = values[i];
+            Color actual = Color.valueOf(i);
             assertEquals(expected, actual, String.format("Expected '%s' but got '%s' at index '%s'",
                     expected, actual, i));
         }
