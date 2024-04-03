@@ -360,10 +360,21 @@ class WrappersAdapterTest {
         else assertThrowsExactly(IllegalArgumentException.class, executable);
     }
 
+    @Test
+    void testInvalidDataType() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MockDataType.class, "String"));
+    }
+
     private static void initializeBlockData() {
         Server server = mock(Server.class);
         when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
+    }
+
+    private static class MockDataType {
+        public MockDataType(String s1, String s2, String s3, String s4) {
+
+        }
     }
 
     private static class MockPotionEffect extends PotionEffectType {
