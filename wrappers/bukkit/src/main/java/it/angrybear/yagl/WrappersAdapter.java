@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -97,11 +100,7 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
-        org.bukkit.Particle actual = tuple.getKey();
-        Object option = tuple.getValue();
-        if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
-        else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+        spawnParticleCommon(world, particle, location, count, offsetX, offsetY, offsetZ);
     }
 
     /**
@@ -165,11 +164,20 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
+        spawnParticleCommon(player, particle, location, count, offsetX, offsetY, offsetZ);
+    }
+
+    private static <T> void spawnParticleCommon(final @NotNull T target, final @NotNull Particle particle,
+                                            final @NotNull Location location, int count,
+                                            double offsetX, double offsetY, double offsetZ) {
         Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
         org.bukkit.Particle actual = tuple.getKey();
         Object option = tuple.getValue();
-        if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
-        else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+
+        List<Object> params = new LinkedList<>(Arrays.asList(actual, location, count, offsetX, offsetY, offsetZ));
+        if (option != null) params.add(option);
+
+        new Refl<>(target).invokeMethod("spawnParticle", params.toArray(new Object[0]));
     }
 
     /**
