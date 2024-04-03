@@ -59,6 +59,17 @@ class ItemTest {
         }
     }
 
+    @Test
+    void testItemFlagMethods() {
+        Item item = new MockItem("STONE");
+        final ItemFlag flag = ItemFlag.HIDE_ATTRIBUTES;
+        assertFalse(item.hasItemFlag(flag), "Item should not have flag at start");
+        item.addItemFlags(flag);
+        assertTrue(item.hasItemFlag(flag), "Item should have flag after add");
+        item.removeItemFlags(flag);
+        assertFalse(item.hasItemFlag(flag), "Item should not have flag after remove");
+    }
+
     @Getter
     public static class MockItem implements Item {
         private String material;
