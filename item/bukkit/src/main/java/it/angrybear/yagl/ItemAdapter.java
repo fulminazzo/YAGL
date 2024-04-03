@@ -132,6 +132,7 @@ public final class ItemAdapter {
         return result;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static org.bukkit.inventory.Recipe recipeToMinecraft(final @Nullable ShapedRecipe recipe) {
         if (recipe == null) return null;
 
@@ -159,9 +160,8 @@ public final class ItemAdapter {
         List<Item> ingredients = recipe.getIngredients();
         Map<Character, Object> finalIngredients = r.getFieldObject("ingredients");
 
-        if (finalIngredients != null)
-            for (char ch = 'A'; ch < c; ch++)
-                finalIngredients.put(ch, getItemOrRecipeChoice(ingredients.get(ch - 'A')));
+        for (char ch = 'A'; ch < c; ch++)
+            finalIngredients.put(ch, getItemOrRecipeChoice(ingredients.get(ch - 'A')));
 
         return r.getObject();
     }
