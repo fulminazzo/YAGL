@@ -63,7 +63,6 @@ allprojects {
             name = "Fulminazzo repository"
             url = "https://repo.fulminazzo.it/releases"
         }
-        mavenLocal()
     }
 
     dependencies {
@@ -81,11 +80,11 @@ allprojects {
         if (projectName.contains("bukkit")) {
             compileOnly libs.spigot
             testImplementation libs.spigot.latest
-            testImplementation "it.fulminazzo:JBukkit:1.0"
+            testImplementation libs.jbukkit
         }
 
         if (projectName.contains("legacy") || projectName.contains("obsolete"))
-            testImplementation "it.fulminazzo.JBukkit:legacy:1.0"
+            testImplementation libs.jbukkit.legacy
 
         if (projectName.contains("-")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
