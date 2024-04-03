@@ -3,6 +3,8 @@ package it.angrybear.yagl.items.recipes;
 import it.angrybear.yagl.items.Item;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
@@ -24,5 +26,13 @@ public class ShapedRecipeTest {
     void testInvalidSet() {
         ShapedRecipe shapedRecipe = new ShapedRecipe("test").setShape(1, 1);
         assertThrowsExactly(IllegalArgumentException.class, () -> shapedRecipe.setIngredient(4, Item.newItem()));
+    }
+
+    @Test
+    void testInvalidSetOfIngredients() {
+        ShapedRecipe shapedRecipe = new ShapedRecipe("test").setShape(1, 1);
+        Item[] items = new Item[4];
+        Arrays.fill(items, Item.newItem());
+        assertThrowsExactly(IllegalArgumentException.class, () -> shapedRecipe.setIngredients(items));
     }
 }
