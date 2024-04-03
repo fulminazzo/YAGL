@@ -9,10 +9,12 @@ import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +43,24 @@ class ItemAdapterTest {
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
 
         assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
+    }
+
+    @Test
+    void testNullFieldsItemConversion() {
+        ItemStack itemStack = new ItemStack(Material.STONE);
+        ItemMeta meta = new MockItemMeta();
+        meta.setDisplayName(null);
+        meta.setLore(null);
+        meta.setCustomModelData(-1);
+        itemStack.setItemMeta(meta);
+        assertEquals(BukkitItem.newItem(Material.STONE), ItemAdapter.itemStackToItem(itemStack));
+    }
+
+    @Test
+    void testNullMetaItemConversion() {
+        ItemStack itemStack = new ItemStack(Material.STONE);
+        itemStack.setItemMeta(null);
+        assertEquals(BukkitItem.newItem(Material.STONE), ItemAdapter.itemStackToItem(itemStack));
     }
 
     @Test
