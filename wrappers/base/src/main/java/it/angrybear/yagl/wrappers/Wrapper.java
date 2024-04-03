@@ -76,8 +76,7 @@ public abstract class Wrapper extends FieldEquable {
      * @return true, if they have the same name
      */
     public boolean isSimilar(final @Nullable Wrapper wrapper) {
-        if (wrapper == null) return false;
-        return getClass().equals(wrapper.getClass()) && getName().equalsIgnoreCase(wrapper.getName());
+        return wrapper != null && getClass().equals(wrapper.getClass()) && getName().equalsIgnoreCase(wrapper.getName());
     }
 
     @Override

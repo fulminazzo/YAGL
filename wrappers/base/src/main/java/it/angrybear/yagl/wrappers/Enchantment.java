@@ -63,7 +63,7 @@ public class Enchantment extends Wrapper {
      * @return true, if they have the same enchantment and the second one has a level higher or equal than the current
      */
     public boolean compareLevels(final @Nullable Enchantment enchantment) {
-        if (enchantment == null) return false;
-        return this.name.equalsIgnoreCase(enchantment.getName()) && this.level <= enchantment.getLevel();
+        return enchantment != null && this.name.equalsIgnoreCase(enchantment.getName()) &&
+                this.level <= enchantment.getLevel();
     }
 }
