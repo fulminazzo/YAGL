@@ -49,6 +49,15 @@ public interface Recipe extends Iterable<Item> {
         return getIngredients().size();
     }
 
+    /**
+     * Check if the current recipe has no ingredients set.
+     *
+     * @return true if {@link #size()} is 0
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
     @Override
     default @NotNull Iterator<Item> iterator() {
         return getIngredients().iterator();
