@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 /**
  * An interface that represents an item.
  */
-@SuppressWarnings({"unused", "UnusedReturnValue"})
-public interface Item {
+@SuppressWarnings({"unused", "UnusedReturnValue", "deprecation"})
+public interface Item extends AbstractItem {
 
     /**
      * Sets material.
