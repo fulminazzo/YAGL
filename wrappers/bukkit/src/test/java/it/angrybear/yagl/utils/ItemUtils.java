@@ -4,6 +4,7 @@ import it.angrybear.yagl.items.AbstractItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("deprecation")
 public final class ItemUtils {
 
     private ItemUtils() {}
