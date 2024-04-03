@@ -11,7 +11,7 @@ import java.util.List;
  * An example of shapeless recipe is the yellow dye, which can be obtained by placing the flower in any position.
  */
 public class ShapelessRecipe extends RecipeImpl {
-    private static final int MAX_SIZE = 9;
+    static final int MAX_SIZE = 9;
     private final @NotNull List<Item> ingredients;
 
     private ShapelessRecipe() {
