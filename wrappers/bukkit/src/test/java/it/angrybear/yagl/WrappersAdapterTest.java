@@ -320,6 +320,11 @@ class WrappersAdapterTest {
     }
 
     @Test
+    void testInvalidEnchantmentProvided() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.wEnchantToEnchant(new Enchantment("mock")));
+    }
+
+    @Test
     void testInvalidClassProvided() {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
