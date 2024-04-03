@@ -7,6 +7,7 @@ import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.*;
@@ -363,6 +364,15 @@ class WrappersAdapterTest {
         Executable executable = () -> WrappersAdapter.convertOption(BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
         else assertThrowsExactly(IllegalArgumentException.class, executable);
+    }
+
+    @Test
+    void testInvalidParticleGeneralDataType() {
+        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
+                ParticleType.ASH.create(), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
+        assertNotNull(conversion);
+        assertNotNull(conversion.getKey());
+        assertNull(conversion.getValue());
     }
 
     @Test
