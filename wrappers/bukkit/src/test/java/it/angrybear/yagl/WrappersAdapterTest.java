@@ -83,6 +83,7 @@ class WrappersAdapterTest {
         for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
         particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
         particles.add(ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(11)));
+        particles.add(ParticleType.SHRIEK.create((PrimitiveParticleOption<Integer>) null));
         particles.add(ParticleType.REDSTONE.create(new DustParticleOption(Color.RED, 12f)));
         particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(
                 Color.RED, Color.BLUE, 12f)));
