@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * A collection of utilities for {@link Item}.
  */
 @SuppressWarnings("deprecation")
-public class ItemAdapter {
+public final class ItemAdapter {
     private static final String ID_KEY = "yagl";
 
     /**
