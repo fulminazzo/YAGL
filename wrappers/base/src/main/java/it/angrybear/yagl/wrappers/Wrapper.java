@@ -2,7 +2,6 @@ package it.angrybear.yagl.wrappers;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Printable;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,11 +46,8 @@ public abstract class Wrapper extends FieldEquable {
             Range range = field.getAnnotation(Range.class);
             int min = range.min();
             int max = range.max();
-            final Refl<Class<Math>> math = new Refl<>(Math.class);
-            Number foundMin = math.invokeMethod("min", value, min);
-            Number foundMax = math.invokeMethod("max", value, max);
 
-            if ((foundMin == null || !foundMin.equals(min)) || (foundMax == null || !foundMax.equals(max))) {
+            if (value.doubleValue() < (double) min || value.doubleValue() > (double) max) {
                 final String fieldName = field.getName();
 
                 String message = String.format("Invalid value provided for '%s'", fieldName);
