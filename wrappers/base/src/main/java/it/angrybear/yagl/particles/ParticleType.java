@@ -41,7 +41,7 @@ public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> 
     /**
      * This particle type requires the <i>item:base</i> module to be added.
      */
-    public static final ParticleType<ItemParticleOption> ITEM_CRACK = new ParticleType<>(ItemParticleOption.class);
+    public static final ParticleType<ItemParticleOption<?>> ITEM_CRACK = new ParticleType<>((Class<ItemParticleOption<?>>) (Class<?>) ItemParticleOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_CRACK = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_DUST = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<?> WATER_DROP = new ParticleType<>();

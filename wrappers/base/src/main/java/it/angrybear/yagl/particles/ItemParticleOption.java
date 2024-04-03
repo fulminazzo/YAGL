@@ -6,20 +6,21 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An option used by {@link ParticleType#ITEM_CRACK}.
  */
-public class ItemParticleOption extends ParticleOption<AbstractItem> {
-    private final AbstractItem item;
+@SuppressWarnings("deprecation")
+public class ItemParticleOption<I extends AbstractItem> extends ParticleOption<I> {
+    private final I item;
 
     /**
      * Instantiates a new Item particle option.
      *
      * @param item the item
      */
-    public ItemParticleOption(final @NotNull AbstractItem item) {
+    public ItemParticleOption(final @NotNull I item) {
         this.item = item;
     }
 
     @Override
-    public AbstractItem getOption() {
+    public I getOption() {
         return this.item;
     }
 }
