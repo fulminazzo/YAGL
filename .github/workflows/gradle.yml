@@ -70,9 +70,8 @@ jobs:
 
       - name: Update and Push JaCoCo Badge
         run: |-
-          git add .github/badges/jacoco.svg
           git config user.name "GitHub Actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update Jacoco badge"
-          git push origin badges
+          git add .
+          if [[ $(git commit -m "Update Jacoco badge") ]]; then git push origin badges; fi
         shell: bash
