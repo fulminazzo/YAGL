@@ -1,6 +1,6 @@
 package it.angrybear.yagl.particles;
 
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 
 /**
  * Represents a general option for a particle.
@@ -8,7 +8,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
  *
  * @param <O> the type parameter
  */
-abstract class ParticleOption<O> {
+abstract class ParticleOption<O> extends FieldEquable {
 
     /**
      * Gets option to send the particle.
@@ -16,10 +16,4 @@ abstract class ParticleOption<O> {
      * @return the option
      */
     public abstract O getOption();
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof ParticleOption) return ReflectionUtils.equalsFields(this, o);
-        return super.equals(o);
-    }
 }

@@ -1,7 +1,7 @@
 package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * A basic implementation of {@link Recipe}.
  */
 @Getter
-abstract class RecipeImpl implements Recipe {
+abstract class RecipeImpl extends FieldEquable implements Recipe {
     protected final @NotNull String id;
     protected Item output;
 
@@ -20,11 +20,5 @@ abstract class RecipeImpl implements Recipe {
      */
     RecipeImpl(@NotNull String id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof RecipeImpl) return ReflectionUtils.equalsFields(this, obj);
-        return super.equals(obj);
     }
 }

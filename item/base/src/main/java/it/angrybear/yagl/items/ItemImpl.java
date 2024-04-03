@@ -5,6 +5,7 @@ import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.structures.EnchantmentSet;
 import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.util.*;
  * An implementation of {@link Item}.
  */
 @Getter
-class ItemImpl implements Item {
+class ItemImpl extends FieldEquable implements Item {
     private String material;
     private int amount;
     private int durability;
@@ -113,21 +114,9 @@ class ItemImpl implements Item {
         return true;
     }
 
-    /**
-     * Compare this item with the given one.
-     *
-     * @param item the item
-     * @return true if they are equal
-     */
-    public boolean equals(final @Nullable Item item) {
-        if (item == null) return false;
-        return ReflectionUtils.equalsFields(this, item);
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof Item) return equals((Item) o);
-        return super.equals(o);
+    protected Class<? extends FieldEquable> clazz() {
+        return ItemImpl.class;
     }
 
     @Override

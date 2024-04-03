@@ -1,6 +1,7 @@
 package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -96,7 +97,7 @@ public class ShapedRecipe extends RecipeImpl {
      * The type Shape.
      */
     @Getter
-    public static class Shape {
+    public static class Shape extends FieldEquable {
         static final int MIN_COLUMNS = 1;
         static final int MAX_COLUMNS = 3;
         static final int MIN_ROWS = 1;
@@ -165,12 +166,6 @@ public class ShapedRecipe extends RecipeImpl {
         public boolean equals(@Nullable Shape shape) {
             if (shape == null) return false;
             return this.columns == shape.columns && this.rows == shape.rows;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o instanceof Shape) return equals((Shape) o);
-            return super.equals(o);
         }
 
         @Override
