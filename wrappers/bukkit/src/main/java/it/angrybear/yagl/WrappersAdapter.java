@@ -507,7 +507,7 @@ public final class WrappersAdapter {
         try {
             Object key = getNamespacedKey(raw);
             actual = new Refl<>(org.bukkit.enchantments.Enchantment.class).invokeMethod("getByKey", key);
-            if (actual == null) throw new Exception("Cannot find from getKey");
+            if (actual == null) throw new IllegalArgumentException("Cannot find from getKey");
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
             Map<String, org.bukkit.enchantments.Enchantment> byName = new Refl<>(org.bukkit.enchantments.Enchantment.class).getFieldObject("byName");
@@ -517,7 +517,7 @@ public final class WrappersAdapter {
                         actual = byName.get(key);
                         break;
                     }
-            if (actual == null) throw new IllegalStateException(String.format("Could not find enchantment '%s'", raw));
+            if (actual == null) throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         }
         return new Tuple<>(actual, enchantment.getLevel());
     }
