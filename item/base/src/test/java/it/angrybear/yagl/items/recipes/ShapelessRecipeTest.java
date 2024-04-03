@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShapelessRecipeTest {
 
     @Test
-    void testAddTooMuchItems() {
-        Item[] items = new Item[ShapelessRecipe.MAX_SIZE];
+    void testAddTooManyItems() {
+        Item[] items = new Item[ShapelessRecipe.MAX_SIZE + 1];
         Arrays.fill(items, Item.newItem());
         assertThrowsExactly(IllegalStateException.class, () -> new ShapelessRecipe("tmp").addIngredients(items));
     }
