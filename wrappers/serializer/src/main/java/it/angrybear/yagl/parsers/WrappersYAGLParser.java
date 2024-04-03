@@ -8,7 +8,9 @@ import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 /**
  * The type Wrappers YAGL parser.
  */
-public class WrappersYAGLParser {
+public final class WrappersYAGLParser {
+
+    private WrappersYAGLParser() {}
 
     /**
      * Adds all the module specific parsers.

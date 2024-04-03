@@ -10,7 +10,9 @@ import java.util.regex.Pattern;
 /**
  * The type Enum utils.
  */
-public class EnumUtils {
+public final class EnumUtils {
+
+    private EnumUtils() {}
 
     /**
      * Uses the given class method <code>valueOf</code> to obtain the corresponding value with the given name.

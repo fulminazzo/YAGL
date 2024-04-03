@@ -25,7 +25,9 @@ import static org.mockito.Mockito.*;
 /**
  * The type Test utils.
  */
-public class TestUtils {
+public final class TestUtils {
+
+    private TestUtils() {}
 
     /**
      * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.

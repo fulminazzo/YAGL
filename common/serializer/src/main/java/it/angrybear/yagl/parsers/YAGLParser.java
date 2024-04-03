@@ -5,7 +5,9 @@ import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 /**
  * The type YAGL parser.
  */
-public class YAGLParser {
+public final class YAGLParser {
+
+    private YAGLParser() {}
 
     /**
      * Adds all the parsers from the {@link it.angrybear.yagl.parsers} package to {@link FileConfiguration}.

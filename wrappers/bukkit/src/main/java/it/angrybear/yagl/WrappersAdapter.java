@@ -34,6 +34,8 @@ import java.util.function.Function;
 @SuppressWarnings("deprecation")
 public final class WrappersAdapter {
 
+    private WrappersAdapter() {}
+
     /**
      * Spawn particle.
      *

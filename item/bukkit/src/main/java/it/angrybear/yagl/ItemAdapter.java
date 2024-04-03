@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 public final class ItemAdapter {
     private static final String ID_KEY = "yagl";
 
+    private ItemAdapter() {}
+
     /**
      * Converts the given {@link ItemStack} to an {@link Item}.
      *

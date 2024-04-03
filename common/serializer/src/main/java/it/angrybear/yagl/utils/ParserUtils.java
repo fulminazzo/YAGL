@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public final class ParserUtils {
 
+    private ParserUtils() {}
+
     /**
      * Converts the given string type to the corresponding class, based on the coreClass.
      * It gathers all the classes that extend <i>coreClass</i> in the same package.

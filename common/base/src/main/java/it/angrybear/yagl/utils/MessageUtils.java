@@ -6,10 +6,12 @@ import java.util.regex.Pattern;
 /**
  * The type Message utils.
  */
-public class MessageUtils {
+public final class MessageUtils {
     private static final String COLOR_CHAR = "§";
     private static final String COLOR_REGEX = "[A-Fa-f0-9]";
     private static final String STYLE_REGEX = "[LlKkRrOoUu]";
+
+    private MessageUtils() {}
 
     /**
      * Recolors the given string using Minecraft default color codes.
