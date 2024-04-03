@@ -4,6 +4,7 @@ import it.angrybear.yagl.Color;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.angrybear.yagl.wrappers.Potion;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
 import it.fulminazzo.yamlparser.utils.FileUtils;
@@ -51,15 +52,11 @@ class ParticleOptionParserTest {
         ParticleOption<?> actual = configuration.get("option", expected.getClass());
 
         Field[] fields = expected.getClass().getDeclaredFields();
-        for (Field field : fields)
-            try {
-                field.setAccessible(true);
-                Object obj1 = field.get(expected);
-                Object obj2 = field.get(actual);
-                assertEquals(obj1.getClass(), obj2.getClass());
-                assertEquals(obj1, obj2);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
+        for (Field field : fields) {
+            Object obj1 = ReflectionUtils.get(field, expected);
+            Object obj2 = ReflectionUtils.get(field, actual);
+            assertEquals(obj1.getClass(), obj2.getClass());
+            assertEquals(obj1, obj2);
+        }
     }
 }

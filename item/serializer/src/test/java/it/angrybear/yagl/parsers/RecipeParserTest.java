@@ -5,6 +5,7 @@ import it.angrybear.yagl.items.recipes.FurnaceRecipe;
 import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -67,14 +68,11 @@ class RecipeParserTest {
         configuration = new FileConfiguration(output);
         Recipe recipe2 = configuration.get(path, Recipe.class);
 
-        for (final Field field : recipe.getClass().getDeclaredFields())
-            try {
-                field.setAccessible(true);
-                Object obj1 = field.get(recipe);
-                Object obj2 = field.get(recipe2);
-                assertEquals(obj1, obj2);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
+        for (final Field field : recipe.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            Object obj1 = ReflectionUtils.get(field, recipe);
+            Object obj2 = ReflectionUtils.get(field, recipe2);
+            assertEquals(obj1, obj2);
+        }
     }
 }

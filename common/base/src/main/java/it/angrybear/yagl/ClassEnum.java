@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
@@ -128,12 +129,7 @@ public abstract class ClassEnum {
             if (!this.values.isEmpty()) return;
             for (Field field : this.clazz.getDeclaredFields())
                 if (field.getType().equals(this.clazz))
-                    try {
-                        field.setAccessible(true);
-                        this.values.put(field.getName().toUpperCase(), (T) field.get(this.clazz));
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
+                    this.values.put(field.getName().toUpperCase(), ReflectionUtils.get(field, this.clazz));
         }
     }
 }

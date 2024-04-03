@@ -3,6 +3,7 @@ package it.angrybear.yagl.particles;
 import it.angrybear.yagl.Color;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.angrybear.yagl.wrappers.Potion;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -75,18 +76,14 @@ class ParticleParserTest {
         Particle actual = configuration.get(expected.getType(), Particle.class);
 
         Field[] fields = expected.getClass().getDeclaredFields();
-        for (Field field : fields)
-            try {
-                field.setAccessible(true);
-                Object obj1 = field.get(expected);
-                Object obj2 = field.get(actual);
-                if (obj1 == null) assertNull(obj2);
-                else {
-                    assertEquals(obj1.getClass(), obj2.getClass());
-                    assertEquals(obj1, obj2);
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+        for (Field field : fields) {
+            Object obj1 = ReflectionUtils.get(field, expected);
+            Object obj2 = ReflectionUtils.get(field, actual);
+            if (obj1 == null) assertNull(obj2);
+            else {
+                assertEquals(obj1.getClass(), obj2.getClass());
+                assertEquals(obj1, obj2);
             }
+        }
     }
 }

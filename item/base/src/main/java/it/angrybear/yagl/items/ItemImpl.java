@@ -100,20 +100,15 @@ class ItemImpl implements Item {
     @Override
     public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
         if (item == null) return false;
-        mainloop:
+        main_loop:
         for (final Field field : ItemImpl.class.getDeclaredFields()) {
             if (Modifier.isStatic(field.getModifiers())) continue;
-            try {
-                for (final ItemField f : ignore)
-                    if (field.getName().equalsIgnoreCase(f.name().replace("_", "")))
-                        continue mainloop;
-                field.setAccessible(true);
-                Object obj1 = field.get(this);
-                Object obj2 = field.get(item);
-                if (!Objects.equals(obj1, obj2)) return false;
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
+            for (final ItemField f : ignore)
+                if (field.getName().equalsIgnoreCase(f.name().replace("_", "")))
+                    continue main_loop;
+            Object obj1 = ReflectionUtils.get(field, this);
+            Object obj2 = ReflectionUtils.get(field, item);
+            if (!Objects.equals(obj1, obj2)) return false;
         }
         return true;
     }

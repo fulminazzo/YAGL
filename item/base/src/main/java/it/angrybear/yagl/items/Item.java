@@ -426,12 +426,9 @@ public interface Item extends AbstractItem {
         Refl<I> item = new Refl<>(clazz, new Object[0]);
         for (final Field field : item.getNonStaticFields())
             try {
-                field.setAccessible(true);
                 ReflectionUtils.getField(this, field.getName());
-                Object obj1 = field.get(this);
+                Object obj1 = ReflectionUtils.get(field, this);
                 item.setFieldObject(field, obj1);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
             } catch (IllegalArgumentException ignored) {
 
             }
