@@ -69,7 +69,6 @@ class RecipeParserTest {
         Recipe recipe2 = configuration.get(path, Recipe.class);
 
         for (final Field field : recipe.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
             Object obj1 = ReflectionUtils.get(field, recipe);
             Object obj2 = ReflectionUtils.get(field, recipe2);
             assertEquals(obj1, obj2);
