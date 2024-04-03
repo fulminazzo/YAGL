@@ -25,28 +25,24 @@ class RecipeParserTest {
     private static Recipe[] getRecipes() {
         Item mock = Item.newItem().setMaterial("STONE");
         List<Recipe> recipes = new LinkedList<>();
+        Item[] ingredients = new Item[9];
+        Arrays.fill(ingredients, mock);
 
         recipes.add(new ShapedRecipe("sd-recipe1"));
-        ShapedRecipe shapedRecipe = new ShapedRecipe("sd-recipe2");
-        shapedRecipe.setShape(3, 3);
-        for (int i = 0; i < 9; i++) shapedRecipe.setIngredient(i, mock);
-        shapedRecipe.setOutput(mock);
+        ShapedRecipe shapedRecipe = new ShapedRecipe("sd-recipe2")
+                .setShape(3, 3)
+                .setIngredients(ingredients).setOutput(mock);
         recipes.add(shapedRecipe);
 
         recipes.add(new ShapelessRecipe("sl-recipe1"));
-        ShapelessRecipe shapelessRecipe = new ShapelessRecipe("sl-recipe2");
-        Item[] tmp = new Item[9];
-        Arrays.fill(tmp, mock);
-        shapelessRecipe.addIngredients(tmp);
-        shapelessRecipe.setOutput(mock);
+        ShapelessRecipe shapelessRecipe = new ShapelessRecipe("sl-recipe2")
+                .addIngredients(ingredients).setOutput(mock);
         recipes.add(shapelessRecipe);
 
         recipes.add(new FurnaceRecipe("f-recipe1"));
-        FurnaceRecipe furnaceRecipe = new FurnaceRecipe("f-recipe2");
-        furnaceRecipe.setIngredient(mock);
-        furnaceRecipe.setOutput(mock);
-        furnaceRecipe.setExperience(1337F);
-        furnaceRecipe.setCookingTime(777);
+        FurnaceRecipe furnaceRecipe = new FurnaceRecipe("f-recipe2")
+                .setIngredient(mock).setOutput(mock)
+                .setExperience(1337F).setCookingTime(777);
         recipes.add(furnaceRecipe);
 
         return recipes.toArray(new Recipe[0]);
