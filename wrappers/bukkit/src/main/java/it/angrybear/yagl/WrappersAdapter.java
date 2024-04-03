@@ -501,6 +501,7 @@ public final class WrappersAdapter {
      * @param enchantment the enchantment
      * @return the tuple
      */
+    @SuppressWarnings("DataFlowIssue")
     public static @NotNull Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
         String raw = enchantment.getName();
         org.bukkit.enchantments.Enchantment actual = null;
@@ -511,12 +512,11 @@ public final class WrappersAdapter {
         } catch (Exception e) {
             // Prevent other versions from complaining about method not found.
             Map<String, org.bukkit.enchantments.Enchantment> byName = new Refl<>(org.bukkit.enchantments.Enchantment.class).getFieldObject("byName");
-            if (byName != null)
-                for (String key : byName.keySet())
-                    if (key.equalsIgnoreCase(raw)) {
-                        actual = byName.get(key);
-                        break;
-                    }
+            for (String key : byName.keySet())
+                if (key.equalsIgnoreCase(raw)) {
+                    actual = byName.get(key);
+                    break;
+                }
             if (actual == null) throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         }
         return new Tuple<>(actual, enchantment.getLevel());
