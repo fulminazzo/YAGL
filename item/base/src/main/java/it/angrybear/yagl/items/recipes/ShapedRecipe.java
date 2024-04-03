@@ -1,6 +1,8 @@
 package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.wrappers.Range;
+import it.angrybear.yagl.wrappers.Wrapper;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -102,7 +104,9 @@ public class ShapedRecipe extends RecipeImpl {
         static final int MAX_COLUMNS = 3;
         static final int MIN_ROWS = 1;
         static final int MAX_ROWS = 3;
+        @Range(min = MIN_ROWS, max = MAX_ROWS)
         private int rows;
+        @Range(min = MIN_COLUMNS, max = MAX_COLUMNS)
         private int columns;
 
         /**
@@ -130,9 +134,7 @@ public class ShapedRecipe extends RecipeImpl {
          * @param columns the columns
          */
         public void setColumns(final int columns) {
-            if (columns < MIN_COLUMNS || columns > MAX_COLUMNS)
-                throw new IllegalArgumentException(String.format("Columns size should be between %s and %s", MIN_COLUMNS, MAX_COLUMNS));
-            this.columns = columns;
+            this.columns = Wrapper.check(this, columns);
         }
 
         /**
@@ -142,9 +144,7 @@ public class ShapedRecipe extends RecipeImpl {
          * @param rows the rows
          */
         public void setRows(final int rows) {
-            if (rows < MIN_ROWS || rows > MAX_ROWS)
-                throw new IllegalArgumentException(String.format("Rows size should be between %s and %s", MIN_ROWS, MAX_ROWS));
-            this.rows = rows;
+            this.rows = Wrapper.check(this, rows);
         }
 
         /**
