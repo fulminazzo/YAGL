@@ -6,8 +6,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PredicateSetTest {
 
@@ -28,15 +27,15 @@ class PredicateSetTest {
         set.add(m1);
 
         set.add(m2);
-        set.stream().findFirst().ifPresent(m -> {
-            assertEquals(m1.hashCode(), m.hashCode(), "Object should have been equal to m1");
-            assertNotEquals(m2.hashCode(), m.hashCode(), "Object should have not been equal to m2");
-        });
+        MockClass first = set.stream().findFirst().orElse(null);
+        assertEquals(m1.hashCode(), first.hashCode(), "Object should have been equal to m1");
+        assertNotEquals(m2.hashCode(), first.hashCode(), "Object should have not been equal to m2");
+
         set.add(m2, true);
-        set.stream().findFirst().ifPresent(m -> {
-            assertNotEquals(m1.hashCode(), m.hashCode(), "Object should have not been equal to m1");
-            assertEquals(m2.hashCode(), m.hashCode(), "Object should have been equal to m2");
-        });
+        first = set.stream().findFirst().orElse(null);
+        if (first == null) fail("Expected first but none found");
+        assertNotEquals(m1.hashCode(), first.hashCode(), "Object should have not been equal to m1");
+        assertEquals(m2.hashCode(), first.hashCode(), "Object should have been equal to m2");
     }
 
     private static class MockClass {
