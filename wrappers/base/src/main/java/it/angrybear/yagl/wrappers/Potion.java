@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class Potion extends Wrapper {
     private @NotNull String name;
+    @Range(min = 1, max = 2)
     @Getter
     private int level;
     private boolean splash;
@@ -78,8 +79,7 @@ public class Potion extends Wrapper {
      * @return this potion
      */
     public Potion setLevel(final int level) {
-        if (level < 1 || level > 2) throw new IllegalArgumentException("level must be between 1 and 2");
-        this.level = level;
+        this.level = check(level);
         return this;
     }
 

@@ -10,7 +10,9 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class PotionEffect extends Wrapper {
     private @NotNull String name;
+    @Range(min = 0)
     private double duration;
+    @Range(min = 1)
     private int amplifier;
     private boolean showingParticles;
     private boolean showingIcon;
@@ -103,8 +105,7 @@ public class PotionEffect extends Wrapper {
      * @return this potion effect
      */
     public PotionEffect setDuration(final double duration) {
-        if (duration < 0) throw new IllegalArgumentException("Duration cannot be lower than 0");
-        this.duration = duration;
+        this.duration = check(duration);
         return this;
     }
 
@@ -115,8 +116,7 @@ public class PotionEffect extends Wrapper {
      * @return this potion effect
      */
     public PotionEffect setAmplifier(final int amplifier) {
-        if (amplifier < 1) throw new IllegalArgumentException("Amplifier cannot be lower than 1");
-        this.amplifier = amplifier;
+        this.amplifier = check(amplifier);
         return this;
     }
 

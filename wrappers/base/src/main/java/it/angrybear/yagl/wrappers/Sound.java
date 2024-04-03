@@ -11,7 +11,9 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 public class Sound extends Wrapper {
     private @NotNull String name;
+    @Range(min = 0)
     private float volume;
+    @Range(min = 0)
     private float pitch;
     /**
      * The category to play the sound for.
@@ -86,8 +88,7 @@ public class Sound extends Wrapper {
      * @return this sound
      */
     public Sound setVolume(final float volume) {
-        if (volume < 0) throw new IllegalArgumentException("Volume cannot be lower than 0");
-        this.volume = volume;
+        this.volume = check(volume);
         return this;
     }
 
@@ -100,8 +101,7 @@ public class Sound extends Wrapper {
      * @return this sound
      */
     public Sound setPitch(final float pitch) {
-        if (pitch < 0) throw new IllegalArgumentException("Pitch cannot be lower than 0");
-        this.pitch = pitch;
+        this.pitch = check(pitch);
         return this;
     }
 

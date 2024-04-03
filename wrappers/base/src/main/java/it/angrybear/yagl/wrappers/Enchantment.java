@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 public class Enchantment extends Wrapper {
     private @NotNull String name;
+    @Range(min = 1)
     private int level;
 
     /**
@@ -51,8 +52,7 @@ public class Enchantment extends Wrapper {
      * @return this enchantment
      */
     public Enchantment setLevel(final int level) {
-        if (level < 1) throw new IllegalArgumentException("Level cannot be lower than 1");
-        this.level = level;
+        this.level = check(level);
         return this;
     }
 
