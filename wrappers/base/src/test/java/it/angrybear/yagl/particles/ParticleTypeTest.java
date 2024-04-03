@@ -1,7 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
-import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.items.AbstractItem;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -50,7 +50,7 @@ class ParticleTypeTest {
         particles.add(ParticleType.REDSTONE.create(new DustParticleOption(Color.RED, 12f)));
         strippedParticles.add(ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.BLUE, 12f));
         particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(Color.RED, Color.BLUE, 12f)));
-        Item item = mock(Item.class);
+        AbstractItem item = mock(AbstractItem.class);
         strippedParticles.add(ParticleType.ITEM_CRACK.create(item));
         particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(item)));
 

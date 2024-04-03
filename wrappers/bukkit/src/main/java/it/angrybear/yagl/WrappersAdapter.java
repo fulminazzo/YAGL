@@ -1,6 +1,6 @@
 package it.angrybear.yagl;
 
-import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.items.AbstractItem;
 import it.angrybear.yagl.particles.BlockDataOption;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.utils.EnumUtils;
@@ -269,7 +269,7 @@ public class WrappersAdapter {
     }
 
     static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
-        if (option instanceof Item) return itemToItemStack((Item) option);
+        if (option instanceof AbstractItem) return itemToItemStack((AbstractItem) option);
         if (option instanceof Potion) return wPotionToPotion((Potion) option);
         if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
         if (dataType.equals(MaterialData.class)) {
@@ -314,12 +314,12 @@ public class WrappersAdapter {
     }
 
     /**
-     * Converts the given {@link Item} to an {@link ItemStack}.
+     * Converts the given {@link AbstractItem} to an {@link ItemStack}.
      *
      * @param item the item
      * @return the item stack
      */
-    public static @Nullable ItemStack itemToItemStack(final @Nullable Item item) {
+    public static @Nullable ItemStack itemToItemStack(final @Nullable AbstractItem item) {
         try {
             Class<?> clazz = Class.forName("it.angrybear.yagl.utils.ItemUtils");
             return new Refl<>(clazz).invokeMethod("itemToItemStack", item);

@@ -1,8 +1,9 @@
 package it.angrybear.yagl.particles;
 
-import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.items.AbstractItem;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption> {
     @Override
     protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption> getLoader() {
         return (c, s) -> {
-            Item item = c.get(s, Item.class);
+            AbstractItem item = c.get(s, ReflectionUtils.getClass("it.angrybear.yagl.items.Item"));
             if (item == null) return null;
             return new ItemParticleOption(item);
         };

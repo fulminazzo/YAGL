@@ -1,6 +1,6 @@
 package it.angrybear.yagl.items;
 
-public class Item {
+public class Item implements AbstractItem {
     private final String material;
 
     public Item() {

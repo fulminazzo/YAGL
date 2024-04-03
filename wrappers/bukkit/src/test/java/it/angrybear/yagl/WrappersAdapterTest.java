@@ -1,6 +1,6 @@
 package it.angrybear.yagl;
 
-import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.items.AbstractItem;
 import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Enchantment;
@@ -84,7 +84,7 @@ class WrappersAdapterTest {
                 it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
         particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
                 new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
-        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(Item.class))));
+        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(AbstractItem.class))));
         particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
@@ -141,7 +141,7 @@ class WrappersAdapterTest {
         // Initialize Bukkit variables
         BukkitUtils.setupServer();
 
-        Particle particle = ParticleType.ITEM_CRACK.create(mock(Item.class));
+        Particle particle = ParticleType.ITEM_CRACK.create(mock(AbstractItem.class));
         Player player = mock(Player.class);
 
         ArgumentCaptor<?> @NotNull [] captors = TestUtils.testSingleMethod(WrappersAdapter.class,
@@ -335,7 +335,7 @@ class WrappersAdapterTest {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
                 ParticleType.REDSTONE.create(it.angrybear.yagl.Color.RED, 3f), org.bukkit.Particle.class,
-                (Function<?, Class<?>>) s -> Item.class));
+                (Function<?, Class<?>>) s -> AbstractItem.class));
     }
 
     private static it.angrybear.yagl.Color[] getColors() {
