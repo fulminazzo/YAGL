@@ -145,6 +145,28 @@ class PersistentListenerTest {
     }
 
     @Test
+    void simulateDragEventWithNoItems() {
+        Player player = getPlayer();
+
+        ItemStack persistentItem = maintain.create();
+
+        ItemStack itemStack = new ItemStack(Material.GLASS);
+        assertNull(PersistentItem.getPersistentItem(itemStack));
+
+        int size = 9;
+        InventoryView view = new MockInventoryView(player.getInventory(), size);
+        for (int i = 0; i < size; i++) view.setItem(i, persistentItem);
+        for (int i = 0; i < view.getBottomInventory().getSize(); i++) view.setItem(i + size, persistentItem);
+
+        InventoryDragEvent event = new InventoryDragEvent(view, null, new ItemStack(Material.AIR), false, new HashMap<Integer, ItemStack>(){{
+            put(18, itemStack);
+        }});
+        listener.on(event);
+        assertFalse(event.isCancelled(), "Expected event to not be cancelled");
+        assertFalse(this.clicked, "Expected click action to not be executed");
+    }
+
+    @Test
     void simulatePlayerDeath() throws InterruptedException {
         Player player = getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
