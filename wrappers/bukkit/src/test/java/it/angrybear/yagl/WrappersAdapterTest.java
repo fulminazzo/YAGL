@@ -7,16 +7,9 @@ import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Server;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Vibration;
-import org.bukkit.World;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -273,13 +266,10 @@ class WrappersAdapterTest {
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
         List<PotionEffectType> potionEffects = new ArrayList<>();
         for (Field field : PotionEffectType.class.getDeclaredFields())
-            if (field.getType().equals(PotionEffectType.class))
-                try {
-                    PotionEffectType type = (PotionEffectType) field.get(PotionEffectType.class);
-                    potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+            if (field.getType().equals(PotionEffectType.class)) {
+                PotionEffectType type = ReflectionUtils.get(field, PotionEffectType.class);
+                potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
+            }
         // Register potion effects
         Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
                 .getFieldObject("byName");
@@ -299,13 +289,10 @@ class WrappersAdapterTest {
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
         List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
         for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
-            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class))
-                try {
-                    org.bukkit.enchantments.Enchantment enchant = (org.bukkit.enchantments.Enchantment) field.get(org.bukkit.enchantments.Enchantment.class);
-                    enchantments.add(new MockEnchantment(enchant.getKey()));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class)) {
+                org.bukkit.enchantments.Enchantment enchant = ReflectionUtils.get(field, org.bukkit.enchantments.Enchantment.class);
+                enchantments.add(new MockEnchantment(enchant.getKey()));
+            }
         // Register enchantments
         Map<NamespacedKey, org.bukkit.enchantments.Enchantment> byKey = new Refl<>(org.bukkit.enchantments.Enchantment.class)
                 .getFieldObject("byKey");
