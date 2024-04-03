@@ -28,7 +28,7 @@ public class ParticleParser extends YAMLParser<Particle> {
             ConfigurationSection particleSection = c.getConfigurationSection(s);
             if (particleSection == null) return null;
             String type = particleSection.getString("type");
-            if (type == null) throw new NullPointerException("'type' cannot be null");
+            if (type == null) throw new IllegalArgumentException("'type' cannot be null");
             AParticleType<?> particleType;
             try {
                 particleType = EnumUtils.valueOf(LegacyParticleType.class, type);

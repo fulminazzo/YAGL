@@ -26,11 +26,11 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
             if (section == null) return null;
             // Get type
             String type = section.getString("type");
-            if (type == null) throw new NullPointerException("'type' cannot be null");
+            if (type == null) throw new IllegalArgumentException("'type' cannot be null");
             Class<?> clazz = typeToClass(getOClass(), type);
             // Get content
             String content = section.getString("content");
-            if (content == null) throw new NullPointerException("'content' cannot be null");
+            if (content == null) throw new IllegalArgumentException("'content' cannot be null");
             try {
                 Constructor<?> constructor = clazz.getConstructor(String.class);
                 return (F) constructor.newInstance(content);

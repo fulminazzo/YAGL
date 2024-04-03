@@ -27,7 +27,7 @@ abstract class GUIElementParser<C> extends CallableYAMLParser<C> {
     public GUIElementParser(final @NotNull Class<C> clazz) {
         super(clazz, (c) -> {
             String type = c.getString("type");
-            if (type == null) throw new NullPointerException("'type' cannot be null");
+            if (type == null) throw new IllegalArgumentException("'type' cannot be null");
             Class<? extends C> clz = typeToClass(clazz, type);
             return new Refl<>(clz, new Object[0]).getObject();
         });

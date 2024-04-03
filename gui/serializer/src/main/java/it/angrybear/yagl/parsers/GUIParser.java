@@ -21,7 +21,7 @@ public class GUIParser extends GUIElementParser<GUI> {
         return (c, s) -> {
             GUI g = super.getLoader().apply(c, s);
             Integer size = c.getInteger(s + ".size");
-            if (size == null) throw new NullPointerException("'size' cannot be null");
+            if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Refl<GUI> gui = new Refl<>(g);
             gui.setFieldObject("contents", gui.invokeMethod("createContents",
                     new Class[]{int.class, List.class},

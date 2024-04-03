@@ -26,7 +26,7 @@ public abstract class TypedParser<C> extends CallableYAMLParser<C> {
     public TypedParser(final @NotNull Class<C> clazz) {
         super(clazz, (c) -> {
             String type = c.getString(TYPE_FIELD);
-            if (type == null) throw new NullPointerException(String.format("'%s' cannot be null", TYPE_FIELD));
+            if (type == null) throw new IllegalArgumentException(String.format("'%s' cannot be null", TYPE_FIELD));
             Class<? extends C> clz = ParserUtils.typeToClass(clazz, type);
             return new Refl<>(clz, new Object[0]).getObject();
         });

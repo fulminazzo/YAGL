@@ -43,7 +43,7 @@ public class ItemParser extends YAMLParser<Item> {
             Item item = Item.newItem();
 
             final String material = itemSection.getString("material");
-            if (material == null) throw new NullPointerException("'material' cannot be null");
+            if (material == null) throw new IllegalArgumentException("'material' cannot be null");
             item.setMaterial(material);
 
             itemSection.getOptional("amount", Integer.class).ifPresent(item::setAmount);

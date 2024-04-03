@@ -67,7 +67,7 @@ public final class ItemAdapter {
     public static @Nullable ItemStack itemToItemStack(final @Nullable Item item) {
         if (item == null) return null;
         String material = item.getMaterial();
-        if (material == null) throw new NullPointerException("Material cannot be null!");
+        if (material == null) throw new IllegalArgumentException("Material cannot be null!");
         ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
 
         ItemMeta meta = itemStack.getItemMeta();
