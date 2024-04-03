@@ -51,7 +51,8 @@ public final class EnumUtils {
                         String message = throwable.getMessage();
                         if (message.contains(name.toUpperCase())) continue;
                     }
-                    ExceptionUtils.throwException(throwable);
+                    if (!(throwable instanceof RuntimeException)) throwable = new RuntimeException(throwable);
+                    throw (RuntimeException) throwable;
                 }
             if (object == null) throw new IllegalArgumentException();
             return object;
