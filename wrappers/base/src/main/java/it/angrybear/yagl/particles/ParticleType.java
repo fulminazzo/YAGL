@@ -3,7 +3,7 @@ package it.angrybear.yagl.particles;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings({"unused", "unchecked"})
-public class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
+public final class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_HUGE = new ParticleType<>();

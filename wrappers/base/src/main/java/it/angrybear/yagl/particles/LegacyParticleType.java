@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 @SuppressWarnings({"unused", "unchecked"})
-public class LegacyParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
+public final class LegacyParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final LegacyParticleType<PrimitiveParticleOption<String>> SMOKE = new LegacyParticleType<>((Class<PrimitiveParticleOption<String>>) (Class<?>) PrimitiveParticleOption.class);
     public static final LegacyParticleType<PotionParticleOption> POTION_BREAK = new LegacyParticleType<>(PotionParticleOption.class);
     public static final LegacyParticleType<?> ENDER_SIGNAL = new LegacyParticleType<>();
