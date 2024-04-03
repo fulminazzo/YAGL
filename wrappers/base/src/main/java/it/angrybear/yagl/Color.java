@@ -247,11 +247,8 @@ public class Color extends ClassEnum {
      * @return true if they match
      */
     public boolean equals(final Color color) {
-        if (color == null) return false;
-        return this.alpha == color.alpha &&
-                this.red == color.red &&
-                this.green == color.green &&
-                this.blue == color.blue;
+        return color != null && this.alpha == color.alpha && this.red == color.red &&
+                this.green == color.green && this.blue == color.blue;
     }
 
     @Override
