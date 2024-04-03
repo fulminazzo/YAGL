@@ -43,8 +43,10 @@ class ItemTest {
         Item item = new MockItem("STONE");
         String[] enchantments = new String[]{"ench1", "ench2", "ench3"};
         item.addEnchantments(enchantments);
-        for (String e : enchantments)
+        for (String e : enchantments) {
             assertEquals(1, item.getEnchantmentLevel(e));
+            assertEquals(1, item.getEnchantmentLevel(new Enchantment(e)));
+        }
     }
 
     @Getter
