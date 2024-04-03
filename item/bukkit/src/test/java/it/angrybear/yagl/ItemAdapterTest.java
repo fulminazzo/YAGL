@@ -8,6 +8,7 @@ import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import org.bukkit.Bukkit;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -92,6 +94,15 @@ class ItemAdapterTest {
         ItemFactory itemFactory = mock(ItemFactory.class);
         when(itemFactory.getItemMeta(any(Material.class))).thenReturn(meta);
         return itemFactory;
+    }
+
+    @Test
+    void testNullRecipeConversion() {
+        Refl<Class<ItemAdapter>> adapter = new Refl<>(ItemAdapter.class);
+        for (Method method : adapter.getMethods(m -> m.getName().equals("recipeToMinecraft"))) {
+            Object result = adapter.invokeMethod(method.getName(), method.getParameterTypes(), (Object) null);
+            assertNull(result);
+        }
     }
 
     @Test
