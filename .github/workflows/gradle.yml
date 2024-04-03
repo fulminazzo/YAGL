@@ -82,6 +82,13 @@ jobs:
           generate-branches-badge: true
           jacoco-csv-file: build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.csv
 
+      - name: Send Report to Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.FULMINAZZO_CODACY_TOKEN }}
+        run: |-
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml
+        shell: bash
+
       - name: Update and Push JaCoCo Badge
         run: |-
           git add .
