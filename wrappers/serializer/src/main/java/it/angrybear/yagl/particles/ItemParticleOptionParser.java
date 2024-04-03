@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Should take priority over {@link ParticleOptionParser}.
  * It requires the <i>item:serializer</i> module to be added.
  */
+@SuppressWarnings("deprecation")
 public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption> {
 
     public ItemParticleOptionParser() {

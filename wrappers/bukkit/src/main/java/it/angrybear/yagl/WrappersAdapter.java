@@ -31,6 +31,7 @@ import java.util.function.Function;
 /**
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
+@SuppressWarnings("deprecation")
 public class WrappersAdapter {
 
     /**
