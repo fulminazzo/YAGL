@@ -157,17 +157,6 @@ public class ShapedRecipe extends RecipeImpl {
             return num >= 0 && num < this.rows * this.columns;
         }
 
-        /**
-         * Compares the given shape with the current one.
-         *
-         * @param shape the shape
-         * @return true if they have the same rows and columns
-         */
-        public boolean equals(@Nullable Shape shape) {
-            if (shape == null) return false;
-            return this.columns == shape.columns && this.rows == shape.rows;
-        }
-
         @Override
         public String toString() {
             return String.format("Shape {rows: %s, columns: %s}", this.rows, this.columns);
