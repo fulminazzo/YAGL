@@ -1,14 +1,22 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.items.AbstractItem;
-import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.particles.Particle;
+import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Vibration;
+import org.bukkit.World;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
