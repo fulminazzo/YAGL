@@ -104,11 +104,11 @@ allprojects {
         if (!project.name.equals(TEST_MODULE)) testImplementation project(":" + TEST_MODULE)
     }
 
+    if (project.name.equals(TEST_MODULE)) return
+
     test {
         useJUnitPlatform()
     }
-
-    if (project.name.equals(TEST_MODULE)) return;
 
     processResources {
         def props = [
