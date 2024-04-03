@@ -96,7 +96,7 @@ public final class TestUtils {
             System.err.printf("Invoked method parameter types: '%s'%n", Arrays.toString(invokedMethodParamTypes));
             System.err.printf("Captors: '%s'%n", Arrays.toString(captors));
             ExceptionUtils.throwException(e);
-            throw new IllegalStateException("Unreachable code");
+            return null;
         }
     }
 

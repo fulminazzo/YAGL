@@ -45,10 +45,10 @@ public interface BukkitItem extends Item {
      * @param metaFunction  the item meta function
      * @return the item stack
      */
+    @SuppressWarnings("DataFlowIssue")
     default <M extends ItemMeta> @NotNull ItemStack create(@Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
         if (getMaterial() == null) throw new IllegalArgumentException("Cannot create item from null material");
         ItemStack itemStack = ItemAdapter.itemToItemStack(this);
-        if (itemStack == null) throw new IllegalStateException("Unreachable code");
         if (itemMetaClass != null && metaFunction != null) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {

@@ -345,12 +345,12 @@ public final class WrappersAdapter {
      * @param color the color
      * @return the color
      */
+    @SuppressWarnings("DataFlowIssue")
     public static @NotNull org.bukkit.Color wColorToColor(final @NotNull Color color) {
         org.bukkit.Color actualColor;
         try {
             actualColor = new Refl<>(org.bukkit.Color.class).invokeMethod("fromARGB",
                     color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
-            if (actualColor == null) throw new IllegalStateException("Unreachable code");
         } catch (Exception e) {
             actualColor = org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
         }
