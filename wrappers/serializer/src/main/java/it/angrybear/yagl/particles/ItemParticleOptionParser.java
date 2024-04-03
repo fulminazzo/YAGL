@@ -14,24 +14,24 @@ import org.jetbrains.annotations.Nullable;
  * Should take priority over {@link ParticleOptionParser}.
  * It requires the <i>item:serializer</i> module to be added.
  */
-@SuppressWarnings("deprecation")
-public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption> {
+@SuppressWarnings({"deprecation", "unchecked"})
+public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption<?>> {
 
     public ItemParticleOptionParser() {
-        super(ItemParticleOption.class);
+        super((Class<ItemParticleOption<?>>) (Class<?>) ItemParticleOption.class);
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption> getLoader() {
+    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption<?>> getLoader() {
         return (c, s) -> {
             AbstractItem item = c.get(s, ReflectionUtils.getClass("it.angrybear.yagl.items.Item"));
             if (item == null) return null;
-            return new ItemParticleOption(item);
+            return new ItemParticleOption<>(item);
         };
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption> getDumper() {
+    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption<?>> getDumper() {
         return (c, s, o) -> c.set(s, o == null ? null : o.getOption());
     }
 }
