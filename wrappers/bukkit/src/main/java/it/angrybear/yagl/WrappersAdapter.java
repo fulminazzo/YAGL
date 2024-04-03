@@ -327,7 +327,7 @@ public final class WrappersAdapter {
             Class<?> clazz = Class.forName("it.angrybear.yagl.utils.ItemUtils");
             return new Refl<>(clazz).invokeMethod("itemToItemStack", item);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Could not find ItemUtils class. This function requires the 'item:bukkit' module to be added");
+            throw new IllegalStateException("Could not find ItemUtils class. This function requires the 'item:bukkit' module to be added");
         }
     }
 

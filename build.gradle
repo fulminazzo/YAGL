@@ -24,7 +24,7 @@ allprojects {
     final String author = 'Fulminazzo'
 
     this.ext.getFileName = { name ->
-        if (name == null) throw new RuntimeException("getFileName(): Name cannot be null!")
+        if (name == null) throw new IllegalArgumentException("getFileName(): Name cannot be null!")
         String fileName = name
         final String projectName = rootProject.name
         if (projectName != fileName) fileName = "${projectName}-" + fileName
