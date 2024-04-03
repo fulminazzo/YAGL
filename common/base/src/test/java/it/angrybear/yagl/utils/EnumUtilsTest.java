@@ -40,6 +40,10 @@ class EnumUtilsTest {
             return null;
         }
 
+        /**
+         * Simulate invalid valueOf method
+         * @param name the name
+         */
         public static void invalid(String name) {
 
         }
