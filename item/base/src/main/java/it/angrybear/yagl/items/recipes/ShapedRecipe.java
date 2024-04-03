@@ -103,6 +103,24 @@ public class ShapedRecipe extends RecipeImpl {
         private int columns;
 
         /**
+         * Instantiates a new Shape.
+         */
+        public Shape() {
+            this(1, 1);
+        }
+
+        /**
+         * Instantiates a new Shape.
+         *
+         * @param rows    the rows
+         * @param columns the columns
+         */
+        public Shape(final int rows, final int columns) {
+            setRows(rows);
+            setColumns(columns);
+        }
+
+        /**
          * Sets columns.
          * Should be between {@link #MIN_COLUMNS} and {@link #MAX_COLUMNS}.
          *
