@@ -1,13 +1,13 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.items.AbstractItem;
-import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.particles.*;
+import it.angrybear.yagl.particles.Particle;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.angrybear.yagl.wrappers.PotionEffect;
+import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
-import org.bukkit.Color;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -24,7 +24,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -41,7 +44,7 @@ class WrappersAdapterTest {
             particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
         particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.create(new PrimitiveParticleOption<>(true)));
         particles.add(LegacyParticleType.BONE_MEAL_USE.create(new PrimitiveParticleOption<>(1)));
-        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.create(new ColorParticleOption(it.angrybear.yagl.Color.AQUA)));
+        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.create(new ColorParticleOption(Color.AQUA)));
         return particles.toArray(new Particle[0]);
     }
 
@@ -79,9 +82,9 @@ class WrappersAdapterTest {
         for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
         particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
         particles.add(ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(11)));
-        particles.add(ParticleType.REDSTONE.create(new DustParticleOption(it.angrybear.yagl.Color.RED, 12f)));
+        particles.add(ParticleType.REDSTONE.create(new DustParticleOption(Color.RED, 12f)));
         particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(
-                it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.BLUE, 12f)));
+                Color.RED, Color.BLUE, 12f)));
         particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
                 new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
         particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(mock(AbstractItem.class))));
@@ -163,15 +166,14 @@ class WrappersAdapterTest {
 
     @Test
     void testPlaySound() {
-        it.angrybear.yagl.wrappers.Sound sound = new it.angrybear.yagl.wrappers.Sound(
-                Sound.BLOCK_GLASS_STEP.name(),10, 2, SoundCategory.BLOCKS.name());
+        Sound sound = new Sound(org.bukkit.Sound.BLOCK_GLASS_STEP.name(),10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
 
         when(player.getLocation()).thenReturn(new Location(null, 0, 1, 0));
 
         WrappersAdapter.playSound(player, sound);
 
-        ArgumentCaptor<Sound> soundArg = ArgumentCaptor.forClass(Sound.class);
+        ArgumentCaptor<org.bukkit.Sound> soundArg = ArgumentCaptor.forClass(org.bukkit.Sound.class);
         ArgumentCaptor<SoundCategory> categoryArg = ArgumentCaptor.forClass(SoundCategory.class);
         ArgumentCaptor<Float> volumeArg = ArgumentCaptor.forClass(Float.class);
         ArgumentCaptor<Float> pitchArg = ArgumentCaptor.forClass(Float.class);
@@ -188,15 +190,14 @@ class WrappersAdapterTest {
 
     @Test
     void testPlaySoundNoCategory() {
-        it.angrybear.yagl.wrappers.Sound sound = new it.angrybear.yagl.wrappers.Sound(
-                Sound.BLOCK_GLASS_STEP.name(),10, 2);
+        Sound sound = new Sound(org.bukkit.Sound.BLOCK_GLASS_STEP.name(),10, 2);
         Player player = mock(Player.class);
 
         when(player.getLocation()).thenReturn(new Location(null, 0, 1, 0));
 
         WrappersAdapter.playSound(player, sound);
 
-        ArgumentCaptor<Sound> soundArg = ArgumentCaptor.forClass(Sound.class);
+        ArgumentCaptor<org.bukkit.Sound> soundArg = ArgumentCaptor.forClass(org.bukkit.Sound.class);
         ArgumentCaptor<Float> volumeArg = ArgumentCaptor.forClass(Float.class);
         ArgumentCaptor<Float> pitchArg = ArgumentCaptor.forClass(Float.class);
         verify(player).playSound(any(Location.class), soundArg.capture(), volumeArg.capture(), pitchArg.capture());
@@ -211,13 +212,13 @@ class WrappersAdapterTest {
     void testPlaySoundInvalidCategory() {
         Player player = mock(Player.class);
         assertThrowsExactly(IllegalArgumentException.class, () ->
-                WrappersAdapter.playSound(player, new it.angrybear.yagl.wrappers.Sound(Sound.BLOCK_AZALEA_FALL.name(),
+                WrappersAdapter.playSound(player, new Sound(org.bukkit.Sound.BLOCK_AZALEA_FALL.name(),
                         1f, 1f, "hostiles")));
     }
 
     @Test
     void testCustomPlaySound() {
-        it.angrybear.yagl.wrappers.Sound sound = new it.angrybear.yagl.wrappers.Sound(
+        Sound sound = new Sound(
                 "custom_sound",10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
 
@@ -242,7 +243,7 @@ class WrappersAdapterTest {
 
     @Test
     void testCustomPlaySoundNoCategory() {
-        it.angrybear.yagl.wrappers.Sound sound = new it.angrybear.yagl.wrappers.Sound(
+        Sound sound = new Sound(
                 "custom_sound",10, 2);
         Player player = mock(Player.class);
 
@@ -326,7 +327,7 @@ class WrappersAdapterTest {
     void testInvalidClassProvided() {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
-                ParticleType.DUST_COLOR_TRANSITION.create(it.angrybear.yagl.Color.RED, it.angrybear.yagl.Color.RED, 3f),
+                ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.RED, 3f),
                 org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.REDSTONE.getDataType()));
     }
 
@@ -334,18 +335,18 @@ class WrappersAdapterTest {
     void testNoConstructorDataTypeProvided() {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
         assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
-                ParticleType.REDSTONE.create(it.angrybear.yagl.Color.RED, 3f), org.bukkit.Particle.class,
+                ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class,
                 (Function<?, Class<?>>) s -> AbstractItem.class));
     }
 
-    private static it.angrybear.yagl.Color[] getColors() {
-        return it.angrybear.yagl.Color.values();
+    private static Color[] getColors() {
+        return Color.values();
     }
 
     @ParameterizedTest
     @MethodSource("getColors")
-    void testColorConversion(it.angrybear.yagl.Color expected) {
-        Color color = WrappersAdapter.wColorToColor(expected);
+    void testColorConversion(Color expected) {
+        org.bukkit.Color color = WrappersAdapter.wColorToColor(expected);
         assertEquals(expected, WrappersAdapter.colorToWColor(color));
     }
 
@@ -395,7 +396,7 @@ class WrappersAdapterTest {
 
         @NotNull
         @Override
-        public Color getColor() {
+        public org.bukkit.Color getColor() {
             return null;
         }
     }

@@ -3,13 +3,14 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.items.recipes.FurnaceRecipe;
+import it.angrybear.yagl.items.recipes.Recipe;
+import it.angrybear.yagl.items.recipes.ShapedRecipe;
+import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
-import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,14 +42,14 @@ class LegacyItemAdapterTest {
 
     @Test
     void testShapedRecipeConversion() {
-        ShapedRecipe expected = new ShapedRecipe(new ItemStack(Material.STONE));
+        org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new ItemStack(Material.STONE));
         expected.shape("ABC", "DEF");
         Material[] materials = new Material[]{Material.IRON_INGOT, Material.GOLD_INGOT, Material.REDSTONE,
                 Material.DIAMOND, Material.EMERALD, Material.INK_SACK};
         for (int i = 0; i < materials.length; i++)
             expected.setIngredient((char) ('A' + i), new ItemStack(materials[i]).getData());
 
-        it.angrybear.yagl.items.recipes.ShapedRecipe recipe = new it.angrybear.yagl.items.recipes.ShapedRecipe("test")
+        ShapedRecipe recipe = new ShapedRecipe("test")
                 .setOutput(Item.newItem("STONE")).setShape(2, 3);
         for (int i = 0; i < materials.length; i++) recipe.setIngredient(i, BukkitItem.newItem(materials[i]));
 
@@ -66,10 +67,10 @@ class LegacyItemAdapterTest {
 
     @Test
     void testShapelessRecipeConversion() {
-        ShapelessRecipe expected = new ShapelessRecipe(new ItemStack(Material.STONE));
+        org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(new ItemStack(Material.STONE));
         expected.addIngredient(new ItemStack(Material.GRASS).getData());
 
-        it.angrybear.yagl.items.recipes.ShapelessRecipe recipe = new it.angrybear.yagl.items.recipes.ShapelessRecipe("test")
+        ShapelessRecipe recipe = new ShapelessRecipe("test")
                 .setOutput(Item.newItem("STONE")).addIngredient(Item.newItem("GRASS"));
 
         Refl<?> r1 = new Refl<>(expected);
@@ -81,10 +82,10 @@ class LegacyItemAdapterTest {
 
     @Test
     void testFurnaceRecipeConversion() {
-        FurnaceRecipe expected = new FurnaceRecipe(new ItemStack(Material.STONE), Material.COAL);
+        org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new ItemStack(Material.STONE), Material.COAL);
         new Refl<>(expected).setFieldObject("ingredient", new ItemStack(Material.COAL));
 
-        it.angrybear.yagl.items.recipes.FurnaceRecipe recipe = new it.angrybear.yagl.items.recipes.FurnaceRecipe("test")
+        FurnaceRecipe recipe = new FurnaceRecipe("test")
                 .setOutput(Item.newItem("STONE")).setIngredient(Item.newItem("COAL"))
                 .setExperience(10).setCookingTime(20);
 
@@ -102,11 +103,11 @@ class LegacyItemAdapterTest {
         final BukkitItem returnItem = BukkitItem.newItem(Material.REDSTONE_BLOCK);
         final int size = 4;
 
-        ShapedRecipe expected = new ShapedRecipe(returnItem.create());
+        org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(returnItem.create());
         expected.shape("AB", "CD");
         for (int i = 0; i < size; i++) expected.setIngredient((char) ('A' + i), new ItemStack(craftMaterial).getData());
 
-        it.angrybear.yagl.items.recipes.ShapedRecipe recipe = new it.angrybear.yagl.items.recipes.ShapedRecipe(id)
+        ShapedRecipe recipe = new ShapedRecipe(id)
                 .setOutput(returnItem).setShape(3, 3);
         for (int i = 0; i < 9; i++) recipe.setIngredient(i, BukkitItem.newItem(Material.COBBLESTONE));
 
@@ -131,6 +132,6 @@ class LegacyItemAdapterTest {
 
     @Test
     void testInvalidRecipeType() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> ItemAdapter.recipeToMinecraft(mock(it.angrybear.yagl.items.recipes.Recipe.class)));
+        assertThrowsExactly(IllegalArgumentException.class, () -> ItemAdapter.recipeToMinecraft(mock(Recipe.class)));
     }
 }

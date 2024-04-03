@@ -26,8 +26,8 @@ import static org.mockito.Mockito.*;
 
 public class LegacyWrappersAdapterTest {
 
-    private static it.angrybear.yagl.Color[] getColors() {
-        return it.angrybear.yagl.Color.values();
+    private static Color[] getColors() {
+        return Color.values();
     }
 
     private static Particle[] getTestLegacyParticles() {
@@ -90,7 +90,7 @@ public class LegacyWrappersAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getColors")
-    void testColorConversion(it.angrybear.yagl.Color expected) {
+    void testColorConversion(Color expected) {
         org.bukkit.Color color = WrappersAdapter.wColorToColor(expected);
         assertEquals(expected, WrappersAdapter.colorToWColor(color));
     }

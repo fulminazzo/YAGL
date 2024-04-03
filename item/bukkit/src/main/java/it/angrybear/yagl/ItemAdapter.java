@@ -3,13 +3,17 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.items.recipes.FurnaceRecipe;
+import it.angrybear.yagl.items.recipes.Recipe;
+import it.angrybear.yagl.items.recipes.ShapedRecipe;
+import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -110,39 +114,39 @@ public final class ItemAdapter {
     }
 
     /**
-     * Converts the {@link it.angrybear.yagl.items.recipes.Recipe} to a Minecraft {@link Recipe}.
+     * Converts the {@link Recipe} to a Minecraft {@link org.bukkit.inventory.Recipe}.
      *
      * @param recipe the recipe
      * @return the recipe
      */
-    public static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.Recipe recipe) {
+    public static org.bukkit.inventory.Recipe recipeToMinecraft(final @Nullable Recipe recipe) {
         if (recipe == null) return null;
-        Recipe result;
-        if (recipe instanceof it.angrybear.yagl.items.recipes.ShapedRecipe)
-            result = recipeToMinecraft((it.angrybear.yagl.items.recipes.ShapedRecipe) recipe);
-        else if (recipe instanceof it.angrybear.yagl.items.recipes.ShapelessRecipe)
-            result = recipeToMinecraft((it.angrybear.yagl.items.recipes.ShapelessRecipe) recipe);
-        else if (recipe instanceof it.angrybear.yagl.items.recipes.FurnaceRecipe)
-            result = recipeToMinecraft((it.angrybear.yagl.items.recipes.FurnaceRecipe) recipe);
+        org.bukkit.inventory.Recipe result;
+        if (recipe instanceof ShapedRecipe)
+            result = recipeToMinecraft((ShapedRecipe) recipe);
+        else if (recipe instanceof ShapelessRecipe)
+            result = recipeToMinecraft((ShapelessRecipe) recipe);
+        else if (recipe instanceof FurnaceRecipe)
+            result = recipeToMinecraft((FurnaceRecipe) recipe);
         else throw new IllegalArgumentException("Unrecognized recipe type: " + recipe.getClass());
         return result;
     }
 
-    private static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.ShapedRecipe recipe) {
+    private static org.bukkit.inventory.Recipe recipeToMinecraft(final @Nullable ShapedRecipe recipe) {
         if (recipe == null) return null;
 
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 
-        Refl<ShapedRecipe> r;
+        Refl<org.bukkit.inventory.ShapedRecipe> r;
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
-            r = new Refl<>(ShapedRecipe.class, namespacedKey, output);
+            r = new Refl<>(org.bukkit.inventory.ShapedRecipe.class, namespacedKey, output);
         } catch (IllegalStateException e) {
-            r = new Refl<>(ShapedRecipe.class, output);
+            r = new Refl<>(org.bukkit.inventory.ShapedRecipe.class, output);
         }
 
         StringBuilder charShape = new StringBuilder();
-        it.angrybear.yagl.items.recipes.ShapedRecipe.Shape shape = recipe.getShape();
+        ShapedRecipe.Shape shape = recipe.getShape();
         char c = 'A';
         for (int i = 0; i < shape.getRows(); i++) {
             for (int j = 0; j < shape.getColumns(); j++) {
@@ -162,7 +166,7 @@ public final class ItemAdapter {
         return r.getObject();
     }
 
-    private static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.ShapelessRecipe recipe) {
+    private static org.bukkit.inventory.Recipe recipeToMinecraft(final @Nullable ShapelessRecipe recipe) {
         if (recipe == null) return null;
 
         final List<Object> ingredients = recipe.getIngredients().stream()
@@ -170,12 +174,12 @@ public final class ItemAdapter {
                 .collect(Collectors.toList());
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
 
-        Refl<ShapelessRecipe> r;
+        Refl<org.bukkit.inventory.ShapelessRecipe> r;
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
-            r = new Refl<>(ShapelessRecipe.class, namespacedKey, output);
+            r = new Refl<>(org.bukkit.inventory.ShapelessRecipe.class, namespacedKey, output);
         } catch (IllegalStateException e) {
-            r = new Refl<>(ShapelessRecipe.class, output);
+            r = new Refl<>(org.bukkit.inventory.ShapelessRecipe.class, output);
         }
 
         r.setFieldObject("ingredients", ingredients);
@@ -183,7 +187,7 @@ public final class ItemAdapter {
         return r.getObject();
     }
 
-    private static Recipe recipeToMinecraft(final @Nullable it.angrybear.yagl.items.recipes.FurnaceRecipe recipe) {
+    private static org.bukkit.inventory.Recipe recipeToMinecraft(final @Nullable FurnaceRecipe recipe) {
         if (recipe == null) return null;
 
         final Object ingredient = getItemOrRecipeChoice(recipe.getIngredients().get(0));
@@ -191,12 +195,12 @@ public final class ItemAdapter {
         final int cookingTime = recipe.getCookingTime();
         final float experience = recipe.getExperience();
 
-        Refl<FurnaceRecipe> r;
+        Refl<org.bukkit.inventory.FurnaceRecipe> r;
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
-            r = new Refl<>(FurnaceRecipe.class, namespacedKey, output, Material.STONE, experience, cookingTime);
+            r = new Refl<>(org.bukkit.inventory.FurnaceRecipe.class, namespacedKey, output, Material.STONE, experience, cookingTime);
         } catch (IllegalStateException e) {
-            r = new Refl<>(FurnaceRecipe.class, output, Material.STONE);
+            r = new Refl<>(org.bukkit.inventory.FurnaceRecipe.class, output, Material.STONE);
         }
 
         r.setFieldObject("ingredient", ingredient);
