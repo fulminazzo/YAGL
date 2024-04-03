@@ -47,13 +47,15 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         shell: bash
 
-      - name: Delete badges Branch If Exists
+      - name: Delete badges Branch If Exists (Local)
         if: ${{ github.ref_name != 'badges' }}
         run: |-
-          if [[ $(git ls-remote | grep badges) ]]; then
-            git branch -d badges
-            git push origin --delete badges
-          fi
+          if [[ $(git branch | grep badges) ]]; then git branch -d badges; fi
+
+      - name: Delete badges Branch If Exists (Remote)
+        if: ${{ github.ref_name != 'badges' }}
+        run: |-
+          if [[ $(git ls-remote | grep badges) ]]; then git push origin --delete badges; fi
 
       - name: Checkout to badges Branch
         if: ${{ github.ref_name != 'badges' }}
