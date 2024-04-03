@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.reset;
 
 /**
  * The type Test utils.
