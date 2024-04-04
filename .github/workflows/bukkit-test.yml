@@ -34,6 +34,6 @@ jobs:
           MINECRAFT_VERSION: ${{ inputs.minecraft-version }}
 
       - name: Test with Gradle Wrapper
-        run: ./gradlew test
+        run: ./gradlew testBukkit
         env:
           MINECRAFT_VERSION: ${{ inputs.minecraft-version }}
