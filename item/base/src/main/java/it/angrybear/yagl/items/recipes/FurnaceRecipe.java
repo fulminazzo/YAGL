@@ -58,6 +58,15 @@ public class FurnaceRecipe extends RecipeImpl {
     }
 
     /**
+     * Gets cooking time in ticks.
+     *
+     * @return the cooking time
+     */
+    public long getCookingTimeInTicks() {
+        return (long) (this.cookingTime * 20L);
+    }
+
+    /**
      * Sets cooking time in seconds.
      *
      * @param cookingTime the cooking time
