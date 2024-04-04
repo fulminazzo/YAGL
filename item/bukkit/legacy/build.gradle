@@ -1,5 +1,3 @@
 dependencies {
     api project(":item:item-bukkit")
-
-    testImplementation libs.spigot.obsolete
 }
