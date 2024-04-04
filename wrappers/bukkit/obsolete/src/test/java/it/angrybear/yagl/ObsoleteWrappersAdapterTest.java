@@ -1,8 +1,11 @@
 package it.angrybear.yagl;
 
 import it.angrybear.yagl.wrappers.Sound;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -10,7 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class ObsoleteWrappersAdapterTest {
+@Before1_(8.9)
+public class ObsoleteWrappersAdapterTest extends BukkitUtils {
+
+    @BeforeEach
+    @Override
+    public void setUp() {
+        super.setUp();
+    }
 
     @Test
     void testPlaySound() {
