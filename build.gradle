@@ -48,7 +48,7 @@ allprojects {
     }
 
     this.ext.getMinecraftVersion = {
-        def minecraftVersion = System.getProperty("minecraft-version")
+        def minecraftVersion = System.getenv("minecraft-version")
         if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
         return minecraftVersion
     }
