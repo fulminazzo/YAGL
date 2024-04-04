@@ -364,6 +364,7 @@ public final class WrappersAdapter {
      * @param color the color
      * @return the color
      */
+    @SuppressWarnings("DataFlowIssue")
     public static @NotNull Color colorToWColor(final @NotNull org.bukkit.Color color) {
         try {
             return new Color(new Refl<>(color).invokeMethod("getAlpha"), color.getRed(), color.getGreen(), color.getBlue());
