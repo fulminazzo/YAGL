@@ -9,6 +9,7 @@ import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +20,13 @@ import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-class LegacyItemAdapterTest {
+@Before1_(11.2)
+class ObsoleteItemAdapterTest extends BukkitUtils {
 
     @BeforeEach
-    void setUp() {
+    @Override
+    protected void setUp() {
+        super.setUp();
         BukkitUtils.setupServer();
     }
 
