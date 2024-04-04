@@ -9,6 +9,7 @@ import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,16 +29,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ItemAdapterTest {
+@After1_(13)
+class ItemAdapterTest extends BukkitUtils {
 
     @BeforeEach
-    void setUp() {
-        BukkitUtils.setupServer();
+    @Override
+    public void setUp() {
+        super.setUp();
+        setupServer();
     }
 
     @Test
     void testItemConversion() {
-        BukkitUtils.setupEnchantments();
+        setupEnchantments();
         Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("flame", 10)
