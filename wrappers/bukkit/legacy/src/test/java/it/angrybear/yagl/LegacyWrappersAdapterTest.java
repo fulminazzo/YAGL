@@ -4,6 +4,9 @@ import it.angrybear.yagl.particles.*;
 import it.angrybear.yagl.wrappers.Potion;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +14,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,10 +25,18 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class LegacyWrappersAdapterTest {
+@Before1_(12.2)
+@After1_(9)
+public class LegacyWrappersAdapterTest extends BukkitUtils {
+
+    @BeforeEach
+    @Override
+    protected void setUp() {
+        super.setUp();
+    }
 
     private static Color[] getColors() {
         return Color.values();
