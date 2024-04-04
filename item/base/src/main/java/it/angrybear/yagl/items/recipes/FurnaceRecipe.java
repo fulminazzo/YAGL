@@ -20,7 +20,7 @@ public class FurnaceRecipe extends RecipeImpl {
     @Range(min = 0)
     private float experience;
     @Range(min = 0)
-    private int cookingTime;
+    private double cookingTime;
 
     private FurnaceRecipe() {
         this("pending");
@@ -58,12 +58,12 @@ public class FurnaceRecipe extends RecipeImpl {
     }
 
     /**
-     * Sets cooking time.
+     * Sets cooking time in seconds.
      *
      * @param cookingTime the cooking time
      * @return this recipe
      */
-    public @NotNull FurnaceRecipe setCookingTime(final int cookingTime) {
+    public @NotNull FurnaceRecipe setCookingTime(final double cookingTime) {
         this.cookingTime = Wrapper.check(this, cookingTime);
         return this;
     }
