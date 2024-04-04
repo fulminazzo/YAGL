@@ -1,10 +1,7 @@
 # 1.20.4-R0.1-SNAPSHOT
 name: MC 1.20
 
-on:
-  push:
-    #TODO: remove feat-item
-    branches: [ "dev", "main", "master", "feat-item", "feat-multi-tests" ]
+on: [ push ]
 
 jobs:
   test:
