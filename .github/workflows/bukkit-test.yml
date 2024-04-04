@@ -4,8 +4,14 @@ name: "Minecraft general test"
 on:
   workflow_call:
     inputs:
-      java-version: '8'
-      minecraft-version: "1.12.2-R0.1-SNAPSHOT"
+      java-version:
+        description: "Java version"
+        required: true
+        type: string
+      minecraft-version:
+        description: "Minecraft version"
+        required: true
+        type: string
 
 jobs:
   test:
