@@ -87,7 +87,7 @@ class LegacyItemAdapterTest {
 
         FurnaceRecipe recipe = new FurnaceRecipe("test")
                 .setOutput(Item.newItem("STONE")).setIngredient(Item.newItem("COAL"))
-                .setExperience(10).setCookingTime(20);
+                .setExperience(10).setCookingTime(1);
 
         Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
