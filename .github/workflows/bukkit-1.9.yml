@@ -1,0 +1,11 @@
+# 1.9.4-R0.1-SNAPSHOT
+name: MC 1.9
+
+on: [ push ]
+
+jobs:
+  test:
+    uses: ./.github/workflows/bukkit-test.yml
+    with:
+      java-version: 8
+      minecraft-version: "1.9.4-R0.1-SNAPSHOT"
