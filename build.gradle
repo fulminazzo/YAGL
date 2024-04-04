@@ -75,16 +75,32 @@ allprojects {
 
         def projectName = project.name
 
+        def minecraftVersion = System.getProperty("minecraft-version")
+        if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
+
         if (projectName.contains("serializer")) api(libs.yamlparser)
 
         if (projectName.contains("bukkit")) {
             compileOnly libs.spigot
-            testImplementation libs.spigot.latest
+            testCompileOnly libs.spigot.latest
+            testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
+
             testImplementation libs.jbukkit
         }
 
-        if (projectName.contains("legacy") || projectName.contains("obsolete"))
+        if (projectName.contains("legacy")) {
+            testCompileOnly libs.spigot.legacy
+            testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
+
             testImplementation libs.jbukkit.legacy
+        }
+
+        if (projectName.contains("obsolete")) {
+            testCompileOnly libs.spigot.obsolete
+            testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
+
+            testImplementation libs.jbukkit.legacy
+        }
 
         if (projectName.contains("-")) {
             def name = projectName.substring(0, projectName.indexOf("-"))
