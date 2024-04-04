@@ -192,7 +192,7 @@ public final class ItemAdapter {
 
         final Object ingredient = getItemOrRecipeChoice(recipe.getIngredients().get(0));
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
-        final int cookingTime = recipe.getCookingTime();
+        final long cookingTime = (long) (recipe.getCookingTime() * Constants.TICKS_IN_SECOND);
         final float experience = recipe.getExperience();
 
         Refl<org.bukkit.inventory.FurnaceRecipe> r;
