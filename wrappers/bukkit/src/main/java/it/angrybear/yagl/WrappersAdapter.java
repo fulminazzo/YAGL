@@ -466,10 +466,10 @@ public final class WrappersAdapter {
      */
     public static @NotNull PotionEffect potionEffectToWPotionEffect(final @NotNull org.bukkit.potion.PotionEffect potionEffect) {
         try {
-            return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / 20,
+            return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / Constants.TICKS_IN_SECOND,
                     potionEffect.getAmplifier() + 1, potionEffect.hasParticles(), potionEffect.hasIcon());
         } catch (NoSuchMethodError e) {
-            return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / 20,
+            return new PotionEffect(potionEffect.getType().getName(), (double) potionEffect.getDuration() / Constants.TICKS_IN_SECOND,
                     potionEffect.getAmplifier() + 1, potionEffect.hasParticles());
         }
     }

@@ -1,5 +1,6 @@
 package it.angrybear.yagl.items.recipes;
 
+import it.angrybear.yagl.Constants;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.wrappers.Range;
 import it.angrybear.yagl.wrappers.Wrapper;
@@ -63,7 +64,7 @@ public class FurnaceRecipe extends RecipeImpl {
      * @return the cooking time
      */
     public long getCookingTimeInTicks() {
-        return (long) (this.cookingTime * 20L);
+        return (long) (this.cookingTime * Constants.TICKS_IN_SECOND);
     }
 
     /**

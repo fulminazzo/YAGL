@@ -1,5 +1,6 @@
 package it.angrybear.yagl.wrappers;
 
+import it.angrybear.yagl.Constants;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -95,7 +96,7 @@ public class PotionEffect extends Wrapper {
      * @return the duration in ticks
      */
     public int getDurationInTicks() {
-        return (int) (getDuration() * 20);
+        return (int) (getDuration() * Constants.TICKS_IN_SECOND);
     }
 
     /**
