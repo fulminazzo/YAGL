@@ -279,6 +279,7 @@ public final class WrappersAdapter {
         }
     }
 
+    @SuppressWarnings("unchecked")
     static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
         if (option instanceof AbstractItem) return itemToItemStack((AbstractItem) option);
         if (option instanceof Potion) return wPotionToPotion((Potion) option);
