@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    uses: Fulminazzo/YAGL/.github/workflows/bukkit-test.yml@*
+    uses: ./.github/workflows/bukkit-test.yml
     with:
       java-version: 17
       minecraft-version: "1.20.4-R0.1-SNAPSHOT"
