@@ -13,10 +13,8 @@ import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -111,14 +109,14 @@ class ItemAdapterTest extends BukkitUtils {
 
     @Test
     void testShapedRecipeConversion() {
-        org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new NamespacedKey("yagl", "test"),
+        org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE));
         expected.shape("ABC", "DEF");
         Material[] materials = new Material[]{Material.IRON_INGOT, Material.GOLD_INGOT, Material.REDSTONE,
                 Material.DIAMOND, Material.EMERALD, Material.LAPIS_LAZULI};
         for (int i = 0; i < materials.length; i++)
-            expected.setIngredient((char) ('A' + i), new RecipeChoice.ExactChoice(new ItemStack(materials[i])));
-        expected.setIngredient((char) ('A' + 3), (RecipeChoice) null);
+            expected.setIngredient((char) ('A' + i), new org.bukkit.inventory.RecipeChoice.ExactChoice(new ItemStack(materials[i])));
+        expected.setIngredient((char) ('A' + 3), (org.bukkit.inventory.RecipeChoice) null);
 
         ShapedRecipe recipe = new ShapedRecipe("test")
                 .setOutput(Item.newItem("STONE")).setShape(2, 3);
@@ -139,9 +137,9 @@ class ItemAdapterTest extends BukkitUtils {
 
     @Test
     void testShapelessRecipeConversion() {
-        org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(new NamespacedKey("yagl", "test"),
+        org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE));
-        expected.addIngredient(new RecipeChoice.ExactChoice(new ItemStack(Material.GRASS)));
+        expected.addIngredient(new org.bukkit.inventory.RecipeChoice.ExactChoice(new ItemStack(Material.GRASS)));
 
         ShapelessRecipe recipe = new ShapelessRecipe("test")
                 .setOutput(Item.newItem("STONE")).addIngredient(Item.newItem("GRASS"));
@@ -155,9 +153,9 @@ class ItemAdapterTest extends BukkitUtils {
 
     @Test
     void testFurnaceRecipeConversion() {
-        org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new NamespacedKey("yagl", "test"),
+        org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE), Material.COAL, 10, 20);
-        new Refl<>(expected).setFieldObject("ingredient", new RecipeChoice.ExactChoice(new ItemStack(Material.COAL)));
+        new Refl<>(expected).setFieldObject("ingredient", new org.bukkit.inventory.RecipeChoice.ExactChoice(new ItemStack(Material.COAL)));
 
         FurnaceRecipe recipe = new FurnaceRecipe("test")
                 .setOutput(Item.newItem("STONE")).setIngredient(Item.newItem("COAL"))
@@ -177,10 +175,10 @@ class ItemAdapterTest extends BukkitUtils {
         final BukkitItem returnItem = BukkitItem.newItem(Material.REDSTONE_BLOCK);
         final int size = 4;
 
-        org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new NamespacedKey("yagl", id),
+        org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new org.bukkit.NamespacedKey("yagl", id),
                 returnItem.create());
         expected.shape("AB", "CD");
-        for (int i = 0; i < size; i++) expected.setIngredient((char) ('A' + i), new RecipeChoice.ExactChoice(new ItemStack(craftMaterial)));
+        for (int i = 0; i < size; i++) expected.setIngredient((char) ('A' + i), new org.bukkit.inventory.RecipeChoice.ExactChoice(new ItemStack(craftMaterial)));
 
         ShapedRecipe recipe = new ShapedRecipe(id)
                 .setOutput(returnItem).setShape(3, 3);
