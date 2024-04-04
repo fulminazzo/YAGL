@@ -10,7 +10,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BukkitRecipeItemImplTest {
+@After1_(13)
+class BukkitRecipeItemImplTest extends BukkitUtils {
+
+    @BeforeEach
+    @Override
+    protected void setUp() {
+        super.setUp();
+    }
 
     @Test
     void testRegisterAndUnregisterRecipe() {
