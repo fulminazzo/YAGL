@@ -2,9 +2,10 @@ package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +17,7 @@ class BukkitRecipeItemImplTest {
         BukkitUtils.setupServer();
         BukkitUtils.setupEnchantments();
         final String id = "test";
-        final NamespacedKey key = new NamespacedKey("yagl", id);
+        final org.bukkit.NamespacedKey key = new org.bukkit.NamespacedKey("yagl", id);
 
         BukkitRecipeItem recipeItem = BukkitItem.newRecipeItem(Material.STONE);
         recipeItem.setRecipes(new ShapelessRecipe(id).addIngredient(Item.newItem("STONE")));
