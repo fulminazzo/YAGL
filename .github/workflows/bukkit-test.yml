@@ -1,3 +1,4 @@
+# A general workflow to execute tests targeted for the specified Bukkit version
 name: "Minecraft general test"
 
 on:
