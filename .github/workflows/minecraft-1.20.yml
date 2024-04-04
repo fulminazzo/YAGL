@@ -1,0 +1,13 @@
+name: MC 1.20
+
+on:
+  push:
+    #TODO: remove feat-item
+    branches: [ "dev", "main", "master", "feat-item", "feat-multi-tests" ]
+
+jobs:
+  test:
+    uses: Fulminazzo/YAGL/.github/workflows/minecraft-test.yml@feat-multi-tests
+    with:
+      java-version: 17
+      minecraft-version: "1.20.4-R0.1-SNAPSHOT"
