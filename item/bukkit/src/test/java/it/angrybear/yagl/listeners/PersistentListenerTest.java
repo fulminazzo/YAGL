@@ -48,7 +48,7 @@ class PersistentListenerTest {
     static void setAllUp() {
         BukkitUtils.setupServer();
         maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
-        disappear = new PersistentItem(Material.GOLDEN_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
+        disappear = new PersistentItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
         listener = new PersistentListener();
     }
 
@@ -121,9 +121,9 @@ class PersistentListenerTest {
         InventoryView view = new MockInventoryView(player.getInventory(), 9);
 
         return new Cancellable[]{
-                new PlayerItemConsumeEvent(player, itemStack, EquipmentSlot.OFF_HAND),
+                new PlayerItemConsumeEvent(player, itemStack),
                 new PlayerItemDamageEvent(player, itemStack, 10),
-                new BlockPlaceEvent(block, mock(BlockState.class), block, itemStack, player, true, EquipmentSlot.OFF_HAND),
+                new BlockPlaceEvent(block, mock(BlockState.class), block, itemStack, player, true),
                 new PlayerDropItemEvent(player, item),
                 new InventoryDragEvent(view, itemStack, new ItemStack(Material.AIR), false, new HashMap<>()),
                 new InventoryDragEvent(view, null, itemStack, false, new HashMap<>()),
@@ -194,8 +194,7 @@ class PersistentListenerTest {
         maintain.onInteract((i, p, a) -> value.set(true));
 
         Player player = getPlayer();
-        PlayerInteractEvent event = new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, maintain.create(),
-                null, BlockFace.DOWN, null);
+        PlayerInteractEvent event = new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, maintain.create(), null, BlockFace.DOWN);
         listener.on(event);
         assertTrue(value.get());
 
