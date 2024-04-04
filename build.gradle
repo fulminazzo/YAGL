@@ -9,7 +9,8 @@ plugins {
 group = 'it.angrybear'
 version = '4.0'
 
-def TEST_MODULE = "testing"
+final def TEST_MODULE = "testing"
+final def VERSION_VARIABLE = "MINECRAFT_VERSION"
 
 allprojects {
     apply plugin: 'java-library'
@@ -22,6 +23,10 @@ allprojects {
     version = "${rootProject.version}"
     description = 'Yet Another GUI Library to create and manage custom items and user interfaces in Minecraft.'
     final String author = 'Fulminazzo'
+
+    def latest_version = libs.versions.spigot.latest.get()
+    def legacy_version = libs.versions.spigot.legacy.get()
+    def obsolete_version = libs.versions.spigot.obsolete.get()
 
     this.ext.getFileName = { name ->
         if (name == null) throw new IllegalArgumentException("getFileName(): Name cannot be null!")
@@ -48,7 +53,7 @@ allprojects {
     }
 
     this.ext.getMinecraftVersion = {
-        def minecraftVersion = System.getenv("MINECRAFT_VERSION")
+        def minecraftVersion = System.getenv(VERSION_VARIABLE)
         if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
         return minecraftVersion
     }
@@ -81,16 +86,14 @@ allprojects {
 
         def projectName = project.name
 
-        def minecraftVersion = getMinecraftVersion()
-
         if (projectName.contains("serializer")) api(libs.yamlparser)
 
         if (projectName.contains("bukkit")) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
-            testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
+            testRuntimeOnly "org.spigotmc:spigot-api:${latest_version}"
 
-            String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf(".", 2))
+            String numVersion = latest_version.substring(2, latest_version.indexOf(".", 2))
             def index = numVersion.indexOf("-")
             if (index != -1) numVersion = numVersion.substring(0, index)
             if (Double.valueOf(numVersion) >= 13) testImplementation libs.jbukkit
@@ -99,14 +102,14 @@ allprojects {
 
         if (projectName.contains("legacy")) {
             testCompileOnly libs.spigot.legacy
-            testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
+            testRuntimeOnly "org.spigotmc:spigot-api:${legacy_version}"
 
             testImplementation libs.jbukkit.legacy
         }
 
         if (projectName.contains("obsolete")) {
             testCompileOnly libs.spigot.obsolete
-            testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
+            testRuntimeOnly "org.spigotmc:spigot-api:${obsolete_version}"
 
             testImplementation libs.jbukkit.legacy
         }
@@ -131,8 +134,26 @@ allprojects {
     if (project.name.equals(TEST_MODULE)) return
 
     test {
+        def projectName = project.name
+
+        if (System.getenv(VERSION_VARIABLE) == null) {
+            if (projectName.contains("bukkit")) environment VERSION_VARIABLE, latest_version
+            else if (projectName.contains("legacy")) environment VERSION_VARIABLE, legacy_version
+            else if (projectName.contains("obsolete")) environment VERSION_VARIABLE, obsolete_version
+        }
+
+        println "Testing ${projectName} with minecraft version ${System.getenv(VERSION_VARIABLE)}"
         useJUnitPlatform()
-        finalizedBy jacocoTestReport
+    }
+
+    tasks.register("testBukkit") {
+        final def minecraftVersion = getMinecraftVersion()
+        println "Using Minecraft version ${minecraftVersion}"
+        latest_version = minecraftVersion
+        legacy_version = minecraftVersion
+        obsolete_version = minecraftVersion
+
+        subprojects.findAll { it.path.contains("bukkit") }.each {dependsOn "${it.path}:test" }
     }
 
     processResources {
@@ -203,11 +224,6 @@ allprojects {
             }
         }
     }
-}
-
-tasks.register("testBukkit") {
-    println "Using Minecraft version ${getMinecraftVersion()}"
-    subprojects.findAll { it.path.contains("bukkit") }.each {dependsOn "${it.path}:test" }
 }
 
 testCodeCoverageReport {
