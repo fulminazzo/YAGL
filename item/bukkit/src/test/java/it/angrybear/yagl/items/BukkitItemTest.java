@@ -49,7 +49,7 @@ class BukkitItemTest {
         ItemMeta meta = expected.getItemMeta();
         meta.setDisplayName("Hello world");
         meta.setLore(Arrays.asList("An interesting lore..."));
-        meta.addEnchant(Enchantment.CHANNELING, 3, true);
+        meta.addEnchant(Enchantment.ARROW_FIRE, 3, true);
         expected.setItemMeta(meta);
 
         BukkitItem actual = BukkitItem.newItem(Material.STONE).setAmount(3)
@@ -64,11 +64,11 @@ class BukkitItemTest {
         BukkitUtils.setupServer();
         ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = expected.getItemMeta();
-        ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.CHANNELING, 1, true);
+        ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.ARROW_FIRE, 1, true);
         expected.setItemMeta(meta);
 
         ItemStack actual = BukkitItem.newItem(Material.ENCHANTED_BOOK)
-                .create(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.CHANNELING, 1, true));
+                .create(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.ARROW_FIRE, 1, true));
 
         assertEquals(expected, actual);
     }
