@@ -90,7 +90,11 @@ allprojects {
             testCompileOnly libs.spigot.latest
             testRuntimeOnly "org.spigotmc:spigot-api:${minecraftVersion}"
 
-            testImplementation libs.jbukkit
+            String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf(".", 2))
+            def index = numVersion.indexOf("-")
+            if (index != -1) numVersion = numVersion.substring(0, index)
+            if (Double.valueOf(numVersion) >= 13) testImplementation libs.jbukkit
+            else testImplementation libs.jbukkit.legacy
         }
 
         if (projectName.contains("legacy")) {
