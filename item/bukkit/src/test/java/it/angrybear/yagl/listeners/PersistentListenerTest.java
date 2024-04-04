@@ -6,7 +6,6 @@ import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
-import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,7 +22,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,9 +69,7 @@ class PersistentListenerTest {
         Player player = getPlayer();
         player.getInventory().setItem(0, maintain.create());
 
-        InventoryView view = new MockInventoryView(player.getInventory(), inventory);
-        when(player.getOpenInventory()).thenReturn(view);
-        return view;
+        return getInventoryView(player, inventory);
     }
 
     private static InventoryClickEvent[] inventoryClickEvents() {
@@ -118,7 +119,7 @@ class PersistentListenerTest {
         Item item = mock(Item.class);
         when(item.getItemStack()).thenReturn(itemStack);
 
-        InventoryView view = new MockInventoryView(player.getInventory(), 9);
+        InventoryView view = getInventoryView(player, 9);
 
         return new Cancellable[]{
                 new PlayerItemConsumeEvent(player, itemStack),
@@ -154,7 +155,7 @@ class PersistentListenerTest {
         assertNull(PersistentItem.getPersistentItem(itemStack));
 
         int size = 9;
-        InventoryView view = new MockInventoryView(player.getInventory(), size);
+        InventoryView view = getInventoryView(player, size);
         for (int i = 0; i < size; i++) view.setItem(i, persistentItem);
         for (int i = 0; i < view.getBottomInventory().getSize(); i++) view.setItem(i + size, persistentItem);
 
@@ -213,5 +214,20 @@ class PersistentListenerTest {
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getItemOnCursor()).thenAnswer(i -> cursor);
         return player;
+    }
+
+    private static InventoryView getInventoryView(Player player, int size) {
+        return getInventoryView(player, new MockInventory(size));
+    }
+
+    private static InventoryView getInventoryView(Player player, Inventory inventory) {
+        InventoryView view = mock(InventoryView.class);
+        PlayerInventory playerInventory = player.getInventory();
+        when(view.getBottomInventory()).thenAnswer(a -> playerInventory);
+        when(view.getTopInventory()).thenReturn(inventory);
+        when(player.getOpenInventory()).thenReturn(view);
+        when(view.getPlayer()).thenReturn(player);
+        when(view.getItem(any(int.class))).thenCallRealMethod();
+        return view;
     }
 }
