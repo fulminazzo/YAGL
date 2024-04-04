@@ -46,7 +46,7 @@ allprojects {
             groupId = "." + groupId.substring(0, groupId.length() - 1)
         return "${rootProject.group}${groupId}"
     }
-    
+
     this.ext.getMinecraftVersion = {
         def minecraftVersion = System.getProperty("minecraft-version")
         if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
@@ -202,6 +202,7 @@ allprojects {
 }
 
 tasks.register("testBukkit") {
+    println "Using Minecraft version ${getMinecraftVersion()}"
     subprojects.findAll { it.path.contains("bukkit") }.each {dependsOn "${it.path}:test" }
 }
 
