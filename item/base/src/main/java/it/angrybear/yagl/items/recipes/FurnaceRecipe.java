@@ -1,6 +1,8 @@
 package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.wrappers.Range;
+import it.angrybear.yagl.wrappers.Wrapper;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +17,9 @@ import java.util.List;
 public class FurnaceRecipe extends RecipeImpl {
     @Getter(AccessLevel.NONE)
     private Item ingredient;
+    @Range(min = 0)
     private float experience;
+    @Range(min = 0)
     private int cookingTime;
 
     private FurnaceRecipe() {
@@ -49,7 +53,7 @@ public class FurnaceRecipe extends RecipeImpl {
      * @return this recipe
      */
     public @NotNull FurnaceRecipe setExperience(final float experience) {
-        this.experience = experience;
+        this.experience = Wrapper.check(this, experience);
         return this;
     }
 
@@ -60,7 +64,7 @@ public class FurnaceRecipe extends RecipeImpl {
      * @return this recipe
      */
     public @NotNull FurnaceRecipe setCookingTime(final int cookingTime) {
-        this.cookingTime = cookingTime;
+        this.cookingTime = Wrapper.check(this, cookingTime);
         return this;
     }
 
