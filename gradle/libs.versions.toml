@@ -15,7 +15,7 @@ annotations = "24.1.0"
 
 junit = "5.9.1"
 mockito = "4.11.0"
-jbukkit = "1.0"
+jbukkit = "2.0"
 
 [libraries]
 fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }
