@@ -180,6 +180,10 @@ allprojects {
     }
 }
 
+tasks.register("testBukkit") {
+    subprojects.findAll { it.path.contains("bukkit") }.each {dependsOn "${it.path}:test" }
+}
+
 testCodeCoverageReport {
     dependsOn test
     reports {
