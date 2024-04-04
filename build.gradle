@@ -46,6 +46,12 @@ allprojects {
             groupId = "." + groupId.substring(0, groupId.length() - 1)
         return "${rootProject.group}${groupId}"
     }
+    
+    this.ext.getMinecraftVersion = {
+        def minecraftVersion = System.getProperty("minecraft-version")
+        if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
+        return minecraftVersion
+    }
 
     repositories {
         mavenCentral()
@@ -75,8 +81,7 @@ allprojects {
 
         def projectName = project.name
 
-        def minecraftVersion = System.getProperty("minecraft-version")
-        if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
+        def minecraftVersion = getMinecraftVersion()
 
         if (projectName.contains("serializer")) api(libs.yamlparser)
 
