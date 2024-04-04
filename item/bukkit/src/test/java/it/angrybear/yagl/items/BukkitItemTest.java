@@ -54,7 +54,7 @@ class BukkitItemTest {
 
         BukkitItem actual = BukkitItem.newItem(Material.STONE).setAmount(3)
                 .setDisplayName("Hello world").addLore("An interesting lore...")
-                .addEnchantment("channeling", 3);
+                .addEnchantment("flame", 3);
 
         assertTrue(actual.isSimilar(expected));
     }
