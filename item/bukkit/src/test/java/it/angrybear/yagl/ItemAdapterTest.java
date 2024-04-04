@@ -27,12 +27,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@After1_(13)
 class ItemAdapterTest extends BukkitUtils {
 
     @BeforeEach
     @Override
-    public void setUp() {
+    protected void setUp() {
         super.setUp();
         setupServer();
     }
@@ -54,11 +53,14 @@ class ItemAdapterTest extends BukkitUtils {
 
     @Test
     void testNullFieldsItemConversion() {
+        check();
         ItemStack itemStack = new ItemStack(Material.STONE);
         ItemMeta meta = new MockItemMeta();
         meta.setDisplayName(null);
         meta.setLore(null);
-        meta.setCustomModelData(-1);
+        try {
+            meta.setCustomModelData(-1);
+        } catch (NoSuchMethodError e) {}
         itemStack.setItemMeta(meta);
         assertEquals(BukkitItem.newItem(Material.STONE), ItemAdapter.itemStackToItem(itemStack));
     }
@@ -108,7 +110,9 @@ class ItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @After1_(13)
     void testShapedRecipeConversion() {
+        check();
         org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE));
         expected.shape("ABC", "DEF");
@@ -136,7 +140,9 @@ class ItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @After1_(13)
     void testShapelessRecipeConversion() {
+        check();
         org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE));
         expected.addIngredient(new org.bukkit.inventory.RecipeChoice.ExactChoice(new ItemStack(Material.GRASS)));
@@ -152,7 +158,9 @@ class ItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @After1_(13)
     void testFurnaceRecipeConversion() {
+        check();
         org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
                 new ItemStack(Material.STONE), Material.COAL, 10, 20);
         new Refl<>(expected).setFieldObject("ingredient", new org.bukkit.inventory.RecipeChoice.ExactChoice(new ItemStack(Material.COAL)));
@@ -169,7 +177,9 @@ class ItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @After1_(13)
     void testResizeRecipe() {
+        check();
         final String id = "test";
         final Material craftMaterial = Material.REDSTONE;
         final BukkitItem returnItem = BukkitItem.newItem(Material.REDSTONE_BLOCK);
