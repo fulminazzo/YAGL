@@ -10,6 +10,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +39,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class WrappersAdapterTest {
+@After1_(13)
+class WrappersAdapterTest extends BukkitUtils {
+
+    @BeforeEach
+    @Override
+    protected void setUp() {
+        super.setUp();
+    }
 
     private static Particle[] getTestLegacyParticles() {
         List<Particle> particles = new ArrayList<>();
