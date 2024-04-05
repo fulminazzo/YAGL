@@ -2,7 +2,7 @@ package it.angrybear.yagl.listeners;
 
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
-import it.angrybear.yagl.persistent.DeathAction;
+import it.angrybear.yagl.items.DeathAction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;

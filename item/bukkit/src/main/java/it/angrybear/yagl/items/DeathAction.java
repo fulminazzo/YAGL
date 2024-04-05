@@ -1,6 +1,4 @@
-package it.angrybear.yagl.persistent;
-
-import it.angrybear.yagl.items.PersistentItem;
+package it.angrybear.yagl.items;
 
 /**
  * Used by {@link PersistentItem} when the player dies.

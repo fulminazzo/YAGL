@@ -2,7 +2,7 @@ package it.angrybear.yagl.listeners;
 
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
-import it.angrybear.yagl.persistent.DeathAction;
+import it.angrybear.yagl.items.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;

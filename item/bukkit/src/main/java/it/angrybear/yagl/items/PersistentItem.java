@@ -4,7 +4,6 @@ import it.angrybear.yagl.actions.ClickItemAction;
 import it.angrybear.yagl.actions.InteractItemAction;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.listeners.PersistentListener;
-import it.angrybear.yagl.persistent.DeathAction;
 import it.angrybear.yagl.wrappers.Enchantment;
 import lombok.AccessLevel;
 import lombok.Getter;
