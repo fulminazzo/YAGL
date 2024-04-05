@@ -5,7 +5,7 @@ class JavaDocUtils {
     private static final def DOCS_DIR = "javadoc"
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
 
-    static def aggregateJavaDoc(String output) {
+    static def aggregateJavaDoc(String output, String... ignoreDirs) {
         def current = new File(System.getProperty("user.dir"))
         if (current.getName() == "buildSrc") current = current.getParentFile()
         def outputDir = new File(current, output)
@@ -14,10 +14,10 @@ class JavaDocUtils {
             throw new IllegalStateException("Could not delete previous directory ${output}")
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
-        aggregateJavaDocRec(current, outputDir)
+        aggregateJavaDocRec(current, outputDir, ignoreDirs)
     }
 
-    private static def aggregateJavaDocRec(File current, File output) {
+    private static def aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
         if (!current.isDirectory()) return
 
         def files = current.listFiles()
@@ -27,6 +27,8 @@ class JavaDocUtils {
         for (file in files) {
             def fileName = file.getName()
             for (dir in IGNORE_DIRS)
+                if (fileName == dir) continue main_loop
+            for (dir in ignoreDirs)
                 if (fileName == dir) continue main_loop
 
             if (file.isDirectory())
