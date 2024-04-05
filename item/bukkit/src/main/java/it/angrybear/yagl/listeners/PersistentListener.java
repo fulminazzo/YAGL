@@ -1,6 +1,6 @@
 package it.angrybear.yagl.listeners;
 
-import it.angrybear.yagl.items.MovablePersistentItem;
+import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
 import org.bukkit.entity.Player;
@@ -114,7 +114,8 @@ public class PersistentListener implements Listener {
 
         Consumer<PersistentItem> ifPresent = e -> {
             int rawSlot = event.getRawSlot();
-            if (!(e instanceof MovablePersistentItem) || !playerInventory.equals(clicked) || rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY))
+            if (e.getMobility() != Mobility.INTERNAL || !playerInventory.equals(clicked) ||
+                    rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY))
                 cancelled(event).accept(e);
         };
 

@@ -1,6 +1,6 @@
 package it.angrybear.yagl.listeners;
 
-import it.angrybear.yagl.items.MovablePersistentItem;
+import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
 import it.angrybear.yagl.persistent.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -96,7 +96,7 @@ class PersistentListenerTest {
 
     @Test
     void testMovableItem() {
-        MovablePersistentItem persistentItem = new MovablePersistentItem(Material.DIAMOND);
+        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND).setMobility(Mobility.INTERNAL);
         InventoryView view = setupInventoryClickEventView();
         int slot = view.getTopInventory().getSize();
         view.getBottomInventory().setItem(0, persistentItem.create());
