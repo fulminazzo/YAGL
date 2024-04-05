@@ -36,17 +36,19 @@ class JavaDocUtils {
         if (files.any { it.getName().contains(".html") } ) return
 
         for (resource in RESOURCES)
-            try (def input = JavaDocUtils.class.getResourceAsStream("/${resource}")
-                 def output = new FileOutputStream(new File(file, resource))
-            ) {
-                def bytes = new byte[65536]
-                int read
-                while ((read = input.read(bytes)) != -1) output.write(bytes, 0, read)
-            } catch (IOException e) {
-                throw new RuntimeException(e)
+            JavaDocUtils.class.getResourceAsStream("/${resource}").withReader { reader ->
+                new File(file, resource).withWriter { writer ->
+                    String line
+                    while ((line = reader.readLine()) != null) {
+                        writer.write(line
+                                .replace("%module_name%", name)
+                                .replace("%module_version%", version))
+                        writer.write('\n')
+                    }
+                }
             }
 
-        for (f in files) createModulesPage(f.getName(), f)
+        for (f in files) createModulesPage(f.getName(), version, f)
     }
 
     private static def aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
