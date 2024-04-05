@@ -2,7 +2,6 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'jacoco-report-aggregation'
-    id 'com.github.johnrengelman.shadow' version libs.versions.shadow
     id 'io.freefair.lombok' version libs.versions.delombok
 }
 
@@ -16,25 +15,15 @@ allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'jacoco-report-aggregation'
-    apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'io.freefair.lombok'
 
     group = "${rootProject.group}"
     version = "${rootProject.version}"
     description = 'Yet Another GUI Library to create and manage custom items and user interfaces in Minecraft.'
-    final String author = 'Fulminazzo'
 
     def latest_version = libs.versions.spigot.latest.get()
     def legacy_version = libs.versions.spigot.legacy.get()
     def obsolete_version = libs.versions.spigot.obsolete.get()
-
-    this.ext.getFileName = { name ->
-        if (name == null) throw new IllegalArgumentException("getFileName(): Name cannot be null!")
-        String fileName = name
-        final String projectName = rootProject.name
-        if (projectName != fileName) fileName = "${projectName}-" + fileName
-        return fileName + "-${rootProject.version}"
-    }
 
     this.ext.getParentFromProject = { project ->
         return new HashMap<>(project.getProperties()).get("parent")
@@ -157,25 +146,6 @@ allprojects {
         subprojects.findAll { it.path.contains("bukkit") }.each {dependsOn "${it.path}:test" }
     }
 
-    processResources {
-        def props = [
-                version: rootProject.version, name: rootProject.name,
-                description: rootProject.description, author: author,
-                group: rootProject.group, module: project.name
-        ]
-        inputs.properties props
-        filteringCharset 'UTF-8'
-        expand props
-    }
-
-    shadowJar {
-        exclude("META-INF/**") // Removes all Maven META-INF/ files.
-        archiveFileName = "${getFileName(project.name)}.jar"
-        manifest {
-            attributes ("Manifest-Version": "${rootProject.version}")
-        }
-    }
-
     tasks.register('sourcesJar', Jar) {
         from sourceSets.main.delombokTask
         archiveClassifier = 'sources'
@@ -184,19 +154,6 @@ allprojects {
     tasks.register('javadocJar', Jar) {
         from javadoc
         archiveClassifier = 'javadoc'
-    }
-
-    jar {
-        enabled = true // Required for sub projects depending on sub projects
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        archiveFileName = "${getFileName(project.name)}-original.jar"
-
-        dependsOn(processResources)
-        dependsOn(shadowJar)
-
-        manifest {
-            attributes ("Manifest-Version": "${rootProject.version}")
-        }
     }
 
     publishing {
