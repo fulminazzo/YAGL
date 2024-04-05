@@ -8,6 +8,7 @@ class JavaDocUtils {
     private static final def DOCS_DIR = "javadoc"
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
     private static final def RESOURCES = [ "index.html", "javadoc-stylesheet.css" ]
+    private static final def MODULE_PLACEHOLDER = "%modules%"
     private static final def MODULE_FORMAT_FILE = "module-format.html"
 
     /**
@@ -40,9 +41,21 @@ class JavaDocUtils {
                 new File(file, resource).withWriter { writer ->
                     String line
                     while ((line = reader.readLine()) != null) {
-                        writer.write(line
+                        line = line
                                 .replace("%module_name%", name)
-                                .replace("%module_version%", version))
+                                .replace("%module_version%", version)
+                        if (line.contains(MODULE_PLACEHOLDER)) {
+                            String output = ""
+                            for (f in files)
+                                JavaDocUtils.class.getResourceAsStream("/${MODULE_FORMAT_FILE}").withReader { r -> {
+                                    String l
+                                    while ((l = r.readLine()) != null)
+                                        output += l.replace("%submodule_name%", f.getName())
+                                                .replace("%submodule_path%", "${f.getName()}${File.separator}index.html")
+                                }}
+                            line = line.replace(MODULE_PLACEHOLDER, output)
+                        }
+                        writer.write(line)
                         writer.write('\n')
                     }
                 }
