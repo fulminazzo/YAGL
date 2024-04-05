@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.apache.commons.io.FileUtils
+
 class JavaDocUtils {
     private static final def DOCS_DIR = "javadoc"
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
@@ -27,9 +29,22 @@ class JavaDocUtils {
 
             if (file.isDirectory())
                 if (file.getName() == DOCS_DIR) {
-                    //TODO: save in output
+                    def dest = getDestinationFromModule(output, file)
+                    FileUtils.copyDirectory(file, new File(output, dest))
                 } else aggregateJavaDocRec(file, output)
         }
+    }
+
+    private static def getDestinationFromModule(File output, File file) {
+        def parent = new File(commonPath(output, file))
+        def module = new File(file, "")
+        while (module.getParentFile().getParentFile() != parent)
+            module = module.getParentFile()
+        def moduleName = module.getName()
+
+        def dst = "${module.getParentFile().getName()}"
+        if (moduleName != "build") dst += "${File.separator}${module.getName()}"
+        return dst
     }
 
     static def commonPath(File file1, File file2) {
