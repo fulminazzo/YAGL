@@ -7,6 +7,8 @@ import java.nio.file.StandardCopyOption
 class JavaDocUtils {
     private static final def DOCS_DIR = "javadoc"
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
+    private static final def RESOURCES = [ "index.html", "javadoc-stylesheet.css" ]
+    private static final def MODULE_FORMAT_FILE = "module-format.html"
 
     /**
      * Aggregates the javadoc of all the root and subprojects into a single directory
@@ -14,7 +16,7 @@ class JavaDocUtils {
      * @param output the output directory
      * @param ignoreDirs the directories (modules) to be ignore
      */
-    static def aggregateJavaDoc(String output, String... ignoreDirs) {
+    static def aggregateJavaDoc(String output, String name, String version, String... ignoreDirs) {
         def current = new File(System.getProperty("user.dir"))
         if (current.getName() == "buildSrc") current = current.getParentFile()
         def outputDir = new File(current, output)
@@ -24,6 +26,27 @@ class JavaDocUtils {
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
         aggregateJavaDocRec(current, outputDir, ignoreDirs)
+        createModulesPage(name, version, outputDir)
+    }
+
+    private static def createModulesPage(String name, String version, File file) {
+        if (!file.isDirectory()) return
+        def files = file.listFiles()
+        if (files == null) return
+        if (files.any { it.getName().contains(".html") } ) return
+
+        for (resource in RESOURCES)
+            try (def input = JavaDocUtils.class.getResourceAsStream("/${resource}")
+                 def output = new FileOutputStream(new File(file, resource))
+            ) {
+                def bytes = new byte[65536]
+                int read
+                while ((read = input.read(bytes)) != -1) output.write(bytes, 0, read)
+            } catch (IOException e) {
+                throw new RuntimeException(e)
+            }
+
+        for (f in files) createModulesPage(f.getName(), f)
     }
 
     private static def aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
