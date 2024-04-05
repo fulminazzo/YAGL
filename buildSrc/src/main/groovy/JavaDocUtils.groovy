@@ -36,32 +36,38 @@ class JavaDocUtils {
         if (files == null) return
         if (files.any { it.getName().contains(".html") } ) return
 
-        for (resource in RESOURCES)
-            JavaDocUtils.class.getResourceAsStream("/${resource}").withReader { reader ->
-                new File(file, resource).withWriter { writer ->
-                    String line
-                    while ((line = reader.readLine()) != null) {
-                        line = line
-                                .replace("%module_name%", name)
-                                .replace("%module_version%", version)
-                        if (line.contains(MODULE_PLACEHOLDER)) {
-                            String output = ""
-                            for (f in files)
-                                JavaDocUtils.class.getResourceAsStream("/${MODULE_FORMAT_FILE}").withReader { r -> {
-                                    String l
-                                    while ((l = r.readLine()) != null)
-                                        output += l.replace("%submodule_name%", f.getName())
-                                                .replace("%submodule_path%", "${f.getName()}${File.separator}index.html")
-                                }}
-                            line = line.replace(MODULE_PLACEHOLDER, output)
-                        }
-                        writer.write(line)
-                        writer.write('\n')
-                    }
+        RESOURCES.each { parseResource(file, it, name, version, files) }
+
+        files.each { createModulesPage(it.getName(), version, it) }
+    }
+
+    private static def parseResource(File parentFile, String resource, String name, String version, File[] files) {
+        JavaDocUtils.class.getResourceAsStream("/${resource}").withReader { reader ->
+            new File(parentFile, resource).withWriter { writer ->
+                String line
+                while ((line = reader.readLine()) != null) {
+                    line = line
+                            .replace("%module_name%", name)
+                            .replace("%module_version%", version)
+                    if (line.contains(MODULE_PLACEHOLDER))
+                        line = parseModulesPlaceholder(line, files)
+                    writer.write(line)
+                    writer.write('\n')
                 }
             }
+        }
+    }
 
-        for (f in files) createModulesPage(f.getName(), version, f)
+    private static def parseModulesPlaceholder(String line, File[] files) {
+        String output = ""
+        for (f in files)
+            JavaDocUtils.class.getResourceAsStream("/${MODULE_FORMAT_FILE}").withReader { r -> {
+                String l
+                while ((l = r.readLine()) != null)
+                    output += l.replace("%submodule_name%", f.getName())
+                            .replace("%submodule_path%", "${f.getName()}${File.separator}index.html")
+            }}
+        return line.replace(MODULE_PLACEHOLDER, output)
     }
 
     private static def aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
