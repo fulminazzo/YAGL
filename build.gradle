@@ -184,6 +184,10 @@ allprojects {
     }
 }
 
+tasks.register("aggregateJavaDoc") {
+    JavaDocUtils.aggregateJavaDoc("html")
+}
+
 testCodeCoverageReport {
     dependsOn test
     reports {
