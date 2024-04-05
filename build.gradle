@@ -142,7 +142,8 @@ allprojects {
             else if (projectName.contains("obsolete")) environment VERSION_VARIABLE, obsolete_version
         }
 
-        println "Testing ${projectName} with Minecraft ${System.getenv(VERSION_VARIABLE)}"
+        def env = System.getenv(VERSION_VARIABLE)
+        if (env != null) println "Testing ${projectName} with Minecraft ${env}"
         useJUnitPlatform()
     }
 
