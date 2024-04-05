@@ -1,10 +1,19 @@
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
+/**
+ * A collection of utilities to aggregate Javadocs
+ */
 class JavaDocUtils {
     private static final def DOCS_DIR = "javadoc"
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
 
+    /**
+     * Aggregates the javadoc of all the root and subprojects into a single directory
+     *
+     * @param output the output directory
+     * @param ignoreDirs the directories (modules) to be ignore
+     */
     static def aggregateJavaDoc(String output, String... ignoreDirs) {
         def current = new File(System.getProperty("user.dir"))
         if (current.getName() == "buildSrc") current = current.getParentFile()
@@ -39,6 +48,12 @@ class JavaDocUtils {
         }
     }
 
+    /**
+     * Copies the given file.
+     *
+     * @param src the source (copied) file
+     * @param dst the destination (copy) file
+     */
     static def copyDirectory(File src, File dst) {
         if (src.isDirectory()) {
             def files = src.listFiles()
@@ -61,6 +76,13 @@ class JavaDocUtils {
         return dst
     }
 
+    /**
+     * Finds the most common path between the two given files
+     *
+     * @param file1 the first file
+     * @param file2 the second file
+     * @return the common path
+     */
     static def commonPath(File file1, File file2) {
         def path1 = file1.getAbsolutePath()
         def path2 = file2.getAbsolutePath()
