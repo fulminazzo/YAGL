@@ -35,6 +35,7 @@ public class PersistentItem extends BukkitItemImpl {
     private @Nullable ClickItemAction clickAction;
     @Getter(AccessLevel.NONE)
     private @Nullable InteractItemAction interactAction;
+    private Mobility mobility;
 
     /**
      * Instantiates a new Persistent item.
@@ -80,6 +81,7 @@ public class PersistentItem extends BukkitItemImpl {
     public PersistentItem(final @Nullable String material, final int amount) {
         super(material, amount);
         this.deathAction = DeathAction.MAINTAIN;
+        this.mobility = Mobility.STATIC;
         PERSISTENT_ITEMS.add(this);
     }
 
@@ -97,6 +99,17 @@ public class PersistentItem extends BukkitItemImpl {
      */
     public @NotNull PersistentItem setDeathAction(final @NotNull DeathAction deathAction) {
         this.deathAction = deathAction;
+        return this;
+    }
+
+    /**
+     * Sets mobility.
+     *
+     * @param mobility the mobility
+     * @return this persistent item
+     */
+    public PersistentItem setMobility(Mobility mobility) {
+        this.mobility = mobility;
         return this;
     }
 
