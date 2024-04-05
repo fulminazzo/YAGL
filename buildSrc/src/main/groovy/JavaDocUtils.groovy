@@ -6,7 +6,8 @@ class JavaDocUtils {
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
 
     static def aggregateJavaDoc(String output) {
-        def current = new File(System.getProperty("user.dir")).getParentFile()
+        def current = new File(System.getProperty("user.dir"))
+        if (current.getName() == "buildSrc") current = current.getParentFile()
         def outputDir = new File(current, output)
 
         if (outputDir.exists() && !outputDir.deleteDir())
