@@ -1,4 +1,5 @@
-import org.gradle.internal.impldep.org.apache.commons.io.FileUtils
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 class JavaDocUtils {
     private static final def DOCS_DIR = "javadoc"
@@ -30,9 +31,19 @@ class JavaDocUtils {
             if (file.isDirectory())
                 if (file.getName() == DOCS_DIR) {
                     def dest = getDestinationFromModule(output, file)
-                    FileUtils.copyDirectory(file, new File(output, dest))
+                    copyDirectory(file, new File(output, dest))
                 } else aggregateJavaDocRec(file, output)
         }
+    }
+
+    static def copyDirectory(File src, File dst) {
+        if (src.isDirectory()) {
+            def files = src.listFiles()
+            dst.mkdirs()
+            if (files != null)
+                for (file in files)
+                    copyDirectory(new File(src, file.getName()), new File(dst, file.getName()))
+        } else Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
     private static def getDestinationFromModule(File output, File file) {
