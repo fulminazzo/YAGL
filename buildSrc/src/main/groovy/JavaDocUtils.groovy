@@ -3,8 +3,8 @@ class JavaDocUtils {
     private static final def IGNORE_DIRS = [ "main", "java", "groovy", "src", "buildSrc", "resources" ]
 
     static def aggregateJavaDoc(String output) {
-        def current = new File(System.getProperty("user.dir"))
-        def outputDir = new File(output)
+        def current = new File(System.getProperty("user.dir")).getParentFile()
+        def outputDir = new File(current, output)
 
         if (outputDir.exists() && !outputDir.deleteDir())
             throw new IllegalStateException("Could not delete previous directory ${output}")
