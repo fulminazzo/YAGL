@@ -141,4 +141,12 @@ class JavaDocUtils {
 
         return result
     }
+
+    private static def getResource(String name) {
+        while (name.startsWith("/")) name = name.substring(1)
+        def resource = JavaDocUtils.class.getResourceAsStream(name)
+        if (resource == null) resource = JavaDocUtils.class.getResourceAsStream("/" + name)
+        if (resource == null) throw new IllegalArgumentException("Could not find resource '${name}'")
+        return resource
+    }
 }
