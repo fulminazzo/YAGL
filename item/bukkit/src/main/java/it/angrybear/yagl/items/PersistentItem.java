@@ -159,19 +159,6 @@ public class PersistentItem extends BukkitItemImpl {
         return this;
     }
 
-    /**
-     * Tries to get the corresponding {@link PersistentItem} from the given {@link ItemStack}.
-     *
-     * @param itemStack the item stack
-     * @return this persistent item
-     */
-    public static @Nullable PersistentItem getPersistentItem(final @Nullable ItemStack itemStack) {
-        if (itemStack == null) return null;
-        for (final PersistentItem item : PERSISTENT_ITEMS)
-            if (item.isSimilar(itemStack)) return item;
-        return null;
-    }
-
     @Override
     public PersistentItem setMaterial(@NotNull Material material) {
         return (PersistentItem) super.setMaterial(material);
@@ -300,6 +287,19 @@ public class PersistentItem extends BukkitItemImpl {
     @Override
     public PersistentItem copy() {
         return super.copy(PersistentItem.class);
+    }
+
+    /**
+     * Tries to get the corresponding {@link PersistentItem} from the given {@link ItemStack}.
+     *
+     * @param itemStack the item stack
+     * @return this persistent item
+     */
+    public static @Nullable PersistentItem getPersistentItem(final @Nullable ItemStack itemStack) {
+        if (itemStack == null) return null;
+        for (final PersistentItem item : PERSISTENT_ITEMS)
+            if (item.isSimilar(itemStack)) return item;
+        return null;
     }
 
     /**
