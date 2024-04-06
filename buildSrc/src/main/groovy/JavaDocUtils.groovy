@@ -19,7 +19,7 @@ class JavaDocUtils {
      */
     static def aggregateJavaDoc(String output, String name, String version, String... ignoreDirs) {
         def current = new File(System.getProperty("user.dir"))
-        if (current.getName() == "buildSrc") current = current.getParentFile()
+        if (current.name == "buildSrc") current = current.parentFile
         def outputDir = new File(current, output)
 
         if (outputDir.exists() && !outputDir.deleteDir())
@@ -31,16 +31,16 @@ class JavaDocUtils {
     }
 
     private static def aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
-        if (!current.isDirectory()) return
+        if (!current.directory) return
 
         def files = current.listFiles()
         if (files == null) return
 
-        files.findAll { f -> f.isDirectory() }
-                .findAll { f -> !IGNORE_DIRS.any { d -> d == f.getName() } }
-                .findAll { f -> !ignoreDirs.any { d -> d == f.getName() } }
+        files.findAll { f -> f.directory }
+                .findAll { f -> !IGNORE_DIRS.any { d -> d == f.name } }
+                .findAll { f -> !ignoreDirs.any { d -> d == f.name } }
                 .each { f -> {
-                    if (f.getName() == DOCS_DIR) {
+                    if (f.name == DOCS_DIR) {
                         def dest = getDestinationFromModule(output, f)
                         copyDirectory(f, new File(output, dest))
                     } else aggregateJavaDocRec(f, output)
@@ -48,14 +48,14 @@ class JavaDocUtils {
     }
 
     private static def createModulesPage(String name, String version, File file) {
-        if (!file.isDirectory()) return
+        if (!file.directory) return
         def files = file.listFiles()
         if (files == null) return
-        if (files.any { it.getName().contains(".html") } ) return
+        if (files.any { it.name.contains(".html") } ) return
 
         RESOURCES.each { parseResource(file, it, name, version, files) }
 
-        files.each { createModulesPage(it.getName(), version, it) }
+        files.each { createModulesPage(it.name, version, it) }
     }
 
     private static def parseResource(File parentFile, String resource, String name, String version, File[] files) {
@@ -76,7 +76,7 @@ class JavaDocUtils {
 
     private static def parseModulesPlaceholder(String line, File[] files) {
         String output = ""
-        files.collect { it.getName() } .each { n -> getResource("/${MODULE_FORMAT_FILE}").withReader { r ->
+        files.collect { it.name } .each { n -> getResource("/${MODULE_FORMAT_FILE}").withReader { r ->
             String l
             while ((l = r.readLine()) != null)
                 output += l.replace("%submodule_name%", n)
@@ -92,23 +92,23 @@ class JavaDocUtils {
      * @param dst the destination (copy) file
      */
     static def copyDirectory(File src, File dst) {
-        if (src.isDirectory()) {
+        if (src.directory) {
             def files = src.listFiles()
             dst.mkdirs()
             if (files != null)
-                files.collect { it.getName() } .each { copyDirectory(new File(src, it), new File(dst, it)) }
+                files.collect { it.name } .each { copyDirectory(new File(src, it), new File(dst, it)) }
         } else Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
     private static def getDestinationFromModule(File output, File file) {
         def parent = new File(commonPath(output, file))
         def module = new File(file, "")
-        while (module.getParentFile().getParentFile() != parent)
-            module = module.getParentFile()
-        def moduleName = module.getName()
+        while (module.parentFile.parentFile != parent)
+            module = module.parentFile
+        def moduleName = module.name
 
-        def dst = "${module.getParentFile().getName()}"
-        if (moduleName != "build") dst += "${File.separator}${module.getName()}"
+        def dst = "${module.parentFile.name}"
+        if (moduleName != "build") dst += "${File.separator}${module.name}"
         return dst
     }
 
@@ -120,8 +120,8 @@ class JavaDocUtils {
      * @return the common path
      */
     static def commonPath(File file1, File file2) {
-        def path1 = file1.getAbsolutePath()
-        def path2 = file2.getAbsolutePath()
+        def path1 = file1.absolutePath
+        def path2 = file2.absolutePath
         def result = ""
 
         for (i in 0..Math.min(path1.length(), path2.length())) {
