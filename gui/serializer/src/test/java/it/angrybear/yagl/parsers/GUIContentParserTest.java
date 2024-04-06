@@ -16,7 +16,7 @@ class GUIContentParserTest {
 
     @Test
     void testSaveAndLoadItemGUIContent() throws IOException {
-        YAGLParser.addAllParsers();
+        GUIYAGLParser.addAllParsers();
         GUIContent expected = (GUIContent) new ItemGUIContent()
                 .setMaterial("STONE_SWORD").setAmount(1)
                 .setDurability(1337).setDisplayName("&8Destroyer")

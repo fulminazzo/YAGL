@@ -28,7 +28,7 @@ class GUIParserTest {
 
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
-        YAGLParser.addAllParsers();
+        GUIYAGLParser.addAllParsers();
         GUIContent expectedContent = new ItemGUIContent()
                 .setMaterial("STONE")
                 .onClickItem(new GUIItemCommand("command"))
@@ -65,7 +65,7 @@ class GUIParserTest {
     @Test
     void testSaveAndLoadResizableGUI() throws IOException {
         FileConfiguration.addParsers(new ContentsParser());
-        YAGLParser.addAllParsers();
+        GUIYAGLParser.addAllParsers();
         TypeGUI expected = (TypeGUI) GUI.newGUI(GUIType.BARREL)
                 .setContents(0, Item.newItem()
                         .setMaterial("STONE_SWORD").setAmount(1)
