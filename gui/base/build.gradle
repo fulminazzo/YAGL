@@ -1,0 +1,7 @@
+dependencies {
+    api(project(":gui"))
+    api(project(":item:item-bukkit"))
+
+    compileOnly libs.spigot
+    testImplementation libs.spigot
+}

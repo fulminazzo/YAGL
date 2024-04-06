@@ -30,11 +30,12 @@ project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsole
 include 'item:item-serializer'
 project(':item:item-serializer').projectDir = file('item/serializer')
 
-//include 'gui'
-//include 'gui:gui-bukkit'
-//project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
-//
-//include 'gui:gui-serializer'
-//project(':gui:gui-serializer').projectDir = file('gui/serializer')
+include 'gui'
+include 'gui:gui-base'
+project(':gui:gui-base').projectDir = file('gui/base')
+include 'gui:gui-bukkit'
+project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
+include 'gui:gui-serializer'
+project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
 include 'testing'
