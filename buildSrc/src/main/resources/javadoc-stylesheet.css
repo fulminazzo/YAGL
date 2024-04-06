@@ -6,8 +6,8 @@ Overall document style
 @import url('resources/fonts/dejavu.css');
 
 body {
-    background-color:#ffffff;
-    color:#353833;
+    background-color: #ffffff;
+    color: #353833;
     font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size:14px;
     margin:0;
@@ -15,26 +15,26 @@ body {
 
 a:link, a:visited {
     text-decoration:none;
-    color:#4A6782;
+    color: #4A6782;
 }
 
 a:hover, a:focus {
     text-decoration:none;
-    color:#bb7a2a;
+    color: #bb7a2a;
 }
 
 a:active {
     text-decoration:none;
-    color:#4A6782;
+    color: #4A6782;
 }
 
 a[name] {
-    color:#353833;
+    color: #353833;
 }
 
 a[name]:hover {
     text-decoration:none;
-    color:#353833;
+    color: #353833;
 }
 
 pre {
@@ -118,17 +118,17 @@ Document title and Copyright styles
 }
 
 .bar a, .bar a:link, .bar a:visited, .bar a:active {
-    color:#FFFFFF;
+    color: #FFFFFF;
     text-decoration:none;
 }
 
 .bar a:hover, .bar a:focus {
-    color:#bb7a2a;
+    color: #bb7a2a;
 }
 
 .tab {
-    background-color:#0066FF;
-    color:#ffffff;
+    background-color: #0066FF;
+    color: #ffffff;
     padding:8px;
     width:5em;
     font-weight:bold;
@@ -138,8 +138,8 @@ Document title and Copyright styles
 Navigation bar styles
 */
 .bar {
-    background-color:#4D7A97;
-    color:#FFFFFF;
+    background-color: #4D7A97;
+    color: #FFFFFF;
     padding:.8em .5em .4em .8em;
     height:auto;/*height:1.8em;*/
     font-size:11px;
@@ -147,8 +147,8 @@ Navigation bar styles
 }
 
 .top-nav {
-    background-color:#4D7A97;
-    color:#FFFFFF;
+    background-color: #4D7A97;
+    color: #FFFFFF;
     float:left;
     padding:0;
     width:100%;
@@ -161,8 +161,8 @@ Navigation bar styles
 
 .bottom-nav {
     margin-top:10px;
-    background-color:#4D7A97;
-    color:#FFFFFF;
+    background-color: #4D7A97;
+    color: #FFFFFF;
     float:left;
     padding:0;
     width:100%;
@@ -174,7 +174,7 @@ Navigation bar styles
 }
 
 .sub-nav {
-    background-color:#dee3e9;
+    background-color: #dee3e9;
     float:left;
     width:100%;
     overflow:hidden;
@@ -207,20 +207,20 @@ ul.subNavList li{
 }
 
 .top-nav a:link, .top-nav a:active, .top-nav a:visited, .bottom-nav a:link, .bottom-nav a:active, .bottom-nav a:visited {
-    color:#FFFFFF;
+    color: #FFFFFF;
     text-decoration:none;
     text-transform:uppercase;
 }
 
 .top-nav a:hover, .bottom-nav a:hover {
     text-decoration:none;
-    color:#bb7a2a;
+    color: #bb7a2a;
     text-transform:uppercase;
 }
 
 .nav-bar-cell-1-rev {
-    background-color:#F8981D;
-    color:#253441;
+    background-color: #F8981D;
+    color: #253441;
     margin: auto 5px;
 }
 
@@ -254,7 +254,7 @@ Page header and footer styles
 }
 
 .title {
-    color:#2c4557;
+    color: #2c4557;
     margin:10px 0;
 }
 
@@ -280,14 +280,14 @@ Page header and footer styles
 Heading styles
 */
 div.details ul.blockList ul.blockList ul.blockList li.blockList h4, div.details ul.blockList ul.blockList ul.blockListLast li.blockList h4 {
-    background-color:#dee3e9;
+    background-color: #dee3e9;
     border:1px solid #d0d9e0;
     margin:0 0 6px -8px;
     padding:7px 5px;
 }
 
 ul.blockList ul.blockList ul.blockList li.blockList h3 {
-    background-color:#dee3e9;
+    background-color: #dee3e9;
     border:1px solid #d0d9e0;
     margin:0 0 6px -8px;
     padding:7px 5px;
@@ -336,7 +336,7 @@ Page layout container styles
     font-size:12px;
     font-weight:bold;
     margin:10px 0 0 0;
-    color:#4E4E4E;
+    color: #4E4E4E;
 }
 
 .content-container .description dl dd, .content-container .details dl dd, .serializedFormContainer dl dd {
@@ -396,12 +396,12 @@ ul.blockList li.blockList, ul.blockListLast li.blockList {
 ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockList {
     padding:0px 20px 5px 10px;
     border:1px solid #ededed; 
-    background-color:#f8f8f8;
+    background-color: #f8f8f8;
 }
 
 ul.blockList ul.blockList ul.blockList li.blockList, ul.blockList ul.blockList ul.blockListLast li.blockList {
     padding:0 0 5px 8px;
-    background-color:#ffffff;
+    background-color: #ffffff;
     border:none;
 }
 
@@ -442,7 +442,7 @@ Table styles
     position:relative;
     text-align:left;
     background-repeat:no-repeat;
-    color:#253441;
+    color: #253441;
     font-weight:bold;
     clear:none;
     overflow:hidden;
@@ -461,7 +461,7 @@ Table styles
 .useSummary caption a:active, .constantsSummary caption a:active, .deprecatedSummary caption a:active,
 .overview-summary caption a:visited, .memberSummary caption a:visited, .typeSummary caption a:visited,
 .useSummary caption a:visited, .constantsSummary caption a:visited, .deprecatedSummary caption a:visited {
-    color:#FFFFFF;
+    color: #FFFFFF;
 }
 
 .overview-summary caption span, .memberSummary caption span, .typeSummary caption span,
@@ -473,7 +473,7 @@ Table styles
     padding-bottom:7px;
     display:inline-block;
     float:left;
-    background-color:#F8981D;
+    background-color: #F8981D;
     border: none;
     height:16px;
 }
@@ -486,7 +486,7 @@ Table styles
     margin-right:3px;
     display:inline-block;
     float:left;
-    background-color:#F8981D;
+    background-color: #F8981D;
     height:16px;
 }
 
@@ -498,7 +498,7 @@ Table styles
     margin-right:3px;
     display:inline-block;
     float:left;
-    background-color:#4D7A97;
+    background-color: #4D7A97;
     height:16px;
 }
 
@@ -517,7 +517,7 @@ Table styles
     width:5px;
     position:relative;
     float:left;
-    background-color:#F8981D;
+    background-color: #F8981D;
 }
 
 .memberSummary .activeTableTab .tabEnd {
@@ -526,7 +526,7 @@ Table styles
     margin-right:3px;
     position:relative; 
     float:left;
-    background-color:#F8981D;
+    background-color: #F8981D;
 }
 
 .memberSummary .tableTab .tabEnd {
@@ -534,7 +534,7 @@ Table styles
     width:5px;
     margin-right:3px;
     position:relative;
-    background-color:#4D7A97;
+    background-color: #4D7A97;
     float:left;
 
 }
@@ -587,15 +587,15 @@ td.colOne a:link, td.colOne a:active, td.colOne a:visited, td.colOne a:hover, td
 }
 
 .tableSubHeadingColor {
-    background-color:#EEEEFF;
+    background-color: #EEEEFF;
 }
 
 .alt-color {
-    background-color:#FFFFFF;
+    background-color: #FFFFFF;
 }
 
 .rowColor {
-    background-color:#EEEEEF;
+    background-color: #EEEEEF;
 }
 
 /*
@@ -649,7 +649,7 @@ h1.hidden {
 .block {
     display:block;
     margin:3px 10px 2px 0px;
-    color:#474747;
+    color: #474747;
 }
 
 .deprecatedLabel, .descfrmTypeLabel, .memberNameLabel, .memberNameLink,
