@@ -9,11 +9,11 @@ import java.nio.file.StandardCopyOption
 @CompileDynamic
 class JavaDocUtils {
 
-    private static final DOCS_DIR = 'javadoc'
-    private static final IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
-    private static final RESOURCES = [ 'index.html', 'javadoc-stylesheet.css' ]
-    private static final MODULE_PLACEHOLDER = '%modules%'
-    private static final MODULE_FORMAT_FILE = 'module-format.html'
+    private static final String DOCS_DIR = 'javadoc'
+    private static final String[] IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
+    private static final String[] RESOURCES = [ 'index.html', 'javadoc-stylesheet.css' ]
+    private static final String MODULE_PLACEHOLDER = '%modules%'
+    private static final String MODULE_FORMAT_FILE = 'module-format.html'
 
     /**
      * Aggregates the javadoc of all the root and subprojects into a single directory
