@@ -137,7 +137,7 @@ Navigation bar styles
     background-color: #4D7A97;
     color: #FFFFFF;
     padding: .8em .5em .4em .8em;
-    height: auto;/*height: 1.8em;*/
+    height: auto;
     font-size: 11px;
     margin: 0;
 }
@@ -233,7 +233,7 @@ Page header and footer styles
 .header, .footer {
     clear: both;
     margin: 0 20px;
-    padding: 5px 0 0 0;
+    padding: 5px 0 0;
 }
 
 .index-header {
