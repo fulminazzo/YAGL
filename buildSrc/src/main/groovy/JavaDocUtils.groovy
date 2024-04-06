@@ -34,61 +34,6 @@ class JavaDocUtils {
         createModulesPage(name, version, outputDir)
     }
 
-    private static aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
-        if (!current.directory) return
-
-        def files = current.listFiles()
-        if (files == null) return
-
-        files.findAll { f -> f.directory }
-                .findAll { f -> !IGNORE_DIRS.any { d -> d == f.name } }
-                .findAll { f -> !ignoreDirs.any { d -> d == f.name } }
-                .each { f -> {
-                    if (f.name == DOCS_DIR) {
-                        def dest = getDestinationFromModule(output, f)
-                        copyDirectory(f, new File(output, dest))
-                    } else aggregateJavaDocRec(f, output)
-                } }
-    }
-
-    private static createModulesPage(String name, String version, File file) {
-        if (!file.directory) return
-        def files = file.listFiles()
-        if (files == null) return
-        if (files.any { it.name.contains('.html') } ) return
-
-        RESOURCES.each { parseResource(file, it, name, version, files) }
-
-        files.each { createModulesPage(it.name, version, it) }
-    }
-
-    private static parseResource(File parentFile, String resource, String name, String version, File[] files) {
-        getResource("/${resource}").withReader { reader ->
-            new File(parentFile, resource).withWriter { writer ->
-                String line
-                while ((line = reader.readLine()) != null) {
-                    line = line.replace('%module_name%', name)
-                            .replace('%module_version%', version)
-                    if (line.contains(MODULE_PLACEHOLDER))
-                        line = parseModulesPlaceholder(line, files)
-                    writer.write(line)
-                    writer.write('\n')
-                }
-            }
-        }
-    }
-
-    private static parseModulesPlaceholder(String line, File[] files) {
-        String output = ''
-        files.collect { it.name } .each { n -> getResource("/${MODULE_FORMAT_FILE}").withReader { r ->
-            String l
-            while ((l = r.readLine()) != null)
-                output += l.replace('%submodule_name%', n)
-                        .replace('%submodule_path%', "${n}${File.separator}index.html")
-        } }
-        return line.replace(MODULE_PLACEHOLDER, output)
-    }
-
     /**
      * Copies the given file.
      *
@@ -100,20 +45,8 @@ class JavaDocUtils {
             def files = src.listFiles()
             dst.mkdirs()
             if (files != null)
-                files.collect { it.name } .each { copyDirectory(new File(src, it), new File(dst, it)) }
+                files*.name.each { copyDirectory(new File(src, it), new File(dst, it)) }
         } else Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
-    }
-
-    private static getDestinationFromModule(File output, File file) {
-        def parent = new File(commonPath(output, file))
-        def module = new File(file, '')
-        while (module.parentFile.parentFile != parent)
-            module = module.parentFile
-        def moduleName = module.name
-
-        def dst = "${module.parentFile.name}"
-        if (moduleName != 'build') dst += "${File.separator}${module.name}"
-        return dst
     }
 
     /**
@@ -138,12 +71,87 @@ class JavaDocUtils {
         return result
     }
 
-    private static getResource(String name) {
+    /**
+     * Gets the given resource.
+     *
+     * @param name the name
+     * @return the resource
+     */
+    static getResource(String name) {
         while (name.startsWith('/')) name = name.substring(1)
         def resource = JavaDocUtils.getResourceAsStream(name)
         if (resource == null) resource = JavaDocUtils.getResourceAsStream("/${name}")
         if (resource == null) throw new IllegalArgumentException("Could not find resource '${name}'")
         return resource
+    }
+
+    private static aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
+        if (!current.directory) return
+
+        def files = current.listFiles()
+        if (files == null) return
+
+        files.findAll { f -> f.directory }
+                .findAll { f -> !IGNORE_DIRS.any { d -> d == f.name } }
+                .findAll { f -> !ignoreDirs.any { d -> d == f.name } }
+                .each { f ->
+                    if (f.name == DOCS_DIR) {
+                        def dest = getDestinationFromModule(output, f)
+                        copyDirectory(f, new File(output, dest))
+                    } else aggregateJavaDocRec(f, output)
+                }
+    }
+
+    private static createModulesPage(String name, String version, File file) {
+        if (!file.directory) return
+        def files = file.listFiles()
+        if (files == null) return
+        if (files.any { it.name.contains('.html') }) return
+
+        RESOURCES.each { parseResource(file, it, name, version, files) }
+
+        files.each { createModulesPage(it.name, version, it) }
+    }
+
+    private static parseResource(File parentFile, String resource, String name, String version, File[] files) {
+        getResource("${resource}").withReader { reader ->
+            new File(parentFile, resource).withWriter { writer ->
+                String line
+                while ((line = reader.readLine()) != null) {
+                    line = line.replace('%module_name%', name)
+                            .replace('%module_version%', version)
+                    if (line.contains(MODULE_PLACEHOLDER))
+                        line = parseModulesPlaceholder(line, files)
+                    writer.write(line)
+                    writer.write('\n')
+                }
+            }
+        }
+    }
+
+    private static parseModulesPlaceholder(String line, File[] files) {
+        String output = ''
+        files*.name.each { n ->
+            getResource("/${MODULE_FORMAT_FILE}").withReader { r ->
+                String l
+                while ((l = r.readLine()) != null)
+                    output += l.replace('%submodule_name%', n)
+                            .replace('%submodule_path%', "${n}${File.separator}index.html")
+            }
+        }
+        return line.replace(MODULE_PLACEHOLDER, output)
+    }
+
+    private static getDestinationFromModule(File output, File file) {
+        def parent = new File(commonPath(output, file))
+        def module = new File(file, '')
+        while (module.parentFile.parentFile != parent)
+            module = module.parentFile
+        def moduleName = module.name
+
+        def dst = "${module.parentFile.name}"
+        if (moduleName != 'build') dst += "${File.separator}${module.name}"
+        return dst
     }
 
 }
