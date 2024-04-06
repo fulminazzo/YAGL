@@ -1,9 +1,13 @@
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 /**
  * A collection of utilities to aggregate Javadocs
  */
+@CompileDynamic
 class JavaDocUtils {
     private static final DOCS_DIR = 'javadoc'
     private static final IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
