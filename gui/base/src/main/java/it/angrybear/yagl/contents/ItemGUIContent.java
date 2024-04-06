@@ -1,9 +1,9 @@
 package it.angrybear.yagl.contents;
 
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.items.fields.Enchantment;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.angrybear.yagl.wrappers.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
