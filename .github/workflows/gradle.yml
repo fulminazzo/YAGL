@@ -9,8 +9,7 @@ name: Tests
 
 on:
   push:
-    #TODO: remove feat-item
-    branches: [ "dev", "main", "master", "feat-item" ]
+    branches: [ "dev", "main", "master" ]
 
 jobs:
   test:
