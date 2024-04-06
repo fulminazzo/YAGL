@@ -139,7 +139,7 @@ class JavaDocUtils {
                             .replace('%submodule_path%', "${n}${File.separator}index.html")
             }
         }
-        return line.replace(MODULE_PLACEHOLDER, output)
+        line.replace(MODULE_PLACEHOLDER, output)
     }
 
     private static getDestinationFromModule(File output, File file) {
