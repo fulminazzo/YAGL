@@ -1,8 +1,8 @@
 package it.angrybear.yagl.actions;
 
+import org.jetbrains.annotations.NotNull;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
-import org.jetbrains.annotations.NotNull;
 
 public class BiGUICommand extends CommandAction implements BiGUIAction {
 

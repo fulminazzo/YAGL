@@ -1,11 +1,11 @@
 package it.angrybear.yagl.guis;
 
-import it.angrybear.yagl.actions.BiGUIAction;
-import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import it.angrybear.yagl.actions.BiGUIAction;
+import it.angrybear.yagl.actions.GUIAction;
 
 import java.util.*;
 import java.util.stream.Stream;

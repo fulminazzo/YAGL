@@ -3,8 +3,8 @@ package it.angrybear.yagl.actions;
 import it.angrybear.yagl.SerializableFunction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
-import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
+import it.angrybear.yagl.viewers.Viewer;
 
 /**
  * A general functional interface accepting a {@link Viewer}, {@link GUI} and a {@link GUIContent}.

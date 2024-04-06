@@ -1,9 +1,9 @@
 package it.angrybear.yagl.actions;
 
+import org.jetbrains.annotations.NotNull;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
-import org.jetbrains.annotations.NotNull;
 
 public class GUIItemCommand extends CommandAction implements GUIItemAction {
 

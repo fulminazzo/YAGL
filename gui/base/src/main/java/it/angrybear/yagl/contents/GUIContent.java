@@ -1,11 +1,11 @@
 package it.angrybear.yagl.contents;
 
-import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import it.angrybear.yagl.actions.GUIItemAction;
+import it.angrybear.yagl.viewers.Viewer;
 
 import java.util.Optional;
 

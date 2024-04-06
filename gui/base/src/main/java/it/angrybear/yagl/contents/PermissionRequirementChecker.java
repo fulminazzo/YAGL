@@ -1,8 +1,8 @@
 package it.angrybear.yagl.contents;
 
-import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import it.angrybear.yagl.viewers.Viewer;
 
 /**
  * A type of requirement that checks if the {@link Viewer} has a certain permission.

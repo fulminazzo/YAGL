@@ -1,10 +1,10 @@
 package it.angrybear.yagl.contents;
 
-import it.angrybear.yagl.actions.GUIItemAction;
-import it.angrybear.yagl.viewers.Viewer;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import it.angrybear.yagl.actions.GUIItemAction;
+import it.angrybear.yagl.viewers.Viewer;
 
 import java.util.Optional;
 

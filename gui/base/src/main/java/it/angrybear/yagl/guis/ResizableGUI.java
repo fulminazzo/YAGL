@@ -1,8 +1,8 @@
 package it.angrybear.yagl.guis;
 
 
-import it.angrybear.yagl.contents.GUIContent;
 import org.jetbrains.annotations.NotNull;
+import it.angrybear.yagl.contents.GUIContent;
 
 /**
  * Represents a "chest" GUI that can be resized.

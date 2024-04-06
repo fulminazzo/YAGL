@@ -1,8 +1,8 @@
 package it.angrybear.yagl.actions;
 
+import org.jetbrains.annotations.NotNull;
 import it.angrybear.yagl.SerializableFunction;
 import it.angrybear.yagl.viewers.Viewer;
-import org.jetbrains.annotations.NotNull;
 
 abstract class CommandAction implements SerializableFunction {
     protected final String command;

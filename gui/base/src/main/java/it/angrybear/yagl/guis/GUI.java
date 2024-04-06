@@ -1,15 +1,15 @@
 package it.angrybear.yagl.guis;
 
-import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.BiGUICommand;
-import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import it.angrybear.yagl.actions.BiGUIAction;
+import it.angrybear.yagl.actions.GUIAction;
+import it.angrybear.yagl.viewers.Viewer;
 
 import java.util.Arrays;
 import java.util.Comparator;
