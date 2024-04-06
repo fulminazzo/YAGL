@@ -5,11 +5,11 @@ import java.nio.file.StandardCopyOption
  * A collection of utilities to aggregate Javadocs
  */
 class JavaDocUtils {
-    private static final def DOCS_DIR = 'javadoc'
-    private static final def IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
-    private static final def RESOURCES = [ 'index.html', 'javadoc-stylesheet.css' ]
-    private static final def MODULE_PLACEHOLDER = '%modules%'
-    private static final def MODULE_FORMAT_FILE = 'module-format.html'
+    private static final DOCS_DIR = 'javadoc'
+    private static final IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
+    private static final RESOURCES = [ 'index.html', 'javadoc-stylesheet.css' ]
+    private static final MODULE_PLACEHOLDER = '%modules%'
+    private static final MODULE_FORMAT_FILE = 'module-format.html'
 
     /**
      * Aggregates the javadoc of all the root and subprojects into a single directory
