@@ -1,5 +1,4 @@
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
