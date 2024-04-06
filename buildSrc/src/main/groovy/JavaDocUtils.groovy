@@ -63,7 +63,7 @@ class JavaDocUtils {
     }
 
     private static parseResource(File parentFile, String resource, String name, String version, File[] files) {
-        getResource('/${resource}').withReader { reader ->
+        getResource("/${resource}").withReader { reader ->
             new File(parentFile, resource).withWriter { writer ->
                 String line
                 while ((line = reader.readLine()) != null) {
