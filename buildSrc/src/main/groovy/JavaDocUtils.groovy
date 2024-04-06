@@ -17,7 +17,7 @@ class JavaDocUtils {
      * @param output the output directory
      * @param ignoreDirs the directories (modules) to be ignore
      */
-    static def aggregateJavaDoc(String output, String name, String version, String... ignoreDirs) {
+    static void aggregateJavaDoc(String output, String name, String version, String... ignoreDirs) {
         def current = new File(System.getProperty("user.dir"))
         if (current.name == "buildSrc") current = current.parentFile
         def outputDir = new File(current, output)
@@ -30,7 +30,7 @@ class JavaDocUtils {
         createModulesPage(name, version, outputDir)
     }
 
-    private static def aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
+    private static void aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
         if (!current.directory) return
 
         def files = current.listFiles()
@@ -47,7 +47,7 @@ class JavaDocUtils {
                 } }
     }
 
-    private static def createModulesPage(String name, String version, File file) {
+    private static void createModulesPage(String name, String version, File file) {
         if (!file.directory) return
         def files = file.listFiles()
         if (files == null) return
@@ -58,7 +58,7 @@ class JavaDocUtils {
         files.each { createModulesPage(it.name, version, it) }
     }
 
-    private static def parseResource(File parentFile, String resource, String name, String version, File[] files) {
+    private static void parseResource(File parentFile, String resource, String name, String version, File[] files) {
         getResource("/${resource}").withReader { reader ->
             new File(parentFile, resource).withWriter { writer ->
                 String line
@@ -74,7 +74,7 @@ class JavaDocUtils {
         }
     }
 
-    private static def parseModulesPlaceholder(String line, File[] files) {
+    private static String parseModulesPlaceholder(String line, File[] files) {
         String output = ""
         files.collect { it.name } .each { n -> getResource("/${MODULE_FORMAT_FILE}").withReader { r ->
             String l
@@ -91,7 +91,7 @@ class JavaDocUtils {
      * @param src the source (copied) file
      * @param dst the destination (copy) file
      */
-    static def copyDirectory(File src, File dst) {
+    static void copyDirectory(File src, File dst) {
         if (src.directory) {
             def files = src.listFiles()
             dst.mkdirs()
@@ -100,7 +100,7 @@ class JavaDocUtils {
         } else Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
-    private static def getDestinationFromModule(File output, File file) {
+    private static String getDestinationFromModule(File output, File file) {
         def parent = new File(commonPath(output, file))
         def module = new File(file, "")
         while (module.parentFile.parentFile != parent)
@@ -119,7 +119,7 @@ class JavaDocUtils {
      * @param file2 the second file
      * @return the common path
      */
-    static def commonPath(File file1, File file2) {
+    static String commonPath(File file1, File file2) {
         def path1 = file1.absolutePath
         def path2 = file2.absolutePath
         def result = ""
@@ -134,7 +134,7 @@ class JavaDocUtils {
         return result
     }
 
-    private static def getResource(String name) {
+    private static InputStream getResource(String name) {
         while (name.startsWith("/")) name = name.substring(1)
         def resource = JavaDocUtils.class.getResourceAsStream(name)
         if (resource == null) resource = JavaDocUtils.class.getResourceAsStream("/" + name)

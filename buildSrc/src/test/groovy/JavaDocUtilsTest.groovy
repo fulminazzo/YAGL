@@ -2,7 +2,7 @@ import spock.lang.Specification
 
 class JavaDocUtilsTest extends Specification {
 
-    def "test common paths"() {
+    void "test common paths"() {
         given:
             def expected = System.getProperty("user.dir") + "/this/path/is/expected/"
             def path1 = new File(expected, "this/is/not")
