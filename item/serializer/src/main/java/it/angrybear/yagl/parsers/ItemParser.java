@@ -71,13 +71,14 @@ public class ItemParser extends YAMLParser<Item> {
             c.set(s, null);
             if (i == null) return;
             final ConfigurationSection itemSection = c.createSection(s);
-            itemSection.set("material", i.getMaterial());
+            String material = i.getMaterial();
+            if (material != null) itemSection.set("material", material.toLowerCase());
             itemSection.set("amount", i.getAmount());
             itemSection.set("durability", i.getDurability());
             itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
             itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
             itemSection.setList("enchantments", i.getEnchantments());
-            itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).collect(Collectors.toList()));
+            itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()));
             itemSection.set("unbreakable", i.isUnbreakable());
             itemSection.set("custom-model-data", i.getCustomModelData());
 

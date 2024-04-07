@@ -76,7 +76,9 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
             Refl<?> wRefl = new Refl<>(w);
             for (Field field : wRefl.getNonStaticFields()) {
                 Object o = wRefl.getFieldObject(field);
-                tmp.append(o == null ? "" : o.toString()).append(":");
+                String result = o == null ? "" : o.toString();
+                if (o instanceof String) result = result.toLowerCase();
+                tmp.append(result).append(":");
             }
             c.set(s, tmp.substring(0, Math.max(0, tmp.length() - 1)));
         };
