@@ -6,7 +6,7 @@
 
     <rule ref="category/java/design.xml/NPathComplexity">
         <properties>
-            <property name="reportLevel" value="215" />
+            <property name="reportLevel" value="50" />
         </properties>
     </rule>
 
