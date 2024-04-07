@@ -8,16 +8,14 @@ import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -53,12 +51,9 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.getListOptional("enchantments", Enchantment.class).ifPresent(item::addEnchantments);
             itemSection.getListOptional("item-flags", ItemFlag.class).ifPresent(item::addItemFlags);
 
-            ConfigurationSection recipesSection = itemSection.getConfigurationSection("recipes");
-            if (recipesSection != null) {
-                final List<Recipe> recipes = new LinkedList<>();
-                @NotNull Set<String> keys = recipesSection.getKeys();
-                for (String k : keys) recipes.add(recipesSection.get(k, Recipe.class));
-                if (!recipes.isEmpty()) item = item.copy(RecipeItem.class).setRecipes(recipes.toArray(new Recipe[0]));
+            if (itemSection.contains("recipes")) {
+                List<Recipe> recipes = itemSection.getList("recipes", Recipe.class);
+                if (recipes != null) item = item.copy(RecipeItem.class).setRecipes(recipes.toArray(new Recipe[0]));
             }
 
             return item;
@@ -70,9 +65,11 @@ public class ItemParser extends YAMLParser<Item> {
         return (c, s, i) -> {
             c.set(s, null);
             if (i == null) return;
+
             final ConfigurationSection itemSection = c.createSection(s);
             String material = i.getMaterial();
             if (material != null) itemSection.set("material", material.toLowerCase());
+
             itemSection.set("amount", i.getAmount());
             itemSection.set("durability", i.getDurability());
             itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
@@ -83,11 +80,9 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.set("custom-model-data", i.getCustomModelData());
 
             if (i instanceof RecipeItem) {
-                ConfigurationSection recipesSection = itemSection.createSection("recipes");
-                List<Recipe> recipes = new Refl<>(i).getFieldObject("recipes");
-                if (recipes != null)
-                    for (int j = 0; j < recipes.size(); j++)
-                        recipesSection.set(String.valueOf(j), recipes.get(j));
+                List<Recipe> recipes = new ArrayList<>();
+                ((RecipeItem) i).forEach(recipes::add);
+                itemSection.setList("recipes", recipes);
             }
         };
     }
