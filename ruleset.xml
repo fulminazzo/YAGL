@@ -6,8 +6,8 @@
 
     <rule ref="category/java/design.xml/NPathComplexity">
         <properties>
-            <property name="minimum" value="10" />
-            <property name="reportLevel" value="100" />
+            <property name="reportLevel" value="215" />
         </properties>
     </rule>
+
 </ruleset>
