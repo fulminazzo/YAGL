@@ -147,7 +147,7 @@ public final class ItemAdapter {
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
             r = new Refl<>(org.bukkit.inventory.ShapedRecipe.class, namespacedKey, output);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             r = new Refl<>(org.bukkit.inventory.ShapedRecipe.class, output);
         }
 
@@ -183,7 +183,7 @@ public final class ItemAdapter {
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
             r = new Refl<>(org.bukkit.inventory.ShapelessRecipe.class, namespacedKey, output);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             r = new Refl<>(org.bukkit.inventory.ShapelessRecipe.class, output);
         }
 
@@ -204,7 +204,7 @@ public final class ItemAdapter {
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
             r = new Refl<>(org.bukkit.inventory.FurnaceRecipe.class, namespacedKey, output, Material.STONE, experience, cookingTime);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             r = new Refl<>(org.bukkit.inventory.FurnaceRecipe.class, output, Material.STONE);
         }
 
