@@ -282,9 +282,9 @@ public final class WrappersAdapter {
     @SuppressWarnings("unchecked")
     static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
         if (option instanceof AbstractItem) return itemToItemStack((AbstractItem) option);
-        if (option instanceof Potion) return wPotionToPotion((Potion) option);
-        if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
-        if (dataType.equals(MaterialData.class)) {
+        else if (option instanceof Potion) return wPotionToPotion((Potion) option);
+        else if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
+        else if (dataType.equals(MaterialData.class)) {
             if (!(option instanceof Tuple))
                 throw new IllegalArgumentException(String.format("Expected %s but got %s",
                         Tuple.class.getSimpleName(), option.getClass().getSimpleName()));
@@ -292,9 +292,8 @@ public final class WrappersAdapter {
             Material material = EnumUtils.valueOf(Material.class, tuple.getKey());
             Integer data = tuple.getValue();
             return material.getNewData((byte) (data == null ? 0 : data));
-        }
-        if (dataType.getCanonicalName().equalsIgnoreCase("org.bukkit.Vibration")) return option;
-        if (dataType.getSimpleName().equals("BlockData")) {
+        } else if (dataType.getCanonicalName().equalsIgnoreCase("org.bukkit.Vibration")) return option;
+        else if (dataType.getSimpleName().equals("BlockData")) {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
             Material material = EnumUtils.valueOf(Material.class, blockDataOption.getMaterial());
@@ -303,18 +302,20 @@ public final class WrappersAdapter {
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
         }
-        if (option instanceof Color) return wColorToColor((Color) option);
-        final Object finalOption;
-        Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
-        int size = constructor.getParameterCount();
-        if (size == 2) {
-            Tuple<?, ?> t = (Tuple<?, ?>) option;
-            finalOption = new Refl<>(dataType, prepareParameters(t.getKey(), t.getValue())).getObject();
-        } else if (size == 3) {
-            Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
-            finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond(), t.getThird())).getObject();
-        } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
-        return finalOption;
+        else if (option instanceof Color) return wColorToColor((Color) option);
+        else {
+            final Object finalOption;
+            Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
+            int size = constructor.getParameterCount();
+            if (size == 2) {
+                Tuple<?, ?> t = (Tuple<?, ?>) option;
+                finalOption = new Refl<>(dataType, prepareParameters(t.getKey(), t.getValue())).getObject();
+            } else if (size == 3) {
+                Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
+                finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond(), t.getThird())).getObject();
+            } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
+            return finalOption;
+        }
     }
 
     private static Object @NotNull [] prepareParameters(final Object @NotNull ... parameters) {
