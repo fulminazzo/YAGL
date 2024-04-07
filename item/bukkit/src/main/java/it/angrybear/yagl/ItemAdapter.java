@@ -74,8 +74,7 @@ public final class ItemAdapter {
         if (material == null) throw new IllegalArgumentException("Material cannot be null!");
         ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        final ItemMeta meta = getItemMeta(itemStack);
         if (meta != null) {
             meta.setDisplayName(item.getDisplayName());
             meta.setLore(item.getLore());
@@ -96,6 +95,12 @@ public final class ItemAdapter {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    private static ItemMeta getItemMeta(final @NotNull ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        else return meta;
     }
 
     /**
