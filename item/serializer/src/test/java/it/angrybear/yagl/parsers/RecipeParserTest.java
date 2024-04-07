@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class RecipeParserTest {
 
     private static Recipe[] getRecipes() {
-        Item mock = Item.newItem().setMaterial("STONE");
+        Item mock = Item.newItem().setMaterial("stone");
         List<Recipe> recipes = new LinkedList<>();
         Item[] ingredients = new Item[9];
         Arrays.fill(ingredients, mock);

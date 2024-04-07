@@ -25,21 +25,22 @@ class RecipeItemParserTest {
         File output = new File("build/resources/test/recipe-item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
         FileUtils.createNewFile(output);
-        Item item = Item.newRecipeItem("STONE").setAmount(2).setDurability(15)
+        Item item = Item.newRecipeItem("stone").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("enchant1", 10).addEnchantment("enchant2", 20)
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
                 .setUnbreakable(true)
                 .addRecipes(
                         new ShapedRecipe("shaped").setShape(2, 2)
-                                .setIngredient(0, Item.newItem().setMaterial("DIAMOND"))
-                                .setIngredient(1, Item.newItem().setMaterial("REDSTONE"))
-                                .setIngredient(2, Item.newItem().setMaterial("EMERALD"))
-                                .setIngredient(3, Item.newItem().setMaterial("GOLD_INGOT")),
+                                .setIngredient(0, Item.newItem().setMaterial("diamond"))
+                                .setIngredient(1, Item.newItem().setMaterial("redstone"))
+                                .setIngredient(2, Item.newItem().setMaterial("emerald"))
+                                .setIngredient(3, Item.newItem().setMaterial("gold_ingot")),
                         new ShapelessRecipe("shapeless").addIngredients(
-                                Item.newItem().setMaterial("STONE"), Item.newItem().setMaterial("ANDESITE"),
-                                Item.newItem().setMaterial("DIORITE"), Item.newItem().setMaterial("COBBLESTONE")),
-                        new FurnaceRecipe("furnace").setCookingTime(3).setExperience(10).setIngredient(Item.newItem().setMaterial("KELP"))
+                                Item.newItem().setMaterial("stone"), Item.newItem().setMaterial("andesite"),
+                                Item.newItem().setMaterial("diorite"), Item.newItem().setMaterial("cobblestone")),
+                        new FurnaceRecipe("furnace").setCookingTime(3).setExperience(10).setIngredient(
+                                Item.newItem().setMaterial("kelp"))
                 )
                 .setCustomModelData(7);
         FileConfiguration configuration = new FileConfiguration(output);

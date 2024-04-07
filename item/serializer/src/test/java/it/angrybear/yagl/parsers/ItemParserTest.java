@@ -20,7 +20,7 @@ class ItemParserTest {
         File output = new File("build/resources/test/item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
         FileUtils.createNewFile(output);
-        Item item = Item.newItem().setMaterial("STONE").setAmount(2).setDurability(15)
+        Item item = Item.newItem().setMaterial("stone").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("enchant1", 10).addEnchantment("enchant2", 20)
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
