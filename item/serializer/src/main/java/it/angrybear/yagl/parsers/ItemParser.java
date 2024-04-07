@@ -4,7 +4,6 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.RecipeItem;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.items.recipes.Recipe;
-import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
@@ -16,7 +15,6 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -52,20 +50,8 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.getOptional("lore", List.class).ifPresent(item::setLore);
             itemSection.getOptional("unbreakable", Boolean.class).ifPresent(item::setUnbreakable);
             itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
-
-            List<String> flags = itemSection.getStringList("item-flags");
-            if (flags != null)
-                item.addItemFlags(flags.stream()
-                        .map(f -> EnumUtils.valueOf(ItemFlag.class, f))
-                        .collect(Collectors.toList()));
-
-            final List<Object> enchantments = itemSection.getList("enchantments", Object.class);
-            if (enchantments != null)
-                for (int j = 0; j < enchantments.size(); j++) {
-                    ConfigurationSection section = new ConfigurationSection(itemSection, String.valueOf(j));
-                    section.set("tmp", enchantments.get(j));
-                    item.addEnchantments(section.get("tmp", Enchantment.class));
-                }
+            itemSection.getListOptional("enchantments", Enchantment.class).ifPresent(item::addEnchantments);
+            itemSection.getListOptional("item-flags", ItemFlag.class).ifPresent(item::addItemFlags);
 
             ConfigurationSection recipesSection = itemSection.getConfigurationSection("recipes");
             if (recipesSection != null) {
@@ -90,16 +76,7 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.set("durability", i.getDurability());
             itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
             itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
-
-            final List<Enchantment> enchantments = new LinkedList<>(i.getEnchantments());
-            List<Object> enchantsToSave = new ArrayList<>();
-            for (int j = 0; j < enchantments.size(); j++) {
-                ConfigurationSection section = new ConfigurationSection(itemSection, String.valueOf(j));
-                section.set("tmp", enchantments.get(j));
-                enchantsToSave.add(section.getObject("tmp"));
-            }
-            itemSection.set("enchantments", enchantsToSave);
-
+            itemSection.setList("enchantments", i.getEnchantments());
             itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).collect(Collectors.toList()));
             itemSection.set("unbreakable", i.isUnbreakable());
             itemSection.set("custom-model-data", i.getCustomModelData());
