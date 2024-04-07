@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -50,6 +51,12 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     public RecipeItem clearRecipes(final Predicate<Recipe> predicate) {
         this.recipes.removeIf(predicate);
         return this;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<Recipe> iterator() {
+        return this.recipes.iterator();
     }
 
     @Override
