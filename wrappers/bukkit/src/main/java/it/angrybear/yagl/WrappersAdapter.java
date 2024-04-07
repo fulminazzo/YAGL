@@ -281,8 +281,11 @@ public final class WrappersAdapter {
 
     @SuppressWarnings("unchecked")
     static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
+        // Check options
         if (option instanceof AbstractItem) return itemToItemStack((AbstractItem) option);
         else if (option instanceof Potion) return wPotionToPotion((Potion) option);
+        else if (option instanceof Color) return wColorToColor((Color) option);
+        // Check data types
         else if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
         else if (dataType.equals(MaterialData.class)) {
             if (!(option instanceof Tuple))
@@ -292,8 +295,8 @@ public final class WrappersAdapter {
             Material material = EnumUtils.valueOf(Material.class, tuple.getKey());
             Integer data = tuple.getValue();
             return material.getNewData((byte) (data == null ? 0 : data));
-        } else if (dataType.getCanonicalName().equalsIgnoreCase("org.bukkit.Vibration")) return option;
-        else if (dataType.getSimpleName().equals("BlockData")) {
+        } else if (dataType.getCanonicalName().equals("org.bukkit.Vibration")) return option;
+        else if (dataType.getCanonicalName().equals("org.bukkit.block.data.BlockData")) {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
             Material material = EnumUtils.valueOf(Material.class, blockDataOption.getMaterial());
@@ -301,9 +304,8 @@ public final class WrappersAdapter {
                 throw new IllegalArgumentException(String.format("Cannot use non-block material '%s' as block data", material));
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
-        }
-        else if (option instanceof Color) return wColorToColor((Color) option);
-        else {
+        } else {
+            // Try creation from data type
             final Object finalOption;
             Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
             int size = constructor.getParameterCount();
