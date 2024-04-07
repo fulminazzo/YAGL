@@ -54,9 +54,10 @@ public class ItemParser extends YAMLParser<Item> {
             itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
 
             List<String> flags = itemSection.getStringList("item-flags");
-            if (flags == null) flags = new LinkedList<>();
-            for (final String flag : flags)
-                item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, flag));
+            if (flags != null)
+                item.addItemFlags(flags.stream()
+                        .map(f -> EnumUtils.valueOf(ItemFlag.class, f))
+                        .collect(Collectors.toList()));
 
             final List<Object> enchantments = itemSection.getList("enchantments", Object.class);
             if (enchantments != null)
