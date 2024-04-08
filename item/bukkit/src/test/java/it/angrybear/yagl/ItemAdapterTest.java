@@ -8,6 +8,7 @@ import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
@@ -17,13 +18,16 @@ import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -146,10 +150,13 @@ class ItemAdapterTest extends BukkitUtils {
     class RecipeConversion {
 
         @Test
-        void testNullRecipe() {
+        void testNullRecipe() throws InvocationTargetException, IllegalAccessException {
+            final String methodName = "recipeToMinecraft";
             Refl<Class<ItemAdapter>> adapter = new Refl<>(ItemAdapter.class);
-            for (Method method : adapter.getMethods(m -> m.getName().equals("recipeToMinecraft"))) {
-                Object result = adapter.invokeMethod(method.getName(), method.getParameterTypes(), (Object) null);
+            @NotNull List<Method> methods = adapter.getMethods(m -> m.getName().equals(methodName));
+            assertEquals(4, methods.size(), String.format("Could not find all '%s' methods", methodName));
+            for (Method method : methods) {
+                Object result = ReflectionUtils.setAccessible(method).invoke(ItemAdapter.class, (Object) null);
                 assertNull(result);
             }
         }
