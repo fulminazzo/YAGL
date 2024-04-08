@@ -1,8 +1,12 @@
 package it.angrybear.yagl;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * A collection of Minecraft constants used throughout the library.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constants {
 
     /**
