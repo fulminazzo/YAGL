@@ -178,6 +178,14 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    void testInvalidTargetSpawnParticle() {
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                new Refl<>(WrappersAdapter.class).invokeMethod("spawnParticleCommon",
+                        10, ParticleType.ASH.create(),
+                        mock(Location.class), 0, 0.0, 1.0, 0.0, 0.0));
+    }
+
+    @Test
     void testPlaySound() {
         Sound sound = new Sound(org.bukkit.Sound.BLOCK_GLASS_STEP.name(),10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
