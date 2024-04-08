@@ -155,9 +155,7 @@ public final class ItemAdapter {
         ShapedRecipe.Shape shape = recipe.getShape();
         char c = 'A';
         for (int i = 0; i < shape.getRows(); i++) {
-            for (int j = 0; j < shape.getColumns(); j++) {
-                charShape.append(c++);
-            }
+            for (int j = 0; j < shape.getColumns(); j++) charShape.append(c++);
             charShape.append(",");
         }
         r.getObject().shape(charShape.toString().split(","));
