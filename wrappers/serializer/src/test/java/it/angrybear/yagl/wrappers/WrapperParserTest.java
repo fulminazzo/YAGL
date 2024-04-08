@@ -84,7 +84,7 @@ class WrapperParserTest {
         final Class<T> clazz = (Class<T>) (t == null ? Wrapper.class : t.getClass());
         String name = t == null ? "wrapper" : clazz.getSimpleName().toLowerCase();
 
-        File file = save(t, name, clazz);
+        File file = save(t, name);
         return load(file, name, clazz);
     }
 
@@ -103,7 +103,7 @@ class WrapperParserTest {
         return configuration.getList(name, clazz);
     }
 
-    private static <T extends Wrapper> @NotNull File save(@Nullable T t, @NotNull String name, @NotNull Class<T> clazz) throws IOException {
+    private static <T extends Wrapper> @NotNull File save(@NotNull T t, @NotNull String name) throws IOException {
         File file = getFile(name);
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -122,7 +122,6 @@ class WrapperParserTest {
             section.set(String.valueOf(i), builder.substring(0, Math.max(0, builder.length() - 1)));
         }
 
-        section.set("value-class", SerializeUtils.serializeToBase64(clazz.getCanonicalName()));
         configuration.save();
         return file;
     }
