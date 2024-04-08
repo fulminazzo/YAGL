@@ -422,9 +422,13 @@ public final class WrappersAdapter {
      * @return the item stack
      */
     public static @Nullable ItemStack itemToItemStack(final @Nullable AbstractItem item) {
-        Class<?> itemUtils = getItemUtils();
-        if (itemUtils != null) return new Refl<>(getItemUtils()).invokeMethod("itemToItemStack", item);
-        else throw new IllegalStateException("Could not find ItemUtils class. This function requires the 'item:bukkit' module to be added");
+        final Class<?> itemUtils;
+        try {
+            itemUtils = ReflectionUtils.getClass("it.angrybear.yagl.utils.ItemUtils");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Could not find ItemUtils class. This function requires the 'item:bukkit' module to be added");
+        }
+        return new Refl<>(itemUtils).invokeMethod("itemToItemStack", item);
     }
 
     private static @Nullable Class<?> getItemUtils() {

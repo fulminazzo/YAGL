@@ -29,7 +29,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -393,16 +392,11 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testItemModuleNotProvided() {
-        try (MockedStatic<WrappersAdapter> clazz = mockStatic(WrappersAdapter.class)) {
-            clazz.when(() -> {
-                Method method = WrappersAdapter.class.getDeclaredMethod("getItemUtils");
-                ReflectionUtils.setAccessible(method).invoke(WrappersAdapter.class);
-            }).thenReturn(null);
-            clazz.when(() -> WrappersAdapter.itemToItemStack(any())).thenCallRealMethod();
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class)) {
+            clazz.when(() -> ReflectionUtils.getClass(any(String.class))).thenThrow(IllegalArgumentException.class);
 
             assertThrowsExactly(IllegalStateException.class, () -> WrappersAdapter.itemToItemStack(null),
-                    "Expected exception to be thrown signaling missing item module, but nothing was thrown");
-
+                    "Should throw exception signaling missing item module");
         }
     }
 
