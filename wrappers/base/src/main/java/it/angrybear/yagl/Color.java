@@ -257,6 +257,16 @@ public class Color extends ClassEnum {
     }
 
     @Override
+    public int hashCode() {
+        int hash = Color.class.hashCode();
+        hash = hash * 31 + this.alpha;
+        hash = hash * 31 + this.red;
+        hash = hash * 31 + this.green;
+        hash = hash * 31 + this.blue;
+        return hash;
+    }
+
+    @Override
     public String toString() {
         String name = name();
         if (name != null) return name;
