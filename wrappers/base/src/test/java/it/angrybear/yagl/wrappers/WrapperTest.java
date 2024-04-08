@@ -71,6 +71,11 @@ class WrapperTest {
     }
 
     @Test
+    void testInvalidRange() {
+        assertThrowsExactly(InvalidRangeException.class, () -> new MockWrapper().setInvalidRange(10));
+    }
+
+    @Test
     void testNoFieldSet() {
         assertDoesNotThrow(() -> new MockWrapper().setFree(10));
     }
@@ -96,6 +101,8 @@ class WrapperTest {
         @Range(max = 9)
         private int maxOnly;
         private int free;
+        @Range(max = Integer.MIN_VALUE, min = Integer.MAX_VALUE)
+        private int invalidRange;
 
         public void setValue(int value) {
             this.value = check(value);
@@ -112,6 +119,10 @@ class WrapperTest {
 
         public void setFree(int free) {
             this.free = check(free);
+        }
+
+        public void setInvalidRange(int invalidRange) {
+            this.invalidRange = check(invalidRange);
         }
 
         @Override
