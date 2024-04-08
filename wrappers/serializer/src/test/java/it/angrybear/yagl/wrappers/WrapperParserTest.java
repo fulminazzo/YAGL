@@ -35,6 +35,15 @@ class WrapperParserTest {
                 .accept(mock(IConfiguration.class), "enchantment", null));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Test
+    void testSaveNullName() {
+        Enchantment enchantment = new Enchantment("mock");
+        new Refl<>(enchantment).setFieldObject("name", null);
+        assertDoesNotThrow(() -> new WrapperParser(Enchantment.class).getDumper()
+                .accept(mock(IConfiguration.class), "enchantment", enchantment));
+    }
+
     @Test
     void testSaveAndLoadPotion() throws IOException {
         Wrapper expected = new Potion("strength");
@@ -126,7 +135,8 @@ class WrapperParserTest {
             StringBuilder builder = new StringBuilder();
             for (int j = 0; j <= i; j++) {
                 Object o = tRefl.getFieldObject(fields.get(j));
-                if (o != null) builder.append(o).append(":");
+                if (o != null) builder.append(o);
+                builder.append(":");
             }
             section.set(String.valueOf(i), builder.substring(0, Math.max(0, builder.length() - 1)));
         }
