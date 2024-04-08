@@ -20,6 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class WrapperParserTest {
 
     @Test
+    void testLoadNull() throws IOException {
+        List<Wrapper> actual = load(getFile("wrapper"), "wrapper", Wrapper.class);
+        assertNotNull(actual);
+        for (Wrapper w : actual) assertNull(w);
+    }
+
+    @Test
     void testSaveAndLoadPotion() throws IOException {
         Wrapper expected = new Potion("strength");
         List<Wrapper> actual = saveAndLoad(expected);
