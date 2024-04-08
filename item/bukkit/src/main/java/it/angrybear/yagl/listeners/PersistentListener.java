@@ -200,8 +200,8 @@ public class PersistentListener implements Listener {
     protected boolean interactPersistentItem(final @NotNull Player player,
                                              final @NotNull Action interactAction,
                                              final @Nullable Consumer<PersistentItem> ifPresent,
-                                             final ItemStack @Nullable ... itemStacks) {
-        return itemStacks != null && interactPersistentItem(player, interactAction, ifPresent, Arrays.asList(itemStacks));
+                                             final @NotNull Collection<ItemStack> itemStacks) {
+        return interactPersistentItem(player, interactAction, ifPresent, itemStacks.toArray(new ItemStack[0]));
     }
 
     /**
@@ -217,34 +217,11 @@ public class PersistentListener implements Listener {
     protected boolean interactPersistentItem(final @NotNull Player player,
                                              final @NotNull Action interactAction,
                                              final @Nullable Consumer<PersistentItem> ifPresent,
-                                             final @NotNull Collection<ItemStack> itemStacks) {
-        boolean found = false;
-        for (final ItemStack itemStack : itemStacks) {
-            PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
-            if (persistentItem != null) {
-                if (ifPresent != null) ifPresent.accept(persistentItem);
-                persistentItem.interact(player, itemStack, interactAction);
-                found = true;
-            }
-        }
-        return found;
-    }
-
-    /**
-     * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
-     * For every match, it executes an action.
-     *
-     * @param player     the player
-     * @param clickType  the click type
-     * @param ifPresent  the consumer to run if the item is found
-     * @param itemStacks the item stacks
-     * @return true if it was found
-     */
-    protected boolean clickPersistentItem(final @NotNull Player player,
-                                          final @NotNull ClickType clickType,
-                                          final @Nullable Consumer<PersistentItem> ifPresent,
-                                          final ItemStack @Nullable ... itemStacks) {
-        return itemStacks != null && clickPersistentItem(player, clickType, ifPresent, Arrays.asList(itemStacks));
+                                             final ItemStack @Nullable ... itemStacks) {
+        return findPersistentItem((p, i) -> {
+            if (ifPresent != null) ifPresent.accept(p);
+            p.interact(player, i, interactAction);
+        }, itemStacks);
     }
 
     /**
@@ -261,16 +238,27 @@ public class PersistentListener implements Listener {
                                           final @NotNull ClickType clickType,
                                           final @Nullable Consumer<PersistentItem> ifPresent,
                                           final @NotNull Collection<ItemStack> itemStacks) {
-        boolean found = false;
-        for (final ItemStack itemStack : itemStacks) {
-            PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
-            if (persistentItem != null) {
-                if (ifPresent != null) ifPresent.accept(persistentItem);
-                persistentItem.click(player, itemStack, clickType);
-                found = true;
-            }
-        }
-        return found;
+        return clickPersistentItem(player, clickType, ifPresent, itemStacks.toArray(new ItemStack[0]));
+    }
+
+    /**
+     * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
+     * For every match, it executes an action.
+     *
+     * @param player     the player
+     * @param clickType  the click type
+     * @param ifPresent  the consumer to run if the item is found
+     * @param itemStacks the item stacks
+     * @return true if it was found
+     */
+    protected boolean clickPersistentItem(final @NotNull Player player,
+                                          final @NotNull ClickType clickType,
+                                          final @Nullable Consumer<PersistentItem> ifPresent,
+                                          final ItemStack @Nullable ... itemStacks) {
+        return findPersistentItem((p, i) -> {
+            if (ifPresent != null) ifPresent.accept(p);
+            p.click(player, i, clickType);
+        }, itemStacks);
     }
 
     /**
