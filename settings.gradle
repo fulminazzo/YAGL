@@ -1,3 +1,7 @@
+plugins {
+    id 'com.gradle.enterprise' version '3.16.2'
+}
+
 rootProject.name = 'YAGL'
 
 include 'common'
@@ -38,3 +42,13 @@ project(':item:item-serializer').projectDir = file('item/serializer')
 //project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
 include 'testing'
+
+gradleEnterprise {
+    if (System.getenv("CI") != null) {
+        buildScan {
+            publishAlways()
+            termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+            termsOfServiceAgree = 'yes'
+        }
+    }
+}
