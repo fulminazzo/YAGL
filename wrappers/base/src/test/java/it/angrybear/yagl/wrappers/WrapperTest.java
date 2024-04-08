@@ -35,8 +35,8 @@ class WrapperTest {
         return new Object[][]{
                 new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setValue(0), 1, 9},
                 new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setValue(10), 1, 9},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setMinOnly(0), 1, null},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setMaxOnly(10), null, 9},
+                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.minOnly(0), 1, null},
+                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.getMaxOnly(10), null, 9},
         };
     }
 
@@ -101,11 +101,12 @@ class WrapperTest {
             this.value = check(value);
         }
 
-        public void setMinOnly(int minOnly) {
+        public void minOnly(int minOnly) {
             this.minOnly = check(minOnly);
         }
 
-        public void setMaxOnly(int maxOnly) {
+        // For testing purposes. A real bad practice in the real world.
+        public void getMaxOnly(int maxOnly) {
             this.maxOnly = check(maxOnly);
         }
 
