@@ -10,6 +10,8 @@ import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,21 +19,27 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class WrapperParserTest {
 
-    @Test
-    void testLoadNull() throws IOException {
-        List<Wrapper> actual = load(getFile("wrapper"), "wrapper", Wrapper.class);
-        assertNotNull(actual);
-        for (Wrapper w : actual) assertNull(w);
+    private static Object[] invalidSaves() {
+        return new Object[]{null, "", "     "};
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @ParameterizedTest
+    @MethodSource("invalidSaves")
+    void testLoadNull(String save) throws Exception {
+        IConfiguration configuration = mock(IConfiguration.class);
+        when(configuration.getString(any())).thenReturn(save);
+        assertNull(new WrapperParser<>(Enchantment.class).getLoader().apply(configuration, "path"));
+    }
+
     @Test
     void testSaveNull() {
-        assertDoesNotThrow(() -> new WrapperParser(Enchantment.class).getDumper()
+        assertDoesNotThrow(() -> new WrapperParser<>(Enchantment.class).getDumper()
                 .accept(mock(IConfiguration.class), "enchantment", null));
     }
 
