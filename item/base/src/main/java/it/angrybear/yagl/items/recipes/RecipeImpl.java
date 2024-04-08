@@ -2,6 +2,7 @@ package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
  * A basic implementation of {@link Recipe}.
  */
 @Getter
-abstract class RecipeImpl extends FieldEquable implements Recipe {
+@EqualsAndHashCode
+abstract class RecipeImpl implements Recipe {
     protected final @NotNull String id;
     protected Item output;
 

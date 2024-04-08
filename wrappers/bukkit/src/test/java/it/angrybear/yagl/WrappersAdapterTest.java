@@ -394,7 +394,7 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
-    void testInvalidDataTypeButNotOption() {
+    void testInvalidDataTypeButNodtOption() {
         Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
                 ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
         assertNotNull(conversion);

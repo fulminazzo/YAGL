@@ -3,7 +3,7 @@ package it.angrybear.yagl.items.recipes;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.wrappers.Range;
 import it.angrybear.yagl.wrappers.Wrapper;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -99,7 +99,8 @@ public class ShapedRecipe extends RecipeImpl {
      * The type Shape.
      */
     @Getter
-    public static class Shape extends FieldEquable {
+    @EqualsAndHashCode
+    public static class Shape {
         static final int MIN_COLUMNS = 1;
         static final int MAX_COLUMNS = 3;
         static final int MIN_ROWS = 1;
