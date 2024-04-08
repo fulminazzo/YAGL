@@ -1,5 +1,6 @@
 package it.angrybear.yagl.items;
 
+import it.angrybear.yagl.exceptions.NotImplemented;
 import it.angrybear.yagl.items.recipes.Recipe;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,12 +62,12 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
 
     @Override
     public void registerRecipes() {
-        throw new IllegalStateException("Not implemented");
+        throw new NotImplemented();
     }
 
     @Override
     public void unregisterRecipes() {
-        throw new IllegalStateException("Not implemented");
+        throw new NotImplemented();
     }
 
     @Override
