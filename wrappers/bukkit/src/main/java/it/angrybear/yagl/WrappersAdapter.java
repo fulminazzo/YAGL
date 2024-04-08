@@ -50,7 +50,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
-        spawnParticle(world, particle, x, y, z, count, 0.0, 0.0, 0.0, 0.0);
+        spawnParticle(world, particle, x, y, z, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -63,7 +63,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count) {
-        spawnParticle(world, particle, location, count, 0.0, 0.0, 0.0, 0.0);
+        spawnParticle(world, particle, location, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -152,7 +152,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
-        spawnParticle(player, particle, x, y, z, count, 0.0, 0.0, 0.0, 0.0);
+        spawnParticle(player, particle, x, y, z, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -165,7 +165,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count) {
-        spawnParticle(player, particle, location, count, 0.0, 0.0, 0.0, 0.0);
+        spawnParticle(player, particle, location, count, 0.0, 0.0, 0.0);
     }
 
     /**
