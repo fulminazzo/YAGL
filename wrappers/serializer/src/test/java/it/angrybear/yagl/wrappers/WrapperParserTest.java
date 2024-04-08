@@ -101,6 +101,10 @@ class WrapperParserTest {
         return (List<T>) configuration.getList(name, t.getClass());
     }
 
+    private static File getFile(String name) {
+        return new File("build/resources/test/" + name + ".yml");
+    }
+
     private static class MockWrapper extends Wrapper {
         private final String name = "mock";
 
