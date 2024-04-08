@@ -25,7 +25,7 @@ public abstract class Wrapper extends FieldEquable {
     }
 
     /**
-     * Allows to check the given number.
+     * Allows checking the given number.
      * It uses the {@link Range} annotation.
      * If the given value is lower than {@link Range#min()} or higher than {@link Range#max()},
      * an {@link IllegalArgumentException} is thrown.
