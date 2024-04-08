@@ -53,15 +53,18 @@ class WrapperTest {
 
             final String message = e.getMessage();
             assertNotNull(message, "Error message should have not been null");
+            System.out.println(message);
 
-            if (min != null)
-                assertTrue(message.contains(String.valueOf(min)), "Error message should have contained max value");
-            else
+            if (min != null) {
+                assertTrue(message.contains(String.valueOf(min)), "Error message should contain min value");
+                if (max == null) assertTrue(message.contains("lower"), "Error message should contain 'lower' keyword");
+            } else
                 assertFalse(message.contains(String.valueOf(Integer.MIN_VALUE)), "Error message should have not contained min value");
 
-            if (max != null)
-                assertTrue(message.contains(String.valueOf(max)), "Error message should have contained min value");
-            else
+            if (max != null) {
+                assertTrue(message.contains(String.valueOf(max)), "Error message should contain max value");
+                if (min == null) assertTrue(message.contains("higher"), "Error message should contain 'higher' keyword");
+            } else
                 assertFalse(message.contains(String.valueOf(Integer.MAX_VALUE)), "Error message should have not contained max value");
         }
     }
