@@ -60,10 +60,12 @@ public abstract class Wrapper extends FieldEquable {
     private static @NotNull String getExceptionMessage(final @NotNull Field field, final int max, final int min) {
         final String fieldName = field.getName();
 
-        String message = String.format("Invalid value provided for '%s'", fieldName);
+        final String message;
         if (max != Integer.MAX_VALUE && min != Integer.MIN_VALUE) message = String.format("'%s' must be between %s and %s", fieldName, min, max);
         else if (min != Integer.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
         else if (max != Integer.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
+        else message = String.format("Invalid value provided for '%s'", fieldName);
+
         return message;
     }
 
