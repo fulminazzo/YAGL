@@ -12,7 +12,6 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
@@ -100,18 +99,16 @@ class ItemImpl extends FieldEquable implements Item {
 
     @Override
     public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
-        if (item == null) return false;
-        main_loop:
-        for (final Field field : ItemImpl.class.getDeclaredFields()) {
-            if (Modifier.isStatic(field.getModifiers())) continue;
-            for (final ItemField f : ignore)
-                if (field.getName().equalsIgnoreCase(f.name().replace("_", "")))
-                    continue main_loop;
-            Object obj1 = ReflectionUtils.get(field, this);
-            Object obj2 = ReflectionUtils.get(field, item);
-            if (!Objects.equals(obj1, obj2)) return false;
-        }
-        return true;
+        return item != null && Arrays.stream(ItemImpl.class.getDeclaredFields())
+                .filter(f ->! Modifier.isStatic(f.getModifiers()))
+                .filter(f -> Arrays.stream(ignore)
+                        .noneMatch(f2 -> f.getName().equalsIgnoreCase(f2.name()
+                                .replace("_", ""))))
+                .allMatch(f -> {
+                    Object obj1 = ReflectionUtils.get(f, this);
+                    Object obj2 = ReflectionUtils.get(f, item);
+                    return Objects.equals(obj1, obj2);
+                });
     }
 
     @Override
