@@ -36,6 +36,9 @@ public class PersistentListener implements Listener {
      * This is used to prevent double calls.
      */
     private static final long INTERACT_DELAY = 10;
+    /**
+     * The general sleep time used in many methods.
+     */
     static final int SLEEP_TIME = 50;
     private final @NotNull Map<UUID, Long> lastUsed;
 
@@ -68,8 +71,8 @@ public class PersistentListener implements Listener {
      * Finds the corresponding {@link PersistentItem} from the given {@link ItemStack} array.
      * Saves the ones with {@link DeathAction#MAINTAIN} in the returning map.
      *
-     * @param drops     the drops
-     * @param contents  the contents
+     * @param contents the contents
+     * @param drops    the drops
      * @return the map
      */
     protected @NotNull Map<Integer, PersistentItem> findPersistentItems(final @NotNull ItemStack[] contents,
@@ -153,7 +156,7 @@ public class PersistentListener implements Listener {
     /**
      * Returns a consumer that simply cancels the event.
      *
-     * @param event   the event
+     * @param event the event
      * @return the consumer
      */
     protected @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
@@ -166,8 +169,8 @@ public class PersistentListener implements Listener {
      * or if the click is external to the player's inventory.
      * If so, it cancels the {@link InventoryClickEvent}.
      *
-     * @param event     the event
-     * @param player    the player
+     * @param event  the event
+     * @param player the player
      * @return the consumer
      */
     protected @NotNull Consumer<PersistentItem> clickConsumer(final @NotNull InventoryClickEvent event, final @NotNull Player player) {
@@ -184,10 +187,10 @@ public class PersistentListener implements Listener {
      * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
      * For every match, it executes an action.
      *
-     * @param player     the player
-     * @param interactAction  the interact action
-     * @param ifPresent  the consumer to run if the item is found
-     * @param itemStacks the item stacks
+     * @param player         the player
+     * @param interactAction the interact action
+     * @param ifPresent      the consumer to run if the item is found
+     * @param itemStacks     the item stacks
      * @return true if it was found
      */
     protected boolean interactPersistentItem(final @NotNull Player player,
@@ -201,10 +204,10 @@ public class PersistentListener implements Listener {
      * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
      * For every match, it executes an action.
      *
-     * @param player     the player
-     * @param interactAction  the interact action
-     * @param ifPresent  the consumer to run if the item is found
-     * @param itemStacks the item stacks
+     * @param player         the player
+     * @param interactAction the interact action
+     * @param ifPresent      the consumer to run if the item is found
+     * @param itemStacks     the item stacks
      * @return true if it was found
      */
     protected boolean interactPersistentItem(final @NotNull Player player,
