@@ -244,6 +244,11 @@ class PersistentListenerTest {
         when(player.getOpenInventory()).thenReturn(view);
         when(view.getPlayer()).thenReturn(player);
         when(view.getItem(any(int.class))).thenCallRealMethod();
+        when(view.getInventory(any(int.class))).thenAnswer(a -> {
+            int slot = a.getArgument(0);
+            if (slot > inventory.getSize()) return inventory;
+            return playerInventory;
+        });
         return view;
     }
 }
