@@ -66,6 +66,12 @@ class WrapperTest {
         }
     }
 
+    @Test
+    void testIsSimilarNull() {
+        Wrapper w1 = new MockWrapper();
+        assertFalse(w1.isSimilar(null), "Wrapper should not be similar to null");
+    }
+
     @SuppressWarnings("unused")
     private static class MockWrapper extends Wrapper {
         @Range(min = 1, max = 9)
@@ -78,6 +84,7 @@ class WrapperTest {
         public void setValue(int value) {
             this.value = check(value);
         }
+
         public void setMinOnly(int minOnly) {
             this.minOnly = check(minOnly);
         }
@@ -88,7 +95,7 @@ class WrapperTest {
 
         @Override
         public String getName() {
-            return null;
+            return "aiden";
         }
     }
 }
