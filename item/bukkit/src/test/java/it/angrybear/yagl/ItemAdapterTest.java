@@ -52,6 +52,11 @@ class ItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    void testNullItemStackConversionShouldReturnNull() {
+        assertNull(ItemAdapter.itemStackToItem(null));
+    }
+
+    @Test
     void testNullFieldsItemConversion() {
         check();
         ItemStack itemStack = new ItemStack(Material.STONE);
@@ -60,7 +65,7 @@ class ItemAdapterTest extends BukkitUtils {
         meta.setLore(null);
         try {
             meta.setCustomModelData(-1);
-        } catch (NoSuchMethodError e) {}
+        } catch (NoSuchMethodError ignored) {}
         itemStack.setItemMeta(meta);
         assertEquals(BukkitItem.newItem(Material.STONE), ItemAdapter.itemStackToItem(itemStack));
     }
