@@ -42,24 +42,29 @@ public abstract class Wrapper extends FieldEquable {
         String method = trace[2].getMethodName().toLowerCase();
         if (method.equals("check")) method = trace[3].getMethodName().toLowerCase();
         if (method.startsWith("set") || method.startsWith("get")) method = method.substring(3);
-        Field field = ReflectionUtils.getField(object, method);
+        checkField(value, ReflectionUtils.getField(object, method));
+        return value;
+    }
+
+    private static <N extends Number> void checkField(@NotNull N value, Field field) {
         if (field.isAnnotationPresent(Range.class)) {
             Range range = field.getAnnotation(Range.class);
             int min = range.min();
             int max = range.max();
 
-            if (value.doubleValue() < (double) min || value.doubleValue() > (double) max) {
-                final String fieldName = field.getName();
-
-                String message = String.format("Invalid value provided for '%s'", fieldName);
-                if (max != Integer.MAX_VALUE && min != Integer.MIN_VALUE) message = String.format("'%s' must be between %s and %s", fieldName, min, max);
-                else if (min != Integer.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
-                else if (max != Integer.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
-
-                throw new IllegalArgumentException(message);
-            }
+            if (value.doubleValue() < (double) min || value.doubleValue() > (double) max)
+                throw new IllegalArgumentException(getExceptionMessage(field, max, min));
         }
-        return value;
+    }
+
+    private static @NotNull String getExceptionMessage(final @NotNull Field field, final int max, final int min) {
+        final String fieldName = field.getName();
+
+        String message = String.format("Invalid value provided for '%s'", fieldName);
+        if (max != Integer.MAX_VALUE && min != Integer.MIN_VALUE) message = String.format("'%s' must be between %s and %s", fieldName, min, max);
+        else if (min != Integer.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
+        else if (max != Integer.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
+        return message;
     }
 
     /**
