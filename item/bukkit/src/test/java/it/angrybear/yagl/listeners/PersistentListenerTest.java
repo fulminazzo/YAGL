@@ -214,10 +214,10 @@ class PersistentListenerTest {
         List<PersistentItem> items = new ArrayList<>();
         for (int i = 0; i < itemSize; i++) {
             int finalI = i;
-            items.add(new PersistentItem().setMaterial("stone").onInteract((p, s, c) -> clickedItems.add(finalI)));
+            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> clickedItems.add(finalI)));
         }
-        listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
-                items.stream().map(BukkitItem::create).collect(Collectors.toList()));
+        assertTrue(listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
+                items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
         assertEquals(itemSize, clickedItems.size());
     }
 
