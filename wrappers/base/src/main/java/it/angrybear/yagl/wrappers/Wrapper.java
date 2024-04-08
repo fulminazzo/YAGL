@@ -51,8 +51,8 @@ public abstract class Wrapper extends FieldEquable {
             Range range = field.getAnnotation(Range.class);
             int min = range.min();
             int max = range.max();
-
-            if (value.doubleValue() < (double) min || value.doubleValue() > (double) max)
+            if (min > max) throw new InvalidRangeException(field, min, max);
+            else if (value.doubleValue() < (double) min || value.doubleValue() > (double) max)
                 throw new IllegalArgumentException(getExceptionMessage(field, max, min));
         }
     }
