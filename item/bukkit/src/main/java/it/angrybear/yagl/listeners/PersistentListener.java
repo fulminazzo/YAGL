@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A listener for {@link PersistentItem}s.
@@ -124,25 +126,14 @@ public class PersistentListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ClickType type = event.getClick();
         ItemStack itemStack = event.getCurrentItem();
-        Inventory open = player.getOpenInventory().getTopInventory();
-        Inventory clicked = event.getClickedInventory();
-        Inventory playerInventory = player.getInventory();
+        Consumer<PersistentItem> ifPresent = clickConsumer(event, player);
 
-        Consumer<PersistentItem> ifPresent = e -> {
-            int rawSlot = event.getRawSlot();
-            if (e.getMobility() != Mobility.INTERNAL || !playerInventory.equals(clicked) ||
-                    rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY))
-                cancelled(event).accept(e);
-        };
-
-        // Check current item.
-        if (clickedWithPersistentItem(itemStack, player, type, ifPresent)) return;
-        // Check cursor.
-        if (clickedWithPersistentItem(event.getCursor(), player, type, ifPresent)) return;
-        // Check if a number has been used from the keyboard to move the item.
-        if (type.equals(ClickType.NUMBER_KEY)) {
-            itemStack = playerInventory.getItem(event.getHotbarButton());
-            clickedWithPersistentItem(itemStack, player, type, ifPresent);
+        // Check the current item and the cursor;
+        if (!clickPersistentItem(player, type, ifPresent, itemStack, event.getCursor()) &&
+                type.equals(ClickType.NUMBER_KEY)) {
+            // Check if a number has been used from the keyboard to move the item.
+            itemStack = player.getInventory().getItem(event.getHotbarButton());
+            clickPersistentItem(player, type, ifPresent, itemStack);
         }
     }
 
@@ -150,12 +141,9 @@ public class PersistentListener implements Listener {
     protected void on(@NotNull InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = ClickType.LEFT;
-        if (clickedWithPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
-        if (clickedWithPersistentItem(event.getOldCursor(), player, type, cancelled(event))) return;
-        Collection<ItemStack> items = event.getNewItems().values();
-        for (ItemStack i : items)
-            // Check every item from the new items, cancel on first one.
-            if (clickedWithPersistentItem(i, player, type, cancelled(event))) return;
+        clickPersistentItem(player, type, cancelled(event), Stream.concat(Stream.of(
+                event.getCursor(), event.getOldCursor()
+        ), event.getNewItems().values().stream()).collect(Collectors.toList()));
     }
 
     /*
