@@ -48,8 +48,31 @@ public class PersistentListener implements Listener {
     @EventHandler
     protected void on(@NotNull PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Map<Integer, PersistentItem> toRestore = new HashMap<>();
         ItemStack[] contents = player.getInventory().getContents();
+        Map<Integer, PersistentItem> toRestore = findPersistentItems(contents, event.getDrops());
+        if (!toRestore.isEmpty()) {
+            // Wait before restoring player contents.
+            new Thread(() -> {
+                try {
+                    Thread.sleep(SLEEP_TIME);
+                    toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
+                } catch (InterruptedException ignored) {
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * Finds the corresponding {@link PersistentItem} from the given {@link ItemStack} array.
+     * Saves the ones with {@link DeathAction#MAINTAIN} in the returning map.
+     *
+     * @param drops     the drops
+     * @param contents  the contents
+     * @return the map
+     */
+    protected @NotNull Map<Integer, PersistentItem> findPersistentItems(final @NotNull ItemStack[] contents,
+                                                                        final @Nullable List<ItemStack> drops) {
+        Map<Integer, PersistentItem> toRestore = new HashMap<>();
         for (int i = 0; i < contents.length; i++) {
             int finalI = i;
             final ItemStack item = contents[i];
@@ -58,17 +81,10 @@ public class PersistentListener implements Listener {
                 DeathAction deathAction = p.getDeathAction();
                 if (deathAction == null) return;
                 if (deathAction == DeathAction.MAINTAIN) toRestore.put(finalI, p);
-                event.getDrops().remove(item);
+                if (drops != null) drops.remove(item);
             });
         }
-        if (toRestore.isEmpty()) return;
-        // Wait before restoring player contents.
-        new Thread(() -> {
-            try {
-                Thread.sleep(SLEEP_TIME);
-                toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
-            } catch (InterruptedException ignored) {}
-        }).start();
+        return toRestore;
     }
 
     @EventHandler
