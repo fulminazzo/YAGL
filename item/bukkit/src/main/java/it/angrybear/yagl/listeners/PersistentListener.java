@@ -1,8 +1,8 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
-import it.angrybear.yagl.items.DeathAction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -10,7 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -82,12 +85,12 @@ public class PersistentListener implements Listener {
             int finalI = i;
             final ItemStack item = contents[i];
             // Save every PersistentItem with the MAINTAIN action, remove if they have DISAPPEAR.
-            findPersistentItem(item, p -> {
+            findPersistentItem(p -> {
                 DeathAction deathAction = p.getDeathAction();
                 if (deathAction == null) return;
                 if (deathAction == DeathAction.MAINTAIN) toRestore.put(finalI, p);
                 if (drops != null) drops.remove(item);
-            });
+            }, item);
         }
         return toRestore;
     }
@@ -105,23 +108,23 @@ public class PersistentListener implements Listener {
 
     @EventHandler
     protected void on(@NotNull PlayerItemConsumeEvent event) {
-        findPersistentItem(event.getItem(), cancelled(event));
+        findPersistentItem(cancelled(event), event.getItem());
     }
 
     @EventHandler
     protected void on(@NotNull PlayerItemDamageEvent event) {
-        findPersistentItem(event.getItem(), cancelled(event));
+        findPersistentItem(cancelled(event), event.getItem());
     }
 
     @EventHandler
     protected void on(@NotNull BlockPlaceEvent event) {
         PlayerInventory inventory = event.getPlayer().getInventory();
-        findPersistentItem(inventory.getItem(inventory.getHeldItemSlot()), cancelled(event));
+        findPersistentItem(cancelled(event), inventory.getItem(inventory.getHeldItemSlot()));
     }
 
     @EventHandler
     protected void on(@NotNull PlayerDropItemEvent event) {
-        findPersistentItem(event.getItemDrop().getItemStack(), cancelled(event));
+        findPersistentItem(cancelled(event), event.getItemDrop().getItemStack());
     }
 
     @EventHandler
@@ -269,16 +272,26 @@ public class PersistentListener implements Listener {
         return found;
     }
 
-    private boolean findPersistentItem(final @Nullable ItemStack itemStack,
-                                       final @NotNull Consumer<PersistentItem> ifPresent) {
-        if (itemStack != null) {
-            PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
-            if (persistentItem != null) {
-                ifPresent.accept(persistentItem);
-                return true;
+    /**
+     * Finds {@link PersistentItem}s from the given {@link ItemStack} array.
+     * For each one found, execute an action
+     *
+     * @param ifPresent  the action to execute
+     * @param itemStacks the item stacks
+     * @return true if at least one found
+     */
+    protected boolean findPersistentItem(final @Nullable Consumer<PersistentItem> ifPresent,
+                                         final ItemStack @Nullable ... itemStacks) {
+        boolean found = false;
+        if (itemStacks != null)
+            for (final ItemStack itemStack : itemStacks) {
+                PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
+                if (persistentItem != null) {
+                    if (ifPresent != null) ifPresent.accept(persistentItem);
+                    found = true;
+                }
             }
-        }
-        return false;
+        return found;
     }
 
     /**
