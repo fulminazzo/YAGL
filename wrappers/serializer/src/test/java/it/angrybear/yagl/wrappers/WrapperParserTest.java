@@ -71,12 +71,30 @@ class WrapperParserTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> saveAndLoad(expected));
     }
 
-    @SuppressWarnings("ReassignedVariable")
-    private @Nullable <T extends Wrapper> List<T> saveAndLoad(T t) throws IOException {
+    @SuppressWarnings({"unchecked"})
+    private @Nullable <T extends Wrapper> List<T> saveAndLoad(final @Nullable T t) throws IOException {
         WrapperParser.addAllParsers();
-        String name = t.getClass().getSimpleName().toLowerCase();
+        final Class<T> clazz = (Class<T>) (t == null ? Wrapper.class : t.getClass());
+        String name = t == null ? "wrapper" : clazz.getSimpleName().toLowerCase();
 
-        File file = new File("build/resources/test/" + name + ".yml");
+        File file = save(t, name, clazz);
+        return load(file, name, clazz);
+    }
+
+    private static <T extends Wrapper> @Nullable List<T> load(@NotNull File file, @NotNull String name, @NotNull Class<T> clazz) throws IOException {
+        if (!file.exists()) {
+            FileUtils.createNewFile(file);
+            FileConfiguration configuration = new FileConfiguration(file);
+            configuration.createSection(name);
+            configuration.set("value-class", SerializeUtils.serializeToBase64(clazz.getCanonicalName()));
+            configuration.save();
+        }
+        FileConfiguration configuration = new FileConfiguration(file);
+        return configuration.getList(name, clazz);
+    }
+
+    private static <T extends Wrapper> @NotNull File save(@Nullable T t, @NotNull String name, @NotNull Class<T> clazz) throws IOException {
+        File file = getFile(name);
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
 
@@ -94,11 +112,9 @@ class WrapperParserTest {
             section.set(String.valueOf(i), builder.substring(0, Math.max(0, builder.length() - 1)));
         }
 
-        section.set("value-class", SerializeUtils.serializeToBase64(t.getClass().getCanonicalName()));
+        section.set("value-class", SerializeUtils.serializeToBase64(clazz.getCanonicalName()));
         configuration.save();
-
-        configuration = new FileConfiguration(file);
-        return (List<T>) configuration.getList(name, t.getClass());
+        return file;
     }
 
     private static File getFile(String name) {
