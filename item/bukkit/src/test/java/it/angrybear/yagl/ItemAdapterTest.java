@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,8 +27,7 @@ import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ItemAdapterTest extends BukkitUtils {
 
@@ -130,6 +130,14 @@ class ItemAdapterTest extends BukkitUtils {
         void testNullItemMeta() {
             when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(null));
             assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(BukkitItem.newItem(Material.STONE)));
+        }
+
+        @Test
+        void testOlderItemMeta() {
+            Damageable meta = mock(Damageable.class, withSettings().extraInterfaces(ItemMeta.class));
+            doThrow(NoSuchMethodError.class).when(meta).setDamage(anyInt());
+            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(meta));
+            assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(Item.newItem("stone")));
         }
 
     }
