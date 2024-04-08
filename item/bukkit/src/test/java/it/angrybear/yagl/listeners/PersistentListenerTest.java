@@ -92,13 +92,14 @@ class PersistentListenerTest {
         assertFalse(this.clicked, "Clicked should be initialized as false");
         assertFalse(event.isCancelled(), "Event should not be cancelled");
         listener.on(event);
+        System.out.println("cancelled ? " + event.isCancelled());
         assertTrue(event.isCancelled(), "Event should have been cancelled by now");
         assertTrue(this.clicked, "Clicked should have changed");
     }
 
     @Test
     void testMovableItem() {
-        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND).setMobility(Mobility.INTERNAL);
+        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND_PICKAXE).setMobility(Mobility.INTERNAL);
         InventoryView view = setupInventoryClickEventView();
         int slot = view.getTopInventory().getSize();
         view.getBottomInventory().setItem(0, persistentItem.create());
@@ -244,6 +245,7 @@ class PersistentListenerTest {
         when(player.getOpenInventory()).thenReturn(view);
         when(view.getPlayer()).thenReturn(player);
         when(view.getItem(any(int.class))).thenCallRealMethod();
+        when(view.getCursor()).thenCallRealMethod();
         when(view.convertSlot(any(int.class))).thenCallRealMethod();
         when(view.getInventory(any(int.class))).thenAnswer(a -> {
             int slot = a.getArgument(0);
