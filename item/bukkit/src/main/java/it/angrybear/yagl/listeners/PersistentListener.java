@@ -11,7 +11,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -65,8 +64,7 @@ public class PersistentListener implements Listener {
                 try {
                     Thread.sleep(SLEEP_TIME);
                     toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
-                } catch (InterruptedException ignored) {
-                }
+                } catch (InterruptedException ignored) {}
             }).start();
         }
     }
@@ -181,9 +179,7 @@ public class PersistentListener implements Listener {
         return e -> {
             Inventory open = player.getOpenInventory().getTopInventory();
             int rawSlot = event.getRawSlot();
-            if (e.getMobility() != Mobility.INTERNAL || rawSlot < open.getSize() ||
-                    InventoryAction.MOVE_TO_OTHER_INVENTORY.equals(event.getAction()))
-                cancelled(event).accept(e);
+            if (e.getMobility() != Mobility.INTERNAL || rawSlot < open.getSize()) cancelled(event).accept(e);
         };
     }
 
