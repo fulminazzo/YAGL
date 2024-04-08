@@ -20,10 +20,11 @@ class ShapelessRecipeTest {
 
     @Test
     void testRemoveItems() {
-        ShapelessRecipe recipe = new ShapelessRecipe("tmp");
         List<Item> items = new LinkedList<>();
         for (int i = 0; i < ShapelessRecipe.MAX_SIZE; i++) items.add(Item.newItem("MOCK_MATERIAL_" + i));
-        recipe.removeIngredients(items.toArray(new Item[0]));
+        ShapelessRecipe recipe = new ShapelessRecipe("tmp")
+                .addIngredients(items.toArray(new Item[0]))
+                .removeIngredients(items.toArray(new Item[0]));
         assertTrue(recipe.isEmpty(), "Recipe should have been empty after removing items");
     }
 }
