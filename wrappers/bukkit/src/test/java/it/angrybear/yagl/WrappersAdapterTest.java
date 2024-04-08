@@ -134,7 +134,7 @@ class WrappersAdapterTest extends BukkitUtils {
                 assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
             };
             invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
-                    double.class, double.class, double.class, double.class};
+                    double.class, double.class, double.class, Double.class};
         } else {
             captorsValidator = a -> {
                 Object value = a[0].getValue();
@@ -143,7 +143,7 @@ class WrappersAdapterTest extends BukkitUtils {
                 assertNotNull(a[a.length - 1].getValue());
             };
             invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
-                    double.class, double.class, double.class, double.class, Object.class};
+                    double.class, double.class, double.class, Double.class, Object.class};
         }
 
         TestUtils.testMultipleMethods(WrappersAdapter.class,
@@ -162,7 +162,8 @@ class WrappersAdapterTest extends BukkitUtils {
         ArgumentCaptor<?> @NotNull [] captors = TestUtils.testSingleMethod(WrappersAdapter.class,
                 WrappersAdapter.class.getMethod("spawnParticle", Player.class, Particle.class, Location.class, int.class),
                 new Object[]{player, particle}, player, "spawnParticle",
-                org.bukkit.Particle.class, Location.class, int.class, double.class, double.class, double.class, double.class, Object.class);
+                org.bukkit.Particle.class, Location.class, int.class, double.class, double.class, double.class,
+                Double.class, Object.class);
 
         Object value = captors[0].getValue();
         assertInstanceOf(org.bukkit.Particle.class, value);
