@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -282,12 +283,25 @@ public class PersistentListener implements Listener {
      */
     protected boolean findPersistentItem(final @Nullable Consumer<PersistentItem> ifPresent,
                                          final ItemStack @Nullable ... itemStacks) {
+        return findPersistentItem(ifPresent == null ? null : (p, i) -> ifPresent.accept(p), itemStacks);
+    }
+
+    /**
+     * Finds {@link PersistentItem}s from the given {@link ItemStack} array.
+     * For each one found, execute an action
+     *
+     * @param ifPresent  the action to execute
+     * @param itemStacks the item stacks
+     * @return true if at least one found
+     */
+    protected boolean findPersistentItem(final @Nullable BiConsumer<PersistentItem, ItemStack> ifPresent,
+                                         final ItemStack @Nullable ... itemStacks) {
         boolean found = false;
         if (itemStacks != null)
             for (final ItemStack itemStack : itemStacks) {
                 PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
                 if (persistentItem != null) {
-                    if (ifPresent != null) ifPresent.accept(persistentItem);
+                    if (ifPresent != null) ifPresent.accept(persistentItem, itemStack);
                     found = true;
                 }
             }
