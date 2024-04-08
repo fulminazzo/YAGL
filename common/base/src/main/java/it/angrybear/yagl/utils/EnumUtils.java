@@ -2,6 +2,8 @@ package it.angrybear.yagl.utils;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -10,9 +12,8 @@ import java.util.regex.Pattern;
 /**
  * The type Enum utils.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnumUtils {
-
-    private EnumUtils() {}
 
     /**
      * Uses the given class method <code>valueOf</code> to obtain the corresponding value with the given name.

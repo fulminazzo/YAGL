@@ -10,6 +10,8 @@ import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -26,10 +28,9 @@ import java.util.stream.Collectors;
  * A collection of utilities for {@link Item}.
  */
 @SuppressWarnings("deprecation")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemAdapter {
     private static final String ID_KEY = "yagl";
-
-    private ItemAdapter() {}
 
     /**
      * Converts the given {@link ItemStack} to an {@link Item}.

@@ -13,6 +13,8 @@ import it.fulminazzo.fulmicollection.structures.CacheMap;
 import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,10 +35,9 @@ import java.util.function.Function;
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
 @SuppressWarnings("deprecation")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WrappersAdapter {
     private static final Map<Particle, Tuple<org.bukkit.Particle, ?>> PARTICLE_CACHE = new CacheMap<>();
-
-    private WrappersAdapter() {}
 
     /**
      * Spawn particle.

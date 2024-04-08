@@ -1,7 +1,6 @@
 package it.angrybear.yagl.particles;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 
 /**
  * Represents a general option for a particle.
@@ -9,9 +8,7 @@ import lombok.ToString;
  *
  * @param <O> the type parameter
  */
-@EqualsAndHashCode
-@ToString
-abstract class ParticleOption<O> {
+abstract class ParticleOption<O> extends FieldEquable {
 
     /**
      * Gets option to send the particle.

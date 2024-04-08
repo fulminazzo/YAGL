@@ -3,6 +3,8 @@ package it.angrybear.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
@@ -25,9 +27,8 @@ import static org.mockito.Mockito.*;
 /**
  * The type Test utils.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
-
-    private TestUtils() {}
 
     /**
      * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.

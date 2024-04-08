@@ -1,11 +1,13 @@
 package it.angrybear.yagl.parsers;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * The type Item YAGL parser.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemYAGLParser {
-
-    private ItemYAGLParser() {}
 
     /**
      * Adds all the module specific parsers.

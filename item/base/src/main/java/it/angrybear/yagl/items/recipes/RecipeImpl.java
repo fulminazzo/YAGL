@@ -2,18 +2,14 @@ package it.angrybear.yagl.items.recipes;
 
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A basic implementation of {@link Recipe}.
  */
 @Getter
-@EqualsAndHashCode
-@ToString
-abstract class RecipeImpl implements Recipe {
+abstract class RecipeImpl extends FieldEquable implements Recipe {
     protected final @NotNull String id;
     protected Item output;
 

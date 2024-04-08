@@ -1,8 +1,7 @@
 package it.angrybear.yagl.particles;
 
-import lombok.EqualsAndHashCode;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
-import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,9 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a general particle with an associated {@link ParticleOption}.
  */
 @Getter
-@EqualsAndHashCode
-@ToString
-public class Particle {
+public class Particle extends FieldEquable {
     private final String type;
     private final ParticleOption<?> option;
 

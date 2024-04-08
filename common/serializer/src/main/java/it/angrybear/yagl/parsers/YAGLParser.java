@@ -1,13 +1,14 @@
 package it.angrybear.yagl.parsers;
 
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * The type YAGL parser.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class YAGLParser {
-
-    private YAGLParser() {}
 
     /**
      * Adds all the parsers from the {@link it.angrybear.yagl.parsers} package to {@link FileConfiguration}.
