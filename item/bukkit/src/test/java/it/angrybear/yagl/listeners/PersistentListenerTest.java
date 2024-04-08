@@ -1,8 +1,9 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.items.BukkitItem;
+import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
-import it.angrybear.yagl.items.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
@@ -34,6 +35,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -203,6 +205,20 @@ class PersistentListenerTest {
         value.set(false);
         listener.on(event);
         assertFalse(value.get());
+    }
+
+    @Test
+    void testInteractPersistentItem() {
+        final int itemSize = 10;
+        final List<Integer> clickedItems = new ArrayList<>();
+        List<PersistentItem> items = new ArrayList<>();
+        for (int i = 0; i < itemSize; i++) {
+            int finalI = i;
+            items.add(new PersistentItem().setMaterial("stone").onInteract((p, s, c) -> clickedItems.add(finalI)));
+        }
+        listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
+                items.stream().map(BukkitItem::create).collect(Collectors.toList()));
+        assertEquals(itemSize, clickedItems.size());
     }
 
     private static Player getPlayer() {
