@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RecipeItemImplTest {
+class RecipeItemTest {
 
     @Test
     void recipeItemRegisterShouldBeUnimplemented() {
@@ -14,6 +14,6 @@ class RecipeItemImplTest {
 
     @Test
     void recipeItemUnregisterShouldBeUnimplemented() {
-        assertThrowsExactly(NotImplemented.class, () -> Item.newRecipeItem().registerRecipes());
+        assertThrowsExactly(NotImplemented.class, () -> Item.newRecipeItem().unregisterRecipes());
     }
 }
