@@ -99,7 +99,45 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticleCommon(world, particle, location, count, offsetX, offsetY, offsetZ);
+        spawnParticle(world, particle, location, count, offsetX, offsetY, offsetZ, 0);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     double x, double y, double z, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticle(world, particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ, speed);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     final @NotNull Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticleCommon(world, particle, location, count, offsetX, offsetY, offsetZ, speed);
     }
 
     /**
@@ -163,24 +201,62 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticleCommon(player, particle, location, count, offsetX, offsetY, offsetZ);
+        spawnParticle(player, particle, location, count, offsetX, offsetY, offsetZ, 0);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     double x, double y, double z, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticle(player, particle, new Location(player.getWorld(), x, y, z), count, offsetX, offsetY, offsetZ, speed);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     final @NotNull Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticleCommon(player, particle, location, count, offsetX, offsetY, offsetZ, speed);
     }
 
     private static <T> void spawnParticleCommon(final @NotNull T target, final @NotNull Particle particle,
                                                 final @NotNull Location location, int count,
-                                                double offsetX, double offsetY, double offsetZ) {
+                                                double offsetX, double offsetY, double offsetZ, double speed) {
         Tuple<org.bukkit.Particle, ?> tuple = PARTICLE_CACHE.computeIfAbsent(particle, p -> wParticleToParticle(particle));
         final org.bukkit.Particle actual = tuple.getKey();
         final Object option = tuple.getValue();
 
         if (target instanceof Player) {
           Player player = (Player) target;
-          if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
-          else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+          if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
+          else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed, option);
         } else if (target instanceof World) {
             World world = (World) target;
-            if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
-            else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+            if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
+            else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed, option);
         } else throw new IllegalArgumentException(String.format("Do not know how to spawn particles for '%s'", target));
     }
 
@@ -283,6 +359,13 @@ public final class WrappersAdapter {
         }
     }
 
+    /**
+     * Converts the given raw option in the specified data type.
+     *
+     * @param dataType the data type
+     * @param option   the option
+     * @return the object
+     */
     @SuppressWarnings("unchecked")
     static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
         // Check options
