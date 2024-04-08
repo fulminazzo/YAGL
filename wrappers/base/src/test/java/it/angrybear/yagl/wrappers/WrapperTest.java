@@ -71,6 +71,11 @@ class WrapperTest {
     }
 
     @Test
+    void testNoFieldSet() {
+        assertDoesNotThrow(() -> new MockWrapper().setFree(10));
+    }
+
+    @Test
     void testIsSimilarNull() {
         Wrapper w1 = new MockWrapper();
         assertFalse(w1.isSimilar(null), "Wrapper should not be similar to null");
@@ -90,6 +95,7 @@ class WrapperTest {
         private int minOnly;
         @Range(max = 9)
         private int maxOnly;
+        private int free;
 
         public void setValue(int value) {
             this.value = check(value);
@@ -101,6 +107,10 @@ class WrapperTest {
 
         public void setMaxOnly(int maxOnly) {
             this.maxOnly = check(maxOnly);
+        }
+
+        public void setFree(int free) {
+            this.free = check(free);
         }
 
         @Override
