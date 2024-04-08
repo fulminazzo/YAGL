@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.ConsumerException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -71,6 +72,11 @@ class WrapperTest {
     }
 
     @Test
+    void testExtremeRange() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> new MockWrapper().setExtremeRange((long) Integer.MAX_VALUE + 1));
+    }
+
+    @Test
     void testInvalidRange() {
         assertThrowsExactly(InvalidRangeException.class, () -> new MockWrapper().setInvalidRange(10));
     }
@@ -103,6 +109,8 @@ class WrapperTest {
         private int free;
         @Range(max = Integer.MIN_VALUE, min = Integer.MAX_VALUE)
         private int invalidRange;
+        @Range(min = Integer.MIN_VALUE, max = Integer.MAX_VALUE)
+        private long extremeRange;
 
         public void setValue(int value) {
             this.value = check(value);
@@ -123,6 +131,10 @@ class WrapperTest {
 
         public void setInvalidRange(int invalidRange) {
             this.invalidRange = check(invalidRange);
+        }
+
+        public void setExtremeRange(long extremeRange) {
+            this.extremeRange = check(extremeRange);
         }
 
         @Override
