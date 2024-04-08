@@ -2,6 +2,7 @@ package it.angrybear.yagl.particles;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 @EqualsAndHashCode
+@ToString
 public class Particle {
     private final String type;
     private final ParticleOption<?> option;

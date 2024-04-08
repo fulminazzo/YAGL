@@ -1,6 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * Represents a general option for a particle.
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
  * @param <O> the type parameter
  */
 @EqualsAndHashCode
+@ToString
 abstract class ParticleOption<O> {
 
     /**
