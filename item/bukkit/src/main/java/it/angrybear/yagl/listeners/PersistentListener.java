@@ -103,7 +103,7 @@ public class PersistentListener implements Listener {
         // Check that a double click is not happening.
         if (now < lastUsed + INTERACT_DELAY) return;
         this.lastUsed.put(player.getUniqueId(), now);
-        interactedWithPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
+        interactPersistentItem(player, event.getAction(), cancelled(event), event.getItem());
     }
 
     @EventHandler
