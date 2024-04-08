@@ -9,6 +9,7 @@ import it.angrybear.yagl.wrappers.Potion;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.CacheMap;
 import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -25,9 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -36,6 +34,7 @@ import java.util.function.Function;
  */
 @SuppressWarnings("deprecation")
 public final class WrappersAdapter {
+    private static final Map<Particle, Tuple<org.bukkit.Particle, ?>> PARTICLE_CACHE = new CacheMap<>();
 
     private WrappersAdapter() {}
 
@@ -168,16 +167,21 @@ public final class WrappersAdapter {
     }
 
     private static <T> void spawnParticleCommon(final @NotNull T target, final @NotNull Particle particle,
-                                            final @NotNull Location location, int count,
-                                            double offsetX, double offsetY, double offsetZ) {
-        Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
-        org.bukkit.Particle actual = tuple.getKey();
-        Object option = tuple.getValue();
+                                                final @NotNull Location location, int count,
+                                                double offsetX, double offsetY, double offsetZ) {
+        Tuple<org.bukkit.Particle, ?> tuple = PARTICLE_CACHE.computeIfAbsent(particle, p -> wParticleToParticle(particle));
+        final org.bukkit.Particle actual = tuple.getKey();
+        final Object option = tuple.getValue();
 
-        List<Object> params = new LinkedList<>(Arrays.asList(actual, location, count, offsetX, offsetY, offsetZ));
-        if (option != null) params.add(option);
-
-        new Refl<>(target).invokeMethod("spawnParticle", params.toArray(new Object[0]));
+        if (target instanceof Player) {
+          Player player = (Player) target;
+          if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
+          else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+        } else if (target instanceof World) {
+            World world = (World) target;
+            if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ);
+            else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, option);
+        } else throw new IllegalArgumentException(String.format("Do not know how to spawn particles for '%s'", target));
     }
 
     /**
