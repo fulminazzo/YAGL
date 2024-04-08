@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class WrapperTest {
 
@@ -73,6 +74,12 @@ class WrapperTest {
     void testIsSimilarNull() {
         Wrapper w1 = new MockWrapper();
         assertFalse(w1.isSimilar(null), "Wrapper should not be similar to null");
+    }
+
+    @Test
+    void testIsSimilarOtherClass() {
+        Wrapper w1 = new MockWrapper();
+        assertFalse(w1.isSimilar(mock(Wrapper.class)), "Wrapper should not be similar to a wrapper of different class");
     }
 
     @SuppressWarnings("unused")
