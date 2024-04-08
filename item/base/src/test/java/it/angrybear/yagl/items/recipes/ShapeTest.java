@@ -1,6 +1,8 @@
 package it.angrybear.yagl.items.recipes;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,5 +57,11 @@ class ShapeTest {
         String toString = shape.toString();
         assertTrue(toString.contains(shape.getColumns() + ""), "Shape#toString did not contain columns");
         assertTrue(toString.contains(shape.getRows() + ""), "Shape#toString did not contain rows");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, Integer.MIN_VALUE, ShapedRecipe.Shape.MAX_COLUMNS * ShapedRecipe.Shape.MAX_ROWS})
+    void testShapeContain(int value) {
+        assertFalse(new ShapedRecipe.Shape().contains(value), String.format("Shape should not contain value '%s'", value));
     }
 }
