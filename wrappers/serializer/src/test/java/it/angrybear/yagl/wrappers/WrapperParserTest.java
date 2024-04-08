@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.SerializeUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.exceptions.YAMLException;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class WrapperParserTest {
 
@@ -24,6 +26,13 @@ class WrapperParserTest {
         List<Wrapper> actual = load(getFile("wrapper"), "wrapper", Wrapper.class);
         assertNotNull(actual);
         for (Wrapper w : actual) assertNull(w);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Test
+    void testSaveNull() {
+        assertDoesNotThrow(() -> new WrapperParser(Enchantment.class).getDumper()
+                .accept(mock(IConfiguration.class), "enchantment", null));
     }
 
     @Test
