@@ -26,8 +26,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -387,6 +389,21 @@ class WrappersAdapterTest extends BukkitUtils {
     @Test
     void testInvalidDataType() {
         assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MockDataType.class, "String"));
+    }
+
+    @Test
+    void testItemModuleNotProvided() {
+        try (MockedStatic<WrappersAdapter> clazz = mockStatic(WrappersAdapter.class)) {
+            clazz.when(() -> {
+                Method method = WrappersAdapter.class.getDeclaredMethod("getItemUtils");
+                ReflectionUtils.setAccessible(method).invoke(WrappersAdapter.class);
+            }).thenReturn(null);
+            clazz.when(() -> WrappersAdapter.itemToItemStack(any())).thenCallRealMethod();
+
+            assertThrowsExactly(IllegalStateException.class, () -> WrappersAdapter.itemToItemStack(null),
+                    "Expected exception to be thrown signaling missing item module, but nothing was thrown");
+
+        }
     }
 
     private static void initializeBlockData() {
