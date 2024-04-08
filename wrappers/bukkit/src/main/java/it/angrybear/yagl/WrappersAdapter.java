@@ -431,14 +431,6 @@ public final class WrappersAdapter {
         return new Refl<>(itemUtils).invokeMethod("itemToItemStack", item);
     }
 
-    private static @Nullable Class<?> getItemUtils() {
-        try {
-            return Class.forName("it.angrybear.yagl.utils.ItemUtils");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
     /**
      * Converts the given wrapper {@link Color} to a {@link org.bukkit.Color}.
      *
