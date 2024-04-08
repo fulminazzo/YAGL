@@ -86,6 +86,9 @@ class WrapperParserTest {
             FileUtils.createNewFile(file);
             FileConfiguration configuration = new FileConfiguration(file);
             configuration.createSection(name);
+            configuration.set("0", null);
+            configuration.set("1", "");
+            configuration.set("2", "    ");
             configuration.set("value-class", SerializeUtils.serializeToBase64(clazz.getCanonicalName()));
             configuration.save();
         }
