@@ -75,6 +75,15 @@ class ItemAdapterTest extends BukkitUtils {
         }
 
         @Test
+        void testNullDisplayNameAndLore() {
+            ItemMeta meta = mock(ItemMeta.class);
+            when(meta.getDisplayName()).thenReturn(null);
+            when(meta.getLore()).thenReturn(null);
+            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(meta));
+            assertDoesNotThrow(() -> ItemAdapter.itemStackToItem(new ItemStack(Material.STONE)));
+        }
+
+        @Test
         void testNullFieldsItem() {
             check();
             ItemStack itemStack = new ItemStack(Material.STONE);
