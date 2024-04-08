@@ -158,8 +158,38 @@ public class PersistentListener implements Listener {
             if (clickedWithPersistentItem(i, player, type, cancelled(event))) return;
     }
 
-    private @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
+    /*
+        API USAGE
+     */
+
+    /**
+     * Returns a consumer that simply cancels the event.
+     *
+     * @param event   the event
+     * @return the consumer
+     */
+    protected @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
         return p -> event.setCancelled(true);
+    }
+
+    /**
+     * Returns the consumer used in the default {@link #on(InventoryClickEvent)}.
+     * It checks if the {@link PersistentItem} is not {@link Mobility#INTERNAL}
+     * or if the click is external to the player's inventory.
+     * If so, it cancels the {@link InventoryClickEvent}.
+     *
+     * @param event     the event
+     * @param player    the player
+     * @return the consumer
+     */
+    protected @NotNull Consumer<PersistentItem> clickConsumer(final @NotNull InventoryClickEvent event, final @NotNull Player player) {
+        return e -> {
+            Inventory open = player.getOpenInventory().getTopInventory();
+            int rawSlot = event.getRawSlot();
+            if (e.getMobility() != Mobility.INTERNAL || rawSlot < open.getSize() ||
+                    InventoryAction.MOVE_TO_OTHER_INVENTORY.equals(event.getAction()))
+                cancelled(event).accept(e);
+        };
     }
 
     private boolean interactedWithPersistentItem(final @Nullable ItemStack itemStack,
