@@ -57,7 +57,7 @@ public class PersistentListener implements Listener {
     protected void on(@NotNull PlayerDeathEvent event) {
         Player player = event.getEntity();
         ItemStack[] contents = player.getInventory().getContents();
-        Map<Integer, PersistentItem> toRestore = findPersistentItems(contents, event.getDrops());
+        Map<Integer, PersistentItem> toRestore = parseDroppedItems(contents, event.getDrops());
         if (!toRestore.isEmpty()) {
             // Wait before restoring player contents.
             new Thread(() -> {
@@ -78,8 +78,8 @@ public class PersistentListener implements Listener {
      * @param drops    the drops
      * @return the map
      */
-    protected @NotNull Map<Integer, PersistentItem> findPersistentItems(final @NotNull ItemStack[] contents,
-                                                                        final @Nullable List<ItemStack> drops) {
+    protected @NotNull Map<Integer, PersistentItem> parseDroppedItems(final @NotNull ItemStack[] contents,
+                                                                      final @Nullable List<ItemStack> drops) {
         Map<Integer, PersistentItem> toRestore = new HashMap<>();
         for (int i = 0; i < contents.length; i++) {
             int finalI = i;
