@@ -293,6 +293,22 @@ public class PersistentListener implements Listener {
     }
 
     /**
+     * Waits for the specified milliseconds, then executes the given action.
+     *
+     * @param milliseconds  the milliseconds
+     * @param action        the action
+     */
+    protected static void sleepAndThen(long milliseconds, final @Nullable Runnable action) {
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(milliseconds);
+                if (action != null) action.run();
+            } catch (InterruptedException ignored) {}
+        });
+        thread.start();
+    }
+
+    /**
      * Checks if the current listener has been initialized at least once.
      *
      * @return true if it is {@link #INITIALIZED}
