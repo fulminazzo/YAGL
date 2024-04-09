@@ -12,6 +12,16 @@ class EnumUtilsTest {
     }
 
     @Test
+    void shouldThrowRealIllegalException() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfIllegal"));
+    }
+
+    @Test
+    void shouldThrowRealIllegalExceptionWithMessage() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfIllegalMessage"));
+    }
+
+    @Test
     void testValid() {
         assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase()));
     }
@@ -49,6 +59,14 @@ class EnumUtilsTest {
 
         public static MockClassEnum valueOf(String name) throws IllegalAccessException {
             throw new IllegalAccessException("Just a mock");
+        }
+
+        public static MockClassEnum valueOfIllegal(String name) {
+            throw new IllegalArgumentException();
+        }
+
+        public static MockClassEnum valueOfIllegalMessage(String name) {
+            throw new IllegalArgumentException("Just a mock");
         }
     }
 }
