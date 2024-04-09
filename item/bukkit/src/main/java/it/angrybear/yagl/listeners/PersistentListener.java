@@ -43,6 +43,8 @@ public class PersistentListener implements Listener {
      * The general sleep time used in many methods.
      */
     static final int SLEEP_TIME = 50;
+    private static final String SLEEP_THEN_NAME = "Sleep-Then-%s";
+    private static long sleepAndThenCounter = 0;
     private final @NotNull Map<UUID, Long> lastUsed;
 
     /**
@@ -301,7 +303,7 @@ public class PersistentListener implements Listener {
                 return;
             }
             if (action != null) action.run();
-        }).start();
+        }, String.format(SLEEP_THEN_NAME, sleepAndThenCounter++)).start();
     }
 
     /**

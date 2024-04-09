@@ -312,6 +312,7 @@ class PersistentListenerTest {
             PersistentListener.sleepAndThen(2000, null);
             Thread thread = Thread.getAllStackTraces().keySet().stream()
                     .filter(t -> t.getState().equals(Thread.State.TIMED_WAITING))
+                    .filter(t -> t.getName().startsWith("Sleep-Then"))
                     .findFirst().orElse(null);
 
             assertNotNull(thread, "Could not find sleeping thread");
