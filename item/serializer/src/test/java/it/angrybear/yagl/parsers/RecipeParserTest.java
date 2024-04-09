@@ -1,5 +1,6 @@
 package it.angrybear.yagl.parsers;
 
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.recipes.FurnaceRecipe;
 import it.angrybear.yagl.items.recipes.Recipe;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class RecipeParserTest {
+class RecipeParserTest extends ParserTestHelper<Recipe> {
 
     private static Recipe[] getRecipes() {
         Item mock = Item.newItem().setMaterial("stone");
@@ -51,7 +52,7 @@ class RecipeParserTest {
     @ParameterizedTest
     @MethodSource("getRecipes")
     void testRecipe(Recipe recipe) throws IOException {
-        YAGLParser.addAllParsers();
+        ItemYAGLParser.addAllParsers();
         final String path = FileUtils.formatStringToYaml(recipe.getClass().getSimpleName());
 
         File output = new File("build/resources/test/recipe.yml");
@@ -69,5 +70,10 @@ class RecipeParserTest {
             Object obj2 = ReflectionUtils.get(field, recipe2);
             assertEquals(obj1, obj2);
         }
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return RecipeParser.class;
     }
 }
