@@ -12,6 +12,11 @@ class EnumUtilsTest {
     }
 
     @Test
+    void shouldThrowRealRuntimeException() {
+        assertThrowsExactly(IllegalStateException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfRuntime"));
+    }
+
+    @Test
     void shouldThrowRealIllegalException() {
         assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfIllegal"));
     }
@@ -59,6 +64,10 @@ class EnumUtilsTest {
 
         public static MockClassEnum valueOf(String name) throws IllegalAccessException {
             throw new IllegalAccessException("Just a mock");
+        }
+
+        public static MockClassEnum valueOfRuntime(String name) {
+            throw new IllegalStateException("Just a mock");
         }
 
         public static MockClassEnum valueOfIllegal(String name) {
