@@ -53,7 +53,8 @@ public class ItemParser extends YAMLParser<Item> {
 
                 if (itemSection.contains("recipes")) {
                     List<Recipe> recipes = itemSection.getList("recipes", Recipe.class);
-                    if (recipes != null) item = item.copy(RecipeItem.class).setRecipes(recipes.toArray(new Recipe[0]));
+                    if (recipes == null) recipes = new ArrayList<>();
+                    item = item.copy(RecipeItem.class).setRecipes(recipes.toArray(new Recipe[0]));
                 }
 
                 return item;
