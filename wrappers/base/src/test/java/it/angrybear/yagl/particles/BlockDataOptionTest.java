@@ -11,6 +11,8 @@ class BlockDataOptionTest {
     private static Object[][] testData() {
         return new Object[][]{
                 new Object[]{"this:item:is:invalid", "INVALID_MATERIAL"},
+                new Object[]{"  ", "INVALID_MATERIAL"},
+                new Object[]{"minecraft:  ", "INVALID_MATERIAL"},
                 new Object[]{"[this one too]", "INVALID_DATA"}
         };
     }
@@ -18,8 +20,10 @@ class BlockDataOptionTest {
     @ParameterizedTest
     @MethodSource("testData")
     void testInvalidData(String raw, String field) {
+        String minecraftId = new Refl<>(BlockDataOption.class).getFieldObject("MINECRAFT_IDENTIFIER");
+        assertNotNull(minecraftId, "Could not find Minecraft identifier");
         Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () -> new BlockDataOption(raw));
-        testThrowable(throwable, field, raw);
+        testThrowable(throwable, field, raw.contains(minecraftId) ? raw.substring(minecraftId.length()) : raw);
     }
 
     private void testThrowable(Throwable throwable, String fieldName, String value) {
