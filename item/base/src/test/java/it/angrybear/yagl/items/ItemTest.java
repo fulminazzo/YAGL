@@ -60,6 +60,12 @@ class ItemTest {
     }
 
     @Test
+    void testRemoveLore() {
+        assertEquals(1, Item.newItem().setLore("Hello", "world").removeLore("Hello").getLore().size(),
+                "After removal there should be only one lore element");
+    }
+
+    @Test
     void testIsNotSimilar() {
         Item i1 = Item.newItem().setAmount(1).setMaterial("grass").setDisplayName("Hello world");
         Item i2 = Item.newItem().setAmount(1).setMaterial("glass").setDisplayName("Hello world");
