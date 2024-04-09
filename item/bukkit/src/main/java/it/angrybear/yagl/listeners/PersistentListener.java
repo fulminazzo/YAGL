@@ -3,6 +3,7 @@ package it.angrybear.yagl.listeners;
 import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
+import it.fulminazzo.fulmicollection.utils.ThreadUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -43,8 +44,6 @@ public class PersistentListener implements Listener {
      * The general sleep time used in many methods.
      */
     static final int SLEEP_TIME = 50;
-    private static final String SLEEP_THEN_NAME = "Sleep-Then-%s";
-    private static long sleepAndThenCounter = 0;
     private final @NotNull Map<UUID, Long> lastUsed;
 
     /**
@@ -62,7 +61,7 @@ public class PersistentListener implements Listener {
         Map<Integer, PersistentItem> toRestore = parseDroppedItems(contents, event.getDrops());
         if (!toRestore.isEmpty())
             // Wait before restoring player contents.
-            sleepAndThen(SLEEP_TIME, () -> toRestore.forEach((i, p) ->
+            ThreadUtils.sleepAndThen(SLEEP_TIME, () -> toRestore.forEach((i, p) ->
                     player.getInventory().setItem(i, p.create())));
     }
 
@@ -287,23 +286,6 @@ public class PersistentListener implements Listener {
                 }
             }
         return found;
-    }
-
-    /**
-     * Waits for the specified milliseconds, then executes the given action.
-     *
-     * @param milliseconds  the milliseconds
-     * @param action        the action
-     */
-    protected static void sleepAndThen(long milliseconds, final @Nullable Runnable action) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(milliseconds);
-            } catch (InterruptedException e) {
-                return;
-            }
-            if (action != null) action.run();
-        }, String.format(SLEEP_THEN_NAME, sleepAndThenCounter++)).start();
     }
 
     /**

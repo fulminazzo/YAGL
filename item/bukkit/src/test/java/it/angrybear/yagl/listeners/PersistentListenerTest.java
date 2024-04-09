@@ -5,6 +5,7 @@ import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ThreadUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
@@ -253,7 +254,7 @@ class PersistentListenerTest {
             // Simulate removal of contents
             Arrays.fill(contents, null);
 
-            PersistentListener.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
+            ThreadUtils.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
                 for (ItemStack i : drops) {
                     // Drop item in case of null
                     if (i != null) assertEquals(none.create(), i);
@@ -276,7 +277,7 @@ class PersistentListenerTest {
             // Simulate removal of contents
             Arrays.fill(contents, null);
 
-            PersistentListener.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
+            ThreadUtils.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
                 List<ItemStack> copy = Arrays.asList(contents);
                 assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
             });
@@ -291,32 +292,10 @@ class PersistentListenerTest {
             // Simulate removal of contents
             Arrays.fill(contents, null);
 
-            PersistentListener.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
+            ThreadUtils.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
                 for (ItemStack i : contents)
                     assertNull(i, "Nothing should be restored");
             });
-        }
-
-    }
-
-    @Nested
-    class SleepAndThen {
-
-        @Test
-        void testNullAction() {
-            assertDoesNotThrow(() -> PersistentListener.sleepAndThen(50, null));
-        }
-
-        @Test
-        void testInterruptedException() {
-            PersistentListener.sleepAndThen(2000, null);
-            Thread thread = Thread.getAllStackTraces().keySet().stream()
-                    .filter(t -> t.getState().equals(Thread.State.TIMED_WAITING))
-                    .filter(t -> t.getName().startsWith("Sleep-Then"))
-                    .findFirst().orElse(null);
-
-            assertNotNull(thread, "Could not find sleeping thread");
-            assertDoesNotThrow(thread::interrupt);
         }
 
     }
