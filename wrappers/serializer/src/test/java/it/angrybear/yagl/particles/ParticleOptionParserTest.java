@@ -1,9 +1,11 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.angrybear.yagl.wrappers.Potion;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
@@ -58,5 +60,37 @@ class ParticleOptionParserTest {
             assertEquals(obj1.getClass(), obj2.getClass());
             assertEquals(obj1, obj2);
         }
+    }
+
+    private static Object[] getParsers() {
+        return new Object[]{
+                ColorOptionParser.class, PotionParticleOptionParser.class,
+                ItemParticleOptionParser.class, BlockDataOptionParser.class,
+                MaterialDataOptionParser.class
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParsers")
+    <T> void testLoadNullFromParser(Class<?> clazz) {
+        ParserTestHelper<T> helper = new ParserTestHelper<T>() {
+            @Override
+            protected Class<?> getParser() {
+                return clazz;
+            }
+        };
+        new Refl<>(helper).invokeMethod("testLoadNull");
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParsers")
+    <T> void testSaveNullFromParser(Class<?> clazz) {
+        ParserTestHelper<T> helper = new ParserTestHelper<T>() {
+            @Override
+            protected Class<?> getParser() {
+                return clazz;
+            }
+        };
+        new Refl<>(helper).invokeMethod("testSaveNull");
     }
 }
