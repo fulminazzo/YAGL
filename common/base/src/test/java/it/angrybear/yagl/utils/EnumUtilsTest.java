@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnumUtilsTest {
 
     @Nested
-    class ValueOfTests {
+    class ValueOfTest {
 
         @Test
         void shouldThrowRealException() {
