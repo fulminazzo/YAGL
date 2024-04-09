@@ -67,6 +67,12 @@ class ParticleOptionParserTest {
     }
 
     @Test
+    void testLoadNull() {
+        assertDoesNotThrow(() -> new ParticleOptionParser<>(DustParticleOption.class).getLoader()
+                .apply(mock(IConfiguration.class), "path"));
+    }
+
+    @Test
     void testSaveNull() {
         assertDoesNotThrow(() -> new ParticleOptionParser<>(DustParticleOption.class).getDumper()
                 .accept(mock(IConfiguration.class), "path", null));
