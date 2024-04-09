@@ -61,12 +61,18 @@ class ItemTest {
 
     @Test
     void testCopyItemFromInterfaceWithNoImpl() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemInterface.class));
+        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemInterface.class));
+        String message = exception.getMessage();
+        assertNotNull(message, "Exception message was null");
+        assertTrue(message.contains(MockItemInterface.class.getCanonicalName()), "Exception message did not contain abstract class name");
     }
 
     @Test
     void testCopyItemFromAbstractWithNoImpl() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemAbstract.class));
+        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemAbstract.class));
+        String message = exception.getMessage();
+        assertNotNull(message, "Exception message was null");
+        assertTrue(message.contains(MockItemInterface.class.getCanonicalName()), "Exception message did not contain abstract class name");
     }
 
     @Test
