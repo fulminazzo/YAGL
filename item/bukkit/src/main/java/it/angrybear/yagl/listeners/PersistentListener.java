@@ -294,13 +294,14 @@ public class PersistentListener implements Listener {
      * @param action        the action
      */
     protected static void sleepAndThen(long milliseconds, final @Nullable Runnable action) {
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
             try {
                 Thread.sleep(milliseconds);
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException e) {
+                return;
+            }
             if (action != null) action.run();
-        });
-        thread.start();
+        }).start();
     }
 
     /**
