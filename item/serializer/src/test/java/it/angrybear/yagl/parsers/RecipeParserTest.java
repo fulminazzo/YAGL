@@ -1,13 +1,16 @@
 package it.angrybear.yagl.parsers;
 
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.recipes.FurnaceRecipe;
 import it.angrybear.yagl.items.recipes.Recipe;
 import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -19,8 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class RecipeParserTest {
+class RecipeParserTest extends ParserTestHelper<Recipe> {
 
     private static Recipe[] getRecipes() {
         Item mock = Item.newItem().setMaterial("stone");
@@ -51,7 +55,7 @@ class RecipeParserTest {
     @ParameterizedTest
     @MethodSource("getRecipes")
     void testRecipe(Recipe recipe) throws IOException {
-        YAGLParser.addAllParsers();
+        ItemYAGLParser.addAllParsers();
         final String path = FileUtils.formatStringToYaml(recipe.getClass().getSimpleName());
 
         File output = new File("build/resources/test/recipe.yml");
@@ -69,5 +73,32 @@ class RecipeParserTest {
             Object obj2 = ReflectionUtils.get(field, recipe2);
             assertEquals(obj1, obj2);
         }
+    }
+
+    @Test
+    void testNullIngredientsList() throws IOException {
+        ItemYAGLParser.addAllParsers();
+        final String path = "null-recipes";
+
+        Recipe recipe = new ShapedRecipe("recipe");
+        new Refl<>(recipe).setFieldObject("ingredients", null);
+
+        File output = new File("build/resources/test/recipe.yml");
+        if (!output.exists()) FileUtils.createNewFile(output);
+
+        FileConfiguration configuration = new FileConfiguration(output);
+        configuration.set(path, recipe);
+        configuration.save();
+
+        configuration = new FileConfiguration(output);
+        Recipe recipe2 = configuration.get(path, Recipe.class);
+
+        assertNotNull(new Refl<>(recipe2).getFieldObject("ingredients"),
+                "Recipe2 ingredients list");
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return RecipeParser.class;
     }
 }

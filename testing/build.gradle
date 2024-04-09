@@ -3,4 +3,6 @@ dependencies {
     api 'org.junit.jupiter:junit-jupiter'
     api 'org.junit.jupiter:junit-jupiter-params'
     api libs.mockito
+
+    compileOnly libs.yamlparser
 }
