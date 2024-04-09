@@ -1,6 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.angrybear.yagl.wrappers.Potion;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -18,7 +19,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class ParticleParserTest {
+class ParticleParserTest extends ParserTestHelper<Particle> {
 
     private static AParticleType<?>[] getTestOptions() {
         return Stream.concat(Arrays.stream(ParticleType.values()), Arrays.stream(LegacyParticleType.values()))
@@ -85,5 +86,10 @@ class ParticleParserTest {
                 assertEquals(obj1, obj2);
             }
         }
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return ParticleParser.class;
     }
 }
