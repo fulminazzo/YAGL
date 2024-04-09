@@ -80,6 +80,13 @@ class BukkitItemTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> BukkitItem.newItem().create());
     }
 
+    @Test
+    void testCreateWithNullMetaClass() {
+        ItemStack expected = new ItemStack(Material.STONE);
+        ItemStack actual = BukkitItem.newItem("stone").create(null, m -> m.setDisplayName("Robert"));
+        assertEquals(expected, actual);
+    }
+
     private static Item mockItem(Item item) {
         return item.setMaterial("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
