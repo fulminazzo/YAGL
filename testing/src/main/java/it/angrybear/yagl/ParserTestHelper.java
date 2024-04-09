@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 /**
  * A class to help test a {@link YAMLParser}.
  */
-public abstract class ParserTestHelper {
+public abstract class ParserTestHelper<T> {
 
     /**
      * Tests if {@link YAMLParser#load(IConfiguration, String)} returns null when the object is null.
@@ -44,7 +44,7 @@ public abstract class ParserTestHelper {
      *
      * @return the loader
      */
-    protected BiFunctionException<IConfiguration, String, Object> getLoader() {
+    protected BiFunctionException<IConfiguration, String, T> getLoader() {
         return getYamlParser().invokeMethod("getLoader");
     }
 
@@ -53,7 +53,7 @@ public abstract class ParserTestHelper {
      *
      * @return the dumper
      */
-    protected TriConsumer<IConfiguration, String, Object> getDumper() {
+    protected TriConsumer<IConfiguration, String, T> getDumper() {
         return getYamlParser().invokeMethod("getLoader");
     }
 
@@ -63,8 +63,8 @@ public abstract class ParserTestHelper {
      * @return the parser
      */
     @SuppressWarnings("unchecked")
-    protected Refl<YAMLParser<?>> getYamlParser() {
-        return (Refl<YAMLParser<?>>) new Refl<>(getParser(), new Object[0]);
+    protected Refl<YAMLParser<T>> getYamlParser() {
+        return (Refl<YAMLParser<T>>) new Refl<>(getParser(), new Object[0]);
     }
 
     /**
