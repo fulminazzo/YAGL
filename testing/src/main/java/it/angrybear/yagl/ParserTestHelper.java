@@ -62,8 +62,9 @@ public abstract class ParserTestHelper {
      *
      * @return the parser
      */
+    @SuppressWarnings("unchecked")
     protected Refl<YAMLParser<?>> getYamlParser() {
-        return new Refl<>(getParser(), new Object[0]);
+        return (Refl<YAMLParser<?>>) new Refl<>(getParser(), new Object[0]);
     }
 
     /**
@@ -71,7 +72,7 @@ public abstract class ParserTestHelper {
      *
      * @return the parser
      */
-    protected abstract Class<YAMLParser<?>> getParser();
+    protected abstract Class<?> getParser();
 
     /**
      * Creates mock of {@link IConfiguration} that returns the given value when using {@link IConfiguration#getString(String)}.
