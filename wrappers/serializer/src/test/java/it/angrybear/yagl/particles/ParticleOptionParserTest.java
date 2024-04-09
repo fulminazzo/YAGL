@@ -8,8 +8,10 @@ import it.angrybear.yagl.wrappers.Potion;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -17,7 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class ParticleOptionParserTest {
 
@@ -60,6 +64,12 @@ class ParticleOptionParserTest {
             assertEquals(obj1.getClass(), obj2.getClass());
             assertEquals(obj1, obj2);
         }
+    }
+
+    @Test
+    void testSaveNull() {
+        assertDoesNotThrow(() -> new ParticleOptionParser<>(DustParticleOption.class).getDumper()
+                .accept(mock(IConfiguration.class), "path", null));
     }
 
     private static Object[] getParsers() {
