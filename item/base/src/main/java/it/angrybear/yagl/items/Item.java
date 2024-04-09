@@ -423,7 +423,7 @@ public interface Item extends AbstractItem {
         if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
             try {
                 clazz = ReflectionUtils.getClass(clazz.getCanonicalName() + "Impl");
-            } catch (IllegalStateException e) {
+            } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(String.format("Could not copy item to abstract class '%s': no '%sImpl' class found",
                         clazz.getCanonicalName(), clazz.getCanonicalName()));
             }
