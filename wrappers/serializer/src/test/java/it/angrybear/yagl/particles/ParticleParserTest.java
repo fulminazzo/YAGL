@@ -5,8 +5,10 @@ import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.parsers.WrappersYAGLParser;
 import it.angrybear.yagl.wrappers.Potion;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -16,8 +18,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ParticleParserTest extends ParserTestHelper<Particle> {
 
@@ -86,6 +87,16 @@ class ParticleParserTest extends ParserTestHelper<Particle> {
                 assertEquals(obj1, obj2);
             }
         }
+    }
+
+    @Test
+    void testNullType() {
+        WrappersYAGLParser.addAllParsers();
+        ConfigurationSection particleSection = new ConfigurationSection(null, "main");
+        particleSection.set("particle.type", null);
+
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                particleSection.get("particle", Particle.class));
     }
 
     @Override
