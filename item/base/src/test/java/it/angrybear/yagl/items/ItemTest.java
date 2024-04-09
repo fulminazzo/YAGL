@@ -60,6 +60,11 @@ class ItemTest {
     }
 
     @Test
+    void testIsSimilarNull() {
+        assertFalse(Item.newItem("stone").setAmount(1).isSimilar(null));
+    }
+
+    @Test
     void testItemFlagMethods() {
         Item item = new MockItem("STONE");
         final ItemFlag flag = ItemFlag.HIDE_ATTRIBUTES;
