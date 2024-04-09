@@ -16,8 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BukkitItemTest {
 
@@ -74,6 +73,11 @@ class BukkitItemTest {
                 .create(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.ARROW_FIRE, 1, true));
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCreateNullMaterial() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> BukkitItem.newItem().create());
     }
 
     private static Item mockItem(Item item) {
