@@ -4,9 +4,12 @@ import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.structures.EnchantmentSet;
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 
@@ -59,20 +62,26 @@ class ItemTest {
         }
     }
 
-    @Test
-    void testCopyItemFromInterfaceWithNoImpl() {
-        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemInterface.class));
-        String message = exception.getMessage();
-        assertNotNull(message, "Exception message was null");
-        assertTrue(message.contains(MockItemInterface.class.getCanonicalName()), "Exception message did not contain abstract class name");
+    private static Object[] getAbstractClasses() {
+        return new Object[]{MockItemInterface.class, MockItemAbstract.class};
     }
 
-    @Test
-    void testCopyItemFromAbstractWithNoImpl() {
-        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemAbstract.class));
+    @ParameterizedTest
+    @MethodSource("getAbstractClasses")
+    void testCopyItemFromAbstractWithNoImpl(Class<? extends Item> clazz) {
+        final String className = clazz.getCanonicalName();
+        final String implName = className + "Impl";
+
+        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(clazz));
+
         String message = exception.getMessage();
         assertNotNull(message, "Exception message was null");
-        assertTrue(message.contains(MockItemInterface.class.getCanonicalName()), "Exception message did not contain abstract class name");
+        assertTrue(message.contains(implName), "Exception message did not contain abstract implementation class name");
+
+        // Check that the returned exception is not from ReflectionUtils
+        String reflMessage = ReflectionUtils.get(ReflectionUtils.getField(ReflectionUtils.class, "CLASS_NOT_FOUND"), ReflectionUtils.class);
+        assertNotEquals(reflMessage.replace("%class%", implName), message,
+                "Exception message should not be the same as the one returned by ReflectionUtils");
     }
 
     @Test
