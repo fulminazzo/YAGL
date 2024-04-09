@@ -23,17 +23,17 @@ class EnumUtilsTest {
 
         @Test
         void shouldThrowRealRuntimeException() {
-            assertThrowsExactly(IllegalStateException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfRuntime"));
+            assertThrowsExactly(IllegalStateException.class, () -> EnumUtils.valueOf(mockClassEnum.class, "any", "valueOfRuntime"));
         }
 
         @Test
         void shouldThrowRealIllegalException() {
-            assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfIllegal"));
+            assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(mockClassEnum.class, "any", "valueOfIllegal"));
         }
 
         @Test
         void shouldThrowRealIllegalExceptionWithMessage() {
-            assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(MockClassEnum.class, "any", "valueOfIllegalMessage"));
+            assertThrowsExactly(IllegalArgumentException.class, () -> EnumUtils.valueOf(mockClassEnum.class, "any", "valueOfIllegalMessage"));
         }
 
         @Test
