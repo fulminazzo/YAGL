@@ -60,6 +60,13 @@ class ItemTest {
     }
 
     @Test
+    void testIsNotSimilar() {
+        Item i1 = Item.newItem().setAmount(1).setMaterial("grass").setDisplayName("Hello world");
+        Item i2 = Item.newItem().setAmount(1).setMaterial("glass").setDisplayName("Hello world");
+        assertFalse(i1.isSimilar(i2));
+    }
+
+    @Test
     void testIsSimilarNull() {
         assertFalse(Item.newItem("stone").setAmount(1).isSimilar(null));
     }
