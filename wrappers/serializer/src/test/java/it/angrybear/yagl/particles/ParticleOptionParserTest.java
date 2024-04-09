@@ -10,6 +10,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
+import it.fulminazzo.yamlparser.parsers.annotations.PreventSaving;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,8 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class ParticleOptionParserTest {
@@ -108,5 +108,49 @@ class ParticleOptionParserTest {
             }
         };
         new Refl<>(helper).invokeMethod("testSaveNull");
+    }
+
+    @Test
+    void testSaveAndLoadWithImmutableFields() throws IOException {
+        FileConfiguration.addParsers(new ParticleOptionParser<>(MockParticleOption.class));
+
+        ParticleOption<?> expected = new MockParticleOption(30);
+
+        File file = new File("build/resources/test/immutable-fields.yml");
+        if (file.exists()) FileUtils.deleteFile(file);
+        FileUtils.createNewFile(file);
+
+        FileConfiguration configuration = new FileConfiguration(file);
+        configuration.set("option", expected);
+        configuration.save();
+
+        configuration = new FileConfiguration(file);
+        ParticleOption<?> actual = configuration.get("option", expected.getClass());
+
+        assertInstanceOf(MockParticleOption.class, actual);
+        MockParticleOption mock = (MockParticleOption) actual;
+
+        assertEquals(0, mock.shouldNotBeLoaded, "Field should be to its default value (0)");
+        assertEquals(30, MockParticleOption.SHOULD_NOT_BE_LOADED, "Static field should not have been changed");
+    }
+
+    private static class MockParticleOption extends ParticleOption<String> {
+        static int SHOULD_NOT_BE_LOADED = 1;
+        @PreventSaving
+        int shouldNotBeLoaded;
+
+        public MockParticleOption() {
+
+        }
+
+        public MockParticleOption(int value) {
+            SHOULD_NOT_BE_LOADED = value;
+            this.shouldNotBeLoaded = value;
+        }
+
+        @Override
+        public String getOption() {
+            return "Hello world";
+        }
     }
 }
