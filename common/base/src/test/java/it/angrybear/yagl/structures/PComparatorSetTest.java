@@ -29,6 +29,12 @@ class PComparatorSetTest {
         assertFalse(set.stream().anyMatch(m -> m.equals(m1)), "No mock should have been equal to m1");
     }
 
+    @Test
+    void testAddNull() {
+        PComparatorSet<?> set = new PComparatorSet<>((o1, o2) -> o1.hashCode() == o2.hashCode(), Object::equals);
+        assertDoesNotThrow(() -> set.add(null));
+    }
+
     private static class Mock {
         final String name;
         final int value;
