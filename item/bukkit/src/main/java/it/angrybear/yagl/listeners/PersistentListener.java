@@ -297,8 +297,8 @@ public class PersistentListener implements Listener {
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(milliseconds);
-                if (action != null) action.run();
             } catch (InterruptedException ignored) {}
+            if (action != null) action.run();
         });
         thread.start();
     }
