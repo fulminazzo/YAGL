@@ -5,7 +5,6 @@ import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ThreadUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
@@ -241,7 +240,7 @@ class PersistentListenerTest {
     class PlayerDeath {
 
         @Test
-        void simulatePlayerDeath() {
+        void simulatePlayerDeath() throws InterruptedException {
             Player player = getPlayer();
             ItemStack[] contents = player.getInventory().getContents();
             contents[3] = maintain.create();
@@ -254,21 +253,21 @@ class PersistentListenerTest {
             // Simulate removal of contents
             Arrays.fill(contents, null);
 
-            ThreadUtils.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
-                for (ItemStack i : drops) {
-                    // Drop item in case of null
-                    if (i != null) assertEquals(none.create(), i);
-                }
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
 
-                List<ItemStack> copy = Arrays.asList(contents);
-                assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
-                assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
-                assertFalse(copy.contains(none.create()), "The contents should not contain the none item");
-            });
+            for (ItemStack i : drops) {
+                // Drop item in case of null
+                if (i != null) assertEquals(none.create(), i);
+            }
+
+            List<ItemStack> copy = Arrays.asList(contents);
+            assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
+            assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
+            assertFalse(copy.contains(none.create()), "The contents should not contain the none item");
         }
 
         @Test
-        void simulateNullDrops() {
+        void simulateNullDrops() throws InterruptedException {
             Player player = getPlayer();
             ItemStack[] contents = player.getInventory().getContents();
             contents[3] = maintain.create();
@@ -277,14 +276,14 @@ class PersistentListenerTest {
             // Simulate removal of contents
             Arrays.fill(contents, null);
 
-            ThreadUtils.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
-                List<ItemStack> copy = Arrays.asList(contents);
-                assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
-            });
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            List<ItemStack> copy = Arrays.asList(contents);
+            assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
         }
 
         @Test
-        void simulateNothingToRestore() {
+        void simulateNothingToRestore() throws InterruptedException {
             Player player = getPlayer();
             ItemStack[] contents = player.getInventory().getContents();
             PlayerDeathEvent event = new PlayerDeathEvent(player, Arrays.asList(contents), 3, "Player died");
@@ -292,10 +291,10 @@ class PersistentListenerTest {
             // Simulate removal of contents
             Arrays.fill(contents, null);
 
-            ThreadUtils.sleepAndThen(PersistentListener.SLEEP_TIME * 2, () -> {
-                for (ItemStack i : contents)
-                    assertNull(i, "Nothing should be restored");
-            });
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            for (ItemStack i : contents)
+                assertNull(i, "Nothing should be restored");
         }
 
     }
