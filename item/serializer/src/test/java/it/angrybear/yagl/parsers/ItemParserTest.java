@@ -3,6 +3,7 @@ package it.angrybear.yagl.parsers;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class ItemParserTest {
 
@@ -44,6 +46,16 @@ class ItemParserTest {
         if (item != null && item.getMaterial() == null)
             assertThrowsExactly(IllegalArgumentException.class, itemSupplier::get);
         else assertEquals(item, itemSupplier.get());
+    }
+
+    @Test
+    void testLoadNullSection() throws Exception {
+        assertNull(new ItemParser().load(mock(IConfiguration.class), "path"));
+    }
+
+    @Test
+    void testSaveNull() {
+        assertDoesNotThrow(() -> new ItemParser().dump(mock(IConfiguration.class), "path", null));
     }
 
     @Test
