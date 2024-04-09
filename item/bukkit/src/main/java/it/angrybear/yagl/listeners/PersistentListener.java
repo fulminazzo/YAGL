@@ -58,15 +58,10 @@ public class PersistentListener implements Listener {
         Player player = event.getEntity();
         ItemStack[] contents = player.getInventory().getContents();
         Map<Integer, PersistentItem> toRestore = parseDroppedItems(contents, event.getDrops());
-        if (!toRestore.isEmpty()) {
+        if (!toRestore.isEmpty())
             // Wait before restoring player contents.
-            new Thread(() -> {
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                    toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
-                } catch (InterruptedException ignored) {}
-            }).start();
-        }
+            sleepAndThen(SLEEP_TIME, () -> toRestore.forEach((i, p) ->
+                    player.getInventory().setItem(i, p.create())));
     }
 
     /**
