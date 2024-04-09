@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
 class ParticleTypeTest {
@@ -33,6 +34,19 @@ class ParticleTypeTest {
     @MethodSource("getEqualityTestParticles")
     void testEqualityOfParticleTypes(Particle actual, Particle expected) {
         assertEquals(expected, actual);
+    }
+
+    private static Object[] inequalityTestParticles() {
+        return new Object[]{
+                ParticleType.SMOKE_LARGE, LegacyParticleType.BONE_MEAL_USE,
+                null, mock(AParticleType.class), ParticleType.SHRIEK.create()
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("inequalityTestParticles")
+    void testInequalityOfParticleTypes(Object object) {
+        assertNotEquals(ParticleType.ASH, object);
     }
 
     private static Object[][] getTestParticles() {
