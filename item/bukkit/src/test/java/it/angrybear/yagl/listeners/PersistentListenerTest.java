@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -173,29 +174,6 @@ class PersistentListenerTest {
     }
 
     @Test
-    void simulatePlayerDeath() throws InterruptedException {
-        Player player = getPlayer();
-        ItemStack[] contents = player.getInventory().getContents();
-        contents[3] = maintain.create();
-        contents[4] = disappear.create();
-        contents[5] = none.create();
-        List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
-
-        PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
-        listener.on(event);
-        // Simulate removal of contents
-        Arrays.fill(contents, null);
-
-        Thread.sleep(PersistentListener.SLEEP_TIME * 2);
-
-        for (ItemStack i : drops) assertNull(i);
-
-        List<ItemStack> copy = Arrays.asList(contents);
-        assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
-        assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
-    }
-
-    @Test
     void simulateInteractEvent() {
         AtomicBoolean value = new AtomicBoolean(false);
         maintain.onInteract((i, p, a) -> value.set(true));
@@ -257,4 +235,64 @@ class PersistentListenerTest {
         });
         return view;
     }
+
+    @Nested
+    class PlayerDeath {
+
+        @Test
+        void simulatePlayerDeath() throws InterruptedException {
+            Player player = getPlayer();
+            ItemStack[] contents = player.getInventory().getContents();
+            contents[3] = maintain.create();
+            contents[4] = disappear.create();
+            contents[5] = none.create();
+            List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
+
+            PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
+            listener.on(event);
+            // Simulate removal of contents
+            Arrays.fill(contents, null);
+
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            for (ItemStack i : drops) assertNull(i);
+
+            List<ItemStack> copy = Arrays.asList(contents);
+            assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
+            assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
+        }
+
+        @Test
+        void simulateNullDrops() throws InterruptedException {
+            Player player = getPlayer();
+            ItemStack[] contents = player.getInventory().getContents();
+            contents[3] = maintain.create();
+            PlayerDeathEvent event = new PlayerDeathEvent(player, null, 3, "Player died");
+            listener.on(event);
+            // Simulate removal of contents
+            Arrays.fill(contents, null);
+
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            List<ItemStack> copy = Arrays.asList(contents);
+            assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
+        }
+
+        @Test
+        void simulateNothingToRestore() throws InterruptedException {
+            Player player = getPlayer();
+            ItemStack[] contents = player.getInventory().getContents();
+            PlayerDeathEvent event = new PlayerDeathEvent(player, Arrays.asList(contents), 3, "Player died");
+            listener.on(event);
+            // Simulate removal of contents
+            Arrays.fill(contents, null);
+
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            for (ItemStack i : contents)
+                assertNull(i, "Nothing should be restored");
+        }
+
+    }
+
 }
