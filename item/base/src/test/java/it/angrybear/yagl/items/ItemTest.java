@@ -60,6 +60,11 @@ class ItemTest {
     }
 
     @Test
+    void testCopyItemFromInterfaceWithNoImpl() {
+        assertDoesNotThrow(() -> Item.newItem("stone").copy(MockItemInterface.class));
+    }
+
+    @Test
     void testRemoveLore() {
         assertEquals(1, Item.newItem().setLore("Hello", "world").removeLore("Hello").getLore().size(),
                 "After removal there should be only one lore element");
