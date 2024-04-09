@@ -61,7 +61,12 @@ class ItemTest {
 
     @Test
     void testCopyItemFromInterfaceWithNoImpl() {
-        assertDoesNotThrow(() -> Item.newItem("stone").copy(MockItemInterface.class));
+        assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemInterface.class));
+    }
+
+    @Test
+    void testCopyItemFromAbstractWithNoImpl() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(MockItemAbstract.class));
     }
 
     @Test
