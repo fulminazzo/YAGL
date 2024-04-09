@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,6 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BukkitItemTest {
+
+    @BeforeAll
+    static void setAllUp() {
+        BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
+    }
 
     private static Item[] getTestMaterialItems() {
         return new Item[]{
@@ -42,9 +49,6 @@ class BukkitItemTest {
 
     @Test
     void testIsSimilar() {
-        BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
-
         ItemStack expected = new ItemStack(Material.STONE, 3);
         ItemMeta meta = expected.getItemMeta();
         meta.setDisplayName("Hello world");
@@ -61,7 +65,6 @@ class BukkitItemTest {
 
     @Test
     void testMetaCreation() {
-        BukkitUtils.setupServer();
         ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = expected.getItemMeta();
         ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.ARROW_FIRE, 1, true);
