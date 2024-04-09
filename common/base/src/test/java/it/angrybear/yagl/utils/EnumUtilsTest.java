@@ -40,6 +40,17 @@ class EnumUtilsTest {
 
     }
 
+    @Nested
+    class GetTypeNameTest {
+
+        @Test
+        void testGetTypeName() {
+            String actual = new Refl<>(EnumUtils.class).invokeMethod("getTypeName", mockClassEnum.class);
+            assertEquals("mock class enum", actual);
+        }
+
+    }
+
     private enum MockEnum {
         VALUE1;
 
