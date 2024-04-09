@@ -299,4 +299,25 @@ class PersistentListenerTest {
 
     }
 
+    @Nested
+    class SleepAndThen {
+
+        @Test
+        void testNullAction() {
+            assertDoesNotThrow(() -> PersistentListener.sleepAndThen(50, null));
+        }
+
+        @Test
+        void testInterruptedException() {
+            PersistentListener.sleepAndThen(2000, null);
+            Thread thread = Thread.getAllStackTraces().keySet().stream()
+                    .filter(t -> t.getState().equals(Thread.State.TIMED_WAITING))
+                    .findFirst().orElse(null);
+
+            assertNotNull(thread, "Could not find sleeping thread");
+            assertDoesNotThrow(thread::interrupt);
+        }
+
+    }
+
 }
