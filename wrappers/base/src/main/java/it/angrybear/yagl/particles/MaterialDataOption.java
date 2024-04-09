@@ -3,9 +3,6 @@ package it.angrybear.yagl.particles;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * An option used by {@link LegacyParticleType#TILE_BREAK} and {@link LegacyParticleType#TILE_DUST}.
  */
@@ -20,13 +17,9 @@ public class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
      * @param materialData the material data
      */
     public MaterialDataOption(final @NotNull String materialData) {
-        Matcher matcher = Pattern.compile(REGEX).matcher(materialData);
-        if (matcher.matches()) {
-            this.material = BlockDataOption.parseMaterial(matcher.group(1));
-            String nbt = matcher.group(2);
-            if (nbt == null || nbt.trim().isEmpty()) this.data = null;
-            else this.data = Integer.parseInt(nbt.trim());
-        } else throw new IllegalArgumentException(String.format("Invalid material data '%s'", materialData));
+        String[] parsed = BlockDataOption.parseRaw(materialData, REGEX);
+        this.material = parsed[0];
+        this.data = Integer.valueOf(parsed[1]);
     }
 
     /**
