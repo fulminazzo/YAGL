@@ -255,11 +255,15 @@ class PersistentListenerTest {
 
             Thread.sleep(PersistentListener.SLEEP_TIME * 2);
 
-            for (ItemStack i : drops) assertNull(i);
+            for (ItemStack i : drops) {
+                // Drop item in case of null
+                if (i != null) assertEquals(none.create(), i);
+            }
 
             List<ItemStack> copy = Arrays.asList(contents);
             assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
             assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
+            assertFalse(copy.contains(none.create()), "The contents should not contain the none item");
         }
 
         @Test
