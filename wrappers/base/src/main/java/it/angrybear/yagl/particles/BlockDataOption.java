@@ -10,7 +10,11 @@ import java.util.regex.Pattern;
  * An option used by {@link ParticleType#BLOCK_CRACK}, {@link ParticleType#BLOCK_DUST} and {@link ParticleType#FALLING_DUST}.
  */
 public class BlockDataOption extends ParticleOption<String> {
+    private static final String INVALID_DATA = "Invalid data '%s'";
+    private static final String INVALID_MATERIAL = "Invalid material '%s'";
+    private static final String MINECRAFT_IDENTIFIER = "minecraft:";
     private static final String NBT_REGEX = "^([^\\[]*)(?:\\[(.*)])?$";
+
     @Getter
     private final @NotNull String material;
     private final @NotNull String nbt;
@@ -59,7 +63,7 @@ public class BlockDataOption extends ParticleOption<String> {
             String nbt = matcher.group(2);
             if (nbt == null) nbt = "";
             return new String[]{parseMaterial(matcher.group(1)), nbt.trim()};
-        } else throw new IllegalArgumentException(String.format("Invalid data '%s'", data));
+        } else throw new IllegalArgumentException(String.format(INVALID_DATA, data));
     }
 
     /**
@@ -71,9 +75,9 @@ public class BlockDataOption extends ParticleOption<String> {
      */
     static @NotNull String parseMaterial(@NotNull String material) {
         material = material.toLowerCase();
-        if (material.startsWith("minecraft:")) material = material.substring("minecraft:".length());
+        if (material.startsWith(MINECRAFT_IDENTIFIER)) material = material.substring(MINECRAFT_IDENTIFIER.length());
         if (material.trim().isEmpty() || Pattern.compile("[\r\n\t :]").matcher(material).find())
-            throw new IllegalArgumentException(String.format("Invalid material '%s'", material));
+            throw new IllegalArgumentException(String.format(INVALID_MATERIAL, material));
         return material;
     }
 
