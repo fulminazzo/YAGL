@@ -45,6 +45,7 @@ import static org.mockito.Mockito.when;
 class PersistentListenerTest {
     private static PersistentItem maintain;
     private static PersistentItem disappear;
+    private static PersistentItem none;
     private static PersistentListener listener;
     private boolean clicked;
     private static ItemStack cursor;
@@ -54,6 +55,7 @@ class PersistentListenerTest {
         BukkitUtils.setupServer();
         maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
         disappear = new PersistentItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
+        none = new PersistentItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(null);
         listener = new PersistentListener();
     }
 
@@ -176,6 +178,7 @@ class PersistentListenerTest {
         ItemStack[] contents = player.getInventory().getContents();
         contents[3] = maintain.create();
         contents[4] = disappear.create();
+        contents[5] = none.create();
         List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
 
         PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
