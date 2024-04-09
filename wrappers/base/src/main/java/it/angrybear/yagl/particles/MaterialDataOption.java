@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * An option used by {@link LegacyParticleType#TILE_BREAK} and {@link LegacyParticleType#TILE_DUST}.
  */
 public class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
-    private static final String REGEX = "^([^\\[]*)(?:\\[(\\d+)])?$";
+    private static final String REGEX = "^([^\\[]+)(?:\\[(\\d+)])?$";
     private final @NotNull String material;
     private final Integer data;
 
