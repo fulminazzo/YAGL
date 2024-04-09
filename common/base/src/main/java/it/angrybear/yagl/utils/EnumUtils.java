@@ -63,6 +63,6 @@ public final class EnumUtils {
         Matcher matcher = Pattern.compile("[A-Z]").matcher(typeName);
         while (matcher.find()) typeName = typeName.replaceAll(matcher.group(), " " + matcher.group());
         if (typeName.startsWith(" ")) typeName = typeName.substring(1);
-        return typeName;
+        return typeName.toLowerCase();
     }
 }
