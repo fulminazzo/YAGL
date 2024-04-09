@@ -54,7 +54,7 @@ public abstract class ParserTestHelper<T> {
      * @return the dumper
      */
     protected TriConsumer<IConfiguration, String, T> getDumper() {
-        return getYamlParser().invokeMethod("getLoader");
+        return getYamlParser().invokeMethod("getDumper");
     }
 
     /**
