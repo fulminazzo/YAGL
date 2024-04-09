@@ -36,6 +36,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -201,6 +203,26 @@ class PersistentListenerTest {
         assertTrue(listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
                 items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
         assertEquals(itemSize, clickedItems.size());
+    }
+
+    @Test
+    void testFindPersistentItemNullStacks() {
+        assertEquals(false, new Refl<>(listener).invokeMethod("findPersistentItem",
+                new Class[]{Consumer.class, ItemStack[].class}, null, null));
+    }
+
+    @Test
+    void testFindPersistentItemNullConsumer() {
+        ItemStack[] stacks = new ItemStack[]{maintain.create()};
+        assertEquals(true, new Refl<>(listener).invokeMethod("findPersistentItem",
+                new Class[]{Consumer.class, ItemStack[].class}, null, stacks));
+    }
+
+    @Test
+    void testFindPersistentItemNullBiConsumer() {
+        ItemStack[] stacks = new ItemStack[]{maintain.create()};
+        assertEquals(true, new Refl<>(listener).invokeMethod("findPersistentItem",
+                new Class[]{BiConsumer.class, ItemStack[].class}, null, stacks));
     }
 
     private static Player getPlayer() {
