@@ -19,7 +19,9 @@ public class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
     public MaterialDataOption(final @NotNull String materialData) {
         String[] parsed = BlockDataOption.parseRaw(materialData, REGEX);
         this.material = parsed[0];
-        this.data = Integer.valueOf(parsed[1]);
+        String rawData = parsed[1];
+        if (rawData.trim().isEmpty()) this.data = 0;
+        else this.data = Integer.valueOf(rawData);
     }
 
     /**
