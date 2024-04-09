@@ -5,34 +5,45 @@ import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemParserTest {
 
-    @Test
-    void testSaveAndLoad() throws IOException {
+    private static Object[] testItems() {
+        return new Object[]{
+                Item.newItem().setMaterial("stone").setAmount(2).setDurability(15)
+                        .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
+                        .addEnchantment("enchant1", 10).addEnchantment("enchant2", 20)
+                        .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
+                        .setUnbreakable(true)
+                        .setCustomModelData(7), Item.newItem(), null
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("testItems")
+    void testSaveAndLoad(Item item) throws IOException {
         ItemYAGLParser.addAllParsers();
 
         File output = new File("build/resources/test/item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
         FileUtils.createNewFile(output);
-        Item item = Item.newItem().setMaterial("stone").setAmount(2).setDurability(15)
-                .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
-                .addEnchantment("enchant1", 10).addEnchantment("enchant2", 20)
-                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
-                .setUnbreakable(true)
-                .setCustomModelData(7);
         FileConfiguration configuration = new FileConfiguration(output);
         configuration.set("item", item);
         configuration.save();
 
-        configuration = new FileConfiguration(output);
-        Item item2 = configuration.get("item", Item.class);
-        assertEquals(item, item2);
+        FileConfiguration config = new FileConfiguration(output);
+        final Supplier<Item> itemSupplier = () -> config.get("item", Item.class);
+        if (item != null && item.getMaterial() == null)
+            assertThrowsExactly(IllegalArgumentException.class, itemSupplier::get);
+        else assertEquals(item, itemSupplier.get());
     }
 
     @Test
