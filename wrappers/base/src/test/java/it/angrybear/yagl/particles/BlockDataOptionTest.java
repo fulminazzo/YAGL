@@ -1,6 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,5 +33,13 @@ class BlockDataOptionTest {
         assertNotNull(actual, String.format("'%s' message should not be null", throwable.getClass().getSimpleName()));
         final String expected = String.format((String) refl.getFieldObject(fieldName), value);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testEmptyNBT() {
+        final String expected = "diamond_sword";
+        BlockDataOption option = new BlockDataOption(expected + "[]");
+        assertEquals(expected, option.getOption());
+        assertEquals("", option.getNBT());
     }
 }
