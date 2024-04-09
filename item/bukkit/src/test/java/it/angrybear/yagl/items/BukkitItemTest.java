@@ -1,10 +1,13 @@
 package it.angrybear.yagl.items;
 
+import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,11 +15,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class BukkitItemTest {
 
@@ -92,6 +98,22 @@ class BukkitItemTest {
         ItemStack expected = new ItemStack(Material.STONE);
         ItemStack actual = BukkitItem.newItem("stone").create(ItemMeta.class, null);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCreateWithNullMeta() {
+        ItemStack expected = new ItemStack(Material.STONE);
+        expected.setItemMeta(null);
+        try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class);
+             MockedStatic<ItemAdapter> itemAdapter = mockStatic(ItemAdapter.class)) {
+            ItemFactory mockFactory = mock(ItemFactory.class);
+            when(mockFactory.getItemMeta(any())).thenReturn(null);
+            bukkit.when(Bukkit::getItemFactory).thenReturn(mockFactory);
+            itemAdapter.when(() -> ItemAdapter.itemToItemStack(any())).thenReturn(expected);
+
+            ItemStack actual = BukkitItem.newItem("stone").create(ItemMeta.class, m -> m.setDisplayName("Hello world"));
+            assertEquals(expected, actual);
+        }
     }
 
     private static Item mockItem(Item item) {
