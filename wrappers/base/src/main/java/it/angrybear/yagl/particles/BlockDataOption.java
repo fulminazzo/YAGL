@@ -13,7 +13,7 @@ public class BlockDataOption extends ParticleOption<String> {
     private static final String INVALID_DATA = "Invalid data '%s'";
     private static final String INVALID_MATERIAL = "Invalid material '%s'";
     private static final String MINECRAFT_IDENTIFIER = "minecraft:";
-    private static final String NBT_REGEX = "^([^\\[]*)(?:\\[(.*)])?$";
+    private static final String NBT_REGEX = "^([^\\[]+)(?:\\[(.*)])?$";
 
     @Getter
     private final @NotNull String material;
