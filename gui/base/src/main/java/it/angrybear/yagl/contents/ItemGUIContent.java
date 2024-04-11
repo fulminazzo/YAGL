@@ -34,7 +34,7 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     }
 
     @Override
-    public @NotNull Item render() {
+    public @NotNull Item internalRender() {
         return this.item.copy();
     }
 
