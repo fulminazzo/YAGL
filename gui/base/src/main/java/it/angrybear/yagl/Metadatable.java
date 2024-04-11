@@ -6,9 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -157,13 +155,15 @@ public interface Metadatable extends Iterable<String> {
      * @param collection the collection
      * @return the collection parsed
      */
+    @SuppressWarnings("unchecked")
     default @NotNull Collection<Object> apply(Collection<Object> collection) {
-        final Class<Collection<?>> clazz = (Class<Collection<?>>) collection.getClass();
-        Collection<Object> newCollection = (Collection<Object>) collection.stream()
-                .map(this::apply)
-                .collect(Collectors.toCollection(() ->
-                        new Refl<>(clazz, new Object[0]).getObject()));
-        return newCollection;
+        Class<?> clazz = collection.getClass();
+        // In the case of creation with Arrays.asList()
+        if (clazz.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
+            clazz = ArrayList.class;
+        Class<Collection<Object>> finalClass = (Class<Collection<Object>>) clazz;
+        return collection.stream().map(this::apply)
+                .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
     }
 
     /**
