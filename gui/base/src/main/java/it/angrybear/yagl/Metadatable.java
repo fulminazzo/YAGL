@@ -13,6 +13,9 @@ import java.util.function.Function;
  * An interface that holds key-value pairs of {@link String}s.
  */
 public interface Metadatable extends Iterable<String> {
+    /**
+     * A function used to convert the variables in {@link #apply(Object)}.
+     */
     Function<@NotNull String, @NotNull String> VARIABLE_FORMAT = s -> "%" + s + "%";
     /**
      * A function used to parse the variables names.
