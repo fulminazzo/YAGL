@@ -29,7 +29,7 @@ public class ResizableGUI extends GUIImpl {
 
     @Override
     public @NotNull GUI setContents(int slot, GUIContent @NotNull ... contents) {
-        if (slot >= getSize() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
+        if (slot >= size() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
         return super.setContents(slot, contents);
     }
 
@@ -40,8 +40,8 @@ public class ResizableGUI extends GUIImpl {
             GUIContent content = contents[i];
             j = addSingle(content, j);
             if (j != -1) continue;
-            if (getSize() < MAX_SIZE) {
-                resize(getSize() + 9);
+            if (size() < MAX_SIZE) {
+                resize(size() + 9);
                 this.contents.set(j, new Contents(content));
             } else throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
         }

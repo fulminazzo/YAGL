@@ -42,7 +42,7 @@ public interface GUI extends Metadatable {
      *
      * @return the size
      */
-    int getSize();
+    int size();
 
     /**
      * Checks if the content at the given slot is movable.
@@ -58,7 +58,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllMovable() {
-        for (int i = 0; i < getSize(); i++) setMovable(i, true);
+        for (int i = 0; i < size(); i++) setMovable(i, true);
         return this;
     }
 
@@ -68,7 +68,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllUnmovable() {
-        for (int i = 0; i < getSize(); i++) setMovable(i, false);
+        for (int i = 0; i < size(); i++) setMovable(i, false);
         return this;
     }
 

@@ -46,7 +46,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public int getSize() {
+    public int size() {
         return this.contents.size();
     }
 

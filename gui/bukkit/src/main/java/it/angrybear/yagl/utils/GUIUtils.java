@@ -26,12 +26,12 @@ public class GUIUtils {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
                 inventory = Bukkit.createInventory(null, type);
-            } else inventory = Bukkit.createInventory(null, gui.getSize());
+            } else inventory = Bukkit.createInventory(null, gui.size());
         } else {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
                 inventory = Bukkit.createInventory(null, type, title);
-            } else inventory = Bukkit.createInventory(null, gui.getSize(), title);
+            } else inventory = Bukkit.createInventory(null, gui.size(), title);
         }
         return inventory;
     }
