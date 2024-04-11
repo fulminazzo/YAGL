@@ -31,31 +31,6 @@ public class GUIManager implements Listener {
         this.viewers = new ArrayList<>();
     }
 
-    protected @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
-        BukkitViewer viewer = getViewer(player);
-        return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
-    }
-
-    protected @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull UUID uuid) {
-        BukkitViewer viewer = getViewer(uuid);
-        return Optional.ofNullable(viewer == null || viewer.hasOpenGUI() ? viewer : null);
-    }
-
-    protected @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
-        BukkitViewer viewer = getViewer(player.getUniqueId());
-        if (viewer == null) {
-            viewer = (BukkitViewer) BukkitViewer.newViewer(player);
-            this.viewers.add(viewer);
-        }
-        return viewer;
-    }
-
-    protected @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
-        return this.viewers.stream()
-                .filter(v -> v.getUniqueId().equals(uuid))
-                .findFirst().orElse(null);
-    }
-
     @EventHandler
     void on(InventoryOpenEvent event) {
         getOpenGUIViewer(event.getPlayer()).ifPresent(viewer -> {
@@ -109,6 +84,31 @@ public class GUIManager implements Listener {
                     .forEach(HumanEntity::closeInventory);
             instance = null;
         }
+    }
+
+    protected static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
+        BukkitViewer viewer = getViewer(player);
+        return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
+    }
+
+    protected static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull UUID uuid) {
+        BukkitViewer viewer = getViewer(uuid);
+        return Optional.ofNullable(viewer == null || viewer.hasOpenGUI() ? viewer : null);
+    }
+
+    protected static @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
+        BukkitViewer viewer = getViewer(player.getUniqueId());
+        if (viewer == null) {
+            viewer = (BukkitViewer) BukkitViewer.newViewer(player);
+            getInstance().viewers.add(viewer);
+        }
+        return viewer;
+    }
+
+    protected static @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
+        return getInstance().viewers.stream()
+                .filter(v -> v.getUniqueId().equals(uuid))
+                .findFirst().orElse(null);
     }
 
     public static GUIManager getInstance() {
