@@ -6,6 +6,7 @@ import it.angrybear.yagl.viewers.BukkitViewer;
 import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,12 +33,12 @@ public class GUIListener implements Listener {
         this.viewers = new ArrayList<>();
     }
 
-    protected Optional<Viewer> getOpenGUIViewer(final @NotNull Player player) {
+    protected Optional<Viewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
         Viewer viewer = getViewer(player);
         return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
     }
 
-    protected Viewer getViewer(final @NotNull Player player) {
+    protected Viewer getViewer(final @NotNull HumanEntity player) {
         return this.viewers.stream()
                 .filter(v -> v.getUniqueId().equals(player.getUniqueId()))
                 .findFirst().orElseGet(() -> {

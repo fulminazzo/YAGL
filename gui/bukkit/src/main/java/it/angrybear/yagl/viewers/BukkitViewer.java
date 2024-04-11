@@ -1,6 +1,7 @@
 package it.angrybear.yagl.viewers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +48,7 @@ public class BukkitViewer extends Viewer {
      * @param player the player
      * @return the viewer
      */
-    public static Viewer newViewer(final @NotNull Player player) {
+    public static Viewer newViewer(final @NotNull HumanEntity player) {
         return new BukkitViewer(player.getUniqueId(), player.getName());
     }
 }
