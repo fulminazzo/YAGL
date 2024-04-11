@@ -12,6 +12,7 @@ import org.mockito.exceptions.misusing.NotAMockException;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -129,13 +130,12 @@ public final class TestUtils {
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
                                           final @Nullable Predicate<Method> filter) {
-        final Refl<?> refl = new Refl<>(object);
-
-        for (Method method : refl.getNonStaticMethods()) {
+        for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
             final String methodString = methodToString(method);
             try {
                 final Class<?> returnType = method.getReturnType();
+                if (Modifier.isStatic(method.getModifiers())) continue;
                 if (!clazz.isAssignableFrom(returnType)) continue;
                 if (filter != null && filter.test(method)) return;
 
