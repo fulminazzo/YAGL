@@ -1,15 +1,16 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.Metadatable;
+import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.BiGUICommand;
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import it.angrybear.yagl.actions.BiGUIAction;
-import it.angrybear.yagl.actions.GUIAction;
-import it.angrybear.yagl.viewers.Viewer;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -19,7 +20,7 @@ import java.util.Optional;
 /**
  * The general interface to represent a GUI.
  */
-public interface GUI extends Iterable<GUIContent> {
+public interface GUI extends Metadatable {
 
     /**
      * Sets title.
@@ -312,6 +313,30 @@ public interface GUI extends Iterable<GUIContent> {
      * @return the action
      */
     @NotNull Optional<BiGUIAction> changeGUIAction();
+
+    @Override
+    @NotNull
+    default GUI setVariable(final @NotNull String name, final @NotNull String value) {
+        return (GUI) Metadatable.super.setVariable(name, value);
+    }
+
+    @Override
+    @NotNull
+    default GUI unsetVariable(final @NotNull String name) {
+        return (GUI) Metadatable.super.unsetVariable(name);
+    }
+
+    @Override
+    @NotNull
+    default GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
+        return (GUI) Metadatable.super.copyAll(other, replace);
+    }
+
+    @Override
+    @NotNull
+    default GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (GUI) Metadatable.super.copyFrom(other, replace);
+    }
 
     /**
      * Creates a new {@link ResizableGUI}.
