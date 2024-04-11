@@ -3,6 +3,7 @@ package it.angrybear.yagl.actions;
 import it.angrybear.yagl.TestUtils;
 import it.fulminazzo.fulmicollection.utils.ClassUtils;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -10,6 +11,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -38,5 +41,19 @@ class CommandActionTest {
             method.invoke(action, params);
             verify(action).execute(any());
         }
+    }
+
+    @Test
+    void testCommandActionsEquality() {
+        CommandAction c1 = new GUICommand("command");
+        CommandAction c2 = new GUICommand("command");
+        assertEquals(c1, c2);
+    }
+
+    @Test
+    void testCommandActionsInequality() {
+        CommandAction c1 = new GUICommand("command");
+        CommandAction c2 = new GUICommand("new-command");
+        assertNotEquals(c1, c2);
     }
 }
