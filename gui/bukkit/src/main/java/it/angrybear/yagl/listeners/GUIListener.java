@@ -90,7 +90,12 @@ public class GUIListener implements Listener {
         JavaPlugin plugin = getProvidingPlugin();
         Plugin disablingPlugin = event.getPlugin();
         if (plugin.equals(disablingPlugin)) {
-            this.openGUIs.keySet().stream().map(Bukkit::getPlayer).filter(Objects::nonNull).forEach(Player::closeInventory);
+            this.viewers.stream()
+                    .filter(Viewer::hasOpenGUI)
+                    .map(Viewer::getUniqueId)
+                    .map(Bukkit::getPlayer)
+                    .filter(Objects::nonNull)
+                    .forEach(HumanEntity::closeInventory);
             instance = null;
         }
     }
