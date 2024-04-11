@@ -8,13 +8,15 @@ import it.angrybear.yagl.viewers.Viewer;
 
 import java.util.Optional;
 
+/**
+ * A basic implementation for {@link GUIContent}.
+ */
 @Getter
 abstract class GUIContentImpl implements GUIContent {
     protected int priority = 0;
     protected String clickSound;
     @Getter(AccessLevel.NONE)
     protected RequirementChecker requirements;
-
     protected GUIItemAction clickAction;
 
     @Override
