@@ -102,7 +102,9 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull List<GUIContent> getContents() {
         List<GUIContent> list = new LinkedList<>();
-        for (Contents content : this.contents) list.addAll(Arrays.asList(content.contents));
+        for (Contents content : this.contents)
+            if (content != null)
+                list.addAll(Arrays.asList(content.contents));
         return list;
     }
 
