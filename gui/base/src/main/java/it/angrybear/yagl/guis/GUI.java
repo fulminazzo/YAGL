@@ -23,6 +23,13 @@ import java.util.Optional;
 public interface GUI extends Metadatable {
 
     /**
+     * Opens the current GUI for the given {@link Viewer}.
+     *
+     * @param viewer the viewer
+     */
+    void open(final @NotNull Viewer viewer);
+
+    /**
      * Sets title.
      *
      * @param title the title
