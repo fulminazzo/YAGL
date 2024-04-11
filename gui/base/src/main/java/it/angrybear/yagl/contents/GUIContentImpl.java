@@ -73,6 +73,9 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
 
     @Override
     public @NotNull Optional<GUIItemAction> clickItemAction() {
-        return Optional.ofNullable(this.clickAction);
+        return Optional.of((v, g, c) -> {
+            if (this.clickSound != null) v.playSound(this.clickSound);
+            if (this.clickAction != null) this.clickAction.execute(v, g, c);
+        });
     }
 }
