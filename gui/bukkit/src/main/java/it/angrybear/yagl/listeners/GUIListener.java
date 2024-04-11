@@ -4,7 +4,6 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.BukkitViewer;
 import it.angrybear.yagl.viewers.Viewer;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -23,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class GUIListener implements Listener {
-    @Getter
     private static GUIListener instance;
 
     private final List<Viewer> viewers;
@@ -119,6 +117,15 @@ public class GUIListener implements Listener {
         if (listener == null)
             throw new IllegalStateException("GUIListener has not been initialized yet");
         listener.openGUIs.put(viewer.getUniqueId(), gui);
+    }
+
+    public static GUIListener getInstance() {
+        GUIListener listener = instance;
+        if (listener == null) {
+            listener = new GUIListener();
+            Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
+        }
+        return listener;
     }
 
     private static @NotNull JavaPlugin getProvidingPlugin() {
