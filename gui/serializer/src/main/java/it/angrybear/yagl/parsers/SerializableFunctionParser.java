@@ -1,6 +1,7 @@
 package it.angrybear.yagl.parsers;
 
 import it.angrybear.yagl.SerializableFunction;
+import it.angrybear.yagl.utils.ParserUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.utils.SerializeUtils;
@@ -45,16 +46,17 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
         return (c, s, f) -> {
             c.set(s, null);
             if (f == null) return;
-            c.set(s + ".type", GUIElementParser.classToType(getOClass(), (Class<? extends F>) f.getClass()));
+            c.set(s + ".type", ParserUtils.classToType(getOClass(), (Class<? extends F>) f.getClass()));
             c.set(s + ".content", f.serialize());
         };
     }
-    
+
     protected static <C> Class<? extends C> typeToClass(final Class<C> mainClass, final @NotNull String type) {
         try {
-            return GUIElementParser.typeToClass(mainClass, type);
+            return ParserUtils.typeToClass(mainClass, type);
         } catch (RuntimeException e) {
             return mainClass;
         }
     }
+
 }
