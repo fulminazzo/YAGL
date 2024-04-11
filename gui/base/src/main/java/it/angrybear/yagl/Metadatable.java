@@ -113,11 +113,14 @@ public interface Metadatable extends Iterable<String> {
      * Applies all the current variables to the given object fields,
      * by replacing in every string all the variables in the format {@link #VARIABLE_FORMAT}.
      *
+     * @param <T>    the type parameter
      * @param object the object
      * @return the object parsed
      */
+    @SuppressWarnings("unchecked")
     default <T> T apply(final T object) {
         if (object == null) return null;
+        else if (object instanceof String) return (T) apply((String) object);
 
         final Refl<T> refl = new Refl<>(object);
         for (Field field : refl.getNonStaticFields())
