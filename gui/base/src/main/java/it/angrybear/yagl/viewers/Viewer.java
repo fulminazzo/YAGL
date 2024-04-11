@@ -1,6 +1,5 @@
 package it.angrybear.yagl.viewers;
 
-import it.angrybear.yagl.guis.GUI;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,13 +30,6 @@ public abstract class Viewer {
      * @param command the command
      */
     public abstract void executeCommand(final @NotNull String command);
-
-    /**
-     * Opens gui.
-     *
-     * @param gui the gui
-     */
-    public abstract void openGUI(final @NotNull GUI gui);
 
     /**
      * Check if the viewer has the given permission
