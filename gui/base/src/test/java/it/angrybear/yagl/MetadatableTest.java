@@ -1,9 +1,15 @@
 package it.angrybear.yagl;
 
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MetadatableTest {
 
@@ -23,4 +29,34 @@ class MetadatableTest {
         final String actual = tmp[0];
         assertEquals(expected, Metadatable.VARIABLE_PARSER.apply(actual));
     }
+
+    @Test
+    void testApply() {
+        Metadatable metadatable = new MockMetadatable();
+        metadatable.setVariable("variable", "me");
+        metadatable.setVariable("not", "hello");
+
+        MockObject object = new MockObject();
+        object = (MockObject) metadatable.apply(object);
+
+        assertEquals("SHOULD %not% BE CHANGED", MockObject.string1);
+        assertNull(object.string2);
+        assertEquals("parse me", object.string3);
+    }
+
+    private static class MockMetadatable implements Metadatable {
+        private final Map<String, String> map = new HashMap<>();
+
+        @Override
+        public @NotNull Map<String, String> variables() {
+            return this.map;
+        }
+    }
+
+    private static class MockObject {
+        static String string1 = "SHOULD %not% BE CHANGED";
+        String string2 = null;
+        String string3 = "parse %variable%";
+    }
+
 }
