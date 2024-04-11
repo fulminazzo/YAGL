@@ -31,19 +31,29 @@ public class GUIListener implements Listener {
         this.viewers = new ArrayList<>();
     }
 
-    protected Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
+    protected @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
         BukkitViewer viewer = getViewer(player);
         return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
     }
 
-    protected BukkitViewer getViewer(final @NotNull HumanEntity player) {
+    protected @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull UUID uuid) {
+        BukkitViewer viewer = getViewer(uuid);
+        return Optional.ofNullable(viewer == null || viewer.hasOpenGUI() ? viewer : null);
+    }
+
+    protected @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
+        BukkitViewer viewer = getViewer(player.getUniqueId());
+        if (viewer == null) {
+            viewer = (BukkitViewer) BukkitViewer.newViewer(player);
+            this.viewers.add(viewer);
+        }
+        return viewer;
+    }
+
+    protected @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
         return this.viewers.stream()
-                .filter(v -> v.getUniqueId().equals(player.getUniqueId()))
-                .findFirst().orElseGet(() -> {
-                    BukkitViewer viewer = (BukkitViewer) BukkitViewer.newViewer(player);
-                    this.viewers.add(viewer);
-                    return viewer;
-                });
+                .filter(v -> v.getUniqueId().equals(uuid))
+                .findFirst().orElse(null);
     }
 
     @EventHandler
