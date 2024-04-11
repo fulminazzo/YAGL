@@ -63,6 +63,16 @@ public interface Metadatable extends Iterable<String> {
     }
 
     /**
+     * Checks if the current {@link Metadatable} has the given variable.
+     *
+     * @param name the name
+     * @return true if it contains
+     */
+    default boolean hasVariable(final @NotNull String name) {
+        return getVariable(VARIABLE_PARSER.apply(name)) != null;
+    }
+
+    /**
      * Gets variable.
      * Returns <i>null</i> in case of missing.
      *
