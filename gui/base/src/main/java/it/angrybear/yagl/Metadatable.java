@@ -136,6 +136,21 @@ public interface Metadatable extends Iterable<String> {
     }
 
     /**
+     * Applies all the current variables to the given string.
+     *
+     * @param string the string
+     * @return the string parsed
+     */
+    default String apply(@NotNull String string) {
+        for (final String v : this) {
+            final String s = getVariable(v);
+            if (s != null)
+                string = string.replace(VARIABLE_FORMAT.apply(v), s);
+        }
+        return string;
+    }
+
+    /**
      * Gets the current variables in form of {@link Map}.
      *
      * @return the map
