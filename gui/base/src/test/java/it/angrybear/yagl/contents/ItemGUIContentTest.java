@@ -1,5 +1,6 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.items.Item;
 import org.junit.jupiter.api.Test;
 
@@ -20,5 +21,11 @@ class ItemGUIContentTest {
                 .setLore("Hello friend", "Do you like this lore?");
 
         assertEquals(expected, guiContent.render());
+    }
+
+    @Test
+    void testReturnTypes() {
+        TestUtils.testReturnType(new ItemGUIContent(), GUIContent.class, m ->
+                m.getName().equals("copyContent"));
     }
 }
