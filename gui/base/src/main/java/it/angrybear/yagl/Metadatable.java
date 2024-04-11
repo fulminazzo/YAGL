@@ -1,13 +1,16 @@
 package it.angrybear.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * An interface that holds key-value pairs of {@link String}s.
@@ -121,21 +124,16 @@ public interface Metadatable extends Iterable<String> {
     default <T> T apply(final T object) {
         if (object == null) return null;
         else if (object instanceof String) return (T) apply((String) object);
-
-        final Refl<T> refl = new Refl<>(object);
-        for (Field field : refl.getNonStaticFields())
-            if (String.class.isAssignableFrom(field.getType())) {
-                String o = refl.getFieldObject(field);
-                if (o == null) continue;
-                for (String v : this) {
-                    String s = getVariable(v);
-                    if (s != null)
-                        o = o.replace(VARIABLE_FORMAT.apply(v), s);
-                }
-                refl.setFieldObject(field, o);
+        else if (object instanceof Collection) return (T) apply((Collection<Object>) object);
+        else if (object instanceof Map) return (T) apply((Map<Object, Object>) object);
+        else if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass())) {
+            final Refl<T> refl = new Refl<>(object);
+            for (Field field : refl.getNonStaticFields()) {
+                Object o = refl.getFieldObject(field);
+                refl.setFieldObject(field, apply(o));
             }
-
-        return refl.getObject();
+        }
+        return object;
     }
 
     /**
@@ -151,6 +149,39 @@ public interface Metadatable extends Iterable<String> {
                 string = string.replace(VARIABLE_FORMAT.apply(v), s);
         }
         return string;
+    }
+
+    /**
+     * Applies all the current variables to the given collection.
+     *
+     * @param collection the collection
+     * @return the collection parsed
+     */
+    default @NotNull Collection<Object> apply(Collection<Object> collection) {
+        final Class<Collection<?>> clazz = (Class<Collection<?>>) collection.getClass();
+        Collection<Object> newCollection = (Collection<Object>) collection.stream()
+                .map(this::apply)
+                .collect(Collectors.toCollection(() ->
+                        new Refl<>(clazz, new Object[0]).getObject()));
+        return newCollection;
+    }
+
+    /**
+     * Applies all the current variables to the given map.
+     *
+     * @param map the map
+     * @return the map parsed
+     */
+    default @NotNull Map<Object, Object> apply(final @NotNull Map<Object, Object> map) {
+        for (Object key : map.keySet()) {
+            if (key == null) continue;
+            Object value = map.get(key);
+            if (value != null) {
+                map.remove(key);
+                map.put(apply(key), apply(value));
+            }
+        }
+        return map;
     }
 
     /**
