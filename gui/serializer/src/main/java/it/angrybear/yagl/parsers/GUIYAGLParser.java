@@ -9,9 +9,8 @@ public class GUIYAGLParser {
 
     public static void addAllParsers() {
         ItemYAGLParser.addAllParsers();
-        //TODO: rework
         FileConfiguration.addParsers(new SerializableFunctionParser<>(RequirementChecker.class));
         ActionParsers.addParsers();
-        FileConfiguration.addParsers(new ContentsParser());
+        FileConfiguration.addParsers(ContentsParser.class.getPackage().getName());
     }
 }
