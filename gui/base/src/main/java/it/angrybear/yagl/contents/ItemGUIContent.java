@@ -1,9 +1,13 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.Metadatable;
+import it.angrybear.yagl.actions.GUIItemAction;
+import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.angrybear.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -218,4 +222,55 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     public @NotNull ItemGUIContent copy() {
         return new ItemGUIContent(this.item);
     }
+
+    @Override
+    public @NotNull ItemGUIContent setClickSound(Sound sound) {
+        return (ItemGUIContent) super.setClickSound(sound);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent setPriority(int priority) {
+        return (ItemGUIContent) super.setPriority(priority);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent setViewRequirements(@NotNull RequirementChecker requirements) {
+        return (ItemGUIContent) super.setViewRequirements(requirements);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent onClickItem(@NotNull GUIItemAction action) {
+        return (ItemGUIContent) super.onClickItem(action);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent setViewRequirements(@NotNull String permission) {
+        return (ItemGUIContent) super.setViewRequirements(permission);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent onClickItem(@NotNull String command) {
+        return (ItemGUIContent) super.onClickItem(command);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent copyFrom(@NotNull Metadatable other, boolean replace) {
+        return (ItemGUIContent) super.copyFrom(other, replace);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent copyAll(@NotNull Metadatable other, boolean replace) {
+        return (ItemGUIContent) super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent unsetVariable(@NotNull String name) {
+        return (ItemGUIContent) super.unsetVariable(name);
+    }
+
+    @Override
+    public @NotNull ItemGUIContent setVariable(@NotNull String name, @NotNull String value) {
+        return (ItemGUIContent) super.setVariable(name, value);
+    }
+
 }
