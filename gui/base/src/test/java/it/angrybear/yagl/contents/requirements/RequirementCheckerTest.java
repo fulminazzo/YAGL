@@ -10,7 +10,7 @@ class RequirementCheckerTest {
 
     @Test
     void testPermissionRequirement() {
-        final PermissionRequirementChecker checker = new PermissionRequirementChecker("yagl.expected");
+        final PermissionRequirement checker = new PermissionRequirement("yagl.expected");
         final Viewer viewer = mock(Viewer.class);
 
         checker.test(viewer);

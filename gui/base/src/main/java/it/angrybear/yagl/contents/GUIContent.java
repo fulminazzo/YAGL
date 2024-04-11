@@ -2,7 +2,7 @@ package it.angrybear.yagl.contents;
 
 import it.angrybear.yagl.Metadatable;
 import it.angrybear.yagl.actions.GUIItemCommand;
-import it.angrybear.yagl.contents.requirements.PermissionRequirementChecker;
+import it.angrybear.yagl.contents.requirements.PermissionRequirement;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
@@ -59,13 +59,13 @@ public interface GUIContent extends Metadatable {
     @Nullable String getClickSound();
 
     /**
-     * Allows to set a {@link PermissionRequirementChecker} with the given permission as the view requirement.
+     * Allows to set a {@link PermissionRequirement} with the given permission as the view requirement.
      *
      * @param permission the permission
      * @return this content
      */
     default @NotNull GUIContent setViewRequirements(final @NotNull String permission) {
-        return setViewRequirements(new PermissionRequirementChecker(permission));
+        return setViewRequirements(new PermissionRequirement(permission));
     }
 
     /**

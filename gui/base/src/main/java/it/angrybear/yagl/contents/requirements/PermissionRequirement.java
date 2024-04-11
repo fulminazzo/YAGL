@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * A type of requirement that checks if the {@link Viewer} has a certain permission.
  */
 @Getter
-public class PermissionRequirementChecker extends FieldEquable implements RequirementChecker {
+public class PermissionRequirement extends FieldEquable implements RequirementChecker {
     private final String permission;
 
     /**
@@ -17,7 +17,7 @@ public class PermissionRequirementChecker extends FieldEquable implements Requir
      *
      * @param permission the permission
      */
-    public PermissionRequirementChecker(final @NotNull String permission) {
+    public PermissionRequirement(final @NotNull String permission) {
         this.permission = permission.toLowerCase();
     }
 
