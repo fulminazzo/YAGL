@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GUIParser extends GUIElementParser<GUI> {
+public class GUIParser extends TypedParser<GUI> {
 
     public GUIParser() {
         super(GUI.class);
@@ -38,4 +38,5 @@ public class GUIParser extends GUIElementParser<GUI> {
             c.set(s + ".size", g.getSize());
         };
     }
+
 }
