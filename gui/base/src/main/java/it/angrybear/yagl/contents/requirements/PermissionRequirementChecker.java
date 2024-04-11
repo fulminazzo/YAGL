@@ -18,7 +18,7 @@ public class PermissionRequirementChecker extends FieldEquable implements Requir
      * @param permission the permission
      */
     public PermissionRequirementChecker(final @NotNull String permission) {
-        this.permission = permission;
+        this.permission = permission.toLowerCase();
     }
 
     @Override

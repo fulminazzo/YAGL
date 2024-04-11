@@ -17,7 +17,7 @@ abstract class CommandAction extends FieldEquable implements SerializableFunctio
      * @param command the command
      */
     CommandAction(final @NotNull String command) {
-        this.command = command;
+        this.command = command.toLowerCase();
     }
 
     /**
