@@ -30,6 +30,12 @@ public class PermissionRequirementChecker implements RequirementChecker {
         return this.permission;
     }
 
+    /**
+     * Equals boolean.
+     *
+     * @param checker the checker
+     * @return the boolean
+     */
     public boolean equals(PermissionRequirementChecker checker) {
         return checker != null && this.permission.equalsIgnoreCase(checker.permission);
     }
