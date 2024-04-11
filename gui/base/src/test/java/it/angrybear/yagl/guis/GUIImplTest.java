@@ -5,6 +5,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
+import it.angrybear.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
@@ -61,12 +62,12 @@ class GUIImplTest {
         }
 
         @Override
-        public @NotNull GUIContent setClickSound(String rawSound) {
+        public @NotNull GUIContent setClickSound(Sound sound) {
             return null;
         }
 
         @Override
-        public @Nullable String getClickSound() {
+        public @Nullable Sound getClickSound() {
             return null;
         }
 

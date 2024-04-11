@@ -4,6 +4,7 @@ import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
+import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,7 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
     @Getter
     protected int priority = 0;
     @Getter
-    protected String clickSound;
+    protected Sound clickSound;
     protected RequirementChecker requirements;
     protected GUIItemAction clickAction;
     protected final Map<String, String> variables = new HashMap<>();
@@ -43,8 +44,8 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
     }
 
     @Override
-    public @NotNull GUIContent setClickSound(String rawSound) {
-        this.clickSound = rawSound;
+    public @NotNull GUIContent setClickSound(Sound sound) {
+        this.clickSound = sound;
         return this;
     }
 

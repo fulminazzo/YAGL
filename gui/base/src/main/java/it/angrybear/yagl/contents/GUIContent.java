@@ -5,6 +5,7 @@ import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.requirements.PermissionRequirement;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import it.angrybear.yagl.actions.GUIItemAction;
@@ -46,17 +47,17 @@ public interface GUIContent extends Metadatable {
      * Sets the sound played upon clicking on the content in the GUI.
      * This is NOT checked until the sound is actually played.
      *
-     * @param rawSound the raw sound
+     * @param sound the sound
      * @return this content
      */
-    @NotNull GUIContent setClickSound(final String rawSound);
+    @NotNull GUIContent setClickSound(final Sound sound);
 
     /**
      * Gets the sound played upon clicking on this content in the GUI.
      *
      * @return the sound, if set
      */
-    @Nullable String getClickSound();
+    @Nullable Sound getClickSound();
 
     /**
      * Allows to set a {@link PermissionRequirement} with the given permission as the view requirement.
