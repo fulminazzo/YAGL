@@ -21,8 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -139,16 +138,29 @@ public final class TestUtils {
                 if (!clazz.isAssignableFrom(returnType)) continue;
                 if (filter != null && filter.test(method)) return;
 
+                final Class<?> objectClass = object.getClass();
+                final String objectClassName = objectClass.getSimpleName();
                 String errorMessage = String.format("Method '%s' of class '%s' did not return itself",
-                        methodString, object.getClass().getSimpleName());
+                        methodString, objectClassName);
 
                 Object[] mockParameters = Arrays.stream(parameters).map(TestUtils::mockParameter).toArray(Object[]::new);
                 Object o = ReflectionUtils.setAccessible(method).invoke(object, mockParameters);
 
                 if (method.getName().equals("copy"))
-                    assertInstanceOf(object.getClass(), o, String.format("Returned object from %s call should have been %s but was %s",
-                            methodString, object.getClass(), o.getClass()));
-                else assertEquals(object.hashCode(), o.hashCode(), errorMessage);
+                    assertInstanceOf(objectClass, o, String.format("Returned object from %s call should have been %s but was %s",
+                            methodString, objectClass, o.getClass()));
+                else {
+                    try {
+                        ReflectionUtils.getMethod(objectClass, objectClass, method.getName(), method.getParameterTypes());
+                    } catch (IllegalArgumentException e) {
+                        final String message = e.getMessage();
+                        if (message != null && message.contains("Could not find"))
+                            fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
+                                    methodString, objectClassName, objectClassName));
+                        else throw e;
+                    }
+                    assertEquals(object.hashCode(), o.hashCode(), errorMessage);
+                }
             } catch (Exception e) {
                 System.err.printf("An exception occurred while testing method '%s'%n", methodString);
                 ExceptionUtils.throwException(e);
