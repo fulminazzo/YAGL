@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ abstract class GUIContentImpl implements GUIContent {
     protected RequirementChecker requirements;
     protected GUIItemAction clickAction;
     @Getter(AccessLevel.NONE)
-    protected Map<String, String> variables;
+    protected final Map<String, String> variables = new HashMap<>();
 
     @Override
     public @NotNull Item render() {
