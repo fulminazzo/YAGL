@@ -1,12 +1,13 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
+import it.angrybear.yagl.viewers.Viewer;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import it.angrybear.yagl.actions.GUIItemAction;
-import it.angrybear.yagl.viewers.Viewer;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -19,6 +20,8 @@ abstract class GUIContentImpl implements GUIContent {
     @Getter(AccessLevel.NONE)
     protected RequirementChecker requirements;
     protected GUIItemAction clickAction;
+    @Getter(AccessLevel.NONE)
+    protected Map<String, String> variables;
 
     @Override
     public @NotNull GUIContent setPriority(int priority) {
@@ -47,6 +50,11 @@ abstract class GUIContentImpl implements GUIContent {
     public @NotNull GUIContent onClickItem(@NotNull GUIItemAction action) {
         this.clickAction = action;
         return this;
+    }
+
+    @Override
+    public @NotNull Map<String, String> variables() {
+        return this.variables;
     }
 
     @Override

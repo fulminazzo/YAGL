@@ -1,5 +1,6 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.Metadatable;
 import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.requirements.PermissionRequirementChecker;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
@@ -14,7 +15,7 @@ import java.util.Optional;
 /**
  * Represents the generic content of a GUI.
  */
-public interface GUIContent {
+public interface GUIContent extends Metadatable {
 
     /**
      * Renders the current content in an Item.
