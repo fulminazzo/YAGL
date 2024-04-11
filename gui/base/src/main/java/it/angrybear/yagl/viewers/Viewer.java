@@ -1,5 +1,6 @@
 package it.angrybear.yagl.viewers;
 
+import it.angrybear.yagl.guis.GUI;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,8 @@ import java.util.UUID;
 public abstract class Viewer {
     protected final UUID uniqueId;
     protected final String name;
+    protected GUI previousGUI;
+    protected GUI openGUI;
 
     /**
      * Instantiates a new Viewer.
