@@ -72,19 +72,23 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
         int j = 0;
-        main_loop:
         for (int i = 0; i < contents.length; i++) {
-            GUIContent content = contents[i];
-            for (; j < this.contents.size(); j++) {
-                Contents c = this.contents.get(j);
-                if (c == null) {
-                    this.contents.set(j, new Contents(content));
-                    continue main_loop;
-                }
-            }
-            throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
+            j = addSingle(contents[i], j);
+            if (j == -1)
+                throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
         }
         return this;
+    }
+
+    protected int addSingle(GUIContent content, int j) {
+        for (; j < this.contents.size(); j++) {
+            Contents c = this.contents.get(j);
+            if (c == null) {
+                this.contents.set(j, new Contents(content));
+                return j;
+            }
+        }
+        return -1;
     }
 
     @Override

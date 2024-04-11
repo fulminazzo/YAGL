@@ -36,16 +36,10 @@ public class ResizableGUI extends GUIImpl {
     @Override
     public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
         int j = 0;
-        main_loop:
         for (int i = 0; i < contents.length; i++) {
             GUIContent content = contents[i];
-            for (; j < this.contents.size(); j++) {
-                Contents c = this.contents.get(j);
-                if (c == null) {
-                    this.contents.set(j, new Contents(content));
-                    continue main_loop;
-                }
-            }
+            j = addSingle(content, j);
+            if (j != -1) continue;
             if (getSize() < MAX_SIZE) {
                 resize(getSize() + 9);
                 this.contents.set(j, new Contents(content));
