@@ -114,7 +114,7 @@ public interface GUIContent extends Metadatable {
      *
      * @return the copy
      */
-    @NotNull GUIContent copyContent();
+    @NotNull GUIContent copy();
 
     @Override
     @NotNull

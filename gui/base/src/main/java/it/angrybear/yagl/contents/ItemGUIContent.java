@@ -215,13 +215,7 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
         return (ItemGUIContent) Item.super.removeItemFlags(itemFlags);
     }
 
-    @Override
-    public ItemGUIContent copy() {
-        return copyContent();
-    }
-
-    @Override
-    public @NotNull ItemGUIContent copyContent() {
+    public @NotNull ItemGUIContent copy() {
         return new ItemGUIContent(this.item);
     }
 }
