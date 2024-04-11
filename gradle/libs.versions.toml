@@ -29,6 +29,6 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 
 junit-platform = { module = "org.junit:junit-bom", version.ref = "junit" }
-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
 jbukkit = { module = "it.fulminazzo:JBukkit", version.ref = "jbukkit" }
 jbukkit_legacy = { module = "it.fulminazzo.JBukkit:legacy", version.ref = "jbukkit" }
