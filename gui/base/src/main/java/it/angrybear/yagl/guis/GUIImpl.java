@@ -3,6 +3,7 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +23,8 @@ abstract class GUIImpl implements GUI {
     protected String title;
     protected List<Contents> contents;
     protected final Set<Integer> movableSlots;
+    @Getter(AccessLevel.NONE)
+    protected final Map<String, String> variables = new HashMap<>();
 
     protected GUIAction clickOutsideAction;
     protected GUIAction openGUIAction;
@@ -166,6 +169,11 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull Optional<BiGUIAction> changeGUIAction() {
         return Optional.ofNullable(this.changeGUIAction);
+    }
+
+    @Override
+    public @NotNull Map<String, String> variables() {
+        return this.variables;
     }
 
     /**
