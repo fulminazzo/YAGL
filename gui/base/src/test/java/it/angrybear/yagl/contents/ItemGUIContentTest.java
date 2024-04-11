@@ -24,8 +24,12 @@ class ItemGUIContentTest {
     }
 
     @Test
-    void testReturnTypes() {
-        TestUtils.testReturnType(new ItemGUIContent(), GUIContent.class, m ->
-                m.getName().equals("copyContent"));
+    void testReturnTypesItem() {
+        TestUtils.testReturnType(new ItemGUIContent(), Item.class, m -> m.getName().equals("copy"));
+    }
+
+    @Test
+    void testReturnTypesGUIContent() {
+        TestUtils.testReturnType(new ItemGUIContent(), GUIContent.class, m -> m.getName().equals("copyContent"));
     }
 }
