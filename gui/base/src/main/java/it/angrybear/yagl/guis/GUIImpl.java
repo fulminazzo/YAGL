@@ -3,6 +3,9 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +40,17 @@ abstract class GUIImpl implements GUI {
         if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
         this.contents = createContents(size, null);
         this.movableSlots = new HashSet<>();
+    }
+
+    @Override
+    public void open(@NotNull Viewer viewer) {
+        final Class<?> guiUtils;
+        try {
+            guiUtils = ReflectionUtils.getClass("it.angrybear.yagl.utils.GUIUtils");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Could not find GUIUtils class. This function requires the 'gui:bukkit' module to be added");
+        }
+        new Refl<>(guiUtils).invokeMethod("openGUI", this, viewer);
     }
 
     @Override
