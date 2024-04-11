@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -91,6 +93,11 @@ class GUIImplTest {
         @Override
         public @NotNull GUIContent copyContent() {
             return null;
+        }
+
+        @Override
+        public @NotNull Map<String, String> variables() {
+            return Collections.emptyMap();
         }
     }
 }
