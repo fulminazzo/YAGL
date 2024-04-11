@@ -40,7 +40,10 @@ public interface Metadatable extends Iterable<String> {
      * @param value the value
      * @return this metadatable
      */
-    @NotNull Metadatable setVariable(final @NotNull String name, final @NotNull String value);
+    default @NotNull Metadatable setVariable(final @NotNull String name, final @NotNull String value) {
+        variables().put(VARIABLE_PARSER.apply(name), value);
+        return this;
+    }
 
     /**
      * Unset variable metadatable.
@@ -48,7 +51,10 @@ public interface Metadatable extends Iterable<String> {
      * @param name the name
      * @return this metadatable
      */
-    @NotNull Metadatable unsetVariable(final @NotNull String name);
+    default @NotNull Metadatable unsetVariable(final @NotNull String name) {
+        variables().remove(VARIABLE_PARSER.apply(name));
+        return this;
+    }
 
     /**
      * Gets variable.
@@ -57,7 +63,9 @@ public interface Metadatable extends Iterable<String> {
      * @param name the name
      * @return the variable
      */
-    @Nullable String getVariable(final @NotNull String name);
+    default @Nullable String getVariable(final @NotNull String name) {
+        return variables().get(VARIABLE_PARSER.apply(name));
+    }
 
     /**
      * Gets the current variables in form of {@link Map}.
