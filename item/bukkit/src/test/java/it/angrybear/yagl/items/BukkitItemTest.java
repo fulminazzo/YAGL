@@ -1,24 +1,36 @@
 package it.angrybear.yagl.items;
 
+import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class BukkitItemTest {
+
+    @BeforeAll
+    static void setAllUp() {
+        BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
+    }
 
     private static Item[] getTestMaterialItems() {
         return new Item[]{
@@ -42,9 +54,6 @@ class BukkitItemTest {
 
     @Test
     void testIsSimilar() {
-        BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
-
         ItemStack expected = new ItemStack(Material.STONE, 3);
         ItemMeta meta = expected.getItemMeta();
         meta.setDisplayName("Hello world");
@@ -61,7 +70,6 @@ class BukkitItemTest {
 
     @Test
     void testMetaCreation() {
-        BukkitUtils.setupServer();
         ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = expected.getItemMeta();
         ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.ARROW_FIRE, 1, true);
@@ -71,6 +79,41 @@ class BukkitItemTest {
                 .create(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.ARROW_FIRE, 1, true));
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCreateNullMaterial() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> BukkitItem.newItem().create());
+    }
+
+    @Test
+    void testCreateWithNullMetaClass() {
+        ItemStack expected = new ItemStack(Material.STONE);
+        ItemStack actual = BukkitItem.newItem("stone").create(null, m -> m.setDisplayName("Robert"));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCreateWithNullMetaFunction() {
+        ItemStack expected = new ItemStack(Material.STONE);
+        ItemStack actual = BukkitItem.newItem("stone").create(ItemMeta.class, null);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCreateWithNullMeta() {
+        ItemStack expected = new ItemStack(Material.STONE);
+        expected.setItemMeta(null);
+        try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class);
+             MockedStatic<ItemAdapter> itemAdapter = mockStatic(ItemAdapter.class)) {
+            ItemFactory mockFactory = mock(ItemFactory.class);
+            when(mockFactory.getItemMeta(any())).thenReturn(null);
+            bukkit.when(Bukkit::getItemFactory).thenReturn(mockFactory);
+            itemAdapter.when(() -> ItemAdapter.itemToItemStack(any())).thenReturn(expected);
+
+            ItemStack actual = BukkitItem.newItem("stone").create(ItemMeta.class, m -> m.setDisplayName("Hello world"));
+            assertEquals(expected, actual);
+        }
     }
 
     private static Item mockItem(Item item) {

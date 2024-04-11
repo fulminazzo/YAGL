@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -412,16 +413,20 @@ public interface Item extends AbstractItem {
      * Copies the current item into a new one using the provided class.
      * If an interface is provided (say {@link Item}),
      * it tries to convert it to {@link ItemImpl} by appending <i>Impl</i>.
+     * If no such class is found, an {@link IllegalArgumentException} is thrown.
      *
      * @param <I>   the type parameter
      * @param clazz the clazz
      * @return the item
      */
     default <I extends Item> I copy(@NotNull Class<I> clazz) {
-        if (clazz.isInterface())
+        if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
             try {
                 clazz = ReflectionUtils.getClass(clazz.getCanonicalName() + "Impl");
-            } catch (Exception ignored) {}
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(String.format("Could not copy item to abstract class '%s': no '%sImpl' class found",
+                        clazz.getCanonicalName(), clazz.getCanonicalName()));
+            }
 
         Refl<I> item = new Refl<>(clazz, new Object[0]);
         for (final Field field : item.getNonStaticFields())

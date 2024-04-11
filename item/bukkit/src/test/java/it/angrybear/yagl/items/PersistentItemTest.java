@@ -23,6 +23,22 @@ class PersistentItemTest {
     }
 
     @Test
+    void testNullInteractAction() {
+        PersistentItem persistentItem = new PersistentItem("stone");
+        Player player = mock(Player.class);
+        ItemStack itemStack = mock(ItemStack.class);
+        assertDoesNotThrow(() -> persistentItem.interact(player, itemStack, Action.LEFT_CLICK_AIR));
+    }
+
+    @Test
+    void testNullClickAction() {
+        PersistentItem persistentItem = new PersistentItem("stone");
+        Player player = mock(Player.class);
+        ItemStack itemStack = mock(ItemStack.class);
+        assertDoesNotThrow(() -> persistentItem.click(player, itemStack, ClickType.DOUBLE_CLICK));
+    }
+
+    @Test
     void testClearPersistentItem() {
         // Clear previous
         PersistentItem.clearPersistentItems();

@@ -1,10 +1,12 @@
 package it.angrybear.yagl.items;
 
+import it.angrybear.yagl.exceptions.NotImplemented;
 import it.angrybear.yagl.items.recipes.Recipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -52,14 +54,20 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
         return this;
     }
 
+    @NotNull
+    @Override
+    public Iterator<Recipe> iterator() {
+        return this.recipes.iterator();
+    }
+
     @Override
     public void registerRecipes() {
-        throw new IllegalStateException("Not implemented");
+        throw new NotImplemented();
     }
 
     @Override
     public void unregisterRecipes() {
-        throw new IllegalStateException("Not implemented");
+        throw new NotImplemented();
     }
 
     @Override

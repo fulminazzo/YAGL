@@ -1,6 +1,7 @@
 package it.angrybear.yagl.parsers;
 
 import it.angrybear.yagl.Color;
+import it.angrybear.yagl.ParserTestHelper;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +14,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ColorParserTest {
+class ColorParserTest extends ParserTestHelper<Color> {
 
     private static Color[] getTestColors() {
         return Stream.concat(Arrays.stream(Color.values()), Stream.of(Color.fromARGB("#ff00aa"))).toArray(Color[]::new);
@@ -35,5 +36,10 @@ class ColorParserTest {
         if (name == null) name = color.toARGB();
         assertEquals(name, configuration.getString("color"));
         assertEquals(color, configuration.get("color", Color.class));
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return ColorParser.class;
     }
 }

@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * An implementation of {@link Item} that supports a {@link Recipe}.
  */
-public interface RecipeItem extends Item {
+public interface RecipeItem extends Item, Iterable<Recipe> {
 
     /**
      * Sets recipes.

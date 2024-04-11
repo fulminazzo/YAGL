@@ -9,9 +9,12 @@ import it.angrybear.yagl.wrappers.Potion;
 import it.angrybear.yagl.wrappers.PotionEffect;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.CacheMap;
 import it.fulminazzo.fulmicollection.structures.Triple;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,9 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -35,9 +35,9 @@ import java.util.function.Function;
  * A utility class to convert objects from this library to Minecraft Bukkit and vice versa.
  */
 @SuppressWarnings("deprecation")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WrappersAdapter {
-
-    private WrappersAdapter() {}
+    private static final Map<Particle, Tuple<org.bukkit.Particle, ?>> PARTICLE_CACHE = new CacheMap<>();
 
     /**
      * Spawn particle.
@@ -51,7 +51,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
-        spawnParticle(world, particle, x, y, z, count, 0, 0, 0);
+        spawnParticle(world, particle, x, y, z, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count) {
-        spawnParticle(world, particle, location, count, 0, 0, 0);
+        spawnParticle(world, particle, location, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -83,7 +83,7 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      double x, double y, double z, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticle(world, particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ);
+        spawnParticle(world, particle, x, y, z, count, offsetX, offsetY, offsetZ, 0.0);
     }
 
     /**
@@ -100,7 +100,45 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticleCommon(world, particle, location, count, offsetX, offsetY, offsetZ);
+        spawnParticle(world, particle, location, count, offsetX, offsetY, offsetZ, 0.0);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     double x, double y, double z, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticle(world, particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ, speed);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param world    the world
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull World world, final @NotNull Particle particle,
+                                     final @NotNull Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticleCommon(world, particle, location, count, offsetX, offsetY, offsetZ, speed);
     }
 
     /**
@@ -115,7 +153,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z, int count) {
-        spawnParticle(player, particle, x, y, z, count, 0, 0, 0);
+        spawnParticle(player, particle, x, y, z, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -128,7 +166,7 @@ public final class WrappersAdapter {
      */
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count) {
-        spawnParticle(player, particle, location, count, 0, 0, 0);
+        spawnParticle(player, particle, location, count, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -147,7 +185,7 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      double x, double y, double z, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticle(player, particle, new Location(player.getWorld(), x, y, z), count, offsetX, offsetY, offsetZ);
+        spawnParticle(player, particle, x, y, z, count, offsetX, offsetY, offsetZ, 0.0);
     }
 
     /**
@@ -164,20 +202,63 @@ public final class WrappersAdapter {
     public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
                                      final @NotNull Location location, int count,
                                      double offsetX, double offsetY, double offsetZ) {
-        spawnParticleCommon(player, particle, location, count, offsetX, offsetY, offsetZ);
+        spawnParticle(player, particle, location, count, offsetX, offsetY, offsetZ, 0.0);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param x        the x
+     * @param y        the y
+     * @param z        the z
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     double x, double y, double z, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticle(player, particle, new Location(player.getWorld(), x, y, z), count, offsetX, offsetY, offsetZ, speed);
+    }
+
+    /**
+     * Spawn particle.
+     *
+     * @param player   the player
+     * @param particle the particle
+     * @param location the location
+     * @param count    the count
+     * @param offsetX  the offset x
+     * @param offsetY  the offset y
+     * @param offsetZ  the offset z
+     * @param speed    the speed
+     */
+    public static void spawnParticle(final @NotNull Player player, final @NotNull Particle particle,
+                                     final @NotNull Location location, int count,
+                                     double offsetX, double offsetY, double offsetZ, double speed) {
+        spawnParticleCommon(player, particle, location, count, offsetX, offsetY, offsetZ, speed);
     }
 
     private static <T> void spawnParticleCommon(final @NotNull T target, final @NotNull Particle particle,
-                                            final @NotNull Location location, int count,
-                                            double offsetX, double offsetY, double offsetZ) {
-        Tuple<org.bukkit.Particle, ?> tuple = wParticleToParticle(particle);
-        org.bukkit.Particle actual = tuple.getKey();
-        Object option = tuple.getValue();
+                                                final @NotNull Location location, int count,
+                                                double offsetX, double offsetY, double offsetZ, double speed) {
+        Tuple<org.bukkit.Particle, ?> tuple = PARTICLE_CACHE.computeIfAbsent(particle, p -> wParticleToParticle(particle));
+        final org.bukkit.Particle actual = tuple.getKey();
+        final Object option = tuple.getValue();
 
-        List<Object> params = new LinkedList<>(Arrays.asList(actual, location, count, offsetX, offsetY, offsetZ));
-        if (option != null) params.add(option);
-
-        new Refl<>(target).invokeMethod("spawnParticle", params.toArray(new Object[0]));
+        if (target instanceof Player) {
+          Player player = (Player) target;
+          if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
+          else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed, option);
+        } else if (target instanceof World) {
+            World world = (World) target;
+            if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
+            else world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed, option);
+        } else throw new IllegalArgumentException(String.format("Do not know how to spawn particles for '%s'", target));
     }
 
     /**
@@ -279,12 +360,22 @@ public final class WrappersAdapter {
         }
     }
 
+    /**
+     * Converts the given raw option in the specified data type.
+     *
+     * @param dataType the data type
+     * @param option   the option
+     * @return the object
+     */
     @SuppressWarnings("unchecked")
     static @Nullable Object convertOption(@NotNull Class<?> dataType, @NotNull Object option) {
+        // Check options
         if (option instanceof AbstractItem) return itemToItemStack((AbstractItem) option);
-        if (option instanceof Potion) return wPotionToPotion((Potion) option);
-        if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
-        if (dataType.equals(MaterialData.class)) {
+        else if (option instanceof Potion) return wPotionToPotion((Potion) option);
+        else if (option instanceof Color) return wColorToColor((Color) option);
+        // Check data types
+        else if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
+        else if (dataType.equals(MaterialData.class)) {
             if (!(option instanceof Tuple))
                 throw new IllegalArgumentException(String.format("Expected %s but got %s",
                         Tuple.class.getSimpleName(), option.getClass().getSimpleName()));
@@ -292,9 +383,8 @@ public final class WrappersAdapter {
             Material material = EnumUtils.valueOf(Material.class, tuple.getKey());
             Integer data = tuple.getValue();
             return material.getNewData((byte) (data == null ? 0 : data));
-        }
-        if (dataType.getCanonicalName().equalsIgnoreCase("org.bukkit.Vibration")) return option;
-        if (dataType.getSimpleName().equals("BlockData")) {
+        } else if (dataType.getCanonicalName().equals("org.bukkit.Vibration")) return option;
+        else if (dataType.getCanonicalName().equals("org.bukkit.block.data.BlockData")) {
             String raw = option.toString();
             BlockDataOption blockDataOption = new BlockDataOption(raw);
             Material material = EnumUtils.valueOf(Material.class, blockDataOption.getMaterial());
@@ -302,19 +392,20 @@ public final class WrappersAdapter {
                 throw new IllegalArgumentException(String.format("Cannot use non-block material '%s' as block data", material));
             String nbt = blockDataOption.getNBT().trim();
             return nbt.isEmpty() ? material.createBlockData() : material.createBlockData(String.format("[%s]", nbt));
+        } else {
+            // Try creation from data type
+            final Object finalOption;
+            Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
+            int size = constructor.getParameterCount();
+            if (size == 2) {
+                Tuple<?, ?> t = (Tuple<?, ?>) option;
+                finalOption = new Refl<>(dataType, prepareParameters(t.getKey(), t.getValue())).getObject();
+            } else if (size == 3) {
+                Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
+                finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond(), t.getThird())).getObject();
+            } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
+            return finalOption;
         }
-        if (option instanceof Color) return wColorToColor((Color) option);
-        final Object finalOption;
-        Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
-        int size = constructor.getParameterCount();
-        if (size == 2) {
-            Tuple<?, ?> t = (Tuple<?, ?>) option;
-            finalOption = new Refl<>(dataType, prepareParameters(t.getKey(), t.getValue())).getObject();
-        } else if (size == 3) {
-            Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
-            finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond(), t.getThird())).getObject();
-        } else throw new IllegalArgumentException("Cannot create option from constructor: " + constructor);
-        return finalOption;
     }
 
     private static Object @NotNull [] prepareParameters(final Object @NotNull ... parameters) {
@@ -332,12 +423,13 @@ public final class WrappersAdapter {
      * @return the item stack
      */
     public static @Nullable ItemStack itemToItemStack(final @Nullable AbstractItem item) {
+        final Class<?> itemUtils;
         try {
-            Class<?> clazz = Class.forName("it.angrybear.yagl.utils.ItemUtils");
-            return new Refl<>(clazz).invokeMethod("itemToItemStack", item);
-        } catch (ClassNotFoundException e) {
+            itemUtils = ReflectionUtils.getClass("it.angrybear.yagl.utils.ItemUtils");
+        } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Could not find ItemUtils class. This function requires the 'item:bukkit' module to be added");
         }
+        return new Refl<>(itemUtils).invokeMethod("itemToItemStack", item);
     }
 
     /**

@@ -26,6 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -134,7 +135,7 @@ class WrappersAdapterTest extends BukkitUtils {
                 assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
             };
             invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
-                    double.class, double.class, double.class};
+                    double.class, double.class, double.class, double.class};
         } else {
             captorsValidator = a -> {
                 Object value = a[0].getValue();
@@ -143,7 +144,7 @@ class WrappersAdapterTest extends BukkitUtils {
                 assertNotNull(a[a.length - 1].getValue());
             };
             invokedMethodParamTypes = new Class[]{org.bukkit.Particle.class, Location.class, int.class,
-                    double.class, double.class, double.class, Object.class};
+                    double.class, double.class, double.class, double.class, Object.class};
         }
 
         TestUtils.testMultipleMethods(WrappersAdapter.class,
@@ -162,7 +163,7 @@ class WrappersAdapterTest extends BukkitUtils {
         ArgumentCaptor<?> @NotNull [] captors = TestUtils.testSingleMethod(WrappersAdapter.class,
                 WrappersAdapter.class.getMethod("spawnParticle", Player.class, Particle.class, Location.class, int.class),
                 new Object[]{player, particle}, player, "spawnParticle",
-                org.bukkit.Particle.class, Location.class, int.class, double.class, double.class, double.class, Object.class);
+                org.bukkit.Particle.class, Location.class, int.class, double.class, double.class, double.class, double.class, Object.class);
 
         Object value = captors[0].getValue();
         assertInstanceOf(org.bukkit.Particle.class, value);
@@ -174,6 +175,14 @@ class WrappersAdapterTest extends BukkitUtils {
         ItemStack actual = (ItemStack) extra.getValue();
         assertEquals(expected.getType(), actual.getType());
         assertEquals(expected.getAmount(), actual.getAmount());
+    }
+
+    @Test
+    void testInvalidTargetSpawnParticle() {
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                new Refl<>(WrappersAdapter.class).invokeMethod("spawnParticleCommon",
+                        10, ParticleType.ASH.create(),
+                        mock(Location.class), 0, 0.0, 1.0, 0.0, 0.0));
     }
 
     @Test
@@ -385,8 +394,27 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    void testInvalidDataTypeButNotOption() {
+        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
+                ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
+        assertNotNull(conversion);
+        assertNotNull(conversion.getKey());
+        assertNull(conversion.getValue());
+    }
+
+    @Test
     void testInvalidDataType() {
         assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MockDataType.class, "String"));
+    }
+
+    @Test
+    void testItemModuleNotProvided() {
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class)) {
+            clazz.when(() -> ReflectionUtils.getClass(any(String.class))).thenThrow(IllegalArgumentException.class);
+
+            assertThrowsExactly(IllegalStateException.class, () -> WrappersAdapter.itemToItemStack(null),
+                    "Should throw exception signaling missing item module");
+        }
     }
 
     private static void initializeBlockData() {

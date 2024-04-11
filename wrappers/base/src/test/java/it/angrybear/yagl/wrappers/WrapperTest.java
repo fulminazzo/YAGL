@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class WrapperTest {
 
@@ -34,8 +35,8 @@ class WrapperTest {
         return new Object[][]{
                 new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setValue(0), 1, 9},
                 new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setValue(10), 1, 9},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setMinOnly(0), 1, null},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setMaxOnly(10), null, 9},
+                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.minOnly(0), 1, null},
+                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.getMaxOnly(10), null, 9},
         };
     }
 
@@ -53,17 +54,47 @@ class WrapperTest {
 
             final String message = e.getMessage();
             assertNotNull(message, "Error message should have not been null");
+            System.out.println(message);
 
-            if (min != null)
-                assertTrue(message.contains(String.valueOf(min)), "Error message should have contained max value");
-            else
+            if (min != null) {
+                assertTrue(message.contains(String.valueOf(min)), "Error message should contain min value");
+                if (max == null) assertTrue(message.contains("lower"), "Error message should contain 'lower' keyword");
+            } else
                 assertFalse(message.contains(String.valueOf(Integer.MIN_VALUE)), "Error message should have not contained min value");
 
-            if (max != null)
-                assertTrue(message.contains(String.valueOf(max)), "Error message should have contained min value");
-            else
+            if (max != null) {
+                assertTrue(message.contains(String.valueOf(max)), "Error message should contain max value");
+                if (min == null) assertTrue(message.contains("higher"), "Error message should contain 'higher' keyword");
+            } else
                 assertFalse(message.contains(String.valueOf(Integer.MAX_VALUE)), "Error message should have not contained max value");
         }
+    }
+
+    @Test
+    void testExtremeRange() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> new MockWrapper().setExtremeRange((long) Integer.MAX_VALUE + 1));
+    }
+
+    @Test
+    void testInvalidRange() {
+        assertThrowsExactly(InvalidRangeException.class, () -> new MockWrapper().setInvalidRange(10));
+    }
+
+    @Test
+    void testNoFieldSet() {
+        assertDoesNotThrow(() -> new MockWrapper().setFree(10));
+    }
+
+    @Test
+    void testIsSimilarNull() {
+        Wrapper w1 = new MockWrapper();
+        assertFalse(w1.isSimilar(null), "Wrapper should not be similar to null");
+    }
+
+    @Test
+    void testIsSimilarOtherClass() {
+        Wrapper w1 = new MockWrapper();
+        assertFalse(w1.isSimilar(mock(Wrapper.class)), "Wrapper should not be similar to a wrapper of different class");
     }
 
     @SuppressWarnings("unused")
@@ -74,21 +105,40 @@ class WrapperTest {
         private int minOnly;
         @Range(max = 9)
         private int maxOnly;
+        private int free;
+        @Range(max = Integer.MIN_VALUE, min = Integer.MAX_VALUE)
+        private int invalidRange;
+        @Range(min = Integer.MIN_VALUE, max = Integer.MAX_VALUE)
+        private long extremeRange;
 
         public void setValue(int value) {
             this.value = check(value);
         }
-        public void setMinOnly(int minOnly) {
+
+        public void minOnly(int minOnly) {
             this.minOnly = check(minOnly);
         }
 
-        public void setMaxOnly(int maxOnly) {
+        // For testing purposes. A real bad practice in the real world.
+        public void getMaxOnly(int maxOnly) {
             this.maxOnly = check(maxOnly);
+        }
+
+        public void setFree(int free) {
+            this.free = check(free);
+        }
+
+        public void setInvalidRange(int invalidRange) {
+            this.invalidRange = check(invalidRange);
+        }
+
+        public void setExtremeRange(long extremeRange) {
+            this.extremeRange = check(extremeRange);
         }
 
         @Override
         public String getName() {
-            return null;
+            return "aiden";
         }
     }
 }

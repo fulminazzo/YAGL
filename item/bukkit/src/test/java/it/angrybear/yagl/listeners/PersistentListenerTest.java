@@ -1,8 +1,9 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.items.BukkitItem;
+import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
-import it.angrybear.yagl.items.DeathAction;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
@@ -28,12 +29,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,6 +48,7 @@ import static org.mockito.Mockito.when;
 class PersistentListenerTest {
     private static PersistentItem maintain;
     private static PersistentItem disappear;
+    private static PersistentItem none;
     private static PersistentListener listener;
     private boolean clicked;
     private static ItemStack cursor;
@@ -52,6 +58,7 @@ class PersistentListenerTest {
         BukkitUtils.setupServer();
         maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
         disappear = new PersistentItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
+        none = new PersistentItem(Material.STONE_SWORD, 1).setDisplayName("None").setDeathAction(null);
         listener = new PersistentListener();
     }
 
@@ -90,13 +97,14 @@ class PersistentListenerTest {
         assertFalse(this.clicked, "Clicked should be initialized as false");
         assertFalse(event.isCancelled(), "Event should not be cancelled");
         listener.on(event);
+        System.out.println("cancelled ? " + event.isCancelled());
         assertTrue(event.isCancelled(), "Event should have been cancelled by now");
         assertTrue(this.clicked, "Clicked should have changed");
     }
 
     @Test
     void testMovableItem() {
-        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND).setMobility(Mobility.INTERNAL);
+        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND_PICKAXE).setMobility(Mobility.INTERNAL);
         InventoryView view = setupInventoryClickEventView();
         int slot = view.getTopInventory().getSize();
         view.getBottomInventory().setItem(0, persistentItem.create());
@@ -168,28 +176,6 @@ class PersistentListenerTest {
     }
 
     @Test
-    void simulatePlayerDeath() throws InterruptedException {
-        Player player = getPlayer();
-        ItemStack[] contents = player.getInventory().getContents();
-        contents[3] = maintain.create();
-        contents[4] = disappear.create();
-        List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
-
-        PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
-        listener.on(event);
-        // Simulate removal of contents
-        Arrays.fill(contents, null);
-
-        Thread.sleep(PersistentListener.SLEEP_TIME * 2);
-
-        for (ItemStack i : drops) assertNull(i);
-
-        List<ItemStack> copy = Arrays.asList(contents);
-        assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
-        assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
-    }
-
-    @Test
     void simulateInteractEvent() {
         AtomicBoolean value = new AtomicBoolean(false);
         maintain.onInteract((i, p, a) -> value.set(true));
@@ -203,6 +189,40 @@ class PersistentListenerTest {
         value.set(false);
         listener.on(event);
         assertFalse(value.get());
+    }
+
+    @Test
+    void testInteractPersistentItem() {
+        final int itemSize = 10;
+        final List<Integer> clickedItems = new ArrayList<>();
+        List<PersistentItem> items = new ArrayList<>();
+        for (int i = 0; i < itemSize; i++) {
+            int finalI = i;
+            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> clickedItems.add(finalI)));
+        }
+        assertTrue(listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
+                items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
+        assertEquals(itemSize, clickedItems.size());
+    }
+
+    @Test
+    void testFindPersistentItemNullStacks() {
+        assertEquals(false, new Refl<>(listener).invokeMethod("findPersistentItem",
+                new Class[]{Consumer.class, ItemStack[].class}, null, null));
+    }
+
+    @Test
+    void testFindPersistentItemNullConsumer() {
+        ItemStack[] stacks = new ItemStack[]{maintain.create()};
+        assertEquals(true, new Refl<>(listener).invokeMethod("findPersistentItem",
+                new Class[]{Consumer.class, ItemStack[].class}, null, stacks));
+    }
+
+    @Test
+    void testFindPersistentItemNullBiConsumer() {
+        ItemStack[] stacks = new ItemStack[]{maintain.create()};
+        assertEquals(true, new Refl<>(listener).invokeMethod("findPersistentItem",
+                new Class[]{BiConsumer.class, ItemStack[].class}, null, stacks));
     }
 
     private static Player getPlayer() {
@@ -228,6 +248,77 @@ class PersistentListenerTest {
         when(player.getOpenInventory()).thenReturn(view);
         when(view.getPlayer()).thenReturn(player);
         when(view.getItem(any(int.class))).thenCallRealMethod();
+        when(view.getCursor()).thenCallRealMethod();
+        when(view.convertSlot(any(int.class))).thenCallRealMethod();
+        when(view.getInventory(any(int.class))).thenAnswer(a -> {
+            int slot = a.getArgument(0);
+            if (slot < inventory.getSize()) return inventory;
+            return playerInventory;
+        });
         return view;
     }
+
+    @Nested
+    class PlayerDeath {
+
+        @Test
+        void simulatePlayerDeath() throws InterruptedException {
+            Player player = getPlayer();
+            ItemStack[] contents = player.getInventory().getContents();
+            contents[3] = maintain.create();
+            contents[4] = disappear.create();
+            contents[5] = none.create();
+            List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
+
+            PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
+            listener.on(event);
+            // Simulate removal of contents
+            Arrays.fill(contents, null);
+
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            for (ItemStack i : drops) {
+                // Drop item in case of null
+                if (i != null) assertEquals(none.create(), i);
+            }
+
+            List<ItemStack> copy = Arrays.asList(contents);
+            assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
+            assertFalse(copy.contains(disappear.create()), "The contents should not contain the disappear item");
+            assertFalse(copy.contains(none.create()), "The contents should not contain the none item");
+        }
+
+        @Test
+        void simulateNullDrops() throws InterruptedException {
+            Player player = getPlayer();
+            ItemStack[] contents = player.getInventory().getContents();
+            contents[3] = maintain.create();
+            PlayerDeathEvent event = new PlayerDeathEvent(player, null, 3, "Player died");
+            listener.on(event);
+            // Simulate removal of contents
+            Arrays.fill(contents, null);
+
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            List<ItemStack> copy = Arrays.asList(contents);
+            assertTrue(copy.contains(maintain.create()), "The contents should contain the maintain item");
+        }
+
+        @Test
+        void simulateNothingToRestore() throws InterruptedException {
+            Player player = getPlayer();
+            ItemStack[] contents = player.getInventory().getContents();
+            PlayerDeathEvent event = new PlayerDeathEvent(player, Arrays.asList(contents), 3, "Player died");
+            listener.on(event);
+            // Simulate removal of contents
+            Arrays.fill(contents, null);
+
+            Thread.sleep(PersistentListener.SLEEP_TIME * 2);
+
+            for (ItemStack i : contents)
+                assertNull(i, "Nothing should be restored");
+        }
+
+    }
+
 }

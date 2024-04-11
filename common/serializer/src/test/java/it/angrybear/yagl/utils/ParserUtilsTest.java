@@ -11,4 +11,5 @@ class ParserUtilsTest {
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 ParserUtils.typeToClass(ParserUtils.class, "any"));
     }
+
 }

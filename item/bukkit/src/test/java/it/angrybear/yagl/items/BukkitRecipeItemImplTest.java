@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @After1_(13)
@@ -36,5 +38,31 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
 
         recipeItem.unregisterRecipes();
         assertNull(Bukkit.getRecipe(key));
+    }
+
+    @Test
+    void testUnregisterNotRegisteredRecipe() {
+        BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
+
+        BukkitRecipeItem recipeItem = BukkitItem.newRecipeItem(Material.STONE);
+        recipeItem.setRecipes(new ShapelessRecipe("test").addIngredient(Item.newItem("STONE")));
+
+        BukkitItem.newRecipeItem("stone")
+                .addRecipes(new ShapelessRecipe("test").addIngredient(Item.newItem("STONE")))
+                .registerRecipes();
+
+        assertEquals(1, countIterator(Bukkit.getServer().recipeIterator()), "Server should have one registered recipe");
+
+        assertDoesNotThrow(recipeItem::unregisterRecipes);
+
+        assertEquals(1, countIterator(Bukkit.getServer().recipeIterator()), "Server should still have registered recipe");
+
+    }
+
+    private int countIterator(Iterator<?> iterator) {
+        int count;
+        for (count = 0; iterator.hasNext(); iterator.next(), count++);
+        return count;
     }
 }

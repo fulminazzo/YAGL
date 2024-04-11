@@ -4,9 +4,12 @@ import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.structures.EnchantmentSet;
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 
@@ -57,6 +60,46 @@ class ItemTest {
             assertTrue(item.hasEnchantment(e));
             assertTrue(item.hasEnchantment(new Enchantment(e)));
         }
+    }
+
+    private static Object[] getAbstractClasses() {
+        return new Object[]{MockItemInterface.class, MockItemAbstract.class};
+    }
+
+    @ParameterizedTest
+    @MethodSource("getAbstractClasses")
+    void testCopyItemFromAbstractWithNoImpl(Class<? extends Item> clazz) {
+        final String className = clazz.getCanonicalName();
+        final String implName = className + "Impl";
+
+        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(clazz));
+
+        String message = exception.getMessage();
+        assertNotNull(message, "Exception message was null");
+        assertTrue(message.contains(implName), "Exception message did not contain abstract implementation class name");
+
+        // Check that the returned exception is not from ReflectionUtils
+        String reflMessage = ReflectionUtils.get(ReflectionUtils.getField(ReflectionUtils.class, "CLASS_NOT_FOUND"), ReflectionUtils.class);
+        assertNotEquals(reflMessage.replace("%class%", implName), message,
+                "Exception message should not be the same as the one returned by ReflectionUtils");
+    }
+
+    @Test
+    void testRemoveLore() {
+        assertEquals(1, Item.newItem().setLore("Hello", "world").removeLore("Hello").getLore().size(),
+                "After removal there should be only one lore element");
+    }
+
+    @Test
+    void testIsNotSimilar() {
+        Item i1 = Item.newItem().setAmount(1).setMaterial("grass").setDisplayName("Hello world");
+        Item i2 = Item.newItem().setAmount(1).setMaterial("glass").setDisplayName("Hello world");
+        assertFalse(i1.isSimilar(i2));
+    }
+
+    @Test
+    void testIsSimilarNull() {
+        assertFalse(Item.newItem("stone").setAmount(1).isSimilar(null));
     }
 
     @Test

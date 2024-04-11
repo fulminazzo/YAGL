@@ -4,12 +4,10 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.RecipeItem;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.items.recipes.Recipe;
-import it.angrybear.yagl.utils.EnumUtils;
 import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
@@ -17,9 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -39,42 +35,30 @@ public class ItemParser extends YAMLParser<Item> {
         return (c, s) -> {
             final ConfigurationSection itemSection = c.getConfigurationSection(s);
             if (itemSection == null) return null;
+            else {
+                Item item = Item.newItem();
 
-            Item item = Item.newItem();
+                final String material = itemSection.getString("material");
+                if (material == null) throw new IllegalArgumentException("'material' cannot be null");
+                item.setMaterial(material);
 
-            final String material = itemSection.getString("material");
-            if (material == null) throw new IllegalArgumentException("'material' cannot be null");
-            item.setMaterial(material);
+                itemSection.getOptional("amount", Integer.class).ifPresent(item::setAmount);
+                itemSection.getOptional("durability", Integer.class).ifPresent(item::setDurability);
+                itemSection.getOptional("display-name", String.class).ifPresent(item::setDisplayName);
+                itemSection.getOptional("lore", List.class).ifPresent(item::setLore);
+                itemSection.getOptional("unbreakable", Boolean.class).ifPresent(item::setUnbreakable);
+                itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
+                itemSection.getListOptional("enchantments", Enchantment.class).ifPresent(item::addEnchantments);
+                itemSection.getListOptional("item-flags", ItemFlag.class).ifPresent(item::addItemFlags);
 
-            itemSection.getOptional("amount", Integer.class).ifPresent(item::setAmount);
-            itemSection.getOptional("durability", Integer.class).ifPresent(item::setDurability);
-            itemSection.getOptional("display-name", String.class).ifPresent(item::setDisplayName);
-            itemSection.getOptional("lore", List.class).ifPresent(item::setLore);
-            itemSection.getOptional("unbreakable", Boolean.class).ifPresent(item::setUnbreakable);
-            itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
-
-            List<String> flags = itemSection.getStringList("item-flags");
-            if (flags == null) flags = new LinkedList<>();
-            for (final String flag : flags)
-                item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, flag));
-
-            final List<Object> enchantments = itemSection.getList("enchantments", Object.class);
-            if (enchantments != null)
-                for (int j = 0; j < enchantments.size(); j++) {
-                    ConfigurationSection section = new ConfigurationSection(itemSection, String.valueOf(j));
-                    section.set("tmp", enchantments.get(j));
-                    item.addEnchantments(section.get("tmp", Enchantment.class));
+                if (itemSection.contains("recipes")) {
+                    List<Recipe> recipes = itemSection.getList("recipes", Recipe.class);
+                    if (recipes == null) recipes = new ArrayList<>();
+                    item = item.copy(RecipeItem.class).setRecipes(recipes.toArray(new Recipe[0]));
                 }
 
-            ConfigurationSection recipesSection = itemSection.getConfigurationSection("recipes");
-            if (recipesSection != null) {
-                final List<Recipe> recipes = new LinkedList<>();
-                @NotNull Set<String> keys = recipesSection.getKeys();
-                for (String k : keys) recipes.add(recipesSection.get(k, Recipe.class));
-                if (!recipes.isEmpty()) item = item.copy(RecipeItem.class).setRecipes(recipes.toArray(new Recipe[0]));
+                return item;
             }
-
-            return item;
         };
     }
 
@@ -82,33 +66,25 @@ public class ItemParser extends YAMLParser<Item> {
     protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Item> getDumper() {
         return (c, s, i) -> {
             c.set(s, null);
-            if (i == null) return;
-            final ConfigurationSection itemSection = c.createSection(s);
-            itemSection.set("material", i.getMaterial());
-            itemSection.set("amount", i.getAmount());
-            itemSection.set("durability", i.getDurability());
-            itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
-            itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
+            if (i != null) {
+                final ConfigurationSection itemSection = c.createSection(s);
+                String material = i.getMaterial();
+                if (material != null) itemSection.set("material", material.toLowerCase());
 
-            final List<Enchantment> enchantments = new LinkedList<>(i.getEnchantments());
-            List<Object> enchantsToSave = new ArrayList<>();
-            for (int j = 0; j < enchantments.size(); j++) {
-                ConfigurationSection section = new ConfigurationSection(itemSection, String.valueOf(j));
-                section.set("tmp", enchantments.get(j));
-                enchantsToSave.add(section.getObject("tmp"));
-            }
-            itemSection.set("enchantments", enchantsToSave);
+                itemSection.set("amount", i.getAmount());
+                itemSection.set("durability", i.getDurability());
+                itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
+                itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
+                itemSection.setList("enchantments", i.getEnchantments());
+                itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()));
+                itemSection.set("unbreakable", i.isUnbreakable());
+                itemSection.set("custom-model-data", i.getCustomModelData());
 
-            itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).collect(Collectors.toList()));
-            itemSection.set("unbreakable", i.isUnbreakable());
-            itemSection.set("custom-model-data", i.getCustomModelData());
-
-            if (i instanceof RecipeItem) {
-                ConfigurationSection recipesSection = itemSection.createSection("recipes");
-                List<Recipe> recipes = new Refl<>(i).getFieldObject("recipes");
-                if (recipes != null)
-                    for (int j = 0; j < recipes.size(); j++)
-                        recipesSection.set(String.valueOf(j), recipes.get(j));
+                if (i instanceof RecipeItem) {
+                    List<Recipe> recipes = new ArrayList<>();
+                    ((RecipeItem) i).forEach(recipes::add);
+                    itemSection.setList("recipes", recipes);
+                }
             }
         };
     }

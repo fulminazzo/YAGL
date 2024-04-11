@@ -17,4 +17,15 @@ class MessageUtilsTest {
         String color = "#FF00AA";
         assertEquals(color, MessageUtils.decolor(MessageUtils.color(color)));
     }
+
+    @Test
+    void testColorNull() {
+        assertNull(MessageUtils.color(null));
+    }
+
+    @Test
+    void testDecolorNull() {
+        assertNull(MessageUtils.decolor(null));
+    }
+
 }

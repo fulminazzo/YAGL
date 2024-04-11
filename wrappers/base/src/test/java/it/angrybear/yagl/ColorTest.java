@@ -2,12 +2,33 @@ package it.angrybear.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ColorTest {
+
+    private static Object[] getNotEqualColors() {
+        return new Object[]{
+                null, "ffff00aa",
+                Color.fromARGB("25ff00aa"),
+                Color.fromARGB("ff3100aa"),
+                Color.fromARGB("ffff01aa"),
+                Color.fromARGB("ffff0077"),
+                Color.fromARGB("aabbccdd"),
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNotEqualColors")
+    void testColorInequality(Object color) {
+        assertNotEquals(Color.fromARGB("ff00aa"), color);
+        if (color != null)
+            assertNotEquals(Color.fromARGB("ff00aa").hashCode(), color.hashCode());
+    }
 
     @Test
     void testValueOfIndex() {

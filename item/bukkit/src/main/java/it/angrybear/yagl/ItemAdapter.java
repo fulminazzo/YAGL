@@ -10,6 +10,8 @@ import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -26,10 +28,9 @@ import java.util.stream.Collectors;
  * A collection of utilities for {@link Item}.
  */
 @SuppressWarnings("deprecation")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemAdapter {
     private static final String ID_KEY = "yagl";
-
-    private ItemAdapter() {}
 
     /**
      * Converts the given {@link ItemStack} to an {@link Item}.
@@ -74,8 +75,7 @@ public final class ItemAdapter {
         if (material == null) throw new IllegalArgumentException("Material cannot be null!");
         ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        final ItemMeta meta = getItemMeta(itemStack);
         if (meta != null) {
             meta.setDisplayName(item.getDisplayName());
             meta.setLore(item.getLore());
@@ -96,6 +96,12 @@ public final class ItemAdapter {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    private static ItemMeta getItemMeta(final @NotNull ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        else return meta;
     }
 
     /**
@@ -142,7 +148,7 @@ public final class ItemAdapter {
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
             r = new Refl<>(org.bukkit.inventory.ShapedRecipe.class, namespacedKey, output);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             r = new Refl<>(org.bukkit.inventory.ShapedRecipe.class, output);
         }
 
@@ -150,9 +156,7 @@ public final class ItemAdapter {
         ShapedRecipe.Shape shape = recipe.getShape();
         char c = 'A';
         for (int i = 0; i < shape.getRows(); i++) {
-            for (int j = 0; j < shape.getColumns(); j++) {
-                charShape.append(c++);
-            }
+            for (int j = 0; j < shape.getColumns(); j++) charShape.append(c++);
             charShape.append(",");
         }
         r.getObject().shape(charShape.toString().split(","));
@@ -178,7 +182,7 @@ public final class ItemAdapter {
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
             r = new Refl<>(org.bukkit.inventory.ShapelessRecipe.class, namespacedKey, output);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             r = new Refl<>(org.bukkit.inventory.ShapelessRecipe.class, output);
         }
 
@@ -199,7 +203,7 @@ public final class ItemAdapter {
         try {
             final Object namespacedKey = WrappersAdapter.getNamespacedKey(ID_KEY, recipe.getId());
             r = new Refl<>(org.bukkit.inventory.FurnaceRecipe.class, namespacedKey, output, Material.STONE, experience, cookingTime);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             r = new Refl<>(org.bukkit.inventory.FurnaceRecipe.class, output, Material.STONE);
         }
 

@@ -39,32 +39,44 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;
-            String[] tmp = raw.split(":");
-            Constructor<W> constructor = (Constructor<W>) Arrays.stream(getOClass().getConstructors())
-                    .filter(t -> t.getParameterCount() <= tmp.length)
-                    .min(Comparator.comparing(t -> -t.getParameterCount())).orElse(null);
-            if (constructor == null) {
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < tmp.length; i++) builder.append("?, ");
-                throw new NoSuchMethodException(String.format("Could not find method %s(%s)",
-                        getOClass().getSimpleName(), builder.substring(0, Math.max(0, builder.length() - 2))));
+            else {
+                String[] rawData = raw.split(":");
+                Constructor<W> constructor = findConstructorFromRaw(rawData);
+                Object[] parameters = initializeParameters(rawData, constructor);
+                return new Refl<>(getOClass(), parameters).getObject();
             }
+        };
+    }
 
-            Object[] parameters = new Object[tmp.length];
+    private @NotNull Constructor<W> findConstructorFromRaw(final String @NotNull [] rawData) throws NoSuchMethodException {
+        Constructor<W> constructor = (Constructor<W>) Arrays.stream(getOClass().getConstructors())
+                .filter(t -> t.getParameterCount() <= rawData.length)
+                .min(Comparator.comparing(t -> -t.getParameterCount())).orElse(null);
+        if (constructor == null) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < rawData.length; i++) builder.append("?, ");
+            throw new NoSuchMethodException(String.format("Could not find method %s(%s)",
+                    getOClass().getSimpleName(), builder.substring(0, Math.max(0, builder.length() - 2))));
+        }
+        return constructor;
+    }
 
-            Class<?>[] types = constructor.getParameterTypes();
-            for (int i = 0; i < types.length; i++) {
-                Class<?> type = types[i];
-                if (!ReflectionUtils.isPrimitiveOrWrapper(type))
-                    throw new IllegalArgumentException(String.format("Cannot parse type %s", type.getCanonicalName()));
+    private static <W extends Wrapper> Object @NotNull [] initializeParameters(final String @NotNull [] rawData,
+                                                                               final @NotNull Constructor<W> constructor) {
+        Object[] parameters = new Object[rawData.length];
+        Class<?>[] types = constructor.getParameterTypes();
+        for (int i = 0; i < types.length; i++) {
+            Class<?> type = types[i];
+            if (!ReflectionUtils.isPrimitiveOrWrapper(type))
+                throw new IllegalArgumentException(String.format("Cannot parse type %s", type.getCanonicalName()));
+            else {
                 type = ReflectionUtils.getWrapperClass(type);
-                String t = tmp[i];
+                String t = rawData[i];
                 if (type.equals(String.class)) parameters[i] = t;
                 else parameters[i] = new Refl<>(type).invokeMethod("valueOf", t);
             }
-
-            return new Refl<>(getOClass(), parameters).getObject();
-        };
+        }
+        return parameters;
     }
 
     @Override
@@ -76,7 +88,9 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
             Refl<?> wRefl = new Refl<>(w);
             for (Field field : wRefl.getNonStaticFields()) {
                 Object o = wRefl.getFieldObject(field);
-                tmp.append(o == null ? "" : o.toString()).append(":");
+                String result = o == null ? "" : o.toString();
+                if (o instanceof String) result = result.toLowerCase();
+                tmp.append(result).append(":");
             }
             c.set(s, tmp.substring(0, Math.max(0, tmp.length() - 1)));
         };

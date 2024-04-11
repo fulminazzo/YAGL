@@ -1,9 +1,13 @@
 package it.angrybear.yagl;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * A collection of Minecraft constants used throughout the library.
  */
-public class Constants {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Constants {
 
     /**
      * The number of ticks in one second.

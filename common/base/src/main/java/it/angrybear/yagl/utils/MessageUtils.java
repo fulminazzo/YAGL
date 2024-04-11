@@ -1,17 +1,19 @@
 package it.angrybear.yagl.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * The type Message utils.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MessageUtils {
     private static final String COLOR_CHAR = "§";
     private static final String COLOR_REGEX = "[A-Fa-f0-9]";
     private static final String STYLE_REGEX = "[LlKkRrOoUu]";
-
-    private MessageUtils() {}
 
     /**
      * Recolors the given string using Minecraft default color codes.

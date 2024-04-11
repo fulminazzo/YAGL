@@ -2,6 +2,8 @@ package it.angrybear.yagl.utils;
 
 import it.fulminazzo.fulmicollection.utils.ClassUtils;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -9,9 +11,8 @@ import java.util.Set;
 /**
  * The type Parser utils.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParserUtils {
-
-    private ParserUtils() {}
 
     /**
      * Converts the given string type to the corresponding class, based on the coreClass.
@@ -49,9 +50,9 @@ public final class ParserUtils {
     public static <C> @NotNull String classToType(final @NotNull Class<C> coreClass, final @NotNull Class<? extends C> toConvert) {
         final String mainClassName = coreClass.getSimpleName();
         String name = toConvert.getSimpleName();
-        if (name.contains("$")) name = mainClassName;
-        else if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
+        if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
         name = FileUtils.formatStringToYaml(name);
         return name.replace("-", "_").toUpperCase();
     }
+
 }

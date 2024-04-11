@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
  * @param <P> the type parameter
  */
 abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
-
     @Getter(AccessLevel.PACKAGE)
     private final Class<P> optionType;
 
@@ -59,10 +58,22 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
         return new Particle(name(), particleOption);
     }
 
+    /**
+     * Compares a {@link Particle} with a {@link ParticleType} using {@link Particle#getType()}.
+     *
+     * @param particle the particle
+     * @return true if they are of the same type
+     */
+    public boolean equals(final @NotNull Particle particle) {
+        return name().equalsIgnoreCase(particle.getType());
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Particle) return name().equalsIgnoreCase(((Particle) o).getType());
-        return super.equals(o);
+        if (o == null) return false;
+        if (o instanceof Particle) return equals((Particle) o);
+        AParticleType<?> particleType = (AParticleType<?>) o;
+        return getClass().equals(particleType.getClass()) && name().equals(particleType.name());
     }
 
     @Override

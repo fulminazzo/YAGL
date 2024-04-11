@@ -240,20 +240,23 @@ public class Color extends ClassEnum {
         return values(Color.class);
     }
 
-    /**
-     * Compares two colors.
-     *
-     * @param color the color
-     * @return true if they match
-     */
-    public boolean equals(final Color color) {
-        return color != null && this.alpha == color.alpha && this.red == color.red &&
-                this.green == color.green && this.blue == color.blue;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Color) {
+            Color color = (Color) o;
+            return this.alpha == color.alpha && this.red == color.red &&
+                    this.green == color.green && this.blue == color.blue;
+        } else return false;
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof Color && equals((Color) o);
+    public int hashCode() {
+        int hash = Color.class.hashCode();
+        hash = hash * 31 + this.alpha;
+        hash = hash * 31 + this.red;
+        hash = hash * 31 + this.green;
+        hash = hash * 31 + this.blue;
+        return hash;
     }
 
     @Override

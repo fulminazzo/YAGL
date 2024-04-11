@@ -3,6 +3,8 @@ package it.angrybear.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
@@ -25,9 +27,8 @@ import static org.mockito.Mockito.*;
 /**
  * The type Test utils.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
-
-    private TestUtils() {}
 
     /**
      * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
@@ -62,7 +63,7 @@ public final class TestUtils {
     }
 
     /**
-     * Allows to test the given <i>targetMethod</i>.
+     * Allows testing the given <i>targetMethod</i>.
      * It verifies that the <i>executor</i> invokes <i>targetMethod</i> and that,
      * upon execution, <i>target</i> invokes <i>invokedMethod</i>.
      *
@@ -86,13 +87,16 @@ public final class TestUtils {
             ReflectionUtils.setAccessible(targetMethod).invoke(executor, parameters);
 
             // Verify execution with mock
-            new Refl<>(verify(target)).invokeMethod(invokedMethod, invokedMethodParamTypes,
+            Method method = target.getClass().getDeclaredMethod(invokedMethod, invokedMethodParamTypes);
+            ReflectionUtils.setAccessible(method).invoke(verify(target),
                     Arrays.stream(captors).map(ArgumentCaptor::capture).toArray(Object[]::new));
 
             return captors;
         } catch (Exception e) {
             System.err.printf("An exception occurred while testing method '%s'%n", methodToString(targetMethod));
             System.err.printf("target: '%s'%n", target.getClass().getCanonicalName());
+            System.err.printf("method: '%s'%n", ReflectionUtils.getMethod(target.getClass(), null, invokedMethod,
+                    invokedMethodParamTypes));
             System.err.printf("Invoked method parameter types: '%s'%n", Arrays.toString(invokedMethodParamTypes));
             System.err.printf("Captors: '%s'%n", Arrays.toString(captors));
             ExceptionUtils.throwException(e);

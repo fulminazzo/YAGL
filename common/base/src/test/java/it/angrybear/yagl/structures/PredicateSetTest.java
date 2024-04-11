@@ -38,6 +38,12 @@ class PredicateSetTest {
         assertEquals(m2.hashCode(), first.hashCode(), "Object should have been equal to m2");
     }
 
+    @Test
+    void testAddNull() {
+        PredicateSet<?> set = new PredicateSet<>((o1, o2) -> o1.hashCode() == o2.hashCode());
+        assertDoesNotThrow(() -> set.add(null));
+    }
+
     private static class MockClass {
 
         @Override

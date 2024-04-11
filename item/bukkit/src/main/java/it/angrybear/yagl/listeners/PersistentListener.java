@@ -1,8 +1,9 @@
 package it.angrybear.yagl.listeners;
 
+import it.angrybear.yagl.items.DeathAction;
 import it.angrybear.yagl.items.Mobility;
 import it.angrybear.yagl.items.PersistentItem;
-import it.angrybear.yagl.items.DeathAction;
+import it.fulminazzo.fulmicollection.utils.ThreadUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -10,7 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -22,7 +25,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A listener for {@link PersistentItem}s.
@@ -34,6 +40,9 @@ public class PersistentListener implements Listener {
      * This is used to prevent double calls.
      */
     private static final long INTERACT_DELAY = 10;
+    /**
+     * The general sleep time used in many methods.
+     */
     static final int SLEEP_TIME = 50;
     private final @NotNull Map<UUID, Long> lastUsed;
 
@@ -48,27 +57,37 @@ public class PersistentListener implements Listener {
     @EventHandler
     protected void on(@NotNull PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Map<Integer, PersistentItem> toRestore = new HashMap<>();
         ItemStack[] contents = player.getInventory().getContents();
+        Map<Integer, PersistentItem> toRestore = parseDroppedItems(contents, event.getDrops());
+        if (!toRestore.isEmpty())
+            // Wait before restoring player contents.
+            ThreadUtils.sleepAndThen(SLEEP_TIME, () -> toRestore.forEach((i, p) ->
+                    player.getInventory().setItem(i, p.create())));
+    }
+
+    /**
+     * Finds the corresponding {@link PersistentItem} from the given {@link ItemStack} array.
+     * Saves the ones with {@link DeathAction#MAINTAIN} in the returning map.
+     *
+     * @param contents the contents
+     * @param drops    the drops
+     * @return the map
+     */
+    protected @NotNull Map<Integer, PersistentItem> parseDroppedItems(final @NotNull ItemStack[] contents,
+                                                                      final @Nullable List<ItemStack> drops) {
+        Map<Integer, PersistentItem> toRestore = new HashMap<>();
         for (int i = 0; i < contents.length; i++) {
             int finalI = i;
             final ItemStack item = contents[i];
             // Save every PersistentItem with the MAINTAIN action, remove if they have DISAPPEAR.
-            findPersistentItem(item, p -> {
+            findPersistentItem(p -> {
                 DeathAction deathAction = p.getDeathAction();
                 if (deathAction == null) return;
                 if (deathAction == DeathAction.MAINTAIN) toRestore.put(finalI, p);
-                event.getDrops().remove(item);
-            });
+                if (drops != null) drops.remove(item);
+            }, item);
         }
-        if (toRestore.isEmpty()) return;
-        // Wait before restoring player contents.
-        new Thread(() -> {
-            try {
-                Thread.sleep(SLEEP_TIME);
-                toRestore.forEach((i, p) -> player.getInventory().setItem(i, p.create()));
-            } catch (InterruptedException ignored) {}
-        }).start();
+        return toRestore;
     }
 
     @EventHandler
@@ -79,28 +98,28 @@ public class PersistentListener implements Listener {
         // Check that a double click is not happening.
         if (now < lastUsed + INTERACT_DELAY) return;
         this.lastUsed.put(player.getUniqueId(), now);
-        interactedWithPersistentItem(event.getItem(), player, event.getAction(), cancelled(event));
+        interactPersistentItem(player, event.getAction(), cancelled(event), event.getItem());
     }
 
     @EventHandler
     protected void on(@NotNull PlayerItemConsumeEvent event) {
-        findPersistentItem(event.getItem(), cancelled(event));
+        findPersistentItem(cancelled(event), event.getItem());
     }
 
     @EventHandler
     protected void on(@NotNull PlayerItemDamageEvent event) {
-        findPersistentItem(event.getItem(), cancelled(event));
+        findPersistentItem(cancelled(event), event.getItem());
     }
 
     @EventHandler
     protected void on(@NotNull BlockPlaceEvent event) {
         PlayerInventory inventory = event.getPlayer().getInventory();
-        findPersistentItem(inventory.getItem(inventory.getHeldItemSlot()), cancelled(event));
+        findPersistentItem(cancelled(event), inventory.getItem(inventory.getHeldItemSlot()));
     }
 
     @EventHandler
     protected void on(@NotNull PlayerDropItemEvent event) {
-        findPersistentItem(event.getItemDrop().getItemStack(), cancelled(event));
+        findPersistentItem(cancelled(event), event.getItemDrop().getItemStack());
     }
 
     @EventHandler
@@ -108,25 +127,14 @@ public class PersistentListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ClickType type = event.getClick();
         ItemStack itemStack = event.getCurrentItem();
-        Inventory open = player.getOpenInventory().getTopInventory();
-        Inventory clicked = event.getClickedInventory();
-        Inventory playerInventory = player.getInventory();
+        Consumer<PersistentItem> ifPresent = clickConsumer(event, player);
 
-        Consumer<PersistentItem> ifPresent = e -> {
-            int rawSlot = event.getRawSlot();
-            if (e.getMobility() != Mobility.INTERNAL || !playerInventory.equals(clicked) ||
-                    rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY))
-                cancelled(event).accept(e);
-        };
-
-        // Check current item.
-        if (clickedWithPersistentItem(itemStack, player, type, ifPresent)) return;
-        // Check cursor.
-        if (clickedWithPersistentItem(event.getCursor(), player, type, ifPresent)) return;
-        // Check if a number has been used from the keyboard to move the item.
-        if (type.equals(ClickType.NUMBER_KEY)) {
-            itemStack = playerInventory.getItem(event.getHotbarButton());
-            clickedWithPersistentItem(itemStack, player, type, ifPresent);
+        // Check the current item and the cursor;
+        if (!clickPersistentItem(player, type, ifPresent, itemStack, event.getCursor()) &&
+                type.equals(ClickType.NUMBER_KEY)) {
+            // Check if a number has been used from the keyboard to move the item.
+            itemStack = player.getInventory().getItem(event.getHotbarButton());
+            clickPersistentItem(player, type, ifPresent, itemStack);
         }
     }
 
@@ -134,48 +142,150 @@ public class PersistentListener implements Listener {
     protected void on(@NotNull InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
         ClickType type = ClickType.LEFT;
-        if (clickedWithPersistentItem(event.getCursor(), player, type, cancelled(event))) return;
-        if (clickedWithPersistentItem(event.getOldCursor(), player, type, cancelled(event))) return;
-        Collection<ItemStack> items = event.getNewItems().values();
-        for (ItemStack i : items)
-            // Check every item from the new items, cancel on first one.
-            if (clickedWithPersistentItem(i, player, type, cancelled(event))) return;
+        clickPersistentItem(player, type, cancelled(event), Stream.concat(Stream.of(
+                event.getCursor(), event.getOldCursor()
+        ), event.getNewItems().values().stream()).collect(Collectors.toList()));
     }
 
-    private @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
+    /*
+        API USAGE
+     */
+
+    /**
+     * Returns a consumer that simply cancels the event.
+     *
+     * @param event the event
+     * @return the consumer
+     */
+    protected @NotNull Consumer<PersistentItem> cancelled(@NotNull Cancellable event) {
         return p -> event.setCancelled(true);
     }
 
-    private boolean interactedWithPersistentItem(final @Nullable ItemStack itemStack,
-                                                 final @NotNull Player player,
-                                                 final @NotNull Action interactAction,
-                                                 final @Nullable Consumer<PersistentItem> ifPresent) {
-        return findPersistentItem(itemStack, p -> {
-            if (itemStack != null) p.interact(player, itemStack, interactAction);
-            if (ifPresent != null) ifPresent.accept(p);
-        });
+    /**
+     * Returns the consumer used in the default {@link #on(InventoryClickEvent)}.
+     * It checks if the {@link PersistentItem} is not {@link Mobility#INTERNAL}
+     * or if the click is external to the player's inventory.
+     * If so, it cancels the {@link InventoryClickEvent}.
+     *
+     * @param event  the event
+     * @param player the player
+     * @return the consumer
+     */
+    protected @NotNull Consumer<PersistentItem> clickConsumer(final @NotNull InventoryClickEvent event, final @NotNull Player player) {
+        return e -> {
+            Inventory open = player.getOpenInventory().getTopInventory();
+            int rawSlot = event.getRawSlot();
+            if (e.getMobility() != Mobility.INTERNAL || rawSlot < open.getSize()) cancelled(event).accept(e);
+        };
     }
 
-    private boolean clickedWithPersistentItem(final @Nullable ItemStack itemStack,
-                                              final @NotNull Player player,
-                                              final @NotNull ClickType clickType,
-                                              final @Nullable Consumer<PersistentItem> ifPresent) {
-        return findPersistentItem(itemStack, p -> {
-            if (itemStack != null) p.click(player, itemStack, clickType);
-            if (ifPresent != null) ifPresent.accept(p);
-        });
+    /**
+     * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
+     * For every match, it executes an action.
+     *
+     * @param player         the player
+     * @param interactAction the interact action
+     * @param ifPresent      the consumer to run if the item is found
+     * @param itemStacks     the item stacks
+     * @return true if it was found
+     */
+    protected boolean interactPersistentItem(final @NotNull Player player,
+                                             final @NotNull Action interactAction,
+                                             final @Nullable Consumer<PersistentItem> ifPresent,
+                                             final @NotNull Collection<ItemStack> itemStacks) {
+        return interactPersistentItem(player, interactAction, ifPresent, itemStacks.toArray(new ItemStack[0]));
     }
 
-    private boolean findPersistentItem(final @Nullable ItemStack itemStack,
-                                       final @NotNull Consumer<PersistentItem> ifPresent) {
-        if (itemStack != null) {
-            PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
-            if (persistentItem != null) {
-                ifPresent.accept(persistentItem);
-                return true;
+    /**
+     * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
+     * For every match, it executes an action.
+     *
+     * @param player         the player
+     * @param interactAction the interact action
+     * @param ifPresent      the consumer to run if the item is found
+     * @param itemStacks     the item stacks
+     * @return true if it was found
+     */
+    protected boolean interactPersistentItem(final @NotNull Player player,
+                                             final @NotNull Action interactAction,
+                                             final @Nullable Consumer<PersistentItem> ifPresent,
+                                             final ItemStack @Nullable ... itemStacks) {
+        return findPersistentItem((p, i) -> {
+            if (ifPresent != null) ifPresent.accept(p);
+            p.interact(player, i, interactAction);
+        }, itemStacks);
+    }
+
+    /**
+     * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
+     * For every match, it executes an action.
+     *
+     * @param player     the player
+     * @param clickType  the click type
+     * @param ifPresent  the consumer to run if the item is found
+     * @param itemStacks the item stacks
+     * @return true if it was found
+     */
+    protected boolean clickPersistentItem(final @NotNull Player player,
+                                          final @NotNull ClickType clickType,
+                                          final @Nullable Consumer<PersistentItem> ifPresent,
+                                          final @NotNull Collection<ItemStack> itemStacks) {
+        return clickPersistentItem(player, clickType, ifPresent, itemStacks.toArray(new ItemStack[0]));
+    }
+
+    /**
+     * Checks through every {@link ItemStack} provided for a match in {@link PersistentItem#getPersistentItem(ItemStack)}.
+     * For every match, it executes an action.
+     *
+     * @param player     the player
+     * @param clickType  the click type
+     * @param ifPresent  the consumer to run if the item is found
+     * @param itemStacks the item stacks
+     * @return true if it was found
+     */
+    protected boolean clickPersistentItem(final @NotNull Player player,
+                                          final @NotNull ClickType clickType,
+                                          final @Nullable Consumer<PersistentItem> ifPresent,
+                                          final ItemStack @Nullable ... itemStacks) {
+        return findPersistentItem((p, i) -> {
+            if (ifPresent != null) ifPresent.accept(p);
+            p.click(player, i, clickType);
+        }, itemStacks);
+    }
+
+    /**
+     * Finds {@link PersistentItem}s from the given {@link ItemStack} array.
+     * For each one found, execute an action
+     *
+     * @param ifPresent  the action to execute
+     * @param itemStacks the item stacks
+     * @return true if at least one found
+     */
+    protected boolean findPersistentItem(final @Nullable Consumer<PersistentItem> ifPresent,
+                                         final ItemStack @Nullable ... itemStacks) {
+        return findPersistentItem(ifPresent == null ? null : (p, i) -> ifPresent.accept(p), itemStacks);
+    }
+
+    /**
+     * Finds {@link PersistentItem}s from the given {@link ItemStack} array.
+     * For each one found, execute an action
+     *
+     * @param ifPresent  the action to execute
+     * @param itemStacks the item stacks
+     * @return true if at least one found
+     */
+    protected boolean findPersistentItem(final @Nullable BiConsumer<PersistentItem, ItemStack> ifPresent,
+                                         final ItemStack @Nullable ... itemStacks) {
+        boolean found = false;
+        if (itemStacks != null)
+            for (final ItemStack itemStack : itemStacks) {
+                PersistentItem persistentItem = PersistentItem.getPersistentItem(itemStack);
+                if (persistentItem != null) {
+                    if (ifPresent != null) ifPresent.accept(persistentItem, itemStack);
+                    found = true;
+                }
             }
-        }
-        return false;
+        return found;
     }
 
     /**

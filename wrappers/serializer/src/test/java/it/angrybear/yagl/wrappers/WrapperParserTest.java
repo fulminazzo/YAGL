@@ -4,11 +4,14 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.SerializeUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.exceptions.YAMLException;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +19,38 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class WrapperParserTest {
+
+    private static Object[] invalidSaves() {
+        return new Object[]{null, "", "     "};
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidSaves")
+    void testLoadNull(String save) throws Exception {
+        IConfiguration configuration = mock(IConfiguration.class);
+        when(configuration.getString(any())).thenReturn(save);
+        assertNull(new WrapperParser<>(Enchantment.class).getLoader().apply(configuration, "path"));
+    }
+
+    @Test
+    void testSaveNull() {
+        assertDoesNotThrow(() -> new WrapperParser<>(Enchantment.class).getDumper()
+                .accept(mock(IConfiguration.class), "enchantment", null));
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Test
+    void testSaveNullName() {
+        Enchantment enchantment = new Enchantment("mock");
+        new Refl<>(enchantment).setFieldObject("name", null);
+        assertDoesNotThrow(() -> new WrapperParser(Enchantment.class).getDumper()
+                .accept(mock(IConfiguration.class), "enchantment", enchantment));
+    }
 
     @Test
     void testSaveAndLoadPotion() throws IOException {
@@ -71,12 +104,33 @@ class WrapperParserTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> saveAndLoad(expected));
     }
 
-    @SuppressWarnings("ReassignedVariable")
-    private @Nullable <T extends Wrapper> List<T> saveAndLoad(T t) throws IOException {
+    @SuppressWarnings({"unchecked"})
+    private @Nullable <T extends Wrapper> List<T> saveAndLoad(final @Nullable T t) throws IOException {
         WrapperParser.addAllParsers();
-        String name = t.getClass().getSimpleName().toLowerCase();
+        final Class<T> clazz = (Class<T>) (t == null ? Wrapper.class : t.getClass());
+        String name = t == null ? "wrapper" : clazz.getSimpleName().toLowerCase();
 
-        File file = new File("build/resources/test/" + name + ".yml");
+        File file = save(t, name);
+        return load(file, name, clazz);
+    }
+
+    private static <T extends Wrapper> @Nullable List<T> load(@NotNull File file, @NotNull String name, @NotNull Class<T> clazz) throws IOException {
+        if (!file.exists()) {
+            FileUtils.createNewFile(file);
+            FileConfiguration configuration = new FileConfiguration(file);
+            configuration.createSection(name);
+            configuration.set("0", null);
+            configuration.set("1", "");
+            configuration.set("2", "    ");
+            configuration.set("value-class", SerializeUtils.serializeToBase64(clazz.getCanonicalName()));
+            configuration.save();
+        }
+        FileConfiguration configuration = new FileConfiguration(file);
+        return configuration.getList(name, clazz);
+    }
+
+    private static <T extends Wrapper> @NotNull File save(@NotNull T t, @NotNull String name) throws IOException {
+        File file = getFile(name);
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
 
@@ -89,16 +143,18 @@ class WrapperParserTest {
             StringBuilder builder = new StringBuilder();
             for (int j = 0; j <= i; j++) {
                 Object o = tRefl.getFieldObject(fields.get(j));
-                if (o != null) builder.append(o).append(":");
+                if (o != null) builder.append(o);
+                builder.append(":");
             }
             section.set(String.valueOf(i), builder.substring(0, Math.max(0, builder.length() - 1)));
         }
 
-        section.set("value-class", SerializeUtils.serializeToBase64(t.getClass().getCanonicalName()));
         configuration.save();
+        return file;
+    }
 
-        configuration = new FileConfiguration(file);
-        return (List<T>) configuration.getList(name, t.getClass());
+    private static File getFile(String name) {
+        return new File("build/resources/test/" + name + ".yml");
     }
 
     private static class MockWrapper extends Wrapper {

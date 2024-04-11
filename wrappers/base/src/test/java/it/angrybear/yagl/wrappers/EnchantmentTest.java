@@ -18,6 +18,16 @@ class EnchantmentTest {
     }
 
     @Test
+    void testCompareLevelsNull() {
+        assertFalse(new Enchantment("unbreaking", 1).compareLevels(null));
+    }
+
+    @Test
+    void testCompareLevelsDifferentName() {
+        assertFalse(new Enchantment("unbreaking", 1).compareLevels(new Enchantment("unbreaking_", 1)));
+    }
+
+    @Test
     void testIsSimilar() {
         assertTrue(new Enchantment("unbreaking", 3).isSimilar(new Enchantment("unbreaking", 1)));
     }
