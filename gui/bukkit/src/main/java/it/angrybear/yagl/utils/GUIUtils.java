@@ -1,17 +1,59 @@
 package it.angrybear.yagl.utils;
 
+import it.angrybear.yagl.GUIManager;
+import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.guis.TypeGUI;
+import it.angrybear.yagl.items.BukkitItem;
+import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 /**
- * The type Gui utils.
+ * A collection of utilities for handling with {@link GUI}s and Bukkit.
  */
 public class GUIUtils {
+
+    /**
+     * Opens the given {@link GUI} for the specified {@link Viewer}.
+     *
+     * @param gui    the gui
+     * @param viewer the viewer
+     */
+    public static void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer) {
+        final UUID uuid = viewer.getUniqueId();
+        final Player player = Bukkit.getPlayer(uuid);
+        if (player == null) throw new IllegalArgumentException(String.format("Cannot open GUI for offline player '%s'", viewer.getName()));
+        final Refl<Viewer> reflViewer = new Refl<>(viewer);
+        // Add to GUIManager if not present
+        viewer = GUIManager.getViewer(player);
+        // Save previous GUI, if present
+        GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
+            reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
+            g.changeGUIAction().ifPresent(a -> a.execute(v, g, gui));
+            player.closeInventory();
+        });
+        // Set new GUI
+        reflViewer.setFieldObject("openGUI", gui);
+        // Open inventory
+        Inventory inventory = guiToInventory(gui);
+        for (int i = 0; i < gui.size(); i++) {
+            GUIContent content = gui.getContent(viewer, i);
+            if (content != null) {
+                ItemStack o = content.render().copy(BukkitItem.class).create();
+                inventory.setItem(i, o);
+            }
+        }
+        player.openInventory(inventory);
+    }
 
     /**
      * Converts the given {@link GUI} to a {@link Inventory}.
