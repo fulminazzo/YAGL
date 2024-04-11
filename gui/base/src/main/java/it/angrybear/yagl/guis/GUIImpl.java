@@ -1,14 +1,13 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.BiGUIAction;
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import it.angrybear.yagl.actions.BiGUIAction;
-import it.angrybear.yagl.actions.GUIAction;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * A basic implementation of {@link GUI}.
@@ -121,7 +120,7 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull List<GUIContent> getContents() {
         List<GUIContent> list = new LinkedList<>();
-        for (GUIContent content : this) list.add(content);
+        for (Contents content : this.contents) list.addAll(Arrays.asList(content.contents));
         return list;
     }
 
@@ -167,14 +166,6 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull Optional<BiGUIAction> changeGUIAction() {
         return Optional.ofNullable(this.changeGUIAction);
-    }
-
-    @NotNull
-    @Override
-    public Iterator<GUIContent> iterator() {
-        return this.contents.stream()
-                .flatMap(c -> c == null ? Stream.of((GUIContent) null) : c.getContents().stream())
-                .iterator();
     }
 
     /**
