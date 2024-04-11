@@ -4,6 +4,7 @@ import it.angrybear.yagl.guis.GUI;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,9 +24,11 @@ public class GUIParser extends TypedParser<GUI> {
             Integer size = c.getInteger(s + ".size");
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Refl<GUI> gui = new Refl<>(g);
+            Class<?> contentsClass = ReflectionUtils.getClass(GUI.class.getCanonicalName() + "Impl.Contents");
+            @Nullable List<?> contents = c.getList(s + ".contents", contentsClass);
             gui.setFieldObject("contents", gui.invokeMethod("createContents",
                     new Class[]{int.class, List.class},
-                    size, gui.getFieldObject("contents")));
+                    size, contents));
             return g;
         };
     }
@@ -35,6 +38,7 @@ public class GUIParser extends TypedParser<GUI> {
         return (c, s, g) -> {
             super.getDumper().accept(c, s, g);
             if (g == null) return;
+            c.set(s + ".contents.value-class", null);
             c.set(s + ".size", g.getSize());
         };
     }
