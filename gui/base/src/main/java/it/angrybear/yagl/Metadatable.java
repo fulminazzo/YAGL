@@ -98,6 +98,18 @@ public interface Metadatable extends Iterable<String> {
     }
 
     /**
+     * Uses {@link #copyAll(Metadatable, boolean)} to copy from the given {@link Metadatable} to this one.
+     *
+     * @param other   the other metadatable
+     * @param replace if false, if this already has the variable, it will not be replaced
+     * @return this metadatable
+     */
+    default @NotNull Metadatable copyFrom(final @NotNull Metadatable other, final boolean replace) {
+        other.copyAll(this, replace);
+        return this;
+    }
+
+    /**
      * Applies all the current variables to the given object fields,
      * by replacing in every string all the variables in the format {@link #VARIABLE_FORMAT}.
      *
