@@ -1,4 +1,4 @@
-package it.angrybear.yagl.listeners;
+package it.angrybear.yagl;
 
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
@@ -21,12 +21,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class GUIListener implements Listener {
-    private static GUIListener instance;
+public class GUIManager implements Listener {
+    private static GUIManager instance;
 
     private final List<BukkitViewer> viewers;
 
-    public GUIListener() {
+    public GUIManager() {
         instance = this;
         this.viewers = new ArrayList<>();
     }
@@ -110,24 +110,24 @@ public class GUIListener implements Listener {
     }
 
     public static Optional<GUI> getOpenGUI(final @NotNull UUID uuid) {
-        GUIListener listener = getInstance();
+        GUIManager listener = getInstance();
         if (listener == null) {
-            listener = new GUIListener();
+            listener = new GUIManager();
             Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
         }
         return Optional.ofNullable(listener.openGUIs.get(uuid));
     }
 
-    public static GUIListener getInstance() {
-        GUIListener listener = instance;
-        if (listener == null) {
-            listener = new GUIListener();
-            Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
+    public static GUIManager getInstance() {
+        GUIManager manager = instance;
+        if (manager == null) {
+            manager = new GUIManager();
+            Bukkit.getPluginManager().registerEvents(manager, getProvidingPlugin());
         }
-        return listener;
+        return manager;
     }
 
     private static @NotNull JavaPlugin getProvidingPlugin() {
-        return JavaPlugin.getProvidingPlugin(GUIListener.class);
+        return JavaPlugin.getProvidingPlugin(GUIManager.class);
     }
 }
