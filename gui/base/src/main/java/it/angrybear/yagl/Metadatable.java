@@ -1,8 +1,10 @@
 package it.angrybear.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
@@ -11,6 +13,7 @@ import java.util.function.Function;
  * An interface that holds key-value pairs of {@link String}s.
  */
 public interface Metadatable extends Iterable<String> {
+    Function<@NotNull String, @NotNull String> VARIABLE_FORMAT = s -> "%" + s + "%";
     /**
      * A function used to parse the variables names.
      */
@@ -65,6 +68,32 @@ public interface Metadatable extends Iterable<String> {
      */
     default @Nullable String getVariable(final @NotNull String name) {
         return variables().get(VARIABLE_PARSER.apply(name));
+    }
+
+    /**
+     * Applies all the current variables to the given object fields,
+     * by replacing in every string all the variables in the format {@link #VARIABLE_FORMAT}.
+     *
+     * @param object the object
+     * @return the object parsed
+     */
+    default Object apply(final Object object) {
+        if (object == null) return null;
+
+        final Refl<?> refl = new Refl<>(object);
+        for (Field field : refl.getNonStaticFields())
+            if (String.class.isAssignableFrom(field.getType())) {
+                String o = refl.getFieldObject(field);
+                if (o == null) continue;
+                for (String v : this) {
+                    String s = getVariable(v);
+                    if (s != null)
+                        o = o.replace(VARIABLE_FORMAT.apply(v), s);
+                }
+                refl.setFieldObject(field, o);
+            }
+
+        return refl.getObject();
     }
 
     /**
