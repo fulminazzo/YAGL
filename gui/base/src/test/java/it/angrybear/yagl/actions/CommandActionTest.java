@@ -38,6 +38,7 @@ class CommandActionTest {
             Object[] params = Arrays.stream(paramTypes).map(TestUtils::mockParameter).toArray(Object[]::new);
 
             when(method.invoke(action, params)).thenCallRealMethod();
+            doCallRealMethod().when(action).execute(any());
             method.invoke(action, params);
             verify(action).execute(any());
         }
