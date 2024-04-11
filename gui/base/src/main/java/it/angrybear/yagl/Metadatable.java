@@ -84,6 +84,20 @@ public interface Metadatable extends Iterable<String> {
     }
 
     /**
+     * Copies all the variables from this metadatable to the given one.
+     *
+     * @param other   the other metadatable
+     * @param replace if false, if the other already has the variable, it will not be replaced
+     * @return this metadatable
+     */
+    default @NotNull Metadatable copyAll(final @NotNull Metadatable other, final boolean replace) {
+        variables().forEach((k, v) -> {
+            if (!other.hasVariable(k) || replace) other.setVariable(k, v);
+        });
+        return this;
+    }
+
+    /**
      * Applies all the current variables to the given object fields,
      * by replacing in every string all the variables in the format {@link #VARIABLE_FORMAT}.
      *
