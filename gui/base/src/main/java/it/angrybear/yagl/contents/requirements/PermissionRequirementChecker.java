@@ -1,4 +1,4 @@
-package it.angrybear.yagl.contents;
+package it.angrybear.yagl.contents.requirements;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

@@ -1,6 +1,8 @@
 package it.angrybear.yagl.contents;
 
 import it.angrybear.yagl.actions.GUIItemCommand;
+import it.angrybear.yagl.contents.requirements.PermissionRequirementChecker;
+import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

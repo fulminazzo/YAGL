@@ -1,5 +1,6 @@
 package it.angrybear.yagl.contents;
 
+import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

@@ -2,9 +2,7 @@ package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
-import it.angrybear.yagl.contents.RequirementChecker;
-import it.angrybear.yagl.guis.GUI;
-import it.angrybear.yagl.guis.GUIImpl;
+import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;

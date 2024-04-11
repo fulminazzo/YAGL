@@ -1,4 +1,4 @@
-package it.angrybear.yagl.contents;
+package it.angrybear.yagl.contents.requirements;
 
 import it.angrybear.yagl.SerializableFunction;
 import it.angrybear.yagl.viewers.Viewer;

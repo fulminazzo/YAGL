@@ -5,7 +5,7 @@ import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
-import it.angrybear.yagl.contents.PermissionRequirementChecker;
+import it.angrybear.yagl.contents.requirements.PermissionRequirementChecker;
 import it.angrybear.yagl.guis.ContentsParser;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;

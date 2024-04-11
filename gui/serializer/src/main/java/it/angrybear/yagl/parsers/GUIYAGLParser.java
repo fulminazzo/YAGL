@@ -1,7 +1,7 @@
 package it.angrybear.yagl.parsers;
 
 import it.angrybear.yagl.actions.ActionParsers;
-import it.angrybear.yagl.contents.RequirementChecker;
+import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.guis.ContentsParser;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 
