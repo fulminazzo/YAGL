@@ -66,6 +66,7 @@ class MetadatableTest {
                 .setVariable("parsing", "not-me")
                 .setVariable("variable", "me")
                 .setVariable("not", "hello")
+                .setVariable("null", null)
                 .unsetVariable("parsing");
 
         MockObject object = new MockObject();
@@ -79,6 +80,8 @@ class MetadatableTest {
         assertEquals(new HashMap<String, String>(){{
             put("parse", "me");
             put("parsing", "%not-me%");
+            put(null, "%variable%");
+            put("%variable%", null);
         }}, object.map);
     }
 
@@ -99,6 +102,8 @@ class MetadatableTest {
         Map<String, String> map = new HashMap<String, String>(){{
             put("parse", "%variable%");
             put("parsing", "%not-me%");
+            put(null, "%variable%");
+            put("%variable%", null);
         }};
     }
 
