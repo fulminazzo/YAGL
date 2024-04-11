@@ -2,6 +2,7 @@ package it.angrybear.yagl.contents;
 
 import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,6 +23,18 @@ abstract class GUIContentImpl implements GUIContent {
     protected GUIItemAction clickAction;
     @Getter(AccessLevel.NONE)
     protected Map<String, String> variables;
+
+    @Override
+    public @NotNull Item render() {
+        return apply(internalRender().copy());
+    }
+
+    /**
+     * Executes the real {@link #render()} function.
+     *
+     * @return the item
+     */
+    protected abstract @NotNull Item internalRender();
 
     @Override
     public @NotNull GUIContent setPriority(int priority) {
