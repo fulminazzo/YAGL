@@ -92,7 +92,6 @@ public class GUIListener implements Listener {
     private void onCloseGUI(Player player) {
         getOpenGUI(player.getUniqueId()).ifPresent(gui ->
                 gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
-        closeGUI(player.getUniqueId());
     }
 
     @EventHandler
@@ -117,20 +116,6 @@ public class GUIListener implements Listener {
             Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
         }
         return Optional.ofNullable(listener.openGUIs.get(uuid));
-    }
-
-    public static void closeGUI(final @NotNull UUID uuid) {
-        GUIListener listener = getInstance();
-        if (listener == null)
-            throw new IllegalStateException("GUIListener has not been initialized yet");
-        listener.openGUIs.remove(uuid);
-    }
-
-    public static void openGUI(final @NotNull Viewer viewer, final @NotNull GUI gui) {
-        GUIListener listener = getInstance();
-        if (listener == null)
-            throw new IllegalStateException("GUIListener has not been initialized yet");
-        listener.openGUIs.put(viewer.getUniqueId(), gui);
     }
 
     public static GUIListener getInstance() {
