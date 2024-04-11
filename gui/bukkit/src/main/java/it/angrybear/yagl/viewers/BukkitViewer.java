@@ -5,6 +5,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -24,22 +25,26 @@ public class BukkitViewer extends Viewer {
 
     @Override
     public void executeCommand(final @NotNull String command) {
-        Player player = getPlayer();
+        Player player = getPlayer().orElse(null);
         if (player == null) throw new IllegalStateException();
         Bukkit.dispatchCommand(player, command);
     }
 
     @Override
     public boolean hasPermission(@NotNull String permission) {
-        Player player = getPlayer();
+        Player player = getPlayer().orElse(null);
         return player != null && player.hasPermission(permission);
     }
 
-    private Player getPlayer() {
+    /**
+     * Gets player.
+     *
+     * @return the player
+     */
+    public Optional<Player> getPlayer() {
         Player player = Bukkit.getPlayer(this.uniqueId);
-        if (player == null) return null;
-        else if (player.isOnline()) return player;
-        else return null;
+        if (player == null) return Optional.empty();
+        else return Optional.ofNullable(player.isOnline() ? player : null);
     }
 
     /**
