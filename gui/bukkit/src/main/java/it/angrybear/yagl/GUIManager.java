@@ -32,7 +32,7 @@ import java.util.UUID;
 public class GUIManager implements Listener {
     private static GUIManager instance;
 
-    private final List<BukkitViewer> viewers;
+    private final List<Viewer> viewers;
 
     /**
      * Instantiates a new GUI manager.
@@ -93,53 +93,53 @@ public class GUIManager implements Listener {
     }
 
     /**
-     * Gets a {@link BiOptional} with the corresponding {@link BukkitViewer} and open {@link GUI} if present.
+     * Gets a {@link BiOptional} with the corresponding {@link Viewer} and open {@link GUI} if present.
      *
      * @param player the player
      * @return the BiOptional
      */
-    public static @NotNull BiOptional<BukkitViewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
-        BukkitViewer viewer = getViewer(player);
+    public static @NotNull BiOptional<Viewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
+        Viewer viewer = getViewer(player);
         if (viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
         else return BiOptional.empty();
     }
 
     /**
-     * Gets a {@link BiOptional} with the corresponding {@link BukkitViewer} and open {@link GUI} if present.
+     * Gets a {@link BiOptional} with the corresponding {@link Viewer} and open {@link GUI} if present.
      *
      * @param uuid the uuid
      * @return the BiOptional
      */
-    public static @NotNull BiOptional<BukkitViewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
-        BukkitViewer viewer = getViewer(uuid);
+    public static @NotNull BiOptional<Viewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
+        Viewer viewer = getViewer(uuid);
         if (viewer != null && viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
         else return BiOptional.empty();
     }
 
     /**
-     * Gets the corresponding {@link BukkitViewer} to the provided player.
+     * Gets the corresponding {@link Viewer} to the provided player.
      * If it is not present, it will be created.
      *
      * @param player the player
      * @return the viewer
      */
-    public static @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
-        BukkitViewer viewer = getViewer(player.getUniqueId());
+    public static @NotNull Viewer getViewer(final @NotNull HumanEntity player) {
+        Viewer viewer = getViewer(player.getUniqueId());
         if (viewer == null) {
-            viewer = (BukkitViewer) BukkitViewer.newViewer(player);
+            viewer = BukkitViewer.newViewer(player);
             getInstance().viewers.add(viewer);
         }
         return viewer;
     }
 
     /**
-     * Gets the corresponding {@link BukkitViewer} to the provided player.
+     * Gets the corresponding {@link Viewer} to the provided player.
      * If it is not present, it will be returned null.
      *
      * @param uuid the uuid
      * @return the viewer
      */
-    public static @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
+    public static @Nullable Viewer getViewer(final @NotNull UUID uuid) {
         return getInstance().viewers.stream()
                 .filter(v -> v.getUniqueId().equals(uuid))
                 .findFirst().orElse(null);
