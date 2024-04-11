@@ -109,15 +109,6 @@ public class GUIManager implements Listener {
         }
     }
 
-    public static Optional<GUI> getOpenGUI(final @NotNull UUID uuid) {
-        GUIManager listener = getInstance();
-        if (listener == null) {
-            listener = new GUIManager();
-            Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
-        }
-        return Optional.ofNullable(listener.openGUIs.get(uuid));
-    }
-
     public static GUIManager getInstance() {
         GUIManager manager = instance;
         if (manager == null) {
