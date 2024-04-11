@@ -24,23 +24,23 @@ import java.util.*;
 public class GUIListener implements Listener {
     private static GUIListener instance;
 
-    private final List<Viewer> viewers;
+    private final List<BukkitViewer> viewers;
 
     public GUIListener() {
         instance = this;
         this.viewers = new ArrayList<>();
     }
 
-    protected Optional<Viewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
-        Viewer viewer = getViewer(player);
+    protected Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
+        BukkitViewer viewer = getViewer(player);
         return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
     }
 
-    protected Viewer getViewer(final @NotNull HumanEntity player) {
+    protected BukkitViewer getViewer(final @NotNull HumanEntity player) {
         return this.viewers.stream()
                 .filter(v -> v.getUniqueId().equals(player.getUniqueId()))
                 .findFirst().orElseGet(() -> {
-                    Viewer viewer = BukkitViewer.newViewer(player);
+                    BukkitViewer viewer = (BukkitViewer) BukkitViewer.newViewer(player);
                     this.viewers.add(viewer);
                     return viewer;
                 });
