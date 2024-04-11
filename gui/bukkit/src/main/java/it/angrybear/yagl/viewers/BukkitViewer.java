@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+/**
+ * An implementation of {@link Viewer} for the Bukkit platform.
+ */
 public class BukkitViewer extends Viewer {
 
     /**
@@ -14,7 +17,7 @@ public class BukkitViewer extends Viewer {
      * @param uniqueId the unique id
      * @param name     the name
      */
-    BukkitViewer(UUID uniqueId, String name) {
+    BukkitViewer(final @NotNull UUID uniqueId, final @NotNull String name) {
         super(uniqueId, name);
     }
 
@@ -38,6 +41,12 @@ public class BukkitViewer extends Viewer {
         else return null;
     }
 
+    /**
+     * New viewer viewer.
+     *
+     * @param player the player
+     * @return the viewer
+     */
     public static Viewer newViewer(final @NotNull Player player) {
         return new BukkitViewer(player.getUniqueId(), player.getName());
     }
