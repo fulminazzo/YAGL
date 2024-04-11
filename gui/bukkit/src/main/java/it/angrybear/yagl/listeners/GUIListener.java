@@ -70,8 +70,7 @@ public class GUIListener implements Listener {
 
     @EventHandler
     void on(InventoryDragEvent event) {
-        if (this.openGUIs.containsKey(event.getWhoClicked().getUniqueId()))
-            event.setCancelled(true);
+        getOpenGUIViewer(event.getWhoClicked()).ifPresent(v -> event.setCancelled(true));
     }
 
     @EventHandler
