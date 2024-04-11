@@ -11,7 +11,6 @@ import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
@@ -30,12 +29,12 @@ class GUIParserTest {
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
         GUIYAGLParser.addAllParsers();
         GUIContent expectedContent = new ItemGUIContent()
-                .setMaterial("STONE")
+                .setMaterial("stone")
                 .onClickItem(new GUIItemCommand("command"))
                 .setViewRequirements(new PermissionRequirementChecker("permission"));
         GUI expected = GUI.newGUI(9)
                 .onChangeGUI(new BiGUICommand("command"))
-                .onCloseGUI(Viewer::openGUI)
+                .onCloseGUI((v, g) -> v.executeCommand("help"))
                 .onOpenGUI(new GUICommand("command"))
                 .setContents(0, expectedContent);
         File file = new File("build/resources/test/actions-and-requirements.yml");
@@ -68,19 +67,19 @@ class GUIParserTest {
         GUIYAGLParser.addAllParsers();
         TypeGUI expected = (TypeGUI) GUI.newGUI(GUIType.BARREL)
                 .setContents(0, Item.newItem()
-                        .setMaterial("STONE_SWORD").setAmount(1)
+                        .setMaterial("stone_sword").setAmount(1)
                         .setDurability(1337).setDisplayName("First")
                         .setCustomModelData(1))
                 .setContents(1, Item.newItem()
-                        .setMaterial("STONE_SWORD").setAmount(1)
+                        .setMaterial("stone_sword").setAmount(1)
                         .setDurability(1337).setDisplayName("Second")
                         .setCustomModelData(1))
                 .setContents(4, Item.newItem()
-                                .setMaterial("STONE_SWORD").setAmount(1)
+                                .setMaterial("stone_sword").setAmount(1)
                                 .setDurability(1337).setDisplayName("Third-1")
                                 .setCustomModelData(1),
                         Item.newItem()
-                                .setMaterial("STONE_SWORD").setAmount(1)
+                                .setMaterial("stone_sword").setAmount(1)
                                 .setDurability(1337).setDisplayName("Third-2")
                                 .setCustomModelData(1))
                 .setMovable(3, true).setMovable(7, true);
