@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,20 +30,6 @@ class MetadatableTest {
         final String expected = tmp[1];
         final String actual = tmp[0];
         assertEquals(expected, Metadatable.VARIABLE_PARSER.apply(actual));
-    }
-
-    @Test
-    void testApply() {
-        Metadatable metadatable = new MockMetadatable();
-        metadatable.setVariable("variable", "me");
-        metadatable.setVariable("not", "hello");
-
-        MockObject object = new MockObject();
-        object = metadatable.apply(object);
-
-        assertEquals("SHOULD %not% BE CHANGED", MockObject.string1);
-        assertNull(object.string2);
-        assertEquals("parse me", object.string3);
     }
 
     @Test
@@ -72,6 +60,25 @@ class MetadatableTest {
         assertEquals("friend", m2.getVariable("replace"));
     }
 
+    @Test
+    void testApply() {
+        Metadatable metadatable = new MockMetadatable();
+        metadatable.setVariable("variable", "me");
+        metadatable.setVariable("not", "hello");
+
+        MockObject object = new MockObject();
+        object = metadatable.apply(object);
+
+        assertEquals("SHOULD %not% BE CHANGED", MockObject.string1);
+        assertNull(object.string2);
+        assertEquals("parse me", object.string3);
+        assertEquals(Arrays.asList("parse", "me"),
+                object.list);
+        assertEquals(new HashMap<String, String>(){{
+            put("parse", "me");
+        }}, object.map);
+    }
+
     private static class MockMetadatable implements Metadatable {
         private final Map<String, String> map = new HashMap<>();
 
@@ -85,6 +92,10 @@ class MetadatableTest {
         static String string1 = "SHOULD %not% BE CHANGED";
         String string2 = null;
         String string3 = "parse %variable%";
+        List<String> list = Arrays.asList("parse", "%variable%");
+        Map<String, String> map = new HashMap<String, String>(){{
+            put("parse", "%variable%");
+        }};
     }
 
 }
