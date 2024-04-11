@@ -4,7 +4,6 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.wrappers.Enchantment;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -218,13 +217,11 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
 
     @Override
     public ItemGUIContent copy() {
-        ItemGUIContent guiContent = new ItemGUIContent();
-        new Refl<>(guiContent).setFieldObject("item", this.item.copy());
-        return guiContent;
+        return copyContent();
     }
 
     @Override
-    public @NotNull GUIContent copyContent() {
+    public @NotNull ItemGUIContent copyContent() {
         return new ItemGUIContent(this.item);
     }
 }
