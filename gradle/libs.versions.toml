@@ -2,7 +2,7 @@
 delombok = "8.4"
 
 fulmicollection = "1.4.3"
-yamlparser = "1.5.14"
+yamlparser = "1.6.1"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 spigot_obsolete = "1.8.8-R0.1-SNAPSHOT"
