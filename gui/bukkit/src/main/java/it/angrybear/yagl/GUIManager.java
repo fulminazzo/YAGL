@@ -37,29 +37,26 @@ public class GUIManager implements Listener {
 
     @EventHandler
     void on(InventoryOpenEvent event) {
-        getOpenGUIViewer(event.getPlayer()).ifPresent(viewer -> {
-            GUI gui = viewer.getOpenGUI();
-            gui.openGUIAction().ifPresent(a -> a.execute(viewer, gui));
-        });
+        getOpenGUIViewer(event.getPlayer()).ifPresent((v, g) ->
+                g.openGUIAction().ifPresent(a -> a.execute(v, g)));
     }
 
     @EventHandler
     void on(InventoryClickEvent event) {
-        getOpenGUIViewer(event.getWhoClicked()).ifPresent(viewer -> {
-            GUI gui = viewer.getOpenGUI();
+        getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
             int slot = event.getRawSlot();
-            if (!gui.isMovable(slot)) event.setCancelled(true);
-            if (slot < 0) gui.clickOutsideAction().ifPresent(a -> a.execute(viewer, gui));
-            else if (slot < gui.getSize()) {
-                @Nullable GUIContent content = gui.getContent(viewer, slot);
-                if (content != null) content.clickItemAction().ifPresent(a -> a.execute(viewer, gui, content));
+            if (!g.isMovable(slot)) event.setCancelled(true);
+            if (slot < 0) g.clickOutsideAction().ifPresent(a -> a.execute(v, g));
+            else if (slot < g.getSize()) {
+                @Nullable GUIContent content = g.getContent(v, slot);
+                if (content != null) content.clickItemAction().ifPresent(a -> a.execute(v, g, content));
             }
         });
     }
 
     @EventHandler
     void on(InventoryDragEvent event) {
-        getOpenGUIViewer(event.getWhoClicked()).ifPresent(v -> event.setCancelled(true));
+        getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> event.setCancelled(true));
     }
 
     @EventHandler
@@ -69,10 +66,8 @@ public class GUIManager implements Listener {
     }
 
     private void onCloseGUI(Player player) {
-        getOpenGUIViewer(player).ifPresent(viewer -> {
-            GUI gui = viewer.getOpenGUI();
-            gui.closeGUIAction().ifPresent(a -> a.execute(viewer, gui));
-        });
+        getOpenGUIViewer(player).ifPresent((v, g) ->
+                g.closeGUIAction().ifPresent(a -> a.execute(v, g)));
     }
 
     @EventHandler
