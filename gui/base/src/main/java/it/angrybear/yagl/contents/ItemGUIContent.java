@@ -4,9 +4,11 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.wrappers.Enchantment;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -122,6 +124,103 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     @Override
     public boolean isSimilar(@Nullable Item item, ItemField @NotNull ... ignore) {
         return this.item.isSimilar(item, ignore);
+    }
+
+    @Override
+    public ItemGUIContent addLore(String @NotNull ... lore) {
+        return (ItemGUIContent) Item.super.addLore(lore);
+    }
+
+    @Override
+    public ItemGUIContent addLore(@NotNull Collection<String> lore) {
+        return (ItemGUIContent) Item.super.addLore(lore);
+    }
+
+    @Override
+    public ItemGUIContent removeLore(String @NotNull ... lore) {
+        return (ItemGUIContent) Item.super.removeLore(lore);
+    }
+
+    @Override
+    public ItemGUIContent removeLore(@NotNull Collection<String> lore) {
+        return (ItemGUIContent) Item.super.removeLore(lore);
+    }
+
+    @Override
+    public ItemGUIContent setLore(String @NotNull ... lore) {
+        return (ItemGUIContent) Item.super.setLore(lore);
+    }
+
+    @Override
+    public ItemGUIContent setLore(@NotNull Collection<String> lore) {
+        return (ItemGUIContent) Item.super.setLore(lore);
+    }
+
+    @Override
+    public ItemGUIContent addEnchantment(@NotNull String enchantment, int level) {
+        return (ItemGUIContent) Item.super.addEnchantment(enchantment, level);
+    }
+
+    @Override
+    public ItemGUIContent addEnchantments(String @NotNull ... enchantments) {
+        return (ItemGUIContent) Item.super.addEnchantments(enchantments);
+    }
+
+    @Override
+    public ItemGUIContent addEnchantments(Enchantment @NotNull ... enchantments) {
+        return (ItemGUIContent) Item.super.addEnchantments(enchantments);
+    }
+
+    @Override
+    public ItemGUIContent addEnchantments(@NotNull Collection<Enchantment> enchantments) {
+        return (ItemGUIContent) Item.super.addEnchantments(enchantments);
+    }
+
+    @Override
+    public ItemGUIContent removeEnchantment(@NotNull String enchantment, int level) {
+        return (ItemGUIContent) Item.super.removeEnchantment(enchantment, level);
+    }
+
+    @Override
+    public ItemGUIContent removeEnchantments(String @NotNull ... enchantments) {
+        return (ItemGUIContent) Item.super.removeEnchantments(enchantments);
+    }
+
+    @Override
+    public ItemGUIContent removeEnchantments(Enchantment @NotNull ... enchantments) {
+        return (ItemGUIContent) Item.super.removeEnchantments(enchantments);
+    }
+
+    @Override
+    public ItemGUIContent removeEnchantments(@NotNull Collection<Enchantment> enchantments) {
+        return (ItemGUIContent) Item.super.removeEnchantments(enchantments);
+    }
+
+    @Override
+    public ItemGUIContent addItemFlags(ItemFlag @NotNull ... itemFlags) {
+        return (ItemGUIContent) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public ItemGUIContent addItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+        return (ItemGUIContent) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public ItemGUIContent removeItemFlags(ItemFlag @NotNull ... itemFlags) {
+        return (ItemGUIContent) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    public ItemGUIContent removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+        return (ItemGUIContent) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    public ItemGUIContent copy() {
+        ItemGUIContent guiContent = new ItemGUIContent();
+        new Refl<>(guiContent).setFieldObject("item", this.item.copy());
+        return guiContent;
     }
 
     @Override
