@@ -28,6 +28,15 @@ public abstract class Viewer {
     }
 
     /**
+     * Checks if the current viewer has a GUI opened.
+     *
+     * @return true if they do
+     */
+    public boolean hasOpenGUI() {
+        return this.openGUI != null;
+    }
+
+    /**
      * Execute command.
      *
      * @param command the command
