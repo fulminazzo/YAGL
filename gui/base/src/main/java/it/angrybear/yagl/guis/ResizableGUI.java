@@ -1,8 +1,8 @@
 package it.angrybear.yagl.guis;
 
 
-import org.jetbrains.annotations.NotNull;
 import it.angrybear.yagl.contents.GUIContent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a "chest" GUI that can be resized.
@@ -39,7 +39,7 @@ public class ResizableGUI extends GUIImpl {
         for (int i = 0; i < contents.length; i++) {
             GUIContent content = contents[i];
             j = addSingle(content, j);
-            if (j != -1) continue;
+            if (j < size()) continue;
             if (size() < MAX_SIZE) {
                 resize(size() + 9);
                 this.contents.set(j, new Contents(content));
