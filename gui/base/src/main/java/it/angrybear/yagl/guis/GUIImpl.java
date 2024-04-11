@@ -80,12 +80,19 @@ abstract class GUIImpl implements GUI {
         return this;
     }
 
-    protected int addSingle(GUIContent content, int j) {
-        for (; j < this.contents.size(); j++) {
-            Contents c = this.contents.get(j);
+    /**
+     * Tries to add the given content from the given index.
+     *
+     * @param content   the content
+     * @param index     the index
+     * @return the new index if it was successful, -1 in case of error
+     */
+    protected int addSingle(final @NotNull GUIContent content, int index) {
+        for (; index < this.contents.size(); index++) {
+            Contents c = this.contents.get(index);
             if (c == null) {
-                this.contents.set(j, new Contents(content));
-                return j;
+                this.contents.set(index, new Contents(content));
+                return index;
             }
         }
         return -1;
