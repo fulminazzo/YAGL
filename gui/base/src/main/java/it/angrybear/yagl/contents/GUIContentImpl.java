@@ -5,7 +5,6 @@ import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,14 +15,13 @@ import java.util.Optional;
 /**
  * A basic implementation for {@link GUIContent}.
  */
-@Getter
 abstract class GUIContentImpl extends FieldEquable implements GUIContent {
+    @Getter
     protected int priority = 0;
+    @Getter
     protected String clickSound;
-    @Getter(AccessLevel.NONE)
     protected RequirementChecker requirements;
     protected GUIItemAction clickAction;
-    @Getter(AccessLevel.NONE)
     protected final Map<String, String> variables = new HashMap<>();
 
     @Override
