@@ -25,11 +25,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * A general manager class that controls most {@link GUI} features.
+ * It is completely independent and not required from the end user to be loaded or registered.
+ */
 public class GUIManager implements Listener {
     private static GUIManager instance;
 
     private final List<BukkitViewer> viewers;
 
+    /**
+     * Instantiates a new GUI manager.
+     */
     public GUIManager() {
         instance = this;
         this.viewers = new ArrayList<>();
@@ -85,18 +92,37 @@ public class GUIManager implements Listener {
         }
     }
 
+    /**
+     * Gets a {@link BiOptional} with the corresponding {@link BukkitViewer} and open {@link GUI} if present.
+     *
+     * @param player the player
+     * @return the BiOptional
+     */
     public static @NotNull BiOptional<BukkitViewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
         BukkitViewer viewer = getViewer(player);
         if (viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
         else return BiOptional.empty();
     }
 
+    /**
+     * Gets a {@link BiOptional} with the corresponding {@link BukkitViewer} and open {@link GUI} if present.
+     *
+     * @param uuid the uuid
+     * @return the BiOptional
+     */
     public static @NotNull BiOptional<BukkitViewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
         BukkitViewer viewer = getViewer(uuid);
         if (viewer != null && viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
         else return BiOptional.empty();
     }
 
+    /**
+     * Gets the corresponding {@link BukkitViewer} to the provided player.
+     * If it is not present, it will be created.
+     *
+     * @param player the player
+     * @return the viewer
+     */
     public static @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
         BukkitViewer viewer = getViewer(player.getUniqueId());
         if (viewer == null) {
@@ -106,12 +132,25 @@ public class GUIManager implements Listener {
         return viewer;
     }
 
+    /**
+     * Gets the corresponding {@link BukkitViewer} to the provided player.
+     * If it is not present, it will be returned null.
+     *
+     * @param uuid the uuid
+     * @return the viewer
+     */
     public static @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
         return getInstance().viewers.stream()
                 .filter(v -> v.getUniqueId().equals(uuid))
                 .findFirst().orElse(null);
     }
 
+    /**
+     * Gets an instance of {@link GUIManager}.
+     * If none is currently loaded, it will be created.
+     *
+     * @return the instance
+     */
     public static GUIManager getInstance() {
         GUIManager manager = instance;
         if (manager == null) {
