@@ -1,13 +1,14 @@
 package it.angrybear.yagl.actions;
 
-import org.jetbrains.annotations.NotNull;
 import it.angrybear.yagl.SerializableFunction;
 import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An implementation of {@link SerializableFunction} that executes the given {@link #command} upon {@link #execute(Viewer)}.
  */
-abstract class CommandAction implements SerializableFunction {
+abstract class CommandAction extends FieldEquable implements SerializableFunction {
     protected final String command;
 
     /**
@@ -26,13 +27,6 @@ abstract class CommandAction implements SerializableFunction {
      */
     protected void execute(final @NotNull Viewer viewer) {
         viewer.executeCommand(this.command);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof CommandAction)
-            return getClass().equals(o.getClass()) && this.command.equals(((CommandAction) o).command);
-        return super.equals(o);
     }
 
     @Override

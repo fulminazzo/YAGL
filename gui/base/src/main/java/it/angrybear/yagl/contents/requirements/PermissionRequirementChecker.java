@@ -1,14 +1,15 @@
 package it.angrybear.yagl.contents.requirements;
 
+import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import it.angrybear.yagl.viewers.Viewer;
 
 /**
  * A type of requirement that checks if the {@link Viewer} has a certain permission.
  */
 @Getter
-public class PermissionRequirementChecker implements RequirementChecker {
+public class PermissionRequirementChecker extends FieldEquable implements RequirementChecker {
     private final String permission;
 
     /**
@@ -28,22 +29,5 @@ public class PermissionRequirementChecker implements RequirementChecker {
     @Override
     public String serialize() {
         return this.permission;
-    }
-
-    /**
-     * Equals boolean.
-     *
-     * @param checker the checker
-     * @return the boolean
-     */
-    public boolean equals(PermissionRequirementChecker checker) {
-        return checker != null && this.permission.equalsIgnoreCase(checker.permission);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof PermissionRequirementChecker)
-            return equals((PermissionRequirementChecker) o);
-        return super.equals(o);
     }
 }
