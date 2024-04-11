@@ -1,5 +1,7 @@
 package it.angrybear.yagl.viewers;
 
+import it.angrybear.yagl.WrappersAdapter;
+import it.angrybear.yagl.wrappers.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -21,6 +23,13 @@ class BukkitViewer extends Viewer {
      */
     BukkitViewer(final @NotNull UUID uniqueId, final @NotNull String name) {
         super(uniqueId, name);
+    }
+
+    @Override
+    public void playSound(@NotNull Sound sound) {
+        Player player = getPlayer().orElse(null);
+        if (player == null) throw new IllegalStateException();
+        WrappersAdapter.playCustomSound(player, sound);
     }
 
     @Override

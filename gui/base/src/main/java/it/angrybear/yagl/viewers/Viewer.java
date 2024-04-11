@@ -1,6 +1,7 @@
 package it.angrybear.yagl.viewers;
 
 import it.angrybear.yagl.guis.GUI;
+import it.angrybear.yagl.wrappers.Sound;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,9 +12,21 @@ import java.util.UUID;
  */
 @Getter
 public abstract class Viewer {
+    /**
+     * The Unique id.
+     */
     protected final UUID uniqueId;
+    /**
+     * The Name.
+     */
     protected final String name;
+    /**
+     * The Previous gui.
+     */
     protected GUI previousGUI;
+    /**
+     * The Open gui.
+     */
     protected GUI openGUI;
 
     /**
@@ -35,6 +48,13 @@ public abstract class Viewer {
     public boolean hasOpenGUI() {
         return this.openGUI != null;
     }
+
+    /**
+     * Plays the given sound for the player.
+     *
+     * @param sound the sound
+     */
+    public abstract void playSound(final @NotNull Sound sound);
 
     /**
      * Execute command.
