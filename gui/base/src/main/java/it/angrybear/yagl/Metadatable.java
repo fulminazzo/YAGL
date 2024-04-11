@@ -173,7 +173,8 @@ public interface Metadatable extends Iterable<String> {
      * @return the map parsed
      */
     default @NotNull Map<Object, Object> apply(final @NotNull Map<Object, Object> map) {
-        for (Object key : map.keySet()) {
+        final List<Object> keys = new ArrayList<>(map.keySet());
+        for (Object key : keys) {
             if (key == null) continue;
             Object value = map.get(key);
             if (value != null) {
