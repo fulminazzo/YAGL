@@ -4,6 +4,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.BukkitViewer;
 import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.structures.BiOptional;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -19,7 +20,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class GUIManager implements Listener {
     private static GUIManager instance;
@@ -86,14 +90,16 @@ public class GUIManager implements Listener {
         }
     }
 
-    public static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
+    public static @NotNull BiOptional<BukkitViewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
         BukkitViewer viewer = getViewer(player);
-        return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
+        if (viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
+        else return BiOptional.empty();
     }
 
-    public static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull UUID uuid) {
+    public static @NotNull BiOptional<BukkitViewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
         BukkitViewer viewer = getViewer(uuid);
-        return Optional.ofNullable(viewer == null || viewer.hasOpenGUI() ? viewer : null);
+        if (viewer != null && viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
+        else return BiOptional.empty();
     }
 
     public static @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
