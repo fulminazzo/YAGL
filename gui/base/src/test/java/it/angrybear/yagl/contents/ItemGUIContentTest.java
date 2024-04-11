@@ -34,16 +34,17 @@ class ItemGUIContentTest {
     }
 
     @Test
+    void testCopy() {
+        ItemGUIContent expected = newItemGUIContent();
+        ItemGUIContent actual = expected.copy();
+        assertEquals(expected, actual);
+        assertEquals((Item) new Refl<>(expected).getFieldObject("item"), new Refl<>(actual).getFieldObject("item"));
+    }
+
+    @Test
     @DisplayName("Item inherited methods should call actual methods of the inner item")
     void testItemMethods() throws InvocationTargetException, IllegalAccessException {
-        ItemGUIContent actual = new ItemGUIContent()
-                .setMaterial("stone_sword").setAmount(1)
-                .setDurability(1337).setDisplayName("&8Destroyer")
-                .setLore("&eUse this sword to fight your enemies")
-                .addEnchantment("unbreaking", 3)
-                .addEnchantment("sharpness", 5)
-                .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
-                .setCustomModelData(1);
+        ItemGUIContent actual = newItemGUIContent();
         Item expected = new Refl<>(actual).getFieldObject("item");
 
         for (Method method : Item.class.getDeclaredMethods())
@@ -56,6 +57,17 @@ class ItemGUIContentTest {
                 Object obj2 = ReflectionUtils.setAccessible(method).invoke(expected, params);
                 assertEquals(obj2, obj1);
             }
+    }
+
+    private static ItemGUIContent newItemGUIContent() {
+        return new ItemGUIContent()
+                .setMaterial("stone_sword").setAmount(1)
+                .setDurability(1337).setDisplayName("&8Destroyer")
+                .setLore("&eUse this sword to fight your enemies")
+                .addEnchantment("unbreaking", 3)
+                .addEnchantment("sharpness", 5)
+                .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
+                .setCustomModelData(1);
     }
 
     @Test
