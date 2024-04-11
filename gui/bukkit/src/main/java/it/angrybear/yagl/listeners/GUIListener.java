@@ -25,11 +25,26 @@ public class GUIListener implements Listener {
     @Getter
     private static GUIListener instance;
 
-    private final Map<UUID, GUI> openGUIs;
+    private final List<Viewer> viewers;
 
     public GUIListener() {
         instance = this;
-        this.openGUIs = new LinkedHashMap<>();
+        this.viewers = new ArrayList<>();
+    }
+
+    protected Optional<Viewer> getOpenGUIViewer(final @NotNull Player player) {
+        Viewer viewer = getViewer(player);
+        return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
+    }
+
+    protected Viewer getViewer(final @NotNull Player player) {
+        return this.viewers.stream()
+                .filter(v -> v.getUniqueId().equals(player.getUniqueId()))
+                .findFirst().orElseGet(() -> {
+                    Viewer viewer = BukkitViewer.newViewer(player);
+                    this.viewers.add(viewer);
+                    return viewer;
+                });
     }
 
     @EventHandler
