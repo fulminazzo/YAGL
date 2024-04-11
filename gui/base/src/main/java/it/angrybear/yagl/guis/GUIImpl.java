@@ -85,17 +85,17 @@ abstract class GUIImpl implements GUI {
      *
      * @param content   the content
      * @param index     the index
-     * @return the new index if it was successful, -1 in case of error
+     * @return the new index if it was successful, an index higher than {@link #size()} if failed
      */
     protected int addSingle(final @NotNull GUIContent content, int index) {
         for (; index < this.contents.size(); index++) {
             Contents c = this.contents.get(index);
             if (c == null) {
                 this.contents.set(index, new Contents(content));
-                return index;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     @Override
