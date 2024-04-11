@@ -58,18 +58,18 @@ public class GUIManager implements Listener {
 
     @EventHandler
     void on(InventoryOpenEvent event) {
-        Player player = (Player) event.getPlayer();
-        getOpenGUI(player.getUniqueId()).ifPresent(gui ->
-                gui.openGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
+        getOpenGUIViewer(event.getPlayer()).ifPresent(viewer -> {
+            GUI gui = viewer.getOpenGUI();
+            gui.openGUIAction().ifPresent(a -> a.execute(viewer, gui));
+        });
     }
 
     @EventHandler
     void on(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        getOpenGUI(player.getUniqueId()).ifPresent(gui -> {
+        getOpenGUIViewer(event.getWhoClicked()).ifPresent(viewer -> {
+            GUI gui = viewer.getOpenGUI();
             int slot = event.getRawSlot();
             if (!gui.isMovable(slot)) event.setCancelled(true);
-            Viewer viewer = BukkitViewer.newViewer(player);
             if (slot < 0) gui.clickOutsideAction().ifPresent(a -> a.execute(viewer, gui));
             else if (slot < gui.getSize()) {
                 @Nullable GUIContent content = gui.getContent(viewer, slot);
@@ -90,8 +90,10 @@ public class GUIManager implements Listener {
     }
 
     private void onCloseGUI(Player player) {
-        getOpenGUI(player.getUniqueId()).ifPresent(gui ->
-                gui.closeGUIAction().ifPresent(a -> a.execute(BukkitViewer.newViewer(player), gui)));
+        getOpenGUIViewer(player).ifPresent(viewer -> {
+            GUI gui = viewer.getOpenGUI();
+            gui.closeGUIAction().ifPresent(a -> a.execute(viewer, gui));
+        });
     }
 
     @EventHandler
