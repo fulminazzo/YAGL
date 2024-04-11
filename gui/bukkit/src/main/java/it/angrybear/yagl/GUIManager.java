@@ -86,17 +86,17 @@ public class GUIManager implements Listener {
         }
     }
 
-    protected static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
+    public static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull HumanEntity player) {
         BukkitViewer viewer = getViewer(player);
         return Optional.ofNullable(viewer.hasOpenGUI() ? viewer : null);
     }
 
-    protected static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull UUID uuid) {
+    public static @NotNull Optional<BukkitViewer> getOpenGUIViewer(final @NotNull UUID uuid) {
         BukkitViewer viewer = getViewer(uuid);
         return Optional.ofNullable(viewer == null || viewer.hasOpenGUI() ? viewer : null);
     }
 
-    protected static @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
+    public static @NotNull BukkitViewer getViewer(final @NotNull HumanEntity player) {
         BukkitViewer viewer = getViewer(player.getUniqueId());
         if (viewer == null) {
             viewer = (BukkitViewer) BukkitViewer.newViewer(player);
@@ -105,7 +105,7 @@ public class GUIManager implements Listener {
         return viewer;
     }
 
-    protected static @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
+    public static @Nullable BukkitViewer getViewer(final @NotNull UUID uuid) {
         return getInstance().viewers.stream()
                 .filter(v -> v.getUniqueId().equals(uuid))
                 .findFirst().orElse(null);
