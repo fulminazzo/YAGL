@@ -37,7 +37,7 @@ class MetadatableTest {
         metadatable.setVariable("not", "hello");
 
         MockObject object = new MockObject();
-        object = (MockObject) metadatable.apply(object);
+        object = metadatable.apply(object);
 
         assertEquals("SHOULD %not% BE CHANGED", MockObject.string1);
         assertNull(object.string2);

@@ -116,10 +116,10 @@ public interface Metadatable extends Iterable<String> {
      * @param object the object
      * @return the object parsed
      */
-    default Object apply(final Object object) {
+    default <T> T apply(final T object) {
         if (object == null) return null;
 
-        final Refl<?> refl = new Refl<>(object);
+        final Refl<T> refl = new Refl<>(object);
         for (Field field : refl.getNonStaticFields())
             if (String.class.isAssignableFrom(field.getType())) {
                 String o = refl.getFieldObject(field);
