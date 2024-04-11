@@ -17,9 +17,6 @@ import java.util.*;
 abstract class GUIImpl implements GUI {
     protected static final int MAX_SIZE = 54;
 
-    protected GUI previous;
-    protected GUI next;
-    protected GUI back;
     protected String title;
     protected List<Contents> contents;
     protected final Set<Integer> movableSlots;
@@ -45,24 +42,6 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull GUI setTitle(@Nullable String title) {
         this.title = title;
-        return this;
-    }
-
-    @Override
-    public @NotNull GUI setPrevious(@Nullable GUI previous) {
-        this.previous = previous;
-        return this;
-    }
-
-    @Override
-    public @NotNull GUI setNext(@Nullable GUI next) {
-        this.next = next;
-        return this;
-    }
-
-    @Override
-    public @NotNull GUI setBack(@Nullable GUI back) {
-        this.back = back;
         return this;
     }
 

@@ -38,51 +38,6 @@ public interface GUI extends Metadatable {
     @Nullable String getTitle();
 
     /**
-     * Sets previous GUI.
-     *
-     * @param previous the previous gui
-     * @return this gui
-     */
-    @NotNull GUI setPrevious(final @Nullable GUI previous);
-
-    /**
-     * Gets the previous GUI.
-     *
-     * @return the previous
-     */
-    @Nullable GUI getPrevious();
-
-    /**
-     * Sets next GUI.
-     *
-     * @param next the next
-     * @return this gui
-     */
-    @NotNull GUI setNext(final @Nullable GUI next);
-
-    /**
-     * Gets the next GUI.
-     *
-     * @return the next
-     */
-    @Nullable GUI getNext();
-
-    /**
-     * Sets back GUI.
-     *
-     * @param back the back
-     * @return this gui
-     */
-    @NotNull GUI setBack(final @Nullable GUI back);
-
-    /**
-     * Gets the GUI opened before opening this GUI (not previous).
-     *
-     * @return the back
-     */
-    @Nullable GUI getBack();
-
-    /**
      * Gets size.
      *
      * @return the size
