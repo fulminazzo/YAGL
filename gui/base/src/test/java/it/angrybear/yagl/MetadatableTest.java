@@ -77,16 +77,16 @@ class MetadatableTest {
         MockObject object = new MockObject();
         object = metadatable.apply(object);
 
-        assertEquals("SHOULD %not% BE CHANGED", MockObject.string1);
+        assertEquals("SHOULD <not> BE CHANGED", MockObject.string1);
         assertNull(object.string2);
         assertEquals("parse me", object.string3);
         assertEquals(Arrays.asList("parse", "me"),
                 object.list);
         assertEquals(new HashMap<String, String>(){{
             put("parse", "me");
-            put("parsing", "%not-me%");
-            put(null, "%variable%");
-            put("%variable%", null);
+            put("parsing", "<not-me>");
+            put(null, "<variable>");
+            put("<variable>", null);
         }}, object.map);
     }
 
@@ -115,15 +115,15 @@ class MetadatableTest {
     }
 
     private static class MockObject {
-        static String string1 = "SHOULD %not% BE CHANGED";
+        static String string1 = "SHOULD <not> BE CHANGED";
         String string2 = null;
-        String string3 = "parse %variable%";
-        List<String> list = Arrays.asList("parse", "%variable%");
+        String string3 = "parse <variable>";
+        List<String> list = Arrays.asList("parse", "<variable>");
         Map<String, String> map = new HashMap<String, String>(){{
-            put("parse", "%variable%");
-            put("parsing", "%not-me%");
-            put(null, "%variable%");
-            put("%variable%", null);
+            put("parse", "<variable>");
+            put("parsing", "<not-me>");
+            put(null, "<variable>");
+            put("<variable>", null);
         }};
     }
 
