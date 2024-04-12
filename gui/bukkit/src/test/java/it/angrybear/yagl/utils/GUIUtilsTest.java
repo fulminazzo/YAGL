@@ -50,7 +50,7 @@ class GUIUtilsTest {
 
         try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
             when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> mock(JavaPlugin.class));
-            GUIUtils.openGUI(expected, GUIManager.getViewer(player));
+            expected.open(GUIManager.getViewer(player));
         }
 
         assertNotNull(inventory);
