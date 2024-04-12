@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.mock;
 
 class MetadatableTest {
 
@@ -93,9 +92,9 @@ class MetadatableTest {
     private static Metadatable[] metadatables() {
         return new Metadatable[]{
                 new ItemGUIContent(),
-                mock(GUI.class),
                 GUI.newGUI(9),
-                GUI.newGUI(GUIType.ANVIL)
+                GUI.newResizableGUI(9),
+                GUI.newGUI(GUIType.ANVIL),
         };
     }
 
