@@ -12,15 +12,17 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class GUIUtilsTest {
 
@@ -28,23 +30,26 @@ class GUIUtilsTest {
     void testOpenGUI() {
         BukkitUtils.setupServer();
 
+        Server server = Bukkit.getServer();
+        when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
+
         AtomicReference<Inventory> inventory = new AtomicReference<>();
-        Player player = mock(Player.class);
-                when(player.isOnline()).thenReturn(true);
+        Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
+        when(player.isOnline()).thenReturn(true);
         when(player.openInventory(any(Inventory.class)))
                 .thenAnswer(a -> {
                     inventory.set(a.getArgument(0));
                     return null;
                 });
 
-        Server server = Bukkit.getServer();
-        when(server.getPlayer(any(UUID.class))).thenReturn(player);
-
         GUI expected = GUI.newGUI(9)
                 .setTitle("Hello world")
                 .addContent(Item.newItem("stone").setDisplayName("test"));
 
-        GUIUtils.openGUI(expected, GUIManager.getViewer(player));
+        try (MockedStatic<JavaPlugin> javaPlugin = mockStatic(JavaPlugin.class)) {
+            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> mock(JavaPlugin.class));
+            GUIUtils.openGUI(expected, GUIManager.getViewer(player));
+        }
 
         assertNotNull(inventory);
         assertEquals(expected.size(), inventory.get().getSize());
