@@ -122,12 +122,29 @@ public final class TestUtils {
      * to allow method chaining.
      * This function allows to check each one to verify that the return type is consistent with the original object.
      *
-     * @param <T>    the type parameter
-     * @param object the object
-     * @param clazz  the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param filter if there are some methods that return a copy or a clone of the object, they should be filtered here.
+     * @param <T>                the type parameter
+     * @param object             the object
+     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
+                                          final @Nullable Predicate<Method> filter) {
+        testReturnType(object, clazz, object.getClass(), filter);
+    }
+
+    /**
+     * Many objects have setter, adder or remover methods which return the object itself,
+     * to allow method chaining.
+     * This function allows to check each one to verify that the return type is consistent with the original object.
+     *
+     * @param <T>                the type parameter
+     * @param object             the object
+     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param expectedReturnType the expected return type of the methods. In case the testing object is an hidden implementation of the actual interface.
+     * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
+     */
+    public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
+                                          final @NotNull Class<?> expectedReturnType,
                                           final @Nullable Predicate<Method> filter) {
         for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
@@ -151,7 +168,7 @@ public final class TestUtils {
                             methodString, objectClass, o.getClass()));
                 else {
                     try {
-                        ReflectionUtils.getMethod(objectClass, objectClass, method.getName(), method.getParameterTypes());
+                        ReflectionUtils.getMethod(objectClass, expectedReturnType, method.getName(), method.getParameterTypes());
                     } catch (IllegalArgumentException e) {
                         final String message = e.getMessage();
                         if (message != null && message.contains("Could not find"))
@@ -168,6 +185,12 @@ public final class TestUtils {
         }
     }
 
+    /**
+     * Mocks the given class to an object.
+     *
+     * @param clazz the clazz
+     * @return the object
+     */
     public static Object mockParameter(Class<?> clazz) {
         clazz = ReflectionUtils.getWrapperClass(clazz);
         if (Number.class.isAssignableFrom(clazz)) return 1;
