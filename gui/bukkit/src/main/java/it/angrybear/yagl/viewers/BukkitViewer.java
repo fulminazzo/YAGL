@@ -28,14 +28,14 @@ class BukkitViewer extends Viewer {
     @Override
     public void playSound(@NotNull Sound sound) {
         Player player = getPlayer().orElse(null);
-        if (player == null) throw new IllegalStateException();
+        if (player == null) throw new PlayerOfflineException(this.name);
         WrappersAdapter.playCustomSound(player, sound);
     }
 
     @Override
     public void executeCommand(final @NotNull String command) {
         Player player = getPlayer().orElse(null);
-        if (player == null) throw new IllegalStateException(String.format("Player '%s' is not online", this.name));
+        if (player == null) throw new PlayerOfflineException(this.name);
         Bukkit.dispatchCommand(player, command);
     }
 
