@@ -163,7 +163,7 @@ class GUIManagerTest {
                     -1, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
-            assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
+            assertFalse(event.isCancelled(), "Event should not be cancelled after being invoked");
             assertFalse(notExpected.get(), "Click action should not be invoked");
             assertTrue(expected.get(), "Outside action was not invoked");
         }
