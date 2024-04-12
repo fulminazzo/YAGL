@@ -27,10 +27,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -67,74 +64,6 @@ class PersistentListenerTest {
         this.clicked = false;
         maintain.onClick((i, c, a) -> clicked = true);
         cursor = null;
-    }
-
-    private static InventoryView setupInventoryClickEventView() {
-        Inventory inventory = new MockInventory(9);
-        inventory.setItem(0, maintain.create());
-
-        Player player = getPlayer();
-        player.getInventory().setItem(0, maintain.create());
-
-        return getInventoryView(player, inventory);
-    }
-
-    private static InventoryClickEvent[] inventoryClickEvents() {
-        InventoryView view = setupInventoryClickEventView();
-
-        return new InventoryClickEvent[]{
-                new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
-                new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 2, ClickType.LEFT, InventoryAction.CLONE_STACK),
-                new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 3, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0),
-        };
-    }
-
-    @ParameterizedTest
-    @MethodSource("inventoryClickEvents")
-    void simulateInventoryClick(InventoryClickEvent event) {
-        if (event.getRawSlot() == 2) cursor = maintain.create();
-
-        assertFalse(this.clicked, "Clicked should be initialized as false");
-        assertFalse(event.isCancelled(), "Event should not be cancelled");
-        listener.on(event);
-        System.out.println("cancelled ? " + event.isCancelled());
-        assertTrue(event.isCancelled(), "Event should have been cancelled by now");
-        assertTrue(this.clicked, "Clicked should have changed");
-    }
-
-    private static Object[] notMovableItems() {
-        return new Object[]{
-                new PersistentItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
-                new PersistentItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
-        };
-    }
-
-    @ParameterizedTest
-    @MethodSource("notMovableItems")
-    void testItemOutsideCouldNotBeMoved(PersistentItem persistentItem) {
-        InventoryView view = setupInventoryClickEventView();
-        int slot = view.getTopInventory().getSize();
-        view.getBottomInventory().setItem(0, persistentItem.create());
-
-        InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0);
-        assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
-        assertFalse(event.isCancelled(), "Event should not be cancelled");
-        listener.on(event);
-        assertEquals(persistentItem.getMobility() == Mobility.STATIC, event.isCancelled(), "Event cancel state was not as expected");
-    }
-
-    @ParameterizedTest
-    @MethodSource("notMovableItems")
-    void testItemInsideShouldNotBeMoved(PersistentItem persistentItem) {
-        InventoryView view = setupInventoryClickEventView();
-        int slot = 0;
-        view.getTopInventory().setItem(slot, persistentItem.create());
-
-        InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.LEFT, InventoryAction.CLONE_STACK);
-        assertEquals(view.getTopInventory(), event.getClickedInventory(), "Clicked inventory should be top inventory");
-        assertFalse(event.isCancelled(), "Event should not be cancelled");
-        listener.on(event);
-        assertTrue(event.isCancelled(), "Event should be cancelled");
     }
 
     private static Cancellable[] cancellableEvents() {
@@ -291,6 +220,79 @@ class PersistentListenerTest {
             return playerInventory;
         });
         return view;
+    }
+
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @Nested
+    class InventoryClick {
+
+        private InventoryView setupInventoryClickEventView() {
+            Inventory inventory = new MockInventory(9);
+            inventory.setItem(0, maintain.create());
+
+            Player player = getPlayer();
+            player.getInventory().setItem(0, maintain.create());
+
+            return getInventoryView(player, inventory);
+        }
+
+        private InventoryClickEvent[] inventoryClickEvents() {
+            InventoryView view = setupInventoryClickEventView();
+
+            return new InventoryClickEvent[]{
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 2, ClickType.LEFT, InventoryAction.CLONE_STACK),
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 3, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0),
+            };
+        }
+
+        @ParameterizedTest
+        @MethodSource("inventoryClickEvents")
+        void simulateInventoryClick(InventoryClickEvent event) {
+            if (event.getRawSlot() == 2) cursor = maintain.create();
+
+            assertFalse(clicked, "Clicked should be initialized as false");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertTrue(event.isCancelled(), "Event should have been cancelled by now");
+            assertTrue(clicked, "Clicked should have changed");
+        }
+
+        private Object[] notMovableItems() {
+            return new Object[]{
+                    new PersistentItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
+                    new PersistentItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
+            };
+        }
+
+        @ParameterizedTest
+        @MethodSource("notMovableItems")
+        void testItemOutsideCouldNotBeMoved(PersistentItem persistentItem) {
+            InventoryView view = setupInventoryClickEventView();
+            int slot = view.getTopInventory().getSize();
+            view.getBottomInventory().setItem(0, persistentItem.create());
+
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0);
+            assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertEquals(persistentItem.getMobility() == Mobility.STATIC, event.isCancelled(), "Event cancel state was not as expected");
+        }
+
+        @ParameterizedTest
+        @MethodSource("notMovableItems")
+        void testItemInsideShouldNotBeMoved(PersistentItem persistentItem) {
+            InventoryView view = setupInventoryClickEventView();
+            int slot = 0;
+            view.getTopInventory().setItem(slot, persistentItem.create());
+
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertEquals(view.getTopInventory(), event.getClickedInventory(), "Clicked inventory should be top inventory");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled");
+        }
+
     }
 
     @Nested
