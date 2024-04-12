@@ -28,7 +28,7 @@ public abstract class ParserTestHelper<T> {
      * @throws Exception the exception
      */
     @Test
-    void testLoadNull() throws Exception {
+    protected void testLoadNull() throws Exception {
         assertNull(getLoader().apply(getConfiguration(null), "path"));
     }
 
@@ -36,7 +36,7 @@ public abstract class ParserTestHelper<T> {
      * Tests if {@link YAMLParser#dump(IConfiguration, String, Object)} returns null when the object is null.
      */
     @Test
-    void testSaveNull() {
+    protected void testSaveNull() {
         assertDoesNotThrow(() -> getDumper()
                 .accept(getConfiguration(null), "path", null));
     }
