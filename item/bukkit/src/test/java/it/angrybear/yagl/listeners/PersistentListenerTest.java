@@ -116,6 +116,20 @@ class PersistentListenerTest {
         assertFalse(event.isCancelled(), "Event should not be cancelled");
     }
 
+    @Test
+    void testMovableItemInside() {
+        PersistentItem persistentItem = new PersistentItem(Material.FLOWER_POT).setMobility(Mobility.INTERNAL);
+        InventoryView view = setupInventoryClickEventView();
+        int slot = 0;
+        view.getTopInventory().setItem(slot, persistentItem.create());
+
+        InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.LEFT, InventoryAction.CLONE_STACK);
+        assertEquals(view.getTopInventory(), event.getClickedInventory(), "Clicked inventory should be top inventory");
+        assertFalse(event.isCancelled(), "Event should not be cancelled");
+        listener.on(event);
+        assertTrue(event.isCancelled(), "Event should be cancelled");
+    }
+
     private static Cancellable[] cancellableEvents() {
         Player player = getPlayer();
 
