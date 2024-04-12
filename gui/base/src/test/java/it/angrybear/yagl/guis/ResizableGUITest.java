@@ -5,6 +5,8 @@ import it.angrybear.yagl.contents.GUIContent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +37,12 @@ class ResizableGUITest {
             contents.add(new GUIImplTest.MockContent());
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 this.gui.addContent(contents.toArray(new GUIContent[0])));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-10, 180, 7})
+    void testInvalidResize(int size) {
+        assertThrowsExactly(IllegalArgumentException.class, () -> ((ResizableGUI) this.gui).resize(size));
     }
 
     @Test
