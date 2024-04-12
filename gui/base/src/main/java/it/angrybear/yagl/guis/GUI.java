@@ -301,12 +301,25 @@ public interface GUI extends Metadatable {
     }
 
     /**
-     * Creates a new {@link ResizableGUI}.
+     * Creates a new {@link GUI}.
      *
      * @param size the size
      * @return the gui
      */
     static GUI newGUI(final int size) {
+        return new GUIImpl(size);
+    }
+
+    /**
+     * Creates a new {@link GUI} capable of resizing.
+     * Upon adding contents with {@link #addContent(Item...)}, the GUI will try to resize itself
+     * until a threshold is met.
+     * The user can also resize it using {@link ResizableGUI#resize(int)}.
+     *
+     * @param size the size
+     * @return the resizable gui
+     */
+    static ResizableGUI newResizableGUI(final int size) {
         return new ResizableGUI(size);
     }
 
