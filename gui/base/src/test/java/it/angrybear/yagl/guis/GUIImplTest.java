@@ -2,6 +2,7 @@ package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
@@ -48,6 +49,15 @@ class GUIImplTest {
         TypeGUI typeGUI = (TypeGUI) gui;
         assertEquals(type, typeGUI.getInventoryType());
         assertEquals(type.getSize(), typeGUI.size());
+    }
+
+    @Test
+    void testGetContentPriority() {
+        GUIContent c1 = ItemGUIContent.newInstance("stone").setPriority(5);
+        GUIContent c2 = ItemGUIContent.newInstance("diamond").setPriority(20);
+        GUI gui = GUI.newGUI(9).setContents(0, c1, c2);
+        GUIContent actual = gui.getContent(mock(Viewer.class), 0);
+        assertEquals(c2, actual);
     }
 
     @Test
