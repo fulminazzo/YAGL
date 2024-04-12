@@ -39,4 +39,10 @@ class BukkitViewerTest {
         assertThrowsExactly(PlayerOfflineException.class, () -> this.viewer.executeCommand("tmp"));
     }
 
+    @Test
+    void testHasPermissionOffline() {
+        BukkitUtils.removePlayer(this.player);
+        assertFalse(this.viewer.hasPermission("permission"));
+    }
+
 }
