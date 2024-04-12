@@ -203,7 +203,7 @@ class GUIImpl implements GUI {
         return contents;
     }
 
-    public static class Contents implements Iterable<GUIContent> {
+    public static class Contents {
         private final GUIContent[] contents;
 
         protected Contents(final GUIContent @NotNull ... contents) {
@@ -212,12 +212,6 @@ class GUIImpl implements GUI {
 
         public List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
-        }
-
-        @NotNull
-        @Override
-        public Iterator<GUIContent> iterator() {
-            return Arrays.stream(this.contents).iterator();
         }
     }
 }
