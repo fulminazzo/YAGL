@@ -11,8 +11,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * A parser to serialize {@link GUI}.
+ */
 public class GUIParser extends TypedParser<GUI> {
 
+    /**
+     * Instantiates a new Gui parser.
+     */
     public GUIParser() {
         super(GUI.class);
     }

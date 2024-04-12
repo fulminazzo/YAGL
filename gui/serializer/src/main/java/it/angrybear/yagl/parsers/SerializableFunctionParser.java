@@ -13,9 +13,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 
+/**
+ * A parser to serialize a general {@link SerializableFunction}.
+ *
+ * @param <F> the type of the {@link SerializableFunction}
+ */
 @SuppressWarnings("unchecked")
 public class SerializableFunctionParser<F extends SerializableFunction> extends YAMLParser<F> {
 
+    /**
+     * Instantiates a new Serializable function parser.
+     *
+     * @param clazz the {@link SerializableFunction} class
+     */
     public SerializableFunctionParser(@NotNull Class<F> clazz) {
         super(clazz);
     }
@@ -51,6 +61,14 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
         };
     }
 
+    /**
+     * Type to class class.
+     *
+     * @param <C>       the type parameter
+     * @param mainClass the main class
+     * @param type      the type
+     * @return the class
+     */
     protected static <C> Class<? extends C> typeToClass(final Class<C> mainClass, final @NotNull String type) {
         try {
             return ParserUtils.typeToClass(mainClass, type);

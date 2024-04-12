@@ -10,8 +10,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * A parser to serialize {@link it.angrybear.yagl.guis.GUIImpl.Contents}.
+ */
 public class ContentsParser extends YAMLParser<GUIImpl.Contents> {
 
+    /**
+     * Instantiates a new Contents parser.
+     */
     public ContentsParser() {
         super(GUIImpl.Contents.class);
     }
