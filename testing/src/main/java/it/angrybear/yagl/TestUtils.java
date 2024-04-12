@@ -136,7 +136,7 @@ public final class TestUtils {
                 final Class<?> returnType = method.getReturnType();
                 if (Modifier.isStatic(method.getModifiers())) continue;
                 if (!clazz.isAssignableFrom(returnType)) continue;
-                if (filter != null && filter.test(method)) return;
+                if (filter != null && filter.test(method)) continue;
 
                 final Class<?> objectClass = object.getClass();
                 final String objectClassName = objectClass.getSimpleName();
