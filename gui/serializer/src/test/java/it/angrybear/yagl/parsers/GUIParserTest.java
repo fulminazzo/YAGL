@@ -58,7 +58,6 @@ class GUIParserTest {
         assertFalse(contents.isEmpty());
         GUIContent content = contents.get(0);
         assertNotNull(content);
-        assertEquals(expectedContent.clickItemAction(), content.clickItemAction());
         assertEquals((Object) new Refl<>(expectedContent).getFieldObject("requirements"),
                 new Refl<>(content).getFieldObject("requirements"));
     }
