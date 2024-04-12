@@ -3,6 +3,7 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
+import it.angrybear.yagl.guis.ResizableGUI;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -89,19 +90,19 @@ class MetadatableTest {
         }}, object.map);
     }
 
-    private static Metadatable[] metadatables() {
-        return new Metadatable[]{
-                new ItemGUIContent(),
-                GUI.newGUI(9),
-                GUI.newResizableGUI(9),
-                GUI.newGUI(GUIType.ANVIL),
+    private static Object[][] metadatables() {
+        return new Object[][]{
+                new Object[]{new ItemGUIContent(), ItemGUIContent.class},
+                new Object[]{GUI.newGUI(9), GUI.class},
+                new Object[]{GUI.newResizableGUI(9), ResizableGUI.class},
+                new Object[]{GUI.newGUI(GUIType.ANVIL), GUI.class},
         };
     }
 
     @ParameterizedTest
     @MethodSource("metadatables")
-    void testMetadatableInheritorsReturnTypes(Metadatable metadatable) {
-        TestUtils.testReturnType(metadatable, Metadatable.class, m -> m.getName().equals("copyFrom"));
+    void testMetadatableInheritorsReturnTypes(Metadatable metadatable, Class<?> expectedReturnType) {
+        TestUtils.testReturnType(metadatable, Metadatable.class, expectedReturnType, m -> m.getName().equals("copyFrom"));
     }
 
     private static class MockMetadatable implements Metadatable {
