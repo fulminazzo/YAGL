@@ -11,13 +11,16 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -149,6 +152,30 @@ class GUIManagerTest {
             this.guiManager.on(new InventoryCloseEvent(view));
 
             assertTrue(expected.get(), "CloseGUI action was not invoked");
+        }
+
+        @Test
+        void testDisableThisPlugin() {
+            try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
+                JavaPlugin plugin = mock(JavaPlugin.class);
+                when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
+
+                PluginDisableEvent event = new PluginDisableEvent(plugin);
+                this.guiManager.on(event);
+                verify(this.player).closeInventory();
+            }
+        }
+
+        @Test
+        void testDisableNotThisPlugin() {
+            try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
+                JavaPlugin plugin = mock(JavaPlugin.class);
+                when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
+
+                PluginDisableEvent event = new PluginDisableEvent(mock(JavaPlugin.class));
+                this.guiManager.on(event);
+                verify(this.player, never()).closeInventory();
+            }
         }
 
         private @NotNull InventoryView getView() {
