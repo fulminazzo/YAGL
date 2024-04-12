@@ -45,6 +45,11 @@ jobs:
       - name: Generate Javadoc
         run: ./gradlew aggregateJavaDoc
 
+      - name: Generate Coverage
+        run: |-
+          ./gradlew testCodeCoverageReport
+          mv build/reports/jacoco/testCodeCoverageReport/html html/coverage
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
