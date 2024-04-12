@@ -110,6 +110,11 @@ When **YAGL** was nothing more than a simple thought, it had many goals:
 During the production, **YAGL** expanded even more, and right now is not just a **GUI** library:
 it took its idea of independence and extended to many aspects of Minecraft, allowing **independent serializing** of **particles**, **sounds**, **enchantments**, **items**, **guis** and **more**!
 
+However, its development is not over yet.
+
+This project is in [continous expansion](#roadmap) and will keep growing,
+introducing new interesting features from other projects,
+while maintaining its core principles.
 
 ## Roadmap
 While it being such a huge project, **YAGL** can still be expanded a lot.
