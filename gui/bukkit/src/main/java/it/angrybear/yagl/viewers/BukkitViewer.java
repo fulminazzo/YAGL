@@ -3,6 +3,7 @@ package it.angrybear.yagl.viewers;
 import it.angrybear.yagl.WrappersAdapter;
 import it.angrybear.yagl.wrappers.Sound;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,22 +28,19 @@ class BukkitViewer extends Viewer {
 
     @Override
     public void playSound(@NotNull Sound sound) {
-        Player player = getPlayer().orElse(null);
-        if (player == null) throw new PlayerOfflineException(this.name);
+        Player player = getPlayer().orElseThrow(() -> new PlayerOfflineException(this.name));
         WrappersAdapter.playCustomSound(player, sound);
     }
 
     @Override
     public void executeCommand(final @NotNull String command) {
-        Player player = getPlayer().orElse(null);
-        if (player == null) throw new PlayerOfflineException(this.name);
+        Player player = getPlayer().orElseThrow(() -> new PlayerOfflineException(this.name));
         Bukkit.dispatchCommand(player, command);
     }
 
     @Override
     public boolean hasPermission(@NotNull String permission) {
-        Player player = getPlayer().orElse(null);
-        return player != null && player.hasPermission(permission);
+        return getPlayer().filter(p -> p.hasPermission(permission)).isPresent();
     }
 
     /**
@@ -52,8 +50,7 @@ class BukkitViewer extends Viewer {
      */
     public Optional<Player> getPlayer() {
         Player player = Bukkit.getPlayer(this.uniqueId);
-        if (player == null) return Optional.empty();
-        else return Optional.ofNullable(player.isOnline() ? player : null);
+        return Optional.ofNullable(player).filter(OfflinePlayer::isOnline);
     }
 
     /**
