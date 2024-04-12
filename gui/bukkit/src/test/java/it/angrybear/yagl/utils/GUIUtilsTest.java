@@ -48,7 +48,7 @@ class GUIUtilsTest {
                 .setTitle("Hello world")
                 .addContent(Item.newItem("stone").setDisplayName("test"));
 
-        try (MockedStatic<JavaPlugin> javaPlugin = mockStatic(JavaPlugin.class)) {
+        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
             when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> mock(JavaPlugin.class));
             GUIUtils.openGUI(expected, GUIManager.getViewer(player));
         }
