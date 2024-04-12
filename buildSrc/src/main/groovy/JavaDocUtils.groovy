@@ -1,7 +1,6 @@
 import groovy.transform.CompileDynamic
 
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
 /**
@@ -31,7 +30,7 @@ class JavaDocUtils {
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
         aggregateJavaDocRec(current, outputDir, ignoreDirs)
-//        createModulesPage(name, version, outputDir)
+        createModulesPage(name, version, outputDir)
     }
 
     /**
