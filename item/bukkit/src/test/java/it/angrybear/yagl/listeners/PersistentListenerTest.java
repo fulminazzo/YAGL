@@ -192,17 +192,31 @@ class PersistentListenerTest {
     }
 
     @Test
-    void testInteractPersistentItem() {
+    void testClickPersistentItem() {
         final int itemSize = 10;
         final List<Integer> clickedItems = new ArrayList<>();
         List<PersistentItem> items = new ArrayList<>();
         for (int i = 0; i < itemSize; i++) {
             int finalI = i;
-            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> clickedItems.add(finalI)));
+            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onClick((p, s, c) -> clickedItems.add(finalI)));
+        }
+        assertTrue(listener.clickPersistentItem(mock(Player.class), ClickType.DOUBLE_CLICK, null,
+                items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
+        assertEquals(itemSize, clickedItems.size());
+    }
+
+    @Test
+    void testInteractPersistentItem() {
+        final int itemSize = 10;
+        final List<Integer> interactItems = new ArrayList<>();
+        List<PersistentItem> items = new ArrayList<>();
+        for (int i = 0; i < itemSize; i++) {
+            int finalI = i;
+            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> interactItems.add(finalI)));
         }
         assertTrue(listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
                 items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
-        assertEquals(itemSize, clickedItems.size());
+        assertEquals(itemSize, interactItems.size());
     }
 
     @Test
