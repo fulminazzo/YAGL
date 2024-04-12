@@ -13,7 +13,7 @@ public class TypeGUI extends GUIImpl {
     /**
      * Internal constructor, used for serializing purposes.
      */
-    TypeGUI() {
+    private TypeGUI() {
         super(0);
         this.inventoryType = null;
     }
@@ -23,8 +23,9 @@ public class TypeGUI extends GUIImpl {
      *
      * @param inventoryType the inventory type
      */
-    public TypeGUI(final @NotNull GUIType inventoryType) {
+    TypeGUI(final @NotNull GUIType inventoryType) {
         super(inventoryType.getSize());
         this.inventoryType = inventoryType;
     }
+    
 }
