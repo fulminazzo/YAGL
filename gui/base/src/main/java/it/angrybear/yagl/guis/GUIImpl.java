@@ -31,6 +31,11 @@ class GUIImpl implements GUI {
     protected GUIAction closeGUIAction;
     protected BiGUIAction changeGUIAction;
 
+    private GUIImpl() {
+        this.contents = new LinkedList<>();
+        this.movableSlots = new HashSet<>();
+    }
+
     /**
      * Instantiates a new Gui.
      *
