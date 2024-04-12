@@ -34,15 +34,12 @@ jobs:
         run: |-
           ./gradlew aggregateJavaDoc
           mkdir html/docs
-          mv html/* html/docs
+          mv html/* html/docs || echo 1
 
-      - run: |-
-          tree .
-
-#      - name: Generate Coverage
-#        run: |-
-#          ./gradlew testCodeCoverageReport
-#          mv build/reports/jacoco/testCodeCoverageReport/html html/coverage
+      - name: Generate Coverage
+        run: |-
+          ./gradlew testCodeCoverageReport
+          mv build/reports/jacoco/testCodeCoverageReport/html html/coverage
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
