@@ -9,7 +9,7 @@ import java.nio.file.StandardCopyOption
 @CompileDynamic
 class JavaDocUtils {
     private static final String DOCS_DIR = 'javadoc'
-    private static final String[] IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
+    private static final String[] IGNORE_DIRS = [ 'main', 'java', 'groovy', 'html', 'src', 'buildSrc', 'resources' ]
     private static final String[] RESOURCES = [ 'index.html', 'javadoc-stylesheet.css' ]
     private static final String MODULE_PLACEHOLDER = '%modules%'
     private static final String MODULE_FORMAT_FILE = 'module-format.html'
@@ -30,7 +30,7 @@ class JavaDocUtils {
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
         aggregateJavaDocRec(current, outputDir, ignoreDirs)
-//        createModulesPage(name, version, outputDir)
+        createModulesPage(name, version, outputDir)
     }
 
     /**
