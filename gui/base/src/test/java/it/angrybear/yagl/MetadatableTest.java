@@ -20,6 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MetadatableTest {
 
+    @Test
+    void testEscapedApply() {
+        String tmp = "<apply> \\<do_not> <do> me";
+        Metadatable metadatable = new MockMetadatable()
+                .setVariable("apply", "hello")
+                .setVariable("do_not", "BROKEN")
+                .setVariable("do", "world");
+        String expected = "hello \\<do_not> world me";
+        assertEquals(expected, metadatable.apply(tmp));
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "hello world;hello_world",
