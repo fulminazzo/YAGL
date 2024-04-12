@@ -3,6 +3,7 @@ package it.angrybear.yagl.utils;
 import it.angrybear.yagl.GUIManager;
 import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
@@ -15,58 +16,83 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class GUIUtilsTest {
+    private Player player;
+    private Inventory inventory;
 
-    @Test
-    void testOpenGUI() {
+    @BeforeEach
+    void setUp() {
         BukkitUtils.setupServer();
 
         Server server = Bukkit.getServer();
         when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
 
-        AtomicReference<Inventory> inventory = new AtomicReference<>();
-        Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
-        when(player.isOnline()).thenReturn(true);
-        when(player.openInventory(any(Inventory.class)))
+        this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
+        when(this.player.isOnline()).thenReturn(true);
+        when(this.player.openInventory(any(Inventory.class)))
                 .thenAnswer(a -> {
-                    inventory.set(a.getArgument(0));
+                    this.inventory = a.getArgument(0);
                     return null;
                 });
+    }
 
+    @Test
+    void testOpenGUI() {
         GUI expected = GUI.newGUI(9)
                 .setTitle("Hello world")
                 .addContent(Item.newItem("stone").setDisplayName("test"));
+        openGUI(expected);
 
-        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> mock(JavaPlugin.class));
-            expected.open(GUIManager.getViewer(player));
-        }
-
-        assertNotNull(inventory);
-        assertEquals(expected.size(), inventory.get().getSize());
-        assertEquals(expected.getTitle(), new Refl<>(inventory.get()).getFieldObject("title"));
+        assertNotNull(this.inventory);
+        assertEquals(expected.size(), this.inventory.getSize());
+        assertEquals(expected.getTitle(), new Refl<>(this.inventory).getFieldObject("title"));
 
         for (int i = 0; i < expected.size(); i++) {
             @NotNull List<GUIContent> contents = expected.getContents(i);
             GUIContent guiContent = contents.isEmpty() ? null : contents.get(0);
-            ItemStack actual = inventory.get().getItem(i);
+            ItemStack actual = this.inventory.getItem(i);
             if (guiContent == null) assertNull(actual);
             else {
                 Item item = new Refl<>(guiContent).getFieldObject("item");
                 ItemStack exp = ItemAdapter.itemToItemStack(item);
                 assertEquals(exp, actual);
             }
+        }
+    }
+
+    @Test
+    void testOpenGUIRequirements() {
+        when(this.player.hasPermission(anyString())).thenReturn(false);
+
+        GUI expected = GUI.newGUI(9)
+                .setTitle("Hello world")
+                .addContent((GUIContent) new ItemGUIContent().setMaterial("stone").setViewRequirements(v -> false),
+                        new ItemGUIContent().setMaterial("diamond").setViewRequirements("permission"));
+        openGUI(expected);
+
+        assertNotNull(this.inventory);
+        assertEquals(expected.size(), this.inventory.getSize());
+        assertEquals(expected.getTitle(), new Refl<>(this.inventory).getFieldObject("title"));
+
+        for (int i = 0; i < expected.size(); i++)
+            assertNull(this.inventory.getItem(i));
+    }
+
+    private void openGUI(GUI gui) {
+        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
+            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> mock(JavaPlugin.class));
+            gui.open(GUIManager.getViewer(this.player));
         }
     }
 
