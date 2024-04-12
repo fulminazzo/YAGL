@@ -6,19 +6,21 @@ import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.contents.requirements.PermissionRequirement;
-import it.angrybear.yagl.guis.ContentsParser;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
-import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,12 +63,16 @@ class GUIParserTest {
                 new Refl<>(content).getFieldObject("requirements"));
     }
 
-    @Test
-    void testSaveAndLoadResizableGUI() throws IOException {
-        FileConfiguration.addParsers(new ContentsParser());
+    private static GUI[] getGUIs() {
+        return new GUI[]{GUI.newResizableGUI(9), GUI.newGUI(9), GUI.newGUI(GUIType.CHEST)};
+    }
+
+    @ParameterizedTest
+    @MethodSource("getGUIs")
+    void testSaveAndLoadGUI(GUI expected) throws IOException {
         GUIYAGLParser.addAllParsers();
-        TypeGUI expected = (TypeGUI) GUI.newGUI(GUIType.BARREL)
-                .setContents(0, Item.newItem()
+
+        expected.setContents(0, Item.newItem()
                         .setMaterial("stone_sword").setAmount(1)
                         .setDurability(1337).setDisplayName("First")
                         .setCustomModelData(1))
@@ -83,17 +89,24 @@ class GUIParserTest {
                                 .setDurability(1337).setDisplayName("Third-2")
                                 .setCustomModelData(1))
                 .setMovable(3, true).setMovable(7, true);
+
         File file = new File("build/resources/test/gui.yml");
-        if (file.exists()) FileUtils.deleteFile(file);
-        FileUtils.createNewFile(file);
+        if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        configuration.set("gui", expected);
+        final String path = expected.getClass().getSimpleName().toLowerCase();
+        configuration.set(path, expected);
         configuration.save();
 
         configuration = new FileConfiguration(file);
-        TypeGUI actual = (TypeGUI) configuration.get("gui", GUI.class);
+        GUI actual = configuration.get(path, GUI.class);
         assertNotNull(actual);
-        assertEquals(expected.getInventoryType(), actual.getInventoryType());
+
+        for (final Field field : new Refl<>(expected).getNonStaticFields())
+            if (!field.getName().equals("contents")) {
+                Object obj1 = ReflectionUtils.get(field, expected);
+                Object obj2 = ReflectionUtils.get(field, actual);
+                assertEquals(obj1, obj2);
+            }
 
         @NotNull List<GUIContent> expectedContents = expected.getContents();
         @NotNull List<GUIContent> actualContents = actual.getContents();
@@ -105,7 +118,5 @@ class GUIParserTest {
             if (exp == null) assertNull(act);
             else assertEquals(exp.render(), act.render());
         }
-
-        assertIterableEquals(expected.getMovableSlots(), actual.getMovableSlots());
     }
 }
