@@ -2,7 +2,8 @@
 
 Its core functions relate to the [Bukkit project](https://dev.bukkit.org/), but one can use the **base** modules across any preferred platform.
 
-Since every module provides a **serializer** one, to load and save the objects, it is possible to store or create **GUIs** and **custom Items** in unrelated platforms;
+Since every module provides a **serializer** one to load and save the objects,
+it is possible to store or create **GUIs** and **custom Items** in unrelated platforms;
 then, send the actual data to a [Bukkit](https://dev.bukkit.org/) backend and display it.
 
 For example, a `/hub` plugin that works with [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/) or [Velocity](https://papermc.io/software/velocity).

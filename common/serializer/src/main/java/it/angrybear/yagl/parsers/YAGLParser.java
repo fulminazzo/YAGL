@@ -12,7 +12,7 @@ public final class YAGLParser {
 
     /**
      * Adds all the parsers from the {@link it.angrybear.yagl.parsers} package to {@link FileConfiguration}.
-     * @deprecated This will NOT add module specific parsers. It is recommended to look for the <b>&lt;module&gt;YAGLParser</b> class instead.
+     * @deprecated This will NOT add module-specific parsers. It is recommended to look for the <b>&lt;module&gt;YAGLParser</b> class instead.
      */
     @Deprecated
     public static void addAllParsers() {

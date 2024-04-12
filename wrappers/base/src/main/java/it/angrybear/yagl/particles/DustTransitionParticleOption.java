@@ -20,13 +20,13 @@ public class DustTransitionParticleOption extends ParticleOption<Triple<Color, C
     /**
      * Instantiates a new Dust transition particle option.
      *
-     * @param from  the from
-     * @param color the color
+     * @param from  the color to start from
+     * @param to the color to end with
      * @param size  the size
      */
-    public DustTransitionParticleOption(final @NotNull Color from, final @NotNull Color color, final float size) {
+    public DustTransitionParticleOption(final @NotNull Color from, final @NotNull Color to, final float size) {
         this.from = from;
-        to = color;
+        this.to = to;
         this.size = size;
     }
 

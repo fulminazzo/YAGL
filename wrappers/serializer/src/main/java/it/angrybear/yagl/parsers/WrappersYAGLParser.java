@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public final class WrappersYAGLParser {
 
     /**
-     * Adds all the module specific parsers.
+     * Adds all the module-specific parsers.
      */
     public static void addAllParsers() {
         YAGLParser.addAllParsers();

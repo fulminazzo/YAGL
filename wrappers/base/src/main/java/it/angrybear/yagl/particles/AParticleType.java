@@ -37,7 +37,7 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     /**
      * Creates a {@link Particle} using the {@link ParticleOption} in {@link #optionType}.
      * The parameters passed will be forwarded to the {@link ParticleOption} constructor.
-     * <b>NOTE:</b> they are NOT checked, therefore it is up to the user to provide the correct ones.
+     * <b>NOTE:</b> they are NOT checked; it is up to the user to provide the correct ones.
      *
      * @param parameters the parameters
      * @return the particle

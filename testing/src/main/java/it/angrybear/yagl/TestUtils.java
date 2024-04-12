@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 public final class TestUtils {
 
     /**
-     * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
+     * Allows testing all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
      * Each one of them is first invoked using {@link #testSingleMethod(Object, Method, Object[], Object, String, Class[])}.
      * Then, it uses <i>captorsValidator</i> to validate the passed parameters.
      *
@@ -120,7 +120,7 @@ public final class TestUtils {
     /**
      * Many objects have setter, adder or remover methods which return the object itself,
      * to allow method chaining.
-     * This function allows to check each one to verify that the return type is consistent with the original object.
+     * This function allows checking each one to verify that the return type is consistent with the original object.
      *
      * @param <T>                the type parameter
      * @param object             the object
@@ -135,12 +135,14 @@ public final class TestUtils {
     /**
      * Many objects have setter, adder or remover methods which return the object itself,
      * to allow method chaining.
-     * This function allows to check each one to verify that the return type is consistent with the original object.
+     * This function allows checking each one to verify that the return type is consistent with the original object.
      *
      * @param <T>                the type parameter
      * @param object             the object
      * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param expectedReturnType the expected return type of the methods. In case the testing object is an hidden implementation of the actual interface.
+     * @param expectedReturnType the expected return type of the methods.
+     *                           For example, if the object is a hidden implementation,
+     *                           the corresponding abstract class (or interface) should be passed.
      * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,

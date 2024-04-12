@@ -27,7 +27,7 @@ public interface GUIContent extends Metadatable {
     @NotNull Item render();
 
     /**
-     * Sets priority.
+     * Sets the priority.
      * If two {@link GUIContent} share the same slot,
      * only the one with higher priority will be shown.
      *
@@ -60,7 +60,7 @@ public interface GUIContent extends Metadatable {
     @Nullable Sound getClickSound();
 
     /**
-     * Allows to set a {@link PermissionRequirement} with the given permission as the view requirement.
+     * Allows setting a {@link PermissionRequirement} with the given permission as the view requirement.
      *
      * @param permission the permission
      * @return this content

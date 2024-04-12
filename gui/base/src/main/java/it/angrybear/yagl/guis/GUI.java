@@ -122,7 +122,7 @@ public interface GUI extends Metadatable {
 
     /**
      * Tries to add all the contents in the GUI.
-     * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
+     * If it fails (because of empty GUI), it throws an {@link IllegalArgumentException}.
      *
      * @param contents the contents
      * @return the gui
@@ -133,7 +133,7 @@ public interface GUI extends Metadatable {
 
     /**
      * Tries to add all the contents in the GUI.
-     * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
+     * If it fails (because of empty GUI), it throws an {@link IllegalArgumentException}.
      *
      * @param contents the contents
      * @return this gui
@@ -144,7 +144,7 @@ public interface GUI extends Metadatable {
 
     /**
      * Tries to add all the contents in the GUI.
-     * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
+     * If it fails (because of empty GUI), it throws an {@link IllegalArgumentException}.
      *
      * @param contents the contents
      * @return this gui

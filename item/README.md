@@ -49,7 +49,7 @@ for items resulted in smelting in the furnace.
 </dependency>
 ```
 
-This module depends on the main core and adds some implementation specific features.
+This module depends on the main core and adds some implementation-specific features.
 
 First of all, it adds the [BukkitItem](bukkit/src/main/java/it/angrybear/yagl/items/BukkitItem.java) class,
 an implementation of [Item](src/main/java/it/angrybear/yagl/items/Item.java)
