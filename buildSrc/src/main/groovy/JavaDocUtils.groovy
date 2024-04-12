@@ -8,7 +8,6 @@ import java.nio.file.StandardCopyOption
  */
 @CompileDynamic
 class JavaDocUtils {
-
     private static final String DOCS_DIR = 'javadoc'
     private static final String[] IGNORE_DIRS = [ 'main', 'java', 'groovy', 'src', 'buildSrc', 'resources' ]
     private static final String[] RESOURCES = [ 'index.html', 'javadoc-stylesheet.css' ]
