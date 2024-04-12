@@ -2,6 +2,8 @@
 name: Deploy static content to Pages
 
 on:
+  push:
+
   workflow_call:
 
   # Allows you to run this workflow manually from the Actions tab
@@ -33,8 +35,6 @@ jobs:
       - name: Generate Javadoc
         run: |-
           ./gradlew aggregateJavaDoc
-          mkdir docs
-          cp -r html docs/docs
           tree .
 
 #      - name: Generate Coverage
