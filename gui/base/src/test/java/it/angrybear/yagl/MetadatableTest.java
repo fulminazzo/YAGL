@@ -1,8 +1,12 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.guis.GUI;
+import it.angrybear.yagl.guis.GUIType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
@@ -12,6 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
 
 class MetadatableTest {
 
@@ -83,6 +88,21 @@ class MetadatableTest {
             put(null, "%variable%");
             put("%variable%", null);
         }}, object.map);
+    }
+
+    private static Metadatable[] metadatables() {
+        return new Metadatable[]{
+                new ItemGUIContent(),
+                mock(GUI.class),
+                GUI.newGUI(9),
+                GUI.newGUI(GUIType.ANVIL)
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("metadatables")
+    void testMetadatableInheritorsReturnTypes(Metadatable metadatable) {
+        TestUtils.testReturnType(metadatable, Metadatable.class, m -> m.getName().equals("copyFrom"));
     }
 
     private static class MockMetadatable implements Metadatable {
