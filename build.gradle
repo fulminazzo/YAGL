@@ -185,8 +185,8 @@ allprojects {
 }
 
 tasks.register("aggregateJavaDoc") {
-    println System.getProperty('user.dir')
     allprojects.forEach { dependsOn "${it.path}:javadoc" }
+    println "Executing aggregate javadoc"
     JavaDocUtils.aggregateJavaDoc("html", rootProject.name, rootProject.version, TEST_MODULE)
 }
 
