@@ -3,8 +3,10 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.utils.GUIUtils;
+import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -23,8 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class GUIManagerTest {
 
@@ -64,6 +65,23 @@ class GUIManagerTest {
             this.guiManager.on(event);
             assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
             assertTrue(expected.get(), "Click action was not invoked");
+        }
+
+        @Test
+        void testNullClickActionSound() {
+            Sound sound = new Sound("pirate", 1f, 3f);
+            Location location = new Location(null, 0, 1, 0);
+            when(this.player.getLocation()).thenReturn(location);
+            this.expected.getContents(0).forEach(c -> c.setClickSound(sound));
+
+            InventoryView view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+                    0, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
+            this.guiManager.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
+
+            verify(this.player).playSound(location, sound.getName(), sound.getVolume(), sound.getPitch());
         }
 
         @Test
