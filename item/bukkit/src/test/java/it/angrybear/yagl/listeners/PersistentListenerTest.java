@@ -293,6 +293,20 @@ class PersistentListenerTest {
             assertTrue(event.isCancelled(), "Event should be cancelled");
         }
 
+        @Test
+        void testClickInBottomInventoryWithNoKeyPress() {
+            PersistentItem persistentItem = new PersistentItem(Material.ACACIA_BOAT);
+            InventoryView view = setupInventoryClickEventView();
+            int slot = view.getTopInventory().getSize();
+            view.getBottomInventory().setItem(0, persistentItem.create());
+
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot + 1, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+        }
+
     }
 
     @Nested
