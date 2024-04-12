@@ -26,7 +26,16 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
      * Instantiates a new Item gui content.
      */
     public ItemGUIContent() {
-        this.item = Item.newItem();
+        this(Item.newItem());
+    }
+
+    /**
+     * Instantiates a new Item gui content.
+     *
+     * @param material the material
+     */
+    public ItemGUIContent(final @NotNull String material) {
+        this(Item.newItem(material));
     }
 
     /**
