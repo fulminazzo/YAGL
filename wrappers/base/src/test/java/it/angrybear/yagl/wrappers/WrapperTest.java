@@ -20,10 +20,11 @@ class WrapperTest {
         };
     }
 
+    @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource("testWrappers")
     void testWrappersReturnType(Wrapper item) {
-        TestUtils.testReturnType(item, Wrapper.class, null);
+        TestUtils.testReturnType(item, (Class<? super Wrapper>) item.getClass(), null);
     }
 
     @Test
