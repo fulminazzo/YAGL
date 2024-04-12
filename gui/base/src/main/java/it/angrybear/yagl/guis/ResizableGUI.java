@@ -1,8 +1,13 @@
 package it.angrybear.yagl.guis;
 
 
+import it.angrybear.yagl.Metadatable;
+import it.angrybear.yagl.actions.BiGUIAction;
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a "chest" GUI that can be resized.
@@ -25,13 +30,13 @@ public class ResizableGUI extends GUIImpl {
     }
 
     @Override
-    public @NotNull GUI setContents(int slot, GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setContents(int slot, GUIContent @NotNull ... contents) {
         if (slot >= size() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
-        return super.setContents(slot, contents);
+        return (ResizableGUI) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI addContent(GUIContent @NotNull ... contents) {
         int j = 0;
         for (int i = 0; i < contents.length; i++) {
             GUIContent content = contents[i];
@@ -60,5 +65,100 @@ public class ResizableGUI extends GUIImpl {
         if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
         if (size % 9 != 0)
             throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of 9 can be accepted", size));
+    }
+
+    @Override
+    public @NotNull ResizableGUI setTitle(@Nullable String title) {
+        return (ResizableGUI) super.setTitle(title);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMovable(int slot, boolean movable) {
+        return (ResizableGUI) super.setMovable(slot, movable);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetContent(int slot) {
+        return (ResizableGUI) super.unsetContent(slot);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onClickOutside(@NotNull GUIAction action) {
+        return (ResizableGUI) super.onClickOutside(action);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onOpenGUI(@NotNull GUIAction action) {
+        return (ResizableGUI) super.onOpenGUI(action);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onCloseGUI(@NotNull GUIAction action) {
+        return (ResizableGUI) super.onCloseGUI(action);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onChangeGUI(@NotNull BiGUIAction action) {
+        return (ResizableGUI) super.onChangeGUI(action);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setAllMovable() {
+        return (ResizableGUI) super.setAllMovable();
+    }
+
+    @Override
+    public @NotNull ResizableGUI setAllUnmovable() {
+        return (ResizableGUI) super.setAllUnmovable();
+    }
+
+    @Override
+    public @NotNull ResizableGUI addContent(Item @NotNull ... contents) {
+        return (ResizableGUI) super.addContent(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setContents(int slot, Item @NotNull ... contents) {
+        return (ResizableGUI) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onClickOutside(@NotNull String command) {
+        return (ResizableGUI) super.onClickOutside(command);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onOpenGUI(@NotNull String command) {
+        return (ResizableGUI) super.onOpenGUI(command);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onCloseGUI(@NotNull String command) {
+        return (ResizableGUI) super.onCloseGUI(command);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onChangeGUI(@NotNull String command) {
+        return (ResizableGUI) super.onChangeGUI(command);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setVariable(@NotNull String name, @NotNull String value) {
+        return (ResizableGUI) super.setVariable(name, value);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetVariable(@NotNull String name) {
+        return (ResizableGUI) super.unsetVariable(name);
+    }
+
+    @Override
+    public @NotNull ResizableGUI copyAll(@NotNull Metadatable other, boolean replace) {
+        return (ResizableGUI) super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull ResizableGUI copyFrom(@NotNull Metadatable other, boolean replace) {
+        return (ResizableGUI) super.copyFrom(other, replace);
     }
 }
