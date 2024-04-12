@@ -17,7 +17,7 @@ import java.util.*;
  * A basic implementation of {@link GUI}.
  */
 @Getter
-abstract class GUIImpl implements GUI {
+class GUIImpl implements GUI {
     protected static final int MAX_SIZE = 54;
 
     protected String title;
