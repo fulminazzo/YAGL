@@ -33,4 +33,10 @@ class BukkitViewerTest {
         assertThrowsExactly(PlayerOfflineException.class, () -> this.viewer.playSound(new Sound("tmp")));
     }
 
+    @Test
+    void testExecuteCommandOffline() {
+        BukkitUtils.removePlayer(this.player);
+        assertThrowsExactly(PlayerOfflineException.class, () -> this.viewer.executeCommand("tmp"));
+    }
+
 }
