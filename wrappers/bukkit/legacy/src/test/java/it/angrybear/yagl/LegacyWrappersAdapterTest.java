@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("deprecation")
 @Before1_(12.2)
 @After1_(9)
 public class LegacyWrappersAdapterTest extends BukkitUtils {

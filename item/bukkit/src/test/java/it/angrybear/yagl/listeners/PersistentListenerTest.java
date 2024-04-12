@@ -42,6 +42,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("deprecation")
 class PersistentListenerTest {
     private static PersistentItem maintain;
     private static PersistentItem disappear;

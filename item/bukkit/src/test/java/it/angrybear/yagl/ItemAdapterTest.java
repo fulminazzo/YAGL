@@ -146,6 +146,7 @@ class ItemAdapterTest extends BukkitUtils {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Nested
     class RecipeConversion {
 

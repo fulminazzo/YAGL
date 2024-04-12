@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
+@SuppressWarnings("deprecation")
 class ParticleTypeTest {
 
     private static ParticleType<?>[] getTests() {

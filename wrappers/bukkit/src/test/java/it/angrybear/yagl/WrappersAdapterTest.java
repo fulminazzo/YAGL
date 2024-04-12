@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings("deprecation")
 @After1_(13)
 class WrappersAdapterTest extends BukkitUtils {
 
