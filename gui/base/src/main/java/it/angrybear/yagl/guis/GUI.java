@@ -138,6 +138,17 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
+    default @NotNull GUI addContent(final ItemGUIContent @NotNull ... contents) {
+        return addContent((GUIContent[]) contents);
+    }
+
+    /**
+     * Tries to add all the contents in the GUI.
+     * If it fails (because of empty GUI) it throws an {@link IllegalArgumentException}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
     @NotNull GUI addContent(final GUIContent @NotNull ... contents);
 
     /**
