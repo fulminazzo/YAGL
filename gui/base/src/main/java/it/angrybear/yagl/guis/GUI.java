@@ -169,6 +169,18 @@ public interface GUI extends Metadatable {
      *
      * @param slot     the slot
      * @param contents the contents
+     * @return the contents
+     */
+    default @NotNull GUI setContents(int slot, final ItemGUIContent @NotNull ... contents) {
+        return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
+    }
+
+    /**
+     * Sets the given contents at the specified index.
+     * These will be then filtered using {@link #getContent(Viewer, int)}
+     *
+     * @param slot     the slot
+     * @param contents the contents
      * @return this gui
      */
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
