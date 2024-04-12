@@ -6,6 +6,7 @@ import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.utils.MessageUtils;
+import it.angrybear.yagl.viewers.PlayerOfflineException;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import lombok.AccessLevel;
@@ -34,7 +35,7 @@ public final class GUIAdapter {
     public static void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer) {
         final UUID uuid = viewer.getUniqueId();
         final Player player = Bukkit.getPlayer(uuid);
-        if (player == null) throw new IllegalArgumentException(String.format("Cannot open GUI for offline player '%s'", viewer.getName()));
+        if (player == null) throw new PlayerOfflineException(viewer.getName());
         final Refl<Viewer> reflViewer = new Refl<>(viewer);
         // Add to GUIManager if not present
         viewer = GUIManager.getViewer(player);
