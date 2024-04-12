@@ -33,6 +33,8 @@ jobs:
       - name: Generate Javadoc
         run: ./gradlew aggregateJavaDoc
 
+      - run: ls ./html
+
 #      - name: Generate Coverage
 #        run: |-
 #          ./gradlew testCodeCoverageReport
@@ -42,7 +44,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload from html
-          path: './html'
+          path: './html/'
 
       - name: Deploy to GitHub Pages
         id: deployment
