@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -143,8 +145,11 @@ public interface Metadatable extends Iterable<String> {
     default String apply(@NotNull String string) {
         for (final String v : this) {
             final String s = getVariable(v);
-            if (s != null)
-                string = string.replace(VARIABLE_FORMAT.apply(v), s);
+            if (s == null) continue;
+            final Matcher matcher = Pattern.compile("([^\\\\]|^)" + VARIABLE_FORMAT.apply(v)).matcher(string);
+            while (matcher.find())
+                string = string.substring(0, matcher.start()) + matcher.group(1) + s +
+                        string.substring(matcher.end());
         }
         return string;
     }
