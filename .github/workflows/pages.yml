@@ -35,11 +35,12 @@ jobs:
           ./gradlew aggregateJavaDoc
           mkdir docs
           mv html docs/docs
+          tree .
 
-      - name: Generate Coverage
-        run: |-
-          ./gradlew testCodeCoverageReport
-          mv build/reports/jacoco/testCodeCoverageReport/html docs/coverage
+#      - name: Generate Coverage
+#        run: |-
+#          ./gradlew testCodeCoverageReport
+#          mv build/reports/jacoco/testCodeCoverageReport/html docs/coverage
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
