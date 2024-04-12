@@ -198,7 +198,7 @@ class PersistentListenerTest {
         List<PersistentItem> items = new ArrayList<>();
         for (int i = 0; i < itemSize; i++) {
             int finalI = i;
-            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onClick((p, s, c) -> clickedItems.add(finalI)));
+            items.add(new PersistentItem().setMaterial(Material.values()[13 + i]).onClick((p, s, c) -> clickedItems.add(finalI)));
         }
         assertTrue(listener.clickPersistentItem(mock(Player.class), ClickType.DOUBLE_CLICK, null,
                 items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
