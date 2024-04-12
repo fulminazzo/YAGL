@@ -35,7 +35,7 @@ jobs:
       - name: Generate Javadoc
         run: |-
           ./gradlew aggregateJavaDoc
-          tree .
+          tree ./html
 
 #      - name: Generate Coverage
 #        run: |-
