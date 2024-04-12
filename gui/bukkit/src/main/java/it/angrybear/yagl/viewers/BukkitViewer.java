@@ -57,7 +57,7 @@ class BukkitViewer extends Viewer {
     }
 
     /**
-     * New viewer viewer.
+     * Gets an instance of {@link Viewer} from the given {@link Player}.
      *
      * @param player the player
      * @return the viewer
