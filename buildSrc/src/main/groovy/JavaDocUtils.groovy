@@ -46,11 +46,7 @@ class JavaDocUtils {
             dst.mkdirs()
             if (files != null)
                 files*.name.each { copyDirectory(new File(src, it), new File(dst, it)) }
-        } else {
-            Path path = Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
-            println "Simulating error, ${src.toPath()} -> ${dst.toPath()}: ${path}"
-            throw new RuntimeException("Simulating error, ${src.toPath()} -> ${dst.toPath()}: ${path}")
-        }
+        } else Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
     /**
