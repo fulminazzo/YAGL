@@ -30,7 +30,7 @@ class GUIParserTest {
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
         GUIYAGLParser.addAllParsers();
-        GUIContent expectedContent = new ItemGUIContent()
+        GUIContent expectedContent = ItemGUIContent.newInstance()
                 .setMaterial("stone")
                 .onClickItem(new GUIItemCommand("command"))
                 .setViewRequirements(new PermissionRequirement("permission"));

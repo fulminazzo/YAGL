@@ -92,7 +92,7 @@ class MetadatableTest {
 
     private static Object[][] metadatables() {
         return new Object[][]{
-                new Object[]{new ItemGUIContent(), ItemGUIContent.class},
+                new Object[]{ItemGUIContent.newInstance(), ItemGUIContent.class},
                 new Object[]{GUI.newGUI(9), GUI.class},
                 new Object[]{GUI.newResizableGUI(9), ResizableGUI.class},
                 new Object[]{GUI.newGUI(GUIType.ANVIL), GUI.class},

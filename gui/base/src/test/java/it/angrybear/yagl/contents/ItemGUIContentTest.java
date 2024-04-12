@@ -20,7 +20,7 @@ class ItemGUIContentTest {
 
     @Test
     void testMetadatableReplacement() {
-        GUIContent guiContent = new ItemGUIContent().setMaterial("stone")
+        GUIContent guiContent = ItemGUIContent.newInstance("stone")
                 .setAmount(3).setDisplayName("Hello %var1%")
                 .setLore("%lore1%", "%lore2%")
                 .setVariable("var1", "world")
@@ -35,7 +35,7 @@ class ItemGUIContentTest {
 
     @Test
     void testCopy() {
-        ItemGUIContent expected = newItemGUIContent();
+        ItemGUIContent expected = newInstance();
         ItemGUIContent actual = expected.copy();
         assertEquals(expected, actual);
         assertEquals((Item) new Refl<>(expected).getFieldObject("item"), new Refl<>(actual).getFieldObject("item"));
@@ -44,7 +44,7 @@ class ItemGUIContentTest {
     @Test
     @DisplayName("Item inherited methods should call actual methods of the inner item")
     void testItemMethods() throws InvocationTargetException, IllegalAccessException {
-        ItemGUIContent actual = newItemGUIContent();
+        ItemGUIContent actual = newInstance();
         Item expected = new Refl<>(actual).getFieldObject("item");
 
         for (Method method : Item.class.getDeclaredMethods())
@@ -59,8 +59,8 @@ class ItemGUIContentTest {
             }
     }
 
-    private static ItemGUIContent newItemGUIContent() {
-        return new ItemGUIContent()
+    private static ItemGUIContent newInstance() {
+        return ItemGUIContent.newInstance()
                 .setMaterial("stone_sword").setAmount(1)
                 .setDurability(1337).setDisplayName("&8Destroyer")
                 .setLore("&eUse this sword to fight your enemies")
@@ -72,11 +72,11 @@ class ItemGUIContentTest {
 
     @Test
     void testReturnTypesItem() {
-        TestUtils.testReturnType(new ItemGUIContent(), Item.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(ItemGUIContent.newInstance(), Item.class, m -> m.getName().equals("copy"));
     }
 
     @Test
     void testReturnTypesGUIContent() {
-        TestUtils.testReturnType(new ItemGUIContent(), GUIContent.class, m -> m.getName().equals("copyContent"));
+        TestUtils.testReturnType(ItemGUIContent.newInstance(), GUIContent.class, m -> m.getName().equals("copyContent"));
     }
 }

@@ -77,8 +77,8 @@ class GUIUtilsTest {
 
         GUI expected = GUI.newGUI(9)
                 .setTitle("Hello world")
-                .addContent(new ItemGUIContent().setMaterial("stone").setViewRequirements(v -> false),
-                        new ItemGUIContent().setMaterial("diamond").setViewRequirements("permission"));
+                .addContent(ItemGUIContent.newInstance("stone").setViewRequirements(v -> false),
+                        ItemGUIContent.newInstance("diamond").setViewRequirements("permission"));
         openGUI(expected);
 
         assertNotNull(this.inventory);

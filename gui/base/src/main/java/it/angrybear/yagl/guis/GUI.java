@@ -128,7 +128,7 @@ public interface GUI extends Metadatable {
      * @return the gui
      */
     default @NotNull GUI addContent(final Item @NotNull ... contents) {
-        return addContent(Arrays.stream(contents).map(ItemGUIContent::new).toArray(GUIContent[]::new));
+        return addContent(Arrays.stream(contents).map(ItemGUIContent::newInstance).toArray(GUIContent[]::new));
     }
 
     /**
@@ -160,7 +160,7 @@ public interface GUI extends Metadatable {
      * @return the contents
      */
     default @NotNull GUI setContents(int slot, final Item @NotNull ... contents) {
-        return setContents(slot, Arrays.stream(contents).map(ItemGUIContent::new).toArray(GUIContent[]::new));
+        return setContents(slot, Arrays.stream(contents).map(ItemGUIContent::newInstance).toArray(GUIContent[]::new));
     }
 
     /**

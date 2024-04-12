@@ -40,7 +40,7 @@ public class BukkitCommandActionTest {
                         (BiConsumer<Viewer, GUI>) (v, g) -> g.changeGUIAction().ifPresent(a -> a.execute(v, g, null))},
                 new Object[]{(Consumer<GUI>) g -> g.onClickOutside(COMMAND),
                         (BiConsumer<Viewer, GUI>) (v, g) -> g.clickOutsideAction().ifPresent(a -> a.execute(v, g))},
-                new Object[]{(Consumer<GUI>) g -> g.addContent(new GUIContent[]{new ItemGUIContent().onClickItem(COMMAND)}),
+                new Object[]{(Consumer<GUI>) g -> g.addContent(new GUIContent[]{ItemGUIContent.newInstance().onClickItem(COMMAND)}),
                         (BiConsumer<Viewer, GUI>) (v, g) -> g.getContents(0).forEach(c -> c.clickItemAction().ifPresent(a -> a.execute(v, g, c)))}
         };
     }

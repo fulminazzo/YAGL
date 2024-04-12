@@ -17,7 +17,7 @@ class GUIContentParserTest {
     @Test
     void testSaveAndLoadItemGUIContent() throws IOException {
         GUIYAGLParser.addAllParsers();
-        GUIContent expected = new ItemGUIContent()
+        GUIContent expected = ItemGUIContent.newInstance()
                 .setMaterial("stone_sword").setAmount(1)
                 .setDurability(1337).setDisplayName("&8Destroyer")
                 .setLore("&eUse this sword to fight your enemies")
