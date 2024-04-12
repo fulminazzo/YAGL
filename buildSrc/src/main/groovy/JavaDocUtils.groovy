@@ -93,13 +93,14 @@ class JavaDocUtils {
         if (!current.directory) return
 
         def files = current.listFiles()
-        if (files == null) return
+        if (files == null)
+            throw new IllegalArgumentException("Could not list files of ${current.path}")
 
         files.findAll { f -> f.directory }
                 .findAll { f -> !IGNORE_DIRS.any { d -> d == f.name } }
                 .findAll { f -> !ignoreDirs.any { d -> d == f.name } }
                 .each { f ->
-                    project.logger.info("Checking file ${f.path}")
+                    throw new RuntimeException("Starting with file ${f.path}")
                     if (f.name == DOCS_DIR) {
                         project.logger.info("Validated file ${f.path}")
                         def dest = getDestinationFromModule(output, f)
