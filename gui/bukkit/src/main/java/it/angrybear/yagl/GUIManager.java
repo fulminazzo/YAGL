@@ -53,9 +53,9 @@ public class GUIManager implements Listener {
     void on(final @NotNull InventoryClickEvent event) {
         getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
             int slot = event.getRawSlot();
-            if (!g.isMovable(slot)) event.setCancelled(true);
             if (slot < 0) g.clickOutsideAction().ifPresent(a -> a.execute(v, g));
             else if (slot < g.size()) {
+                if (!g.isMovable(slot)) event.setCancelled(true);
                 @Nullable GUIContent content = g.getContent(v, slot);
                 if (content != null) content.clickItemAction().ifPresent(a -> a.execute(v, g, content));
             }
