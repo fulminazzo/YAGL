@@ -102,23 +102,30 @@ class PersistentListenerTest {
         assertTrue(this.clicked, "Clicked should have changed");
     }
 
-    @Test
-    void testMovableItem() {
-        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND_PICKAXE).setMobility(Mobility.INTERNAL);
+    private static Object[] notMovableItems() {
+        return new Object[]{
+                new PersistentItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
+                new PersistentItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("notMovableItems")
+    void testItemOutsideCouldNotBeMoved(PersistentItem persistentItem) {
         InventoryView view = setupInventoryClickEventView();
         int slot = view.getTopInventory().getSize();
         view.getBottomInventory().setItem(0, persistentItem.create());
 
-        InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.LEFT, InventoryAction.CLONE_STACK);
+        InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0);
         assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
         assertFalse(event.isCancelled(), "Event should not be cancelled");
         listener.on(event);
-        assertFalse(event.isCancelled(), "Event should not be cancelled");
+        assertEquals(persistentItem.getMobility() == Mobility.STATIC, event.isCancelled(), "Event cancel state was not as expected");
     }
 
-    @Test
-    void testMovableItemInside() {
-        PersistentItem persistentItem = new PersistentItem(Material.FLOWER_POT).setMobility(Mobility.INTERNAL);
+    @ParameterizedTest
+    @MethodSource("notMovableItems")
+    void testItemInsideShouldNotBeMoved(PersistentItem persistentItem) {
         InventoryView view = setupInventoryClickEventView();
         int slot = 0;
         view.getTopInventory().setItem(slot, persistentItem.create());
