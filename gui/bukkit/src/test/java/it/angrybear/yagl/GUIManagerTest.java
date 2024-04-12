@@ -91,6 +91,20 @@ class GUIManagerTest {
         }
 
         @Test
+        void testClickActionNull() {
+            AtomicBoolean expected = new AtomicBoolean(false);
+            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
+
+            InventoryView view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+                    1, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
+            this.guiManager.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
+            assertFalse(expected.get(), "Click action should not be invoked");
+        }
+
+        @Test
         void testClickActionOutside() {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
