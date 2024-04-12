@@ -5,21 +5,25 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.utils.GUIUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -60,6 +64,16 @@ class GUIManagerTest {
             this.guiManager.on(new InventoryOpenEvent(view));
 
             assertTrue(expected.get(), "OpenGUI action was not invoked");
+        }
+
+        @Test
+        void testDragEvent() {
+            InventoryView view = getView();
+            InventoryDragEvent event = new InventoryDragEvent(view, null, new ItemStack(Material.STONE),
+                    false, new HashMap<>());
+            assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
+            this.guiManager.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
         }
 
         @Test
