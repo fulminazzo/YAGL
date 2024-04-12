@@ -5,6 +5,7 @@ import it.angrybear.yagl.Metadatable;
 import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -118,7 +119,17 @@ public class ResizableGUI extends GUIImpl {
     }
 
     @Override
+    public @NotNull ResizableGUI addContent(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.addContent(contents);
+    }
+
+    @Override
     public @NotNull ResizableGUI setContents(int slot, Item @NotNull ... contents) {
+        return (ResizableGUI) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setContents(int slot, ItemGUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
