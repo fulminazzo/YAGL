@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
@@ -30,13 +29,13 @@ class GUIImplTest {
 
     @Test
     void testCorrectAdd() {
-        GUI gui = new MockGUI(2);
+        GUI gui = new GUIImpl(2);
         assertDoesNotThrow(() -> gui.addContent(new MockContent(), new MockContent()));
     }
 
     @Test
     void testInvalidAdd() {
-        GUI gui = new MockGUI(1);
+        GUI gui = new GUIImpl(1);
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 gui.addContent(new MockContent(), new MockContent()));
     }
@@ -53,19 +52,7 @@ class GUIImplTest {
 
     @Test
     void testOpenWithNoBukkitModule() {
-        assertThrowsExactly(IllegalStateException.class, () -> new MockGUI(9).open(mock(Viewer.class)));
-    }
-
-    public static class MockGUI extends GUIImpl {
-
-        /**
-         * Instantiates a new Gui.
-         *
-         * @param size the size
-         */
-        public MockGUI(int size) {
-            super(size);
-        }
+        assertThrowsExactly(IllegalStateException.class, () -> new GUIImpl(9).open(mock(Viewer.class)));
     }
     
     public static class MockContent implements GUIContent {
