@@ -2,7 +2,6 @@ package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.contents.GUIContent;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,7 +51,7 @@ class ResizableGUITest {
 
     @Test
     void testValidSet() {
-        Assertions.assertDoesNotThrow(() -> this.gui.setContents(9, new GUIImplTest.MockContent()));
+        assertDoesNotThrow(() -> this.gui.setContents(9, new GUIImplTest.MockContent()));
     }
 
     @Test
