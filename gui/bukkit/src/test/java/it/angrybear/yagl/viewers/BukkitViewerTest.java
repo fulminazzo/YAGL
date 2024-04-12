@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class BukkitViewerTest {
     private Player player;
@@ -43,6 +44,12 @@ class BukkitViewerTest {
     void testHasPermissionOffline() {
         BukkitUtils.removePlayer(this.player);
         assertFalse(this.viewer.hasPermission("permission"));
+    }
+
+    @Test
+    void getOfflinePlayerShouldNotBePresent() {
+        when(this.player.isOnline()).thenReturn(false);
+        assertFalse(((BukkitViewer) this.viewer).getPlayer().isPresent());
     }
 
 }
