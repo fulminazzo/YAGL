@@ -1,11 +1,11 @@
-package it.angrybear.yagl.utils;
+package it.angrybear.yagl;
 
-import it.angrybear.yagl.GUIManager;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.BukkitItem;
+import it.angrybear.yagl.utils.MessageUtils;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import lombok.AccessLevel;
@@ -23,7 +23,7 @@ import java.util.UUID;
  * A collection of utilities for handling with {@link GUI}s and Bukkit.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class GUIUtils {
+public final class GUIAdapter {
 
     /**
      * Opens the given {@link GUI} for the specified {@link Viewer}.

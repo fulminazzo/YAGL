@@ -1,7 +1,5 @@
-package it.angrybear.yagl.utils;
+package it.angrybear.yagl;
 
-import it.angrybear.yagl.GUIManager;
-import it.angrybear.yagl.ItemAdapter;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
@@ -27,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class GUIUtilsTest {
+class GUIAdapterTest {
     private Player player;
     private Inventory inventory;
 

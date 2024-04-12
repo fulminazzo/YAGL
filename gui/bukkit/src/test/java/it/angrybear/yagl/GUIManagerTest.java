@@ -2,7 +2,6 @@ package it.angrybear.yagl;
 
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.utils.GUIUtils;
 import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
@@ -53,7 +52,7 @@ class GUIManagerTest {
                     .setTitle("Hello world")
                     .addContent(Item.newItem("stone").setDisplayName("test"));
 
-            GUIUtils.openGUI(this.expected, GUIManager.getViewer(this.player));
+            GUIAdapter.openGUI(this.expected, GUIManager.getViewer(this.player));
         }
 
         @Test
