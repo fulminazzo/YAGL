@@ -186,7 +186,7 @@ allprojects {
 
 tasks.register("aggregateJavaDoc") {
     allprojects.forEach { dependsOn "${it.path}:javadoc" }
-    JavaDocUtils.aggregateJavaDoc("html", rootProject.name, rootProject.version, rootProject, TEST_MODULE)
+    JavaDocUtils.aggregateJavaDoc("html", rootProject.name, rootProject.version, TEST_MODULE)
 }
 
 testCodeCoverageReport {

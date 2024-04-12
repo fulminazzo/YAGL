@@ -21,7 +21,7 @@ class JavaDocUtils {
      * @param output the output directory
      * @param ignoreDirs the directories (modules) to be ignore
      */
-    static aggregateJavaDoc(String output, String name, String version, def project, String... ignoreDirs) {
+    static aggregateJavaDoc(String output, String name, String version, String... ignoreDirs) {
         def current = new File(System.getProperty('user.dir'))
         if (current.name == 'buildSrc') current = current.parentFile
         def outputDir = new File(current, output)
@@ -30,7 +30,7 @@ class JavaDocUtils {
             throw new IllegalStateException("Could not delete previous directory ${output}")
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
-        aggregateJavaDocRec(current, outputDir, project, ignoreDirs)
+        aggregateJavaDocRec(current, outputDir, ignoreDirs)
 //        createModulesPage(name, version, outputDir)
     }
 
@@ -89,7 +89,7 @@ class JavaDocUtils {
         return resource
     }
 
-    private static aggregateJavaDocRec(File current, File output, def project, String... ignoreDirs) {
+    private static aggregateJavaDocRec(File current, File output, String... ignoreDirs) {
         if (!current.directory) return
 
         def files = current.listFiles()
@@ -100,13 +100,11 @@ class JavaDocUtils {
                 .findAll { f -> !IGNORE_DIRS.any { d -> d == f.name } }
                 .findAll { f -> !ignoreDirs.any { d -> d == f.name } }
                 .each { f ->
-                    throw new RuntimeException("Starting with file ${f.path}")
                     if (f.name == DOCS_DIR) {
-                        project.logger.info("Validated file ${f.path}")
                         def dest = getDestinationFromModule(output, f)
                         def out = new File(output, dest)
                         copyDirectory(f, out)
-                    } else aggregateJavaDocRec(f, output, project)
+                    } else aggregateJavaDocRec(f, output)
                 }
     }
 
