@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
@@ -52,6 +50,20 @@ class GUIManagerTest {
                     .addContent(Item.newItem("stone").setDisplayName("test"));
 
             GUIUtils.openGUI(this.expected, GUIManager.getViewer(this.player));
+        }
+
+        @Test
+        void testClickAction() {
+            AtomicBoolean expected = new AtomicBoolean(false);
+            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
+
+            InventoryView view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+                    0, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
+            this.guiManager.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
+            assertTrue(expected.get(), "Click action was not invoked");
         }
 
         @Test
