@@ -48,7 +48,7 @@ class JavaDocUtils {
                 files*.name.each { copyDirectory(new File(src, it), new File(dst, it)) }
         } else {
             Path path = Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
-            throw new RuntimeException(path.toString())
+            throw new RuntimeException("${src.toPath()} -> ${dst.toPath()}: ${path}")
         }
     }
 
