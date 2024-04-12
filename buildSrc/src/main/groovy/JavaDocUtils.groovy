@@ -114,10 +114,8 @@ class JavaDocUtils {
     }
 
     private static parseResource(File parentFile, String resource, String name, String version, File[] files) {
-        def file = new File(parentFile, resource)
-        if (file.isDirectory()) return
         getResource("${resource}").withReader { reader ->
-            file.withWriter { writer ->
+            new File(parentFile, resource).withWriter { writer ->
                 String line
                 while ((line = reader.readLine()) != null) {
                     line = line.replace('%module_name%', name)
