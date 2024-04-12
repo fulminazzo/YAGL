@@ -57,6 +57,25 @@ class GUIManagerTest {
         }
 
         @Test
+        void testChangeGUI() {
+            AtomicBoolean expected = new AtomicBoolean(false);
+            AtomicBoolean notExpected = new AtomicBoolean(false);
+            this.expected
+                    .onChangeGUI((v, g1, g2) -> expected.set(true))
+                    .onCloseGUI((v, g) -> notExpected.set(true));
+            doAnswer(a -> {
+                InventoryCloseEvent event = new InventoryCloseEvent(getView());
+                this.guiManager.on(event);
+                return null;
+            }).when(this.player).closeInventory();
+
+            this.expected.open(GUIManager.getViewer(this.player));
+
+            assertTrue(expected.get(), "Change GUI was not invoked");
+            assertTrue(notExpected.get(), "Close GUI should not invoked");
+        }
+
+        @Test
         void testClickAction() {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
