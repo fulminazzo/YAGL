@@ -51,7 +51,7 @@ class GUIImpl implements GUI {
     public void open(@NotNull Viewer viewer) {
         final Class<?> guiUtils;
         try {
-            guiUtils = ReflectionUtils.getClass("it.angrybear.yagl.utils.GUIUtils");
+            guiUtils = ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter");
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Could not find GUIUtils class. This function requires the 'gui:bukkit' module to be added");
         }
