@@ -30,7 +30,7 @@ class JavaDocUtils {
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
         aggregateJavaDocRec(current, outputDir, ignoreDirs)
-//        createModulesPage(name, version, outputDir)
+        createModulesPage(name, version, outputDir)
     }
 
     /**
