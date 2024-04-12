@@ -3,6 +3,7 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.utils.GUIUtils;
+import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
@@ -26,8 +27,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GUIManagerTest {
@@ -69,10 +69,12 @@ class GUIManagerTest {
                 return null;
             }).when(this.player).closeInventory();
 
-            this.expected.open(GUIManager.getViewer(this.player));
+            Viewer viewer = GUIManager.getViewer(this.player);
+            this.expected.open(viewer);
 
             assertTrue(expected.get(), "Change GUI was not invoked");
             assertFalse(notExpected.get(), "Close GUI should not invoked");
+            assertEquals(this.expected, viewer.getPreviousGUI());
         }
 
         @Test
