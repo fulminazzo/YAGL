@@ -72,7 +72,7 @@ class GUIManagerTest {
             this.expected.open(GUIManager.getViewer(this.player));
 
             assertTrue(expected.get(), "Change GUI was not invoked");
-            assertTrue(notExpected.get(), "Close GUI should not invoked");
+            assertFalse(notExpected.get(), "Close GUI should not invoked");
         }
 
         @Test
