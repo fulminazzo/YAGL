@@ -21,8 +21,8 @@ class ItemGUIContentTest {
     @Test
     void testMetadatableReplacement() {
         GUIContent guiContent = ItemGUIContent.newInstance("stone")
-                .setAmount(3).setDisplayName("Hello %var1%")
-                .setLore("%lore1%", "%lore2%")
+                .setAmount(3).setDisplayName("Hello <var1>")
+                .setLore("<lore1>", "<lore2>")
                 .setVariable("var1", "world")
                 .setVariable("lore1", "Hello friend")
                 .setVariable("lore2", "Do you like this lore?");
