@@ -94,13 +94,10 @@ class JavaDocUtils {
                 .findAll { f -> !IGNORE_DIRS.any { d -> d == f.name } }
                 .findAll { f -> !ignoreDirs.any { d -> d == f.name } }
                 .each { f ->
-                    println f
                     if (f.name == DOCS_DIR) {
-                        println "Aggregating Javadoc from ${f.path}"
                         def dest = getDestinationFromModule(output, f)
                         def out = new File(output, dest)
                         copyDirectory(f, out)
-                        println "Aggregated in ${out.path}"
                     } else aggregateJavaDocRec(f, output)
                 }
     }
