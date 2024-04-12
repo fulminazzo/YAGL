@@ -371,6 +371,14 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    void testNullDataForMaterialData() {
+        Material material = Material.LEGACY_STONE;
+        Tuple<String, Integer> option = new Tuple<>(material.name(), null);
+        MaterialData expected = material.getNewData((byte) 0);
+        assertEquals(expected, WrappersAdapter.convertOption(MaterialData.class, option));
+    }
+
+    @Test
     void testInvalidOptionForMaterialData() {
         assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MaterialData.class, "string"));
     }
