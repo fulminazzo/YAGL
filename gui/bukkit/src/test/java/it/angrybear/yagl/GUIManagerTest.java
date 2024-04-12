@@ -8,9 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -53,8 +55,7 @@ class GUIManagerTest {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.onOpenGUI((v, g) -> expected.set(true));
 
-            InventoryView view = mock(InventoryView.class);
-            when(view.getPlayer()).thenReturn(this.player);
+            InventoryView view = getView();
 
             this.guiManager.on(new InventoryOpenEvent(view));
 
@@ -66,12 +67,17 @@ class GUIManagerTest {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.onCloseGUI((v, g) -> expected.set(true));
 
-            InventoryView view = mock(InventoryView.class);
-            when(view.getPlayer()).thenReturn(this.player);
+            InventoryView view = getView();
 
             this.guiManager.on(new InventoryCloseEvent(view));
 
             assertTrue(expected.get(), "CloseGUI action was not invoked");
+        }
+
+        private @NotNull InventoryView getView() {
+            InventoryView view = mock(InventoryView.class);
+            when(view.getPlayer()).thenReturn(this.player);
+            return view;
         }
 
     }
