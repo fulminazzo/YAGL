@@ -34,7 +34,7 @@ jobs:
         run: |-
           ./gradlew aggregateJavaDoc
           mkdir docs
-          mv html docs/docs
+          cp -r html docs/docs
           tree .
 
 #      - name: Generate Coverage
