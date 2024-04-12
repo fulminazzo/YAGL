@@ -144,8 +144,15 @@ public final class TestUtils {
      * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
-                                          final @NotNull Class<?> expectedReturnType,
+                                          @NotNull Class<?> expectedReturnType,
                                           final @Nullable Predicate<Method> filter) {
+        if (expectedReturnType.getSimpleName().endsWith("Impl"))
+            try {
+                String name = expectedReturnType.getCanonicalName();
+                expectedReturnType = ReflectionUtils.getClass(name.substring(0, name.length() - "Impl".length()));
+            } catch (IllegalArgumentException ignored) {
+
+            }
         for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
             final String methodString = methodToString(method);
