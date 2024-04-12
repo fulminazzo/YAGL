@@ -14,8 +14,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GUIImplTest {
 
@@ -30,6 +29,16 @@ class GUIImplTest {
         GUI gui = new MockGUI(1);
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 gui.addContent(new MockContent(), new MockContent()));
+    }
+
+    @Test
+    void testTypeGUI() {
+        GUIType type = GUIType.BEACON;
+        GUI gui = GUI.newGUI(type);
+        assertInstanceOf(TypeGUI.class, gui);
+        TypeGUI typeGUI = (TypeGUI) gui;
+        assertEquals(type, typeGUI.getInventoryType());
+        assertEquals(type.getSize(), typeGUI.size());
     }
 
     public static class MockGUI extends GUIImpl {
