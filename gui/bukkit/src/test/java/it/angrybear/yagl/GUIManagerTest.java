@@ -2,6 +2,7 @@ package it.angrybear.yagl;
 
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.utils.GUITestUtils;
 import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
@@ -20,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -34,13 +34,8 @@ class GUIManagerTest {
     @Test
     void testGetOpenGUIViewerUUID() {
         BukkitUtils.setupServer();
-        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-            JavaPlugin plugin = mock(JavaPlugin.class);
-            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
-            when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
-
-            assertFalse(GUIManager.getOpenGUIViewer(UUID.randomUUID()).isPresent(), "Should not be present");
-        }
+        GUITestUtils.mockPlugin(p ->
+                assertFalse(GUIManager.getOpenGUIViewer(UUID.randomUUID()).isPresent(), "Should not be present"));
     }
 
     @Nested
@@ -216,26 +211,20 @@ class GUIManagerTest {
 
         @Test
         void testDisableThisPlugin() {
-            try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-                JavaPlugin plugin = mock(JavaPlugin.class);
-                when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
-
-                PluginDisableEvent event = new PluginDisableEvent(plugin);
+            GUITestUtils.mockPlugin(p -> {
+                PluginDisableEvent event = new PluginDisableEvent(p);
                 this.guiManager.on(event);
                 verify(this.player).closeInventory();
-            }
+            });
         }
 
         @Test
         void testDisableNotThisPlugin() {
-            try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-                JavaPlugin plugin = mock(JavaPlugin.class);
-                when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
-
+            GUITestUtils.mockPlugin(p -> {
                 PluginDisableEvent event = new PluginDisableEvent(mock(JavaPlugin.class));
                 this.guiManager.on(event);
                 verify(this.player, never()).closeInventory();
-            }
+            });
         }
 
         private @NotNull InventoryView getView() {

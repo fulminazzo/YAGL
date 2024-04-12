@@ -4,6 +4,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.utils.GUITestUtils;
 import it.angrybear.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
@@ -13,11 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.util.List;
 import java.util.UUID;
@@ -94,10 +93,7 @@ class GUIAdapterTest {
     }
 
     private void openGUI(GUI gui) {
-        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> mock(JavaPlugin.class));
-            gui.open(GUIManager.getViewer(this.player));
-        }
+        GUITestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
     }
 
 }
