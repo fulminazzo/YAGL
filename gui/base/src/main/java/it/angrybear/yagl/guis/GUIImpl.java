@@ -16,10 +16,10 @@ import java.util.*;
 /**
  * A basic implementation of {@link GUI}.
  */
-@Getter
 class GUIImpl implements GUI {
     protected static final int MAX_SIZE = 54;
 
+    @Getter
     protected String title;
     protected List<Contents> contents;
     protected final Set<Integer> movableSlots;
