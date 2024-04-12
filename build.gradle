@@ -112,7 +112,7 @@ allprojects {
         }
 
         if (!projectName.contains("-"))
-            subprojects.findAll { !it.name.equals(TEST_MODULE) } .each {api project(it.path)}
+            subprojects.findAll { (it.name != TEST_MODULE) } .each {api project(it.path)}
 
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok

@@ -9,7 +9,6 @@ import org.mockito.MockedStatic;
 
 import java.util.function.Consumer;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
