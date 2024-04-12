@@ -31,6 +31,18 @@ import static org.mockito.Mockito.*;
 
 class GUIManagerTest {
 
+    @Test
+    void testGetOpenGUIViewerUUID() {
+        BukkitUtils.setupServer();
+        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
+            JavaPlugin plugin = mock(JavaPlugin.class);
+            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
+            when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
+
+            assertFalse(GUIManager.getOpenGUIViewer(UUID.randomUUID()).isPresent(), "Should not be present");
+        }
+    }
+
     @Nested
     class EventsTest {
         private GUIManager guiManager;
