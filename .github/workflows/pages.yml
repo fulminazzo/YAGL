@@ -33,20 +33,18 @@ jobs:
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5
 
       - name: Generate Javadoc
-        run: |-
-          ./gradlew aggregateJavaDoc
-          tree ./html
+        run: ./gradlew aggregateJavaDoc
 
-#      - name: Generate Coverage
-#        run: |-
-#          ./gradlew testCodeCoverageReport
-#          mv build/reports/jacoco/testCodeCoverageReport/html docs/coverage
+      - name: Generate Coverage
+        run: |-
+          ./gradlew testCodeCoverageReport
+          mv build/reports/jacoco/testCodeCoverageReport/html html/coverage
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload from docs
-          path: './docs/'
+          # Upload from html
+          path: './html/'
 
       - name: Deploy to GitHub Pages
         id: deployment
