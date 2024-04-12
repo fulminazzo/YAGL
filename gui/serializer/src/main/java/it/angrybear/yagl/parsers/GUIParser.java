@@ -38,7 +38,8 @@ public class GUIParser extends TypedParser<GUI> {
         return (c, s, g) -> {
             super.getDumper().accept(c, s, g);
             if (g == null) return;
-            c.set(s + ".contents.value-class", null);
+            final String valueClass = s + ".contents.value-class";
+            if (c.contains(valueClass)) c.set(valueClass, null);
             c.set(s + ".size", g.size());
         };
     }
