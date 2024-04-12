@@ -3,6 +3,7 @@ package it.angrybear.yagl;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
+import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.utils.GUITestUtils;
 import it.angrybear.yagl.viewers.PlayerOfflineException;
@@ -17,6 +18,8 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.UUID;
@@ -44,11 +47,26 @@ class GUIAdapterTest {
                 });
     }
 
-    @Test
-    void testOpenGUI() {
-        GUI expected = GUI.newGUI(9)
-                .setTitle("Hello world")
-                .addContent(Item.newItem("stone").setDisplayName("test"));
+    private static GUI[] guis() {
+        return new GUI[]{
+                GUI.newGUI(9)
+                        .setTitle("Hello world")
+                        .addContent(Item.newItem("stone").setDisplayName("test")),
+                GUI.newGUI(9)
+                        .setTitle(null)
+                        .addContent(Item.newItem("stone").setDisplayName("test")),
+                GUI.newGUI(GUIType.CHEST)
+                        .setTitle("Hello world")
+                        .addContent(Item.newItem("stone").setDisplayName("test")),
+                GUI.newGUI(GUIType.CHEST)
+                        .setTitle(null)
+                        .addContent(Item.newItem("stone").setDisplayName("test")),
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("guis")
+    void testOpenGUI(GUI expected) {
         openGUI(expected);
 
         assertNotNull(this.inventory);
