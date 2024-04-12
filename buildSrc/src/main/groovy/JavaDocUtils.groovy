@@ -100,7 +100,7 @@ class JavaDocUtils {
                         def dest = getDestinationFromModule(output, f)
                         def out = new File(output, dest)
                         copyDirectory(f, out)
-                    } else aggregateJavaDocRec(f, output)
+                    } else aggregateJavaDocRec(f, output, project)
                 }
     }
 
