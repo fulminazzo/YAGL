@@ -187,7 +187,7 @@ allprojects {
 tasks.register("aggregateJavaDoc") {
     allprojects.forEach { dependsOn "${it.path}:javadoc" }
     doLast {
-        JavaDocUtils.aggregateJavaDoc("html", rootProject.name, rootProject.version, TEST_MODULE)
+        JavaDocUtils.aggregateJavaDoc("html/docs", rootProject.name, rootProject.version, TEST_MODULE)
     }
 }
 
