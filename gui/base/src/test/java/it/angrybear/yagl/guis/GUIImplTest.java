@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class GUIImplTest {
 
@@ -48,6 +49,11 @@ class GUIImplTest {
         TypeGUI typeGUI = (TypeGUI) gui;
         assertEquals(type, typeGUI.getInventoryType());
         assertEquals(type.getSize(), typeGUI.size());
+    }
+
+    @Test
+    void testOpenWithNoBukkitModule() {
+        assertThrowsExactly(IllegalStateException.class, () -> new MockGUI(9).open(mock(Viewer.class)));
     }
 
     public static class MockGUI extends GUIImpl {
