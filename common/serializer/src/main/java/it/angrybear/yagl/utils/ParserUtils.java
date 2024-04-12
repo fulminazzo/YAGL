@@ -52,6 +52,7 @@ public final class ParserUtils {
         String name = toConvert.getSimpleName();
         if (name.startsWith(mainClassName)) name = name.substring(mainClassName.length());
         if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
+        if (name.equals("Impl")) name = "default";
         name = FileUtils.formatStringToYaml(name);
         return name.replace("-", "_").toUpperCase();
     }
