@@ -102,8 +102,8 @@ class GUIImpl implements GUI {
     /**
      * Tries to add the given content from the given index.
      *
-     * @param content   the content
-     * @param index     the index
+     * @param content the content
+     * @param index   the index
      * @return the new index if it was successful, an index higher than {@link #size()} if failed
      */
     protected int addSingle(final @NotNull GUIContent content, int index) {
@@ -203,13 +203,26 @@ class GUIImpl implements GUI {
         return contents;
     }
 
+    /**
+     * A type to keep track of multiple {@link GUIContent} for one slot.
+     */
     public static class Contents {
         private final GUIContent[] contents;
 
+        /**
+         * Instantiates a new Contents.
+         *
+         * @param contents the contents
+         */
         protected Contents(final GUIContent @NotNull ... contents) {
             this.contents = contents;
         }
 
+        /**
+         * Gets contents.
+         *
+         * @return the contents
+         */
         public List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
         }
