@@ -44,13 +44,13 @@ public class GUIManager implements Listener {
     }
 
     @EventHandler
-    void on(InventoryOpenEvent event) {
+    void on(final @NotNull InventoryOpenEvent event) {
         getOpenGUIViewer(event.getPlayer()).ifPresent((v, g) ->
                 g.openGUIAction().ifPresent(a -> a.execute(v, g)));
     }
 
     @EventHandler
-    void on(InventoryClickEvent event) {
+    void on(final @NotNull InventoryClickEvent event) {
         getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
             int slot = event.getRawSlot();
             if (!g.isMovable(slot)) event.setCancelled(true);
@@ -63,23 +63,18 @@ public class GUIManager implements Listener {
     }
 
     @EventHandler
-    void on(InventoryDragEvent event) {
+    void on(final @NotNull InventoryDragEvent event) {
         getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> event.setCancelled(true));
     }
 
     @EventHandler
-    void on(InventoryCloseEvent event) {
+    void on(final @NotNull InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
         onCloseGUI(player);
     }
 
-    private void onCloseGUI(Player player) {
-        getOpenGUIViewer(player).ifPresent((v, g) ->
-                g.closeGUIAction().ifPresent(a -> a.execute(v, g)));
-    }
-
     @EventHandler
-    void on(PluginDisableEvent event) {
+    void on(final @NotNull PluginDisableEvent event) {
         JavaPlugin plugin = getProvidingPlugin();
         Plugin disablingPlugin = event.getPlugin();
         if (plugin.equals(disablingPlugin)) {
@@ -91,6 +86,11 @@ public class GUIManager implements Listener {
                     .forEach(HumanEntity::closeInventory);
             instance = null;
         }
+    }
+
+    private void onCloseGUI(Player player) {
+        getOpenGUIViewer(player).ifPresent((v, g) ->
+                g.closeGUIAction().ifPresent(a -> a.execute(v, g)));
     }
 
     /**
