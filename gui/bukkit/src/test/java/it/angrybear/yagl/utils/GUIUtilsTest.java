@@ -53,7 +53,7 @@ class GUIUtilsTest {
 
         assertNotNull(inventory);
         assertEquals(expected.size(), inventory.get().getSize());
-        assertEquals(expected.getTitle(), new Refl<>(inventory).getFieldObject("title"));
+        assertEquals(expected.getTitle(), new Refl<>(inventory.get()).getFieldObject("title"));
 
         for (int i = 0; i < expected.size(); i++) {
             GUIContent guiContent = expected.getContents(i).get(0);
