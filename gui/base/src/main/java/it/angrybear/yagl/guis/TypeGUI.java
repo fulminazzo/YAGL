@@ -7,10 +7,13 @@ import org.jetbrains.annotations.NotNull;
  * An implementation of {@link GUI} that allows a {@link GUIType}.
  */
 @Getter
-class TypeGUI extends GUIImpl {
+public class TypeGUI extends GUIImpl {
     private final GUIType inventoryType;
 
-    private TypeGUI() {
+    /**
+     * Internal constructor, used for serializing purposes.
+     */
+    TypeGUI() {
         super(0);
         this.inventoryType = null;
     }
