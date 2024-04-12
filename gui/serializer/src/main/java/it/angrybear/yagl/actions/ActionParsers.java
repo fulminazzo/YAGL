@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * The type Action parsers.
  */
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ActionParsers {
 
     /**
