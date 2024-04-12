@@ -9,6 +9,9 @@ import it.angrybear.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
 import java.util.Map;
@@ -17,6 +20,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GUIImplTest {
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 180})
+    void testInvalidSize(int size) {
+        assertThrowsExactly(IllegalArgumentException.class, () -> GUI.newGUI(size));
+    }
 
     @Test
     void testCorrectAdd() {
