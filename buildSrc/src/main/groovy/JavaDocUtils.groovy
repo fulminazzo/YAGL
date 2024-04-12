@@ -1,6 +1,7 @@
 import groovy.transform.CompileDynamic
 
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
 /**
@@ -45,7 +46,10 @@ class JavaDocUtils {
             dst.mkdirs()
             if (files != null)
                 files*.name.each { copyDirectory(new File(src, it), new File(dst, it)) }
-        } else Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        } else {
+            Path path = Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            throw new RuntimeException(path.toString())
+        }
     }
 
     /**
