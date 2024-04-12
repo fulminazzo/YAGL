@@ -7,6 +7,7 @@ import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.PluginManager;
@@ -58,6 +59,19 @@ class GUIManagerTest {
             this.guiManager.on(new InventoryOpenEvent(view));
 
             assertTrue(expected.get(), "OpenGUI action was not invoked");
+        }
+
+        @Test
+        void testCloseEvent() {
+            AtomicBoolean expected = new AtomicBoolean(false);
+            this.expected.onCloseGUI((v, g) -> expected.set(true));
+
+            InventoryView view = mock(InventoryView.class);
+            when(view.getPlayer()).thenReturn(this.player);
+
+            this.guiManager.on(new InventoryCloseEvent(view));
+
+            assertTrue(expected.get(), "CloseGUI action was not invoked");
         }
 
     }
