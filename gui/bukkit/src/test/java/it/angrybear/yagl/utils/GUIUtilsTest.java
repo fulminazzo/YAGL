@@ -14,9 +14,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -56,7 +58,8 @@ class GUIUtilsTest {
         assertEquals(expected.getTitle(), new Refl<>(inventory.get()).getFieldObject("title"));
 
         for (int i = 0; i < expected.size(); i++) {
-            GUIContent guiContent = expected.getContents(i).get(0);
+            @NotNull List<GUIContent> contents = expected.getContents(i);
+            GUIContent guiContent = contents.isEmpty() ? null : contents.get(0);
             ItemStack actual = inventory.get().getItem(i);
             if (guiContent == null) assertNull(actual);
             else {
