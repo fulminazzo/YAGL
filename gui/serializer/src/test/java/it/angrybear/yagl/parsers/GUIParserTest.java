@@ -1,5 +1,6 @@
 package it.angrybear.yagl.parsers;
 
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.actions.BiGUICommand;
 import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.actions.GUIItemCommand;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GUIParserTest {
+class GUIParserTest extends ParserTestHelper<GUI> {
 
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
@@ -117,5 +118,10 @@ class GUIParserTest {
             if (exp == null) assertNull(act);
             else assertEquals(exp.render(), act.render());
         }
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return GUIParser.class;
     }
 }
