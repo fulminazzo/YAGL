@@ -5,6 +5,7 @@ import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.BiOptional;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -134,7 +135,8 @@ public class GUIManager implements Listener {
 
     private static @NotNull Viewer newViewer(final @NotNull HumanEntity player) {
         final String packageName = Viewer.class.getPackage().getName();
-        Viewer viewer = new Refl<>(packageName + ".BukkitViewer").invokeMethod("newViewer", player);
+        final Class<?> bukkitViewer = ReflectionUtils.getClass(packageName + ".BukkitViewer");
+        Viewer viewer = new Refl<>(bukkitViewer).invokeMethod("newViewer", player);
         return Objects.requireNonNull(viewer);
     }
 
