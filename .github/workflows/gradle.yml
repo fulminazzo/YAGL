@@ -9,7 +9,8 @@ name: Tests
 
 on:
   push:
-    branches: [ "dev", "main", "master" ]
+    #TODO: remove feat-java-doc
+    branches: [ "dev", "main", "master", "feat-java-doc" ]
 
 jobs:
   test:
