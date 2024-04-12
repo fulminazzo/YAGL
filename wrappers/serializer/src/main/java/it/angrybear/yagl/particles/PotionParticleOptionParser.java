@@ -5,8 +5,6 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A parser to serialize {@link PotionParticleOption}.
@@ -22,7 +20,7 @@ public class PotionParticleOptionParser extends YAMLParser<PotionParticleOption>
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable PotionParticleOption> getLoader() {
+    protected BiFunctionException<IConfiguration, String, PotionParticleOption> getLoader() {
         return (c, s) -> {
             Potion potion = c.get(s, Potion.class);
             if (potion == null) return null;
@@ -31,7 +29,7 @@ public class PotionParticleOptionParser extends YAMLParser<PotionParticleOption>
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable PotionParticleOption> getDumper() {
+    protected TriConsumer<IConfiguration, String, PotionParticleOption> getDumper() {
         return (c, s, p) -> c.set(s, p == null ? null : p.getOption());
     }
 }

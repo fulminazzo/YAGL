@@ -7,8 +7,6 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class RecipeParser extends TypedParser<Recipe> {
     }
 
     @Override
-    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable Recipe> getDumper() {
+    protected TriConsumer<IConfiguration, String, Recipe> getDumper() {
         return super.getDumper().andThen((c, s, r) -> {
             if (r == null) return;
             if (!r.isEmpty()) c.set(s + ".ingredients.value-class", null);

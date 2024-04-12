@@ -10,7 +10,6 @@ import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import it.fulminazzo.yamlparser.parsers.annotations.PreventSaving;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -35,7 +34,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     @Override
-    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable P> getLoader() {
+    protected BiFunctionException<IConfiguration, String, P> getLoader() {
         return (c, s) -> {
             Refl<?> reflP = new Refl<>(getOClass(), new Object[0]);
 
@@ -62,7 +61,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     @Override
-    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable P> getDumper() {
+    protected TriConsumer<IConfiguration, String, P> getDumper() {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;

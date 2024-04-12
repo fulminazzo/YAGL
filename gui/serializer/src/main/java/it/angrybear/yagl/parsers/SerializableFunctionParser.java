@@ -9,7 +9,6 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 
@@ -26,12 +25,12 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
      *
      * @param clazz the {@link SerializableFunction} class
      */
-    public SerializableFunctionParser(@NotNull Class<F> clazz) {
+    public SerializableFunctionParser(final @NotNull Class<F> clazz) {
         super(clazz);
     }
 
     @Override
-    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable F> getLoader() {
+    protected BiFunctionException<IConfiguration, String, F> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -52,7 +51,7 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
     }
 
     @Override
-    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable F> getDumper() {
+    protected TriConsumer<IConfiguration, String, F> getDumper() {
         return (c, s, f) -> {
             c.set(s, null);
             if (f == null) return;

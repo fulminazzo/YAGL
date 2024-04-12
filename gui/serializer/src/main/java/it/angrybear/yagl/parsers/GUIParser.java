@@ -6,7 +6,6 @@ import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class GUIParser extends TypedParser<GUI> {
     }
 
     @Override
-    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable GUI> getLoader() {
+    protected BiFunctionException<IConfiguration, String, GUI> getLoader() {
         return (c, s) -> {
             GUI g = super.getLoader().apply(c, s);
             Integer size = c.getInteger(s + ".size");
@@ -40,7 +39,7 @@ public class GUIParser extends TypedParser<GUI> {
     }
 
     @Override
-    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable GUI> getDumper() {
+    protected TriConsumer<IConfiguration, String, GUI> getDumper() {
         return (c, s, g) -> {
             super.getDumper().accept(c, s, g);
             if (g == null) return;
