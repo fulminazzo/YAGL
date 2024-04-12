@@ -70,7 +70,8 @@ public class GUIManager implements Listener {
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        onCloseGUI(player);
+        getOpenGUIViewer(player).ifPresent((v, g) ->
+                g.closeGUIAction().ifPresent(a -> a.execute(v, g)));
     }
 
     @EventHandler
@@ -86,11 +87,6 @@ public class GUIManager implements Listener {
                     .forEach(HumanEntity::closeInventory);
             instance = null;
         }
-    }
-
-    private void onCloseGUI(Player player) {
-        getOpenGUIViewer(player).ifPresent((v, g) ->
-                g.closeGUIAction().ifPresent(a -> a.execute(v, g)));
     }
 
     /**
