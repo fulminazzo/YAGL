@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.contents.GUIContent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,11 @@ class ResizableGUITest {
             contents.add(new GUIImplTest.MockContent());
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 this.gui.addContent(contents.toArray(new GUIContent[0])));
+    }
+
+    @Test
+    void testReturnTypes() {
+        TestUtils.testReturnType(this.gui, GUI.class, m -> m.getName().equals("copy"));
     }
 
     @Test
