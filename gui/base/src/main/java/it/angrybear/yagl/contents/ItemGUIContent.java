@@ -22,28 +22,15 @@ import java.util.Set;
 public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     private final Item item;
 
-    /**
-     * Instantiates a new Item gui content.
-     */
-    public ItemGUIContent() {
+    private ItemGUIContent() {
         this(Item.newItem());
     }
 
-    /**
-     * Instantiates a new Item gui content.
-     *
-     * @param material the material
-     */
-    public ItemGUIContent(final @NotNull String material) {
+    private ItemGUIContent(final @NotNull String material) {
         this(Item.newItem(material));
     }
 
-    /**
-     * Instantiates a new Item gui content.
-     *
-     * @param item the item
-     */
-    public ItemGUIContent(final @NotNull Item item) {
+    private ItemGUIContent(final @NotNull Item item) {
         this.item = item.copy(Item.class);
     }
 
@@ -280,6 +267,35 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     @Override
     public @NotNull ItemGUIContent setVariable(@NotNull String name, @NotNull String value) {
         return (ItemGUIContent) super.setVariable(name, value);
+    }
+
+    /**
+     * Creates an instance of {@link ItemGUIContent}.
+     *
+     * @return the item gui content
+     */
+    public static ItemGUIContent newInstance() {
+        return new ItemGUIContent();
+    }
+
+    /**
+     * Creates an instance of {@link ItemGUIContent} with the given material.
+     *
+     * @param material the material
+     * @return the item gui content
+     */
+    public static ItemGUIContent newInstance(final @NotNull String material) {
+        return new ItemGUIContent(material);
+    }
+
+    /**
+     * Creates an instance of {@link ItemGUIContent} with the given item.
+     *
+     * @param item the item
+     * @return the item gui content
+     */
+    public static ItemGUIContent newInstance(final @NotNull Item item) {
+        return new ItemGUIContent(item);
     }
 
 }
