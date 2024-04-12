@@ -12,9 +12,11 @@ import it.angrybear.yagl.guis.GUIType;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -118,6 +120,19 @@ class GUIParserTest extends ParserTestHelper<GUI> {
             if (exp == null) assertNull(act);
             else assertEquals(exp.render(), act.render());
         }
+    }
+
+    @Test
+    @DisplayName("Test invalid size")
+    @Override
+    protected void testLoadNull() {
+        final String path = "gui";
+        final GUI gui = GUI.newGUI(9);
+        ConfigurationSection section = new ConfigurationSection(null, "section");
+        getDumper().accept(section, path, gui);
+        section.set(path + ".size", null);
+
+        assertThrowsExactly(IllegalArgumentException.class, () -> getLoader().apply(section, path));
     }
 
     @Override
