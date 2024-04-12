@@ -8,6 +8,8 @@ import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.BukkitItem;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -20,7 +22,8 @@ import java.util.UUID;
 /**
  * A collection of utilities for handling with {@link GUI}s and Bukkit.
  */
-public class GUIUtils {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class GUIUtils {
 
     /**
      * Opens the given {@link GUI} for the specified {@link Viewer}.
