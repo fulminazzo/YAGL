@@ -19,7 +19,7 @@ public class ResizableGUI extends GUIImpl {
      *
      * @param size the size
      */
-    public ResizableGUI(int size) {
+    ResizableGUI(int size) {
         super(size);
         checkSize(size);
     }
