@@ -94,7 +94,6 @@ They can all be imported separately or together, following one of the three comm
 For more information, [check the wiki](https://github.com/Fulminazzo/YAGL/wiki).
 
 ## Why?
-
 > Wait, so in 2024 you wrote another GUI library, totally ignoring all the better options available? 
 > You are not that smart, are you?
 
@@ -113,3 +112,10 @@ it took its idea of independence and extended to many aspects of Minecraft, allo
 
 
 ## Roadmap
+While it being such a huge project, **YAGL** can still be expanded a lot.
+These are some of the pending features that are planned for the future:
+* [ ] possibility to serialize data to **different file formats** like **JSON**, **XML**, **properties**;
+* [ ] add support for [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) in variable replacements;
+* [ ] a special `GUIContent` that allows animated items;
+* [ ] a special `GUIContent` that allows items which can be toggled based on user click;
+* [ ] online web editor to customize and visualize data in real time;
