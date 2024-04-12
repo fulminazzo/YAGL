@@ -33,6 +33,10 @@ jobs:
       - name: Test with Gradle Wrapper
         run: ./gradlew test
 
+  update-pages:
+    needs: test
+    uses: ./.github/workflows/pages.yml
+
   jacoco:
     needs: test
     runs-on: ubuntu-latest
