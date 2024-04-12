@@ -94,4 +94,22 @@ They can all be imported separately or together, following one of the three comm
 For more information, [check the wiki](https://github.com/Fulminazzo/YAGL/wiki).
 
 ## Why?
+
+> Wait, so in 2024 you wrote another GUI library, totally ignoring all the better options available? 
+> You are not that smart, are you?
+
+When **YAGL** was nothing more than a simple thought, it had many goals:
+- it had to be **platform independent**, meaning that it could potentially be used by even other platforms to implement their own versions (check [Roadmap](#roadmap) for more);
+- it had to be **cross-compatible** among **older Minecraft versions**, specifically from **1.8**.
+  Many may argue that such a version is so obsolete that it should not even be distributed anymore,
+  and I totally agree with that.
+  However, while working in the Minecraft industry for a long time,
+  I noticed that many still require the **retro-compatibility** option,
+  that is why **YAGL** is tested on **every Minecraft version from 1.8**;
+- it had to create a **fast**, **easy** and **scalable** system for developers to create **custom items** and **guis**, without the overhead created by **Bukkit** methods like **ItemMeta**.
+
+During the production, **YAGL** expanded even more, and right now is not just a **GUI** library:
+it took its idea of independence and extended to many aspects of Minecraft, allowing **independent serializing** of **particles**, **sounds**, **enchantments**, **items**, **guis** and **more**!
+
+
 ## Roadmap
