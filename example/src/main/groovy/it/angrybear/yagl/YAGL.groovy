@@ -67,13 +67,15 @@ class YAGL extends JavaPlugin {
     void saveDefaultCommands(final @NotNull File commandsDir) {
         final def containingFolder = '/commands'
         FileUtils.createFolder(commandsDir)
-        getClass().getResourceAsStream(containingFolder).withReader {
-            def fileName = it.readLine()
-            def file = new File(commandsDir, fileName)
-            FileUtils.createNewFile(file)
-            def input = getClass().getResourceAsStream("${containingFolder}/${fileName}")
-            def output = new FileOutputStream(file)
-            output << input
+        getClass().getResourceAsStream(containingFolder).withReader { reader ->
+            String fileName
+            while ((fileName = reader.readLine()) != null) {
+                def file = new File(commandsDir, fileName)
+                FileUtils.createNewFile(file)
+                def input = getClass().getResourceAsStream("${containingFolder}/${fileName}")
+                def output = new FileOutputStream(file)
+                output << input
+            }
         }
     }
 
