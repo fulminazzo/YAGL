@@ -26,7 +26,7 @@ class YAGL extends JavaPlugin {
      */
     void loadCommands() {
         this.commands.clear()
-        File commandsDir = new File(getDataFolder(), "commands")
+        File commandsDir = new File(getDataFolder(), 'commands')
         if (!commandsDir.exists()) saveDefaultCommands(commandsDir)
         File[] files = commandsDir.listFiles()
         if (files != null)
@@ -40,8 +40,8 @@ class YAGL extends JavaPlugin {
      */
     void unloadCommands() {
         commandMap().ifPresent { map ->
-            Map<String, Command> commands = new Refl<>(map).getFieldObject("knownCommands")
-            if (commands == null) getLogger().warning("Could not find 'knownCommands' field in CommandMap")
+            Map<String, Command> commands = new Refl<>(map).getFieldObject('knownCommands')
+            if (commands == null) getLogger().warning('Could not find \'knownCommands\' field in CommandMap')
             else commands.keySet().clone().each { key ->
                 Command value = commands.get(key)
                 if (this.commands.contains(value)) commands.remove(key, value)
@@ -54,7 +54,7 @@ class YAGL extends JavaPlugin {
         if (pluginManager == null) Optional.empty()
         else {
             def refl = new Refl<>(pluginManager)
-            Optional.ofNullable(refl.getFieldObject("commandMap"))
+            Optional.ofNullable(refl.getFieldObject('commandMap'))
         }
     }
 
