@@ -110,9 +110,8 @@ it took its idea of independence and extended to many aspects of Minecraft, allo
 
 However, its development is not over yet.
 
-This project is in [continous expansion](#roadmap) and will keep growing,
-introducing new interesting features from other projects,
-while maintaining its core principles.
+Because of its incredible modularity, **YAGL** can be used for more projects related to Minecraft, like [Fabric](https://fabricmc.net/) and [Forge](https://files.minecraftforge.net/net/minecraftforge/forge/).
+As of right now, **they are not planned**, but there is possibility in the future.
 
 ## Roadmap
 While it being such a huge project, **YAGL** can still be expanded a lot.
