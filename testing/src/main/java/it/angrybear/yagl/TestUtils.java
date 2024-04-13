@@ -152,9 +152,7 @@ public final class TestUtils {
             try {
                 String name = expectedReturnType.getCanonicalName();
                 expectedReturnType = ReflectionUtils.getClass(name.substring(0, name.length() - "Impl".length()));
-            } catch (IllegalArgumentException ignored) {
-
-            }
+            } catch (IllegalArgumentException ignored) {}
         for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
             final String methodString = methodToString(method);
