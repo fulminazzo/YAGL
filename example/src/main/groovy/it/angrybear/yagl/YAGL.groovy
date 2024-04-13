@@ -42,7 +42,7 @@ class YAGL extends JavaPlugin {
         commandMap().ifPresent { map ->
             Map<String, Command> commands = new Refl<>(map).getFieldObject('knownCommands')
             if (commands == null) getLogger().warning('Could not find \'knownCommands\' field in CommandMap')
-            else commands.keySet().clone().each { key ->
+            else commands.keySet().collect().each { key ->
                 Command value = commands.get(key)
                 if (this.commands.contains(value)) commands.remove(key, value)
             }
