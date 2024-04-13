@@ -12,7 +12,8 @@ class YAGL extends JavaPlugin {
 
     @Override
     void onEnable() {
-
+        loadCommands()
+        getLogger().info("Loaded ${commands.size()} commands")
     }
 
     /**
