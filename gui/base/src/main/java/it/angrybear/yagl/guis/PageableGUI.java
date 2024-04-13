@@ -280,6 +280,91 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         return this.templateGUI.changeGUIAction();
     }
 
+    @Override
+    public @NotNull PageableGUI setAllMovable() {
+        return (PageableGUI) GUI.super.setAllMovable();
+    }
+
+    @Override
+    public @NotNull PageableGUI setAllUnmovable() {
+        return (PageableGUI) GUI.super.setAllUnmovable();
+    }
+
+    @Override
+    public @NotNull PageableGUI addContent(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.addContent(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI addContent(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.addContent(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setContents(int slot, Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setContents(int slot, ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI onClickOutside(@NotNull String command) {
+        return (PageableGUI) GUI.super.onClickOutside(command);
+    }
+
+    @Override
+    public @NotNull PageableGUI onOpenGUI(@NotNull String command) {
+        return (PageableGUI) GUI.super.onOpenGUI(command);
+    }
+
+    @Override
+    public @NotNull PageableGUI onCloseGUI(@NotNull String command) {
+        return (PageableGUI) GUI.super.onCloseGUI(command);
+    }
+
+    @Override
+    public @NotNull PageableGUI onChangeGUI(@NotNull String command) {
+        return (PageableGUI) GUI.super.onChangeGUI(command);
+    }
+
+    @Override
+    public @NotNull PageableGUI setVariable(@NotNull String name, @NotNull String value) {
+        return (PageableGUI) GUI.super.setVariable(name, value);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetVariable(@NotNull String name) {
+        return (PageableGUI) GUI.super.unsetVariable(name);
+    }
+
+    @Override
+    public @NotNull PageableGUI copyAll(@NotNull GUI other, boolean replace) {
+        return (PageableGUI) GUI.super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull PageableGUI copyFrom(@NotNull GUI other, boolean replace) {
+        return (PageableGUI) GUI.super.copyFrom(other, replace);
+    }
+
+    @Override
+    public @NotNull PageableGUI copyAll(@NotNull Metadatable other, boolean replace) {
+        return (PageableGUI) GUI.super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull PageableGUI copyFrom(@NotNull Metadatable other, boolean replace) {
+        return (PageableGUI) GUI.super.copyFrom(other, replace);
+    }
+
+    @Override
+    public PageableGUI copy() {
+        return GUI.super.copy(PageableGUI.class);
+    }
+
     /**
      * Creates a new {@link PageableGUI} with the given size.
      *
