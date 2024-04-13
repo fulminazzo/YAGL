@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
     implementation libs.groovy
+
+    compileOnly libs.spigot.latest
 }
 
 shadowJar {
