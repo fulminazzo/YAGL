@@ -28,6 +28,21 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     /**
+     * Gets the {@link GUI} page from the given index.
+     * The index starts from <b>1</b>.
+     *
+     * @param page the page
+     * @return the corresponding {@link GUI} page
+     */
+    public GUI getPage(final int page) {
+        try {
+            return this.pages.get(page - 1);
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException(String.format("Could not find page '%s'", page));
+        }
+    }
+
+    /**
      * Sets pages.
      *
      * @param pages the pages
