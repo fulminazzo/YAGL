@@ -1,6 +1,7 @@
 package it.angrybear.yagl
 
-import groovy.transform.CompileDynamic
+
+import groovy.transform.CompileStatic
 import it.angrybear.yagl.commands.ShellCommand
 import it.fulminazzo.fulmicollection.objects.Refl
 import it.fulminazzo.yamlparser.utils.FileUtils
@@ -10,7 +11,7 @@ import org.bukkit.command.CommandMap
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.annotations.NotNull
 
-@CompileDynamic
+@CompileStatic
 class YAGL extends JavaPlugin {
     private final List<ShellCommand> commands = new ArrayList<>()
 
