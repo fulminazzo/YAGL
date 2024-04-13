@@ -54,9 +54,9 @@ class PersistentListenerTest {
     @BeforeAll
     static void setAllUp() {
         BukkitUtils.setupServer();
-        maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
-        disappear = new PersistentItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
-        none = new PersistentItem(Material.STONE_SWORD, 1).setDisplayName("None").setDeathAction(null);
+        maintain = PersistentItem.newItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
+        disappear = PersistentItem.newItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
+        none = PersistentItem.newItem(Material.STONE_SWORD, 1).setDisplayName("None").setDeathAction(null);
         listener = new PersistentListener();
     }
 
@@ -149,7 +149,7 @@ class PersistentListenerTest {
         List<PersistentItem> items = new ArrayList<>();
         for (int i = 0; i < itemSize; i++) {
             int finalI = i;
-            items.add(new PersistentItem().setMaterial(Material.values()[13 + i]).onClick((p, s, c) -> clickedItems.add(finalI)));
+            items.add(PersistentItem.newItem().setMaterial(Material.values()[13 + i]).onClick((p, s, c) -> clickedItems.add(finalI)));
         }
         assertTrue(listener.clickPersistentItem(mock(Player.class), ClickType.DOUBLE_CLICK, null,
                 items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
@@ -163,7 +163,7 @@ class PersistentListenerTest {
         List<PersistentItem> items = new ArrayList<>();
         for (int i = 0; i < itemSize; i++) {
             int finalI = i;
-            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> interactItems.add(finalI)));
+            items.add(PersistentItem.newItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> interactItems.add(finalI)));
         }
         assertTrue(listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
                 items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
@@ -261,8 +261,8 @@ class PersistentListenerTest {
 
         private Object[] notMovableItems() {
             return new Object[]{
-                    new PersistentItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
-                    new PersistentItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
+                    PersistentItem.newItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
+                    PersistentItem.newItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
             };
         }
 
@@ -296,7 +296,7 @@ class PersistentListenerTest {
 
         @Test
         void testClickInBottomInventoryWithNoKeyPress() {
-            PersistentItem persistentItem = new PersistentItem(Material.ACACIA_BOAT);
+            PersistentItem persistentItem = PersistentItem.newItem(Material.ACACIA_BOAT);
             InventoryView view = setupInventoryClickEventView();
             int slot = view.getTopInventory().getSize();
             view.getBottomInventory().setItem(0, persistentItem.create());

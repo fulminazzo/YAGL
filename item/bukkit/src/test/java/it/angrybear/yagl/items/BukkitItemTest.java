@@ -130,7 +130,7 @@ class BukkitItemTest {
                 mockItem(Item.newRecipeItem()),
                 mockItem(BukkitItem.newItem()),
                 mockItem(BukkitItem.newRecipeItem()),
-                mockItem(new PersistentItem())
+                mockItem(PersistentItem.newItem())
         };
     }
 
