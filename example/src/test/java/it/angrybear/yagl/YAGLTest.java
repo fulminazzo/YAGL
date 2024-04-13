@@ -1,11 +1,15 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.commands.ShellCommand;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,7 +23,19 @@ class YAGLTest {
         File dataDir = new File("build/resources/test/plugin");
         if (dataDir.exists()) FileUtils.deleteFolder(dataDir);
         when(this.plugin.getDataFolder()).thenReturn(dataDir);
+        new Refl<>(this.plugin).setFieldObject("commands", new LinkedList<>());
+        doCallRealMethod().when(this.plugin).loadCommands();
         doCallRealMethod().when(this.plugin).saveDefaultCommands(any());
+    }
+
+    @Test
+    void testLoadCommands() {
+        this.plugin.loadCommands();
+        List<ShellCommand> commands = new Refl<>(this.plugin).getFieldObject("commands");
+        assertNotNull(commands);
+        assertEquals(1, commands.size(), "Expected one command");
+        ShellCommand command = commands.get(0);
+        assertEquals("mock", command.getName());
     }
 
     @Test

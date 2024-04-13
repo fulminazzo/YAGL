@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull
 
 @CompileDynamic
 class YAGL extends JavaPlugin {
-    final List<ShellCommand> commands = new ArrayList<>()
+    private final List<ShellCommand> commands = new ArrayList<>()
 
     @Override
     void onEnable() {
