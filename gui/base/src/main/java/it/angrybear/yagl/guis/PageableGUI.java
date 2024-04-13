@@ -1,18 +1,18 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.Metadatable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
-public class PageableGUI implements Iterable<GUI> {
+public class PageableGUI implements Iterable<GUI>, Metadatable {
     private final GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
+    private final Map<String, String> variables = new HashMap<>();
 
     private PageableGUI(final int size) {
         this.templateGUI = GUI.newGUI(size);
@@ -64,5 +64,10 @@ public class PageableGUI implements Iterable<GUI> {
      */
     public static PageableGUI newGUI(final @NotNull GUIType type) {
         return new PageableGUI(type);
+    }
+
+    @Override
+    public @NotNull Map<String, String> variables() {
+        return this.variables;
     }
 }
