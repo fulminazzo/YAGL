@@ -32,4 +32,24 @@ public class PageableGUI implements Iterable<GUI> {
     public Iterator<GUI> iterator() {
         return this.pages.iterator();
     }
+
+    /**
+     * Creates a new {@link PageableGUI} with the given size.
+     *
+     * @param size the size
+     * @return the pageable gui
+     */
+    public static PageableGUI newGUI(final int size) {
+        return new PageableGUI(size);
+    }
+
+    /**
+     * Creates a new {@link PageableGUI} with the given type.
+     *
+     * @param type the type
+     * @return the pageable gui
+     */
+    public static PageableGUI newGUI(final @NotNull GUIType type) {
+        return new PageableGUI(type);
+    }
 }
