@@ -242,5 +242,17 @@ class GUIImpl implements GUI {
             }
             return false;
         }
+
+        @Override
+        public int hashCode() {
+            int hash = Contents.class.hashCode();
+
+            for (GUIContent content : this.contents) {
+                hash *= 31;
+                hash += content == null ? 191 : content.hashCode();
+            }
+
+            return hash;
+        }
     }
 }

@@ -80,6 +80,7 @@ class GUIImplTest {
                     ItemGUIContent.newInstance("grass")
             );
             assertEquals(c1, c2);
+            assertEquals(c1.hashCode(), c2.hashCode());
         }
 
         @Test
@@ -94,6 +95,7 @@ class GUIImplTest {
                     ItemGUIContent.newInstance("diamond")
             );
             assertNotEquals(c1, c2);
+            assertNotEquals(c1.hashCode(), c2.hashCode());
         }
 
         @Test
@@ -103,10 +105,11 @@ class GUIImplTest {
                     ItemGUIContent.newInstance("grass")
             );
             GUIImpl.Contents c2 = new GUIImpl.Contents(
-                    ItemGUIContent.newInstance("stone"),
+                    null,
                     ItemGUIContent.newInstance("diamond")
             );
             assertNotEquals(c1, c2);
+            assertNotEquals(c1.hashCode(), c2.hashCode());
         }
 
         @Test
