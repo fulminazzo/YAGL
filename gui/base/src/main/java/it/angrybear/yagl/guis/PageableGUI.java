@@ -28,6 +28,15 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     /**
+     * Gets the number of pages
+     *
+     * @return the pages
+     */
+    public int pages() {
+        return this.pages.size();
+    }
+
+    /**
      * Gets the {@link GUI} page from the given index.
      * The index starts from <b>1</b>.
      *
