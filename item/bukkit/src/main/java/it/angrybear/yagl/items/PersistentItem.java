@@ -278,6 +278,8 @@ public class PersistentItem extends BukkitItemImpl {
 
     /**
      * Instantiates a new Persistent item.
+     *
+     * @return the persistent item
      */
     public static PersistentItem newItem() {
         return new PersistentItem();
@@ -287,6 +289,7 @@ public class PersistentItem extends BukkitItemImpl {
      * Instantiates a new Persistent item.
      *
      * @param material the material
+     * @return the persistent item
      */
     public static PersistentItem newItem(final @NotNull Material material) {
         return new PersistentItem(material);
@@ -296,6 +299,7 @@ public class PersistentItem extends BukkitItemImpl {
      * Instantiates a new Persistent item.
      *
      * @param material the material
+     * @return the persistent item
      */
     public static PersistentItem newItem(final @Nullable String material) {
         return new PersistentItem(material);
@@ -306,6 +310,7 @@ public class PersistentItem extends BukkitItemImpl {
      *
      * @param material the material
      * @param amount   the amount
+     * @return the persistent item
      */
     public static PersistentItem newItem(final @NotNull Material material, final int amount) {
         return new PersistentItem(material, amount);
@@ -316,6 +321,7 @@ public class PersistentItem extends BukkitItemImpl {
      *
      * @param material the material
      * @param amount   the amount
+     * @return the persistent item
      */
     public static PersistentItem newItem(final @Nullable String material, final int amount) {
         return new PersistentItem(material, amount);
