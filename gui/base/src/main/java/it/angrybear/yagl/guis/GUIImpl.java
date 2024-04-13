@@ -4,6 +4,7 @@ import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
@@ -225,6 +226,21 @@ class GUIImpl implements GUI {
          */
         public List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Contents) {
+                Contents c = (Contents) o;
+                if (this.contents.length != c.contents.length) return false;
+                for (int i = 0; i < this.contents.length; i++) {
+                    GUIContent c1 = this.contents[i];
+                    GUIContent c2 = c.contents[i];
+                    if (!Objects.equals(c1, c2)) return false;
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
