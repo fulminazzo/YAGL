@@ -114,7 +114,6 @@ public interface GUI extends Metadatable {
 
     /**
      * Gets a copy of all the contents.
-     * To get the actual content, use the GUI in a for-enhanced loop or use {@link #iterator()}.
      *
      * @return the contents
      */
