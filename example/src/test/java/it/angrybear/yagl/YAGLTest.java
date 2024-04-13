@@ -2,6 +2,7 @@ package it.angrybear.yagl;
 
 import it.angrybear.yagl.commands.ShellCommand;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ class YAGLTest {
 
     @BeforeEach
     void setUp() throws IOException {
+        BukkitUtils.setupServer();
         this.plugin = mock(YAGL.class);
         File dataDir = new File("build/resources/test/plugin");
         if (dataDir.exists()) FileUtils.deleteFolder(dataDir);
