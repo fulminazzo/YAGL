@@ -49,6 +49,11 @@ class PageableGUITest {
         assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(1).getPage(1));
     }
 
+    @Test
+    void testReturnTypes() {
+        TestUtils.testReturnType(PageableGUI.newGUI(9), GUI.class, m -> m.getName().equals("copy"));
+    }
+
     private GUI setupGUI(GUI gui) {
         return gui.setTitle("hello world")
                 .setMovable(3, true)
