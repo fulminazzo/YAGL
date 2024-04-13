@@ -66,10 +66,24 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         return this.pages.iterator();
     }
 
-    //TODO:
+    /**
+     * Opens the current GUI for the given viewer at the first page.
+     *
+     * @param viewer the viewer
+     */
     @Override
     public void open(final @NotNull Viewer viewer) {
+        open(viewer, 1);
+    }
 
+    /**
+     * Opens the current GUI for the given viewer at the specified page.
+     *
+     * @param viewer the viewer
+     * @param page   the page
+     */
+    public void open(final @NotNull Viewer viewer, final int page) {
+        getPage(page).copyFrom(this, false).open(viewer);
     }
 
     @Override
