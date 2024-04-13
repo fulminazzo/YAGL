@@ -4,6 +4,10 @@ import it.angrybear.yagl.commands.ShellCommand;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.plugin.SimplePluginManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,5 +65,12 @@ class YAGLTest {
         String actualContent = FileUtils.readFileToString(expected);
 
         assertEquals(expectedContent, actualContent, "Content did not match expected");
+    }
+
+    private void setupPluginManager() {
+        Server server = Bukkit.getServer();
+        SimpleCommandMap commandMap = new SimpleCommandMap(server);
+        SimplePluginManager pluginManager = new SimplePluginManager(server, commandMap);
+        when(server.getPluginManager()).thenReturn(pluginManager);
     }
 }
