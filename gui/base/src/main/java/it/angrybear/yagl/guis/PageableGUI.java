@@ -4,7 +4,10 @@ import it.angrybear.yagl.Metadatable;
 import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.structures.Tuple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +21,9 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     private final GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
+
+    private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
+    private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
     private PageableGUI(final int size) {
         this.templateGUI = GUI.newGUI(size);
@@ -55,12 +61,84 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * Sets pages.
      *
      * @param pages the pages
+     * @return this gui
      */
-    public void setPages(final int pages) {
+    public PageableGUI setPages(final int pages) {
         if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
         int s;
         while ((s = this.pages.size()) - pages >= 0) this.pages.remove(s - 1);
         while (pages - this.pages.size() > 0) this.pages.add(this.templateGUI.copy());
+        return this;
+    }
+
+    /**
+     * Sets the previous page content.
+     * When clicking on it, the previous page will be opened.
+     *
+     * @param slot         the slot
+     * @param previousPage the previous page
+     * @return the previous page
+     */
+    public PageableGUI setPreviousPage(final int slot, final @NotNull Item previousPage) {
+        return setPreviousPage(slot, (GUIContent) ItemGUIContent.newInstance(previousPage));
+    }
+
+    /**
+     * Sets the previous page content.
+     * When clicking on it, the previous page will be opened.
+     *
+     * @param slot         the slot
+     * @param previousPage the previous page
+     * @return the previous page
+     */
+    public PageableGUI setPreviousPage(final int slot, final @NotNull GUIContent previousPage) {
+        this.previousPage.set(slot, previousPage);
+        return this;
+    }
+
+    /**
+     * Removes the previous page set with {@link #setPreviousPage(int, GUIContent)}.
+     *
+     * @return the pageable gui
+     */
+    public PageableGUI unsetPreviousPage() {
+        this.previousPage.set(null, null);
+        return this;
+    }
+
+    /**
+     * Sets the next page content.
+     * When clicking on it, the next page will be opened.
+     *
+     * @param slot         the slot
+     * @param nextPage the next page
+     * @return the next page
+     */
+    public PageableGUI setNextPage(final int slot, final @NotNull Item nextPage) {
+        return setNextPage(slot, (GUIContent) ItemGUIContent.newInstance(nextPage));
+    }
+
+    /**
+     * Sets the next page content.
+     * When clicking on it, the next page will be opened.
+     *
+     * @param slot         the slot
+     * @param nextPage the next page
+     * @return the next page
+     */
+    public PageableGUI setNextPage(final int slot, final @NotNull GUIContent nextPage) {
+        this.nextPage.set(slot, nextPage);
+        return this;
+    }
+
+    /**
+     * Removes the next page set with {@link #setNextPage(int, GUIContent)}.
+     *
+     * @return the pageable gui
+     */
+    public PageableGUI unsetNextPage() {
+        this.nextPage.set(null, null);
+        return this;
     }
 
     private void forEachInternal(final @NotNull Consumer<? super GUI> function) {
@@ -91,10 +169,10 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param page   the page
      */
     public void open(final @NotNull Viewer viewer, final int page) {
-        getPage(page).copyFrom(this, false)
+        GUI gui = getPage(page).copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page))
-                .setVariable("pages", String.valueOf(pages()))
-                .open(viewer);
+                .setVariable("pages", String.valueOf(pages()));
+        gui.open(viewer);
     }
 
     @Override
