@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * A basic implementation of {@link GUI}.
  */
-class GUIImpl implements GUI {
+class GUIImpl extends FieldEquable implements GUI {
     protected static final int MAX_SIZE = 54;
 
     @Getter
