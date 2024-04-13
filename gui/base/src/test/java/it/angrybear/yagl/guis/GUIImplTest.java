@@ -66,6 +66,19 @@ class GUIImplTest {
         assertThrowsExactly(IllegalStateException.class, () -> new GUIImpl(9).open(mock(Viewer.class)));
     }
 
+    @Test
+    void testCopyAllNoReplace() {
+        GUI expected = GUI.newGUI(9).setTitle("Hello")
+                .setVariable("hello", "world")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .addContent(ItemGUIContent.newInstance("diamond"));
+        GUI actual = GUI.newGUI(9).setTitle("Hi")
+                .copyFrom(expected, false);
+        assertEquals("Hi", actual.getTitle());
+        actual.setTitle(expected.getTitle());
+        assertEquals(expected, actual);
+    }
+
     @Nested
     public class ContentsTest {
 
