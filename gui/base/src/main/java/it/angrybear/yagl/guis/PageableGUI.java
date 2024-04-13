@@ -174,9 +174,9 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
                 .setVariable("previous-page", String.valueOf(page - 1))
                 .setVariable("next-page", String.valueOf(page + 1))
                 .setVariable("pages", String.valueOf(pages()));
-        if (page > 0) this.previousPage.ifPresent((s, p) ->
+        if (page > 1) this.previousPage.ifPresent((s, p) ->
                 gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
-        if (page < pages()) this.nextPage.ifPresent((s, p) ->
+        if (page + 1 <= pages()) this.nextPage.ifPresent((s, p) ->
                 gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
         gui.open(viewer);
     }
