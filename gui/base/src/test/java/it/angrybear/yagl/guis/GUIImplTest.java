@@ -79,6 +79,17 @@ class GUIImplTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void testCopyAllReplace() {
+        GUI expected = GUI.newGUI(9).setTitle("Hello")
+                .setVariable("hello", "world")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .addContent(ItemGUIContent.newInstance("diamond"));
+        GUI actual = GUI.newGUI(9).setTitle("Hi")
+                .copyFrom(expected, true);
+        assertEquals(expected, actual);
+    }
+
     @Nested
     public class ContentsTest {
 
