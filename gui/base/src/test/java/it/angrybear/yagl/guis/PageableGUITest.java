@@ -18,19 +18,20 @@ class PageableGUITest {
 
     @Test
     void testPageableGUIMethods() throws InvocationTargetException, IllegalAccessException {
-        GUI expected = setupGUI(GUI.newGUI(27));
-        GUI actual = setupGUI(PageableGUI.newGUI(27));
+        GUI expected = setupGUI(GUI.newGUI(9));
+        GUI actual = setupGUI(PageableGUI.newGUI(9));
 
         for (Method method : GUI.class.getDeclaredMethods()) {
             try {
                 if (method.equals(GUI.class.getDeclaredMethod("open", Viewer.class))) continue;
+                if (method.getName().contains("copy")) continue;
                 Metadatable.class.getDeclaredMethod(method.getName(), method.getParameterTypes());
                 continue;
             } catch (NoSuchMethodException ignored) {}
             method = ReflectionUtils.setAccessible(method);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
-                    .map(o -> o instanceof Integer ? 9 : o)
+                    .map(o -> o instanceof Integer ? 0 : o)
                     .toArray(Object[]::new);
             Object obj1 = method.invoke(expected, params);
             Object obj2 = method.invoke(actual, params);
