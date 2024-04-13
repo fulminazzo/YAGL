@@ -39,6 +39,15 @@ class YAGLTest {
     }
 
     @Test
+    void testLoadCommandsFromAlreadyPresentDirectory() throws IOException {
+        FileUtils.createFolder(new File(this.plugin.getDataFolder(), "commands"));
+        this.plugin.loadCommands();
+        List<ShellCommand> commands = new Refl<>(this.plugin).getFieldObject("commands");
+        assertNotNull(commands);
+        assertEquals(0, commands.size(), "Expected zero commands");
+    }
+
+    @Test
     void testSaveDefaultCommands() throws IOException {
         final String fileName = "commands/mock.groovy";
         File expected = new File(this.plugin.getDataFolder(), fileName);
