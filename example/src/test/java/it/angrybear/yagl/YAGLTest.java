@@ -6,6 +6,7 @@ import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.SimplePluginManager;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -77,6 +79,26 @@ class YAGLTest {
         assertNull(commandMap.getCommand("mock"), "Not expected 'mock' command but some was found");
         this.plugin.loadCommands();
         assertNotNull(commandMap.getCommand("mock"), "Expected 'mock' command but none was found");
+    }
+
+    @Test
+    void testUnloadAndUnregisterCommands() {
+        setupPluginManager();
+        CommandMap commandMap = new Refl<>(Bukkit.getPluginManager()).getFieldObject("commandMap");
+        assertNotNull(commandMap);
+
+        ShellCommand shellCommand = new ShellCommand(new File(this.plugin.getDataFolder(), "commands/mock.groovy"));
+        Map<String, Command> knownCommands = new Refl<>(commandMap).getFieldObject("knownCommands");
+        assertNotNull(knownCommands);
+        knownCommands.put("mock", shellCommand);
+
+        List<ShellCommand> commands = new Refl<>(this.plugin).getFieldObject("commands");
+        assertNotNull(commands);
+        commands.add(shellCommand);
+
+        assertNotNull(commandMap.getCommand("mock"), "Expected 'mock' command but none was found");
+        this.plugin.unloadCommands();
+        assertNull(commandMap.getCommand("mock"), "Not expected 'mock' command but some was found");
     }
 
     private void setupPluginManager() {
