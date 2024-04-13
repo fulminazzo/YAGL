@@ -90,6 +90,12 @@ class GUIImplTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void testCopyDifferentSizes() {
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                GUI.newGUI(9).copyFrom(GUI.newGUI(27), false));
+    }
+
     @Nested
     public class ContentsTest {
 
