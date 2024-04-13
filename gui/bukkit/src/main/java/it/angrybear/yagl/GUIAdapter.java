@@ -82,7 +82,10 @@ public final class GUIAdapter {
         for (int i = 0; i < gui.size(); i++) {
             GUIContent content = gui.getContent(viewer, i);
             if (content != null) {
-                ItemStack o = content.render().copy(BukkitItem.class).create(itemMetaClass, metaFunction);
+                ItemStack o = content.copy().copyFrom(gui, false)
+                        .render()
+                        .copy(BukkitItem.class)
+                        .create(itemMetaClass, metaFunction);
                 inventory.setItem(i, o);
             }
         }
