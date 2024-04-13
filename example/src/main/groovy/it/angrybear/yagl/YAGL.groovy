@@ -16,6 +16,19 @@ class YAGL extends JavaPlugin {
     }
 
     /**
+     * Loads all the commands from the <i>{@link #getDataFolder()}/commands</i> directory.
+     * If it does not exist, it is created using {@link #saveDefaultCommands(File)}.
+     */
+    void loadCommands() {
+        this.commands.clear()
+        File commandsDir = new File(getDataFolder(), "commands")
+        if (!commandsDir.exists()) saveDefaultCommands(commandsDir)
+        File[] files = commandsDir.listFiles()
+        if (files != null)
+            this.commands.addAll(files.collect { new ShellCommand(it) })
+    }
+
+    /**
      * Saves all the default command scripts to the given directory
      *
      * @param commandsDir   the output directory
