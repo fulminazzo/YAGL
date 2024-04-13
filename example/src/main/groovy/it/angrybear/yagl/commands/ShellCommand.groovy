@@ -8,10 +8,18 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.jetbrains.annotations.NotNull
 
+/**
+ * A general class used to create a command from a Groovy script.
+ */
 @CompileStatic
 class ShellCommand extends Command {
     private final String shellCode
 
+    /**
+     * Instantiates a new shell command
+     *
+     * @param file  the file containing the script
+     */
     ShellCommand(final @NotNull File file) {
         super(file.getName().substring(0, file.getName().lastIndexOf('.')))
         def imports = ClassUtils.findClassesInPackage(YAGL.package.name)
