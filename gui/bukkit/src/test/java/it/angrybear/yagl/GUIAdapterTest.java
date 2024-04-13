@@ -10,10 +10,12 @@ import it.angrybear.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,6 +86,24 @@ class GUIAdapterTest {
                 assertEquals(exp, actual);
             }
         }
+    }
+
+    @Test
+    void testOpenGUIMeta() {
+        GUI gui = GUI.newGUI(GUIType.CHEST)
+                .setTitle(null)
+                .addContent(Item.newItem(Material.PLAYER_HEAD.name()).setDisplayName("test"));
+        GUITestUtils.mockPlugin(p -> GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player), m -> m.setUnbreakable(true)));
+
+        assertNotNull(this.inventory);
+
+        ItemStack expected = new ItemStack(Material.PLAYER_HEAD);
+        ItemMeta meta = expected.getItemMeta();
+        meta.setDisplayName("test");
+        meta.setUnbreakable(true);
+        expected.setItemMeta(meta);
+
+        assertEquals(expected, this.inventory.getItem(0));
     }
 
     @Test
