@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.exceptions.misusing.NotAMockException;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -210,7 +211,13 @@ public final class TestUtils {
         }
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
-        return mock(clazz);
+        Object object = mock(clazz);
+        if (clazz.getPackage().getName().endsWith("guis"))
+            try {
+                Method method = clazz.getDeclaredMethod("size");
+                when(method.invoke(object)).thenReturn(9);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {}
+        return object;
     }
 
     private static String methodToString(final @NotNull Method method) {
