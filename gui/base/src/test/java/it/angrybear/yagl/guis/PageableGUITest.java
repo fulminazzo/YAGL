@@ -12,8 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PageableGUITest {
 
@@ -42,6 +41,11 @@ class PageableGUITest {
             GUI template = new Refl<>(actual).getFieldObject("templateGUI");
             assertEquals(expected, template);
         }
+    }
+
+    @Test
+    void testGetGUIPageException() {
+        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(1).getPage(1));
     }
 
     private GUI setupGUI(GUI gui) {
