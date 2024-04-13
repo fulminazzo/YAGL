@@ -310,6 +310,39 @@ public interface GUI extends Metadatable {
         return (GUI) Metadatable.super.unsetVariable(name);
     }
 
+    /**
+     * Copies all the contents and title from this gui to the given one.
+     *
+     * @param other   the other gui
+     * @param replace if false, if the other already has the content or title, it will not be replaced
+     * @return this gui
+     */
+    default @NotNull GUI copyAll(final @NotNull GUI other, final boolean replace) {
+        if (other.size() != size())
+            throw new IllegalArgumentException(String.format("Cannot copy from GUI with different size %s != %s",
+                    size(), other.size()));
+        if (other.getTitle() == null || replace) other.setTitle(getTitle());
+        copyAll((Metadatable) other, replace);
+        for (int i = 0; i < size(); i++) {
+            final @NotNull List<GUIContent> contents = getContents(i);
+            if (!contents.isEmpty() && other.getContents(i).isEmpty())
+                other.setContents(i, contents.toArray(new GUIContent[0]));
+        }
+        return this;
+    }
+
+    /**
+     * Uses {@link #copyAll(GUI, boolean)} to copy from the given {@link GUI} to this one.
+     *
+     * @param other   the other gui
+     * @param replace if false, if this already has the content or title, it will not be replaced
+     * @return this gui
+     */
+    default @NotNull GUI copyFrom(final @NotNull GUI other, final boolean replace) {
+        other.copyAll(this, replace);
+        return this;
+    }
+
     @Override
     @NotNull
     default GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
