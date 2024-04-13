@@ -14,7 +14,7 @@ dependencies {
 shadowJar {
     exclude 'META-INF/**'
 
-    archiveFileName = "${rootProject.name}-${project.version}.jar"
+    archiveFileName = "${rootProject.name}-plugin-${project.version}.jar"
     mainClassName = "${project.group}.${rootProject.name.toLowerCase()}.${rootProject.name}"
 }
 
