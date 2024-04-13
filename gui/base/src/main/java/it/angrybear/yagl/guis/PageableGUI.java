@@ -60,8 +60,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
         int s;
         while ((s = this.pages.size()) - pages >= 0) this.pages.remove(s - 1);
-        //TODO: copy method
-//        while (pages - this.pages.size() > 0) this.pages.add(this.templateGUI.copy());
+        while (pages - this.pages.size() > 0) this.pages.add(this.templateGUI.copy());
     }
 
     private void forEachInternal(final @NotNull Consumer<? super GUI> function) {
