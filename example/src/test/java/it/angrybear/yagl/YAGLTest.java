@@ -30,6 +30,7 @@ class YAGLTest {
         if (dataDir.exists()) FileUtils.deleteFolder(dataDir);
         when(this.plugin.getDataFolder()).thenReturn(dataDir);
         new Refl<>(this.plugin).setFieldObject("commands", new LinkedList<>());
+        when(this.plugin.getName()).thenReturn("YAGL-Plugin");
         doCallRealMethod().when(this.plugin).loadCommands();
         doCallRealMethod().when(this.plugin).saveDefaultCommands(any());
     }
