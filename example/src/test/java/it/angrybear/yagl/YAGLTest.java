@@ -35,6 +35,7 @@ class YAGLTest {
         new Refl<>(this.plugin).setFieldObject("commands", new LinkedList<>());
         when(this.plugin.getName()).thenReturn("YAGL-Plugin");
         doCallRealMethod().when(this.plugin).loadCommands();
+        doCallRealMethod().when(this.plugin).unloadCommands();
         doCallRealMethod().when(this.plugin).saveDefaultCommands(any());
     }
 
