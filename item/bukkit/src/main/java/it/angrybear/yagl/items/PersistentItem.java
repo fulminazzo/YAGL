@@ -36,48 +36,23 @@ public class PersistentItem extends BukkitItemImpl {
     private @Nullable InteractItemAction interactAction;
     private Mobility mobility;
 
-    /**
-     * Instantiates a new Persistent item.
-     */
-    public PersistentItem() {
+    private PersistentItem() {
         this((String) null);
     }
 
-    /**
-     * Instantiates a new Persistent item.
-     *
-     * @param material the material
-     */
-    public PersistentItem(final @NotNull Material material) {
+    private PersistentItem(final @NotNull Material material) {
         this(material.name(), 1);
     }
 
-    /**
-     * Instantiates a new Persistent item.
-     *
-     * @param material the material
-     */
-    public PersistentItem(final @Nullable String material) {
+    private PersistentItem(final @Nullable String material) {
         this(material, 1);
     }
 
-    /**
-     * Instantiates a new Persistent item.
-     *
-     * @param material the material
-     * @param amount   the amount
-     */
-    public PersistentItem(final @NotNull Material material, final int amount) {
+    private PersistentItem(final @NotNull Material material, final int amount) {
         this(material.name(), amount);
     }
 
-    /**
-     * Instantiates a new Persistent item.
-     *
-     * @param material the material
-     * @param amount   the amount
-     */
-    public PersistentItem(final @Nullable String material, final int amount) {
+    private PersistentItem(final @Nullable String material, final int amount) {
         super(material, amount);
         this.deathAction = DeathAction.MAINTAIN;
         this.mobility = Mobility.STATIC;
@@ -299,6 +274,51 @@ public class PersistentItem extends BukkitItemImpl {
         for (final PersistentItem item : PERSISTENT_ITEMS)
             if (item.isSimilar(itemStack)) return item;
         return null;
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     */
+    public static PersistentItem newItem() {
+        return new PersistentItem();
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     *
+     * @param material the material
+     */
+    public static PersistentItem newItem(final @NotNull Material material) {
+        return new PersistentItem(material);
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     *
+     * @param material the material
+     */
+    public static PersistentItem newItem(final @Nullable String material) {
+        return new PersistentItem(material);
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
+    public static PersistentItem newItem(final @NotNull Material material, final int amount) {
+        return new PersistentItem(material, amount);
+    }
+
+    /**
+     * Instantiates a new Persistent item.
+     *
+     * @param material the material
+     * @param amount   the amount
+     */
+    public static PersistentItem newItem(final @Nullable String material, final int amount) {
+        return new PersistentItem(material, amount);
     }
 
     /**
