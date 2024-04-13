@@ -1,8 +1,6 @@
 package it.angrybear.yagl.commands
 
 import groovy.transform.CompileStatic
-import it.angrybear.yagl.YAGL
-import it.fulminazzo.fulmicollection.utils.ClassUtils
 import it.fulminazzo.yamlparser.utils.FileUtils
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -22,11 +20,8 @@ class ShellCommand extends Command {
      */
     ShellCommand(final @NotNull File file) {
         super(file.getName().substring(0, file.getName().lastIndexOf('.')))
-        def imports = ClassUtils.findClassesInPackage(YAGL.package.name)
-                .collect({ "import ${it.package.name}.*" })
-                .reverse().unique().join("\n")
         def code = FileUtils.readFileToString(file)
-        this.shellCode = "${imports}\n${code}\nrun(sender, label, args)"
+        this.shellCode = "${code}\nrun(sender, label, args)"
     }
 
     @Override
