@@ -10,6 +10,7 @@ dependencies {
 
     compileOnly libs.spigot.latest
     testImplementation libs.spigot.latest
+    testImplementation libs.jbukkit
 }
 
 shadowJar {
