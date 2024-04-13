@@ -9,6 +9,7 @@ import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -63,6 +64,60 @@ class GUIImplTest {
     @Test
     void testOpenWithNoBukkitModule() {
         assertThrowsExactly(IllegalStateException.class, () -> new GUIImpl(9).open(mock(Viewer.class)));
+    }
+
+    @Nested
+    public class ContentsTest {
+
+        @Test
+        void testEquals() {
+            GUIImpl.Contents c1 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass")
+            );
+            GUIImpl.Contents c2 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass")
+            );
+            assertEquals(c1, c2);
+        }
+
+        @Test
+        void testEqualsDifferentLengths() {
+            GUIImpl.Contents c1 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass")
+            );
+            GUIImpl.Contents c2 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass"),
+                    ItemGUIContent.newInstance("diamond")
+            );
+            assertNotEquals(c1, c2);
+        }
+
+        @Test
+        void testEqualsDifferentContents() {
+            GUIImpl.Contents c1 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass")
+            );
+            GUIImpl.Contents c2 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("diamond")
+            );
+            assertNotEquals(c1, c2);
+        }
+
+        @Test
+        void testEqualsDifferentObjects() {
+            GUIImpl.Contents c1 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass")
+            );
+            assertNotEquals(c1, ItemGUIContent.newInstance("grass"));
+        }
+
     }
     
     public static class MockContent implements GUIContent {
