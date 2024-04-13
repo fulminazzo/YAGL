@@ -92,7 +92,10 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param page   the page
      */
     public void open(final @NotNull Viewer viewer, final int page) {
-        getPage(page).copyFrom(this, false).open(viewer);
+        getPage(page).copyFrom(this, false)
+                .setVariable("page", String.valueOf(page))
+                .setVariable("pages", String.valueOf(pages()))
+                .open(viewer);
     }
 
     @Override
