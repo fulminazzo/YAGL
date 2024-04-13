@@ -1,9 +1,9 @@
 package it.angrybear.yagl
 
-
 import groovy.transform.CompileStatic
 import it.angrybear.yagl.commands.ShellCommand
 import it.fulminazzo.fulmicollection.objects.Refl
+import it.fulminazzo.fulmicollection.utils.JarUtils
 import it.fulminazzo.yamlparser.utils.FileUtils
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -65,18 +65,26 @@ class YAGL extends JavaPlugin {
      * @param commandsDir   the output directory
      */
     void saveDefaultCommands(final @NotNull File commandsDir) {
-        final def containingFolder = '/commands'
+        final def resourceDir = '/commands'
         FileUtils.createFolder(commandsDir)
-        getClass().getResourceAsStream(containingFolder).withReader { reader ->
+        getClass().getResourceAsStream(resourceDir).withReader { reader ->
             String fileName
-            while ((fileName = reader.readLine()) != null) {
-                def file = new File(commandsDir, fileName)
-                FileUtils.createNewFile(file)
-                def input = getClass().getResourceAsStream("${containingFolder}/${fileName}")
-                def output = new FileOutputStream(file)
-                output << input
-            }
+            while ((fileName = reader.readLine()) != null) writeResourceToFile(commandsDir, fileName, resourceDir)
         }
+        Iterator<String> jarEntries = JarUtils.getEntries(YAGL, "")
+        while (jarEntries.hasNext()) {
+            def entry = jarEntries.next()
+            if (entry.startsWith(resourceDir.substring(1)) && entry.length() > resourceDir.length())
+                writeResourceToFile(commandsDir, entry.substring(resourceDir.length()), resourceDir)
+        }
+    }
+
+    private void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName, final @NotNull resourceDir) {
+        def file = new File(dir, fileName)
+        FileUtils.createNewFile(file)
+        def input = getClass().getResourceAsStream("${resourceDir}/${fileName}")
+        def output = new FileOutputStream(file)
+        output << input
     }
 
 }
