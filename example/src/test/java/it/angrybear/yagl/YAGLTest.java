@@ -6,6 +6,7 @@ import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.SimplePluginManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,6 +67,16 @@ class YAGLTest {
         String actualContent = FileUtils.readFileToString(expected);
 
         assertEquals(expectedContent, actualContent, "Content did not match expected");
+    }
+
+    @Test
+    void testLoadAndRegisterCommands() {
+        setupPluginManager();
+        CommandMap commandMap = new Refl<>(Bukkit.getPluginManager()).getFieldObject("commandMap");
+        assertNotNull(commandMap);
+        assertNull(commandMap.getCommand("mock"), "Not expected 'mock' command but some was found");
+        this.plugin.loadCommands();
+        assertNotNull(commandMap.getCommand("mock"), "Expected 'mock' command but none was found");
     }
 
     private void setupPluginManager() {
