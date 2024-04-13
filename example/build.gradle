@@ -35,5 +35,7 @@ processResources {
     ]
     inputs.properties props
     filteringCharset 'UTF-8'
-    expand props
+    filesMatching('*.yml') {
+        expand props
+    }
 }
