@@ -27,7 +27,9 @@ public class ObjectUtils {
         } catch (Exception e) {
             // Get the most abstract class
             Class<?> c = clazz;
-            while (c.getInterfaces().length != 0) c = c.getInterfaces()[0];
+            Class<?>[] interfaces;
+            while ((interfaces = c.getInterfaces()).length != 0 && !interfaces[0].equals(Iterable.class))
+                c = interfaces[0];
             clazz = ReflectionUtils.getClass(c.getCanonicalName() + "Impl");
         }
         return copy(t, clazz);
