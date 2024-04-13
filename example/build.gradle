@@ -11,14 +11,26 @@ dependencies {
 }
 
 shadowJar {
-    exclude("META-INF/**")
-    archiveFileName = "${project.name}-${project.version}.jar"
-    mainClassName = "${project.group}.yagl.YAGL"
+    exclude 'META-INF/**'
+
+    archiveFileName = "${rootProject.name}-${project.version}.jar"
+    mainClassName = "${project.group}.${rootProject.name.toLowerCase()}.${rootProject.name}"
 }
 
 jar {
-    enabled = true // Required for sub projects depending on sub projects
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn processResources
+    dependsOn shadowJar
+
     archiveFileName = "${project.name}-${project.version}-original.jar"
-    dependsOn(shadowJar)
+}
+
+processResources {
+    def props = [
+            version: rootProject.version, name: rootProject.name, name_lower: rootProject.name.toLowerCase(),
+            description: rootProject.description, author: 'Fulminazzo',
+            group: rootProject.group, module: rootProject.name
+    ]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    expand props
 }
