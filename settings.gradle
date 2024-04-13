@@ -53,3 +53,5 @@ gradleEnterprise {
         }
     }
 }
+include 'example'
+
