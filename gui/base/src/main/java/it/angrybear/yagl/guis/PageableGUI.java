@@ -22,6 +22,19 @@ public class PageableGUI implements Iterable<GUI> {
         this.templateGUI = GUI.newGUI(type);
     }
 
+    /**
+     * Sets pages.
+     *
+     * @param pages the pages
+     */
+    public void setPages(final int pages) {
+        if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
+        int s;
+        while ((s = this.pages.size()) - pages >= 0) this.pages.remove(s - 1);
+        //TODO: copy method
+//        while (pages - this.pages.size() > 0) this.pages.add(this.templateGUI.copy());
+    }
+
     private void forEachInternal(final @NotNull Consumer<? super GUI> function) {
         function.accept(this.templateGUI);
         this.pages.forEach(function);
