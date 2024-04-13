@@ -16,9 +16,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * A collection of utilities for handling with {@link GUI}s and Bukkit.
@@ -33,6 +36,33 @@ public final class GUIAdapter {
      * @param viewer the viewer
      */
     public static void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer) {
+        openGUI(gui, viewer, null, null);
+    }
+
+
+    /**
+     * Opens the given {@link GUI} for the specified {@link Viewer}.
+     * Uses the given {@link ItemMeta} function to {@link BukkitItem#create(Class, Consumer)} the contents.
+     *
+     * @param gui          the gui
+     * @param viewer       the viewer
+     * @param metaFunction the meta function
+     */
+    public static void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer, final @NotNull Consumer<ItemMeta> metaFunction) {
+        openGUI(gui, viewer, ItemMeta.class, metaFunction);
+    }
+
+    /**
+     * Opens the given {@link GUI} for the specified {@link Viewer}.
+     * Uses the given {@link ItemMeta} class and function to {@link BukkitItem#create(Class, Consumer)} the contents.
+     *
+     * @param <M>           the type parameter
+     * @param gui           the gui
+     * @param viewer        the viewer
+     * @param itemMetaClass the ItemMeta class
+     * @param metaFunction  the meta function
+     */
+    public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer, @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
         final UUID uuid = viewer.getUniqueId();
         final Player player = Bukkit.getPlayer(uuid);
         if (player == null) throw new PlayerOfflineException(viewer.getName());
@@ -52,7 +82,7 @@ public final class GUIAdapter {
         for (int i = 0; i < gui.size(); i++) {
             GUIContent content = gui.getContent(viewer, i);
             if (content != null) {
-                ItemStack o = content.render().copy(BukkitItem.class).create();
+                ItemStack o = content.render().copy(BukkitItem.class).create(itemMetaClass, metaFunction);
                 inventory.setItem(i, o);
             }
         }
