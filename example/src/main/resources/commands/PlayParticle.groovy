@@ -3,6 +3,7 @@ import it.angrybear.yagl.ItemAdapter
 import it.angrybear.yagl.WrappersAdapter
 import it.angrybear.yagl.particles.*
 import it.fulminazzo.fulmicollection.objects.Refl
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 
@@ -12,10 +13,15 @@ def getOption(sender, particleType, optionType, args) {
     if (optionType == DustTransitionParticleOption)
         new DustTransitionParticleOption(Color.fromARGB(args[0]), Color.fromARGB(args[1]), Float.valueOf(args[2]))
     else if (optionType == ItemParticleOption)
-        ItemAdapter.itemStackToItem(sender.getInventory().getItem(EquipmentSlot.HAND))
+        ItemAdapter.itemStackToItem(sender.inventory.getItem(EquipmentSlot.HAND))
     else if (optionType == BlockDataOption)
         new BlockDataOption(args[0])
-    else if (particleType == ParticleType.SCULK_CHARGE)
+    else if (particleType == ParticleType.VIBRATION) {
+        Location start = sender.location
+        Location end = start.clone().add(0, 10, 0)
+        def dest = new org.bukkit.Vibration.Destination.BlockDestination(end)
+        new PrimitiveParticleOption<>(new org.bukkit.Vibration(start, dest, Integer.valueOf(args[0])))
+    } else if (particleType == ParticleType.SCULK_CHARGE)
         new PrimitiveParticleOption<>(Float.valueOf(args[0]))
     else if (particleType == ParticleType.SHRIEK)
         new PrimitiveParticleOption<>(Integer.valueOf(args[0]))
