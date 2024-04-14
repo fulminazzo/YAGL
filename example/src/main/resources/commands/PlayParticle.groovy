@@ -1,3 +1,9 @@
+/**
+ * Spawns the specified particle at the player's eyes location.
+ * If additional arguments are specified, and the particle supports it,
+ * they are converted to the corresponding ParticleOption.
+ * See {@link #getOption(Object, Object, Object, Object)} to find out how.
+ */
 import it.angrybear.yagl.Color
 import it.angrybear.yagl.ItemAdapter
 import it.angrybear.yagl.WrappersAdapter
