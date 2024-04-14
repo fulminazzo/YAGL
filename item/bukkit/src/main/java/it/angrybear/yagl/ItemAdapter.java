@@ -56,8 +56,7 @@ public final class ItemAdapter {
             invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), () ->
                     item.setUnbreakable(meta.spigot().isUnbreakable()));
             invokeNoSuchMethod(() -> {
-                int modelData = meta.getCustomModelData();
-                if (modelData > 0) item.setCustomModelData(modelData);
+                if (meta.hasCustomModelData()) item.setCustomModelData(meta.getCustomModelData());
             }, null);
         }
         return item;
