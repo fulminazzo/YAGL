@@ -6,11 +6,15 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.jetbrains.annotations.NotNull
 
+import java.util.regex.Pattern
+
 /**
  * A general class used to create a command from a Groovy script.
  */
 @CompileStatic
 class ShellCommand extends Command {
+    private static final String NUMBER_FORMAT_REGEX = '(catch *\\(NumberFormatException +ignored\\) *\\{\\n)[ \\t]*(\\n *})'
+    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(e.getMessage().replace(\'For input string: \', \'Invalid number \'))'
     private final String shellCode
 
     /**
@@ -21,6 +25,11 @@ class ShellCommand extends Command {
     ShellCommand(final @NotNull File file) {
         super(file.getName().substring(0, file.getName().lastIndexOf('.')))
         def code = FileUtils.readFileToString(file)
+        def matcher = Pattern.compile(NUMBER_FORMAT_REGEX).matcher(code)
+        while (matcher.find()) {
+            def replacement = "${matcher.group(1)}    ${INVALID_NUMBER_CODE}${matcher.group(2)}"
+            code = code.replace(matcher.group(), replacement)
+        }
         this.shellCode = "${code}\nrun(sender, label, args)"
     }
 
