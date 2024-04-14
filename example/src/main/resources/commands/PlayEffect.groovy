@@ -1,11 +1,6 @@
 import it.angrybear.yagl.Color
 import it.angrybear.yagl.WrappersAdapter
-import it.angrybear.yagl.particles.ColorParticleOption
-import it.angrybear.yagl.particles.LegacyParticleType
-import it.angrybear.yagl.particles.MaterialDataOption
-import it.angrybear.yagl.particles.Particle
-import it.angrybear.yagl.particles.PotionParticleOption
-import it.angrybear.yagl.particles.PrimitiveParticleOption
+import it.angrybear.yagl.particles.*
 import it.angrybear.yagl.wrappers.Potion
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.entity.Player
@@ -43,7 +38,7 @@ def run = { sender, label, args ->
                 def option = getOption(sender, type, optionType, Arrays.copyOfRange(args, 1, args.length))
                 particle = type.create(option)
             } else particle = type.create()
-            WrappersAdapter.spawnParticle(sender, particle, sender.getEyeLocation(), 1)
+            WrappersAdapter.spawnEffect(sender, particle, sender.getEyeLocation())
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /playeffect <particle> <data...>')
         } catch (NumberFormatException ignored) {
