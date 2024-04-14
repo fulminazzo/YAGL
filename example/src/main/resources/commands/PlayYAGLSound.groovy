@@ -9,6 +9,8 @@ def run = { sender, label, args ->
             WrappersAdapter.playSound(sender, sound)
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /playsound <sound> <volume> <pitch> <category>')
+        } catch (NumberFormatException ignored) {
+
         } catch (Exception e) {
             sender.sendMessage(e.getMessage())
         }
