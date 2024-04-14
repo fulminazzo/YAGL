@@ -148,7 +148,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     private void forEachInternal(final @NotNull Consumer<? super GUI> function) {
         function.accept(this.templateGUI);
-        this.pages.forEach(function);
     }
 
     @NotNull
@@ -188,7 +187,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI setTitle(final @Nullable String title) {
-        forEachInternal(g -> g.setTitle(title));
+        this.templateGUI.setTitle(title);
         return this;
     }
 
@@ -209,7 +208,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI setMovable(int slot, boolean movable) {
-        forEachInternal(g -> g.setMovable(slot, movable));
+        this.templateGUI.setMovable(slot, movable);
         return this;
     }
 
@@ -225,25 +224,25 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI addContent(GUIContent @NotNull ... contents) {
-        forEachInternal(g -> g.addContent(contents));
+        this.templateGUI.addContent(contents);
         return this;
     }
 
     @Override
     public @NotNull PageableGUI setContents(int slot, GUIContent @NotNull ... contents) {
-        forEachInternal(g -> g.setContents(slot, contents));
+        this.templateGUI.setContents(slot, contents);
         return this;
     }
 
     @Override
     public @NotNull PageableGUI unsetContent(int slot) {
-        forEachInternal(g -> g.unsetContent(slot));
+        this.templateGUI.unsetContent(slot);
         return this;
     }
 
     @Override
     public @NotNull PageableGUI onClickOutside(final @NotNull GUIAction action) {
-        forEachInternal(g -> g.onClickOutside(action));
+        this.templateGUI.onClickOutside(action);
         return this;
     }
 
@@ -254,7 +253,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI onOpenGUI(final @NotNull GUIAction action) {
-        forEachInternal(g -> g.onOpenGUI(action));
+        this.templateGUI.onOpenGUI(action);
         return this;
     }
 
@@ -265,7 +264,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI onCloseGUI(final @NotNull GUIAction action) {
-        forEachInternal(g -> g.onCloseGUI(action));
+        this.templateGUI.onCloseGUI(action);
         return this;
     }
 
@@ -276,7 +275,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI onChangeGUI(final @NotNull BiGUIAction action) {
-        forEachInternal(g -> g.onChangeGUI(action));
+        this.templateGUI.onChangeGUI(action);
         return this;
     }
 
