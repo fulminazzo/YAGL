@@ -9,6 +9,7 @@ import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.contents.requirements.PermissionRequirement;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
+import it.angrybear.yagl.guis.PageableGUI;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -29,6 +30,24 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GUIParserTest extends ParserTestHelper<GUI> {
+
+    @Test
+    void testSaveAndLoadPageableGUI() throws IOException {
+        GUIYAGLParser.addAllParsers();
+        GUI expected = PageableGUI.newGUI(9).setPages(3);
+
+        File file = new File("build/resources/test/pageable-gui.yml");
+        if (!file.exists()) FileUtils.createNewFile(file);
+        FileConfiguration configuration = new FileConfiguration(file);
+        final String path = expected.getClass().getSimpleName().toLowerCase();
+        configuration.set(path, expected);
+        configuration.save();
+
+        configuration = new FileConfiguration(file);
+        GUI actual = configuration.get(path, GUI.class);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
 
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
