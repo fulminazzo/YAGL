@@ -21,6 +21,11 @@ class YAGL extends JavaPlugin {
         getLogger().info("Loaded ${commands.size()} commands")
     }
 
+    @Override
+    void onDisable() {
+        unloadCommands()
+    }
+
     /**
      * Loads all the commands from the <i>{@link #getDataFolder()}/commands</i> directory.
      * If it does not exist, it is created using {@link #saveDefaultCommands(File)}.
