@@ -9,7 +9,7 @@ group = 'it.angrybear'
 version = '4.0'
 
 final def TEST_MODULE = "testing"
-final def EXAMPLE_MODULE = "example"
+final def DEMO_MODULE = "demo"
 final def VERSION_VARIABLE = "MINECRAFT_VERSION"
 
 allprojects {
@@ -183,7 +183,7 @@ allprojects {
 }
 
 dependencies {
-    subprojects.findAll { it.name != TEST_MODULE && it.name != EXAMPLE_MODULE } .each { api project(it.path) }
+    subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE } .each { api project(it.path) }
 }
 
 testCodeCoverageReport {
