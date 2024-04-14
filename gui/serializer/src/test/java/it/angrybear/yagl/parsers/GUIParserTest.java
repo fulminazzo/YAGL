@@ -9,7 +9,6 @@ import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.contents.requirements.PermissionRequirement;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
-import it.angrybear.yagl.guis.PageableGUI;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -107,7 +106,7 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         }
     }
 
-    private static void setupContents(GUI expected) {
+    public static void setupContents(GUI expected) {
         expected.setContents(0, Item.newItem()
                         .setMaterial("stone_sword").setAmount(1)
                         .setDurability(1337).setDisplayName("First")
