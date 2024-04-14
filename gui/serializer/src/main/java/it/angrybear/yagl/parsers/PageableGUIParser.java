@@ -12,6 +12,8 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 
+import java.util.Map;
+
 @SuppressWarnings("DataFlowIssue")
 public class PageableGUIParser extends YAMLParser<PageableGUI> {
 
@@ -37,6 +39,9 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             if (nextPage != null)
                 gui.setNextPage(nextPage.getInteger("slot"),
                         nextPage.get("content", GUIContent.class));
+
+            Map<String, String> variables = section.get("variables", Map.class);
+            if (variables != null) gui.variables().putAll(variables);
 
             return gui;
         };
@@ -66,6 +71,8 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
                 nextSection.set("slot", i);
                 nextSection.set("content", g);
             });
+
+            section.set("variables", p.variables());
         };
     }
 }

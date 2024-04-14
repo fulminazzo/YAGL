@@ -27,7 +27,9 @@ class PageableGUIParserTest {
                 .setNextPage(1, Item.newItem("paper")
                         .setDisplayName("&eNext Page")
                         .addEnchantment("unbreaking", 3)
-                        .addItemFlags(ItemFlag.HIDE_UNBREAKABLE));
+                        .addItemFlags(ItemFlag.HIDE_UNBREAKABLE))
+                .setVariable("var1", "hello")
+                .setVariable("var2", "world");
 
         File file = new File("build/resources/test/pageable-gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
