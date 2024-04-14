@@ -36,7 +36,7 @@ class YAGL extends JavaPlugin {
         if (!commandsDir.exists()) saveDefaultCommands(commandsDir)
         File[] files = commandsDir.listFiles()
         if (files != null)
-            this.commands.addAll(files.collect { new ShellCommand(it) })
+            this.commands.addAll(files.findAll({ it.name.endsWith(".groovy") }).collect { new ShellCommand(it) })
 
         commandMap().ifPresent { map -> this.commands.each { map.register(getName(), it) } }
     }
