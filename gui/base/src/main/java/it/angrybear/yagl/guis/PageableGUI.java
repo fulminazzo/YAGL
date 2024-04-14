@@ -25,6 +25,10 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
     private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
+    private PageableGUI() {
+        this(0);
+    }
+
     private PageableGUI(final int size) {
         this.templateGUI = GUI.newGUI(size);
     }
