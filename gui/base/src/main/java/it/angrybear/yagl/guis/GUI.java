@@ -13,10 +13,7 @@ import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The general interface to represent a GUI.
@@ -51,6 +48,15 @@ public interface GUI extends Metadatable {
      * @return the size
      */
     int size();
+
+    /**
+     * Checks if all the returned {@link #getContents()} are null.
+     *
+     * @return true if they are, or if it is empty
+     */
+    default boolean isEmpty() {
+        return getContents().stream().allMatch(Objects::isNull);
+    }
 
     /**
      * Checks if the content at the given slot is movable.
