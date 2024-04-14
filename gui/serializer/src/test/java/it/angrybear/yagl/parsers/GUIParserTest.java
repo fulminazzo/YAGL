@@ -74,23 +74,7 @@ class GUIParserTest extends ParserTestHelper<GUI> {
     void testSaveAndLoadGUI(GUI expected) throws IOException {
         GUIYAGLParser.addAllParsers();
 
-        expected.setContents(0, Item.newItem()
-                        .setMaterial("stone_sword").setAmount(1)
-                        .setDurability(1337).setDisplayName("First")
-                        .setCustomModelData(1))
-                .setContents(1, Item.newItem()
-                        .setMaterial("stone_sword").setAmount(1)
-                        .setDurability(1337).setDisplayName("Second")
-                        .setCustomModelData(1))
-                .setContents(4, Item.newItem()
-                                .setMaterial("stone_sword").setAmount(1)
-                                .setDurability(1337).setDisplayName("Third-1")
-                                .setCustomModelData(1),
-                        Item.newItem()
-                                .setMaterial("stone_sword").setAmount(1)
-                                .setDurability(1337).setDisplayName("Third-2")
-                                .setCustomModelData(1))
-                .setMovable(3, true).setMovable(7, true);
+        setupContents(expected);
 
         File file = new File("build/resources/test/gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
@@ -120,6 +104,26 @@ class GUIParserTest extends ParserTestHelper<GUI> {
             if (exp == null) assertNull(act);
             else assertEquals(exp.render(), act.render());
         }
+    }
+
+    private static void setupContents(GUI expected) {
+        expected.setContents(0, Item.newItem()
+                        .setMaterial("stone_sword").setAmount(1)
+                        .setDurability(1337).setDisplayName("First")
+                        .setCustomModelData(1))
+                .setContents(1, Item.newItem()
+                        .setMaterial("stone_sword").setAmount(1)
+                        .setDurability(1337).setDisplayName("Second")
+                        .setCustomModelData(1))
+                .setContents(4, Item.newItem()
+                                .setMaterial("stone_sword").setAmount(1)
+                                .setDurability(1337).setDisplayName("Third-1")
+                                .setCustomModelData(1),
+                        Item.newItem()
+                                .setMaterial("stone_sword").setAmount(1)
+                                .setDurability(1337).setDisplayName("Third-2")
+                                .setCustomModelData(1))
+                .setMovable(3, true).setMovable(7, true);
     }
 
     @Test
