@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
@@ -27,9 +28,12 @@ public class GUIParser extends TypedParser<GUI> {
     @Override
     protected BiFunctionException<IConfiguration, String, GUI> getLoader() {
         return (c, s) -> {
-            GUI g = super.getLoader().apply(c, s);
-            YAMLParser<? extends GUI> parser = FileConfiguration.getParser(g.getClass());
+            ConfigurationSection section = c.getConfigurationSection(s);
+            if (section == null) return null;
+            GUI tmp = new Refl<>(this).getFieldRefl("function").invokeMethod("apply", section);
+            YAMLParser<? extends GUI> parser = FileConfiguration.getParser(tmp.getClass());
             if (!parser.equals(this)) return parser.load(c, s);
+            GUI g = super.getLoader().apply(c, s);
             Integer size = c.getInteger(s + ".size");
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Refl<GUI> gui = new Refl<>(g);
