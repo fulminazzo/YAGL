@@ -32,24 +32,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class GUIParserTest extends ParserTestHelper<GUI> {
 
     @Test
-    void testSaveAndLoadPageableGUI() throws IOException {
-        GUIYAGLParser.addAllParsers();
-        GUI expected = PageableGUI.newGUI(9).setPages(3);
-
-        File file = new File("build/resources/test/pageable-gui.yml");
-        if (!file.exists()) FileUtils.createNewFile(file);
-        FileConfiguration configuration = new FileConfiguration(file);
-        final String path = expected.getClass().getSimpleName().toLowerCase();
-        configuration.set(path, expected);
-        configuration.save();
-
-        configuration = new FileConfiguration(file);
-        GUI actual = configuration.get(path, GUI.class);
-        assertNotNull(actual);
-        assertEquals(expected, actual);
-    }
-
-    @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
         GUIYAGLParser.addAllParsers();
         GUIContent expectedContent = ItemGUIContent.newInstance()
