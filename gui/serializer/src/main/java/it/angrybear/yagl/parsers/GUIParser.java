@@ -5,7 +5,9 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
+import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public class GUIParser extends TypedParser<GUI> {
     protected BiFunctionException<IConfiguration, String, GUI> getLoader() {
         return (c, s) -> {
             GUI g = super.getLoader().apply(c, s);
+            YAMLParser<? extends GUI> parser = FileConfiguration.getParser(g.getClass());
+            if (!parser.equals(this)) return parser.load(c, s);
             Integer size = c.getInteger(s + ".size");
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Refl<GUI> gui = new Refl<>(g);
@@ -38,14 +42,20 @@ public class GUIParser extends TypedParser<GUI> {
         };
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected TriConsumer<IConfiguration, String, GUI> getDumper() {
         return (c, s, g) -> {
-            super.getDumper().accept(c, s, g);
+            c.set(s, null);
             if (g == null) return;
-            final String valueClass = s + ".contents.value-class";
-            if (c.contains(valueClass)) c.set(valueClass, null);
-            c.set(s + ".size", g.size());
+            YAMLParser<GUI> parser = (YAMLParser<GUI>) FileConfiguration.getParser(g.getClass());
+            if (!parser.equals(this)) parser.dump(c, s, g);
+            else {
+                super.getDumper().accept(c, s, g);
+                final String valueClass = s + ".contents.value-class";
+                if (c.contains(valueClass)) c.set(valueClass, null);
+                c.set(s + ".size", g.size());
+            }
         };
     }
 
