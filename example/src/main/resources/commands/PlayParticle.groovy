@@ -19,7 +19,7 @@ def getOption(sender, particleType, optionType, args) {
         new PrimitiveParticleOption<>(Float.valueOf(args[0]))
     else if (particleType == ParticleType.SHRIEK)
         new PrimitiveParticleOption<>(Integer.valueOf(args[0]))
-    throw new IllegalArgumentException("Cannot get particle option of ${optionType}")
+    else throw new IllegalArgumentException("Cannot get particle option of ${optionType}")
 }
 
 def run = { sender, label, args ->
