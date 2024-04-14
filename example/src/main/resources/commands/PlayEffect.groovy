@@ -43,7 +43,7 @@ def run = { sender, label, args ->
                 def option = getOption(sender, type, optionType, Arrays.copyOfRange(args, 1, args.length))
                 particle = type.create(option)
             } else particle = type.create()
-            WrappersAdapter.spawnParticle(sender, particle, sender.getEyeLocation(), 1)
+            WrappersAdapter.spawnEffect(sender, particle, sender.getEyeLocation())
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /playeffect <particle> <data...>')
         } catch (NumberFormatException ignored) {
