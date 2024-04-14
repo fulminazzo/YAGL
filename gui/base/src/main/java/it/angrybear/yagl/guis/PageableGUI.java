@@ -7,6 +7,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,7 @@ import java.util.function.Consumer;
 /**
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
-public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
+public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadatable, GUI {
     private final GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
