@@ -19,7 +19,8 @@ class PageableGUIParserTest {
     @Test
     void testSaveAndLoadPageableGUI() throws IOException {
         GUIYAGLParser.addAllParsers();
-        GUI expected = PageableGUI.newGUI(9)
+        PageableGUI expected = PageableGUI.newGUI(9)
+                .setPages(3)
                 .setPreviousPage(1, Item.newItem("paper")
                         .setDisplayName("&ePrevious Page")
                         .addEnchantment("unbreaking", 3)
@@ -30,6 +31,9 @@ class PageableGUIParserTest {
                         .addItemFlags(ItemFlag.HIDE_UNBREAKABLE))
                 .setVariable("var1", "hello")
                 .setVariable("var2", "world");
+        expected.getPage(1).setContents(2, Item.newItem("stone"));
+        expected.getPage(2).setContents(2, Item.newItem("grass"));
+        expected.getPage(3).setContents(2, Item.newItem("diamond"));
         GUIParserTest.setupContents(expected);
 
         File file = new File("build/resources/test/pageable-gui.yml");

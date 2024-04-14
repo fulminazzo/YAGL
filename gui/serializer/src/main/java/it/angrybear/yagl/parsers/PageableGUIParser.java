@@ -12,6 +12,7 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("DataFlowIssue")
@@ -36,7 +37,8 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             GUI templateGUI = c.get(s, GUI.class);
             if (templateGUI == null)
                 throw new IllegalArgumentException("Cannot properly load template GUI");
-            new Refl<>(gui).setFieldObject("templateGUI", templateGUI);
+            Refl<PageableGUI> refl = new Refl<>(gui);
+            refl.setFieldObject("templateGUI", templateGUI);
             templateGUI.variables().clear();
 
             ConfigurationSection previousPage = section.getConfigurationSection("previous-page");
@@ -52,6 +54,13 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             Map<String, String> variables = section.get("variables", Map.class);
             if (variables != null) gui.variables().putAll(variables);
 
+            List<GUI> guiPages = section.getList("gui-pages", GUI.class);
+            if (guiPages != null && !guiPages.isEmpty()) {
+                if (guiPages.size() != pages)
+                    throw new IllegalArgumentException(String.format("Cannot set 'gui-pages' of invalid pages size (%s != %s)", guiPages.size(), pages));
+                refl.setFieldObject("pages", guiPages);
+            }
+
             return gui;
         };
     }
@@ -61,14 +70,14 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;
-            c.set(s, new Refl<>(p).getFieldObject("templateGUI"));
+            Refl<PageableGUI> refl = new Refl<>(p);
+
+            c.set(s, refl.getFieldObject("templateGUI"));
             ConfigurationSection section = c.getConfigurationSection(s);
             section.set("gui-type", section.getString("type"));
             section.set("type", ParserUtils.classToType(GUI.class, getOClass()));
             section.set("size", p.size());
             section.set("pages", p.pages());
-
-            Refl<PageableGUI> refl = new Refl<>(p);
 
             Tuple<Integer, GUIContent> previousPage = refl.getFieldObject("previousPage");
             previousPage.ifPresent((i, g) -> {
@@ -85,6 +94,9 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             });
 
             section.set("variables", p.variables());
+            section.set("gui-pages", refl.getFieldObject("pages"));
+            final String valueClass = "gui-pages.value-class";
+            if (section.contains(valueClass)) section.set(valueClass, null);
         };
     }
 }
