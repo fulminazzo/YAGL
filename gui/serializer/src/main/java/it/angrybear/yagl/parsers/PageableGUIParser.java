@@ -28,7 +28,9 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             if (section == null) return null;
             Integer size = section.getInteger("size");
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
-            PageableGUI gui = PageableGUI.newGUI(size);
+            Integer pages = section.getInteger("pages");
+            if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
+            PageableGUI gui = PageableGUI.newGUI(size).setPages(pages);
 
             section.set("type", section.getString("gui-type"));
             GUI templateGUI = c.get(s, GUI.class);
@@ -64,6 +66,7 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             section.set("gui-type", section.getString("type"));
             section.set("type", ParserUtils.classToType(GUI.class, getOClass()));
             section.set("size", p.size());
+            section.set("pages", p.pages());
 
             Refl<PageableGUI> refl = new Refl<>(p);
 
