@@ -53,7 +53,7 @@ public class GUIParser extends TypedParser<GUI> {
             c.set(s, null);
             if (g == null) return;
             YAMLParser<GUI> parser = (YAMLParser<GUI>) FileConfiguration.getParser(g.getClass());
-            if (!parser.equals(this)) parser.dump(c, s, g);
+            if (!this.equals(parser)) parser.dump(c, s, g);
             else {
                 super.getDumper().accept(c, s, g);
                 final String valueClass = s + ".contents.value-class";
