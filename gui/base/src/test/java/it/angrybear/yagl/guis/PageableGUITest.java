@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -89,6 +90,18 @@ class PageableGUITest {
     @Test
     void testHigherSlot() {
         assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(9).setPreviousPage(10, Item.newItem()));
+    }
+
+    @Test
+    void testIteratorShouldReturnPages() {
+        PageableGUI gui = PageableGUI.newGUI(9).setPages(4);
+        List<GUI> pages = Arrays.asList(
+                gui.getPage(1).setContents(0, Item.newItem("stone")),
+                gui.getPage(2).setContents(0, Item.newItem("diamond")),
+                gui.getPage(3).setContents(0, Item.newItem("emerald")),
+                gui.getPage(4)
+        );
+        assertIterableEquals(pages, gui);
     }
 
     private GUI setupGUI(GUI gui) {
