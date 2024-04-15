@@ -45,6 +45,11 @@ class PageableGUITest {
     }
 
     @Test
+    void testSetInvalidPages() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(GUIType.CHEST).setPages(-1));
+    }
+
+    @Test
     void testGetGUIPageException() {
         assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(1).getPage(1));
     }
