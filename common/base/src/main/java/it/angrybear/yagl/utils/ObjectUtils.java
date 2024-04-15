@@ -18,7 +18,7 @@ public class ObjectUtils {
      *
      * @param <T> the type of the object to copy from
      * @param t   the object to copy from
-     * @return the object
+     * @return the copy
      */
     @SuppressWarnings("unchecked")
     public static <T> T copy(final @NotNull T t) {
@@ -49,7 +49,7 @@ public class ObjectUtils {
      * @param <O>   the type of the returned object
      * @param t     the object to copy from
      * @param clazz the class to copy to
-     * @return the object
+     * @return the copy
      */
     @SuppressWarnings("unchecked")
     public static <T, O extends T> O copy(final @NotNull T t, @NotNull Class<O> clazz) {
