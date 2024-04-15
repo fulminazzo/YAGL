@@ -18,10 +18,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * A parser to serialize {@link PageableGUI}.
+ */
 @SuppressWarnings("DataFlowIssue")
 public class PageableGUIParser extends YAMLParser<PageableGUI> {
     private static final String[] IGNORE_FIELDS = new String[]{"type", "size"};
 
+    /**
+     * Instantiates a new Pageable gui parser.
+     */
     public PageableGUIParser() {
         super(PageableGUI.class);
     }

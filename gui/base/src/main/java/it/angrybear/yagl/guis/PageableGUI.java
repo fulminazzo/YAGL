@@ -114,7 +114,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * Sets the next page content.
      * When clicking on it, the next page will be opened.
      *
-     * @param slot         the slot
+     * @param slot     the slot
      * @param nextPage the next page
      * @return the next page
      */
@@ -126,7 +126,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * Sets the next page content.
      * When clicking on it, the next page will be opened.
      *
-     * @param slot         the slot
+     * @param slot     the slot
      * @param nextPage the next page
      * @return the next page
      */
