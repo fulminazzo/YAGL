@@ -2,6 +2,8 @@ package it.angrybear.yagl.utils;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.*;
@@ -11,7 +13,9 @@ import java.util.stream.Collectors;
 /**
  * The type Object utils.
  */
-public class ObjectUtils {
+@SuppressWarnings("unchecked")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ObjectUtils {
 
     /**
      * Copies the given object to a new one.
@@ -20,7 +24,6 @@ public class ObjectUtils {
      * @param t   the object to copy from
      * @return the copy
      */
-    @SuppressWarnings("unchecked")
     public static <T> T copy(final @NotNull T t) {
         Class<? extends T> clazz = (Class<? extends T>) t.getClass();
         try {
@@ -51,7 +54,6 @@ public class ObjectUtils {
      * @param clazz the class to copy to
      * @return the copy
      */
-    @SuppressWarnings("unchecked")
     public static <T, O extends T> O copy(final @NotNull T t, @NotNull Class<O> clazz) {
         if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
             try {
