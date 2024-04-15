@@ -115,14 +115,14 @@ public interface GUI extends Metadatable {
      * Gets a copy of the contents at the given slot.
      *
      * @param slot the slot
-     * @return the contents
+     * @return this gui
      */
     @NotNull List<GUIContent> getContents(int slot);
 
     /**
      * Gets a copy of all the contents.
      *
-     * @return the contents
+     * @return this gui
      */
     @NotNull List<GUIContent> getContents();
 
@@ -163,7 +163,7 @@ public interface GUI extends Metadatable {
      *
      * @param slot     the slot
      * @param contents the contents
-     * @return the contents
+     * @return this gui
      */
     default @NotNull GUI setContents(int slot, final Item @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).map(ItemGUIContent::newInstance).toArray(GUIContent[]::new));
@@ -175,10 +175,22 @@ public interface GUI extends Metadatable {
      *
      * @param slot     the slot
      * @param contents the contents
-     * @return the contents
+     * @return this gui
      */
     default @NotNull GUI setContents(int slot, final ItemGUIContent @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
+    }
+    
+    /**
+     * Sets the given contents at the specified index.
+     * These will be then filtered using {@link #getContent(Viewer, int)}
+     *
+     * @param slot     the slot
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setContents(int slot, final @NotNull Collection<GUIContent> contents) {
+        return setContents(slot, contents.toArray(new GUIContent[0]));
     }
 
     /**

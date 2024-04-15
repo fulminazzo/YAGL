@@ -243,6 +243,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI setContents(int slot, @NotNull Collection<GUIContent> contents) {
+        return (PageableGUI) GUI.super.setContents(slot, contents);
+    }
+
+    @Override
     public @NotNull PageableGUI unsetContent(int slot) {
         this.templateGUI.unsetContent(slot);
         return this;
