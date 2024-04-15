@@ -1,4 +1,4 @@
-import org.gradle.internal.impldep.org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,8 +29,7 @@ class JavaDocUtilsTest {
 
     @Test
     void testInvalidResource() {
-        assertThrowsExactly(IllegalArgumentException.class, () ->
-                JavaDocUtils.getResource("invalid"));
+        assertThrowsExactly(IllegalArgumentException.class, () -> JavaDocUtils.getResource("invalid"));
     }
 
 }
