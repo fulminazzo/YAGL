@@ -14,12 +14,10 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
@@ -113,6 +111,26 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
                 getLoader().apply(configuration, "gui"));
         checkMessage(throwable, "template");
+    }
+
+    @Test
+    void testNullVariablesMap() throws Exception {
+        IConfiguration configuration = getConfiguration(c -> {
+            c.set("size", 3);
+            c.set("pages", 3);
+            c.set("gui-type", "DEFAULT");
+            c.set("variables", new HashMap<Object, Object>(){{
+                put(null, "do-not-pick");
+                put("do-not-pick", null);
+                put(1, "hello");
+                put(true, "world");
+            }});
+        });
+        GUI gui = getLoader().apply(configuration, "gui");
+        assertEquals(new HashMap<String, String>(){{
+            put("1", "hello");
+            put("true", "world");
+        }}, gui.variables());
     }
 
     private void checkMessage(Throwable throwable, String tmp) {
