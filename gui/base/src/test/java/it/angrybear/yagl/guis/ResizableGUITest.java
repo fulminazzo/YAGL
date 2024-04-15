@@ -10,8 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ResizableGUITest {
     private GUI gui;
@@ -19,6 +18,13 @@ class ResizableGUITest {
     @BeforeEach
     void setUp() {
         this.gui = new ResizableGUI(9);
+    }
+
+    @Test
+    void testCopyReturnType() {
+        GUI copy = this.gui.copy();
+        assertInstanceOf(ResizableGUI.class, copy);
+        assertEquals(this.gui, copy);
     }
 
     @Test
