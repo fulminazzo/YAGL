@@ -2,21 +2,73 @@ package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.Metadatable;
 import it.angrybear.yagl.TestUtils;
+import it.angrybear.yagl.actions.GUIItemAction;
+import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
+import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 
 class PageableGUITest {
+
+    @Test
+    void testOpenPage() {
+        PageableGUI gui = PageableGUI.newGUI(9)
+                .setPreviousPage(0, Item.newItem("redstone_block")
+                        .setDisplayName("&7Go to page &e<previous_page>"))
+                .setNextPage(8, Item.newItem("emerald_block")
+                        .setDisplayName("&7Go to page &e<next_page>"))
+                .setPages(3)
+                .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
+        gui.getPage(1).setContents(1, Item.newItem("red_concrete"));
+        gui.getPage(2).setContents(1, Item.newItem("lime_concrete"));
+        gui.getPage(3).setContents(1, Item.newItem("yellow_concrete"));
+
+        final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+
+            for (int i = 0; i < gui.pages(); i++) {
+                gui.open(viewer, i + 1);
+                GUI expected = generateExpected(gui.getPage(i + 1), i);
+                GUI actual = viewer.openedGUI;
+                actual.getContents(0).forEach(e -> e.onClickItem((GUIItemAction) null));
+                actual.getContents(8).forEach(e -> e.onClickItem((GUIItemAction) null));
+
+                assertEquals(expected, actual);
+            }
+        }
+    }
+
+    private GUI generateExpected(GUI gui, int index) {
+        GUI g = GUI.newGUI(9)
+                .setContents(1, gui.getContents(1))
+                .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e" + (index + 1)))
+                .setVariable("next_page", String.valueOf(index + 2))
+                .setVariable("pages", String.valueOf(3))
+                .setVariable("page", String.valueOf(index + 1))
+                .setVariable("previous_page", String.valueOf(index));
+        if (index > 0) g.setContents(0, ItemGUIContent.newInstance("redstone_block")
+                .setDisplayName("&7Go to page &e" + index));
+        if (index < 3) g.setContents(8, ItemGUIContent.newInstance("emerald_block")
+                .setDisplayName("&7Go to page &e" + (index + 2)));
+        return g;
+    }
 
     @Test
     void testPageableGUIMethods() throws InvocationTargetException, IllegalAccessException {
@@ -124,5 +176,35 @@ class PageableGUITest {
                 .onClickOutside("command")
                 .onOpenGUI("command")
                 .onChangeGUI("command");
+    }
+
+    private static class MockViewer extends Viewer {
+        GUI openedGUI;
+
+        protected MockViewer(UUID uniqueId, String name) {
+            super(uniqueId, name);
+        }
+
+        @Override
+        public void playSound(@NotNull Sound sound) {
+
+        }
+
+        @Override
+        public void executeCommand(@NotNull String command) {
+
+        }
+
+        @Override
+        public boolean hasPermission(@NotNull String permission) {
+            return false;
+        }
+    }
+
+    private static class MockGUIAdapter {
+
+        public static void openGUI(GUI gui, MockViewer viewer) {
+            viewer.openedGUI = gui;
+        }
     }
 }
