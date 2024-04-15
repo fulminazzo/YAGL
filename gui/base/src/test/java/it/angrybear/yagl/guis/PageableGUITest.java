@@ -3,6 +3,7 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.Metadatable;
 import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.actions.GUIItemAction;
+import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
@@ -68,7 +69,17 @@ class PageableGUITest {
                 gui.open(viewer, i + 1);
                 GUI expected = generateExpected(gui.getPage(i + 1), i);
                 GUI actual = viewer.openedGUI;
+                if (i > 1) {
+                    GUIContent content = actual.getContents(0).get(0);
+                    content.clickItemAction().ifPresent(a -> a.execute(viewer, actual, content));
+                    assertIterableEquals(gui.getPage(i).getContents(1), viewer.openedGUI.getContents(1));
+                }
                 actual.getContents(0).forEach(e -> e.onClickItem((GUIItemAction) null));
+                if (i < gui.pages() - 1) {
+                    GUIContent content = actual.getContents(8).get(0);
+                    content.clickItemAction().ifPresent(a -> a.execute(viewer, actual, content));
+                    assertIterableEquals(gui.getPage(i + 2).getContents(1), viewer.openedGUI.getContents(1));
+                }
                 actual.getContents(8).forEach(e -> e.onClickItem((GUIItemAction) null));
 
                 assertEquals(expected, actual);
