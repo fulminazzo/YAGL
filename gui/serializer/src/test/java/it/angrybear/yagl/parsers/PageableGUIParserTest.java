@@ -5,15 +5,20 @@ import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.PageableGUI;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
@@ -48,6 +53,28 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         GUI actual = configuration.get(path, GUI.class);
         assertNotNull(actual);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testSizeNotSpecified() {
+        IConfiguration configuration = getConfiguration(c -> {});
+        Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
+                getLoader().apply(configuration, "gui"));
+        checkMessage(throwable, "size");
+    }
+
+    private void checkMessage(Throwable throwable, String tmp) {
+        String message = throwable.getMessage();
+        assertNotNull(message, "Message of exception should not be null");
+        assertTrue(message.contains(tmp), String.format("'%s' did not contain '%s'", message, tmp));
+    }
+
+    private IConfiguration getConfiguration(Consumer<IConfiguration> function) {
+        IConfiguration configuration = mock(IConfiguration.class);
+        ConfigurationSection section = new ConfigurationSection(configuration, "gui");
+        when(configuration.getConfigurationSection(anyString())).thenReturn(section);
+        function.accept(section);
+        return configuration;
     }
 
     @Override
