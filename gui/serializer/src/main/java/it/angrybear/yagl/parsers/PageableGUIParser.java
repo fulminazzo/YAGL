@@ -48,10 +48,15 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
             section.set("type", guiType);
 
-            GUI templateGUI = c.get(s, GUI.class);
-            if (templateGUI == null) throw new IllegalArgumentException("Cannot properly load template GUI for PageableGUI");
+            final GUI templateGUI;
+            try {
+                templateGUI = c.get(s, GUI.class);
+                templateGUI.variables().clear();
+            } catch (Exception e) {
+                String message = String.format("Cannot properly load template GUI for PageableGUI: %s", e.getMessage());
+                throw new IllegalArgumentException(message);
+            }
             refl.setFieldObject("templateGUI", templateGUI);
-            templateGUI.variables().clear();
 
             ConfigurationSection previousPage = section.getConfigurationSection("previous-page");
             if (previousPage != null)
