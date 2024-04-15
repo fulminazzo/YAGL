@@ -8,15 +8,19 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("DataFlowIssue")
 public class PageableGUIParser extends YAMLParser<PageableGUI> {
+    private static final String[] IGNORE_FIELDS = new String[]{"type", "size"};
 
     public PageableGUIParser() {
         super(PageableGUI.class);
@@ -94,9 +98,33 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             });
 
             section.set("variables", p.variables());
-            section.set("gui-pages", refl.getFieldObject("pages"));
-            final String valueClass = "gui-pages.value-class";
-            if (section.contains(valueClass)) section.set(valueClass, null);
+
+            final ConfigurationSection pagesSection = section.createSection("gui-pages");
+            dumpPages(pagesSection, p, IGNORE_FIELDS);
         };
+    }
+
+    private void dumpPages(final @NotNull ConfigurationSection pagesSection, final @NotNull PageableGUI gui,
+                           final String @NotNull ... ignoreFields) {
+        final List<GUI> guiPages = new Refl<>(gui).getFieldObject("pages");
+        for (int i = 0; i < guiPages.size(); i++) {
+            final GUI page = guiPages.get(i);
+            final String path = String.valueOf(i);
+            pagesSection.set(path, page);
+
+            final ConfigurationSection pageSection = pagesSection.getConfigurationSection(path);
+
+            for (String s : ignoreFields) pageSection.set(s, null);
+            final Set<String> keys = pageSection.getKeys();
+            for (String k : keys) {
+                Object object = pageSection.getObject(k);
+                if (object instanceof ConfigurationSection && ((ConfigurationSection) object).getKeys().isEmpty())
+                    pageSection.set(k, null);
+                else if (object instanceof List && ((List<?>) object).isEmpty())
+                    pageSection.set(k, null);
+            }
+
+            if (pageSection.getKeys().isEmpty()) pagesSection.set(pageSection.getName(), null);
+        }
     }
 }
