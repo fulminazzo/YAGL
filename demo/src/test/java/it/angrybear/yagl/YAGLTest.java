@@ -137,6 +137,11 @@ class YAGLTest {
         assertTrue(printOutput.contains(field), String.format("'%s' did not contain '%s'", printOutput, field));
     }
 
+    @Test
+    void testNullPluginManager() {
+        assertDoesNotThrow(() -> this.plugin.loadCommands());
+    }
+
     private void setupPluginManager() {
         Server server = Bukkit.getServer();
         SimpleCommandMap commandMap = new SimpleCommandMap(server);
