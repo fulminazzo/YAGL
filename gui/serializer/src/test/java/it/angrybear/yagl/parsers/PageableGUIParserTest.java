@@ -56,6 +56,24 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     }
 
     @Test
+    void testSaveAndLoadPageableGUIStripped() throws IOException {
+        GUIYAGLParser.addAllParsers();
+        PageableGUI expected = PageableGUI.newGUI(9).setPages(0);
+
+        File file = new File("build/resources/test/pageable-gui-stripped.yml");
+        if (!file.exists()) FileUtils.createNewFile(file);
+        FileConfiguration configuration = new FileConfiguration(file);
+        final String path = expected.getClass().getSimpleName().toLowerCase();
+        configuration.set(path, expected);
+        configuration.save();
+
+        configuration = new FileConfiguration(file);
+        GUI actual = configuration.get(path, GUI.class);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testSizeNotSpecified() {
         IConfiguration configuration = getConfiguration(c -> {});
         Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
