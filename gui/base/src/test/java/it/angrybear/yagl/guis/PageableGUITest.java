@@ -79,15 +79,15 @@ class PageableGUITest {
     private GUI generateExpected(GUI gui, int index) {
         GUI g = GUI.newGUI(9)
                 .setContents(1, gui.getContents(1))
-                .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e" + (index + 1)))
+                .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"))
                 .setVariable("next_page", String.valueOf(index + 2))
                 .setVariable("pages", String.valueOf(3))
                 .setVariable("page", String.valueOf(index + 1))
                 .setVariable("previous_page", String.valueOf(index));
         if (index > 0) g.setContents(0, ItemGUIContent.newInstance("redstone_block")
-                .setDisplayName("&7Go to page &e" + index));
-        if (index < 3) g.setContents(8, ItemGUIContent.newInstance("emerald_block")
-                .setDisplayName("&7Go to page &e" + (index + 2)));
+                .setDisplayName("&7Go to page &e<previous_page>"));
+        if (index < 2) g.setContents(8, ItemGUIContent.newInstance("emerald_block")
+                .setDisplayName("&7Go to page &e<next_page>"));
         return g;
     }
 
