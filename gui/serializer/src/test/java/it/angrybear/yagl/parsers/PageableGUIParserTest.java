@@ -153,8 +153,9 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     }
 
     private IConfiguration getConfiguration(Consumer<IConfiguration> function) {
-        FileConfiguration configuration = new FileConfiguration(new ByteArrayInputStream(new byte[0]));
-        ConfigurationSection section = configuration.createSection("gui");
+        IConfiguration configuration = mock(IConfiguration.class);
+        ConfigurationSection section = new ConfigurationSection(configuration, "gui");
+        when(configuration.getConfigurationSection(anyString())).thenReturn(section);
         function.accept(section);
         return configuration;
     }
