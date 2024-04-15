@@ -372,11 +372,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         return (PageableGUI) GUI.super.copyFrom(other, replace);
     }
 
-    @Override
-    public PageableGUI copy() {
-        return GUI.super.copy(PageableGUI.class);
-    }
-
     /**
      * Creates a new {@link PageableGUI} with the given size.
      *

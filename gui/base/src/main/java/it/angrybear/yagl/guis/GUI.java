@@ -388,20 +388,6 @@ public interface GUI extends Metadatable {
     }
 
     /**
-     * Copies the current gui to a new one using the provided class.
-     * If an interface is provided (say {@link GUI}),
-     * it tries to convert it to {@link GUIImpl} by appending <i>Impl</i>.
-     * If no such class is found, an {@link IllegalArgumentException} is thrown.
-     *
-     * @param <G>   the type of the gui
-     * @param clazz the class of the copied gui
-     * @return the gui
-     */
-    default <G extends GUI> G copy(@NotNull Class<G> clazz) {
-        return ObjectUtils.copy(this, clazz);
-    }
-
-    /**
      * Creates a new {@link GUI}.
      *
      * @param size the size
