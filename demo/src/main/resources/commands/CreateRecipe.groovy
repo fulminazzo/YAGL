@@ -1,8 +1,26 @@
 import it.angrybear.yagl.items.BukkitItem
 import it.angrybear.yagl.items.Item
 import it.angrybear.yagl.items.recipes.FurnaceRecipe
+import it.angrybear.yagl.items.recipes.ShapedRecipe
 import it.angrybear.yagl.items.recipes.ShapelessRecipe
 import org.bukkit.entity.Player
+
+def shaped(sender, label, args, output, name) {
+    try {
+        def rows = Integer.valueOf(args[0])
+        def columns = Integer.valueOf(args[1])
+        def recipe = new ShapedRecipe(name).setShape(rows, columns)
+        if (args.length < 2) throw new IndexOutOfBoundsException()
+        for (int i = 2; i < args.length; i += 1)
+            recipe.setIngredient(i - 2, Item.newItem(args[i]))
+        BukkitItem.newRecipeItem(output).addRecipes(recipe).registerRecipes()
+        sender.sendMessage('Ok')
+    } catch (NumberFormatException ignored) {
+
+    } catch (IndexOutOfBoundsException ignored) {
+        sender.sendMessage('Usage: /createrecipe <name> <result> shaped <rows> <columns> <ingredients...>')
+    }
+}
 
 def shapeless(sender, label, args, output, name) {
     try {
