@@ -11,6 +11,7 @@ import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -121,9 +122,8 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     }
 
     private IConfiguration getConfiguration(Consumer<IConfiguration> function) {
-        IConfiguration configuration = mock(IConfiguration.class);
-        ConfigurationSection section = new ConfigurationSection(configuration, "gui");
-        when(configuration.getConfigurationSection(anyString())).thenReturn(section);
+        FileConfiguration configuration = new FileConfiguration(new ByteArrayInputStream(new byte[0]));
+        ConfigurationSection section = configuration.createSection("gui");
         function.accept(section);
         return configuration;
     }
