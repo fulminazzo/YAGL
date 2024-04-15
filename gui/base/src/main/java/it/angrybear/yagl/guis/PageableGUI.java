@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
@@ -144,10 +143,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     public PageableGUI unsetNextPage() {
         this.nextPage.set(null, null);
         return this;
-    }
-
-    private void forEachInternal(final @NotNull Consumer<? super GUI> function) {
-        function.accept(this.templateGUI);
     }
 
     private int checkSlot(final int slot) {
