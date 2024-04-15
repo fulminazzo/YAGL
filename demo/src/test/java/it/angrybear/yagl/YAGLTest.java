@@ -124,6 +124,19 @@ class YAGLTest {
         file.delete();
     }
 
+    @Test
+    void testNullKnownCommands() {
+        final String field = "knownCommands";
+
+        setupPluginManager();
+        new Refl<>(Bukkit.getPluginManager()).getFieldRefl("commandMap").setFieldObject(field, null);
+
+        assertDoesNotThrow(() -> this.plugin.unloadCommands());
+
+        String printOutput = getOutput();
+        assertTrue(printOutput.contains(field), String.format("'%s' did not contain '%s'", printOutput, field));
+    }
+
     private void setupPluginManager() {
         Server server = Bukkit.getServer();
         SimpleCommandMap commandMap = new SimpleCommandMap(server);
