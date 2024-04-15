@@ -53,6 +53,7 @@ class YAGLTest {
 
     @Test
     void testOnEnableShouldCallLoadCommands() {
+        setupPluginManager();
         YAGL plugin = mock(YAGL.class);
         when(plugin.getLogger()).thenReturn(Logger.getAnonymousLogger());
         new Refl<>(plugin).setFieldObject("commands", new ArrayList<>());
