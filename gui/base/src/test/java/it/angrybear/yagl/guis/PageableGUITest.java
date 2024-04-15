@@ -27,6 +27,27 @@ import static org.mockito.Mockito.mockStatic;
 class PageableGUITest {
 
     @Test
+    void testOpen() {
+        PageableGUI gui = PageableGUI.newGUI(9).setPages(1);
+        gui.getPage(1).setContents(1, Item.newItem("red_concrete"));
+
+        final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+
+            gui.open(viewer);
+            GUI expected = gui.getPage(1)
+                    .setVariable("next_page", "2")
+                    .setVariable("pages", "1")
+                    .setVariable("page", "1")
+                    .setVariable("previous_page", "0");
+            GUI actual = viewer.openedGUI;
+
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Test
     void testOpenPage() {
         PageableGUI gui = PageableGUI.newGUI(9)
                 .setPreviousPage(0, Item.newItem("redstone_block")
