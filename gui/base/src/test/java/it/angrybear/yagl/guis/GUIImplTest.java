@@ -79,11 +79,11 @@ class GUIImplTest {
 
     @Nested
     public class CopyTest {
-        private GUI gui;
+        private GUI expected;
 
         @BeforeEach
         void setUp() {
-            this.gui = GUI.newGUI(9)
+            this.expected = GUI.newGUI(9)
                     .setTitle("Hello")
                     .setVariable("hello", "world")
                     .setContents(0, Item.newItem("stone"))
@@ -93,9 +93,36 @@ class GUIImplTest {
         @Test
         void testCopyOfDifferentSize() {
             assertThrowsExactly(IllegalArgumentException.class, () ->
-                    this.gui.copyFrom(GUI.newGUI(18), true));
+                    this.expected.copyFrom(GUI.newGUI(18), true));
         }
 
+        @Test
+        void testCopyNoReplace() {
+            GUI actual = GUI.newGUI(this.expected.size()).copyFrom(this.expected, false);
+            assertEquals(this.expected, actual);
+        }
+
+        @Test
+        void testCopyNoReplaceTitleAndContents() {
+            GUI actual = GUI.newGUI(this.expected.size())
+                    .setTitle("Hi")
+                    .setContents(0, Item.newItem("diamond"))
+                    .copyFrom(this.expected, false);
+            assertNotEquals(this.expected.getTitle(), actual.getTitle());
+            assertNotEquals(this.expected.getContents(0), actual.getContents(0));
+            actual.setTitle(this.expected.getTitle())
+                    .setContents(0, this.expected.getContents(0));
+            assertEquals(this.expected, actual);
+        }
+
+        @Test
+        void testCopyReplaceTitleAndContents() {
+            GUI actual = GUI.newGUI(this.expected.size())
+                    .setTitle("Hi")
+                    .setContents(0, Item.newItem("diamond"))
+                    .copyFrom(this.expected, true);
+            assertEquals(this.expected, actual);
+        }
     }
 
     @Nested
