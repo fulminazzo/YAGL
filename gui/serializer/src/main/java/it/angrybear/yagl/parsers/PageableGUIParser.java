@@ -8,12 +8,12 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.Tuple;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,15 +58,29 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             Map<String, String> variables = section.get("variables", Map.class);
             if (variables != null) gui.variables().putAll(variables);
 
-            List<GUI> guiPages = section.getList("gui-pages", GUI.class);
-            if (guiPages != null && !guiPages.isEmpty()) {
-                if (guiPages.size() != pages)
-                    throw new IllegalArgumentException(String.format("Cannot set 'gui-pages' of invalid pages size (%s != %s)", guiPages.size(), pages));
-                refl.setFieldObject("pages", guiPages);
-            }
+            final ConfigurationSection pagesSection = section.getConfigurationSection("gui-pages");
+            loadPages(section, pagesSection, gui, IGNORE_FIELDS);
 
             return gui;
         };
+    }
+
+    private void loadPages(final @NotNull ConfigurationSection guiSection,
+                           final @NotNull ConfigurationSection pagesSection,
+                           final @NotNull PageableGUI gui,
+                           final String @NotNull ... ignoreFields) {
+        List<GUI> guiPages = new LinkedList<>();
+        for (int i = 0; i < gui.pages(); i++) {
+            final String path = String.valueOf(i);
+            ConfigurationSection pageSection = pagesSection.getConfigurationSection(path);
+            if (pageSection == null) guiPages.add(gui.getPage(i + 1));
+            else {
+                for (String s : ignoreFields) pageSection.set(s, guiSection.getObject(s));
+                guiPages.add(pagesSection.get(path, GUI.class));
+                for (String s : ignoreFields) pageSection.set(s, null);
+            }
+        }
+        new Refl<>(gui).setFieldObject("pages", guiPages);
     }
 
     @Override
