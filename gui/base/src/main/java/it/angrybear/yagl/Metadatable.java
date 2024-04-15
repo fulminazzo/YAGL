@@ -129,8 +129,6 @@ public interface Metadatable {
         else if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass())) {
             final Refl<T> refl = new Refl<>(object);
             for (Field field : refl.getNonStaticFields()) {
-                // Skip metadatable variables
-                if (field.getName().equals("variables")) continue;
                 Object o = refl.getFieldObject(field);
                 refl.setFieldObject(field, apply(o));
             }
