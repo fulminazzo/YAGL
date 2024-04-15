@@ -54,6 +54,16 @@ class PageableGUITest {
         TestUtils.testReturnType(PageableGUI.newGUI(9), GUI.class, m -> m.getName().equals("copy"));
     }
 
+    @Test
+    void testLowerSlot() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(9).setNextPage(-1, Item.newItem()));
+    }
+
+    @Test
+    void testHigherSlot() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(9).setPreviousPage(10, Item.newItem()));
+    }
+
     private GUI setupGUI(GUI gui) {
         return gui.setTitle("hello world")
                 .setMovable(3, true)

@@ -97,7 +97,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the previous page
      */
     public PageableGUI setPreviousPage(final int slot, final @NotNull GUIContent previousPage) {
-        this.previousPage.set(slot, previousPage);
+        this.previousPage.set(checkSlot(slot), previousPage);
         return this;
     }
 
@@ -132,7 +132,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the next page
      */
     public PageableGUI setNextPage(final int slot, final @NotNull GUIContent nextPage) {
-        this.nextPage.set(slot, nextPage);
+        this.nextPage.set(checkSlot(slot), nextPage);
         return this;
     }
 
@@ -148,6 +148,14 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     private void forEachInternal(final @NotNull Consumer<? super GUI> function) {
         function.accept(this.templateGUI);
+    }
+
+    private int checkSlot(final int slot) {
+        if (slot < 0 || slot > size()) {
+            final String message = String.format("'slot' must be between %s and %s", 0, size());
+            throw new IllegalArgumentException(message);
+        }
+        return slot;
     }
 
     @NotNull
