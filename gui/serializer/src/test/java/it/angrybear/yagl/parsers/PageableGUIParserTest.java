@@ -31,9 +31,9 @@ class PageableGUIParserTest {
                         .addItemFlags(ItemFlag.HIDE_UNBREAKABLE))
                 .setVariable("var1", "hello")
                 .setVariable("var2", "world");
-        expected.getPage(1).setContents(2, Item.newItem("stone"));
-        expected.getPage(3).setVariable("hello", "world");
-        expected.getPage(4).setMovable(3, true);
+        expected.getPage(0).setContents(2, Item.newItem("stone"));
+        expected.getPage(2).setVariable("hello", "world");
+        expected.getPage(3).setMovable(3, true);
         GUIParserTest.setupContents(expected);
 
         File file = new File("build/resources/test/pageable-gui.yml");

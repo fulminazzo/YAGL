@@ -30,14 +30,14 @@ class PageableGUITest {
     @Test
     void testOpen() {
         PageableGUI gui = PageableGUI.newGUI(9).setPages(1);
-        gui.getPage(1).setContents(1, Item.newItem("red_concrete"));
+        gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
             clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
 
             gui.open(viewer);
-            GUI expected = gui.getPage(1)
+            GUI expected = gui.getPage(0)
                     .setVariable("next_page", "2")
                     .setVariable("pages", "1")
                     .setVariable("page", "1")
@@ -57,28 +57,28 @@ class PageableGUITest {
                         .setDisplayName("&7Go to page &e<next_page>"))
                 .setPages(3)
                 .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
-        gui.getPage(1).setContents(1, Item.newItem("red_concrete"));
-        gui.getPage(2).setContents(1, Item.newItem("lime_concrete"));
-        gui.getPage(3).setContents(1, Item.newItem("yellow_concrete"));
+        gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
+        gui.getPage(1).setContents(1, Item.newItem("lime_concrete"));
+        gui.getPage(2).setContents(1, Item.newItem("yellow_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
             clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {
-                gui.open(viewer, i + 1);
-                GUI expected = generateExpected(gui.getPage(i + 1), i);
+                gui.open(viewer, i);
+                GUI expected = generateExpected(gui.getPage(i), i);
                 GUI actual = viewer.openedGUI;
                 if (i > 1) {
                     GUIContent content = actual.getContents(0).get(0);
                     content.clickItemAction().ifPresent(a -> a.execute(viewer, actual, content));
-                    assertIterableEquals(gui.getPage(i).getContents(1), viewer.openedGUI.getContents(1));
+                    assertIterableEquals(gui.getPage(i - 1).getContents(1), viewer.openedGUI.getContents(1));
                 }
                 actual.getContents(0).forEach(e -> e.onClickItem((GUIItemAction) null));
                 if (i < gui.pages() - 1) {
                     GUIContent content = actual.getContents(8).get(0);
                     content.clickItemAction().ifPresent(a -> a.execute(viewer, actual, content));
-                    assertIterableEquals(gui.getPage(i + 2).getContents(1), viewer.openedGUI.getContents(1));
+                    assertIterableEquals(gui.getPage(i + 1).getContents(1), viewer.openedGUI.getContents(1));
                 }
                 actual.getContents(8).forEach(e -> e.onClickItem((GUIItemAction) null));
 
@@ -106,17 +106,17 @@ class PageableGUITest {
     void testOpenPageNoNextPageOrPreviousPage() {
         PageableGUI gui = PageableGUI.newGUI(9).setPages(3)
                 .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
-        gui.getPage(1).setContents(1, Item.newItem("red_concrete"));
-        gui.getPage(2).setContents(1, Item.newItem("lime_concrete"));
-        gui.getPage(3).setContents(1, Item.newItem("yellow_concrete"));
+        gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
+        gui.getPage(1).setContents(1, Item.newItem("lime_concrete"));
+        gui.getPage(2).setContents(1, Item.newItem("yellow_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
             clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {
-                gui.open(viewer, i + 1);
-                GUI expected = generateExpected(gui.getPage(i + 1), i).unsetContent(0).unsetContent(8);
+                gui.open(viewer, i);
+                GUI expected = generateExpected(gui.getPage(i), i).unsetContent(0).unsetContent(8);
                 GUI actual = viewer.openedGUI;
 
                 assertEquals(expected, actual);
@@ -202,10 +202,10 @@ class PageableGUITest {
     void testIteratorShouldReturnPages() {
         PageableGUI gui = PageableGUI.newGUI(9).setPages(4);
         List<GUI> pages = Arrays.asList(
-                gui.getPage(1).setContents(0, Item.newItem("stone")),
-                gui.getPage(2).setContents(0, Item.newItem("diamond")),
-                gui.getPage(3).setContents(0, Item.newItem("emerald")),
-                gui.getPage(4)
+                gui.getPage(0).setContents(0, Item.newItem("stone")),
+                gui.getPage(1).setContents(0, Item.newItem("diamond")),
+                gui.getPage(2).setContents(0, Item.newItem("emerald")),
+                gui.getPage(3)
         );
         assertIterableEquals(pages, gui);
     }

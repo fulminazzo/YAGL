@@ -48,14 +48,14 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     /**
      * Gets the {@link GUI} page from the given index.
-     * The index starts from <b>1</b>.
+     * The index starts from <b>0</b>.
      *
      * @param page the page
      * @return the corresponding {@link GUI} page
      */
     public GUI getPage(final int page) {
         try {
-            return this.pages.get(page - 1);
+            return this.pages.get(page);
         } catch (IndexOutOfBoundsException e) {
             throw new IndexOutOfBoundsException(String.format("Could not find page '%s'", page));
         }
@@ -166,7 +166,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      */
     @Override
     public void open(final @NotNull Viewer viewer) {
-        open(viewer, 1);
+        open(viewer, 0);
     }
 
     /**
@@ -177,13 +177,13 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      */
     public void open(final @NotNull Viewer viewer, final int page) {
         GUI gui = getPage(page).copy().copyFrom(this, false)
-                .setVariable("page", String.valueOf(page))
-                .setVariable("previous-page", String.valueOf(page - 1))
-                .setVariable("next-page", String.valueOf(page + 1))
+                .setVariable("page", String.valueOf(page + 1))
+                .setVariable("previous-page", String.valueOf(page))
+                .setVariable("next-page", String.valueOf(page + 2))
                 .setVariable("pages", String.valueOf(pages()));
-        if (page > 1) this.previousPage.ifPresent((s, p) ->
+        if (page > 0) this.previousPage.ifPresent((s, p) ->
                 gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
-        if (page + 1 <= pages()) this.nextPage.ifPresent((s, p) ->
+        if (page + 1 < pages()) this.nextPage.ifPresent((s, p) ->
                 gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
         gui.open(viewer);
     }
