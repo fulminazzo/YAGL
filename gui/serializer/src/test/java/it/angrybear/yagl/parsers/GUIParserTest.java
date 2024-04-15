@@ -16,7 +16,6 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -127,9 +126,7 @@ class GUIParserTest extends ParserTestHelper<GUI> {
     }
 
     @Test
-    @DisplayName("Test invalid size")
-    @Override
-    protected void testLoadNull() {
+    void testInvalidSize() {
         final String path = "gui";
         final GUI gui = GUI.newGUI(9);
         ConfigurationSection section = new ConfigurationSection(null, "section");
