@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     implementation libs.groovy
-    implementation project(":")
 
     compileOnly libs.spigot.latest
     testImplementation libs.spigot.latest

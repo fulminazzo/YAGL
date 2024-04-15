@@ -116,6 +116,10 @@ allprojects {
         testAnnotationProcessor libs.lombok
 
         if (!project.name.equals(TEST_MODULE)) testImplementation project(":${TEST_MODULE}")
+
+        if (project.name.equals(DEMO_MODULE))
+            rootProject.subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
+                    .each { implementation project(it.path) }
     }
 
     if (project.name.equals(TEST_MODULE)) return
