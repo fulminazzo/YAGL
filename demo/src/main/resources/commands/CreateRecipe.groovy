@@ -1,5 +1,6 @@
 import it.angrybear.yagl.items.BukkitItem
 import it.angrybear.yagl.items.Item
+import it.angrybear.yagl.items.recipes.FurnaceRecipe
 import it.angrybear.yagl.items.recipes.ShapelessRecipe
 import org.bukkit.entity.Player
 
@@ -17,6 +18,22 @@ def shapeless(sender, label, args, output, name) {
 
     } catch (IndexOutOfBoundsException ignored) {
         sender.sendMessage('Usage: /createrecipe <name> <result> shapeless <ingredients...>')
+    }
+}
+
+def furnace(sender, label, args, output, name) {
+    try {
+        BukkitItem.newRecipeItem(output)
+                .addRecipes(new FurnaceRecipe(name)
+                        .setIngredient(Item.newItem(args[0]))
+                        .setCookingTime(Double.valueOf(args[1]))
+                        .setExperience(Float.valueOf(args[2])))
+                .registerRecipes()
+        sender.sendMessage('Ok')
+    } catch (NumberFormatException ignored) {
+
+    } catch (IndexOutOfBoundsException ignored) {
+        sender.sendMessage('Usage: /createrecipe <name> <result> furnace <ingredient> <cooking-time> <experience>')
     }
 }
 
