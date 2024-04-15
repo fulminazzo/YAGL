@@ -102,6 +102,16 @@ class YAGLTest {
         assertNull(commandMap.getCommand("mock"), "Not expected 'mock' command but some was found");
     }
 
+    @Test
+    void testInvalidCommandsDirectory() throws IOException {
+        File file = new File(this.plugin.getDataFolder(), "commands");
+        if (file.isFile()) FileUtils.deleteFile(file);
+        if (file.isDirectory()) FileUtils.deleteFolder(file);
+        FileUtils.createNewFile(file);
+        assertDoesNotThrow(() -> this.plugin.loadCommands());
+        file.delete();
+    }
+
     private void setupPluginManager() {
         Server server = Bukkit.getServer();
         SimpleCommandMap commandMap = new SimpleCommandMap(server);
