@@ -2,6 +2,7 @@ package it.angrybear.yagl
 
 import groovy.transform.CompileStatic
 import it.angrybear.yagl.commands.ShellCommand
+import it.angrybear.yagl.listeners.PersistentListener
 import it.fulminazzo.fulmicollection.objects.Refl
 import it.fulminazzo.fulmicollection.utils.JarUtils
 import it.fulminazzo.yamlparser.utils.FileUtils
@@ -18,6 +19,7 @@ class YAGL extends JavaPlugin {
     @Override
     void onEnable() {
         loadCommands()
+        Bukkit.getPluginManager().registerEvents(new PersistentListener(), this)
         getLogger().info("Loaded ${commands.size()} commands")
     }
 
