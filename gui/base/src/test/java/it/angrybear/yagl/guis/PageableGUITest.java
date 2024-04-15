@@ -92,6 +92,28 @@ class PageableGUITest {
     }
 
     @Test
+    void testOpenPageNoNextPageOrPreviousPage() {
+        PageableGUI gui = PageableGUI.newGUI(9).setPages(3)
+                .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
+        gui.getPage(1).setContents(1, Item.newItem("red_concrete"));
+        gui.getPage(2).setContents(1, Item.newItem("lime_concrete"));
+        gui.getPage(3).setContents(1, Item.newItem("yellow_concrete"));
+
+        final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+
+            for (int i = 0; i < gui.pages(); i++) {
+                gui.open(viewer, i + 1);
+                GUI expected = generateExpected(gui.getPage(i + 1), i).unsetContent(0).unsetContent(8);
+                GUI actual = viewer.openedGUI;
+
+                assertEquals(expected, actual);
+            }
+        }
+    }
+
+    @Test
     void testPageableGUIMethods() throws InvocationTargetException, IllegalAccessException {
         GUI expected = setupGUI(GUI.newGUI(9));
         GUI actual = setupGUI(PageableGUI.newGUI(9));
