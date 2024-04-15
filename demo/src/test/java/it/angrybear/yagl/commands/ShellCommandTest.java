@@ -5,9 +5,11 @@ import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class ShellCommandTest {
@@ -46,6 +48,12 @@ class ShellCommandTest {
         String actual = new Refl<>(shellCommand).getFieldObject("shellCode");
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testTabCompleteShouldNotBeNull() throws IOException {
+        File file = File.createTempFile("build/resources/test", "file.groovy");
+        assertNotNull(new ShellCommand(file).tabComplete(null, null, null));
     }
 
 }
