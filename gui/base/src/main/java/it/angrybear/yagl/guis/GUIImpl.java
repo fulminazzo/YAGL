@@ -54,7 +54,7 @@ class GUIImpl extends FieldEquable implements GUI {
         try {
             guiUtils = ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter");
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Could not find GUIUtils class. This function requires the 'gui:bukkit' module to be added");
+            throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
         }
         new Refl<>(guiUtils).invokeMethod("openGUI", this, viewer);
     }
