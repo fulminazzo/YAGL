@@ -332,7 +332,8 @@ public interface GUI extends Metadatable {
         copyAll((Metadatable) other, replace);
         for (int i = 0; i < size(); i++) {
             final @NotNull List<GUIContent> contents = getContents(i);
-            if (!contents.isEmpty() && other.getContents(i).isEmpty())
+            if (contents.isEmpty()) continue;
+            if (other.getContents(i).isEmpty() || replace)
                 other.setContents(i, contents.toArray(new GUIContent[0]));
         }
         openGUIAction().ifPresent(a -> {
