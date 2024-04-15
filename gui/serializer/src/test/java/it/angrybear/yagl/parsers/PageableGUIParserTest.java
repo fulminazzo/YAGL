@@ -1,5 +1,6 @@
 package it.angrybear.yagl.parsers;
 
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.PageableGUI;
 import it.angrybear.yagl.items.Item;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PageableGUIParserTest {
+class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
     @Test
     void testSaveAndLoadPageableGUI() throws IOException {
@@ -49,4 +50,8 @@ class PageableGUIParserTest {
         assertEquals(expected, actual);
     }
 
+    @Override
+    protected Class<?> getParser() {
+        return PageableGUIParser.class;
+    }
 }
