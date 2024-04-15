@@ -318,7 +318,7 @@ public interface GUI extends Metadatable {
     }
 
     /**
-     * Copies all the contents and title from this gui to the given one.
+     * Copies all the contents, title and actions from this gui to the given one.
      *
      * @param other   the other gui
      * @param replace if false, if the other already has the content or title, it will not be replaced
@@ -335,6 +335,22 @@ public interface GUI extends Metadatable {
             if (!contents.isEmpty() && other.getContents(i).isEmpty())
                 other.setContents(i, contents.toArray(new GUIContent[0]));
         }
+        openGUIAction().ifPresent(a -> {
+            @NotNull Optional<GUIAction> open = other.openGUIAction();
+            if (!open.isPresent() || replace) other.onOpenGUI(a);
+        });
+        closeGUIAction().ifPresent(a -> {
+            @NotNull Optional<GUIAction> close = other.closeGUIAction();
+            if (!close.isPresent() || replace) other.onCloseGUI(a);
+        });
+        changeGUIAction().ifPresent(a -> {
+            @NotNull Optional<BiGUIAction> change = other.changeGUIAction();
+            if (!change.isPresent() || replace) other.onChangeGUI(a);
+        });
+        clickOutsideAction().ifPresent(a -> {
+            @NotNull Optional<GUIAction> clickOutside = other.clickOutsideAction();
+            if (!clickOutside.isPresent() || replace) other.onClickOutside(a);
+        });
         return this;
     }
 
