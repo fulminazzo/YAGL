@@ -104,6 +104,14 @@ class PageableGUITest {
         assertIterableEquals(pages, gui);
     }
 
+    @Test
+    void testCopyReturnType() {
+        GUI expected = PageableGUI.newGUI(9);
+        GUI actual = expected.copy();
+        assertInstanceOf(PageableGUI.class, actual);
+        assertEquals(expected, actual);
+    }
+
     private GUI setupGUI(GUI gui) {
         return gui.setTitle("hello world")
                 .setMovable(3, true)
