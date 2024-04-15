@@ -86,6 +86,7 @@ class YAGL extends JavaPlugin {
 
     private void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName, final @NotNull resourceDir) {
         def file = new File(dir, fileName)
+        if (file.exists()) FileUtils.deleteFile(file)
         FileUtils.createNewFile(file)
         def input = getClass().getResourceAsStream("${resourceDir}/${fileName}")
         def output = new FileOutputStream(file)
