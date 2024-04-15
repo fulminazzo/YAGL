@@ -136,6 +136,15 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         assertThrowsExactly(IllegalArgumentException.class, () -> getLoader().apply(section, path));
     }
 
+    @Test
+    void testDumpOfGUIWithParser() {
+        FileConfiguration.addParsers(new MockGUIParser());
+        ConfigurationSection section = new ConfigurationSection(null, "main");
+        GUI gui = new MockGUIParser.MockGUI();
+        getDumper().accept(section, "gui", gui);
+        assertEquals(section.getObject("gui"), gui.getTitle());
+    }
+
     @Override
     protected Class<?> getParser() {
         return GUIParser.class;
