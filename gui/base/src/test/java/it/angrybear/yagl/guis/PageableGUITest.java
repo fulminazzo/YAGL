@@ -50,6 +50,11 @@ class PageableGUITest {
     }
 
     @Test
+    void testRemovePages() {
+        assertEquals(5, PageableGUI.newGUI(9).setPages(10).setPages(5).pages());
+    }
+
+    @Test
     void testGetGUIPageException() {
         assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(1).getPage(1));
     }
