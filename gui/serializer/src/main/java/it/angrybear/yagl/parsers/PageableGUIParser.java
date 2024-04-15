@@ -35,13 +35,15 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Integer pages = section.getInteger("pages");
             if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
-            PageableGUI gui = PageableGUI.newGUI(size).setPages(pages);
+            final PageableGUI gui = PageableGUI.newGUI(size).setPages(pages);
+            final Refl<PageableGUI> refl = new Refl<>(gui);
 
-            section.set("type", section.getString("gui-type"));
+            final String guiType = section.getString("gui-type");
+            if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
+            section.set("type", guiType);
+
             GUI templateGUI = c.get(s, GUI.class);
-            if (templateGUI == null)
-                throw new IllegalArgumentException("Cannot properly load template GUI");
-            Refl<PageableGUI> refl = new Refl<>(gui);
+            if (templateGUI == null) throw new IllegalArgumentException("Cannot properly load template GUI for PageableGUI");
             refl.setFieldObject("templateGUI", templateGUI);
             templateGUI.variables().clear();
 
@@ -55,11 +57,13 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
                 gui.setNextPage(nextPage.getInteger("slot"),
                         nextPage.get("content", GUIContent.class));
 
-            Map<String, String> variables = section.get("variables", Map.class);
-            if (variables != null) gui.variables().putAll(variables);
+            Map<?, ?> variables = section.get("variables", Map.class);
+            if (variables != null) variables.forEach((k, v) -> {
+                if (k != null && v != null) gui.setVariable(k.toString(), v.toString());
+            });
 
             final ConfigurationSection pagesSection = section.getConfigurationSection("gui-pages");
-            loadPages(section, pagesSection, gui, IGNORE_FIELDS);
+            if (pagesSection != null) loadPages(section, pagesSection, gui, IGNORE_FIELDS);
 
             return gui;
         };
@@ -69,7 +73,7 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
                            final @NotNull ConfigurationSection pagesSection,
                            final @NotNull PageableGUI gui,
                            final String @NotNull ... ignoreFields) {
-        List<GUI> guiPages = new LinkedList<>();
+        final List<GUI> guiPages = new LinkedList<>();
         for (int i = 0; i < gui.pages(); i++) {
             final String path = String.valueOf(i);
             ConfigurationSection pageSection = pagesSection.getConfigurationSection(path);
