@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,24 @@ class YAGLTest {
         doCallRealMethod().when(this.plugin).unloadCommands();
         doCallRealMethod().when(this.plugin).saveDefaultCommands(any());
         when(this.plugin.getLogger()).thenReturn(logger);
+    }
+
+    @Test
+    void testOnEnableShouldCallLoadCommands() {
+        YAGL plugin = mock(YAGL.class);
+        when(plugin.getLogger()).thenReturn(Logger.getAnonymousLogger());
+        new Refl<>(plugin).setFieldObject("commands", new ArrayList<>());
+        doCallRealMethod().when(plugin).onEnable();
+        plugin.onEnable();
+        verify(plugin, atLeastOnce()).loadCommands();
+    }
+
+    @Test
+    void testOnDisableShouldCallUnloadCommands() {
+        YAGL plugin = mock(YAGL.class);
+        doCallRealMethod().when(plugin).onDisable();
+        plugin.onDisable();
+        verify(plugin, atLeastOnce()).unloadCommands();
     }
 
     @Test
