@@ -123,6 +123,50 @@ class GUIImplTest {
                     .copyFrom(this.expected, true);
             assertEquals(this.expected, actual);
         }
+
+        @Test
+        void testCopyActionSourceNoActionDestinationNoReplace() {
+            this.expected.onOpenGUI("command")
+                    .onCloseGUI("command")
+                    .onChangeGUI("command")
+                    .onClickOutside("command");
+            GUI actual = GUI.newGUI(this.expected.size())
+                    .copyFrom(this.expected, false);
+            assertEquals(this.expected, actual);
+        }
+
+        @Test
+        void testCopyActionSourceActionDestinationNoReplace() {
+            this.expected.onOpenGUI("command")
+                    .onCloseGUI("command")
+                    .onChangeGUI("command")
+                    .onClickOutside("command");
+            GUI actual = GUI.newGUI(this.expected.size())
+                    .onOpenGUI("command1")
+                    .onCloseGUI("command1")
+                    .onChangeGUI("command1")
+                    .onClickOutside("command1")
+                    .copyFrom(this.expected, false);
+            assertNotEquals(this.expected.openGUIAction().get(), actual.openGUIAction().get());
+            assertNotEquals(this.expected.closeGUIAction().get(), actual.closeGUIAction().get());
+            assertNotEquals(this.expected.changeGUIAction().get(), actual.changeGUIAction().get());
+            assertNotEquals(this.expected.clickOutsideAction().get(), actual.clickOutsideAction().get());
+        }
+
+        @Test
+        void testCopyActionSourceActionDestinationReplace() {
+            this.expected.onOpenGUI("command")
+                    .onCloseGUI("command")
+                    .onChangeGUI("command")
+                    .onClickOutside("command");
+            GUI actual = GUI.newGUI(this.expected.size())
+                    .onOpenGUI("command1")
+                    .onCloseGUI("command1")
+                    .onChangeGUI("command1")
+                    .onClickOutside("command1")
+                    .copyFrom(this.expected, true);
+            assertEquals(this.expected, actual);
+        }
     }
 
     @Nested
