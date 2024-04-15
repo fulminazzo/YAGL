@@ -125,6 +125,7 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
 
             final ConfigurationSection pagesSection = section.createSection("gui-pages");
             dumpPages(pagesSection, p, IGNORE_FIELDS);
+            if (pagesSection.getKeys().isEmpty()) section.set(pagesSection.getName(), null);
         };
     }
 
