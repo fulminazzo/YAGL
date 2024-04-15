@@ -84,6 +84,18 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         checkMessage(throwable, "gui-type");
     }
 
+    @Test
+    void testInvalidTemplateGUI() {
+        IConfiguration configuration = getConfiguration(c -> {
+            c.set("size", 3);
+            c.set("pages", 3);
+            c.set("gui-type", "DEFAULT");
+        });
+        Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
+                getLoader().apply(configuration, "gui"));
+        checkMessage(throwable, "template");
+    }
+
     private void checkMessage(Throwable throwable, String tmp) {
         String message = throwable.getMessage();
         assertNotNull(message, "Message of exception should not be null");
