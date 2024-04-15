@@ -5,11 +5,13 @@ import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.PageableGUI;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.mockito.invocation.InvocationOnMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
@@ -115,17 +118,27 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
     @Test
     void testNullVariablesMap() throws Exception {
-        IConfiguration configuration = getConfiguration(c -> {
-            c.set("size", 3);
-            c.set("pages", 3);
-            c.set("gui-type", "DEFAULT");
-            c.set("variables", new HashMap<Object, Object>(){{
-                put(null, "do-not-pick");
-                put("do-not-pick", null);
-                put(1, "hello");
-                put(true, "world");
-            }});
-        });
+        GUIYAGLParser.addAllParsers();
+        IConfiguration configuration = new FileConfiguration(new ByteArrayInputStream(new byte[0]));
+        ConfigurationSection section = mock(ConfigurationSection.class, InvocationOnMock::callRealMethod);
+        new Refl<>(section).setFieldObject("map", new HashMap<>())
+                .setFieldObject("name", "gui")
+                .setFieldObject("parent", configuration);
+        when(section.getName()).thenReturn("gui");
+        doAnswer(a -> {
+            if (a.getArgument(0).equals("variables"))
+                return new HashMap<Object, Object>(){{
+                    put(null, "do-not-pick");
+                    put("do-not-pick", null);
+                    put(1, "hello");
+                    put(true, "world");
+                }};
+            else return a.callRealMethod();
+        }).when(section).get(anyString(), any());
+        configuration.toMap().put("gui", section);
+        section.set("size", 3);
+        section.set("pages", 3);
+        section.set("gui-type", "DEFAULT");
         GUI gui = getLoader().apply(configuration, "gui");
         assertEquals(new HashMap<String, String>(){{
             put("1", "hello");
