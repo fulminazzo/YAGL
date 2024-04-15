@@ -11,12 +11,15 @@ import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.invocation.InvocationOnMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -116,8 +119,30 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         checkMessage(throwable, "template");
     }
 
-    @Test
-    void testNullVariablesMap() throws Exception {
+    private static Object[][] getVariableMaps() {
+        return new Object[][]{
+                new Object[]{
+                        new HashMap<Object, Object>(){{
+                            put(null, "do-not-pick");
+                            put("do-not-pick", null);
+                            put(1, "hello");
+                            put(true, "world");
+                        }},
+                        new HashMap<String, String>(){{
+                            put("1", "hello");
+                            put("true", "world");
+                        }}
+                },
+                new Object[]{
+                        null,
+                        new HashMap<>()
+                }
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getVariableMaps")
+    void testVariableMaps(Map<Object, Object> variables, Object expected) throws Exception {
         GUIYAGLParser.addAllParsers();
         IConfiguration configuration = new FileConfiguration(new ByteArrayInputStream(new byte[0]));
         ConfigurationSection section = mock(ConfigurationSection.class, InvocationOnMock::callRealMethod);
@@ -125,25 +150,14 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
                 .setFieldObject("name", "gui")
                 .setFieldObject("parent", configuration);
         when(section.getName()).thenReturn("gui");
-        doAnswer(a -> {
-            if (a.getArgument(0).equals("variables"))
-                return new HashMap<Object, Object>(){{
-                    put(null, "do-not-pick");
-                    put("do-not-pick", null);
-                    put(1, "hello");
-                    put(true, "world");
-                }};
-            else return a.callRealMethod();
-        }).when(section).get(anyString(), any());
+        doAnswer(a -> variables == null ? null : new HashMap<>(variables))
+                .when(section).get("variables", Map.class);
         configuration.toMap().put("gui", section);
         section.set("size", 3);
         section.set("pages", 3);
         section.set("gui-type", "DEFAULT");
         GUI gui = getLoader().apply(configuration, "gui");
-        assertEquals(new HashMap<String, String>(){{
-            put("1", "hello");
-            put("true", "world");
-        }}, gui.variables());
+        assertEquals(expected, gui.variables());
     }
 
     private void checkMessage(Throwable throwable, String tmp) {
