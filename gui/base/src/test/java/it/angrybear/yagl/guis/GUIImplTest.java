@@ -30,6 +30,16 @@ class GUIImplTest {
     }
 
     @Test
+    void testNotEmpty() {
+        assertFalse(GUI.newGUI(9).setContents(0, Item.newItem()).isEmpty());
+    }
+
+    @Test
+    void testEmpty() {
+        assertTrue(GUI.newGUI(9).isEmpty());
+    }
+
+    @Test
     void testCorrectAdd() {
         GUI gui = new GUIImpl(2);
         assertDoesNotThrow(() -> gui.addContent(new MockContent(), new MockContent()));
