@@ -151,6 +151,21 @@ public class ResizableGUI extends GUIImpl {
     }
 
     @Override
+    public @NotNull ResizableGUI copyAll(@NotNull GUI other, boolean replace) {
+        return (ResizableGUI) super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull ResizableGUI copyFrom(@NotNull GUI other, boolean replace) {
+        return (ResizableGUI) super.copyFrom(other, replace);
+    }
+
+    @Override
+    public ResizableGUI copy() {
+        return (ResizableGUI) super.copy();
+    }
+
+    @Override
     public @NotNull ResizableGUI onCloseGUI(@NotNull String command) {
         return (ResizableGUI) super.onCloseGUI(command);
     }
