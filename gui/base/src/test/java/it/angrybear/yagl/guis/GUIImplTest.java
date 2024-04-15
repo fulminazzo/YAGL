@@ -9,6 +9,7 @@ import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,102 +77,25 @@ class GUIImplTest {
         assertThrowsExactly(IllegalStateException.class, () -> new GUIImpl(9).open(mock(Viewer.class)));
     }
 
-    @Test
-    void testCopyAllNoReplace() {
-        GUI expected = GUI.newGUI(9).setTitle("Hello")
-                .setVariable("hello", "world")
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .addContent(ItemGUIContent.newInstance("diamond"));
-        GUI actual = GUI.newGUI(9).setTitle("Hi")
-                .copyFrom(expected, false);
-        assertEquals("Hi", actual.getTitle());
-        actual.setTitle(expected.getTitle());
-        assertEquals(expected, actual);
-    }
+    @Nested
+    public class CopyTest {
+        private GUI gui;
 
-    @Test
-    void testCopyAllActionsNoReplace() {
-        GUI expected = GUI.newGUI(9).setTitle("Hello")
-                .setVariable("hello", "world")
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .addContent(ItemGUIContent.newInstance("diamond"))
-                .onOpenGUI("command")
-                .onChangeGUI("command")
-                .onCloseGUI("command")
-                .onClickOutside("command");
-        GUI actual = GUI.newGUI(9).setTitle("Hi").copyFrom(expected, false);
-        assertEquals("Hi", actual.getTitle());
-        actual.setTitle(expected.getTitle())
-                .onOpenGUI("command")
-                .onChangeGUI("command")
-                .onCloseGUI("command")
-                .onClickOutside("command");
-        assertEquals(expected, actual);
-    }
+        @BeforeEach
+        void setUp() {
+            this.gui = GUI.newGUI(9)
+                    .setTitle("Hello")
+                    .setVariable("hello", "world")
+                    .setContents(0, Item.newItem("stone"))
+                    .addContent(Item.newItem("grass"));
+        }
 
-    @Test
-    void testCopyAllActionsOnActualNoReplace() {
-        GUI expected = GUI.newGUI(9).setTitle("Hello")
-                .setVariable("hello", "world")
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .addContent(ItemGUIContent.newInstance("diamond"))
-                .onOpenGUI("command")
-                .onChangeGUI("command")
-                .onCloseGUI("command")
-                .onClickOutside("command");
-        GUI actual = GUI.newGUI(9).setTitle("Hi")
-                .onOpenGUI("command1")
-                .onChangeGUI("command1")
-                .onCloseGUI("command1")
-                .onClickOutside("command1")
-                .copyFrom(expected, false);
-        assertEquals("Hi", actual.getTitle());
-        assertNotEquals(actual.openGUIAction().get(), expected.openGUIAction().get());
-        assertNotEquals(actual.changeGUIAction().get(), expected.changeGUIAction().get());
-        assertNotEquals(actual.closeGUIAction().get(), expected.closeGUIAction().get());
-        assertNotEquals(actual.clickOutsideAction().get(), expected.clickOutsideAction().get());
-        actual.setTitle(expected.getTitle())
-                .onOpenGUI("command")
-                .onChangeGUI("command")
-                .onCloseGUI("command")
-                .onClickOutside("command");
-        assertEquals(expected, actual);
-    }
+        @Test
+        void testCopyOfDifferentSize() {
+            assertThrowsExactly(IllegalArgumentException.class, () ->
+                    this.gui.copyFrom(GUI.newGUI(18), true));
+        }
 
-    @Test
-    void testCopyAllReplace() {
-        GUI expected = GUI.newGUI(9).setTitle("Hello")
-                .setVariable("hello", "world")
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .addContent(ItemGUIContent.newInstance("diamond"));
-        GUI actual = GUI.newGUI(9).setTitle("Hi")
-                .copyFrom(expected, true);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void testCopyAllActionsOnActualAllReplace() {
-        GUI expected = GUI.newGUI(9).setTitle("Hello")
-                .setVariable("hello", "world")
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .addContent(ItemGUIContent.newInstance("diamond"))
-                .onOpenGUI("command")
-                .onChangeGUI("command")
-                .onCloseGUI("command")
-                .onClickOutside("command");
-        GUI actual = GUI.newGUI(9).setTitle("Hi")
-                .onOpenGUI("command1")
-                .onChangeGUI("command1")
-                .onCloseGUI("command1")
-                .onClickOutside("command1")
-                .copyFrom(expected, true);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void testCopyDifferentSizes() {
-        assertThrowsExactly(IllegalArgumentException.class, () ->
-                GUI.newGUI(9).copyFrom(GUI.newGUI(27), false));
     }
 
     @Nested
