@@ -90,12 +90,80 @@ class GUIImplTest {
     }
 
     @Test
+    void testCopyAllActionsNoReplace() {
+        GUI expected = GUI.newGUI(9).setTitle("Hello")
+                .setVariable("hello", "world")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .addContent(ItemGUIContent.newInstance("diamond"))
+                .onOpenGUI("command")
+                .onChangeGUI("command")
+                .onCloseGUI("command")
+                .onClickOutside("command");
+        GUI actual = GUI.newGUI(9).setTitle("Hi").copyFrom(expected, false);
+        assertEquals("Hi", actual.getTitle());
+        actual.setTitle(expected.getTitle())
+                .onOpenGUI("command")
+                .onChangeGUI("command")
+                .onCloseGUI("command")
+                .onClickOutside("command");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCopyAllActionsOnActualNoReplace() {
+        GUI expected = GUI.newGUI(9).setTitle("Hello")
+                .setVariable("hello", "world")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .addContent(ItemGUIContent.newInstance("diamond"))
+                .onOpenGUI("command")
+                .onChangeGUI("command")
+                .onCloseGUI("command")
+                .onClickOutside("command");
+        GUI actual = GUI.newGUI(9).setTitle("Hi")
+                .onOpenGUI("command1")
+                .onChangeGUI("command1")
+                .onCloseGUI("command1")
+                .onClickOutside("command1")
+                .copyFrom(expected, false);
+        assertEquals("Hi", actual.getTitle());
+        assertNotEquals(actual.openGUIAction().get(), expected.openGUIAction().get());
+        assertNotEquals(actual.changeGUIAction().get(), expected.changeGUIAction().get());
+        assertNotEquals(actual.closeGUIAction().get(), expected.closeGUIAction().get());
+        assertNotEquals(actual.clickOutsideAction().get(), expected.clickOutsideAction().get());
+        actual.setTitle(expected.getTitle())
+                .onOpenGUI("command")
+                .onChangeGUI("command")
+                .onCloseGUI("command")
+                .onClickOutside("command");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testCopyAllReplace() {
         GUI expected = GUI.newGUI(9).setTitle("Hello")
                 .setVariable("hello", "world")
                 .setContents(0, ItemGUIContent.newInstance("stone"))
                 .addContent(ItemGUIContent.newInstance("diamond"));
         GUI actual = GUI.newGUI(9).setTitle("Hi")
+                .copyFrom(expected, true);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCopyAllActionsOnActualAllReplace() {
+        GUI expected = GUI.newGUI(9).setTitle("Hello")
+                .setVariable("hello", "world")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .addContent(ItemGUIContent.newInstance("diamond"))
+                .onOpenGUI("command")
+                .onChangeGUI("command")
+                .onCloseGUI("command")
+                .onClickOutside("command");
+        GUI actual = GUI.newGUI(9).setTitle("Hi")
+                .onOpenGUI("command1")
+                .onChangeGUI("command1")
+                .onCloseGUI("command1")
+                .onClickOutside("command1")
                 .copyFrom(expected, true);
         assertEquals(expected, actual);
     }
