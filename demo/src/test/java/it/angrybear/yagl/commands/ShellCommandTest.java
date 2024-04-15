@@ -53,7 +53,8 @@ class ShellCommandTest {
     @Test
     void testTabCompleteShouldNotBeNull() throws IOException {
         File file = File.createTempFile("build/resources/test", "file.groovy");
-        assertNotNull(new ShellCommand(file).tabComplete(null, null, null));
+        assertNotNull(new ShellCommand(file).tabComplete(mock(CommandSender.class),
+                "command", new String[0]));
     }
 
 }
