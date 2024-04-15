@@ -2,6 +2,7 @@ package it.angrybear.yagl;
 
 import it.angrybear.yagl.commands.ShellCommand;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.JarUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.bukkit.Bukkit;
@@ -12,14 +13,12 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.SimplePluginManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -159,6 +158,21 @@ class YAGLTest {
     @Test
     void testNullPluginManager() {
         assertDoesNotThrow(() -> this.plugin.loadCommands());
+    }
+
+    @Test
+    void simulateJarEntries() {
+        setupPluginManager();
+        List<String> entries = Arrays.asList("ignored", "also-ignored", "commands", "commands/", "commands/mock.groovy");
+        try (MockedStatic<JarUtils> ignored = mockStatic(JarUtils.class)) {
+            when(JarUtils.getEntries((Class<?>) any(), anyString())).thenAnswer(a -> entries.iterator());
+
+            this.plugin.loadCommands();
+
+            List<ShellCommand> commands = new Refl<>(this.plugin).getFieldObject("commands");
+            assertNotNull(commands);
+            assertEquals(1, commands.size(), "Commands size did not match expected");
+        }
     }
 
     private void setupPluginManager() {
