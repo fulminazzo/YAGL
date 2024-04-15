@@ -13,21 +13,32 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class YAGLTest {
     private YAGL plugin;
+    private Handler handler;
+    private ByteArrayOutputStream output;
 
     @BeforeEach
     void setUp() throws IOException {
         BukkitUtils.setupServer();
+
+        this.output = new ByteArrayOutputStream();
+        this.handler = new StreamHandler(this.output, new SimpleFormatter());
+        this.handler.setLevel(Level.ALL);
+        Logger logger = Logger.getAnonymousLogger();
+        logger.addHandler(handler);
+
         this.plugin = mock(YAGL.class);
         File dataDir = new File("build/resources/test/plugin");
         if (dataDir.exists()) FileUtils.deleteFolder(dataDir);
@@ -37,6 +48,7 @@ class YAGLTest {
         doCallRealMethod().when(this.plugin).loadCommands();
         doCallRealMethod().when(this.plugin).unloadCommands();
         doCallRealMethod().when(this.plugin).saveDefaultCommands(any());
+        when(this.plugin.getLogger()).thenReturn(logger);
     }
 
     @Test
@@ -117,5 +129,10 @@ class YAGLTest {
         SimpleCommandMap commandMap = new SimpleCommandMap(server);
         SimplePluginManager pluginManager = new SimplePluginManager(server, commandMap);
         when(server.getPluginManager()).thenReturn(pluginManager);
+    }
+
+    private String getOutput() {
+        this.handler.flush();
+        return this.output.toString();
     }
 }
