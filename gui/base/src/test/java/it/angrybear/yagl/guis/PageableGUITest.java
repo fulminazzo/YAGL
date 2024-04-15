@@ -5,6 +5,7 @@ import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.junit.jupiter.api.Test;
 
@@ -62,6 +63,22 @@ class PageableGUITest {
     @Test
     void testReturnTypes() {
         TestUtils.testReturnType(PageableGUI.newGUI(9), GUI.class, m -> m.getName().equals("copy"));
+    }
+
+    @Test
+    void testRemovePreviousPage() {
+        PageableGUI gui = PageableGUI.newGUI(9).setPreviousPage(1, Item.newItem()).unsetPreviousPage();
+        Tuple<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
+        assertNotNull(nextPage);
+        assertTrue(nextPage.isEmpty(), String.format("Expected empty but got '%s'", nextPage));
+    }
+
+    @Test
+    void testRemoveNextPage() {
+        PageableGUI gui = PageableGUI.newGUI(9).setNextPage(1, Item.newItem()).unsetNextPage();
+        Tuple<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
+        assertNotNull(nextPage);
+        assertTrue(nextPage.isEmpty(), String.format("Expected empty but got '%s'", nextPage));
     }
 
     @Test
