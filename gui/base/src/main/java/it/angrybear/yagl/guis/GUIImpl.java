@@ -254,5 +254,10 @@ class GUIImpl extends FieldEquable implements GUI {
 
             return hash;
         }
+
+        @Override
+        public String toString() {
+            return Arrays.toString(this.contents);
+        }
     }
 }
