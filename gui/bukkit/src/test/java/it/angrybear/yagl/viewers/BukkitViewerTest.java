@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class BukkitViewerTest {
     private Player player;
@@ -19,6 +19,7 @@ class BukkitViewerTest {
     void setUp() {
         BukkitUtils.setupServer();
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
+        when(this.player.isOnline()).thenReturn(true);
         this.viewer = BukkitViewer.newViewer(this.player);
     }
 
@@ -26,6 +27,19 @@ class BukkitViewerTest {
     void testNewViewer() {
         assertEquals(this.player.getUniqueId(), this.viewer.getUniqueId());
         assertEquals(this.player.getName(), this.viewer.getName());
+    }
+
+    @Test
+    void testSendMessage() {
+        String expected = "Hello world";
+        this.viewer.sendMessage(expected);
+        verify(this.player, atLeastOnce()).sendMessage(expected);
+    }
+
+    @Test
+    void testSendMessageOffline() {
+        BukkitUtils.removePlayer(this.player);
+        assertThrowsExactly(PlayerOfflineException.class, () -> this.viewer.sendMessage("Message"));
     }
 
     @Test
