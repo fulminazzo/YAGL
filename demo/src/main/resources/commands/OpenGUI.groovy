@@ -1,5 +1,6 @@
 import it.angrybear.yagl.GUIManager
 import it.angrybear.yagl.guis.GUI
+import it.angrybear.yagl.guis.GUIType
 import it.angrybear.yagl.items.Item
 import it.angrybear.yagl.items.fields.ItemFlag
 import it.angrybear.yagl.utils.EnumUtils
@@ -10,7 +11,15 @@ def run = { sender, label, args ->
         try {
             def columns = 9
             def border = Item.newItem("black_stained_glass_pane").setDisplayName(" ")
-            GUI gui = GUI.newGUI(27)
+            GUI gui
+            try {
+                gui = GUI.newGUI(EnumUtils.valueOf(GUIType, args[0]))
+            } catch (IllegalArgumentException ignored) {
+                gui = GUI.newResizableGUI(Integer.valueOf(args[0]))
+            } catch (IndexOutOfBoundsException ignored) {
+                sender.sendMessage("Usage: /opengui <type|size>")
+                return
+            }
             for (int i = 0; i < columns; i += 1) {
                 gui.setContents(i, border)
                 gui.setContents(gui.size() - i - 1, border)
