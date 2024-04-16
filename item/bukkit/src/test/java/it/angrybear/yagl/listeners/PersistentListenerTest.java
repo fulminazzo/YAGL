@@ -256,7 +256,7 @@ class PersistentListenerTest {
         @ParameterizedTest
         @MethodSource("inventoryClickEvents")
         void simulateInventoryClick(InventoryClickEvent event) {
-            if (event.getRawSlot() == 2) cursor = maintain.create();
+            if (event.getRawSlot() == 2) cursor = maintain.setMobility(Mobility.INTERNAL).create();
 
             assertFalse(clicked, "Clicked should be initialized as false");
             assertFalse(event.isCancelled(), "Event should not be cancelled");
