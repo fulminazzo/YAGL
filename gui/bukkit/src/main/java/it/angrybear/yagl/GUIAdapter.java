@@ -76,7 +76,7 @@ public final class GUIAdapter {
             player.closeInventory();
         });
         // Set new GUI
-        reflViewer.setFieldObject("openGUI", gui);
+        reflViewer.setFieldObject("openGUI", gui.apply(gui));
         // Open inventory
         Inventory inventory = guiToInventory(gui);
         for (int i = 0; i < gui.size(); i++) {
