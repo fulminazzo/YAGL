@@ -245,6 +245,11 @@ class PageableGUITest {
         }
 
         @Override
+        public void sendMessage(@NotNull String message) {
+
+        }
+
+        @Override
         public void executeCommand(@NotNull String command) {
 
         }
