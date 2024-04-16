@@ -32,6 +32,14 @@ import static org.mockito.Mockito.*;
 class GUIManagerTest {
 
     @Test
+    void testGetOpenGUIViewerPlayer() {
+        BukkitUtils.setupServer();
+        Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
+        GUITestUtils.mockPlugin(p ->
+                assertFalse(GUIManager.getOpenGUIViewer(player).isPresent(), "Should not be present"));
+    }
+
+    @Test
     void testGetOpenGUIViewerUUID() {
         BukkitUtils.setupServer();
         GUITestUtils.mockPlugin(p ->
