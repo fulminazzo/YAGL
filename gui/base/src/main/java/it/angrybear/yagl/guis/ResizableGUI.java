@@ -10,6 +10,8 @@ import it.angrybear.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 /**
  * Represents a "chest" GUI that can be resized.
  * This GUI can start with any value in bounds and multiple of 9 and can grow if necessary.
@@ -33,6 +35,11 @@ public class ResizableGUI extends GUIImpl {
     @Override
     public @NotNull ResizableGUI setContents(int slot, GUIContent @NotNull ... contents) {
         if (slot >= size() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
+        return (ResizableGUI) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setContents(int slot, @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
@@ -141,6 +148,21 @@ public class ResizableGUI extends GUIImpl {
     @Override
     public @NotNull ResizableGUI onOpenGUI(@NotNull String command) {
         return (ResizableGUI) super.onOpenGUI(command);
+    }
+
+    @Override
+    public @NotNull ResizableGUI copyAll(@NotNull GUI other, boolean replace) {
+        return (ResizableGUI) super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull ResizableGUI copyFrom(@NotNull GUI other, boolean replace) {
+        return (ResizableGUI) super.copyFrom(other, replace);
+    }
+
+    @Override
+    public ResizableGUI copy() {
+        return (ResizableGUI) super.copy();
     }
 
     @Override

@@ -5,7 +5,10 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
+import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
+import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,6 +28,11 @@ public class GUIParser extends TypedParser<GUI> {
     @Override
     protected BiFunctionException<IConfiguration, String, GUI> getLoader() {
         return (c, s) -> {
+            ConfigurationSection section = c.getConfigurationSection(s);
+            if (section == null) return null;
+            GUI tmp = new Refl<>(this).getFieldRefl("function").invokeMethod("apply", section);
+            YAMLParser<? extends GUI> parser = FileConfiguration.getParser(tmp.getClass());
+            if (!parser.equals(this)) return parser.load(c, s);
             GUI g = super.getLoader().apply(c, s);
             Integer size = c.getInteger(s + ".size");
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
@@ -38,14 +46,20 @@ public class GUIParser extends TypedParser<GUI> {
         };
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected TriConsumer<IConfiguration, String, GUI> getDumper() {
         return (c, s, g) -> {
-            super.getDumper().accept(c, s, g);
+            c.set(s, null);
             if (g == null) return;
-            final String valueClass = s + ".contents.value-class";
-            if (c.contains(valueClass)) c.set(valueClass, null);
-            c.set(s + ".size", g.size());
+            YAMLParser<GUI> parser = (YAMLParser<GUI>) FileConfiguration.getParser(g.getClass());
+            if (!this.equals(parser)) parser.dump(c, s, g);
+            else {
+                super.getDumper().accept(c, s, g);
+                final String valueClass = s + ".contents.value-class";
+                if (c.contains(valueClass)) c.set(valueClass, null);
+                c.set(s + ".size", g.size());
+            }
         };
     }
 

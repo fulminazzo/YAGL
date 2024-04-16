@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * An interface that holds key-value pairs of {@link String}s.
  */
-public interface Metadatable extends Iterable<String> {
+public interface Metadatable {
     /**
      * A function used to convert the variables in {@link #apply(Object)}.
      */
@@ -144,7 +144,7 @@ public interface Metadatable extends Iterable<String> {
      * @return the string parsed
      */
     default String apply(@NotNull String string) {
-        for (final String v : this) {
+        for (final String v : variables().keySet()) {
             final String s = getVariable(v);
             if (s == null) continue;
             final Matcher matcher = Pattern.compile("([^\\\\]|^)" + VARIABLE_FORMAT.apply(v)).matcher(string);
@@ -197,9 +197,4 @@ public interface Metadatable extends Iterable<String> {
      * @return the map
      */
     @NotNull Map<String, String> variables();
-
-    @Override
-    default @NotNull Iterator<String> iterator() {
-        return variables().keySet().iterator();
-    }
 }

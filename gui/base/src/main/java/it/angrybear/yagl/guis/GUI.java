@@ -8,14 +8,12 @@ import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
+import it.angrybear.yagl.utils.ObjectUtils;
 import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The general interface to represent a GUI.
@@ -50,6 +48,15 @@ public interface GUI extends Metadatable {
      * @return the size
      */
     int size();
+
+    /**
+     * Checks if all the returned {@link #getContents()} are null.
+     *
+     * @return true if they are, or if it is empty
+     */
+    default boolean isEmpty() {
+        return getContents().stream().allMatch(Objects::isNull);
+    }
 
     /**
      * Checks if the content at the given slot is movable.
@@ -108,15 +115,14 @@ public interface GUI extends Metadatable {
      * Gets a copy of the contents at the given slot.
      *
      * @param slot the slot
-     * @return the contents
+     * @return this gui
      */
     @NotNull List<GUIContent> getContents(int slot);
 
     /**
      * Gets a copy of all the contents.
-     * To get the actual content, use the GUI in a for-enhanced loop or use {@link #iterator()}.
      *
-     * @return the contents
+     * @return this gui
      */
     @NotNull List<GUIContent> getContents();
 
@@ -157,7 +163,7 @@ public interface GUI extends Metadatable {
      *
      * @param slot     the slot
      * @param contents the contents
-     * @return the contents
+     * @return this gui
      */
     default @NotNull GUI setContents(int slot, final Item @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).map(ItemGUIContent::newInstance).toArray(GUIContent[]::new));
@@ -169,10 +175,22 @@ public interface GUI extends Metadatable {
      *
      * @param slot     the slot
      * @param contents the contents
-     * @return the contents
+     * @return this gui
      */
     default @NotNull GUI setContents(int slot, final ItemGUIContent @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
+    }
+    
+    /**
+     * Sets the given contents at the specified index.
+     * These will be then filtered using {@link #getContent(Viewer, int)}
+     *
+     * @param slot     the slot
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setContents(int slot, final @NotNull Collection<GUIContent> contents) {
+        return setContents(slot, contents.toArray(new GUIContent[0]));
     }
 
     /**
@@ -311,6 +329,56 @@ public interface GUI extends Metadatable {
         return (GUI) Metadatable.super.unsetVariable(name);
     }
 
+    /**
+     * Copies all the contents, title and actions from this gui to the given one.
+     *
+     * @param other   the other gui
+     * @param replace if false, if the other already has the content or title, it will not be replaced
+     * @return this gui
+     */
+    default @NotNull GUI copyAll(final @NotNull GUI other, final boolean replace) {
+        if (other.size() != size())
+            throw new IllegalArgumentException(String.format("Cannot copy from GUI with different size %s != %s",
+                    size(), other.size()));
+        if (other.getTitle() == null || replace) other.setTitle(getTitle());
+        copyAll((Metadatable) other, replace);
+        for (int i = 0; i < size(); i++) {
+            final @NotNull List<GUIContent> contents = getContents(i);
+            if (contents.isEmpty()) continue;
+            if (other.getContents(i).isEmpty() || replace)
+                other.setContents(i, contents.toArray(new GUIContent[0]));
+        }
+        openGUIAction().ifPresent(a -> {
+            @NotNull Optional<GUIAction> open = other.openGUIAction();
+            if (!open.isPresent() || replace) other.onOpenGUI(a);
+        });
+        closeGUIAction().ifPresent(a -> {
+            @NotNull Optional<GUIAction> close = other.closeGUIAction();
+            if (!close.isPresent() || replace) other.onCloseGUI(a);
+        });
+        changeGUIAction().ifPresent(a -> {
+            @NotNull Optional<BiGUIAction> change = other.changeGUIAction();
+            if (!change.isPresent() || replace) other.onChangeGUI(a);
+        });
+        clickOutsideAction().ifPresent(a -> {
+            @NotNull Optional<GUIAction> clickOutside = other.clickOutsideAction();
+            if (!clickOutside.isPresent() || replace) other.onClickOutside(a);
+        });
+        return this;
+    }
+
+    /**
+     * Uses {@link #copyAll(GUI, boolean)} to copy from the given {@link GUI} to this one.
+     *
+     * @param other   the other gui
+     * @param replace if false, if this already has the content or title, it will not be replaced
+     * @return this gui
+     */
+    default @NotNull GUI copyFrom(final @NotNull GUI other, final boolean replace) {
+        other.copyAll(this, replace);
+        return this;
+    }
+
     @Override
     @NotNull
     default GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
@@ -321,6 +389,15 @@ public interface GUI extends Metadatable {
     @NotNull
     default GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (GUI) Metadatable.super.copyFrom(other, replace);
+    }
+
+    /**
+     * Copies the current gui to a new one.
+     *
+     * @return the gui
+     */
+    default GUI copy() {
+        return ObjectUtils.copy(this);
     }
 
     /**

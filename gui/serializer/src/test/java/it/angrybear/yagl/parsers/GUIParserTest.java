@@ -16,7 +16,6 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -74,23 +73,7 @@ class GUIParserTest extends ParserTestHelper<GUI> {
     void testSaveAndLoadGUI(GUI expected) throws IOException {
         GUIYAGLParser.addAllParsers();
 
-        expected.setContents(0, Item.newItem()
-                        .setMaterial("stone_sword").setAmount(1)
-                        .setDurability(1337).setDisplayName("First")
-                        .setCustomModelData(1))
-                .setContents(1, Item.newItem()
-                        .setMaterial("stone_sword").setAmount(1)
-                        .setDurability(1337).setDisplayName("Second")
-                        .setCustomModelData(1))
-                .setContents(4, Item.newItem()
-                                .setMaterial("stone_sword").setAmount(1)
-                                .setDurability(1337).setDisplayName("Third-1")
-                                .setCustomModelData(1),
-                        Item.newItem()
-                                .setMaterial("stone_sword").setAmount(1)
-                                .setDurability(1337).setDisplayName("Third-2")
-                                .setCustomModelData(1))
-                .setMovable(3, true).setMovable(7, true);
+        setupContents(expected);
 
         File file = new File("build/resources/test/gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
@@ -122,10 +105,28 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         }
     }
 
+    public static void setupContents(GUI expected) {
+        expected.setContents(0, Item.newItem()
+                        .setMaterial("stone_sword").setAmount(1)
+                        .setDurability(1337).setDisplayName("First")
+                        .setCustomModelData(1))
+                .setContents(1, Item.newItem()
+                        .setMaterial("stone_sword").setAmount(1)
+                        .setDurability(1337).setDisplayName("Second")
+                        .setCustomModelData(1))
+                .setContents(4, Item.newItem()
+                                .setMaterial("stone_sword").setAmount(1)
+                                .setDurability(1337).setDisplayName("Third-1")
+                                .setCustomModelData(1),
+                        Item.newItem()
+                                .setMaterial("stone_sword").setAmount(1)
+                                .setDurability(1337).setDisplayName("Third-2")
+                                .setCustomModelData(1))
+                .setMovable(3, true).setMovable(7, true);
+    }
+
     @Test
-    @DisplayName("Test invalid size")
-    @Override
-    protected void testLoadNull() {
+    void testInvalidSize() {
         final String path = "gui";
         final GUI gui = GUI.newGUI(9);
         ConfigurationSection section = new ConfigurationSection(null, "section");
@@ -133,6 +134,15 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         section.set(path + ".size", null);
 
         assertThrowsExactly(IllegalArgumentException.class, () -> getLoader().apply(section, path));
+    }
+
+    @Test
+    void testDumpOfGUIWithParser() {
+        FileConfiguration.addParsers(new MockGUIParser());
+        ConfigurationSection section = new ConfigurationSection(null, "main");
+        GUI gui = new MockGUIParser.MockGUI();
+        getDumper().accept(section, "gui", gui);
+        assertEquals(section.getObject("gui"), gui.getTitle());
     }
 
     @Override

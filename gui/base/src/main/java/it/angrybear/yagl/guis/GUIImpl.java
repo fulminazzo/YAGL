@@ -4,6 +4,7 @@ import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.viewers.Viewer;
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
@@ -16,7 +17,7 @@ import java.util.*;
 /**
  * A basic implementation of {@link GUI}.
  */
-class GUIImpl implements GUI {
+class GUIImpl extends FieldEquable implements GUI {
     protected static final int MAX_SIZE = 54;
 
     @Getter
@@ -53,7 +54,7 @@ class GUIImpl implements GUI {
         try {
             guiUtils = ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter");
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Could not find GUIUtils class. This function requires the 'gui:bukkit' module to be added");
+            throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
         }
         new Refl<>(guiUtils).invokeMethod("openGUI", this, viewer);
     }
@@ -225,6 +226,38 @@ class GUIImpl implements GUI {
          */
         public List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Contents) {
+                Contents c = (Contents) o;
+                if (this.contents.length != c.contents.length) return false;
+                for (int i = 0; i < this.contents.length; i++) {
+                    GUIContent c1 = this.contents[i];
+                    GUIContent c2 = c.contents[i];
+                    if (!Objects.equals(c1, c2)) return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = Contents.class.hashCode();
+
+            for (GUIContent content : this.contents) {
+                hash *= 31;
+                hash += content == null ? 191 : content.hashCode();
+            }
+
+            return hash;
+        }
+
+        @Override
+        public String toString() {
+            return Arrays.toString(this.contents);
         }
     }
 }
