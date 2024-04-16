@@ -2,7 +2,6 @@ import it.angrybear.yagl.GUIManager
 import it.angrybear.yagl.guis.GUIType
 import it.angrybear.yagl.guis.PageableGUI
 import it.angrybear.yagl.items.BukkitItem
-import it.angrybear.yagl.items.Item
 import it.angrybear.yagl.utils.EnumUtils
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -20,12 +19,15 @@ def run = { sender, label, args ->
                 return
             }
             def size = gui.size()
-            def middle = (int) (size / 2)
-            if (size > 1) gui.setContents(middle, BukkitItem.newItem(Material.OBSIDIAN).setDisplayName("&7Page: &e<page>"))
-                    .setPreviousPage(0, BukkitItem.newItem(Material.REDSTONE_BLOCK)
-                        .setDisplayName("&7Go to page &e<previous_page>"))
-                    .setNextPage(size - 1, BukkitItem.newItem(Material.EMERALD_BLOCK)
-                            .setDisplayName("&7Go to page &e<next_page>"))
+            def middle = (int) Math.min(size / 2, 9 / 2)
+            if (size > 1) {
+                size -= 1
+                gui.setContents(size - middle, BukkitItem.newItem(Material.OBSIDIAN).setDisplayName("&7Page: &e<page>"))
+                        .setPreviousPage(size - middle * 2, BukkitItem.newItem(Material.REDSTONE_BLOCK)
+                                .setDisplayName("&7Go to page &e<previous_page>"))
+                        .setNextPage(size, BukkitItem.newItem(Material.EMERALD_BLOCK)
+                                .setDisplayName("&7Go to page &e<next_page>"))
+            }
 
             gui.setTitle("Page #<page>")
                     .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
