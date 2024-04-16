@@ -8,7 +8,6 @@ import it.fulminazzo.fulmicollection.structures.BiOptional;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -69,9 +68,7 @@ public class GUIManager implements Listener {
 
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        getOpenGUIViewer(player).ifPresent((v, g) ->
-                g.closeGUIAction().ifPresent(a -> a.execute(v, g)));
+        GUIAdapter.closeGUI(getViewer(event.getPlayer()));
     }
 
     @EventHandler

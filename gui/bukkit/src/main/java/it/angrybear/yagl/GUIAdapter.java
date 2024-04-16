@@ -60,6 +60,24 @@ public final class GUIAdapter {
     }
 
     /**
+     * Closes the currently open {@link GUI} for the specified {@link Viewer}, if present.
+     *
+     * @param viewer the viewer
+     */
+    public static void closeGUI(final @NotNull Viewer viewer) {
+        final UUID uuid = viewer.getUniqueId();
+        final Player player = Bukkit.getPlayer(uuid);
+        if (player == null) throw new PlayerOfflineException(viewer.getName());
+        final Refl<Viewer> reflViewer = new Refl<>(viewer);
+        // Save previous GUI, if present
+        GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
+            reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
+            g.closeGUIAction().ifPresent(a -> a.execute(v, g));
+            player.closeInventory();
+        });
+    }
+
+    /**
      * Converts the given {@link GUI} to a {@link Inventory}.
      *
      * @param gui the gui
