@@ -1,4 +1,5 @@
 import it.angrybear.yagl.GUIManager
+import it.angrybear.yagl.contents.ItemGUIContent
 import it.angrybear.yagl.guis.GUI
 import it.angrybear.yagl.guis.GUIType
 import it.angrybear.yagl.items.Item
@@ -29,7 +30,7 @@ def run = { sender, label, args ->
                 gui.setContents(gui.size() - i - 1, border)
             }
             def middle = (int) (gui.size() / 2)
-            gui.setContents(middle, Item.newItem("gold_block").setDisplayName("This is a demo GUI!")
+            gui.setContents(middle, Item.newItem("gold_block").setDisplayName("This is a <name> GUI!")
                             .addEnchantment("unbreaking", 1)
                             .addItemFlags(ItemFlag.HIDE_ENCHANTS))
             if (middle - 1 >= 0)
@@ -38,10 +39,16 @@ def run = { sender, label, args ->
                         .addEnchantment("sharpness", 2))
                         .setMovable(middle - 1, true)
             if (middle + 1 < gui.size())
-                gui.setContents(middle + 1, Item.newItem("diamond_pickaxe")
+                gui.setContents(middle + 1, ItemGUIContent.newInstance("diamond_pickaxe")
                         .setDisplayName("Can't pick me...")
-                        .addEnchantment("efficiency", 10))
-            gui.setTitle("Demo GUI").open(GUIManager.getViewer(sender))
+                        .addEnchantment("efficiency", 10)
+                        .onClickItem((v, g, c) -> v.sendMessage('You cannot pick this item!')))
+            gui.setTitle("<name> GUI")
+                    .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
+                    .onOpenGUI((v, g) -> v.sendMessage('Opening the GUI... voila'))
+                    .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))
+                    .setVariable("name", "Demo")
+                    .open(GUIManager.getViewer(sender))
         } catch (NumberFormatException ignored) {
 
         } catch (Exception e) {
