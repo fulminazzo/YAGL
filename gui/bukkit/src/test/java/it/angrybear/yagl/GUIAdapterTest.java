@@ -130,8 +130,18 @@ class GUIAdapterTest {
         assertThrowsExactly(PlayerOfflineException.class, () -> openGUI(GUI.newGUI(9)));
     }
 
+    @Test
+    void testCloseGUIForOfflinePlayer() {
+        BukkitUtils.removePlayer(this.player);
+        assertThrowsExactly(PlayerOfflineException.class, this::closeGUI);
+    }
+
     private void openGUI(GUI gui) {
         GUITestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
+    }
+
+    private void closeGUI() {
+        GUITestUtils.mockPlugin(p -> GUIAdapter.closeGUI(GUIManager.getViewer(this.player)));
     }
 
 }
