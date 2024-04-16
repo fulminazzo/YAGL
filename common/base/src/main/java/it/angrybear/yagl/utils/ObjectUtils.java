@@ -1,6 +1,7 @@
 package it.angrybear.yagl.utils;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.NullableOptional;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -88,7 +89,8 @@ public final class ObjectUtils {
                     } else
                         try {
                             Method copy = obj1.getClass().getDeclaredMethod("copy");
-                            obj1 = ReflectionUtils.setAccessible(copy).invoke(obj1);
+                            @NotNull NullableOptional<Method> optional = ReflectionUtils.setAccessible(copy);
+                            if (optional.isPresent()) obj1 = optional.get().invoke(obj1);
                         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ignored) {}
                 object.setFieldObject(field, obj1);
             } catch (IllegalArgumentException ignored) {}
