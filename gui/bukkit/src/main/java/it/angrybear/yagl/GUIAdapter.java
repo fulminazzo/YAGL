@@ -73,12 +73,9 @@ public final class GUIAdapter {
         GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
             g.changeGUIAction().ifPresent(a -> a.execute(v, g, gui));
-            player.closeInventory();
         });
-        // Set new GUI
-        reflViewer.setFieldObject("openGUI", gui.apply(gui));
         // Open inventory
-        Inventory inventory = guiToInventory(gui);
+        Inventory inventory = guiToInventory(gui.apply(gui));
         for (int i = 0; i < gui.size(); i++) {
             GUIContent content = gui.getContent(viewer, i);
             if (content != null) {
@@ -90,6 +87,10 @@ public final class GUIAdapter {
             }
         }
         player.openInventory(inventory);
+        // Set new GUI
+        reflViewer.setFieldObject("openGUI", gui);
+        // Execute action if present
+        gui.openGUIAction().ifPresent(a -> a.execute(reflViewer.getObject(), gui));
     }
 
     /**

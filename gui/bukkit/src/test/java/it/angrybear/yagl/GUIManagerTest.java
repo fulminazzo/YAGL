@@ -184,18 +184,6 @@ class GUIManagerTest {
         }
 
         @Test
-        void testOpenEvent() {
-            AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.onOpenGUI((v, g) -> expected.set(true));
-
-            InventoryView view = getView();
-
-            this.guiManager.on(new InventoryOpenEvent(view));
-
-            assertTrue(expected.get(), "OpenGUI action was not invoked");
-        }
-
-        @Test
         void testDragEvent() {
             InventoryView view = getView();
             InventoryDragEvent event = new InventoryDragEvent(view, null, new ItemStack(Material.STONE),
