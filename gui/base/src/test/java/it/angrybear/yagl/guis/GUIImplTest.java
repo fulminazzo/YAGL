@@ -232,6 +232,15 @@ class GUIImplTest {
             super(size);
         }
 
+        @Override
+        public int rows() {
+            return 0;
+        }
+
+        @Override
+        public int columns() {
+            return 0;
+        }
     }
 
     public static class MockContent implements GUIContent {

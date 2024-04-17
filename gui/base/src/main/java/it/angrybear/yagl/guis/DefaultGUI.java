@@ -33,4 +33,14 @@ class DefaultGUI extends GUIImpl {
             throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of %s can be accepted",
                     size, COLUMNS));
     }
+
+    @Override
+    public int rows() {
+        return size() / COLUMNS;
+    }
+
+    @Override
+    public int columns() {
+        return COLUMNS;
+    }
 }

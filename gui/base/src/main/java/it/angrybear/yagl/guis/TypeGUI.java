@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.exceptions.NotImplemented;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,5 +27,14 @@ public class TypeGUI extends GUIImpl {
         super(inventoryType.getSize());
         this.inventoryType = inventoryType;
     }
-    
+
+    @Override
+    public int rows() {
+        throw new NotImplemented();
+    }
+
+    @Override
+    public int columns() {
+        throw new NotImplemented();
+    }
 }
