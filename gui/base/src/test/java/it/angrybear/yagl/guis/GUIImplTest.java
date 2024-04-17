@@ -42,13 +42,13 @@ class GUIImplTest {
 
     @Test
     void testCorrectAdd() {
-        GUI gui = new GUIImpl(2);
+        GUI gui = new MockGUI(2);
         assertDoesNotThrow(() -> gui.addContent(new MockContent(), new MockContent()));
     }
 
     @Test
     void testInvalidAdd() {
-        GUI gui = new GUIImpl(1);
+        GUI gui = new MockGUI(1);
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 gui.addContent(new MockContent(), new MockContent()));
     }
@@ -74,7 +74,7 @@ class GUIImplTest {
 
     @Test
     void testOpenWithNoBukkitModule() {
-        assertThrowsExactly(IllegalStateException.class, () -> new GUIImpl(9).open(mock(Viewer.class)));
+        assertThrowsExactly(IllegalStateException.class, () -> new MockGUI(9).open(mock(Viewer.class)));
     }
 
     @Nested
@@ -225,7 +225,15 @@ class GUIImplTest {
         }
 
     }
-    
+
+    public static class MockGUI extends GUIImpl {
+
+        public MockGUI(int size) {
+            super(size);
+        }
+
+    }
+
     public static class MockContent implements GUIContent {
 
         @Override
