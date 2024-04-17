@@ -339,6 +339,86 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI setTopSide(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setTopSide(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setTopSide(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setTopSide(@NotNull Collection<GUIContent> contents) {
+        return (PageableGUI) GUI.super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setLeftSide(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setLeftSide(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setLeftSide(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setLeftSide(@NotNull Collection<GUIContent> contents) {
+        return (PageableGUI) GUI.super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setBottomSide(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setBottomSide(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setBottomSide(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setBottomSide(@NotNull Collection<GUIContent> contents) {
+        return (PageableGUI) GUI.super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setRightSide(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setRightSide(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setRightSide(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setRightSide(@NotNull Collection<GUIContent> contents) {
+        return (PageableGUI) GUI.super.setRightSide(contents);
+    }
+
+    @Override
     public @NotNull PageableGUI setNorthWest(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthWest(contents);
     }
