@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mock;
 class GUIImplTest {
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 180})
+    @ValueSource(ints = {-1, 180, 17})
     void testInvalidSize(int size) {
         assertThrowsExactly(IllegalArgumentException.class, () -> GUI.newGUI(size));
     }
