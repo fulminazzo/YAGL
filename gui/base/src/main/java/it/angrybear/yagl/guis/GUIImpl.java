@@ -7,7 +7,6 @@ import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +30,10 @@ abstract class GUIImpl extends FieldEquable implements GUI {
     protected GUIAction closeGUIAction;
     protected BiGUIAction changeGUIAction;
 
-    private GUIImpl() {
+    /**
+     * Instantiates a new Gui.
+     */
+    GUIImpl() {
         this.contents = new LinkedList<>();
         this.movableSlots = new HashSet<>();
     }
