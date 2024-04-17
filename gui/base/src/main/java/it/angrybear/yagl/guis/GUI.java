@@ -203,14 +203,47 @@ public interface GUI extends Metadatable {
      */
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
+    /**
+     * Gets the slot at the North-West position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     | X |   |   |
+     *     |   |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int northWest() {
         return 0;
     }
 
+    /**
+     * Gets the slot at the North position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   | X |   |
+     *     |   |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int north() {
         return columns() / 2;
     }
 
+    /**
+     * Gets the slot at the North-East position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   | X |
+     *     |   |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int northEast() {
         return Math.max(0, columns() - 1);
     }
@@ -221,14 +254,47 @@ public interface GUI extends Metadatable {
         return (int) line;
     }
 
+    /**
+     * Gets the slot at the Middle-West position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     | X |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int middleWest() {
         return northWest() + middleLine();
     }
 
+    /**
+     * Gets the slot at the Middle position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   | X |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int middle() {
         return north() + middleLine();
     }
 
+    /**
+     * Gets the slot at the Middle-East position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   | X |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int middleEast() {
         return northEast() + middleLine();
     }
@@ -237,14 +303,47 @@ public interface GUI extends Metadatable {
         return Math.max(0, rows() - 1);
     }
 
+    /**
+     * Gets the slot at the South-West position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   |   |
+     *     | X |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int southWest() {
         return northWest() + southLine() * columns();
     }
 
+    /**
+     * Gets the slot at the South position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   |   |
+     *     |   | X |   |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int south() {
         return north() + southLine() * columns();
     }
 
+    /**
+     * Gets the slot at the South-East position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   |   |
+     *     |   |   | X |
+     * </pre>
+     *
+     * @return the slots
+     */
     default int southEast() {
         return northEast() + southLine() * columns();
     }
