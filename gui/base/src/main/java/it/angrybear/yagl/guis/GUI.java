@@ -204,6 +204,276 @@ public interface GUI extends Metadatable {
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
     /**
+     * Sets the given contents at the index {@link #northWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthWest(final Item @NotNull ... contents) {
+        return setContents(northWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthWest(final ItemGUIContent @NotNull ... contents) {
+        return setContents(northWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthWest(final GUIContent @NotNull ... contents) {
+        return setContents(northWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #north()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorth(final Item @NotNull ... contents) {
+        return setContents(north(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #north()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorth(final ItemGUIContent @NotNull ... contents) {
+        return setContents(north(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #north()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorth(final GUIContent @NotNull ... contents) {
+        return setContents(north(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthEast(final Item @NotNull ... contents) {
+        return setContents(northEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthEast(final ItemGUIContent @NotNull ... contents) {
+        return setContents(northEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthEast(final GUIContent @NotNull ... contents) {
+        return setContents(northEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleWest(final Item @NotNull ... contents) {
+        return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleWest(final ItemGUIContent @NotNull ... contents) {
+        return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleWest(final GUIContent @NotNull ... contents) {
+        return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middle()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddle(final Item @NotNull ... contents) {
+        return setContents(middle(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middle()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddle(final ItemGUIContent @NotNull ... contents) {
+        return setContents(middle(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middle()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddle(final GUIContent @NotNull ... contents) {
+        return setContents(middle(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleEast(final Item @NotNull ... contents) {
+        return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleEast(final ItemGUIContent @NotNull ... contents) {
+        return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleEast(final GUIContent @NotNull ... contents) {
+        return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthWest(final Item @NotNull ... contents) {
+        return setContents(southWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthWest(final ItemGUIContent @NotNull ... contents) {
+        return setContents(southWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthWest(final GUIContent @NotNull ... contents) {
+        return setContents(southWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #south()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouth(final Item @NotNull ... contents) {
+        return setContents(south(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #south()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouth(final ItemGUIContent @NotNull ... contents) {
+        return setContents(south(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #south()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouth(final GUIContent @NotNull ... contents) {
+        return setContents(south(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthEast(final Item @NotNull ... contents) {
+        return setContents(southEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthEast(final ItemGUIContent @NotNull ... contents) {
+        return setContents(southEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthEast(final GUIContent @NotNull ... contents) {
+        return setContents(southEast(), contents);
+    }
+
+    /**
      * Gets the slot at the North-West position in this GUI.
      * For example, in the case of a <i>3x3</i> dimension:
      * <pre>
@@ -489,14 +759,12 @@ public interface GUI extends Metadatable {
     @NotNull Optional<BiGUIAction> changeGUIAction();
 
     @Override
-    @NotNull
-    default GUI setVariable(final @NotNull String name, final @NotNull String value) {
+    default @NotNull GUI setVariable(final @NotNull String name, final @NotNull String value) {
         return (GUI) Metadatable.super.setVariable(name, value);
     }
 
     @Override
-    @NotNull
-    default GUI unsetVariable(final @NotNull String name) {
+    default @NotNull GUI unsetVariable(final @NotNull String name) {
         return (GUI) Metadatable.super.unsetVariable(name);
     }
 
@@ -551,14 +819,12 @@ public interface GUI extends Metadatable {
     }
 
     @Override
-    @NotNull
-    default GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
+    default @NotNull GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (GUI) Metadatable.super.copyAll(other, replace);
     }
 
     @Override
-    @NotNull
-    default GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
+    default @NotNull GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (GUI) Metadatable.super.copyFrom(other, replace);
     }
 
