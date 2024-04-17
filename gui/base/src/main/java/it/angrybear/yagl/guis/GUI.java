@@ -180,7 +180,7 @@ public interface GUI extends Metadatable {
     default @NotNull GUI setContents(int slot, final ItemGUIContent @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
     }
-    
+
     /**
      * Sets the given contents at the specified index.
      * These will be then filtered using {@link #getContent(Viewer, int)}
@@ -248,6 +248,12 @@ public interface GUI extends Metadatable {
         return Math.max(0, columns() - 1);
     }
 
+    /**
+     * Gets the slot at the start of the middle line.
+     * For internal use only.
+     *
+     * @return the start of the line
+     */
     default int middleLine() {
         int rows = (rows() - 1) / 2;
         double line = rows * columns();
@@ -299,6 +305,12 @@ public interface GUI extends Metadatable {
         return northEast() + middleLine();
     }
 
+    /**
+     * Gets the slot at the start of the south line.
+     * For internal use only.
+     *
+     * @return the start of the line
+     */
     default int southLine() {
         return Math.max(0, rows() - 1);
     }
@@ -348,8 +360,18 @@ public interface GUI extends Metadatable {
         return northEast() + southLine() * columns();
     }
 
+    /**
+     * Gets the rows of this GUI.
+     *
+     * @return the rows
+     */
     int rows();
 
+    /**
+     * Gets the columns of this GUI.
+     *
+     * @return the columns
+     */
     int columns();
 
     /**
