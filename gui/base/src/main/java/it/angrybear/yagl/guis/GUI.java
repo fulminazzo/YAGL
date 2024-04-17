@@ -203,6 +203,56 @@ public interface GUI extends Metadatable {
      */
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
+    default int northWest() {
+        return 0;
+    }
+
+    default int north() {
+        return columns() / 2;
+    }
+
+    default int northEast() {
+        return Math.max(0, columns() - 1);
+    }
+
+    default int middleLine() {
+        int rows = (rows() - 1) / 2;
+        double line = rows * columns();
+        return (int) line;
+    }
+
+    default int middleWest() {
+        return northWest() + middleLine();
+    }
+
+    default int middle() {
+        return north() + middleLine();
+    }
+
+    default int middleEast() {
+        return northEast() + middleLine();
+    }
+
+    default int southLine() {
+        return Math.max(0, rows() - 1);
+    }
+
+    default int southWest() {
+        return northWest() + southLine() * columns();
+    }
+
+    default int south() {
+        return north() + southLine() * columns();
+    }
+
+    default int southEast() {
+        return northEast() + southLine() * columns();
+    }
+
+    int rows();
+
+    int columns();
+
     /**
      * Removes the content from the given index.
      *
