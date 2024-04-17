@@ -323,6 +323,65 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final Item @NotNull ... contents) {
+        bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final ItemGUIContent @NotNull ... contents) {
+        bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final GUIContent @NotNull ... contents) {
+        bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final @NotNull Collection<GUIContent> contents) {
+        bottomSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the bottom side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> bottomSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = southWest(); i <= southEast(); i++) set.add(i);
+        return set;
+    }
+
+    /**
      * Sets the given contents at the {@link #rightSlots()}.
      *
      * @param contents the contents
