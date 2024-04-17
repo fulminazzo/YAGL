@@ -86,6 +86,16 @@ public class MockGUIParser extends YAMLParser<MockGUIParser.MockGUI> {
         }
 
         @Override
+        public int rows() {
+            return 0;
+        }
+
+        @Override
+        public int columns() {
+            return 0;
+        }
+
+        @Override
         public @NotNull GUI unsetContent(int slot) {
             return null;
         }
