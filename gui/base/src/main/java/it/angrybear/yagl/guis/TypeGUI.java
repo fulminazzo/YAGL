@@ -8,12 +8,18 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public class TypeGUI extends GUIImpl {
+    private static final int DEFAULT_ROWS = 1;
+
     private static final int DROPPER_ROWS = 3;
     private static final int DROPPER_COLUMNS = 3;
+
     private static final int BREWING_ROWS = 2;
     private static final int BREWING_COLUMNS = 3;
+
     private static final int LOOM_ROWS = 2;
     private static final int LOOM_COLUMNS = 3;
+    private static final int LOOM_MIDDLE_LINE = 0;
+    private static final int LOOM_SOUTH = 2;
 
     private final GUIType inventoryType;
 
@@ -36,106 +42,66 @@ public class TypeGUI extends GUIImpl {
 
     @Override
     public int northEast() {
-        switch (this.inventoryType) {
-            case BREWING:
-                return BREWING_ROWS - 1;
-            case LOOM:
-                return LOOM_ROWS - 1;
-            default:
-                return super.northEast();
-        }
+        if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS - 1;
+        else if (this.inventoryType == GUIType.LOOM) return LOOM_ROWS - 1;
+        else return super.northEast();
     }
 
     @Override
     public int middleLine() {
-        switch (this.inventoryType) {
-            case BREWING:
-                return BREWING_ROWS;
-            case LOOM:
-                return 0;
-            default:
-                return super.middleLine();
-        }
+        if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS;
+        else if (this.inventoryType == GUIType.LOOM) return LOOM_MIDDLE_LINE;
+        else return super.middleLine();
     }
 
     @Override
     public int middleEast() {
-        switch (this.inventoryType) {
-            case LOOM:
-                return LOOM_COLUMNS;
-            default:
-                return super.middleEast();
-        }
+        if (this.inventoryType == GUIType.LOOM) return LOOM_COLUMNS;
+        else return super.middleEast();
     }
 
     @Override
     public int southLine() {
-        switch (this.inventoryType) {
-            case BREWING:
-                return BREWING_ROWS;
-            default:
-                return super.southLine();
-        }
+        if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS;
+        else return super.southLine();
     }
 
     @Override
     public int southWest() {
-        switch (this.inventoryType) {
-            case LOOM:
-                return 2;
-            default:
-                return super.southWest();
-        }
+        if (this.inventoryType == GUIType.LOOM) return LOOM_SOUTH;
+        else return super.southWest();
     }
 
     @Override
     public int south() {
-        switch (this.inventoryType) {
-            case LOOM:
-                return 2;
-            default:
-                return super.south();
-        }
+        if (this.inventoryType == GUIType.LOOM) return LOOM_SOUTH;
+        else return super.south();
     }
 
     @Override
     public int southEast() {
-        switch (this.inventoryType) {
-            case LOOM:
-                return 2;
-            default:
-                return super.southEast();
-        }
+        if (this.inventoryType == GUIType.LOOM) return LOOM_SOUTH;
+        else return super.southEast();
     }
 
     @Override
     public int rows() {
-        switch (this.inventoryType) {
-            case WORKBENCH:
-            case DROPPER:
-            case DISPENSER:
-                return DROPPER_ROWS;
-            case BREWING:
-                return BREWING_ROWS;
-            case LOOM:
-                return LOOM_ROWS;
-        }
-        if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
-        return 1;
+        if (this.inventoryType == GUIType.WORKBENCH ||
+                this.inventoryType == GUIType.DROPPER ||
+                this.inventoryType == GUIType.DISPENSER) return DROPPER_ROWS;
+        else if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS;
+        else if (this.inventoryType == GUIType.LOOM) return LOOM_ROWS;
+        else if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
+        else return DEFAULT_ROWS;
     }
 
     @Override
     public int columns() {
-        switch (this.inventoryType) {
-            case WORKBENCH:
-            case DISPENSER:
-            case DROPPER:
-                return DROPPER_COLUMNS;
-            case BREWING:
-                return BREWING_COLUMNS;
-            case LOOM:
-                return LOOM_COLUMNS;
-        }
-        return Math.min(size(), DefaultGUI.COLUMNS);
+        if (this.inventoryType == GUIType.WORKBENCH ||
+                this.inventoryType == GUIType.DROPPER ||
+                this.inventoryType == GUIType.DISPENSER) return DROPPER_COLUMNS;
+        else if (this.inventoryType == GUIType.BREWING) return BREWING_COLUMNS;
+        else if (this.inventoryType == GUIType.LOOM) return LOOM_COLUMNS;
+        else return Math.min(size(), DefaultGUI.COLUMNS);
     }
 }
