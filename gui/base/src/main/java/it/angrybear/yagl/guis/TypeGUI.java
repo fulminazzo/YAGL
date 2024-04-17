@@ -1,6 +1,5 @@
 package it.angrybear.yagl.guis;
 
-import it.angrybear.yagl.exceptions.NotImplemented;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public class TypeGUI extends GUIImpl {
+    private static final int DROPPER_ROWS = 3;
+    private static final int DROPPER_COLUMNS = 3;
+
     private final GUIType inventoryType;
 
     /**
@@ -30,11 +32,22 @@ public class TypeGUI extends GUIImpl {
 
     @Override
     public int rows() {
-        throw new NotImplemented();
+        if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
+        switch (this.inventoryType) {
+            case DROPPER:
+            case DISPENSER:
+                return DROPPER_ROWS;
+        }
+        return 1;
     }
 
     @Override
     public int columns() {
-        throw new NotImplemented();
+        switch (this.inventoryType) {
+            case DISPENSER:
+            case DROPPER:
+                return DROPPER_COLUMNS;
+        }
+        return Math.min(size(), DefaultGUI.COLUMNS);
     }
 }
