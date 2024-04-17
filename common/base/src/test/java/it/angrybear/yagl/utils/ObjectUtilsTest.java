@@ -38,16 +38,34 @@ class ObjectUtilsTest {
         assertNotEquals(c1.copiable, c2.copiable);
     }
 
+    @Test
+    void testCopyThrowsIllegalArgument() {
+        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () ->
+                ObjectUtils.copy(new GeneralCopyException()));
+        assertEquals("Everything good", exception.getMessage());
+    }
+
     private static class GeneralCopy {
         List<String> list = Arrays.asList("hello", "world");
         String[] array = new String[]{"hello", "world"};
         GeneralCopiable copiable = new GeneralCopiable();
     }
 
+    private static class GeneralCopyException {
+        GeneralCopiableException copiable = new GeneralCopiableException();
+    }
+
     private static class GeneralCopiable {
 
         public GeneralCopiable copy() {
             return new GeneralCopiable();
+        }
+    }
+
+    private static class GeneralCopiableException {
+
+        public GeneralCopiable copy() {
+            throw new IllegalArgumentException("Everything good");
         }
     }
 
