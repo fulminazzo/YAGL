@@ -1,13 +1,15 @@
 package it.angrybear.yagl.utils;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.NullableOptional;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,7 +73,7 @@ public final class ObjectUtils {
                 else if (obj1 instanceof Collection) return copyCollection(obj1);
                 else if (obj1 instanceof Map) return copyMap(obj1);
                 else if (obj1.getClass().isArray()) return copyArray(obj1);
-                else return copyWthMethod(obj1);
+                else return copyWithMethod(obj1);
             }).ifPresent(obj1 -> object.setFieldObject(field, obj1));
         return object.getObject();
     }
@@ -99,13 +101,15 @@ public final class ObjectUtils {
                 .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
     }
 
-    private static @NotNull Object copyWthMethod(final @NotNull Object obj1) {
+    private static @NotNull Object copyWithMethod(final @NotNull Object obj1) {
         try {
             Method copy = obj1.getClass().getDeclaredMethod("copy");
-            @NotNull NullableOptional<Method> optional = ReflectionUtils.setAccessible(copy);
-            if (optional.isPresent()) obj1 = optional.get().invoke(obj1);
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ignored) {}
-        return obj1;
+            return ReflectionUtils.setAccessible(copy)
+                    .map(m -> m.invoke(obj1))
+                    .orElseGet(obj1);
+        } catch (NoSuchMethodException e) {
+            return obj1;
+        }
     }
 
 }
