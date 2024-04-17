@@ -79,7 +79,7 @@ class ItemTest {
         assertTrue(message.contains(implName), "Exception message did not contain abstract implementation class name");
 
         // Check that the returned exception is not from ReflectionUtils
-        String reflMessage = ReflectionUtils.get(ReflectionUtils.getField(ReflectionUtils.class, "CLASS_NOT_FOUND"), ReflectionUtils.class);
+        String reflMessage = ReflectionUtils.getOrThrow(ReflectionUtils.getField(ReflectionUtils.class, "CLASS_NOT_FOUND"), ReflectionUtils.class);
         assertNotEquals(reflMessage.replace("%class%", implName), message,
                 "Exception message should not be the same as the one returned by ReflectionUtils");
     }
