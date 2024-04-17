@@ -12,6 +12,8 @@ public class TypeGUI extends GUIImpl {
     private static final int DROPPER_COLUMNS = 3;
     private static final int BREWING_ROWS = 2;
     private static final int BREWING_COLUMNS = 3;
+    private static final int LOOM_ROWS = 2;
+    private static final int LOOM_COLUMNS = 3;
 
     private final GUIType inventoryType;
 
@@ -37,6 +39,8 @@ public class TypeGUI extends GUIImpl {
         switch (this.inventoryType) {
             case BREWING:
                 return BREWING_ROWS - 1;
+            case LOOM:
+                return LOOM_ROWS - 1;
             default:
                 return super.northEast();
         }
@@ -47,8 +51,20 @@ public class TypeGUI extends GUIImpl {
         switch (this.inventoryType) {
             case BREWING:
                 return BREWING_ROWS;
+            case LOOM:
+                return 0;
             default:
                 return super.middleLine();
+        }
+    }
+
+    @Override
+    public int middleEast() {
+        switch (this.inventoryType) {
+            case LOOM:
+                return LOOM_COLUMNS;
+            default:
+                return super.middleEast();
         }
     }
 
@@ -63,6 +79,36 @@ public class TypeGUI extends GUIImpl {
     }
 
     @Override
+    public int southWest() {
+        switch (this.inventoryType) {
+            case LOOM:
+                return 2;
+            default:
+                return super.southWest();
+        }
+    }
+
+    @Override
+    public int south() {
+        switch (this.inventoryType) {
+            case LOOM:
+                return 2;
+            default:
+                return super.south();
+        }
+    }
+
+    @Override
+    public int southEast() {
+        switch (this.inventoryType) {
+            case LOOM:
+                return 2;
+            default:
+                return super.southEast();
+        }
+    }
+
+    @Override
     public int rows() {
         switch (this.inventoryType) {
             case WORKBENCH:
@@ -71,6 +117,8 @@ public class TypeGUI extends GUIImpl {
                 return DROPPER_ROWS;
             case BREWING:
                 return BREWING_ROWS;
+            case LOOM:
+                return LOOM_ROWS;
         }
         if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
         return 1;
@@ -85,6 +133,8 @@ public class TypeGUI extends GUIImpl {
                 return DROPPER_COLUMNS;
             case BREWING:
                 return BREWING_COLUMNS;
+            case LOOM:
+                return LOOM_COLUMNS;
         }
         return Math.min(size(), DefaultGUI.COLUMNS);
     }
