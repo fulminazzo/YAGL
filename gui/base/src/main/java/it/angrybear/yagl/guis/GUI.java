@@ -204,6 +204,50 @@ public interface GUI extends Metadatable {
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
     /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final Item @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final ItemGUIContent @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final GUIContent @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final @NotNull Collection<GUIContent> contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
      * Sets the given contents at the {@link #topSlots()} and the {@link #bottomSlots()}.
      *
      * @param contents the contents
