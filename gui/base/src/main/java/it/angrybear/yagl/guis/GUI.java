@@ -272,7 +272,7 @@ public interface GUI extends Metadatable {
      * @return the slots
      */
     default int middleWest() {
-        return northWest() + middleLine();
+        return middleLine();
     }
 
     /**
@@ -287,7 +287,7 @@ public interface GUI extends Metadatable {
      * @return the slots
      */
     default int middle() {
-        return north() + middleLine();
+        return columns() / 2 + middleLine();
     }
 
     /**
@@ -302,7 +302,7 @@ public interface GUI extends Metadatable {
      * @return the slots
      */
     default int middleEast() {
-        return northEast() + middleLine();
+        return Math.max(0, columns() - 1) + middleLine();
     }
 
     /**
@@ -327,7 +327,7 @@ public interface GUI extends Metadatable {
      * @return the slots
      */
     default int southWest() {
-        return northWest() + southLine() * columns();
+        return southLine() * columns();
     }
 
     /**
@@ -342,7 +342,7 @@ public interface GUI extends Metadatable {
      * @return the slots
      */
     default int south() {
-        return north() + southLine() * columns();
+        return columns() / 2 + southLine() * columns();
     }
 
     /**
@@ -357,7 +357,7 @@ public interface GUI extends Metadatable {
      * @return the slots
      */
     default int southEast() {
-        return northEast() + southLine() * columns();
+        return Math.max(0, columns() - 1) + southLine() * columns();
     }
 
     /**
