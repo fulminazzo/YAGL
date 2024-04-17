@@ -211,7 +211,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final Item @NotNull ... contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
@@ -222,7 +222,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final ItemGUIContent @NotNull ... contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
@@ -233,7 +233,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final GUIContent @NotNull ... contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
@@ -244,7 +244,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final @NotNull Collection<GUIContent> contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
