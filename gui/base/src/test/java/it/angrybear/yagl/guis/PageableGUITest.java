@@ -164,7 +164,7 @@ class PageableGUITest {
 
     @Test
     void testGetGUIPageException() {
-        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(1).getPage(1));
+        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(9).getPage(1));
     }
 
     @Test
