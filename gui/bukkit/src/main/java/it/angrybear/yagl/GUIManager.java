@@ -4,7 +4,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.BiOptional;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -80,27 +80,27 @@ public class GUIManager implements Listener {
     }
 
     /**
-     * Gets a {@link BiOptional} with the corresponding {@link Viewer} and open {@link GUI} if present.
+     * Gets a {@link Tuple} with the corresponding {@link Viewer} and open {@link GUI} if present.
      *
      * @param player the player
-     * @return the BiOptional
+     * @return the Tuple
      */
-    public static @NotNull BiOptional<Viewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
+    public static @NotNull Tuple<Viewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
         Viewer viewer = getViewer(player);
-        if (viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
-        else return BiOptional.empty();
+        if (viewer.hasOpenGUI()) return new Tuple<>(viewer, viewer.getOpenGUI());
+        else return new Tuple<>();
     }
 
     /**
-     * Gets a {@link BiOptional} with the corresponding {@link Viewer} and open {@link GUI} if present.
+     * Gets a {@link Tuple} with the corresponding {@link Viewer} and open {@link GUI} if present.
      *
      * @param uuid the uuid
-     * @return the BiOptional
+     * @return the Tuple
      */
-    public static @NotNull BiOptional<Viewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
+    public static @NotNull Tuple<Viewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
         Viewer viewer = getViewer(uuid);
-        if (viewer != null && viewer.hasOpenGUI()) return BiOptional.of(viewer, viewer.getOpenGUI());
-        else return BiOptional.empty();
+        if (viewer != null && viewer.hasOpenGUI()) return new Tuple<>(viewer, viewer.getOpenGUI());
+        else return new Tuple<>();
     }
 
     /**
