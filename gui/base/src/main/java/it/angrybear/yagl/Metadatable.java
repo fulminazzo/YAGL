@@ -130,13 +130,8 @@ public interface Metadatable {
         else if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass())) {
             final Refl<T> refl = new Refl<>(object);
             for (Field field : refl.getNonStaticFields())
-                ReflectionUtils.setAccessible(field).ifPresent(f -> {
-                    try {
-                        refl.setFieldObject(f, apply(f.get(object)));
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                ReflectionUtils.setAccessible(field).ifPresent(f ->
+                        refl.setFieldObject(f, apply(f.get(object))));
         }
         return object;
     }
