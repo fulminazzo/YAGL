@@ -4,13 +4,18 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@SuppressWarnings("unused")
 class GUITest {
 
     private static Object[][] expectedCorners() {
@@ -65,6 +70,52 @@ class GUITest {
         assertEquals(southWest, gui.southWest(), "Invalid South West slot");
         assertEquals(south, gui.south(), "Invalid South slot");
         assertEquals(southEast, gui.southEast(), "Invalid South East slot");
+    }
+
+    @ParameterizedTest
+    @MethodSource("expectedCorners")
+    void testSetLeftSide(Object object,
+                        int northWest, int north, int northEast,
+                        int middleWest, int middle, int middleEast,
+                        int southWest, int south, int southEast) {
+        final Map<Object, Integer> ignored = new HashMap<>();
+        ignored.put(GUIType.WORKBENCH, 9);
+        ignored.put(GUIType.BREWING, 3);
+        ignored.put(GUIType.PLAYER, 36);
+        ignored.put(GUIType.LOOM, 3);
+
+        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+
+        ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
+        gui.setLeftSide(itemGUIContent);
+        testSide(object, northWest, middleWest, southWest, gui, ignored, itemGUIContent);
+
+        gui.clear();
+        Item item = Item.newItem("gold");
+        gui.setLeftSide(item);
+        testSide(object, northWest, middleWest, southWest, gui, ignored, ItemGUIContent.newInstance(item));
+
+        gui.clear();
+        GUIContent guiContent = mock(GUIContent.class);
+        when(guiContent.copy()).thenReturn(guiContent);
+        gui.setLeftSide(guiContent);
+        testSide(object, northWest, middleWest, southWest, gui, ignored, guiContent);
+
+        gui.clear();
+        gui.setLeftSide(Collections.singletonList(guiContent));
+        testSide(object, northWest, middleWest, southWest, gui, ignored, guiContent);
+    }
+
+    private static void testSide(Object object, int north, int middle, int south, GUI gui,
+                                 Map<Object, Integer> ignoredSlots, Object expected) {
+        for (int i = 0; i < gui.size(); i++) {
+            @NotNull List<GUIContent> contents = gui.getContents(i);
+            if ((i == north || i == middle || i == south || (i - north) % gui.columns() == 0 ||
+                    (i - middle) % gui.columns() == 0) && ignoredSlots.getOrDefault(object, -1) != i) {
+                assertFalse(contents.isEmpty(), String.format("Expected not empty at %s", i));
+                assertEquals(expected, contents.get(0));
+            } else assertTrue(contents.isEmpty(), String.format("Expected empty at %s but was: %s", i, contents));
+        }
     }
 
     @ParameterizedTest
