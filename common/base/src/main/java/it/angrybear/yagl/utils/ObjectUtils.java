@@ -64,37 +64,15 @@ public final class ObjectUtils {
                         clazz.getCanonicalName(), clazz.getCanonicalName()));
             }
 
-        Refl<O> object = new Refl<>(clazz, new Object[0]);
+        final Refl<O> object = new Refl<>(clazz, new Object[0]);
         for (final Field field : object.getNonStaticFields())
-            try {
-                Object obj1 = ReflectionUtils.get(field, t);
-                if (obj1 instanceof Collection) {
-                    Class<?> tmpClass = obj1.getClass();
-                    // In the case of creation with Arrays.asList()
-                    if (tmpClass.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
-                        tmpClass = ArrayList.class;
-                    Class<Collection<Object>> finalClass = (Class<Collection<Object>>) tmpClass;
-                    obj1 = ((Collection<?>) obj1).stream()
-                            .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
-                } else if (obj1 instanceof Map) {
-                    Map<Object, Object> map = new HashMap<>();
-                    ((Map<Object, Object>) obj1).putAll(map);
-                    obj1 = map;
-                } else if (obj1 != null)
-                    if (obj1.getClass().isArray()) {
-                        Object[] tmp = (Object[]) obj1;
-                        Object[] arr = (Object[]) Array.newInstance(obj1.getClass().getComponentType(), tmp.length);
-                        System.arraycopy(tmp, 0, arr, 0, arr.length);
-                        obj1 = arr;
-                    } else
-                        try {
-                            Method copy = obj1.getClass().getDeclaredMethod("copy");
-                            @NotNull NullableOptional<Method> optional = ReflectionUtils.setAccessible(copy);
-                            if (optional.isPresent()) obj1 = optional.get().invoke(obj1);
-                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ignored) {}
-                object.setFieldObject(field, obj1);
-            } catch (IllegalArgumentException ignored) {}
-
+            ReflectionUtils.get(field, t).map(obj1 -> {
+                if (obj1 == null) return null;
+                else if (obj1 instanceof Collection) return copyCollection(obj1);
+                else if (obj1 instanceof Map) return copyMap(obj1);
+                else if (obj1.getClass().isArray()) return copyArray(obj1);
+                else return copyWthMethod(obj1);
+            }).ifPresent(obj1 -> object.setFieldObject(field, obj1));
         return object.getObject();
     }
 
