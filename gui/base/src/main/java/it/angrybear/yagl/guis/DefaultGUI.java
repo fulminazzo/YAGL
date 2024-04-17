@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 class DefaultGUI extends GUIImpl {
-    private static final int COLUMNS = 9;
+    static final int COLUMNS = 9;
 
     /**
      * Instantiates a new Gui.
