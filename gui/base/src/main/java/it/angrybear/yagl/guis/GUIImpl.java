@@ -24,7 +24,6 @@ abstract class GUIImpl extends FieldEquable implements GUI {
     protected String title;
     protected List<Contents> contents;
     protected final Set<Integer> movableSlots;
-    @Getter(AccessLevel.NONE)
     protected final Map<String, String> variables = new HashMap<>();
 
     protected GUIAction clickOutsideAction;
