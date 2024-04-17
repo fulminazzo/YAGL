@@ -264,6 +264,66 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final Item @NotNull ... contents) {
+        rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final ItemGUIContent @NotNull ... contents) {
+        rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final GUIContent @NotNull ... contents) {
+        rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final @NotNull Collection<GUIContent> contents) {
+        rightSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the right side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> rightSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = northEast(); i <= southEast(); i += columns()) set.add(i);
+        set.addAll(Arrays.asList(northEast(), middleEast(), southEast()));
+        return set;
+    }
+
+    /**
      * Sets the given contents at the index {@link #northWest()}.
      *
      * @param contents the contents
