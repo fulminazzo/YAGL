@@ -287,7 +287,7 @@ class WrappersAdapterTest extends BukkitUtils {
         List<PotionEffectType> potionEffects = new ArrayList<>();
         for (Field field : PotionEffectType.class.getDeclaredFields())
             if (field.getType().equals(PotionEffectType.class)) {
-                PotionEffectType type = ReflectionUtils.get(field, PotionEffectType.class);
+                PotionEffectType type = ReflectionUtils.getOrThrow(field, PotionEffectType.class);
                 potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
             }
         // Register potion effects
@@ -310,7 +310,7 @@ class WrappersAdapterTest extends BukkitUtils {
         List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
         for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
             if (field.getType().equals(org.bukkit.enchantments.Enchantment.class)) {
-                org.bukkit.enchantments.Enchantment enchant = ReflectionUtils.get(field, org.bukkit.enchantments.Enchantment.class);
+                org.bukkit.enchantments.Enchantment enchant = ReflectionUtils.getOrThrow(field, org.bukkit.enchantments.Enchantment.class);
                 enchantments.add(new MockEnchantment(enchant.getKey()));
             }
         // Register enchantments

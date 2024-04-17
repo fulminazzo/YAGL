@@ -79,8 +79,8 @@ class ParticleParserTest extends ParserTestHelper<Particle> {
 
         Field[] fields = expected.getClass().getDeclaredFields();
         for (Field field : fields) {
-            Object obj1 = ReflectionUtils.get(field, expected);
-            Object obj2 = ReflectionUtils.get(field, actual);
+            Object obj1 = ReflectionUtils.getOrThrow(field, expected);
+            Object obj2 = ReflectionUtils.getOrThrow(field, actual);
             if (obj1 == null) assertNull(obj2);
             else {
                 assertEquals(obj1.getClass(), obj2.getClass());

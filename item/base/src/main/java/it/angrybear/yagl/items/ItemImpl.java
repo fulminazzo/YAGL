@@ -105,8 +105,8 @@ class ItemImpl extends FieldEquable implements Item {
                         .noneMatch(f2 -> f.getName().equalsIgnoreCase(f2.name()
                                 .replace("_", ""))))
                 .allMatch(f -> {
-                    Object obj1 = ReflectionUtils.get(f, this);
-                    Object obj2 = ReflectionUtils.get(f, item);
+                    Object obj1 = ReflectionUtils.getOrThrow(f, this);
+                    Object obj2 = ReflectionUtils.getOrThrow(f, item);
                     return Objects.equals(obj1, obj2);
                 });
     }
