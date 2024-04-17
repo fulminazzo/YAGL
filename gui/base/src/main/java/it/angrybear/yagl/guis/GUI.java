@@ -244,6 +244,46 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final Item @NotNull ... contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final ItemGUIContent @NotNull ... contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final GUIContent @NotNull ... contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
      * Sets the given contents at the {@link #topSlots()}.
      *
      * @param contents the contents
