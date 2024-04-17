@@ -53,8 +53,8 @@ class ItemGUIContentTest {
                 if (method.getName().equals("isSimilar")) params = new Object[]{expected, new ItemField[0]};
                 else params = Arrays.stream(method.getParameterTypes()).map(TestUtils::mockParameter).toArray(Object[]::new);
 
-                Object obj1 = ReflectionUtils.setAccessible(method).invoke(actual, params);
-                Object obj2 = ReflectionUtils.setAccessible(method).invoke(expected, params);
+                Object obj1 = ReflectionUtils.setAccessibleOrThrow(method).invoke(actual, params);
+                Object obj2 = ReflectionUtils.setAccessibleOrThrow(method).invoke(expected, params);
                 assertEquals(obj2, obj1);
             }
     }

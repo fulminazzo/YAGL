@@ -136,7 +136,7 @@ class PageableGUITest {
                 Metadatable.class.getDeclaredMethod(method.getName(), method.getParameterTypes());
                 continue;
             } catch (NoSuchMethodException ignored) {}
-            method = ReflectionUtils.setAccessible(method);
+            method = ReflectionUtils.setAccessibleOrThrow(method);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
                     .map(o -> o instanceof Integer ? 0 : o)

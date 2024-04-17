@@ -156,7 +156,7 @@ class ItemAdapterTest extends BukkitUtils {
             @NotNull List<Method> methods = adapter.getMethods(m -> m.getName().equals(methodName));
             assertEquals(4, methods.size(), String.format("Could not find all '%s' methods", methodName));
             for (Method method : methods) {
-                Object result = ReflectionUtils.setAccessible(method).invoke(ItemAdapter.class, (Object) null);
+                Object result = ReflectionUtils.setAccessibleOrThrow(method).invoke(ItemAdapter.class, (Object) null);
                 assertNull(result);
             }
         }
