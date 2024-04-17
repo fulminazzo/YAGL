@@ -407,7 +407,7 @@ public interface GUI extends Metadatable {
      * @return the gui
      */
     static GUI newGUI(final int size) {
-        return new GUIImpl(size);
+        return new DefaultGUI(size);
     }
 
     /**
