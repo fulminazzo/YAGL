@@ -333,6 +333,141 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI setNorthWest(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorthWest(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorthWest(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorth(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorth(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorth(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorthEast(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorthEast(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setNorthEast(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddleWest(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddleWest(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddleWest(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddle(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddle(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddle(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddleEast(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddleEast(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setMiddleEast(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouthWest(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouthWest(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouthWest(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouth(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouth(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouth(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouthEast(Item @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouthEast(ItemGUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI setSouthEast(GUIContent @NotNull ... contents) {
+        return (PageableGUI) GUI.super.setSouthEast(contents);
+    }
+
+    @Override
     public @NotNull PageableGUI onClickOutside(@NotNull String command) {
         return (PageableGUI) GUI.super.onClickOutside(command);
     }

@@ -83,6 +83,141 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI setNorthWest(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorthWest(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorthWest(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorth(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorth(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorth(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorthEast(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorthEast(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setNorthEast(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddleWest(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddleWest(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddleWest(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddle(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddle(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddle(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddleEast(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddleEast(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setMiddleEast(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouthWest(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouthWest(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouthWest(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouth(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouth(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouth(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouthEast(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouthEast(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setSouthEast(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setSouthEast(contents);
+    }
+
+    @Override
     public @NotNull ResizableGUI onClickOutside(@NotNull GUIAction action) {
         return (ResizableGUI) super.onClickOutside(action);
     }
