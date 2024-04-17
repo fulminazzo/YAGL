@@ -27,8 +27,10 @@ class DefaultGUI extends GUIImpl {
      * @param size  the size
      */
     void checkSize(int size) {
-        if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
-        if (size % 9 != 0)
-            throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of 9 can be accepted", size));
+        if (size < COLUMNS || size > MAX_SIZE)
+            throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and 54!", COLUMNS));
+        if (size % COLUMNS != 0)
+            throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of %s can be accepted",
+                    size, COLUMNS));
     }
 }
