@@ -1,7 +1,7 @@
 package it.angrybear.yagl.particles;
 
 import it.angrybear.yagl.Color;
-import it.fulminazzo.fulmicollection.structures.Triple;
+import it.fulminazzo.fulmicollection.structures.tuples.Triple;
 import org.jetbrains.annotations.NotNull;
 
 /**

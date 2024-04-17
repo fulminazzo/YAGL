@@ -1,6 +1,6 @@
 import it.angrybear.yagl.WrappersAdapter
 import it.angrybear.yagl.wrappers.Enchantment
-import it.fulminazzo.fulmicollection.structures.Tuple
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
