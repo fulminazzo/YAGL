@@ -9,7 +9,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -75,9 +78,9 @@ class GUITest {
     @ParameterizedTest
     @MethodSource("expectedCorners")
     void testSetLeftSide(Object object,
-                        int northWest, int north, int northEast,
-                        int middleWest, int middle, int middleEast,
-                        int southWest, int south, int southEast) {
+                         int northWest, int north, int northEast,
+                         int middleWest, int middle, int middleEast,
+                         int southWest, int south, int southEast) {
         final Map<Object, Integer> ignored = new HashMap<>();
         ignored.put(GUIType.WORKBENCH, 9);
         ignored.put(GUIType.BREWING, 3);
@@ -104,6 +107,37 @@ class GUITest {
         gui.clear();
         gui.setLeftSide(Collections.singletonList(guiContent));
         testSide(object, northWest, middleWest, southWest, gui, ignored, guiContent);
+    }
+
+    @ParameterizedTest
+    @MethodSource("expectedCorners")
+    void testSetRightSide(Object object,
+                         int northWest, int north, int northEast,
+                         int middleWest, int middle, int middleEast,
+                         int southWest, int south, int southEast) {
+        final Map<Object, Integer> ignored = new HashMap<>();
+        ignored.put(GUIType.LOOM, 0);
+
+        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+
+        ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
+        gui.setRightSide(itemGUIContent);
+        testSide(object, northEast, middleEast, southEast, gui, ignored, itemGUIContent);
+
+        gui.clear();
+        Item item = Item.newItem("gold");
+        gui.setRightSide(item);
+        testSide(object, northEast, middleEast, southEast, gui, ignored, ItemGUIContent.newInstance(item));
+
+        gui.clear();
+        GUIContent guiContent = mock(GUIContent.class);
+        when(guiContent.copy()).thenReturn(guiContent);
+        gui.setRightSide(guiContent);
+        testSide(object, northEast, middleEast, southEast, gui, ignored, guiContent);
+
+        gui.clear();
+        gui.setRightSide(Collections.singletonList(guiContent));
+        testSide(object, northEast, middleEast, southEast, gui, ignored, guiContent);
     }
 
     private static void testSide(Object object, int north, int middle, int south, GUI gui,
