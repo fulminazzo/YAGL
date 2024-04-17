@@ -1,10 +1,15 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class GUITest {
 
@@ -60,6 +65,36 @@ class GUITest {
         assertEquals(southWest, gui.southWest(), "Invalid South West slot");
         assertEquals(south, gui.south(), "Invalid South slot");
         assertEquals(southEast, gui.southEast(), "Invalid South East slot");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "northWest", "north", "northEast",
+            "middleWest", "middle", "middleEast",
+            "southWest", "south", "southEast",
+    })
+    void testSetCornersMethods(String methodName) {
+        GUI gui = GUI.newGUI(27);
+        Refl<GUI> guiRefl = new Refl<>(gui);
+        int slot = guiRefl.invokeMethod(methodName);
+
+        Item item = Item.newItem("stone");
+        guiRefl.invokeMethod("set" + methodName, new Class[]{Item[].class},
+                (Object) new Item[]{item});
+
+        assertEquals(ItemGUIContent.newInstance(item), gui.getContents(slot).get(0));
+
+        ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("diamond");
+        guiRefl.invokeMethod("set" + methodName, new Class[]{ItemGUIContent[].class},
+                (Object) new ItemGUIContent[]{itemGUIContent});
+
+        assertEquals(itemGUIContent, gui.getContents(slot).get(0));
+
+        GUIContent guiContent = mock(GUIContent.class);
+        guiRefl.invokeMethod("set" + methodName, new Class[]{GUIContent[].class},
+                (Object) new GUIContent[]{guiContent});
+
+        assertEquals(guiContent, gui.getContents(slot).get(0));
     }
 
 }
