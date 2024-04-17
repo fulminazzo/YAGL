@@ -32,18 +32,20 @@ public class TypeGUI extends GUIImpl {
 
     @Override
     public int rows() {
-        if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
         switch (this.inventoryType) {
+            case WORKBENCH:
             case DROPPER:
             case DISPENSER:
                 return DROPPER_ROWS;
         }
+        if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
         return 1;
     }
 
     @Override
     public int columns() {
         switch (this.inventoryType) {
+            case WORKBENCH:
             case DISPENSER:
             case DROPPER:
                 return DROPPER_COLUMNS;
