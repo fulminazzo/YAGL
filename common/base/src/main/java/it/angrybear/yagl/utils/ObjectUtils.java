@@ -98,4 +98,36 @@ public final class ObjectUtils {
         return object.getObject();
     }
 
+    private static @NotNull Object[] copyArray(final @NotNull Object obj1) {
+        Object[] tmp = (Object[]) obj1;
+        Object[] arr = (Object[]) Array.newInstance(obj1.getClass().getComponentType(), tmp.length);
+        System.arraycopy(tmp, 0, arr, 0, arr.length);
+        return arr;
+    }
+
+    private static @NotNull Map<Object, Object> copyMap(final @NotNull Object obj1) {
+        Map<Object, Object> map = new HashMap<>();
+        ((Map<Object, Object>) obj1).putAll(map);
+        return map;
+    }
+
+    private static @NotNull Collection<?> copyCollection(final @NotNull Object obj1) {
+        Class<?> tmpClass = obj1.getClass();
+        // In the case of creation with Arrays.asList()
+        if (tmpClass.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
+            tmpClass = ArrayList.class;
+        Class<Collection<Object>> finalClass = (Class<Collection<Object>>) tmpClass;
+        return ((Collection<?>) obj1).stream()
+                .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
+    }
+
+    private static @NotNull Object copyWthMethod(final @NotNull Object obj1) {
+        try {
+            Method copy = obj1.getClass().getDeclaredMethod("copy");
+            @NotNull NullableOptional<Method> optional = ReflectionUtils.setAccessible(copy);
+            if (optional.isPresent()) obj1 = optional.get().invoke(obj1);
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ignored) {}
+        return obj1;
+    }
+
 }
