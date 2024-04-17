@@ -83,6 +83,71 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI clear() {
+        return (ResizableGUI) super.clear();
+    }
+
+    @Override
+    public @NotNull ResizableGUI setAllSides(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setAllSides(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setAllSides(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setAllSides(@NotNull Collection<GUIContent> contents) {
+        return (ResizableGUI) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setTopAndBottomSides(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setTopAndBottomSides(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setTopAndBottomSides(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+        return (ResizableGUI) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setLeftAndRightSides(Item @NotNull ... contents) {
+        return (ResizableGUI) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setLeftAndRightSides(ItemGUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setLeftAndRightSides(GUIContent @NotNull ... contents) {
+        return (ResizableGUI) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+        return (ResizableGUI) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
     public @NotNull ResizableGUI setTopSide(Item @NotNull ... contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
