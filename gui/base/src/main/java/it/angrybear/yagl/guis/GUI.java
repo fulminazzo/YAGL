@@ -180,7 +180,7 @@ public interface GUI extends Metadatable {
     default @NotNull GUI setContents(int slot, final ItemGUIContent @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
     }
-    
+
     /**
      * Sets the given contents at the specified index.
      * These will be then filtered using {@link #getContent(Viewer, int)}
@@ -202,6 +202,816 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final Item @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final ItemGUIContent @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final GUIContent @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setAllSides(final @NotNull Collection<GUIContent> contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()} and the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopAndBottomSides(final Item @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()} and the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopAndBottomSides(final ItemGUIContent @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()} and the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopAndBottomSides(final GUIContent @NotNull ... contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()} and the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
+        return setTopSide(contents).setBottomSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final Item @NotNull ... contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final ItemGUIContent @NotNull ... contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final GUIContent @NotNull ... contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
+        return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final Item @NotNull ... contents) {
+        topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final ItemGUIContent @NotNull ... contents) {
+        topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final GUIContent @NotNull ... contents) {
+        topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final @NotNull Collection<GUIContent> contents) {
+        topSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the top side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> topSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = 0; i <= northEast(); i++) set.add(i);
+        return set;
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftSide(final Item @NotNull ... contents) {
+        leftSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftSide(final ItemGUIContent @NotNull ... contents) {
+        leftSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftSide(final GUIContent @NotNull ... contents) {
+        leftSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #leftSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setLeftSide(final @NotNull Collection<GUIContent> contents) {
+        leftSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the left side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> leftSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = northWest(); i <= southWest(); i += columns()) set.add(i);
+        set.addAll(Arrays.asList(northWest(), middleWest(), southWest()));
+        return set;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final Item @NotNull ... contents) {
+        bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final ItemGUIContent @NotNull ... contents) {
+        bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final GUIContent @NotNull ... contents) {
+        bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #bottomSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setBottomSide(final @NotNull Collection<GUIContent> contents) {
+        bottomSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the bottom side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> bottomSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = southWest(); i <= southEast(); i++) set.add(i);
+        return set;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final Item @NotNull ... contents) {
+        rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final ItemGUIContent @NotNull ... contents) {
+        rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final GUIContent @NotNull ... contents) {
+        rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #rightSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setRightSide(final @NotNull Collection<GUIContent> contents) {
+        rightSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the right side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> rightSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = northEast(); i <= southEast(); i += columns()) set.add(i);
+        set.addAll(Arrays.asList(northEast(), middleEast(), southEast()));
+        return set;
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthWest(final Item @NotNull ... contents) {
+        return setContents(northWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthWest(final ItemGUIContent @NotNull ... contents) {
+        return setContents(northWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthWest(final GUIContent @NotNull ... contents) {
+        return setContents(northWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #north()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorth(final Item @NotNull ... contents) {
+        return setContents(north(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #north()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorth(final ItemGUIContent @NotNull ... contents) {
+        return setContents(north(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #north()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorth(final GUIContent @NotNull ... contents) {
+        return setContents(north(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthEast(final Item @NotNull ... contents) {
+        return setContents(northEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthEast(final ItemGUIContent @NotNull ... contents) {
+        return setContents(northEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #northEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setNorthEast(final GUIContent @NotNull ... contents) {
+        return setContents(northEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleWest(final Item @NotNull ... contents) {
+        return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleWest(final ItemGUIContent @NotNull ... contents) {
+        return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleWest(final GUIContent @NotNull ... contents) {
+        return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middle()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddle(final Item @NotNull ... contents) {
+        return setContents(middle(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middle()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddle(final ItemGUIContent @NotNull ... contents) {
+        return setContents(middle(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middle()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddle(final GUIContent @NotNull ... contents) {
+        return setContents(middle(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleEast(final Item @NotNull ... contents) {
+        return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleEast(final ItemGUIContent @NotNull ... contents) {
+        return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #middleEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setMiddleEast(final GUIContent @NotNull ... contents) {
+        return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthWest(final Item @NotNull ... contents) {
+        return setContents(southWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthWest(final ItemGUIContent @NotNull ... contents) {
+        return setContents(southWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southWest()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthWest(final GUIContent @NotNull ... contents) {
+        return setContents(southWest(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #south()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouth(final Item @NotNull ... contents) {
+        return setContents(south(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #south()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouth(final ItemGUIContent @NotNull ... contents) {
+        return setContents(south(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #south()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouth(final GUIContent @NotNull ... contents) {
+        return setContents(south(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthEast(final Item @NotNull ... contents) {
+        return setContents(southEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthEast(final ItemGUIContent @NotNull ... contents) {
+        return setContents(southEast(), contents);
+    }
+
+    /**
+     * Sets the given contents at the index {@link #southEast()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setSouthEast(final GUIContent @NotNull ... contents) {
+        return setContents(southEast(), contents);
+    }
+
+    /**
+     * Gets the slot at the North-West position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     | X |   |   |
+     *     |   |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int northWest() {
+        return 0;
+    }
+
+    /**
+     * Gets the slot at the North position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   | X |   |
+     *     |   |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int north() {
+        return columns() / 2;
+    }
+
+    /**
+     * Gets the slot at the North-East position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   | X |
+     *     |   |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int northEast() {
+        return Math.max(0, columns() - 1);
+    }
+
+    /**
+     * Gets the slot at the start of the middle line.
+     * For internal use only.
+     *
+     * @return the start of the line
+     */
+    default int middleLine() {
+        int rows = (rows() - 1) / 2;
+        double line = rows * columns();
+        return (int) line;
+    }
+
+    /**
+     * Gets the slot at the Middle-West position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     | X |   |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int middleWest() {
+        return middleLine();
+    }
+
+    /**
+     * Gets the slot at the Middle position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   | X |   |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int middle() {
+        return columns() / 2 + middleLine();
+    }
+
+    /**
+     * Gets the slot at the Middle-East position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   | X |
+     *     |   |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int middleEast() {
+        return Math.max(0, columns() - 1) + middleLine();
+    }
+
+    /**
+     * Gets the slot at the start of the south line.
+     * For internal use only.
+     *
+     * @return the start of the line
+     */
+    default int southLine() {
+        return Math.max(0, rows() - 1) * columns();
+    }
+
+    /**
+     * Gets the slot at the South-West position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   |   |
+     *     | X |   |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int southWest() {
+        return southLine();
+    }
+
+    /**
+     * Gets the slot at the South position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   |   |
+     *     |   | X |   |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int south() {
+        return columns() / 2 + southLine();
+    }
+
+    /**
+     * Gets the slot at the South-East position in this GUI.
+     * For example, in the case of a <i>3x3</i> dimension:
+     * <pre>
+     *     |   |   |   |
+     *     |   |   |   |
+     *     |   |   | X |
+     * </pre>
+     *
+     * @return the slots
+     */
+    default int southEast() {
+        return Math.max(0, columns() - 1) + southLine();
+    }
+
+    /**
+     * Gets the rows of this GUI.
+     *
+     * @return the rows
+     */
+    int rows();
+
+    /**
+     * Gets the columns of this GUI.
+     *
+     * @return the columns
+     */
+    int columns();
+
+    /**
+     * Removes all the contents in this GUI.
+     *
+     * @return this gui
+     */
+    @NotNull GUI clear();
 
     /**
      * Removes the content from the given index.
@@ -318,14 +1128,12 @@ public interface GUI extends Metadatable {
     @NotNull Optional<BiGUIAction> changeGUIAction();
 
     @Override
-    @NotNull
-    default GUI setVariable(final @NotNull String name, final @NotNull String value) {
+    default @NotNull GUI setVariable(final @NotNull String name, final @NotNull String value) {
         return (GUI) Metadatable.super.setVariable(name, value);
     }
 
     @Override
-    @NotNull
-    default GUI unsetVariable(final @NotNull String name) {
+    default @NotNull GUI unsetVariable(final @NotNull String name) {
         return (GUI) Metadatable.super.unsetVariable(name);
     }
 
@@ -380,14 +1188,12 @@ public interface GUI extends Metadatable {
     }
 
     @Override
-    @NotNull
-    default GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
+    default @NotNull GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (GUI) Metadatable.super.copyAll(other, replace);
     }
 
     @Override
-    @NotNull
-    default GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
+    default @NotNull GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (GUI) Metadatable.super.copyFrom(other, replace);
     }
 
@@ -407,7 +1213,7 @@ public interface GUI extends Metadatable {
      * @return the gui
      */
     static GUI newGUI(final int size) {
-        return new GUIImpl(size);
+        return new DefaultGUI(size);
     }
 
     /**

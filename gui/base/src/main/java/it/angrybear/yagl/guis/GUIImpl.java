@@ -7,7 +7,6 @@ import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,14 +16,13 @@ import java.util.*;
 /**
  * A basic implementation of {@link GUI}.
  */
-class GUIImpl extends FieldEquable implements GUI {
+abstract class GUIImpl extends FieldEquable implements GUI {
     protected static final int MAX_SIZE = 54;
 
     @Getter
     protected String title;
     protected List<Contents> contents;
     protected final Set<Integer> movableSlots;
-    @Getter(AccessLevel.NONE)
     protected final Map<String, String> variables = new HashMap<>();
 
     protected GUIAction clickOutsideAction;
@@ -32,7 +30,10 @@ class GUIImpl extends FieldEquable implements GUI {
     protected GUIAction closeGUIAction;
     protected BiGUIAction changeGUIAction;
 
-    private GUIImpl() {
+    /**
+     * Instantiates a new Gui.
+     */
+    GUIImpl() {
         this.contents = new LinkedList<>();
         this.movableSlots = new HashSet<>();
     }
@@ -68,6 +69,12 @@ class GUIImpl extends FieldEquable implements GUI {
     @Override
     public int size() {
         return this.contents.size();
+    }
+
+    @Override
+    public @NotNull GUI clear() {
+        Collections.fill(this.contents, null);
+        return this;
     }
 
     @Override

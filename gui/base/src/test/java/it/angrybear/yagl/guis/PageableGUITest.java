@@ -126,8 +126,8 @@ class PageableGUITest {
 
     @Test
     void testPageableGUIMethods() throws InvocationTargetException, IllegalAccessException {
-        GUI expected = setupGUI(GUI.newGUI(9));
-        GUI actual = setupGUI(PageableGUI.newGUI(9));
+        GUI expected = setupGUI(GUI.newGUI(18));
+        GUI actual = setupGUI(PageableGUI.newGUI(18));
 
         for (Method method : GUI.class.getDeclaredMethods()) {
             try {
@@ -139,7 +139,7 @@ class PageableGUITest {
             method = ReflectionUtils.setAccessibleOrThrow(method);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
-                    .map(o -> o instanceof Integer ? 0 : o)
+                    .map(o -> o instanceof Integer ? 9 : o)
                     .toArray(Object[]::new);
             Object obj1 = method.invoke(expected, params);
             Object obj2 = method.invoke(actual, params);
@@ -164,7 +164,7 @@ class PageableGUITest {
 
     @Test
     void testGetGUIPageException() {
-        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(1).getPage(1));
+        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(9).getPage(1));
     }
 
     @Test
