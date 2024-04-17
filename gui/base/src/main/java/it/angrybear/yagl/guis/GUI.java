@@ -645,6 +645,13 @@ public interface GUI extends Metadatable {
     int columns();
 
     /**
+     * Removes all the contents in this GUI.
+     *
+     * @return this gui
+     */
+    @NotNull GUI clear();
+
+    /**
      * Removes the content from the given index.
      *
      * @param slot the slot

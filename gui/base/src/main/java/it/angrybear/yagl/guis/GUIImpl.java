@@ -72,6 +72,12 @@ abstract class GUIImpl extends FieldEquable implements GUI {
     }
 
     @Override
+    public @NotNull GUI clear() {
+        Collections.fill(this.contents, null);
+        return this;
+    }
+
+    @Override
     public @NotNull GUI setMovable(int slot, boolean movable) {
         if (movable) this.movableSlots.add(slot);
         else this.movableSlots.remove(slot);
