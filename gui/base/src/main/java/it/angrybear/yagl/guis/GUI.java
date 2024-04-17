@@ -204,6 +204,65 @@ public interface GUI extends Metadatable {
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
     /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final Item @NotNull ... contents) {
+        topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(Item::copy).toArray(Item[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final ItemGUIContent @NotNull ... contents) {
+        topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final GUIContent @NotNull ... contents) {
+        topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Sets the given contents at the {@link #topSlots()}.
+     *
+     * @param contents the contents
+     * @return this gui
+     */
+    default @NotNull GUI setTopSide(final @NotNull Collection<GUIContent> contents) {
+        topSlots().forEach(s -> setContents(s, contents.stream()
+                .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Gets the slots on the top side.
+     *
+     * @return the slots
+     */
+    default @NotNull Set<Integer> topSlots() {
+        Set<Integer> set = new TreeSet<>();
+        for (int i = 0; i <= northEast(); i++) set.add(i);
+        return set;
+    }
+
+    /**
      * Sets the given contents at the {@link #leftSlots()}.
      *
      * @param contents the contents
