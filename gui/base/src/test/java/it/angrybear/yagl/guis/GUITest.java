@@ -3,7 +3,6 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.structures.PredicateSet;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -89,22 +88,26 @@ class GUITest {
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
         gui.setTopSide(itemGUIContent);
-        testSide(object, northWest, north, northEast, i -> i <= northEast, gui, ignored, itemGUIContent);
+        testSide(object, northWest, north, northEast, i -> i <= northEast,
+                gui, ignored, itemGUIContent);
 
         gui.clear();
         Item item = Item.newItem("gold");
         gui.setTopSide(item);
-        testSide(object, northWest, north, northEast, i -> i <= northEast, gui, ignored, ItemGUIContent.newInstance(item));
+        testSide(object, northWest, north, northEast, i -> i <= northEast,
+                gui, ignored, ItemGUIContent.newInstance(item));
 
         gui.clear();
         GUIContent guiContent = mock(GUIContent.class);
         when(guiContent.copy()).thenReturn(guiContent);
         gui.setTopSide(guiContent);
-        testSide(object, northWest, north, northEast, i -> i <= northEast, gui, ignored, guiContent);
+        testSide(object, northWest, north, northEast, i -> i <= northEast,
+                gui, ignored, guiContent);
 
         gui.clear();
         gui.setTopSide(Collections.singletonList(guiContent));
-        testSide(object, northWest, north, northEast, i -> i <= northEast, gui, ignored, guiContent);
+        testSide(object, northWest, north, northEast, i -> i <= northEast,
+                gui, ignored, guiContent);
     }
 
     @ParameterizedTest
@@ -139,6 +142,43 @@ class GUITest {
         gui.clear();
         gui.setLeftSide(Collections.singletonList(guiContent));
         testSide(object, northWest, middleWest, southWest, gui, ignored, guiContent);
+    }
+
+    @ParameterizedTest
+    @MethodSource("expectedCorners")
+    void testSetBottomSide(Object object,
+                        int northWest, int north, int northEast,
+                        int middleWest, int middle, int middleEast,
+                        int southWest, int south, int southEast) {
+        final Map<Object, Integer> ignored = new HashMap<>();
+        ignored.put(GUIType.WORKBENCH, 9);
+        ignored.put(GUIType.PLAYER, 36);
+        ignored.put(GUIType.LOOM, 3);
+
+        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+
+        ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
+        gui.setBottomSide(itemGUIContent);
+        testSide(object, southWest, south, southEast, i -> i >= southWest && (object != GUIType.PLAYER || i < 37),
+                gui, ignored, itemGUIContent);
+
+        gui.clear();
+        Item item = Item.newItem("gold");
+        gui.setBottomSide(item);
+        testSide(object, southWest, south, southEast, i -> i >= southWest && (object != GUIType.PLAYER || i < 37),
+                gui, ignored, ItemGUIContent.newInstance(item));
+
+        gui.clear();
+        GUIContent guiContent = mock(GUIContent.class);
+        when(guiContent.copy()).thenReturn(guiContent);
+        gui.setBottomSide(guiContent);
+        testSide(object, southWest, south, southEast, i -> i >= southWest && (object != GUIType.PLAYER || i < 37),
+                gui, ignored, guiContent);
+
+        gui.clear();
+        gui.setBottomSide(Collections.singletonList(guiContent));
+        testSide(object, southWest, south, southEast, i -> i >= southWest && (object != GUIType.PLAYER || i < 37),
+                gui, ignored, guiContent);
     }
 
     @ParameterizedTest
