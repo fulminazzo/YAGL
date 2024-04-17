@@ -359,6 +359,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetAllSides() {
+        return (PageableGUI) GUI.super.unsetAllSides();
+    }
+
+    @Override
     public @NotNull PageableGUI setTopAndBottomSides(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopAndBottomSides(contents);
     }
@@ -376,6 +381,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetTopAndBottomSides() {
+        return (PageableGUI) GUI.super.unsetTopAndBottomSides();
     }
 
     @Override
@@ -399,6 +409,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetLeftAndRightSides() {
+        return (PageableGUI) GUI.super.unsetLeftAndRightSides();
+    }
+
+    @Override
     public @NotNull PageableGUI setTopSide(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopSide(contents);
     }
@@ -416,6 +431,16 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setTopSide(@NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetTopSide() {
+        return (PageableGUI) GUI.super.unsetTopSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> topSlots() {
+        return GUI.super.topSlots();
     }
 
     @Override
@@ -439,6 +464,16 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetLeftSide() {
+        return (PageableGUI) GUI.super.unsetLeftSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> leftSlots() {
+        return GUI.super.leftSlots();
+    }
+
+    @Override
     public @NotNull PageableGUI setBottomSide(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setBottomSide(contents);
     }
@@ -456,6 +491,16 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setBottomSide(@NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetBottomSide() {
+        return (PageableGUI) GUI.super.unsetBottomSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> bottomSlots() {
+        return GUI.super.bottomSlots();
     }
 
     @Override
@@ -479,6 +524,16 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetRightSide() {
+        return (PageableGUI) GUI.super.unsetRightSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> rightSlots() {
+        return GUI.super.rightSlots();
+    }
+
+    @Override
     public @NotNull PageableGUI setNorthWest(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthWest(contents);
     }
@@ -491,6 +546,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setNorthWest(GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetNorthWest() {
+        return (PageableGUI) GUI.super.unsetNorthWest();
     }
 
     @Override
@@ -509,6 +569,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetNorth() {
+        return (PageableGUI) GUI.super.unsetNorth();
+    }
+
+    @Override
     public @NotNull PageableGUI setNorthEast(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthEast(contents);
     }
@@ -521,6 +586,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setNorthEast(GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetNorthEast() {
+        return (PageableGUI) GUI.super.unsetNorthEast();
     }
 
     @Override
@@ -539,6 +609,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetMiddleWest() {
+        return (PageableGUI) GUI.super.unsetMiddleWest();
+    }
+
+    @Override
     public @NotNull PageableGUI setMiddle(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddle(contents);
     }
@@ -551,6 +626,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setMiddle(GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetMiddle() {
+        return (PageableGUI) GUI.super.unsetMiddle();
     }
 
     @Override
@@ -569,6 +649,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetMiddleEast() {
+        return (PageableGUI) GUI.super.unsetMiddleEast();
+    }
+
+    @Override
     public @NotNull PageableGUI setSouthWest(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthWest(contents);
     }
@@ -581,6 +666,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setSouthWest(GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetSouthWest() {
+        return (PageableGUI) GUI.super.unsetSouthWest();
     }
 
     @Override
@@ -599,6 +689,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull PageableGUI unsetSouth() {
+        return (PageableGUI) GUI.super.unsetSouth();
+    }
+
+    @Override
     public @NotNull PageableGUI setSouthEast(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthEast(contents);
     }
@@ -611,6 +706,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI setSouthEast(GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull PageableGUI unsetSouthEast() {
+        return (PageableGUI) GUI.super.unsetSouthEast();
     }
 
     @Override

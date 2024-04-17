@@ -204,6 +204,14 @@ public interface GUI extends Metadatable {
     @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
 
     /**
+     * Removes the content from the given index.
+     *
+     * @param slot the slot
+     * @return this gui
+     */
+    @NotNull GUI unsetContent(int slot);
+
+    /**
      * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
      * the {@link #bottomSlots()} and the {@link #rightSlots()}.
      *
@@ -211,7 +219,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final Item @NotNull ... contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
@@ -222,7 +230,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final ItemGUIContent @NotNull ... contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
@@ -233,7 +241,7 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final GUIContent @NotNull ... contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
     /**
@@ -244,7 +252,17 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     default @NotNull GUI setAllSides(final @NotNull Collection<GUIContent> contents) {
-        return setTopSide(contents).setBottomSide(contents);
+        return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
+    }
+
+    /**
+     * Removes the contents at the {@link #topSlots()}, the {@link #leftSlots()},
+     * the {@link #bottomSlots()} and the {@link #rightSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetAllSides() {
+        return unsetTopAndBottomSides().unsetLeftAndRightSides();
     }
 
     /**
@@ -288,6 +306,15 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes the contents at the {@link #topSlots()} and the {@link #bottomSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetTopAndBottomSides() {
+        return unsetTopSide().unsetBottomSide();
+    }
+
+    /**
      * Sets the given contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
      *
      * @param contents the contents
@@ -325,6 +352,15 @@ public interface GUI extends Metadatable {
      */
     default @NotNull GUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
         return setLeftSide(contents).setRightSide(contents);
+    }
+
+    /**
+     * Removes the contents at the {@link #leftSlots()} and the {@link #rightSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetLeftAndRightSides() {
+        return unsetLeftSide().unsetRightSide();
     }
 
     /**
@@ -372,6 +408,16 @@ public interface GUI extends Metadatable {
     default @NotNull GUI setTopSide(final @NotNull Collection<GUIContent> contents) {
         topSlots().forEach(s -> setContents(s, contents.stream()
                 .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Removes the contents at the {@link #topSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetTopSide() {
+        topSlots().forEach(this::unsetContent);
         return this;
     }
 
@@ -431,6 +477,16 @@ public interface GUI extends Metadatable {
     default @NotNull GUI setLeftSide(final @NotNull Collection<GUIContent> contents) {
         leftSlots().forEach(s -> setContents(s, contents.stream()
                 .map(GUIContent::copy).toArray(GUIContent[]::new)));
+        return this;
+    }
+
+    /**
+     * Removes the contents at the {@link #leftSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetLeftSide() {
+        leftSlots().forEach(this::unsetContent);
         return this;
     }
 
@@ -495,6 +551,16 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes the contents at the {@link #bottomSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetBottomSide() {
+        bottomSlots().forEach(this::unsetContent);
+        return this;
+    }
+
+    /**
      * Gets the slots on the bottom side.
      *
      * @return the slots
@@ -554,6 +620,16 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes all the contents at the {@link #rightSlots()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetRightSide() {
+        rightSlots().forEach(this::unsetContent);
+        return this;
+    }
+
+    /**
      * Gets the slots on the right side.
      *
      * @return the slots
@@ -596,6 +672,15 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes all the contents at the index {@link #northWest()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetNorthWest() {
+        return unsetContent(northWest());
+    }
+
+    /**
      * Sets the given contents at the index {@link #north()}.
      *
      * @param contents the contents
@@ -623,6 +708,15 @@ public interface GUI extends Metadatable {
      */
     default @NotNull GUI setNorth(final GUIContent @NotNull ... contents) {
         return setContents(north(), contents);
+    }
+
+    /**
+     * Removes all the contents at the index {@link #north()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetNorth() {
+        return unsetContent(north());
     }
 
     /**
@@ -656,6 +750,15 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes all the contents at the index {@link #northEast()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetNorthEast() {
+        return unsetContent(northEast());
+    }
+
+    /**
      * Sets the given contents at the index {@link #middleWest()}.
      *
      * @param contents the contents
@@ -683,6 +786,15 @@ public interface GUI extends Metadatable {
      */
     default @NotNull GUI setMiddleWest(final GUIContent @NotNull ... contents) {
         return setContents(middleWest(), contents);
+    }
+
+    /**
+     * Removes all the contents at the index {@link #middleWest()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetMiddleWest() {
+        return unsetContent(middleWest());
     }
 
     /**
@@ -716,6 +828,15 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes all the contents at the index {@link #middle()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetMiddle() {
+        return unsetContent(middle());
+    }
+
+    /**
      * Sets the given contents at the index {@link #middleEast()}.
      *
      * @param contents the contents
@@ -743,6 +864,15 @@ public interface GUI extends Metadatable {
      */
     default @NotNull GUI setMiddleEast(final GUIContent @NotNull ... contents) {
         return setContents(middleEast(), contents);
+    }
+
+    /**
+     * Removes all the contents at the index {@link #middleEast()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetMiddleEast() {
+        return unsetContent(middleEast());
     }
 
     /**
@@ -776,6 +906,15 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes all the contents at the index {@link #southWest()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetSouthWest() {
+        return unsetContent(southWest());
+    }
+
+    /**
      * Sets the given contents at the index {@link #south()}.
      *
      * @param contents the contents
@@ -806,6 +945,15 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Removes all the contents at the index {@link #south()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetSouth() {
+        return unsetContent(south());
+    }
+
+    /**
      * Sets the given contents at the index {@link #southEast()}.
      *
      * @param contents the contents
@@ -833,6 +981,15 @@ public interface GUI extends Metadatable {
      */
     default @NotNull GUI setSouthEast(final GUIContent @NotNull ... contents) {
         return setContents(southEast(), contents);
+    }
+
+    /**
+     * Removes all the contents at the index {@link #southEast()}.
+     *
+     * @return this gui
+     */
+    default @NotNull GUI unsetSouthEast() {
+        return unsetContent(southEast());
     }
 
     /**
@@ -1012,14 +1169,6 @@ public interface GUI extends Metadatable {
      * @return this gui
      */
     @NotNull GUI clear();
-
-    /**
-     * Removes the content from the given index.
-     *
-     * @param slot the slot
-     * @return this gui
-     */
-    @NotNull GUI unsetContent(int slot);
 
     /**
      * Forces the {@link Viewer} to execute the given command when clicking outside the GUI (will not include player's inventory slots).

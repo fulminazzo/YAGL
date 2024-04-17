@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Represents a "chest" GUI that can be resized.
@@ -108,6 +109,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetAllSides() {
+        return (ResizableGUI) super.unsetAllSides();
+    }
+
+    @Override
     public @NotNull ResizableGUI setTopAndBottomSides(Item @NotNull ... contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
     }
@@ -125,6 +131,11 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetTopAndBottomSides() {
+        return (ResizableGUI) super.unsetTopAndBottomSides();
     }
 
     @Override
@@ -148,6 +159,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetLeftAndRightSides() {
+        return (ResizableGUI) super.unsetLeftAndRightSides();
+    }
+
+    @Override
     public @NotNull ResizableGUI setTopSide(Item @NotNull ... contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
@@ -165,6 +181,16 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setTopSide(@NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetTopSide() {
+        return (ResizableGUI) super.unsetTopSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> topSlots() {
+        return super.topSlots();
     }
 
     @Override
@@ -188,6 +214,16 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetLeftSide() {
+        return (ResizableGUI) super.unsetLeftSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> leftSlots() {
+        return super.leftSlots();
+    }
+
+    @Override
     public @NotNull ResizableGUI setBottomSide(Item @NotNull ... contents) {
         return (ResizableGUI) super.setBottomSide(contents);
     }
@@ -205,6 +241,16 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setBottomSide(@NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetBottomSide() {
+        return (ResizableGUI) super.unsetBottomSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> bottomSlots() {
+        return super.bottomSlots();
     }
 
     @Override
@@ -228,6 +274,16 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetRightSide() {
+        return (ResizableGUI) super.unsetRightSide();
+    }
+
+    @Override
+    public @NotNull Set<Integer> rightSlots() {
+        return super.rightSlots();
+    }
+
+    @Override
     public @NotNull ResizableGUI setNorthWest(Item @NotNull ... contents) {
         return (ResizableGUI) super.setNorthWest(contents);
     }
@@ -240,6 +296,11 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setNorthWest(GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetNorthWest() {
+        return (ResizableGUI) super.unsetNorthWest();
     }
 
     @Override
@@ -258,6 +319,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetNorth() {
+        return (ResizableGUI) super.unsetNorth();
+    }
+
+    @Override
     public @NotNull ResizableGUI setNorthEast(Item @NotNull ... contents) {
         return (ResizableGUI) super.setNorthEast(contents);
     }
@@ -270,6 +336,11 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setNorthEast(GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetNorthEast() {
+        return (ResizableGUI) super.unsetNorthEast();
     }
 
     @Override
@@ -288,6 +359,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetMiddleWest() {
+        return (ResizableGUI) super.unsetMiddleWest();
+    }
+
+    @Override
     public @NotNull ResizableGUI setMiddle(Item @NotNull ... contents) {
         return (ResizableGUI) super.setMiddle(contents);
     }
@@ -300,6 +376,11 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setMiddle(GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetMiddle() {
+        return (ResizableGUI) super.unsetMiddle();
     }
 
     @Override
@@ -318,6 +399,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetMiddleEast() {
+        return (ResizableGUI) super.unsetMiddleEast();
+    }
+
+    @Override
     public @NotNull ResizableGUI setSouthWest(Item @NotNull ... contents) {
         return (ResizableGUI) super.setSouthWest(contents);
     }
@@ -330,6 +416,11 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setSouthWest(GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetSouthWest() {
+        return (ResizableGUI) super.unsetSouthWest();
     }
 
     @Override
@@ -348,6 +439,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI unsetSouth() {
+        return (ResizableGUI) super.unsetSouth();
+    }
+
+    @Override
     public @NotNull ResizableGUI setSouthEast(Item @NotNull ... contents) {
         return (ResizableGUI) super.setSouthEast(contents);
     }
@@ -360,6 +456,11 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI setSouthEast(GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI unsetSouthEast() {
+        return (ResizableGUI) super.unsetSouthEast();
     }
 
     @Override
