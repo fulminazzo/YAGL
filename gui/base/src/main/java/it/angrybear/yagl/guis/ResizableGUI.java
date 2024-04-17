@@ -16,7 +16,7 @@ import java.util.Collection;
  * Represents a "chest" GUI that can be resized.
  * This GUI can start with any value in bounds and multiple of 9 and can grow if necessary.
  */
-public class ResizableGUI extends GUIImpl {
+public class ResizableGUI extends DefaultGUI {
 
     private ResizableGUI() {
         this(0);
@@ -29,7 +29,6 @@ public class ResizableGUI extends GUIImpl {
      */
     ResizableGUI(int size) {
         super(size);
-        checkSize(size);
     }
 
     @Override
@@ -67,12 +66,6 @@ public class ResizableGUI extends GUIImpl {
     public void resize(int size) {
         checkSize(size);
         this.contents = createContents(size, this.contents);
-    }
-
-    private void checkSize(int size) {
-        if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54!");
-        if (size % 9 != 0)
-            throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of 9 can be accepted", size));
     }
 
     @Override
