@@ -1,14 +1,15 @@
 package it.angrybear.yagl.guis;
 
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Represents a "chest" GUI that cannot be resized.
  */
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 class DefaultGUI extends GUIImpl {
-
-    private DefaultGUI() {
-        this(0);
-    }
+    private static final int COLUMNS = 9;
 
     /**
      * Instantiates a new Gui.

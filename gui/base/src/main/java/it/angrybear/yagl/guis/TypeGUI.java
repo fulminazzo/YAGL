@@ -14,7 +14,6 @@ public class TypeGUI extends GUIImpl {
      * Internal constructor, used for serializing purposes.
      */
     private TypeGUI() {
-        super(0);
         this.inventoryType = null;
     }
 

@@ -7,6 +7,8 @@ import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,11 +18,8 @@ import java.util.Collection;
  * Represents a "chest" GUI that can be resized.
  * This GUI can start with any value in bounds and multiple of 9 and can grow if necessary.
  */
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class ResizableGUI extends DefaultGUI {
-
-    private ResizableGUI() {
-        this(0);
-    }
 
     /**
      * Instantiates a new Gui.
