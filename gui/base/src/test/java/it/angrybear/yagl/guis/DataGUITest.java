@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
 import java.util.Arrays;
@@ -71,6 +72,14 @@ class DataGUITest {
 
         int pages = dataGUI.pages();
         assertEquals(expected, pages);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"getPage", "setPages"})
+    void testPagesRelatedMethodShouldThrowException(String method) {
+        Throwable throwable = assertThrowsExactly(IllegalStateException.class, () ->
+                new Refl<>(DataGUI.newGUI(GUIType.ANVIL, s -> null)).invokeMethod(method, 1));
+        assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
     }
 
     @Test
