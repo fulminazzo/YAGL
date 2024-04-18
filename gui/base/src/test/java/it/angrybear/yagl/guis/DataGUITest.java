@@ -1,5 +1,6 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
@@ -121,4 +122,10 @@ class DataGUITest {
             }
         }
     }
+
+    @Test
+    void testReturnTypes() {
+        TestUtils.testReturnType(DataGUI.newGUI(9, c -> null), GUI.class, m -> m.getName().equals("copy"));
+    }
+
 }
