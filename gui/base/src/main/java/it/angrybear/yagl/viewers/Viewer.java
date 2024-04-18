@@ -12,9 +12,21 @@ import java.util.UUID;
  */
 @Getter
 public abstract class Viewer {
+    /**
+     * The Unique id.
+     */
     protected final UUID uniqueId;
+    /**
+     * The Name.
+     */
     protected final String name;
+    /**
+     * The Previous gui.
+     */
     protected GUI previousGUI;
+    /**
+     * The Open gui.
+     */
     protected GUI openGUI;
 
     /**
@@ -43,6 +55,13 @@ public abstract class Viewer {
      * @param sound the sound
      */
     public abstract void playSound(final @NotNull Sound sound);
+
+    /**
+     * Sends the given message to the player.
+     *
+     * @param message the message
+     */
+    public abstract void sendMessage(final @NotNull String message);
 
     /**
      * Execute command.

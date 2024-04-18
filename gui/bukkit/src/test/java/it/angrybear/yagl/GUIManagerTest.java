@@ -32,6 +32,14 @@ import static org.mockito.Mockito.*;
 class GUIManagerTest {
 
     @Test
+    void testGetOpenGUIViewerPlayer() {
+        BukkitUtils.setupServer();
+        Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
+        GUITestUtils.mockPlugin(p ->
+                assertFalse(GUIManager.getOpenGUIViewer(player).isPresent(), "Should not be present"));
+    }
+
+    @Test
     void testGetOpenGUIViewerUUID() {
         BukkitUtils.setupServer();
         GUITestUtils.mockPlugin(p ->
@@ -173,18 +181,6 @@ class GUIManagerTest {
             assertFalse(event.isCancelled(), "Event should not be cancelled after being invoked");
             assertFalse(notExpected.get(), "Click action should not be invoked");
             assertTrue(expected.get(), "Outside action was not invoked");
-        }
-
-        @Test
-        void testOpenEvent() {
-            AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.onOpenGUI((v, g) -> expected.set(true));
-
-            InventoryView view = getView();
-
-            this.guiManager.on(new InventoryOpenEvent(view));
-
-            assertTrue(expected.get(), "OpenGUI action was not invoked");
         }
 
         @Test

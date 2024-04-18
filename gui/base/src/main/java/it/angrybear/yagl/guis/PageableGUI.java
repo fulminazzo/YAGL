@@ -8,7 +8,7 @@ import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

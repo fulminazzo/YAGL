@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
@@ -130,8 +131,27 @@ class GUIAdapterTest {
         assertThrowsExactly(PlayerOfflineException.class, () -> openGUI(GUI.newGUI(9)));
     }
 
+    @Test
+    void testCloseGUIForOfflinePlayer() {
+        BukkitUtils.removePlayer(this.player);
+        assertThrowsExactly(PlayerOfflineException.class, this::closeGUI);
+    }
+
+    @Test
+    void testOpenGUIAction() {
+        GUI gui = GUI.newGUI(9);
+        GUIAction openAction = mock(GUIAction.class);
+        gui.onOpenGUI(openAction);
+        openGUI(gui);
+        verify(openAction).execute(GUIManager.getViewer(this.player), gui);
+    }
+
     private void openGUI(GUI gui) {
         GUITestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
+    }
+
+    private void closeGUI() {
+        GUITestUtils.mockPlugin(p -> GUIAdapter.closeGUI(GUIManager.getViewer(this.player)));
     }
 
 }

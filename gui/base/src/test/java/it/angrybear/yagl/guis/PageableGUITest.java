@@ -9,7 +9,7 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -137,7 +137,7 @@ class PageableGUITest {
                 Metadatable.class.getDeclaredMethod(method.getName(), method.getParameterTypes());
                 continue;
             } catch (NoSuchMethodException ignored) {}
-            method = ReflectionUtils.setAccessible(method);
+            method = ReflectionUtils.setAccessibleOrThrow(method);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
                     .map(o -> o instanceof Integer ? 9 : o)
@@ -242,6 +242,11 @@ class PageableGUITest {
 
         @Override
         public void playSound(@NotNull Sound sound) {
+
+        }
+
+        @Override
+        public void sendMessage(@NotNull String message) {
 
         }
 

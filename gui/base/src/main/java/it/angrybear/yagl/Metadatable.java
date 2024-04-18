@@ -123,15 +123,15 @@ public interface Metadatable {
     @SuppressWarnings("unchecked")
     default <T> T apply(final T object) {
         if (object == null) return null;
+        else if (object.getClass().isEnum()) return object;
         else if (object instanceof String) return (T) apply((String) object);
         else if (object instanceof Collection) return (T) apply((Collection<Object>) object);
         else if (object instanceof Map) return (T) apply((Map<Object, Object>) object);
         else if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass())) {
             final Refl<T> refl = new Refl<>(object);
-            for (Field field : refl.getNonStaticFields()) {
-                Object o = refl.getFieldObject(field);
-                refl.setFieldObject(field, apply(o));
-            }
+            for (Field field : refl.getNonStaticFields())
+                ReflectionUtils.setAccessible(field).ifPresent(f ->
+                        refl.setFieldObject(f, apply(f.get(object))));
         }
         return object;
     }

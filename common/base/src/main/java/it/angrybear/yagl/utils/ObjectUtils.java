@@ -6,7 +6,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,37 +66,56 @@ public final class ObjectUtils {
                         clazz.getCanonicalName(), clazz.getCanonicalName()));
             }
 
-        Refl<O> object = new Refl<>(clazz, new Object[0]);
-        for (final Field field : object.getNonStaticFields())
+        final Refl<O> object = new Refl<>(clazz, new Object[0]);
+        for (final Field field : object.getNonStaticFields()) {
+            field.setAccessible(true);
             try {
-                Object obj1 = ReflectionUtils.get(field, t);
-                if (obj1 instanceof Collection) {
-                    Class<?> tmpClass = obj1.getClass();
-                    // In the case of creation with Arrays.asList()
-                    if (tmpClass.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
-                        tmpClass = ArrayList.class;
-                    Class<Collection<Object>> finalClass = (Class<Collection<Object>>) tmpClass;
-                    obj1 = ((Collection<?>) obj1).stream()
-                            .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
-                } else if (obj1 instanceof Map) {
-                    Map<Object, Object> map = new HashMap<>();
-                    ((Map<Object, Object>) obj1).putAll(map);
-                    obj1 = map;
-                } else if (obj1 != null)
-                    if (obj1.getClass().isArray()) {
-                        Object[] tmp = (Object[]) obj1;
-                        Object[] arr = (Object[]) Array.newInstance(obj1.getClass().getComponentType(), tmp.length);
-                        System.arraycopy(tmp, 0, arr, 0, arr.length);
-                        obj1 = arr;
-                    } else
-                        try {
-                            Method copy = obj1.getClass().getDeclaredMethod("copy");
-                            obj1 = ReflectionUtils.setAccessible(copy).invoke(obj1);
-                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ignored) {}
-                object.setFieldObject(field, obj1);
-            } catch (IllegalArgumentException ignored) {}
-
+                ReflectionUtils.get(field, t).map(obj1 -> {
+                    if (obj1 == null) return null;
+                    else if (obj1 instanceof Collection) return copyCollection(obj1);
+                    else if (obj1 instanceof Map) return copyMap(obj1);
+                    else if (obj1.getClass().isArray()) return copyArray(obj1);
+                    else return copyWithMethod(obj1);
+                }).ifPresent(obj1 -> object.setFieldObject(field, obj1));
+            } catch (IllegalArgumentException e) {
+                if (!e.getMessage().contains("Can not set")) throw e;
+            }
+        }
         return object.getObject();
+    }
+
+    private static @NotNull Object[] copyArray(final @NotNull Object obj1) {
+        Object[] tmp = (Object[]) obj1;
+        Object[] arr = (Object[]) Array.newInstance(obj1.getClass().getComponentType(), tmp.length);
+        System.arraycopy(tmp, 0, arr, 0, arr.length);
+        return arr;
+    }
+
+    private static @NotNull Map<Object, Object> copyMap(final @NotNull Object obj1) {
+        Map<Object, Object> map = new HashMap<>();
+        ((Map<Object, Object>) obj1).putAll(map);
+        return map;
+    }
+
+    private static @NotNull Collection<?> copyCollection(final @NotNull Object obj1) {
+        Class<?> tmpClass = obj1.getClass();
+        // In the case of creation with Arrays.asList()
+        if (tmpClass.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
+            tmpClass = ArrayList.class;
+        Class<Collection<Object>> finalClass = (Class<Collection<Object>>) tmpClass;
+        return ((Collection<?>) obj1).stream()
+                .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
+    }
+
+    private static @NotNull Object copyWithMethod(final @NotNull Object obj1) {
+        try {
+            Method copy = obj1.getClass().getDeclaredMethod("copy");
+            return ReflectionUtils.setAccessible(copy)
+                    .map(m -> m.invoke(obj1))
+                    .orElseGet(obj1);
+        } catch (NoSuchMethodException e) {
+            return obj1;
+        }
     }
 
 }

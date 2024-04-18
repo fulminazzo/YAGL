@@ -214,7 +214,12 @@ class PersistentListenerTest {
         when(view.getPlayer()).thenReturn(player);
         when(view.getItem(any(int.class))).thenCallRealMethod();
         when(view.getCursor()).thenCallRealMethod();
-        when(view.convertSlot(any(int.class))).thenCallRealMethod();
+        when(view.convertSlot(any(int.class))).thenAnswer(a -> {
+            int slot = a.getArgument(0);
+            int size = inventory.getSize();
+            if (slot >= size) slot -= size;
+            return slot;
+        });
         when(view.getInventory(any(int.class))).thenAnswer(a -> {
             int slot = a.getArgument(0);
             if (slot < inventory.getSize()) return inventory;
@@ -244,13 +249,14 @@ class PersistentListenerTest {
                     new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
                     new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 2, ClickType.LEFT, InventoryAction.CLONE_STACK),
                     new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 3, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0),
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 9, ClickType.SHIFT_LEFT, InventoryAction.MOVE_TO_OTHER_INVENTORY),
             };
         }
 
         @ParameterizedTest
         @MethodSource("inventoryClickEvents")
         void simulateInventoryClick(InventoryClickEvent event) {
-            if (event.getRawSlot() == 2) cursor = maintain.create();
+            if (event.getRawSlot() == 2) cursor = maintain.setMobility(Mobility.INTERNAL).create();
 
             assertFalse(clicked, "Clicked should be initialized as false");
             assertFalse(event.isCancelled(), "Event should not be cancelled");

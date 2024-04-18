@@ -33,6 +33,12 @@ class BukkitViewer extends Viewer {
     }
 
     @Override
+    public void sendMessage(@NotNull String message) {
+        Player player = getPlayer().orElseThrow(() -> new PlayerOfflineException(this.name));
+        player.sendMessage(message);
+    }
+
+    @Override
     public void executeCommand(final @NotNull String command) {
         Player player = getPlayer().orElseThrow(() -> new PlayerOfflineException(this.name));
         Bukkit.dispatchCommand(player, command);
