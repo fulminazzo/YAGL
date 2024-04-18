@@ -15,6 +15,8 @@ import java.util.function.Predicate;
  * @param <T> the type of the data
  */
 public class DataGUI<T> extends PageableGUI {
+    private static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
+
     private final List<T> data;
     private final Function<T, GUIContent> dataConverter;
 
@@ -123,5 +125,42 @@ public class DataGUI<T> extends PageableGUI {
         this.data.clear();
         return this;
     }
-    
+
+    /**
+     * Gets the {@link GUI} page from the given index.
+     * The index starts from <b>0</b>.
+     *
+     * @param page the page
+     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
+     * @return the corresponding {@link GUI} page
+     */
+    @Override
+    @Deprecated
+    public GUI getPage(int page) {
+        throw new IllegalStateException(ERROR_MESSAGE);
+    }
+
+    /**
+     * Sets pages.
+     *
+     * @param pages the pages
+     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
+     * @return this gui
+     */
+    @Override
+    public PageableGUI setPages(int pages) {
+        throw new IllegalStateException(ERROR_MESSAGE);
+    }
+
+    /**
+     * Gets the number of pages based on the amount of data provided.
+     *
+     * @return the pages
+     */
+    @Override
+    public int pages() {
+        double pages = (double) this.data.size() / emptySlots().size();
+        return (int) Math.ceil(pages);
+    }
+
 }
