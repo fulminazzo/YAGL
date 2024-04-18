@@ -63,7 +63,8 @@ class PageableGUITest {
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter"))
+                    .thenReturn(MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {
                 gui.open(viewer, i);
@@ -87,7 +88,7 @@ class PageableGUITest {
         }
     }
 
-    private GUI generateExpected(GUI gui, int index) {
+    static GUI generateExpected(GUI gui, int index) {
         GUI g = GUI.newGUI(9)
                 .setContents(1, gui.getContents(1))
                 .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"))
@@ -232,7 +233,7 @@ class PageableGUITest {
                 .onChangeGUI("command");
     }
 
-    private static class MockViewer extends Viewer {
+    static class MockViewer extends Viewer {
         GUI openedGUI;
 
         protected MockViewer(UUID uniqueId, String name) {
@@ -255,7 +256,7 @@ class PageableGUITest {
         }
     }
 
-    private static class MockGUIAdapter {
+    static class MockGUIAdapter {
 
         public static void openGUI(GUI gui, MockViewer viewer) {
             viewer.openedGUI = gui;
