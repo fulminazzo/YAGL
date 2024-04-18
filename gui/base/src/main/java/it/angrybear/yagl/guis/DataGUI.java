@@ -1,6 +1,7 @@
 package it.angrybear.yagl.guis;
 
 import it.angrybear.yagl.contents.GUIContent;
+import it.angrybear.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -125,6 +126,13 @@ public class DataGUI<T> extends PageableGUI {
     public DataGUI<T> clearData() {
         this.data.clear();
         return this;
+    }
+
+    @Override
+    public void open(@NotNull Viewer viewer, int page) {
+        GUI templateGUI = this.templateGUI;
+        if (templateGUI == null) throw new IllegalStateException("templateGUI did not load correctly");
+        fillContents(prepareOpenGUI(templateGUI, page), page).open(viewer);
     }
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
