@@ -189,18 +189,18 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param page   the page
      */
     public void open(final @NotNull Viewer viewer, final int page) {
-        GUI gui = prepareOpenGUI(page);
-        gui.open(viewer);
+        prepareOpenGUI(getPage(page), page).open(viewer);
     }
 
     /**
      * Prepares the {@link GUI} at the given page for {@link #open(Viewer, int)}.
      *
-     * @param page  the page
+     * @param gui  the gui
+     * @param page the page
      * @return the gui
      */
-    @NotNull GUI prepareOpenGUI(int page) {
-        GUI gui = getPage(page).copy().copyFrom(this, false)
+    @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
+        gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
                 .setVariable("previous-page", String.valueOf(page))
                 .setVariable("next-page", String.valueOf(page + 2))
