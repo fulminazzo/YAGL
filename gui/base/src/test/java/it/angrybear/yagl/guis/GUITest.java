@@ -5,14 +5,12 @@ import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -266,6 +264,17 @@ class GUITest {
                 (Object) new GUIContent[]{guiContent});
 
         assertEquals(guiContent, gui.getContents(slot).get(0));
+    }
+
+    @Test
+    void testEmptySlots() {
+        GUI gui = GUI.newGUI(54);
+        gui.setContents(1, Item.newItem("Stone"));
+
+        Set<Integer> slots = gui.emptySlots();
+        for (int i = 0; i < gui.size(); i++)
+            if (i == 1) assertFalse(slots.contains(i), String.format("Slots should not contain '%s'", i));
+            else assertTrue(slots.contains(i), String.format("Slots should contain '%s'", i));
     }
 
 }

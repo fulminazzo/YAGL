@@ -1164,6 +1164,18 @@ public interface GUI extends Metadatable {
     int columns();
 
     /**
+     * Counts the empty slots of the current GUI.
+     *
+     * @return the slots
+     */
+    default Set<Integer> emptySlots() {
+        Set<Integer> slots = new HashSet<>();
+        for (int i = 0; i < size(); i++)
+            if (getContents(i).isEmpty()) slots.add(i);
+        return slots;
+    }
+
+    /**
      * Removes all the contents in this GUI.
      *
      * @return this gui
