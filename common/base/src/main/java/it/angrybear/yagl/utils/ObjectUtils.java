@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -87,13 +88,14 @@ public final class ObjectUtils {
     private static @NotNull Object[] copyArray(final @NotNull Object obj1) {
         Object[] tmp = (Object[]) obj1;
         Object[] arr = (Object[]) Array.newInstance(obj1.getClass().getComponentType(), tmp.length);
-        System.arraycopy(tmp, 0, arr, 0, arr.length);
+        for (int i = 0; i < tmp.length; i++) arr[i] = copyWithMethod(tmp[i]);
         return arr;
     }
 
     private static @NotNull Map<Object, Object> copyMap(final @NotNull Object obj1) {
         Map<Object, Object> map = new HashMap<>();
-        ((Map<Object, Object>) obj1).putAll(map);
+        ((Map<Object, Object>) obj1).forEach((k, v) ->
+                map.put(copyWithMethod(k), copyWithMethod(v)));
         return map;
     }
 
@@ -104,11 +106,13 @@ public final class ObjectUtils {
             tmpClass = ArrayList.class;
         Class<Collection<Object>> finalClass = (Class<Collection<Object>>) tmpClass;
         return ((Collection<?>) obj1).stream()
+                .map(ObjectUtils::copyWithMethod)
                 .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
     }
 
-    private static @NotNull Object copyWithMethod(final @NotNull Object obj1) {
+    private static @Nullable Object copyWithMethod(final @Nullable Object obj1) {
         try {
+            if (obj1 == null) return null;
             Method copy = obj1.getClass().getDeclaredMethod("copy");
             return ReflectionUtils.setAccessible(copy)
                     .map(m -> m.invoke(obj1))

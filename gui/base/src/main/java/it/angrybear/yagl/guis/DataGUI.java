@@ -132,16 +132,23 @@ public class DataGUI<T> extends PageableGUI {
     public void open(@NotNull Viewer viewer, int page) {
         GUI templateGUI = this.templateGUI;
         if (templateGUI == null) throw new IllegalStateException("templateGUI did not load correctly");
-        prepareOpenGUI(fillContents(templateGUI, page), page).open(viewer);
+        fillContents(prepareOpenGUI(templateGUI, page), page).open(viewer);
     }
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
-        int emptySlots = gui.emptySlots().size();
+        int emptySlots = emptySlots().size();
+        if (this.previousPage.isPresent()) emptySlots--;
+        if (this.nextPage.isPresent()) emptySlots--;
         int min = emptySlots * page;
-        int max = emptySlots * (page + 1);
-        int size = this.data.size();
-        for (int i = Math.min(min, size); i < Math.min(max, size); i++)
-            gui.addContent(this.dataConverter.apply(this.data.get(i)));
+        if (min >= this.data.size())
+            throw new IllegalArgumentException(String.format("No such page '%s'", page));
+        if (page > 0) min++;
+        int size = Math.min(gui.emptySlots().size() + min, this.data.size());
+        for (int i = min; i < size; i++) {
+            T data = this.data.get(i);
+            GUIContent content = this.dataConverter.apply(data);
+            gui.addContent(content);
+        }
         return gui;
     }
 
@@ -178,8 +185,25 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     public int pages() {
-        double pages = (double) this.data.size() / emptySlots().size();
-        return (int) Math.ceil(pages);
+        int emptySlots = emptySlots().size();
+        if (emptySlots == 0)
+            throw new IllegalStateException("Cannot set data for non-empty pages");
+        int size = this.data.size();
+        int pages = size % emptySlots == 0 ? 0 : 1;
+        if (size < emptySlots) return pages;
+        int add = 0;
+        if (this.previousPage.isPresent()) {
+            pages++;
+            size -= emptySlots - (this.nextPage.isEmpty() ? 1 : 0);
+            add--;
+        }
+        if (this.nextPage.isPresent()) {
+            pages++;
+            size -= emptySlots + add;
+            add--;
+        }
+        while ((size -= emptySlots + add) >= 0) pages++;
+        return pages;
     }
 
     /**

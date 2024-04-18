@@ -231,8 +231,19 @@ abstract class GUIImpl extends FieldEquable implements GUI {
          *
          * @return the contents
          */
-        public List<GUIContent> getContents() {
+        public @NotNull List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
+        }
+
+        /**
+         * Copies the current object to a new one.
+         *
+         * @return the copy
+         */
+        public @NotNull Contents copy() {
+            return new GUIImpl.Contents(Arrays.stream(this.contents)
+                    .map(c -> c == null ? null : c.copy())
+                    .toArray(GUIContent[]::new));
         }
 
         @Override

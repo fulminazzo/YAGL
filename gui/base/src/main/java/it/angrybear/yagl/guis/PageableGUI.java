@@ -22,8 +22,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
 
-    private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
-    private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
+    protected final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
+    protected final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
     /**
      * Instantiates a new Pageable gui.
@@ -200,16 +200,16 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the gui
      */
     protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
-        gui.copy().copyFrom(this, false)
+        GUI newGUI = gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
                 .setVariable("previous-page", String.valueOf(page))
                 .setVariable("next-page", String.valueOf(page + 2))
                 .setVariable("pages", String.valueOf(pages()));
         if (page > 0) this.previousPage.ifPresent((s, p) ->
-                gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
+                newGUI.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
         if (page + 1 < pages()) this.nextPage.ifPresent((s, p) ->
-                gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
-        return gui;
+                newGUI.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
+        return newGUI;
     }
 
     @Override
