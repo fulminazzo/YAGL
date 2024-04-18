@@ -18,22 +18,35 @@ import java.util.*;
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
 public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadatable, GUI {
-    private final GUI templateGUI;
+    protected final GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
 
     private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
     private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
-    private PageableGUI() {
+    /**
+     * Instantiates a new Pageable gui.
+     */
+    PageableGUI() {
         this.templateGUI = null;
     }
 
-    private PageableGUI(final int size) {
+    /**
+     * Instantiates a new Pageable gui.
+     *
+     * @param size the size
+     */
+    PageableGUI(final int size) {
         this.templateGUI = GUI.newGUI(size);
     }
 
-    private PageableGUI(final @NotNull GUIType type) {
+    /**
+     * Instantiates a new Pageable gui.
+     *
+     * @param type the type
+     */
+    PageableGUI(final @NotNull GUIType type) {
         this.templateGUI = GUI.newGUI(type);
     }
 
@@ -176,7 +189,18 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param page   the page
      */
     public void open(final @NotNull Viewer viewer, final int page) {
-        GUI gui = getPage(page).copy().copyFrom(this, false)
+        prepareOpenGUI(getPage(page), page).open(viewer);
+    }
+
+    /**
+     * Prepares the {@link GUI} at the given page for {@link #open(Viewer, int)}.
+     *
+     * @param gui  the gui
+     * @param page the page
+     * @return the gui
+     */
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
+        gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
                 .setVariable("previous-page", String.valueOf(page))
                 .setVariable("next-page", String.valueOf(page + 2))
@@ -185,7 +209,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
                 gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
         if (page + 1 < pages()) this.nextPage.ifPresent((s, p) ->
                 gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
-        gui.open(viewer);
+        return gui;
     }
 
     @Override
