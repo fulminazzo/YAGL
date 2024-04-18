@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -109,8 +110,9 @@ public final class ObjectUtils {
                 .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
     }
 
-    private static @NotNull Object copyWithMethod(final @NotNull Object obj1) {
+    private static @Nullable Object copyWithMethod(final @Nullable Object obj1) {
         try {
+            if (obj1 == null) return null;
             Method copy = obj1.getClass().getDeclaredMethod("copy");
             return ReflectionUtils.setAccessible(copy)
                     .map(m -> m.invoke(obj1))
