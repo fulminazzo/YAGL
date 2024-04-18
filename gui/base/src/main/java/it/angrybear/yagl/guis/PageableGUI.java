@@ -25,15 +25,28 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
     private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
-    private PageableGUI() {
+    /**
+     * Instantiates a new Pageable gui.
+     */
+    PageableGUI() {
         this.templateGUI = null;
     }
 
-    private PageableGUI(final int size) {
+    /**
+     * Instantiates a new Pageable gui.
+     *
+     * @param size the size
+     */
+    PageableGUI(final int size) {
         this.templateGUI = GUI.newGUI(size);
     }
 
-    private PageableGUI(final @NotNull GUIType type) {
+    /**
+     * Instantiates a new Pageable gui.
+     *
+     * @param type the type
+     */
+    PageableGUI(final @NotNull GUIType type) {
         this.templateGUI = GUI.newGUI(type);
     }
 
