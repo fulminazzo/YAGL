@@ -132,7 +132,7 @@ public class DataGUI<T> extends PageableGUI {
     public void open(@NotNull Viewer viewer, int page) {
         GUI templateGUI = this.templateGUI;
         if (templateGUI == null) throw new IllegalStateException("templateGUI did not load correctly");
-        prepareOpenGUI(fillContents(templateGUI, page), page).open(viewer);
+        fillContents(prepareOpenGUI(templateGUI, page), page).open(viewer);
     }
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
