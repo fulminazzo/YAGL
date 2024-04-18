@@ -130,9 +130,7 @@ public class DataGUI<T> extends PageableGUI {
 
     @Override
     public void open(@NotNull Viewer viewer, int page) {
-        GUI templateGUI = this.templateGUI;
-        if (templateGUI == null) throw new IllegalStateException("templateGUI did not load correctly");
-        fillContents(prepareOpenGUI(templateGUI, page), page).open(viewer);
+        fillContents(prepareOpenGUI(this.templateGUI, page), page).open(viewer);
     }
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
@@ -150,32 +148,6 @@ public class DataGUI<T> extends PageableGUI {
             gui.addContent(content);
         }
         return gui;
-    }
-
-    /**
-     * Gets the {@link GUI} page from the given index.
-     * The index starts from <b>0</b>.
-     *
-     * @param page the page
-     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
-     * @return the corresponding {@link GUI} page
-     */
-    @Override
-    @Deprecated
-    public @NotNull GUI getPage(int page) {
-        throw new IllegalStateException(ERROR_MESSAGE);
-    }
-
-    /**
-     * Sets pages.
-     *
-     * @param pages the pages
-     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
-     * @return this gui
-     */
-    @Override
-    public @NotNull PageableGUI setPages(int pages) {
-        throw new IllegalStateException(ERROR_MESSAGE);
     }
 
     /**
@@ -204,6 +176,32 @@ public class DataGUI<T> extends PageableGUI {
         }
         while ((size -= emptySlots + add) >= 0) pages++;
         return pages;
+    }
+
+    /**
+     * Gets the {@link GUI} page from the given index.
+     * The index starts from <b>0</b>.
+     *
+     * @param page the page
+     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
+     * @return the corresponding {@link GUI} page
+     */
+    @Override
+    @Deprecated
+    public @NotNull GUI getPage(int page) {
+        throw new IllegalStateException(ERROR_MESSAGE);
+    }
+
+    /**
+     * Sets pages.
+     *
+     * @param pages the pages
+     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
+     * @return this gui
+     */
+    @Override
+    public @NotNull DataGUI<T> setPages(int pages) {
+        throw new IllegalStateException(ERROR_MESSAGE);
     }
 
     /**
