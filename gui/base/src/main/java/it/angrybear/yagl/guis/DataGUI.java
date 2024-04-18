@@ -7,6 +7,7 @@ import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +27,7 @@ import java.util.function.Predicate;
 public class DataGUI<T> extends PageableGUI {
     private static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
 
+    @Getter
     private final @NotNull List<T> data;
     private final @NotNull Function<T, GUIContent> dataConverter;
 
