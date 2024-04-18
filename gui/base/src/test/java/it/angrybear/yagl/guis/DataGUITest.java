@@ -1,17 +1,24 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedStatic;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 
 class DataGUITest {
 
@@ -66,6 +73,40 @@ class DataGUITest {
 
     @Test
     void testOpenPage() {
+        int[] slots = new int[]{1, 2, 3, 5, 6, 7};
+        Double[] data = new Double[] {
+                0.1, 0.2, 0.3, 0.5, 0.6, 0.7,
+                1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
+                2.1, 2.2, 2.3, 2.5, 2.6, 2.7,
+        };
+        Function<Double, GUIContent> cc = d -> ItemGUIContent.newInstance().setAmount((int) (d * 10));
+        PageableGUI gui = DataGUI.newGUI(9, cc, data)
+                .setPreviousPage(0, Item.newItem("redstone_block")
+                        .setDisplayName("&7Go to page &e<previous_page>"))
+                .setNextPage(8, Item.newItem("emerald_block")
+                        .setDisplayName("&7Go to page &e<next_page>"))
+                .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
 
+        final PageableGUITest.MockViewer viewer = new PageableGUITest.MockViewer(UUID.randomUUID(), "Steve");
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter"))
+                    .thenReturn(PageableGUITest.MockGUIAdapter.class);
+
+            for (int i = 0; i < gui.pages(); i++) {
+                gui.open(viewer, i);
+                GUI expected = new Refl<>(gui).getFieldObject("templateGUI");
+                assertNotNull(expected);
+                expected = PageableGUITest.generateExpected(expected.copy(), i);
+
+                for (int s : slots)
+                    expected.setContents(s, cc.apply(data[s + i * slots.length]));
+
+                GUI actual = viewer.openedGUI;
+                actual.getContents(0).forEach(e -> e.onClickItem((GUIItemAction) null));
+                actual.getContents(8).forEach(e -> e.onClickItem((GUIItemAction) null));
+
+                assertEquals(expected, actual);
+            }
+        }
     }
 }
