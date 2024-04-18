@@ -22,8 +22,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
 
-    private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
-    private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
+    protected final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
+    protected final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
     /**
      * Instantiates a new Pageable gui.
