@@ -74,6 +74,15 @@ class DataGUITest {
                 String.format("Message should contain '%s' but was '%s'", page, message));
     }
 
+    @Test
+    void testNoEmptySlots() {
+        int size = 9;
+        Item[] contents = new Item[size];
+        Arrays.fill(contents, Item.newItem("stone"));
+        DataGUI<?> gui = DataGUI.newGUI(size, s -> null).addContent(contents);
+        assertThrowsExactly(IllegalStateException.class, gui::pages);
+    }
+
     @ParameterizedTest
     @MethodSource("pagesTest")
     void testPagesMethod(int contents, int data, int expected) {
