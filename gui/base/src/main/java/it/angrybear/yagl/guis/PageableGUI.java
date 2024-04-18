@@ -18,7 +18,7 @@ import java.util.*;
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
 public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadatable, GUI {
-    private final GUI templateGUI;
+    protected final GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
 
@@ -199,7 +199,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param page the page
      * @return the gui
      */
-    @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
         gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
                 .setVariable("previous-page", String.valueOf(page))
