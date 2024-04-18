@@ -126,7 +126,11 @@ class DataGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(DataGUI.newGUI(9, c -> null), GUI.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(DataGUI.newGUI(9, c -> null), PageableGUI.class, m -> {
+            for (String s : Arrays.asList("copy", "setPages", "getPage"))
+                if (s.equals(m.getName())) return true;
+            return false;
+        });
     }
 
     private static Object[][] constructorParameters() {
