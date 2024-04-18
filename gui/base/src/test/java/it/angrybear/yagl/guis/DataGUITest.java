@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -128,4 +129,29 @@ class DataGUITest {
         TestUtils.testReturnType(DataGUI.newGUI(9, c -> null), GUI.class, m -> m.getName().equals("copy"));
     }
 
+    private static Object[][] constructorParameters() {
+        return new Object[][]{
+                new Object[]{27, null, null},
+                new Object[]{27, null, new Object[]{"Hello", "World"}},
+                new Object[]{27, null, Arrays.asList("Hello", "World")},
+                new Object[]{GUIType.CHEST, null, null},
+                new Object[]{GUIType.CHEST, null, new Object[]{"Hello", "World"}},
+                new Object[]{GUIType.CHEST, null, Arrays.asList("Hello", "World")},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorParameters")
+    void testConstructors(Object obj1, Object obj2, Object obj3) {
+        @NotNull DataGUI<Object> expected = obj1 instanceof GUIType ?
+                new DataGUI<>(GUIType.CHEST, null) :
+                new DataGUI<>(27, null);
+        expected.setData("Hello", "World");
+        DataGUI<Object> actual;
+        if (obj3 == null) {
+            actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", obj1, obj2);
+            actual.setData("Hello", "World");
+        } else actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", obj1, obj2, obj3);
+        assertEquals(expected, actual);
+    }
 }
