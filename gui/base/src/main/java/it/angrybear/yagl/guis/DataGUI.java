@@ -178,7 +178,10 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     public int pages() {
-        double pages = (double) this.data.size() / emptySlots().size();
+        int emptySlots = emptySlots().size();
+        if (emptySlots == 0)
+            throw new IllegalStateException("Cannot set data for non-empty pages");
+        double pages = (double) this.data.size() / emptySlots;
         return (int) Math.ceil(pages);
     }
 
