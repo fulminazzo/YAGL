@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
@@ -61,6 +62,25 @@ class DataGUITest {
                 else assertEquals(convertedContent, content, message);
             }
         }
+    }
+
+    private static Object[] removeDataParameters() {
+        return new Object[]{
+                "hello,world",
+                Arrays.asList("hello", "world"),
+                (Predicate<String>) s -> s.equals("hello") || s.equals("world")
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("removeDataParameters")
+    void testRemoveData(Object object) {
+        if (object instanceof String)
+            object = Arrays.stream(object.toString().split(",")).toArray(Object[]::new);
+        DataGUI<String> gui = DataGUI.newGUI(9, s -> null, "hello", "world");
+        new Refl<>(gui).invokeMethod("removeData", object);
+        @NotNull List<String> data = gui.getData();
+        assertTrue(data.isEmpty(), String.format("Expected empty but was '%s'", data));
     }
 
     @Test
