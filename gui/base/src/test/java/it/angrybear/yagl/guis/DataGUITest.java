@@ -108,7 +108,7 @@ class DataGUITest {
                 int[] tmpSlots = slots[i];
                 for (int s = 0; s < tmpSlots.length; s++) {
                     int ind = s;
-                    if (i > 0) ind += slots[i - 1].length;
+                    for (int k = i; k > 0; k--) ind += slots[k - 1].length;
                     double d = data[ind];
                     expected.setContents(tmpSlots[s], cc.apply(d));
                 }
