@@ -79,7 +79,9 @@ class DataGUITest {
                 1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
                 2.1, 2.2, 2.3, 2.5, 2.6, 2.7,
         };
-        Function<Double, GUIContent> cc = d -> ItemGUIContent.newInstance().setAmount((int) (d * 10));
+        Function<Double, GUIContent> cc = d -> ItemGUIContent.newInstance()
+                .setDisplayName("Data: " + d)
+                .setAmount((int) (d * 10));
         PageableGUI gui = DataGUI.newGUI(9, cc, data)
                 .setPreviousPage(0, Item.newItem("redstone_block")
                         .setDisplayName("&7Go to page &e<previous_page>"))
