@@ -1,11 +1,13 @@
 package it.angrybear.yagl.guis;
 
+import it.angrybear.yagl.contents.GUIContent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -15,12 +17,14 @@ import java.util.function.Predicate;
  */
 public class DataGUI<T> extends PageableGUI {
     private final List<T> data;
+    private final Function<T, GUIContent> dataConverter;
 
     /**
      * Instantiates a new Data gui.
      */
     DataGUI() {
         this.data = new ArrayList<>();
+        this.dataConverter = null;
     }
 
     /**
@@ -29,9 +33,10 @@ public class DataGUI<T> extends PageableGUI {
      * @param size the size
      * @param data the data
      */
-    DataGUI(int size, List<T> data) {
+    DataGUI(int size, List<T> data, Function<T, GUIContent> dataConverter) {
         super(size);
         this.data = data;
+        this.dataConverter = dataConverter;
     }
 
     /**
@@ -40,9 +45,10 @@ public class DataGUI<T> extends PageableGUI {
      * @param type the type
      * @param data the data
      */
-    DataGUI(@NotNull GUIType type, List<T> data) {
+    DataGUI(@NotNull GUIType type, List<T> data, Function<T, GUIContent> dataConverter) {
         super(type);
         this.data = data;
+        this.dataConverter = dataConverter;
     }
 
     /**
