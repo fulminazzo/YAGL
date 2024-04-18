@@ -5,6 +5,7 @@ import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -61,5 +62,10 @@ class DataGUITest {
 
         int pages = dataGUI.pages();
         assertEquals(expected, pages);
+    }
+
+    @Test
+    void testOpenPage() {
+
     }
 }
