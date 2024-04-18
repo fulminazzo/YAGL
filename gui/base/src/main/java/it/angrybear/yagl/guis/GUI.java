@@ -1168,7 +1168,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default Set<Integer> emptySlots() {
+    default @NotNull Set<Integer> emptySlots() {
         Set<Integer> slots = new HashSet<>();
         for (int i = 0; i < size(); i++)
             if (getContents(i).isEmpty()) slots.add(i);
@@ -1373,7 +1373,7 @@ public interface GUI extends Metadatable {
      * @param size the size
      * @return the gui
      */
-    static GUI newGUI(final int size) {
+    static @NotNull GUI newGUI(final int size) {
         return new DefaultGUI(size);
     }
 
@@ -1386,7 +1386,7 @@ public interface GUI extends Metadatable {
      * @param size the size
      * @return the resizable gui
      */
-    static ResizableGUI newResizableGUI(final int size) {
+    static @NotNull ResizableGUI newResizableGUI(final int size) {
         return new ResizableGUI(size);
     }
 
@@ -1396,7 +1396,7 @@ public interface GUI extends Metadatable {
      * @param type the type
      * @return the gui
      */
-    static GUI newGUI(final GUIType type) {
+    static @NotNull GUI newGUI(final @NotNull GUIType type) {
         return new TypeGUI(type);
     }
 }

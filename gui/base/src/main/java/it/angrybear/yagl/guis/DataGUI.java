@@ -19,8 +19,8 @@ import java.util.function.Predicate;
 public class DataGUI<T> extends PageableGUI {
     private static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
 
-    private final List<T> data;
-    private final Function<T, GUIContent> dataConverter;
+    private final @NotNull List<T> data;
+    private final @NotNull Function<T, GUIContent> dataConverter;
 
     /**
      * Instantiates a new Data gui.
@@ -52,7 +52,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data the data
      * @return this gui
      */
-    public DataGUI<T> addData(final T @NotNull ... data) {
+    public @NotNull DataGUI<T> addData(final T @NotNull ... data) {
         return addData(Arrays.asList(data));
     }
 
@@ -62,7 +62,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data the data
      * @return this gui
      */
-    public DataGUI<T> addData(final @NotNull Collection<T> data) {
+    public @NotNull DataGUI<T> addData(final @NotNull Collection<T> data) {
         this.data.addAll(data);
         return this;
     }
@@ -73,7 +73,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data the data
      * @return the data
      */
-    public DataGUI<T> setData(final T @NotNull ... data) {
+    public @NotNull DataGUI<T> setData(final T @NotNull ... data) {
         return setData(Arrays.asList(data));
     }
 
@@ -83,7 +83,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data the data
      * @return the data
      */
-    public DataGUI<T> setData(final @NotNull Collection<T> data) {
+    public @NotNull DataGUI<T> setData(final @NotNull Collection<T> data) {
         return clearData().addData(data);
     }
 
@@ -93,7 +93,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data the data
      * @return this gui
      */
-    public DataGUI<T> removeData(final T @NotNull ... data) {
+    public @NotNull DataGUI<T> removeData(final T @NotNull ... data) {
         return removeData(Arrays.asList(data));
     }
 
@@ -103,7 +103,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data the data
      * @return this gui
      */
-    public DataGUI<T> removeData(final @NotNull Collection<T> data) {
+    public @NotNull DataGUI<T> removeData(final @NotNull Collection<T> data) {
         return removeData(t -> t.equals(data));
     }
 
@@ -113,7 +113,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param function the function
      * @return this gui
      */
-    public DataGUI<T> removeData(final @NotNull Predicate<T> function) {
+    public @NotNull DataGUI<T> removeData(final @NotNull Predicate<T> function) {
         this.data.removeIf(function);
         return this;
     }
@@ -123,7 +123,7 @@ public class DataGUI<T> extends PageableGUI {
      *
      * @return this gui
      */
-    public DataGUI<T> clearData() {
+    public @NotNull DataGUI<T> clearData() {
         this.data.clear();
         return this;
     }
@@ -162,7 +162,7 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     @Deprecated
-    public GUI getPage(int page) {
+    public @NotNull GUI getPage(int page) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
 
@@ -174,7 +174,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return this gui
      */
     @Override
-    public PageableGUI setPages(int pages) {
+    public @NotNull PageableGUI setPages(int pages) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
 
@@ -214,7 +214,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param dataConverter the data converter
      * @return the data gui
      */
-    public static <T> DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter) {
+    public static <T> @NotNull DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter) {
         return new DataGUI<>(size, dataConverter);
     }
 
@@ -228,7 +228,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     @SafeVarargs
-    public static <T> DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
+    public static <T> @NotNull DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
                                         final T @NotNull ... data) {
         return new DataGUI<>(size, dataConverter).setData(data);
     }
@@ -242,7 +242,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data          the data
      * @return the data gui
      */
-    public static <T> DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
+    public static <T> @NotNull DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
                                         final @NotNull Collection<T> data) {
         return new DataGUI<>(size, dataConverter).setData(data);
     }
@@ -255,7 +255,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param dataConverter the data converter
      * @return the data gui
      */
-    public static <T> DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter) {
+    public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter) {
         return new DataGUI<>(type, dataConverter);
     }
 
@@ -269,7 +269,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     @SafeVarargs
-    public static <T> DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
+    public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
                                         final T @NotNull ... data) {
         return new DataGUI<>(type, dataConverter).setData(data);
     }
@@ -283,7 +283,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data          the data
      * @return the data gui
      */
-    public static <T> DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
+    public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
                                         final @NotNull Collection<T> data) {
         return new DataGUI<>(type, dataConverter).setData(data);
     }
