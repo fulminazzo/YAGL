@@ -73,11 +73,16 @@ class DataGUITest {
 
     @Test
     void testOpenPage() {
-        int[] slots = new int[]{1, 2, 3, 5, 6, 7};
+        int[][] slots = new int[][]{
+                new int[]{0, 1, 2, 3, 5, 6, 7},
+                new int[]{1, 2, 3, 5, 6, 7},
+                new int[]{1, 2, 3, 5, 6, 7, 8}
+        };
+
         Double[] data = new Double[] {
-                0.1, 0.2, 0.3, 0.5, 0.6, 0.7,
-                1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
-                2.1, 2.2, 2.3, 2.5, 2.6, 2.7,
+                0.0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.7,
+                     1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
+                     2.1, 2.2, 2.3, 2.5, 2.6, 2.7, 2.8,
         };
         Function<Double, GUIContent> cc = d -> ItemGUIContent.newInstance()
                 .setDisplayName("Data: " + d)
@@ -100,14 +105,19 @@ class DataGUITest {
                 assertNotNull(expected);
                 expected = PageableGUITest.generateExpected(expected.copy(), i);
 
-                for (int s = 0; s < slots.length; s++)
-                    expected.setContents(slots[s], cc.apply(data[s + i * slots.length]));
+                int[] tmpSlots = slots[i];
+                for (int s = 0; s < tmpSlots.length; s++) {
+                    int ind = s;
+                    if (i > 0) ind += slots[i - 1].length;
+                    double d = data[ind];
+                    expected.setContents(tmpSlots[s], cc.apply(d));
+                }
 
                 GUI actual = viewer.openedGUI;
                 actual.getContents(0).forEach(e -> e.onClickItem((GUIItemAction) null));
                 actual.getContents(8).forEach(e -> e.onClickItem((GUIItemAction) null));
 
-                assertEquals(expected, actual);
+                assertEquals(expected, actual, String.format("Invalid page %s", i));
             }
         }
     }
