@@ -127,6 +127,16 @@ public class DataGUI<T> extends PageableGUI {
         return this;
     }
 
+    private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
+        int emptySlots = gui.emptySlots().size();
+        int min = emptySlots * page;
+        int max = emptySlots * (page + 1);
+        int size = this.data.size();
+        for (int i = Math.min(min, size); i < Math.min(max, size); i++)
+            gui.addContent(this.dataConverter.apply(this.data.get(i)));
+        return gui;
+    }
+
     /**
      * Gets the {@link GUI} page from the given index.
      * The index starts from <b>0</b>.
