@@ -3,7 +3,6 @@ package it.angrybear.yagl.guis;
 import it.angrybear.yagl.contents.GUIContent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -18,14 +17,6 @@ import java.util.function.Predicate;
 public class DataGUI<T> extends PageableGUI {
     private final List<T> data;
     private final Function<T, GUIContent> dataConverter;
-
-    /**
-     * Instantiates a new Data gui.
-     */
-    DataGUI() {
-        this.data = new ArrayList<>();
-        this.dataConverter = null;
-    }
 
     /**
      * Instantiates a new Data gui.
