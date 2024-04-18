@@ -63,6 +63,17 @@ class DataGUITest {
         }
     }
 
+    @Test
+    void testInvalidPage() {
+        DataGUI<?> gui = DataGUI.newGUI(9, s -> null).setData(new String[]{"Hello"});
+        int page = 3;
+        Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
+                gui.open(null, page));
+        String message = throwable.getMessage();
+        assertTrue(message.contains(String.valueOf(page)),
+                String.format("Message should contain '%s' but was '%s'", page, message));
+    }
+
     @ParameterizedTest
     @MethodSource("pagesTest")
     void testPagesMethod(int contents, int data, int expected) {
