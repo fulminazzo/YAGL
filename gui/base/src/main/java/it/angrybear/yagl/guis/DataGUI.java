@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -23,24 +24,24 @@ public class DataGUI<T> extends PageableGUI {
     /**
      * Instantiates a new Data gui.
      *
-     * @param size the size
-     * @param data the data
+     * @param size          the size
+     * @param dataConverter the data converter
      */
-    DataGUI(int size, List<T> data, Function<T, GUIContent> dataConverter) {
+    DataGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter) {
         super(size);
-        this.data = data;
+        this.data = new LinkedList<>();
         this.dataConverter = dataConverter;
     }
 
     /**
      * Instantiates a new Data gui.
      *
-     * @param type the type
-     * @param data the data
+     * @param type          the type
+     * @param dataConverter the data converter
      */
-    DataGUI(@NotNull GUIType type, List<T> data, Function<T, GUIContent> dataConverter) {
+    DataGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter) {
         super(type);
-        this.data = data;
+        this.data = new LinkedList<>();
         this.dataConverter = dataConverter;
     }
 
@@ -161,6 +162,88 @@ public class DataGUI<T> extends PageableGUI {
     public int pages() {
         double pages = (double) this.data.size() / emptySlots().size();
         return (int) Math.ceil(pages);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given size and converter.
+     *
+     * @param <T>           the type of the data
+     * @param size          the size
+     * @param dataConverter the data converter
+     * @return the data gui
+     */
+    public static <T> DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter) {
+        return new DataGUI<>(size, dataConverter);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given size, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param size          the size
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    @SafeVarargs
+    public static <T> DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
+                                        final T @NotNull ... data) {
+        return new DataGUI<>(size, dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given size, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param size          the size
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    public static <T> DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
+                                        final @NotNull Collection<T> data) {
+        return new DataGUI<>(size, dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given type and converter.
+     *
+     * @param <T>           the type of the data
+     * @param type          the type
+     * @param dataConverter the data converter
+     * @return the data gui
+     */
+    public static <T> DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter) {
+        return new DataGUI<>(type, dataConverter);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given type, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param type          the type
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    @SafeVarargs
+    public static <T> DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
+                                        final T @NotNull ... data) {
+        return new DataGUI<>(type, dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given type, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param type          the type
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    public static <T> DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
+                                        final @NotNull Collection<T> data) {
+        return new DataGUI<>(type, dataConverter).setData(data);
     }
 
 }
