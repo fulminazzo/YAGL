@@ -98,8 +98,8 @@ class DataGUITest {
                 assertNotNull(expected);
                 expected = PageableGUITest.generateExpected(expected.copy(), i);
 
-                for (int s : slots)
-                    expected.setContents(s, cc.apply(data[s + i * slots.length]));
+                for (int s = 0; s < slots.length; s++)
+                    expected.setContents(slots[s], cc.apply(data[s + i * slots.length]));
 
                 GUI actual = viewer.openedGUI;
                 actual.getContents(0).forEach(e -> e.onClickItem((GUIItemAction) null));
