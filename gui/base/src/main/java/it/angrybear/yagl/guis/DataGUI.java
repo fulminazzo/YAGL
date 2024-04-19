@@ -162,30 +162,62 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     /**
+     * Gets the first page empty slots.
+     *
+     * @return the slots
+     */
+    protected int getFirstPageEmptySlots() {
+        int slots = getPageEmptySlots();
+        if (this.previousPage.isPresent()) slots++;
+        return slots;
+    }
+
+    /**
+     * Gets the last page empty slots.
+     *
+     * @return the slots
+     */
+    protected int getLastPageEmptySlots() {
+        int slots = getPageEmptySlots();
+        if (this.nextPage.isPresent()) slots++;
+        return slots;
+    }
+
+    /**
+     * Gets a general page empty slots.
+     *
+     * @return the slots
+     */
+    protected int getPageEmptySlots() {
+        final Set<Integer> slots = emptySlots();
+        this.previousPage.ifPresent((i, p) -> slots.remove(i));
+        this.nextPage.ifPresent((i, p) -> slots.remove(i));
+        return slots.size();
+    }
+
+    /**
      * Gets the number of pages based on the amount of data provided.
      *
      * @return the pages
      */
     @Override
     public int pages() {
-        final int emptySlots = emptySlots().size();
-        //TODO: not counting 1 item nextPage
-        if (emptySlots == 0)
-            throw new IllegalStateException("Cannot set data for non-empty pages");
         int dataSize = this.data.size();
-        // Start counting first page.
-        int firstPageSlots = emptySlots;
-        if (this.previousPage.isPresent()) firstPageSlots++;
-        dataSize -= firstPageSlots;
+        if (dataSize == 0) throw new IllegalArgumentException("Cannot set empty data");
+        final int emptySlots = getPageEmptySlots();
+        final int firstPageSlots = getFirstPageEmptySlots();
+        final int lastPageSlots = getLastPageEmptySlots();
         int pages = 1;
+        // First page
+        dataSize -= firstPageSlots;
         if (dataSize < 1) return pages;
-        // Count final page
-        int finalPageSlots = emptySlots;
-        if (this.nextPage.isPresent()) finalPageSlots++;
-        dataSize -= finalPageSlots;
+        if (emptySlots < 1)
+            throw new IllegalStateException(String.format("Not enough empty slots available to set %s items of data", dataSize));
+        // Last page
         pages++;
-        if (dataSize < 0) return pages;
-        // Count remaining pages
+        dataSize -= lastPageSlots;
+        if (dataSize < 1) return pages;
+        // Other pages
         while (dataSize > 0) {
             pages++;
             dataSize -= emptySlots;
