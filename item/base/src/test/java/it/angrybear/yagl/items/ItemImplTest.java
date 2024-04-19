@@ -4,6 +4,8 @@ import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemImplTest {
@@ -48,4 +50,14 @@ class ItemImplTest {
                 .addEnchantments("enchant1", "enchant2")
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)::toString);
     }
+
+    @Test
+    void testStrippedPrint() {
+        String output = new ItemImpl()
+                .setMaterial("stone")
+                .setAmount(2).toString();
+        for (String s : Arrays.asList("durability", "displayName", "lore", "enchantments", "itemFlags", "unbreakable", "customModelData"))
+            assertFalse(output.contains(s), String.format("'%s' should not contain %s", output, s));
+    }
+
 }
