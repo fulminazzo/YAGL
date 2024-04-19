@@ -2,9 +2,11 @@ package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.fulminazzo.fulmicollection.objects.Printable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.PrimitiveIterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,12 +45,19 @@ class ItemImplTest {
 
     @Test
     void testPrint() {
-        assertDoesNotThrow(new ItemImpl()
+        Item item = new ItemImpl()
                 .setMaterial("material")
                 .setAmount(2)
+                .setDurability(4)
+                .setDisplayName("Hello world")
                 .addLore("lore")
+                .setCustomModelData(2)
                 .addEnchantments("enchant1", "enchant2")
-                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)::toString);
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                .setUnbreakable(true);
+        String output = item.toString();
+        String expected = Printable.convertToJson(item);
+        assertEquals(expected, output);
     }
 
     @Test
