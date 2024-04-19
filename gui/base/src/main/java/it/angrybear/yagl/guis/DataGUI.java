@@ -254,6 +254,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return this gui
      */
     @Override
+    @Deprecated
     public @NotNull DataGUI<T> setPages(int pages) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
