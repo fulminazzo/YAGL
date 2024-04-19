@@ -38,7 +38,7 @@ class ShellCommandTest {
                 "    try {\n" +
                 "        sender.sendMessage(\"Your number is ${Integer.valueOf(args[0])}\")\n" +
                 "    } catch (NumberFormatException ignored) {\n" +
-                "    sender.sendMessage(e.getMessage().replace('For input string: ', 'Invalid number '))\n" +
+                "    sender.sendMessage(e.message.replace('For input string: ', 'Invalid number '))\n" +
                 "    }\n" +
                 "}\n" +
                 "run(sender, label, args)";
