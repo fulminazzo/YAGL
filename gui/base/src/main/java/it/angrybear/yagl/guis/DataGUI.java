@@ -5,6 +5,7 @@ import it.angrybear.yagl.actions.BiGUIAction;
 import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.exceptions.NotImplemented;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import lombok.Getter;
@@ -28,11 +29,17 @@ public class DataGUI<T> extends PageableGUI {
     private final @NotNull List<T> data;
     private final @NotNull Function<T, GUIContent> dataConverter;
 
-    @SuppressWarnings("DataFlowIssue")
     private DataGUI() {
         this.data = new LinkedList<>();
-        // Temporary value replaced by Field set.
-        this.dataConverter = null;
+        this.dataConverter = t -> {
+            throw new NotImplemented();
+        };
+    }
+
+    private DataGUI(final int size) {
+        this(size, t -> {
+            throw new NotImplemented();
+        });
     }
 
     /**
