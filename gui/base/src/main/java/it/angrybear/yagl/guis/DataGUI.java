@@ -28,6 +28,11 @@ public class DataGUI<T> extends PageableGUI {
     private final @NotNull List<T> data;
     private final @NotNull Function<T, GUIContent> dataConverter;
 
+    private DataGUI() {
+        this.data = new LinkedList<>();
+        this.dataConverter = t -> null;
+    }
+
     /**
      * Instantiates a new Data gui.
      *
