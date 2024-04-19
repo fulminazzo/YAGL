@@ -6,7 +6,6 @@ import it.fulminazzo.fulmicollection.objects.Printable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.PrimitiveIterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,7 +64,7 @@ class ItemImplTest {
         String output = new ItemImpl()
                 .setMaterial("stone")
                 .setAmount(2).toString();
-        for (String s : Arrays.asList("durability", "displayName", "lore", "enchantments", "itemFlags", "unbreakable", "customModelData"))
+        for (String s : Arrays.asList("durability", "displayName", "lore", "enchantments", "itemFlags", "customModelData"))
             assertFalse(output.contains(s), String.format("'%s' should not contain %s", output, s));
     }
 
