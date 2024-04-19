@@ -117,7 +117,7 @@ class DataGUITest {
         int size = 9;
         Item[] contents = new Item[size];
         Arrays.fill(contents, Item.newItem("stone"));
-        DataGUI<?> gui = DataGUI.newGUI(size, s -> null).addContent(contents);
+        DataGUI<?> gui = DataGUI.newGUI(size, s -> null, "Hello").addContent(contents);
         assertThrowsExactly(IllegalStateException.class, gui::pages);
     }
 
