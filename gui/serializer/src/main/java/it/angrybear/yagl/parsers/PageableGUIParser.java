@@ -40,8 +40,10 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Integer pages = section.getInteger("pages");
             if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
-            final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section, size);
-            gui.setPages(pages);
+            final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section);
+            try {
+                gui.setPages(pages);
+            } catch (IllegalStateException ignored) {}
             final Refl<PageableGUI> refl = new Refl<>(gui);
 
             final String guiType = section.getString("gui-type");
