@@ -34,7 +34,7 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
-            // Get type
+            // Get the type
             String type = section.getString("type");
             if (type == null) throw new IllegalArgumentException("'type' cannot be null");
             Class<?> clazz = typeToClass(getOClass(), type);
@@ -61,9 +61,9 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
     }
 
     /**
-     * Type to class class.
+     * Converts the given type to the corresponding class.
      *
-     * @param <C>       the type parameter
+     * @param <C>       the type of the class
      * @param mainClass the main class
      * @param type      the type
      * @return the class

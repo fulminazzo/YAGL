@@ -100,7 +100,7 @@ public class PersistentItem extends BukkitItemImpl {
 
     /**
      * Set the action executed on interacting.
-     * A player interacts with an item when they right-click with it in game.
+     * A player interacts with an item when they right-click with it in the game.
      *
      * @param action the action
      * @return this persistent item
