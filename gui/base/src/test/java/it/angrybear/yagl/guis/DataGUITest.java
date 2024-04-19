@@ -4,6 +4,7 @@ import it.angrybear.yagl.TestUtils;
 import it.angrybear.yagl.actions.GUIItemAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
+import it.angrybear.yagl.exceptions.NotImplemented;
 import it.angrybear.yagl.items.Item;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -14,6 +15,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -134,6 +138,25 @@ class DataGUITest {
         Throwable throwable = assertThrowsExactly(IllegalStateException.class, () ->
                 new Refl<>(DataGUI.newGUI(GUIType.ANVIL, s -> null)).invokeMethod(method, 1));
         assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
+    }
+
+    private static Constructor<?>[] privateConstructors() {
+        return Arrays.stream(DataGUI.class.getDeclaredConstructors())
+                .filter(c -> Modifier.isPrivate(c.getModifiers()))
+                .toArray(Constructor[]::new);
+    }
+
+    @ParameterizedTest
+    @MethodSource("privateConstructors")
+    void testPrivateConstructorsConverter(Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object[] parameters = Arrays.stream(constructor.getParameterTypes())
+                .map(TestUtils::mockParameter)
+                .map(o -> o instanceof Number ? 9 : o)
+                .toArray(Object[]::new);
+        Object object = ReflectionUtils.setAccessibleOrThrow(constructor).newInstance(parameters);
+        assertThrowsExactly(NotImplemented.class, () -> new Refl<>(object)
+                .getFieldRefl("dataConverter")
+                .invokeMethod("apply", (Object) null));
     }
 
     @Test
