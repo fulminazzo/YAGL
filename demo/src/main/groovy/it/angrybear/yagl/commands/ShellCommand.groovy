@@ -14,7 +14,7 @@ import java.util.regex.Pattern
 @CompileStatic
 class ShellCommand extends Command {
     private static final String NUMBER_FORMAT_REGEX = '(catch *\\(NumberFormatException +ignored\\) *\\{\\n)[ \\t]*(\\n *})'
-    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(e.getMessage().replace(\'For input string: \', \'Invalid number \'))'
+    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(e.message.replace(\'For input string: \', \'Invalid number \'))'
     private final String shellCode
 
     /**
@@ -23,7 +23,7 @@ class ShellCommand extends Command {
      * @param file  the file containing the script
      */
     ShellCommand(final @NotNull File file) {
-        super(file.getName().substring(0, file.getName().lastIndexOf('.')))
+        super(file.name.substring(0, file.name.lastIndexOf('.')))
         def code = FileUtils.readFileToString(file)
         if (code == null) {
             this.shellCode = ''

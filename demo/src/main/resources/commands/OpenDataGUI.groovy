@@ -74,7 +74,7 @@ def run = { sender, label, args ->
         } catch (NumberFormatException ignored) {
 
         } catch (Exception e) {
-            sender.sendMessage(e.getMessage())
+            sender.sendMessage(e.message)
         }
     else sender.sendMessage('Console cannot execute this command!')
 }

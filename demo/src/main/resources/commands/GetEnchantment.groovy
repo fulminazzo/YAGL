@@ -11,11 +11,11 @@ def run = { sender, label, args ->
         try {
             Enchantment enchantment = new Enchantment(args[0], Integer.valueOf(args[1]))
             ItemStack book = new ItemStack(Material.ENCHANTED_BOOK)
-            EnchantmentStorageMeta meta = book.getItemMeta()
+            EnchantmentStorageMeta meta = book.itemMeta
             Tuple<org.bukkit.enchantments.Enchantment, Integer> tuple = WrappersAdapter.wEnchantToEnchant(enchantment)
-            meta.addStoredEnchant(tuple.getKey(), tuple.getValue(), true)
+            meta.addStoredEnchant(tuple.key, tuple.value, true)
             book.setItemMeta(meta)
-            sender.getInventory().addItem(book)
+            sender.inventory.addItem(book)
         } catch (NumberFormatException ignored) {
 
         } catch (IndexOutOfBoundsException ignored) {

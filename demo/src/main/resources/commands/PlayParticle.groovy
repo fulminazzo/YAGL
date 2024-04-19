@@ -44,13 +44,13 @@ def run = { sender, label, args ->
                 def option = getOption(sender, type, optionType, Arrays.copyOfRange(args, 1, args.length))
                 particle = type.create(option)
             } else particle = type.create()
-            WrappersAdapter.spawnParticle(sender, particle, sender.getEyeLocation(), 1)
+            WrappersAdapter.spawnParticle(sender, particle, sender.eyeLocation, 1)
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /playparticle <particle> <data...>')
         } catch (NumberFormatException ignored) {
 
         } catch (Exception e) {
-            sender.sendMessage(e.getMessage())
+            sender.sendMessage(e.message)
         }
     } else sender.sendMessage('Console cannot execute this command!')
 }

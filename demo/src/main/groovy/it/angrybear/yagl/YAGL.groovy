@@ -19,8 +19,8 @@ class YAGL extends JavaPlugin {
     @Override
     void onEnable() {
         loadCommands()
-        Bukkit.getPluginManager().registerEvents(new PersistentListener(), this)
-        getLogger().info("Loaded ${commands.size()} commands")
+        Bukkit.pluginManager.registerEvents(new PersistentListener(), this)
+        logger.info("Loaded ${commands.size()} commands")
     }
 
     @Override
@@ -29,18 +29,18 @@ class YAGL extends JavaPlugin {
     }
 
     /**
-     * Loads all the commands from the <i>{@link #getDataFolder()}/commands</i> directory.
+     * Loads all the commands from the <i>{@link #dataFolder}/commands</i> directory.
      * If it does not exist, it is created using {@link #saveDefaultCommands(File)}.
      */
     void loadCommands() {
         this.commands.clear()
-        File commandsDir = new File(getDataFolder(), 'commands')
+        File commandsDir = new File(dataFolder, 'commands')
         if (!commandsDir.exists()) saveDefaultCommands(commandsDir)
         File[] files = commandsDir.listFiles()
         if (files != null)
             this.commands.addAll(files.findAll({ it.name.endsWith('.groovy') }).collect { new ShellCommand(it) })
 
-        commandMap().ifPresent { map -> this.commands.each { map.register(getName(), it) } }
+        commandMap().ifPresent { map -> this.commands.each { map.register(name, it) } }
     }
 
     /**
@@ -49,7 +49,7 @@ class YAGL extends JavaPlugin {
     void unloadCommands() {
         commandMap().ifPresent(map -> {
             Map<String, Command> commands = new Refl<>(map).getFieldObject('knownCommands')
-            if (commands == null) getLogger().warning('Could not find \'knownCommands\' field in CommandMap')
+            if (commands == null) logger.warning('Could not find \'knownCommands\' field in CommandMap')
             else commands.keySet().collect().each { key ->
                 Command value = commands.get(key)
                 if (this.commands.contains(value)) commands.remove(key, value)
@@ -58,7 +58,7 @@ class YAGL extends JavaPlugin {
     }
 
     private static Optional<CommandMap> commandMap() {
-        def pluginManager = Bukkit.getPluginManager()
+        def pluginManager = Bukkit.pluginManager
         // Terrible line, but necessary for JaCoCo coverage report to 100%
         pluginManager == null ? Optional.empty() : Optional.ofNullable((CommandMap) new Refl<>(pluginManager)
                 .getFieldObject('commandMap'))

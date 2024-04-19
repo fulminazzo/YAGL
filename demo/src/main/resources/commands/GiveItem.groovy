@@ -25,7 +25,7 @@ def run = { sender, label, args ->
             } catch (IndexOutOfBoundsException ignored) {
 
             }
-            sender.getInventory().addItem(item.copy(BukkitItem).create())
+            sender.inventory.addItem(item.copy(BukkitItem).create())
         } catch (NumberFormatException ignored) {
 
         } catch (IndexOutOfBoundsException ignored) {

@@ -64,7 +64,7 @@ def run = { sender, label, args ->
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /createrecipe <name> <result> <shaped|shapeless|furnace> <data>')
         } catch (Exception e) {
-            sender.sendMessage(e.getMessage())
+            sender.sendMessage(e.message)
         }
     else sender.sendMessage('Console cannot execute this command!')
 }
