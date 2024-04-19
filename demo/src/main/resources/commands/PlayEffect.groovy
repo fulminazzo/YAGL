@@ -16,7 +16,7 @@ import it.angrybear.yagl.wrappers.Potion
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.entity.Player
 
-static def getOption(sender, particleType, optionType, args) {
+static getOption(sender, particleType, optionType, args) {
     if (optionType == PotionParticleOption)
         new PotionParticleOption(new Potion(args[0], Integer.valueOf(args[1]),
                 Boolean.valueOf(args[2]), Boolean.valueOf(args[3])))

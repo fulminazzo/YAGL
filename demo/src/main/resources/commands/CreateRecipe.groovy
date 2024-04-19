@@ -5,7 +5,7 @@ import it.angrybear.yagl.items.recipes.ShapedRecipe
 import it.angrybear.yagl.items.recipes.ShapelessRecipe
 import org.bukkit.entity.Player
 
-static def shaped(sender, label, args, output, name) {
+static shaped(sender, label, args, output, name) {
     try {
         def rows = Integer.valueOf(args[0])
         def columns = Integer.valueOf(args[1])
@@ -22,7 +22,7 @@ static def shaped(sender, label, args, output, name) {
     }
 }
 
-static def shapeless(sender, label, args, output, name) {
+static shapeless(sender, label, args, output, name) {
     try {
         if (args.length == 0) throw new IndexOutOfBoundsException()
         BukkitItem.newRecipeItem(output)
@@ -39,7 +39,7 @@ static def shapeless(sender, label, args, output, name) {
     }
 }
 
-static def furnace(sender, label, args, output, name) {
+static furnace(sender, label, args, output, name) {
     try {
         BukkitItem.newRecipeItem(output)
                 .addRecipes(new FurnaceRecipe(name)

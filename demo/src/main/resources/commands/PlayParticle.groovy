@@ -19,7 +19,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 
-static def getOption(sender, particleType, optionType, args) {
+static getOption(sender, particleType, optionType, args) {
     if (optionType == DustParticleOption)
         new DustParticleOption(Color.fromARGB(args[0]), Float.valueOf(args[1]))
     if (optionType == DustTransitionParticleOption)
