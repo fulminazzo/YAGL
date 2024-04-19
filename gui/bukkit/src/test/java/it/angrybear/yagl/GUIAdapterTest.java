@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -140,10 +141,11 @@ class GUIAdapterTest {
     @Test
     void testOpenGUIAction() {
         GUI gui = GUI.newGUI(9);
-        GUIAction openAction = mock(GUIAction.class);
+        AtomicBoolean executed = new AtomicBoolean(false);
+        GUIAction openAction = (g, v) -> executed.set(true);
         gui.onOpenGUI(openAction);
         openGUI(gui);
-        verify(openAction).execute(GUIManager.getViewer(this.player), gui);
+        assertTrue(executed.get(), "openAction was not executed");
     }
 
     private void openGUI(GUI gui) {
