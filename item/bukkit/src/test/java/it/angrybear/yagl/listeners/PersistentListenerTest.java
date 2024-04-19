@@ -97,7 +97,6 @@ class PersistentListenerTest {
         assertFalse(this.clicked, "Clicked should be initialized as false");
         assertFalse(event.isCancelled(), "Event should not be cancelled");
         listener.on(event);
-        System.out.println("cancelled ? " + event.isCancelled());
         assertTrue(event.isCancelled(), "Event should have been cancelled by now");
         assertTrue(this.clicked, "Clicked should have changed");
     }
