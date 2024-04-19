@@ -124,7 +124,6 @@ public interface Metadatable {
     default <T> T apply(final T object) {
         if (object == null) return null;
         else if (object.getClass().isEnum()) return object;
-        else if (object.getClass().isInterface()) return object;
         else if (object instanceof String) return (T) apply((String) object);
         else if (object instanceof Collection) return (T) apply((Collection<Object>) object);
         else if (object instanceof Map) return (T) apply((Map<Object, Object>) object);
