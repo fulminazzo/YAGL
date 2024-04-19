@@ -47,7 +47,6 @@ public class GUIParser extends TypedParser<GUI> {
         };
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected TriConsumer<IConfiguration, String, GUI> getDumper() {
         return (c, s, g) -> {

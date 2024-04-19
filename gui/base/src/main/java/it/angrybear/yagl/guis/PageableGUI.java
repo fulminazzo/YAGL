@@ -478,11 +478,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
-    public @NotNull Set<Integer> topSlots() {
-        return GUI.super.topSlots();
-    }
-
-    @Override
     public @NotNull PageableGUI setLeftSide(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftSide(contents);
     }
@@ -505,11 +500,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI unsetLeftSide() {
         return (PageableGUI) GUI.super.unsetLeftSide();
-    }
-
-    @Override
-    public @NotNull Set<Integer> leftSlots() {
-        return GUI.super.leftSlots();
     }
 
     @Override
@@ -538,11 +528,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
-    public @NotNull Set<Integer> bottomSlots() {
-        return GUI.super.bottomSlots();
-    }
-
-    @Override
     public @NotNull PageableGUI setRightSide(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setRightSide(contents);
     }
@@ -565,11 +550,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI unsetRightSide() {
         return (PageableGUI) GUI.super.unsetRightSide();
-    }
-
-    @Override
-    public @NotNull Set<Integer> rightSlots() {
-        return GUI.super.rightSlots();
     }
 
     @Override

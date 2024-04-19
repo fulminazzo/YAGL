@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Represents a "chest" GUI that can be resized.
@@ -189,11 +188,6 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull Set<Integer> topSlots() {
-        return super.topSlots();
-    }
-
-    @Override
     public @NotNull ResizableGUI setLeftSide(Item @NotNull ... contents) {
         return (ResizableGUI) super.setLeftSide(contents);
     }
@@ -216,11 +210,6 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI unsetLeftSide() {
         return (ResizableGUI) super.unsetLeftSide();
-    }
-
-    @Override
-    public @NotNull Set<Integer> leftSlots() {
-        return super.leftSlots();
     }
 
     @Override
@@ -249,11 +238,6 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull Set<Integer> bottomSlots() {
-        return super.bottomSlots();
-    }
-
-    @Override
     public @NotNull ResizableGUI setRightSide(Item @NotNull ... contents) {
         return (ResizableGUI) super.setRightSide(contents);
     }
@@ -276,11 +260,6 @@ public class ResizableGUI extends DefaultGUI {
     @Override
     public @NotNull ResizableGUI unsetRightSide() {
         return (ResizableGUI) super.unsetRightSide();
-    }
-
-    @Override
-    public @NotNull Set<Integer> rightSlots() {
-        return super.rightSlots();
     }
 
     @Override
