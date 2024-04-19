@@ -161,24 +161,28 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     public int pages() {
-        int emptySlots = emptySlots().size();
+        final int emptySlots = emptySlots().size();
+        //TODO: not counting 1 item nextPage
         if (emptySlots == 0)
             throw new IllegalStateException("Cannot set data for non-empty pages");
-        int size = this.data.size();
-        int pages = size % emptySlots == 0 ? 0 : 1;
-        if (size < emptySlots) return pages;
-        int add = 0;
-        if (this.previousPage.isPresent()) {
+        int dataSize = this.data.size();
+        // Start counting first page.
+        int firstPageSlots = emptySlots;
+        if (this.previousPage.isPresent()) firstPageSlots++;
+        dataSize -= firstPageSlots;
+        int pages = 1;
+        if (dataSize < 1) return pages;
+        // Count final page
+        int finalPageSlots = emptySlots;
+        if (this.nextPage.isPresent()) finalPageSlots++;
+        dataSize -= finalPageSlots;
+        pages++;
+        if (dataSize < 0) return pages;
+        // Count remaining pages
+        while (dataSize > 0) {
             pages++;
-            size -= emptySlots - (this.nextPage.isEmpty() ? 1 : 0);
-            add--;
+            dataSize -= emptySlots;
         }
-        if (this.nextPage.isPresent()) {
-            pages++;
-            size -= emptySlots + add;
-            add--;
-        }
-        while ((size -= emptySlots + add) >= 0) pages++;
         return pages;
     }
 
