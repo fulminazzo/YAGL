@@ -212,6 +212,21 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         return newGUI;
     }
 
+    /**
+     * Counts the empty slots of the current GUI.
+     * If {@link #setPreviousPage(int, GUIContent)} or {@link #setNextPage(int, GUIContent)}
+     * were used, their slots are removed from the final count.
+     *
+     * @return the slots
+     */
+    @Override
+    public @NotNull Set<Integer> emptySlots() {
+        final Set<Integer> slots = GUI.super.emptySlots();
+        this.previousPage.ifPresent((i, p) -> slots.remove(i));
+        this.nextPage.ifPresent((i, p) -> slots.remove(i));
+        return slots;
+    }
+
     @Override
     public @NotNull PageableGUI setTitle(final @Nullable String title) {
         this.templateGUI.setTitle(title);

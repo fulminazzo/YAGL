@@ -141,8 +141,6 @@ public class DataGUI<T> extends PageableGUI {
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
         int emptySlots = emptySlots().size();
-        if (this.previousPage.isPresent()) emptySlots--;
-        if (this.nextPage.isPresent()) emptySlots--;
         int min = emptySlots * page;
         if (min >= this.data.size())
             throw new IllegalArgumentException(String.format("No such page '%s'", page));
