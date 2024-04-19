@@ -108,7 +108,7 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
             c.set(s, refl.getFieldObject("templateGUI"));
             ConfigurationSection section = c.getConfigurationSection(s);
             section.set("gui-type", section.getString("type"));
-            section.set("type", ParserUtils.classToType(GUI.class, getOClass()));
+            section.set("type", ParserUtils.classToType(GUI.class, p.getClass()));
             section.set("size", p.size());
             section.set("pages", p.pages());
 
