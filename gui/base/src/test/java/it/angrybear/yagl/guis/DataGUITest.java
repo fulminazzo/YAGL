@@ -189,6 +189,13 @@ class DataGUITest {
         });
     }
 
+    @Test
+    void testCopy() {
+        DataGUI<?> expected = DataGUI.newGUI(9, c -> null, "Hello", "world");
+        DataGUI<?> actual = expected.copy();
+        assertEquals(expected, actual);
+    }
+
     private static Object[][] constructorParameters() {
         return new Object[][]{
                 new Object[]{27, null, null},
