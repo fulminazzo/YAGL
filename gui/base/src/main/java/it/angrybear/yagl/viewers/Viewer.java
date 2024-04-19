@@ -12,21 +12,9 @@ import java.util.UUID;
  */
 @Getter
 public abstract class Viewer {
-    /**
-     * The Unique id.
-     */
     protected final UUID uniqueId;
-    /**
-     * The Name.
-     */
     protected final String name;
-    /**
-     * The Previous gui.
-     */
     protected GUI previousGUI;
-    /**
-     * The Open gui.
-     */
     protected GUI openGUI;
 
     /**
