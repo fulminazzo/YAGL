@@ -28,9 +28,11 @@ public class DataGUI<T> extends PageableGUI {
     private final @NotNull List<T> data;
     private final @NotNull Function<T, GUIContent> dataConverter;
 
+    @SuppressWarnings("DataFlowIssue")
     private DataGUI() {
         this.data = new LinkedList<>();
-        this.dataConverter = t -> null;
+        // Temporary value replaced by Field set.
+        this.dataConverter = null;
     }
 
     /**
