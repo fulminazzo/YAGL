@@ -70,7 +70,7 @@ class YAGL extends JavaPlugin {
      * @param commandsDir   the output directory
      */
     void saveDefaultCommands(final @NotNull File commandsDir) {
-        final def resourceDir = '/commands'
+        final resourceDir = '/commands'
         FileUtils.createFolder(commandsDir)
         getClass().getResourceAsStream(resourceDir).withReader { reader ->
             String fileName
