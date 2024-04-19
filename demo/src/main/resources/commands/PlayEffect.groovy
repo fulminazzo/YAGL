@@ -6,7 +6,12 @@
  */
 import it.angrybear.yagl.Color
 import it.angrybear.yagl.WrappersAdapter
-import it.angrybear.yagl.particles.*
+import it.angrybear.yagl.particles.ColorParticleOption
+import it.angrybear.yagl.particles.LegacyParticleType
+import it.angrybear.yagl.particles.MaterialDataOption
+import it.angrybear.yagl.particles.Particle
+import it.angrybear.yagl.particles.PotionParticleOption
+import it.angrybear.yagl.particles.PrimitiveParticleOption
 import it.angrybear.yagl.wrappers.Potion
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.entity.Player
