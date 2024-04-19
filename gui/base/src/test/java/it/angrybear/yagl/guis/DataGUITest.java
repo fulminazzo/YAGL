@@ -28,23 +28,23 @@ class DataGUITest {
 
     private static Object[][] pagesTest() {
         return new Object[][]{
-                new Object[]{0, 27, 1},
-                new Object[]{0, 54, 2},
-                new Object[]{9, 54, 3},
-                new Object[]{26, 54, 54},
-                new Object[]{14, 198, 16},
+                new Object[]{0, 27, 1, false, false},
+                new Object[]{0, 54, 2, false, false},
+                new Object[]{9, 54, 3, false, false},
+                new Object[]{26, 54, 54, false, false},
+                new Object[]{14, 198, 16, false, false},
+                new Object[]{0, 27, 2, false, true},
+                new Object[]{0, 27, 1, true, false},
+                new Object[]{0, 54, 3, true, true},
         };
     }
 
     @ParameterizedTest
     @MethodSource("pagesTest")
-    void testFillContentsMethod(int contents, int data, int pages) {
+    void testFillContentsMethod(int contents, int data, int pages, boolean prev, boolean next) {
         GUIContent convertedContent = ItemGUIContent.newInstance("grass");
-        DataGUI<Integer> dataGUI = DataGUI.newGUI(27, s -> convertedContent);
+        DataGUI<Integer> dataGUI = setupGUI(contents, data, prev, next, convertedContent);
         Refl<?> guiRefl = new Refl<>(dataGUI);
-        for (int i = 0; i < data; i++) dataGUI.addData(i);
-        @NotNull Item stone = Item.newItem("stone");
-        for (int i = 0; i < contents; i++) dataGUI.addContent(stone);
 
         for (int p = 0; p < pages; p++) {
             GUI gui = guiRefl.getFieldObject("templateGUI");
@@ -62,6 +62,24 @@ class DataGUITest {
                 else assertEquals(convertedContent, content, message);
             }
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("pagesTest")
+    void testPagesMethod(int contents, int data, int expected, boolean prev, boolean next) {
+        DataGUI<Integer> dataGUI = setupGUI(contents, data, prev, next, ItemGUIContent.newInstance());
+        int pages = dataGUI.pages();
+        assertEquals(expected, pages);
+    }
+
+    private static @NotNull DataGUI<Integer> setupGUI(int contents, int data, boolean prev, boolean next, GUIContent convertedContent) {
+        DataGUI<Integer> dataGUI = DataGUI.newGUI(27, s -> convertedContent);
+        if (prev) dataGUI.setPreviousPage(0, Item.newItem());
+        if (next) dataGUI.setNextPage(0, Item.newItem());
+        for (int i = 0; i < data; i++) dataGUI.addData(i);
+        @NotNull Item stone = Item.newItem("stone");
+        for (int i = 0; i < contents; i++) dataGUI.addContent(stone);
+        return dataGUI;
     }
 
     private static Object[] removeDataParameters() {
@@ -101,17 +119,6 @@ class DataGUITest {
         Arrays.fill(contents, Item.newItem("stone"));
         DataGUI<?> gui = DataGUI.newGUI(size, s -> null).addContent(contents);
         assertThrowsExactly(IllegalStateException.class, gui::pages);
-    }
-
-    @ParameterizedTest
-    @MethodSource("pagesTest")
-    void testPagesMethod(int contents, int data, int expected) {
-        DataGUI<Integer> dataGUI = DataGUI.newGUI(27, s -> ItemGUIContent.newInstance());
-        for (int i = 0; i < data; i++) dataGUI.addData(i);
-        for (int i = 0; i < contents; i++) dataGUI.addContent(Item.newItem("stone"));
-
-        int pages = dataGUI.pages();
-        assertEquals(expected, pages);
     }
 
     @ParameterizedTest
