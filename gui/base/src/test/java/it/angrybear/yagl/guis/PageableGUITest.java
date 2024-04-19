@@ -242,17 +242,17 @@ class PageableGUITest {
 
         @Override
         public void playSound(@NotNull Sound sound) {
-
+            //
         }
 
         @Override
         public void sendMessage(@NotNull String message) {
-
+            //
         }
 
         @Override
         public void executeCommand(@NotNull String command) {
-
+            //
         }
 
         @Override
