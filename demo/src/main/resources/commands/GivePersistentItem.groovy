@@ -1,6 +1,5 @@
 import it.angrybear.yagl.items.BukkitItem
 import it.angrybear.yagl.items.DeathAction
-import it.angrybear.yagl.items.Item
 import it.angrybear.yagl.items.Mobility
 import it.angrybear.yagl.items.PersistentItem
 import it.angrybear.yagl.items.fields.ItemFlag
