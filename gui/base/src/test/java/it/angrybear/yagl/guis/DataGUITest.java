@@ -41,6 +41,14 @@ class DataGUITest {
 
     @ParameterizedTest
     @MethodSource("pagesTest")
+    void testPagesMethod(int contents, int data, int expected, boolean prev, boolean next) {
+        DataGUI<Integer> dataGUI = setupGUI(contents, data, prev, next, ItemGUIContent.newInstance());
+        int pages = dataGUI.pages();
+        assertEquals(expected, pages);
+    }
+
+    @ParameterizedTest
+    @MethodSource("pagesTest")
     void testFillContentsMethod(int contents, int data, int pages, boolean prev, boolean next) {
         GUIContent convertedContent = ItemGUIContent.newInstance("grass");
         DataGUI<Integer> dataGUI = setupGUI(contents, data, prev, next, convertedContent);
@@ -64,18 +72,10 @@ class DataGUITest {
         }
     }
 
-    @ParameterizedTest
-    @MethodSource("pagesTest")
-    void testPagesMethod(int contents, int data, int expected, boolean prev, boolean next) {
-        DataGUI<Integer> dataGUI = setupGUI(contents, data, prev, next, ItemGUIContent.newInstance());
-        int pages = dataGUI.pages();
-        assertEquals(expected, pages);
-    }
-
     private static @NotNull DataGUI<Integer> setupGUI(int contents, int data, boolean prev, boolean next, GUIContent convertedContent) {
         DataGUI<Integer> dataGUI = DataGUI.newGUI(27, s -> convertedContent);
         if (prev) dataGUI.setPreviousPage(0, Item.newItem());
-        if (next) dataGUI.setNextPage(0, Item.newItem());
+        if (next) dataGUI.setNextPage(2, Item.newItem());
         for (int i = 0; i < data; i++) dataGUI.addData(i);
         @NotNull Item stone = Item.newItem("stone");
         for (int i = 0; i < contents; i++) dataGUI.addContent(stone);
