@@ -31,7 +31,7 @@ def run = { sender, label, args ->
             }
             sender.inventory.addItem(item.copy(BukkitItem).create())
         } catch (NumberFormatException ignored) {
-
+            // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /givepersistentitem <death-action> <mobility> <material> <amount> <durability> <name> <lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
             sender.sendMessage('At least death-action, mobility and material are required!')

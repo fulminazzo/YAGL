@@ -48,7 +48,7 @@ def run = { sender, label, args ->
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /playparticle <particle> <data...>')
         } catch (NumberFormatException ignored) {
-
+            // auto-generated code
         } catch (Exception e) {
             sender.sendMessage(e.message)
         }

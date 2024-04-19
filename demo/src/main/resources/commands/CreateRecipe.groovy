@@ -16,7 +16,7 @@ static def shaped(sender, label, args, output, name) {
         BukkitItem.newRecipeItem(output).addRecipes(recipe).registerRecipes()
         sender.sendMessage('Ok')
     } catch (NumberFormatException ignored) {
-
+        // auto-generated code
     } catch (IndexOutOfBoundsException ignored) {
         sender.sendMessage('Usage: /createrecipe <name> <result> shaped <rows> <columns> <ingredients...>')
     }
@@ -33,7 +33,7 @@ static def shapeless(sender, label, args, output, name) {
                 .registerRecipes()
         sender.sendMessage('Ok')
     } catch (NumberFormatException ignored) {
-
+        // auto-generated code
     } catch (IndexOutOfBoundsException ignored) {
         sender.sendMessage('Usage: /createrecipe <name> <result> shapeless <ingredients...>')
     }
@@ -49,7 +49,7 @@ static def furnace(sender, label, args, output, name) {
                 .registerRecipes()
         sender.sendMessage('Ok')
     } catch (NumberFormatException ignored) {
-
+        // auto-generated code
     } catch (IndexOutOfBoundsException ignored) {
         sender.sendMessage('Usage: /createrecipe <name> <result> furnace <ingredient> <cooking-time> <experience>')
     }
@@ -60,7 +60,7 @@ def run = { sender, label, args ->
         try {
             "${args[2].toLowerCase()}"(sender, label, Arrays.copyOfRange(args, 3, args.length), args[1], args[0])
         } catch (NumberFormatException ignored) {
-
+            // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /createrecipe <name> <result> <shaped|shapeless|furnace> <data>')
         } catch (Exception e) {

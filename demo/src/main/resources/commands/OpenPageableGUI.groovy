@@ -35,7 +35,7 @@ def run = { sender, label, args ->
                     .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))
                     .open(GUIManager.getViewer(sender))
         } catch (NumberFormatException ignored) {
-
+            // auto-generated code
         } catch (Exception e) {
             sender.sendMessage(e.message)
         }

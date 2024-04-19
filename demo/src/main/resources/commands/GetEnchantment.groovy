@@ -17,7 +17,7 @@ def run = { sender, label, args ->
             book.setItemMeta(meta)
             sender.inventory.addItem(book)
         } catch (NumberFormatException ignored) {
-
+            // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {
             sender.sendMessage('Usage: /getenchantment <enchantment> <level>')
         }

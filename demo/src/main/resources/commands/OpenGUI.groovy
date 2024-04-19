@@ -50,7 +50,7 @@ def run = { sender, label, args ->
                     .setVariable('name', 'Demo')
                     .open(GUIManager.getViewer(sender))
         } catch (NumberFormatException ignored) {
-
+            // auto-generated code
         } catch (Exception e) {
             sender.sendMessage(e.message)
         }
