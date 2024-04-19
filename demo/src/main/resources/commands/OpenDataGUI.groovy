@@ -39,7 +39,7 @@ def run = { sender, label, args ->
                     'Alan', 'Grace', 'Juan', 'Amber', 'Albert', 'Denise', 'Willie', 'Danielle', 'Elijah',
                     'Marilyn', 'Wayne', 'Beverly', 'Randy', 'Charlotte', 'Vincent', 'Natalie', 'Mason',
                     'Theresa', 'Roy', 'Diana', 'Ralph', 'Brittany', 'Bobby', 'Doris', 'Russell', 'Kayla',
-                    'Bradley', 'Alexis', 'Philip', 'Lori', 'Eugene', 'Marie'
+                    'Bradley', 'Alexis', 'Philip', 'Lori', 'Eugene', 'Marie',
             ]
             Function<String, GUIContent> converter = s -> ItemGUIContent.newInstance(Material.PLAYER_HEAD.name())
                     .setDisplayName("&e${s}'s head")

@@ -38,7 +38,7 @@ class YAGL extends JavaPlugin {
         if (!commandsDir.exists()) saveDefaultCommands(commandsDir)
         File[] files = commandsDir.listFiles()
         if (files != null)
-            this.commands.addAll(files.findAll({ it.name.endsWith('.groovy') }).collect { new ShellCommand(it) })
+            this.commands.addAll(files.findAll { it.name.endsWith('.groovy') }.collect { new ShellCommand(it) })
 
         commandMap().ifPresent { map -> this.commands.each { map.register(name, it) } }
     }
@@ -55,13 +55,6 @@ class YAGL extends JavaPlugin {
                 if (this.commands.contains(value)) commands.remove(key, value)
             }
         })
-    }
-
-    private static Optional<CommandMap> commandMap() {
-        def pluginManager = Bukkit.pluginManager
-        // Terrible line, but necessary for JaCoCo coverage report to 100%
-        pluginManager == null ? Optional.empty() : Optional.ofNullable((CommandMap) new Refl<>(pluginManager)
-                .getFieldObject('commandMap'))
     }
 
     /**
@@ -84,7 +77,14 @@ class YAGL extends JavaPlugin {
         }
     }
 
-    private void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName, final @NotNull resourceDir) {
+    private static Optional<CommandMap> commandMap() {
+        def pluginManager = Bukkit.pluginManager
+        // Terrible line, but necessary for JaCoCo coverage report to 100%
+        pluginManager == null ? Optional.empty() : Optional.ofNullable((CommandMap) new Refl<>(pluginManager)
+                .getFieldObject('commandMap'))
+    }
+
+    private static void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName, final @NotNull resourceDir) {
         def file = new File(dir, fileName)
         if (file.exists()) FileUtils.deleteFile(file)
         FileUtils.createNewFile(file)
