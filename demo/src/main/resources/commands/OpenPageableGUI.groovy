@@ -15,21 +15,21 @@ def run = { sender, label, args ->
             } catch (IllegalArgumentException ignored) {
                 gui = PageableGUI.newGUI(Integer.valueOf(args[0])).setPages(Integer.valueOf(args[1]))
             } catch (IndexOutOfBoundsException ignored) {
-                sender.sendMessage("Usage: /openpageablegui <type|size> <pages>")
+                sender.sendMessage('Usage: /openpageablegui <type|size> <pages>')
                 return
             }
             def size = gui.size()
             def middle = (int) Math.min(size / 2, 9 / 2)
             if (size > 1) {
                 size -= 1
-                gui.setContents(size - middle, BukkitItem.newItem(Material.OBSIDIAN).setDisplayName("&7Page: &e<page>"))
+                gui.setContents(size - middle, BukkitItem.newItem(Material.OBSIDIAN).setDisplayName('&7Page: &e<page>'))
                         .setPreviousPage(size - middle * 2, BukkitItem.newItem(Material.REDSTONE_BLOCK)
-                                .setDisplayName("&7Go to page &e<previous_page>"))
+                                .setDisplayName('&7Go to page &e<previous_page>'))
                         .setNextPage(size, BukkitItem.newItem(Material.EMERALD_BLOCK)
-                                .setDisplayName("&7Go to page &e<next_page>"))
+                                .setDisplayName('&7Go to page &e<next_page>'))
             }
 
-            gui.setTitle("Page #<page>")
+            gui.setTitle('Page #<page>')
                     .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
                     .onOpenGUI((v, g) -> v.sendMessage(g.apply('Opening page <page>')))
                     .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))

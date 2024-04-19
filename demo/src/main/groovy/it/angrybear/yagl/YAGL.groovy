@@ -38,7 +38,7 @@ class YAGL extends JavaPlugin {
         if (!commandsDir.exists()) saveDefaultCommands(commandsDir)
         File[] files = commandsDir.listFiles()
         if (files != null)
-            this.commands.addAll(files.findAll({ it.name.endsWith(".groovy") }).collect { new ShellCommand(it) })
+            this.commands.addAll(files.findAll({ it.name.endsWith('.groovy') }).collect { new ShellCommand(it) })
 
         commandMap().ifPresent { map -> this.commands.each { map.register(getName(), it) } }
     }
@@ -76,7 +76,7 @@ class YAGL extends JavaPlugin {
             String fileName
             while ((fileName = reader.readLine()) != null) writeResourceToFile(commandsDir, fileName, resourceDir)
         }
-        Iterator<String> jarEntries = JarUtils.getEntries(YAGL, "")
+        Iterator<String> jarEntries = JarUtils.getEntries(YAGL, '')
         while (jarEntries.hasNext()) {
             def entry = jarEntries.next()
             if (entry.startsWith(resourceDir.substring(1)) && entry.length() > resourceDir.length())

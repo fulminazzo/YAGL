@@ -39,7 +39,7 @@ class ShellCommand extends Command {
 
     @Override
     boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
-        Binding binding = new Binding(["sender": sender, "label": label, "args": args])
+        Binding binding = new Binding(['sender': sender, 'label': label, 'args': args])
         new GroovyShell(binding).evaluate(this.shellCode)
         return true
     }
