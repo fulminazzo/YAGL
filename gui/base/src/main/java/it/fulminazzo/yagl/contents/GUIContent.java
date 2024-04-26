@@ -1,15 +1,16 @@
 package it.fulminazzo.yagl.contents;
 
 import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.actions.GUIItemAction;
+import it.fulminazzo.yagl.actions.GUIItemClose;
 import it.fulminazzo.yagl.actions.GUIItemCommand;
 import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
 import it.fulminazzo.yagl.contents.requirements.RequirementChecker;
 import it.fulminazzo.yagl.items.Item;
+import it.fulminazzo.yagl.viewers.Viewer;
 import it.fulminazzo.yagl.wrappers.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import it.fulminazzo.yagl.actions.GUIItemAction;
-import it.fulminazzo.yagl.viewers.Viewer;
 
 import java.util.Optional;
 
@@ -84,6 +85,15 @@ public interface GUIContent extends Metadatable {
      * @return the boolean
      */
     boolean hasViewRequirements(final @NotNull Viewer viewer);
+
+    /**
+     * Closes the opened GUI for the {@link Viewer}.
+     *
+     * @return this content
+     */
+    default @NotNull GUIContent onClickItemClose() {
+        return onClickItem(new GUIItemClose());
+    }
 
     /**
      * Forces the {@link Viewer} to execute the given command when clicking on this GUIContent in a GUI.
