@@ -725,6 +725,21 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
+    public @NotNull DataGUI<T> fill(@NotNull Item content) {
+        return (DataGUI<T>) super.fill(content);
+    }
+
+    @Override
+    public @NotNull DataGUI<T> fill(@NotNull ItemGUIContent content) {
+        return (DataGUI<T>) super.fill(content);
+    }
+
+    @Override
+    public @NotNull DataGUI<T> fill(@NotNull GUIContent content) {
+        return (DataGUI<T>) super.fill(content);
+    }
+
+    @Override
     public @NotNull DataGUI<T> clear() {
         return (DataGUI<T>) super.clear();
     }
