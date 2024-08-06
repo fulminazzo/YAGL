@@ -6,10 +6,9 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * This parser allows to parse an object using the {@link CallableYAMLParser} methods.
+ * This parser allows parsing an object using the {@link CallableYAMLParser} methods.
  * However, it forces the saved object to store a <i>type</i> field, that contains the name of the class of the original object.
  * Upon loading, this class is retrieved (and will throw errors for invalid values) to recreate the object.
  *
@@ -34,7 +33,7 @@ public abstract class TypedParser<C> extends CallableYAMLParser<C> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable C> getDumper() {
+    protected TriConsumer<IConfiguration, String, C> getDumper() {
         return (c, s, g) -> {
             super.getDumper().accept(c, s, g);
             if (g == null) return;

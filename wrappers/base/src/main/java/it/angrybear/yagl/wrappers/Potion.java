@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A {@link Wrapper} class used to represent potions in older version of Minecraft.
+ * A {@link Wrapper} class used to represent potions in older versions of Minecraft.
  * Currently used only for {@link it.angrybear.yagl.particles.LegacyParticleType#POTION_BREAK}.
  */
 @Getter

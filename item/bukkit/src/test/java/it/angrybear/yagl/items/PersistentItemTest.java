@@ -1,6 +1,7 @@
 package it.angrybear.yagl.items;
 
 import it.angrybear.yagl.items.fields.ItemFlag;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,7 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -24,7 +29,7 @@ class PersistentItemTest {
 
     @Test
     void testNullInteractAction() {
-        PersistentItem persistentItem = new PersistentItem("stone");
+        PersistentItem persistentItem = PersistentItem.newItem("stone");
         Player player = mock(Player.class);
         ItemStack itemStack = mock(ItemStack.class);
         assertDoesNotThrow(() -> persistentItem.interact(player, itemStack, Action.LEFT_CLICK_AIR));
@@ -32,7 +37,7 @@ class PersistentItemTest {
 
     @Test
     void testNullClickAction() {
-        PersistentItem persistentItem = new PersistentItem("stone");
+        PersistentItem persistentItem = PersistentItem.newItem("stone");
         Player player = mock(Player.class);
         ItemStack itemStack = mock(ItemStack.class);
         assertDoesNotThrow(() -> persistentItem.click(player, itemStack, ClickType.DOUBLE_CLICK));
@@ -43,7 +48,7 @@ class PersistentItemTest {
         // Clear previous
         PersistentItem.clearPersistentItems();
 
-        PersistentItem persistentItem = new PersistentItem(Material.STONE);
+        PersistentItem persistentItem = PersistentItem.newItem(Material.STONE);
         ItemStack itemStack = persistentItem.create();
         PersistentItem.clearPersistentItems();
 
@@ -53,7 +58,7 @@ class PersistentItemTest {
     @Test
     void testGetPersistentItem() {
         BukkitUtils.setupEnchantments();
-        PersistentItem expected = new PersistentItem(Material.DIAMOND_SWORD, 1)
+        PersistentItem expected = PersistentItem.newItem(Material.DIAMOND_SWORD, 1)
                 .addLore("Extremely deep lore").setDisplayName("Cool sword")
                 .addEnchantment("flame", 3).addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
                 .setCustomModelData(3);
@@ -65,7 +70,7 @@ class PersistentItemTest {
     @Test
     void testInteract() {
         AtomicBoolean value = new AtomicBoolean(false);
-        PersistentItem persistentItem = new PersistentItem().setMaterial("STONE")
+        PersistentItem persistentItem = PersistentItem.newItem().setMaterial("STONE")
                 .onInteract((i, p, a) -> value.set(true))
                 .onClick((i, p, a) -> value.set(false));
         persistentItem.click(mock(Player.class), persistentItem.create(), ClickType.DOUBLE_CLICK);
@@ -77,12 +82,42 @@ class PersistentItemTest {
     @Test
     void testClick() {
         AtomicBoolean value = new AtomicBoolean(false);
-        PersistentItem persistentItem = new PersistentItem().setMaterial("STONE")
+        PersistentItem persistentItem = PersistentItem.newItem().setMaterial("STONE")
                 .onClick((i, p, a) -> value.set(true))
                 .onInteract((i, p, a) -> value.set(false));
         persistentItem.interact(mock(Player.class), persistentItem.create(), Action.LEFT_CLICK_AIR);
         assertFalse(value.get());
         persistentItem.click(mock(Player.class), persistentItem.create(), ClickType.DOUBLE_CLICK);
         assertTrue(value.get());
+    }
+
+    @Test
+    void testStaticInitializers() {
+        List<PersistentItem> items = new Refl<>(PersistentItem.class).getStaticMethods().stream()
+                .filter(m -> m.getReturnType().equals(PersistentItem.class))
+                .filter(m -> m.getName().equals("newItem"))
+                .map(m -> {
+                    Class<?>[] paramTypes = m.getParameterTypes();
+                    Object[] params = Arrays.stream(paramTypes)
+                            .map(c -> {
+                                if (c.equals(String.class)) return "STONE";
+                                else if (c.equals(int.class)) return 1;
+                                else if (c.equals(Material.class)) return Material.STONE;
+                                else return null;
+                            }).toArray(Object[]::new);
+                    try {
+                        return m.invoke(PersistentItem.class, params);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .map(m -> (PersistentItem) m)
+                .peek(m -> {
+                    if (m.getMaterial() == null) m.setMaterial("STONE");
+                })
+                .collect(Collectors.toList());
+        for (PersistentItem i1 : items)
+            for (PersistentItem i2 : items)
+                assertEquals(i1, i2);
     }
 }

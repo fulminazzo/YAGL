@@ -130,8 +130,7 @@ public class PersistentListener implements Listener {
         Consumer<PersistentItem> ifPresent = clickConsumer(event, player);
 
         // Check the current item and the cursor;
-        if (!clickPersistentItem(player, type, ifPresent, itemStack, event.getCursor()) &&
-                type.equals(ClickType.NUMBER_KEY)) {
+        if (!clickPersistentItem(player, type, ifPresent, itemStack, event.getCursor()) && type.equals(ClickType.NUMBER_KEY)) {
             // Check if a number has been used from the keyboard to move the item.
             itemStack = player.getInventory().getItem(event.getHotbarButton());
             clickPersistentItem(player, type, ifPresent, itemStack);

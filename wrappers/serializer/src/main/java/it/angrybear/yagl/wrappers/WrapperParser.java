@@ -9,7 +9,6 @@ import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -35,7 +34,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     }
 
     @Override
-    protected @NotNull BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable W> getLoader() {
+    protected BiFunctionException<IConfiguration, String, W> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;
@@ -80,7 +79,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     }
 
     @Override
-    protected @NotNull TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable W> getDumper() {
+    protected TriConsumer<IConfiguration, String, W> getDumper() {
         return (c, s, w) -> {
             c.set(s, null);
             if (w == null) return;

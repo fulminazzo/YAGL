@@ -41,7 +41,7 @@ public interface Recipe extends Iterable<Item> {
     @NotNull Item getOutput();
 
     /**
-     * Gets the amount of ingredients of this recipe.
+     * Gets the number of ingredients in this recipe.
      *
      * @return the size
      */
@@ -50,7 +50,7 @@ public interface Recipe extends Iterable<Item> {
     }
 
     /**
-     * Check if the current recipe has no ingredients set.
+     * Check if the current recipe has no ingredient set.
      *
      * @return true if {@link #size()} is 0
      */

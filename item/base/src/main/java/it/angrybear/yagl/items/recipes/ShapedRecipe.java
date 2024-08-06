@@ -128,7 +128,7 @@ public class ShapedRecipe extends RecipeImpl {
         }
 
         /**
-         * Sets columns.
+         * Sets the columns.
          * Should be between {@link #MIN_COLUMNS} and {@link #MAX_COLUMNS}.
          *
          * @param columns the columns
@@ -138,7 +138,7 @@ public class ShapedRecipe extends RecipeImpl {
         }
 
         /**
-         * Sets rows.
+         * Sets the rows.
          * Should be between {@link #MIN_ROWS} and {@link #MAX_ROWS}.
          *
          * @param rows the rows

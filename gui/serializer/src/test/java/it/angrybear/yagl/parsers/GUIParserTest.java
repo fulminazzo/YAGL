@@ -1,41 +1,44 @@
 package it.angrybear.yagl.parsers;
 
+import it.angrybear.yagl.ParserTestHelper;
 import it.angrybear.yagl.actions.BiGUICommand;
 import it.angrybear.yagl.actions.GUICommand;
 import it.angrybear.yagl.actions.GUIItemCommand;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
-import it.angrybear.yagl.contents.PermissionRequirementChecker;
-import it.angrybear.yagl.guis.ContentsParser;
+import it.angrybear.yagl.contents.requirements.PermissionRequirement;
 import it.angrybear.yagl.guis.GUI;
 import it.angrybear.yagl.guis.GUIType;
-import it.angrybear.yagl.guis.TypeGUI;
 import it.angrybear.yagl.items.Item;
-import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GUIParserTest {
+class GUIParserTest extends ParserTestHelper<GUI> {
 
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
-        YAGLParser.addAllParsers();
-        GUIContent expectedContent = new ItemGUIContent()
-                .setMaterial("STONE")
+        GUIYAGLParser.addAllParsers();
+        GUIContent expectedContent = ItemGUIContent.newInstance()
+                .setMaterial("stone")
                 .onClickItem(new GUIItemCommand("command"))
-                .setViewRequirements(new PermissionRequirementChecker("permission"));
+                .setViewRequirements(new PermissionRequirement("permission"));
         GUI expected = GUI.newGUI(9)
                 .onChangeGUI(new BiGUICommand("command"))
-                .onCloseGUI(Viewer::openGUI)
+                .onCloseGUI((v, g) -> v.executeCommand("help"))
                 .onOpenGUI(new GUICommand("command"))
                 .setContents(0, expectedContent);
         File file = new File("build/resources/test/actions-and-requirements.yml");
@@ -57,44 +60,38 @@ class GUIParserTest {
         assertFalse(contents.isEmpty());
         GUIContent content = contents.get(0);
         assertNotNull(content);
-        assertEquals(expectedContent.clickItemAction(), content.clickItemAction());
         assertEquals((Object) new Refl<>(expectedContent).getFieldObject("requirements"),
                 new Refl<>(content).getFieldObject("requirements"));
     }
 
-    @Test
-    void testSaveAndLoadResizableGUI() throws IOException {
-        FileConfiguration.addParsers(new ContentsParser());
-        YAGLParser.addAllParsers();
-        TypeGUI expected = (TypeGUI) GUI.newGUI(GUIType.BARREL)
-                .setContents(0, Item.newItem()
-                        .setMaterial("STONE_SWORD").setAmount(1)
-                        .setDurability(1337).setDisplayName("First")
-                        .setCustomModelData(1))
-                .setContents(1, Item.newItem()
-                        .setMaterial("STONE_SWORD").setAmount(1)
-                        .setDurability(1337).setDisplayName("Second")
-                        .setCustomModelData(1))
-                .setContents(4, Item.newItem()
-                                .setMaterial("STONE_SWORD").setAmount(1)
-                                .setDurability(1337).setDisplayName("Third-1")
-                                .setCustomModelData(1),
-                        Item.newItem()
-                                .setMaterial("STONE_SWORD").setAmount(1)
-                                .setDurability(1337).setDisplayName("Third-2")
-                                .setCustomModelData(1))
-                .setMovable(3, true).setMovable(7, true);
+    private static GUI[] getGUIs() {
+        return new GUI[]{GUI.newResizableGUI(9), GUI.newGUI(9), GUI.newGUI(GUIType.CHEST)};
+    }
+
+    @ParameterizedTest
+    @MethodSource("getGUIs")
+    void testSaveAndLoadGUI(GUI expected) throws IOException {
+        GUIYAGLParser.addAllParsers();
+
+        setupContents(expected);
+
         File file = new File("build/resources/test/gui.yml");
-        if (file.exists()) FileUtils.deleteFile(file);
-        FileUtils.createNewFile(file);
+        if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        configuration.set("gui", expected);
+        final String path = expected.getClass().getSimpleName().toLowerCase();
+        configuration.set(path, expected);
         configuration.save();
 
         configuration = new FileConfiguration(file);
-        TypeGUI actual = (TypeGUI) configuration.get("gui", GUI.class);
+        GUI actual = configuration.get(path, GUI.class);
         assertNotNull(actual);
-        assertEquals(expected.getInventoryType(), actual.getInventoryType());
+
+        for (final Field field : new Refl<>(expected).getNonStaticFields())
+            if (!field.getName().equals("contents")) {
+                Object obj1 = ReflectionUtils.get(field, expected);
+                Object obj2 = ReflectionUtils.get(field, actual);
+                assertEquals(obj1, obj2);
+            }
 
         @NotNull List<GUIContent> expectedContents = expected.getContents();
         @NotNull List<GUIContent> actualContents = actual.getContents();
@@ -106,7 +103,50 @@ class GUIParserTest {
             if (exp == null) assertNull(act);
             else assertEquals(exp.render(), act.render());
         }
+    }
 
-        assertIterableEquals(expected.getMovableSlots(), actual.getMovableSlots());
+    public static void setupContents(GUI expected) {
+        expected.setContents(0, Item.newItem()
+                        .setMaterial("stone_sword").setAmount(1)
+                        .setDurability(1337).setDisplayName("First")
+                        .setCustomModelData(1))
+                .setContents(1, Item.newItem()
+                        .setMaterial("stone_sword").setAmount(1)
+                        .setDurability(1337).setDisplayName("Second")
+                        .setCustomModelData(1))
+                .setContents(4, Item.newItem()
+                                .setMaterial("stone_sword").setAmount(1)
+                                .setDurability(1337).setDisplayName("Third-1")
+                                .setCustomModelData(1),
+                        Item.newItem()
+                                .setMaterial("stone_sword").setAmount(1)
+                                .setDurability(1337).setDisplayName("Third-2")
+                                .setCustomModelData(1))
+                .setMovable(3, true).setMovable(7, true);
+    }
+
+    @Test
+    void testInvalidSize() {
+        final String path = "gui";
+        final GUI gui = GUI.newGUI(9);
+        ConfigurationSection section = new ConfigurationSection(null, "section");
+        getDumper().accept(section, path, gui);
+        section.set(path + ".size", null);
+
+        assertThrowsExactly(IllegalArgumentException.class, () -> getLoader().apply(section, path));
+    }
+
+    @Test
+    void testDumpOfGUIWithParser() {
+        FileConfiguration.addParsers(new MockGUIParser());
+        ConfigurationSection section = new ConfigurationSection(null, "main");
+        GUI gui = new MockGUIParser.MockGUI();
+        getDumper().accept(section, "gui", gui);
+        assertEquals(section.getObject("gui"), gui.getTitle());
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return GUIParser.class;
     }
 }

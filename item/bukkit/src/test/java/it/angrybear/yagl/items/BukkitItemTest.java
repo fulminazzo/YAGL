@@ -18,10 +18,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class BukkitItemTest {
@@ -57,7 +56,7 @@ class BukkitItemTest {
         ItemStack expected = new ItemStack(Material.STONE, 3);
         ItemMeta meta = expected.getItemMeta();
         meta.setDisplayName("Hello world");
-        meta.setLore(Arrays.asList("An interesting lore..."));
+        meta.setLore(Collections.singletonList("An interesting lore..."));
         meta.addEnchant(Enchantment.ARROW_FIRE, 3, true);
         expected.setItemMeta(meta);
 
@@ -131,7 +130,7 @@ class BukkitItemTest {
                 mockItem(Item.newRecipeItem()),
                 mockItem(BukkitItem.newItem()),
                 mockItem(BukkitItem.newRecipeItem()),
-                mockItem(new PersistentItem())
+                mockItem(PersistentItem.newItem())
         };
     }
 

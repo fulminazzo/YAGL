@@ -93,7 +93,7 @@ public class Sound extends Wrapper {
     }
 
     /**
-     * Sets pitch.
+     * Sets the pitch.
      * It is limited from 0 and 2.0, where 2.0 is the fastest and 0.0 is the lowest.
      * The default value is 1.0.
      *

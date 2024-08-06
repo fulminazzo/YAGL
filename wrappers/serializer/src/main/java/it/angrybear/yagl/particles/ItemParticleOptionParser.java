@@ -6,8 +6,6 @@ import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A parser to serialize {@link ItemParticleOption}.
@@ -22,7 +20,7 @@ public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption<?>> 
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption<?>> getLoader() {
+    protected BiFunctionException<IConfiguration, String, ItemParticleOption<?>> getLoader() {
         return (c, s) -> {
             AbstractItem item = c.get(s, ReflectionUtils.getClass("it.angrybear.yagl.items.Item"));
             if (item == null) return null;
@@ -31,7 +29,7 @@ public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption<?>> 
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable ItemParticleOption<?>> getDumper() {
+    protected TriConsumer<IConfiguration, String, ItemParticleOption<?>> getDumper() {
         return (c, s, o) -> c.set(s, o == null ? null : o.getOption());
     }
 }

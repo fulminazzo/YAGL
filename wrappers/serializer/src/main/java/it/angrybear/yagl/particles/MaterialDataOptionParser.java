@@ -5,8 +5,6 @@ import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.structures.Tuple;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A parser to serialize {@link MaterialDataOption}.
@@ -22,7 +20,7 @@ public class MaterialDataOptionParser extends YAMLParser<MaterialDataOption> {
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, @Nullable MaterialDataOption> getLoader() {
+    protected BiFunctionException<IConfiguration, String, MaterialDataOption> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null) return null;
@@ -31,7 +29,7 @@ public class MaterialDataOptionParser extends YAMLParser<MaterialDataOption> {
     }
 
     @Override
-    protected TriConsumer<@NotNull IConfiguration, @NotNull String, @Nullable MaterialDataOption> getDumper() {
+    protected TriConsumer<IConfiguration, String, MaterialDataOption> getDumper() {
         return (c, s, b) -> {
             c.set(s, null);
             if (b == null) return;

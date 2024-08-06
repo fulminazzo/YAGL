@@ -1,5 +1,6 @@
 package it.angrybear.yagl.items;
 
+@SuppressWarnings("deprecation")
 public class Item implements AbstractItem {
     private final String material;
 

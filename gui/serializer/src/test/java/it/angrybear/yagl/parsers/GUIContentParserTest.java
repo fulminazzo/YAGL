@@ -16,13 +16,13 @@ class GUIContentParserTest {
 
     @Test
     void testSaveAndLoadItemGUIContent() throws IOException {
-        YAGLParser.addAllParsers();
-        GUIContent expected = (GUIContent) new ItemGUIContent()
-                .setMaterial("STONE_SWORD").setAmount(1)
+        GUIYAGLParser.addAllParsers();
+        GUIContent expected = ItemGUIContent.newInstance()
+                .setMaterial("stone_sword").setAmount(1)
                 .setDurability(1337).setDisplayName("&8Destroyer")
                 .setLore("&eUse this sword to fight your enemies")
-                .addEnchantment("UNBREAKING", 3)
-                .addEnchantment("SHARPNESS", 5)
+                .addEnchantment("unbreaking", 3)
+                .addEnchantment("sharpness", 5)
                 .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
                 .setCustomModelData(1);
         File file = new File("build/resources/test/gui-content.yml");

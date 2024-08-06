@@ -618,7 +618,7 @@ public final class WrappersAdapter {
 
     /**
      * Gets the corresponding namespaced key if the current version of Minecraft supports it.
-     * Uses <i>minecraft</i> as key for {@link #getNamespacedKey(String, String)}.
+     * Uses <i>minecraft</i> as the key for {@link #getNamespacedKey(String, String)}.
      *
      * @param value the value
      * @return the namespaced key

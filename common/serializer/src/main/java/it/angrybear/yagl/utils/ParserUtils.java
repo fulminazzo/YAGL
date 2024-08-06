@@ -50,7 +50,9 @@ public final class ParserUtils {
     public static <C> @NotNull String classToType(final @NotNull Class<C> coreClass, final @NotNull Class<? extends C> toConvert) {
         final String mainClassName = coreClass.getSimpleName();
         String name = toConvert.getSimpleName();
+        if (name.startsWith(mainClassName)) name = name.substring(mainClassName.length());
         if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
+        if (name.equals("Impl")) name = "default";
         name = FileUtils.formatStringToYaml(name);
         return name.replace("-", "_").toUpperCase();
     }

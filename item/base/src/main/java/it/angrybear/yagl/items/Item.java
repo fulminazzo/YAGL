@@ -3,15 +3,11 @@ package it.angrybear.yagl.items;
 import it.angrybear.yagl.items.fields.ItemField;
 import it.angrybear.yagl.items.fields.ItemFlag;
 import it.angrybear.yagl.utils.MessageUtils;
+import it.angrybear.yagl.utils.ObjectUtils;
 import it.angrybear.yagl.wrappers.Enchantment;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -395,49 +391,26 @@ public interface Item extends AbstractItem {
     boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore);
 
     /**
-     * Copies the current item into a new one.
+     * Copies the current item to a new one.
      *
      * @return the item
      */
     default Item copy() {
-        Class<? extends Item> clazz = this.getClass();
-        try {
-            Constructor<? extends Item> constructor = ReflectionUtils.getConstructor(clazz);
-        } catch (Exception e) {
-            clazz = ItemImpl.class;
-        }
-        return copy(clazz);
+        return ObjectUtils.copy(this);
     }
 
     /**
-     * Copies the current item into a new one using the provided class.
+     * Copies the current item to a new one using the provided class.
      * If an interface is provided (say {@link Item}),
      * it tries to convert it to {@link ItemImpl} by appending <i>Impl</i>.
      * If no such class is found, an {@link IllegalArgumentException} is thrown.
      *
-     * @param <I>   the type parameter
-     * @param clazz the clazz
+     * @param <I>   the type of the item
+     * @param clazz the class of the copied item
      * @return the item
      */
     default <I extends Item> I copy(@NotNull Class<I> clazz) {
-        if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
-            try {
-                clazz = ReflectionUtils.getClass(clazz.getCanonicalName() + "Impl");
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(String.format("Could not copy item to abstract class '%s': no '%sImpl' class found",
-                        clazz.getCanonicalName(), clazz.getCanonicalName()));
-            }
-
-        Refl<I> item = new Refl<>(clazz, new Object[0]);
-        for (final Field field : item.getNonStaticFields())
-            try {
-                ReflectionUtils.getField(this, field.getName());
-                Object obj1 = ReflectionUtils.get(field, this);
-                item.setFieldObject(field, obj1);
-            } catch (IllegalArgumentException ignored) {
-
-            }
-        return item.getObject();
+        return ObjectUtils.copy(this, clazz);
     }
 
     /**

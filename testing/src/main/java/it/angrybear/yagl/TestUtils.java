@@ -11,7 +11,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.exceptions.misusing.NotAMockException;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.*;
 public final class TestUtils {
 
     /**
-     * Allows to test all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
+     * Allows testing all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
      * Each one of them is first invoked using {@link #testSingleMethod(Object, Method, Object[], Object, String, Class[])}.
      * Then, it uses <i>captorsValidator</i> to validate the passed parameters.
      *
@@ -120,35 +121,71 @@ public final class TestUtils {
     /**
      * Many objects have setter, adder or remover methods which return the object itself,
      * to allow method chaining.
-     * This function allows to check each one to verify that the return type is consistent with the original object.
+     * This function allows checking each one to verify that the return type is consistent with the original object.
      *
-     * @param <T>    the type parameter
-     * @param object the object
-     * @param clazz  the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param filter if there are some methods that return a copy or a clone of the object, they should be filtered here.
+     * @param <T>                the type parameter
+     * @param object             the object
+     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
                                           final @Nullable Predicate<Method> filter) {
-        final Refl<?> refl = new Refl<>(object);
+        testReturnType(object, clazz, object.getClass(), filter);
+    }
 
-        for (Method method : refl.getNonStaticMethods()) {
+    /**
+     * Many objects have setter, adder or remover methods which return the object itself,
+     * to allow method chaining.
+     * This function allows checking each one to verify that the return type is consistent with the original object.
+     *
+     * @param <T>                the type parameter
+     * @param object             the object
+     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param expectedReturnType the expected return type of the methods.
+     *                           For example, if the object is a hidden implementation,
+     *                           the corresponding abstract class (or interface) should be passed.
+     * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
+     */
+    public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
+                                          @NotNull Class<?> expectedReturnType,
+                                          final @Nullable Predicate<Method> filter) {
+        if (expectedReturnType.getSimpleName().endsWith("Impl"))
+            try {
+                String name = expectedReturnType.getCanonicalName();
+                expectedReturnType = ReflectionUtils.getClass(name.substring(0, name.length() - "Impl".length()));
+            } catch (IllegalArgumentException ignored) {}
+        for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
             final String methodString = methodToString(method);
             try {
                 final Class<?> returnType = method.getReturnType();
+                if (Modifier.isStatic(method.getModifiers())) continue;
                 if (!clazz.isAssignableFrom(returnType)) continue;
-                if (filter != null && filter.test(method)) return;
+                if (filter != null && filter.test(method)) continue;
 
+                final Class<?> objectClass = object.getClass();
+                final String objectClassName = objectClass.getSimpleName();
                 String errorMessage = String.format("Method '%s' of class '%s' did not return itself",
-                        methodString, object.getClass().getSimpleName());
+                        methodString, objectClassName);
 
                 Object[] mockParameters = Arrays.stream(parameters).map(TestUtils::mockParameter).toArray(Object[]::new);
                 Object o = ReflectionUtils.setAccessible(method).invoke(object, mockParameters);
 
                 if (method.getName().equals("copy"))
-                    assertInstanceOf(object.getClass(), o, String.format("Returned object from %s call should have been %s but was %s",
-                            methodString, object.getClass(), o.getClass()));
-                else assertEquals(object.hashCode(), o.hashCode(), errorMessage);
+                    assertInstanceOf(objectClass, o, String.format("Returned object from %s call should have been %s but was %s",
+                            methodString, objectClass, o.getClass()));
+                else {
+                    try {
+                        ReflectionUtils.getMethod(objectClass, expectedReturnType, method.getName(), method.getParameterTypes());
+                    } catch (IllegalArgumentException e) {
+                        final String message = e.getMessage();
+                        if (message != null && message.contains("Could not find"))
+                            fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
+                                    methodString, objectClassName, objectClassName));
+                        else throw e;
+                    }
+                    assertEquals(object.hashCode(), o.hashCode(), errorMessage);
+                }
             } catch (Exception e) {
                 System.err.printf("An exception occurred while testing method '%s'%n", methodString);
                 ExceptionUtils.throwException(e);
@@ -156,6 +193,12 @@ public final class TestUtils {
         }
     }
 
+    /**
+     * Mocks the given class to an object.
+     *
+     * @param clazz the clazz
+     * @return the object
+     */
     public static Object mockParameter(Class<?> clazz) {
         clazz = ReflectionUtils.getWrapperClass(clazz);
         if (Number.class.isAssignableFrom(clazz)) return 1;
@@ -168,7 +211,13 @@ public final class TestUtils {
         }
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
-        return mock(clazz);
+        Object object = mock(clazz);
+        if (clazz.getPackage().getName().endsWith("guis"))
+            try {
+                Method method = clazz.getDeclaredMethod("size");
+                when(method.invoke(object)).thenReturn(9);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {}
+        return object;
     }
 
     private static String methodToString(final @NotNull Method method) {

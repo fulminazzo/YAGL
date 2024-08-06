@@ -1,8 +1,8 @@
 [versions]
 delombok = "8.4"
 
-fulmicollection = "1.5.1"
-yamlparser = "1.6.1"
+fulmicollection = "1.5.2"
+yamlparser = "1.6.2"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 spigot_obsolete = "1.8.8-R0.1-SNAPSHOT"
@@ -14,7 +14,7 @@ annotations = "24.1.0"
 
 junit = "5.9.1"
 mockito = "4.11.0"
-jbukkit = "2.0"
+jbukkit = "2.1"
 
 [libraries]
 fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }

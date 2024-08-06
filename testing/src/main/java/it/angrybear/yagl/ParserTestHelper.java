@@ -17,6 +17,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * A class to help test a {@link YAMLParser}.
+ *
+ * @param <T> the type parameter
  */
 public abstract class ParserTestHelper<T> {
 
@@ -26,17 +28,17 @@ public abstract class ParserTestHelper<T> {
      * @throws Exception the exception
      */
     @Test
-    void testLoadNull() throws Exception {
-        assertNull(getLoader().apply(prepareConfiguration(null), "path"));
+    protected void testLoadNull() throws Exception {
+        assertNull(getLoader().apply(getConfiguration(null), "path"));
     }
 
     /**
      * Tests if {@link YAMLParser#dump(IConfiguration, String, Object)} returns null when the object is null.
      */
     @Test
-    void testSaveNull() {
+    protected void testSaveNull() {
         assertDoesNotThrow(() -> getDumper()
-                .accept(prepareConfiguration(null), "path", null));
+                .accept(getConfiguration(null), "path", null));
     }
 
     /**
@@ -65,6 +67,16 @@ public abstract class ParserTestHelper<T> {
     @SuppressWarnings("unchecked")
     protected Refl<YAMLParser<T>> getYamlParser() {
         return (Refl<YAMLParser<T>>) new Refl<>(getParser(), new Object[0]);
+    }
+
+    /**
+     * Local implementation of {@link #prepareConfiguration(String)}.
+     *
+     * @param returnValue the return value
+     * @return the configuration
+     */
+    protected @NotNull IConfiguration getConfiguration(final @Nullable String returnValue) {
+        return prepareConfiguration(returnValue);
     }
 
     /**

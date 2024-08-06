@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
+@SuppressWarnings("deprecation")
 class ParticleTypeTest {
 
     private static ParticleType<?>[] getTests() {
@@ -66,7 +67,7 @@ class ParticleTypeTest {
         particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(Color.RED, Color.BLUE, 12f)));
         AbstractItem item = mock(AbstractItem.class);
         strippedParticles.add(ParticleType.ITEM_CRACK.create(item));
-        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption(item)));
+        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption<>(item)));
 
         List<Particle[]> tmp = new LinkedList<>();
         for (int i = 0; i < strippedParticles.size(); i++)

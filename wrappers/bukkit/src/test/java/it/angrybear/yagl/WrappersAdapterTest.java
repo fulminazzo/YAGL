@@ -37,9 +37,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings("deprecation")
 @After1_(13)
 class WrappersAdapterTest extends BukkitUtils {
 
@@ -368,6 +368,14 @@ class WrappersAdapterTest extends BukkitUtils {
     void testColorConversion(Color expected) {
         org.bukkit.Color color = WrappersAdapter.wColorToColor(expected);
         assertEquals(expected, WrappersAdapter.colorToWColor(color));
+    }
+
+    @Test
+    void testNullDataForMaterialData() {
+        Material material = Material.LEGACY_STONE;
+        Tuple<String, Integer> option = new Tuple<>(material.name(), null);
+        MaterialData expected = material.getNewData((byte) 0);
+        assertEquals(expected, WrappersAdapter.convertOption(MaterialData.class, option));
     }
 
     @Test

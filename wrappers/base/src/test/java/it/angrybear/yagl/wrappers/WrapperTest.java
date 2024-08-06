@@ -20,10 +20,11 @@ class WrapperTest {
         };
     }
 
+    @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource("testWrappers")
     void testWrappersReturnType(Wrapper item) {
-        TestUtils.testReturnType(item, Wrapper.class, null);
+        TestUtils.testReturnType(item, (Class<? super Wrapper>) item.getClass(), null);
     }
 
     @Test
@@ -118,7 +119,7 @@ class WrapperTest {
             this.minOnly = check(minOnly);
         }
 
-        // For testing purposes. A real bad practice in the real world.
+        // For testing purposes. A very bad practice in the real world.
         public void getMaxOnly(int maxOnly) {
             this.maxOnly = check(maxOnly);
         }

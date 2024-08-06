@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("deprecation")
 @After1_(13)
 class BukkitRecipeItemImplTest extends BukkitUtils {
 

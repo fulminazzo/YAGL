@@ -27,10 +27,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -45,6 +42,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("deprecation")
 class PersistentListenerTest {
     private static PersistentItem maintain;
     private static PersistentItem disappear;
@@ -56,9 +54,9 @@ class PersistentListenerTest {
     @BeforeAll
     static void setAllUp() {
         BukkitUtils.setupServer();
-        maintain = new PersistentItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
-        disappear = new PersistentItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
-        none = new PersistentItem(Material.STONE_SWORD, 1).setDisplayName("None").setDeathAction(null);
+        maintain = PersistentItem.newItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
+        disappear = PersistentItem.newItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
+        none = PersistentItem.newItem(Material.STONE_SWORD, 1).setDisplayName("None").setDeathAction(null);
         listener = new PersistentListener();
     }
 
@@ -191,17 +189,31 @@ class PersistentListenerTest {
     }
 
     @Test
-    void testInteractPersistentItem() {
+    void testClickPersistentItem() {
         final int itemSize = 10;
         final List<Integer> clickedItems = new ArrayList<>();
         List<PersistentItem> items = new ArrayList<>();
         for (int i = 0; i < itemSize; i++) {
             int finalI = i;
-            items.add(new PersistentItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> clickedItems.add(finalI)));
+            items.add(PersistentItem.newItem().setMaterial(Material.values()[13 + i]).onClick((p, s, c) -> clickedItems.add(finalI)));
+        }
+        assertTrue(listener.clickPersistentItem(mock(Player.class), ClickType.DOUBLE_CLICK, null,
+                items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
+        assertEquals(itemSize, clickedItems.size());
+    }
+
+    @Test
+    void testInteractPersistentItem() {
+        final int itemSize = 10;
+        final List<Integer> interactItems = new ArrayList<>();
+        List<PersistentItem> items = new ArrayList<>();
+        for (int i = 0; i < itemSize; i++) {
+            int finalI = i;
+            items.add(PersistentItem.newItem().setMaterial(Material.values()[3 + i]).onInteract((p, s, c) -> interactItems.add(finalI)));
         }
         assertTrue(listener.interactPersistentItem(mock(Player.class), Action.LEFT_CLICK_AIR, null,
                 items.stream().map(BukkitItem::create).collect(Collectors.toList())), "Should have been true for found");
-        assertEquals(itemSize, clickedItems.size());
+        assertEquals(itemSize, interactItems.size());
     }
 
     @Test
@@ -255,6 +267,93 @@ class PersistentListenerTest {
             return playerInventory;
         });
         return view;
+    }
+
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @Nested
+    class InventoryClick {
+
+        private InventoryView setupInventoryClickEventView() {
+            Inventory inventory = new MockInventory(9);
+            inventory.setItem(0, maintain.create());
+
+            Player player = getPlayer();
+            player.getInventory().setItem(0, maintain.create());
+
+            return getInventoryView(player, inventory);
+        }
+
+        private InventoryClickEvent[] inventoryClickEvents() {
+            InventoryView view = setupInventoryClickEventView();
+
+            return new InventoryClickEvent[]{
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 2, ClickType.LEFT, InventoryAction.CLONE_STACK),
+                    new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, 3, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0),
+            };
+        }
+
+        @ParameterizedTest
+        @MethodSource("inventoryClickEvents")
+        void simulateInventoryClick(InventoryClickEvent event) {
+            if (event.getRawSlot() == 2) cursor = maintain.create();
+
+            assertFalse(clicked, "Clicked should be initialized as false");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertTrue(event.isCancelled(), "Event should have been cancelled by now");
+            assertTrue(clicked, "Clicked should have changed");
+        }
+
+        private Object[] notMovableItems() {
+            return new Object[]{
+                    PersistentItem.newItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
+                    PersistentItem.newItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
+            };
+        }
+
+        @ParameterizedTest
+        @MethodSource("notMovableItems")
+        void testItemOutsideCouldNotBeMoved(PersistentItem persistentItem) {
+            InventoryView view = setupInventoryClickEventView();
+            int slot = view.getTopInventory().getSize();
+            view.getBottomInventory().setItem(0, persistentItem.create());
+
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0);
+            assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertEquals(persistentItem.getMobility() == Mobility.STATIC, event.isCancelled(), "Event cancel state was not as expected");
+        }
+
+        @ParameterizedTest
+        @MethodSource("notMovableItems")
+        void testItemInsideShouldNotBeMoved(PersistentItem persistentItem) {
+            InventoryView view = setupInventoryClickEventView();
+            int slot = 0;
+            view.getTopInventory().setItem(slot, persistentItem.create());
+
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertEquals(view.getTopInventory(), event.getClickedInventory(), "Clicked inventory should be top inventory");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled");
+        }
+
+        @Test
+        void testClickInBottomInventoryWithNoKeyPress() {
+            PersistentItem persistentItem = PersistentItem.newItem(Material.ACACIA_BOAT);
+            InventoryView view = setupInventoryClickEventView();
+            int slot = view.getTopInventory().getSize();
+            view.getBottomInventory().setItem(0, persistentItem.create());
+
+            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER, slot + 1, ClickType.LEFT, InventoryAction.CLONE_STACK);
+            assertEquals(view.getBottomInventory(), event.getClickedInventory(), "Clicked inventory should be PlayerInventory");
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+            listener.on(event);
+            assertFalse(event.isCancelled(), "Event should not be cancelled");
+        }
+
     }
 
     @Nested

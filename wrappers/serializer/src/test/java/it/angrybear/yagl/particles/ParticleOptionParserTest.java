@@ -36,7 +36,7 @@ class ParticleOptionParserTest {
                 new BlockDataOption("oak_fence", "east=false,north=false,south=false,waterlogged=false,west=false"),
                 new MaterialDataOption("oak_fence", 2),
                 new PotionParticleOption(new Potion("strength", 2, true)),
-                new ItemParticleOption(new Item("STONE")),
+                new ItemParticleOption<>(new Item("STONE")),
         };
     }
 
