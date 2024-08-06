@@ -101,7 +101,7 @@ class PersistentListenerTest {
 
     @Test
     void testMovableItem() {
-        PersistentItem persistentItem = new PersistentItem(Material.DIAMOND_PICKAXE).setMobility(Mobility.INTERNAL);
+        PersistentItem persistentItem = PersistentItem.newItem(Material.DIAMOND_PICKAXE).setMobility(Mobility.INTERNAL);
         InventoryView view = setupInventoryClickEventView();
         int slot = view.getTopInventory().getSize();
         view.getBottomInventory().setItem(0, persistentItem.create());
