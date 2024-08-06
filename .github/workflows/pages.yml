@@ -10,6 +10,9 @@ on:
   push:
     branches: [ "dev", "main", "master" ]
 
+permissions:
+  contents: write
+
 jobs:
   # Single deploy job since we're just deploying
   deploy:
