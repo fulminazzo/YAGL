@@ -9,8 +9,7 @@ name: Tests
 
 on:
   push:
-    #TODO: remove feat-gui
-    branches: [ "dev", "main", "master", "feat-gui" ]
+    branches: [ "dev", "main", "master" ]
 
 jobs:
   test:
