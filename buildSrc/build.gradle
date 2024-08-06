@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "Fulminazzo repository"
+        url = "https://repo.fulminazzo.it/releases"
+    }
+}
+
+dependencies {
+    testImplementation platform(libs.junit.platform)
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+
+    testImplementation libs.yamlparser
+}
+
+test {
+    useJUnitPlatform()
+}
