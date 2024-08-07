@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/"><img src="https://fulminazzo.it/badge/coverage/Fulminazzo/YAGL/gradle.yml" alt="Tests resuls" /></a>
+  <a href="https://yagl.fulminazzo.it/coverage"><img src="https://fulminazzo.it/badge/coverage/Fulminazzo/YAGL/gradle.yml" alt="Tests coverage" /></a>
   <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/"><img src="https://img.shields.io/codacy/grade/8740bf6175de4d479851a4a9ed0ea18e?logo=codacy" alt="Codacy Grade" /></a>
   <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/"><img src="https://tokei.rs/b1/github/Fulminazzo/YAGL?category=code&style=flat" alt="Lines of Code" /></a>
 </p>
