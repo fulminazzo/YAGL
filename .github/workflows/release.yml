@@ -9,7 +9,9 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 # Jobs that will execute
 jobs:
