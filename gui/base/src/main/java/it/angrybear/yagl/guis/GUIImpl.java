@@ -20,9 +20,9 @@ abstract class GUIImpl extends FieldEquable implements GUI {
     protected static final int MAX_SIZE = 54;
 
     @Getter
-    protected String title;
+    protected @Nullable String title;
     protected List<Contents> contents;
-    protected final Set<Integer> movableSlots;
+    protected final @NotNull Set<Integer> movableSlots;
     protected final Map<String, String> variables = new HashMap<>();
 
     protected GUIAction clickOutsideAction;
@@ -202,7 +202,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
      * @param copyFrom if not null, copy the contents of this list in the resulting one
      * @return the list
      */
-    protected List<Contents> createContents(int size, final List<Contents> copyFrom) {
+    protected @NotNull List<Contents> createContents(int size, final @Nullable List<Contents> copyFrom) {
         List<Contents> contents = new LinkedList<>();
         for (int i = 0; i < size; i++) contents.add(null);
         if (copyFrom != null) 
@@ -215,7 +215,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
      * A type to keep track of multiple {@link GUIContent} for one slot.
      */
     public static class Contents {
-        private final GUIContent[] contents;
+        private final GUIContent @NotNull [] contents;
 
         /**
          * Instantiates a new Contents.
@@ -231,8 +231,19 @@ abstract class GUIImpl extends FieldEquable implements GUI {
          *
          * @return the contents
          */
-        public List<GUIContent> getContents() {
+        public @NotNull List<GUIContent> getContents() {
             return Arrays.asList(this.contents);
+        }
+
+        /**
+         * Copies the current object to a new one.
+         *
+         * @return the copy
+         */
+        public @NotNull Contents copy() {
+            return new GUIImpl.Contents(Arrays.stream(this.contents)
+                    .map(c -> c == null ? null : c.copy())
+                    .toArray(GUIContent[]::new));
         }
 
         @Override
@@ -263,7 +274,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
         }
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return Arrays.toString(this.contents);
         }
     }

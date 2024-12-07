@@ -88,8 +88,8 @@ class GUIParserTest extends ParserTestHelper<GUI> {
 
         for (final Field field : new Refl<>(expected).getNonStaticFields())
             if (!field.getName().equals("contents")) {
-                Object obj1 = ReflectionUtils.get(field, expected);
-                Object obj2 = ReflectionUtils.get(field, actual);
+                Object obj1 = ReflectionUtils.getOrThrow(field, expected);
+                Object obj2 = ReflectionUtils.getOrThrow(field, actual);
                 assertEquals(obj1, obj2);
             }
 

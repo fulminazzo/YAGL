@@ -129,7 +129,8 @@ public abstract class ClassEnum {
             if (!this.values.isEmpty()) return;
             for (Field field : this.clazz.getDeclaredFields())
                 if (field.getType().equals(this.clazz))
-                    this.values.put(field.getName().toUpperCase(), ReflectionUtils.get(field, this.clazz));
+                    ReflectionUtils.get(field, this.clazz).ifPresent(o ->
+                            this.values.put(field.getName().toUpperCase(), (T) o));
         }
     }
 }

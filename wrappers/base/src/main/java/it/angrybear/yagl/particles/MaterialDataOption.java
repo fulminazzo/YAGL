@@ -1,6 +1,6 @@
 package it.angrybear.yagl.particles;
 
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import org.jetbrains.annotations.NotNull;
 
 /**

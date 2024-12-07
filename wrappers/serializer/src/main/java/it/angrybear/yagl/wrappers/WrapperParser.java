@@ -38,24 +38,35 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;
-            else {
-                String[] rawData = raw.split(":");
-                Constructor<W> constructor = findConstructorFromRaw(rawData);
-                Object[] parameters = initializeParameters(rawData, constructor);
-                return new Refl<>(getOClass(), parameters).getObject();
-            }
+            else return parseWrapperFromString(raw, getOClass());
         };
     }
 
-    private @NotNull Constructor<W> findConstructorFromRaw(final String @NotNull [] rawData) throws NoSuchMethodException {
-        Constructor<W> constructor = (Constructor<W>) Arrays.stream(getOClass().getConstructors())
+    /**
+     * Converts the given string to an instance of the given wrapper class by using the most appropriate constructor.
+     *
+     * @param <W>   the type of the wrapper
+     * @param raw   the string to convert from
+     * @param clazz the class of the wrapper
+     * @return the wrapper
+     * @throws NoSuchMethodException an exception thrown in case the constructor cannot be found
+     */
+    public static <W extends Wrapper> @NotNull W parseWrapperFromString(final @NotNull String raw, final @NotNull Class<W> clazz) throws NoSuchMethodException {
+        String[] rawData = raw.split(":");
+        Constructor<W> constructor = findConstructorFromRaw(rawData, clazz);
+        Object[] parameters = initializeParameters(rawData, constructor);
+        return new Refl<>(clazz, parameters).getObject();
+    }
+
+    private static <W extends Wrapper> @NotNull Constructor<W> findConstructorFromRaw(final String @NotNull [] rawData, final @NotNull Class<W> clazz) throws NoSuchMethodException {
+        Constructor<W> constructor = (Constructor<W>) Arrays.stream(clazz.getConstructors())
                 .filter(t -> t.getParameterCount() <= rawData.length)
                 .min(Comparator.comparing(t -> -t.getParameterCount())).orElse(null);
         if (constructor == null) {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < rawData.length; i++) builder.append("?, ");
             throw new NoSuchMethodException(String.format("Could not find method %s(%s)",
-                    getOClass().getSimpleName(), builder.substring(0, Math.max(0, builder.length() - 2))));
+                    clazz.getSimpleName(), builder.substring(0, Math.max(0, builder.length() - 2))));
         }
         return constructor;
     }

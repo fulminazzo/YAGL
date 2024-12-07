@@ -1,0 +1,40 @@
+plugins {
+    id 'groovy'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+dependencies {
+    implementation libs.groovy
+
+    compileOnly libs.spigot.latest
+    testImplementation libs.spigot.latest
+    testImplementation libs.jbukkit
+}
+
+shadowJar {
+    exclude 'META-INF/**'
+
+    archiveFileName = "${rootProject.name}-plugin-${project.version}.jar"
+    mainClassName = "${project.group}.${rootProject.name.toLowerCase()}.${rootProject.name}"
+}
+
+jar {
+    dependsOn processResources
+    dependsOn shadowJar
+
+    archiveFileName = "${project.name}-${project.version}-original.jar"
+}
+
+processResources {
+    def props = [
+            version: rootProject.version, name: rootProject.name, name_lower: rootProject.name.toLowerCase(),
+            description: rootProject.description, author: 'Fulminazzo',
+            group: rootProject.group, module: rootProject.name
+    ]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('*.yml') {
+        expand props
+    }
+}

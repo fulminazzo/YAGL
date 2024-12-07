@@ -7,10 +7,9 @@ import it.angrybear.yagl.utils.ParserUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
-import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -22,7 +21,7 @@ import java.util.Set;
  * A parser to serialize {@link PageableGUI}.
  */
 @SuppressWarnings("DataFlowIssue")
-public class PageableGUIParser extends YAMLParser<PageableGUI> {
+public class PageableGUIParser extends TypedParser<PageableGUI> {
     private static final String[] IGNORE_FIELDS = new String[]{"type", "size"};
 
     /**
@@ -41,7 +40,10 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             if (size == null) throw new IllegalArgumentException("'size' cannot be null");
             Integer pages = section.getInteger("pages");
             if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
-            final PageableGUI gui = PageableGUI.newGUI(size).setPages(pages);
+            final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section, size);
+            try {
+                gui.setPages(pages);
+            } catch (IllegalStateException ignored) {}
             final Refl<PageableGUI> refl = new Refl<>(gui);
 
             final String guiType = section.getString("gui-type");
@@ -108,7 +110,7 @@ public class PageableGUIParser extends YAMLParser<PageableGUI> {
             c.set(s, refl.getFieldObject("templateGUI"));
             ConfigurationSection section = c.getConfigurationSection(s);
             section.set("gui-type", section.getString("type"));
-            section.set("type", ParserUtils.classToType(GUI.class, getOClass()));
+            section.set("type", ParserUtils.classToType(GUI.class, p.getClass()));
             section.set("size", p.size());
             section.set("pages", p.pages());
 

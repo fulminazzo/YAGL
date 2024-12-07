@@ -21,13 +21,13 @@ public class TypeGUI extends GUIImpl {
     private static final int LOOM_MIDDLE_LINE = 0;
     private static final int LOOM_SOUTH = 2;
 
-    private final GUIType inventoryType;
+    private final @NotNull GUIType inventoryType;
 
     /**
      * Internal constructor, used for serializing purposes.
      */
     private TypeGUI() {
-        this.inventoryType = null;
+        this.inventoryType = GUIType.CHEST;
     }
 
     /**

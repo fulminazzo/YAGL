@@ -85,11 +85,11 @@ public final class TestUtils {
         try {
             // Execute target method
             final Object[] parameters = initializeParameters(targetMethod.getParameterTypes(), staticObjects);
-            ReflectionUtils.setAccessible(targetMethod).invoke(executor, parameters);
+            ReflectionUtils.setAccessibleOrThrow(targetMethod).invoke(executor, parameters);
 
             // Verify execution with mock
             Method method = target.getClass().getDeclaredMethod(invokedMethod, invokedMethodParamTypes);
-            ReflectionUtils.setAccessible(method).invoke(verify(target),
+            ReflectionUtils.setAccessibleOrThrow(method).invoke(verify(target),
                     Arrays.stream(captors).map(ArgumentCaptor::capture).toArray(Object[]::new));
 
             return captors;
@@ -169,7 +169,7 @@ public final class TestUtils {
                         methodString, objectClassName);
 
                 Object[] mockParameters = Arrays.stream(parameters).map(TestUtils::mockParameter).toArray(Object[]::new);
-                Object o = ReflectionUtils.setAccessible(method).invoke(object, mockParameters);
+                Object o = ReflectionUtils.setAccessibleOrThrow(method).invoke(object, mockParameters);
 
                 if (method.getName().equals("copy"))
                     assertInstanceOf(objectClass, o, String.format("Returned object from %s call should have been %s but was %s",

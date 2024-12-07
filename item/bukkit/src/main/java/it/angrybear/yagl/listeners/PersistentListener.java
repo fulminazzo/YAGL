@@ -12,6 +12,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -79,7 +80,7 @@ public class PersistentListener implements Listener {
         for (int i = 0; i < contents.length; i++) {
             int finalI = i;
             final ItemStack item = contents[i];
-            // Save every PersistentItem with the MAINTAIN action, remove if they have DISAPPEAR.
+            // Save every PersistentItem with the MAINTAIN action, remove if they have the DISAPPEAR one.
             findPersistentItem(p -> {
                 DeathAction deathAction = p.getDeathAction();
                 if (deathAction == null) return;
@@ -129,7 +130,7 @@ public class PersistentListener implements Listener {
         ItemStack itemStack = event.getCurrentItem();
         Consumer<PersistentItem> ifPresent = clickConsumer(event, player);
 
-        // Check the current item and the cursor;
+        // Check the current item and the cursor.
         if (!clickPersistentItem(player, type, ifPresent, itemStack, event.getCursor()) && type.equals(ClickType.NUMBER_KEY)) {
             // Check if a number has been used from the keyboard to move the item.
             itemStack = player.getInventory().getItem(event.getHotbarButton());
@@ -174,7 +175,8 @@ public class PersistentListener implements Listener {
         return e -> {
             Inventory open = player.getOpenInventory().getTopInventory();
             int rawSlot = event.getRawSlot();
-            if (e.getMobility() != Mobility.INTERNAL || rawSlot < open.getSize()) cancelled(event).accept(e);
+            if (e.getMobility() != Mobility.INTERNAL || (rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)))
+                cancelled(event).accept(e);
         };
     }
 

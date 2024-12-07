@@ -5,11 +5,12 @@ plugins {
     id 'io.freefair.lombok' version libs.versions.delombok
 }
 
+final def TEST_MODULE = 'testing'
+final def DEMO_MODULE = 'demo'
+final def VERSION_VARIABLE = 'MINECRAFT_VERSION'
+
 group = 'it.angrybear'
 version = '4.0'
-
-final def TEST_MODULE = "testing"
-final def VERSION_VARIABLE = "MINECRAFT_VERSION"
 
 allprojects {
     apply plugin: 'java-library'
@@ -26,7 +27,7 @@ allprojects {
     def obsolete_version = libs.versions.spigot.obsolete.get()
 
     this.ext.getParentFromProject = { project ->
-        return new HashMap<>(project.getProperties()).get("parent")
+        return new HashMap<>(project.getProperties()).get('parent')
     }
 
     this.ext.getProjectGroupId = {
@@ -37,7 +38,7 @@ allprojects {
             tmp = getParentFromProject(tmp)
         }
         if (groupId.size() > 0)
-            groupId = "." + groupId.substring(0, groupId.length() - 1)
+            groupId = ".${groupId.substring(0, groupId.length() - 1)}"
         return "${rootProject.group}${groupId}"
     }
 
@@ -50,18 +51,18 @@ allprojects {
     repositories {
         mavenCentral()
         maven {
-            name = "spigotmc-repo"
+            name = 'spigotmc-repo'
             url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
         }
         maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url = 'https://oss.sonatype.org/content/repositories/central' }
         maven {
-            name = "JitPack"
-            url = "https://jitpack.io"
+            name = 'JitPack'
+            url = 'https://jitpack.io'
         }
         maven {
-            name = "Fulminazzo repository"
-            url = "https://repo.fulminazzo.it/releases"
+            name = 'Fulminazzo repository'
+            url = 'https://repo.fulminazzo.it/releases'
         }
     }
 
@@ -75,60 +76,61 @@ allprojects {
 
         def projectName = project.name
 
-        if (projectName.contains("serializer")) api(libs.yamlparser)
+        if (projectName.contains('serializer')) api(libs.yamlparser)
 
-        if (projectName.contains("bukkit")) {
+        if (projectName.contains('bukkit')) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
             testRuntimeOnly "org.spigotmc:spigot-api:${latest_version}"
 
-            String numVersion = latest_version.substring(2, latest_version.indexOf(".", 2))
-            def index = numVersion.indexOf("-")
+            String numVersion = latest_version.substring(2, latest_version.indexOf('.', 2))
+            def index = numVersion.indexOf('-')
             if (index != -1) numVersion = numVersion.substring(0, index)
             if (Double.valueOf(numVersion) >= 13) testImplementation libs.jbukkit
             else testImplementation libs.jbukkit.legacy
         }
 
-        if (projectName.contains("legacy")) {
+        if (projectName.contains('legacy')) {
             testCompileOnly libs.spigot.legacy
             testRuntimeOnly "org.spigotmc:spigot-api:${legacy_version}"
 
             testImplementation libs.jbukkit.legacy
         }
 
-        if (projectName.contains("obsolete")) {
+        if (projectName.contains('obsolete')) {
             testCompileOnly libs.spigot.obsolete
             testRuntimeOnly "org.spigotmc:spigot-api:${obsolete_version}"
 
             testImplementation libs.jbukkit.legacy
         }
 
-        if (projectName.contains("-")) {
-            def name = projectName.substring(0, projectName.indexOf("-"))
-            def id = projectName.substring(projectName.indexOf("-") + 1)
-            if (!projectName.contains("base")) api(project(":${name}:${name}-base"))
-            if (name != "common" && id != "legacy" && id != "obsolete")
+        if (projectName.contains('-')) {
+            def name = projectName.substring(0, projectName.indexOf('-'))
+            def id = projectName.substring(projectName.indexOf('-') + 1)
+            if (!projectName.contains('base')) api(project(":${name}:${name}-base"))
+            if (name != 'common' && id != 'legacy' && id != 'obsolete')
                 api(project(":common:common-${id}"))
         }
-
-        if (!projectName.contains("-"))
-            subprojects.findAll { (it.name != TEST_MODULE) } .each {api project(it.path)}
 
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok
 
-        if (!project.name.equals(TEST_MODULE)) testImplementation project(":" + TEST_MODULE)
+        if (project.name != TEST_MODULE) testImplementation project(":${TEST_MODULE}")
+
+        if (project.name == DEMO_MODULE)
+            rootProject.subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
+                    .each { implementation project(it.path) }
     }
 
-    if (project.name.equals(TEST_MODULE)) return
+    if (project.name == TEST_MODULE) return
 
     test {
         def projectName = project.name
 
         if (System.getenv(VERSION_VARIABLE) == null) {
-            if (projectName.contains("bukkit")) environment VERSION_VARIABLE, latest_version
-            else if (projectName.contains("legacy")) environment VERSION_VARIABLE, legacy_version
-            else if (projectName.contains("obsolete")) environment VERSION_VARIABLE, obsolete_version
+            if (projectName.contains('bukkit')) environment VERSION_VARIABLE, latest_version
+            else if (projectName.contains('legacy')) environment VERSION_VARIABLE, legacy_version
+            else if (projectName.contains('obsolete')) environment VERSION_VARIABLE, obsolete_version
         }
 
         def env = System.getenv(VERSION_VARIABLE)
@@ -136,14 +138,14 @@ allprojects {
         useJUnitPlatform()
     }
 
-    tasks.register("testBukkit") {
+    tasks.register('testBukkit') {
         final def minecraftVersion = getMinecraftVersion()
         println "Using Minecraft version ${minecraftVersion}"
         latest_version = minecraftVersion
         legacy_version = minecraftVersion
         obsolete_version = minecraftVersion
 
-        subprojects.findAll { it.path.contains("bukkit") }.each { dependsOn "${it.path}:test" }
+        subprojects.findAll { it.path.contains('bukkit') }.each {dependsOn "${it.path}:test" }
     }
 
     tasks.register('sourcesJar', Jar) {
@@ -171,10 +173,10 @@ allprojects {
 
         repositories {
             maven {
-                url "https://repo.fulminazzo.it/releases"
+                url 'https://repo.fulminazzo.it/releases'
                 credentials {
-                    username = System.getenv("REPO_USERNAME")
-                    password = System.getenv("REPO_PASSWORD")
+                    username = System.getenv('REPO_USERNAME')
+                    password = System.getenv('REPO_PASSWORD')
                 }
                 authentication {
                     basic(BasicAuthentication)
@@ -182,6 +184,11 @@ allprojects {
             }
         }
     }
+}
+
+dependencies {
+    subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE } .each { api project(it.path) }
+    implementation project(":${DEMO_MODULE}")
 }
 
 tasks.register("aggregateJavaDoc") {

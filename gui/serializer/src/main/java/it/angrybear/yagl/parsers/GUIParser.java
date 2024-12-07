@@ -9,6 +9,7 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class GUIParser extends TypedParser<GUI> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
             GUI tmp = new Refl<>(this).getFieldRefl("function").invokeMethod("apply", section);
-            YAMLParser<? extends GUI> parser = FileConfiguration.getParser(tmp.getClass());
+            YAMLParser<? extends GUI> parser = getSpecificGUIParser(tmp);
             if (!parser.equals(this)) return parser.load(c, s);
             GUI g = super.getLoader().apply(c, s);
             Integer size = c.getInteger(s + ".size");
@@ -46,13 +47,12 @@ public class GUIParser extends TypedParser<GUI> {
         };
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected TriConsumer<IConfiguration, String, GUI> getDumper() {
         return (c, s, g) -> {
             c.set(s, null);
             if (g == null) return;
-            YAMLParser<GUI> parser = (YAMLParser<GUI>) FileConfiguration.getParser(g.getClass());
+            YAMLParser<GUI> parser = getSpecificGUIParser(g);
             if (!this.equals(parser)) parser.dump(c, s, g);
             else {
                 super.getDumper().accept(c, s, g);
@@ -61,6 +61,15 @@ public class GUIParser extends TypedParser<GUI> {
                 c.set(s + ".size", g.size());
             }
         };
+    }
+
+    @SuppressWarnings("unchecked")
+    private YAMLParser<GUI> getSpecificGUIParser(final @NotNull GUI gui) {
+        FileConfiguration.removeParsers(this);
+        YAMLParser<? extends @NotNull GUI> parser = FileConfiguration.getParser(gui.getClass());
+        FileConfiguration.addParsers(this);
+        if (parser == null || !getOClass().isAssignableFrom(parser.getOClass())) return this;
+        return (YAMLParser<GUI>) parser;
     }
 
 }

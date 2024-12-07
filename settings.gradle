@@ -43,6 +43,7 @@ include 'gui:gui-serializer'
 project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
 include 'testing'
+include 'demo'
 
 gradleEnterprise {
     if (System.getenv("CI") != null) {
@@ -53,3 +54,4 @@ gradleEnterprise {
         }
     }
 }
+

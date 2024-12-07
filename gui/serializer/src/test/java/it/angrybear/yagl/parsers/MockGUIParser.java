@@ -37,7 +37,7 @@ public class MockGUIParser extends YAMLParser<MockGUIParser.MockGUI> {
 
         @Override
         public void open(@NotNull Viewer viewer) {
-
+            //
         }
 
         @Override

@@ -89,6 +89,7 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     @Test
     void testPagesNotSpecified() {
         IConfiguration configuration = getConfiguration(c -> {
+            c.set("type", "PAGEABLE");
             c.set("size", 3);
         });
         Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
@@ -99,6 +100,7 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     @Test
     void testGUITypeNotSpecified() {
         IConfiguration configuration = getConfiguration(c -> {
+            c.set("type", "PAGEABLE");
             c.set("size", 9);
             c.set("pages", 3);
         });
@@ -110,6 +112,7 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     @Test
     void testInvalidTemplateGUI() {
         IConfiguration configuration = getConfiguration(c -> {
+            c.set("type", "PAGEABLE");
             c.set("size", 9);
             c.set("pages", 3);
             c.set("gui-type", "DEFAULT");
@@ -153,6 +156,7 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         doAnswer(a -> variables == null ? null : new HashMap<>(variables))
                 .when(section).get("variables", Map.class);
         configuration.toMap().put("gui", section);
+        section.set("type", "PAGEABLE");
         section.set("size", 9);
         section.set("pages", 3);
         section.set("gui-type", "DEFAULT");

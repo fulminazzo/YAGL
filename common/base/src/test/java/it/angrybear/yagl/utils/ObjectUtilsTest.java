@@ -3,9 +3,7 @@ package it.angrybear.yagl.utils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,18 +34,43 @@ class ObjectUtilsTest {
         assertNotEquals(c1.array, c2.array);
         assertArrayEquals(c1.array, c2.array);
         assertNotEquals(c1.copiable, c2.copiable);
+        assertEquals(c1.map, c2.map);
+        // Try removal from the first map
+        c1.map.remove("hello");
+        assertEquals("world", c2.map.get("hello"));
+    }
+
+    @Test
+    void testCopyThrowsIllegalArgument() {
+        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () ->
+                ObjectUtils.copy(new GeneralCopyException()));
+        assertEquals("Everything good", exception.getMessage());
     }
 
     private static class GeneralCopy {
+        Map<String, String> map = new HashMap<String, String>(){{
+            put("hello", "world");
+        }};
         List<String> list = Arrays.asList("hello", "world");
         String[] array = new String[]{"hello", "world"};
         GeneralCopiable copiable = new GeneralCopiable();
+    }
+
+    private static class GeneralCopyException {
+        GeneralCopiableException copiable = new GeneralCopiableException();
     }
 
     private static class GeneralCopiable {
 
         public GeneralCopiable copy() {
             return new GeneralCopiable();
+        }
+    }
+
+    private static class GeneralCopiableException {
+
+        public GeneralCopiable copy() {
+            throw new IllegalArgumentException("Everything good");
         }
     }
 

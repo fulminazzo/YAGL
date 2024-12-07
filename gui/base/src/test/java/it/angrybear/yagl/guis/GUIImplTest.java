@@ -7,6 +7,7 @@ import it.angrybear.yagl.contents.requirements.RequirementChecker;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -222,6 +223,20 @@ class GUIImplTest {
                     ItemGUIContent.newInstance("grass")
             );
             assertNotEquals(c1, ItemGUIContent.newInstance("grass"));
+        }
+
+        @Test
+        void testCopy() {
+            GUIImpl.Contents c1 = new GUIImpl.Contents(
+                    ItemGUIContent.newInstance("stone"),
+                    ItemGUIContent.newInstance("grass"),
+                    null
+            );
+            GUIImpl.Contents c2 = c1.copy();
+            assertEquals(c1.getContents(), c2.getContents());
+            Object cs1 = new Refl<>(c1).getFieldRefl("contents");
+            Object cs2 = new Refl<>(c2).getFieldRefl("contents");
+            assertNotEquals(cs1.hashCode(), cs2.hashCode());
         }
 
     }

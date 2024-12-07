@@ -8,7 +8,7 @@ import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,22 +18,35 @@ import java.util.*;
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
 public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadatable, GUI {
-    private final GUI templateGUI;
+    protected final @NotNull GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
 
-    private final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
-    private final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
+    protected final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
+    protected final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
-    private PageableGUI() {
-        this.templateGUI = null;
+    /**
+     * Instantiates a new Pageable gui.
+     */
+    PageableGUI() {
+        this.templateGUI = new DefaultGUI();
     }
 
-    private PageableGUI(final int size) {
+    /**
+     * Instantiates a new Pageable gui.
+     *
+     * @param size the size
+     */
+    PageableGUI(final int size) {
         this.templateGUI = GUI.newGUI(size);
     }
 
-    private PageableGUI(final @NotNull GUIType type) {
+    /**
+     * Instantiates a new Pageable gui.
+     *
+     * @param type the type
+     */
+    PageableGUI(final @NotNull GUIType type) {
         this.templateGUI = GUI.newGUI(type);
     }
 
@@ -53,7 +66,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param page the page
      * @return the corresponding {@link GUI} page
      */
-    public GUI getPage(final int page) {
+    public @NotNull GUI getPage(final int page) {
         try {
             return this.pages.get(page);
         } catch (IndexOutOfBoundsException e) {
@@ -67,7 +80,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param pages the pages
      * @return this gui
      */
-    public PageableGUI setPages(final int pages) {
+    public @NotNull PageableGUI setPages(final int pages) {
         if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
         int s;
         while ((s = this.pages.size()) - pages > 0) this.pages.remove(s - 1);
@@ -83,7 +96,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param previousPage the previous page
      * @return the previous page
      */
-    public PageableGUI setPreviousPage(final int slot, final @NotNull Item previousPage) {
+    public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull Item previousPage) {
         return setPreviousPage(slot, (GUIContent) ItemGUIContent.newInstance(previousPage));
     }
 
@@ -95,7 +108,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param previousPage the previous page
      * @return the previous page
      */
-    public PageableGUI setPreviousPage(final int slot, final @NotNull GUIContent previousPage) {
+    public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull GUIContent previousPage) {
         this.previousPage.set(checkSlot(slot), previousPage);
         return this;
     }
@@ -105,7 +118,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      *
      * @return the pageable gui
      */
-    public PageableGUI unsetPreviousPage() {
+    public @NotNull PageableGUI unsetPreviousPage() {
         this.previousPage.set(null, null);
         return this;
     }
@@ -118,7 +131,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param nextPage the next page
      * @return the next page
      */
-    public PageableGUI setNextPage(final int slot, final @NotNull Item nextPage) {
+    public @NotNull PageableGUI setNextPage(final int slot, final @NotNull Item nextPage) {
         return setNextPage(slot, (GUIContent) ItemGUIContent.newInstance(nextPage));
     }
 
@@ -130,7 +143,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param nextPage the next page
      * @return the next page
      */
-    public PageableGUI setNextPage(final int slot, final @NotNull GUIContent nextPage) {
+    public @NotNull PageableGUI setNextPage(final int slot, final @NotNull GUIContent nextPage) {
         this.nextPage.set(checkSlot(slot), nextPage);
         return this;
     }
@@ -140,7 +153,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      *
      * @return the pageable gui
      */
-    public PageableGUI unsetNextPage() {
+    public @NotNull PageableGUI unsetNextPage() {
         this.nextPage.set(null, null);
         return this;
     }
@@ -176,16 +189,42 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param page   the page
      */
     public void open(final @NotNull Viewer viewer, final int page) {
-        GUI gui = getPage(page).copy().copyFrom(this, false)
+        prepareOpenGUI(getPage(page), page).open(viewer);
+    }
+
+    /**
+     * Prepares the {@link GUI} at the given page for {@link #open(Viewer, int)}.
+     *
+     * @param gui  the gui
+     * @param page the page
+     * @return the gui
+     */
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
+        GUI newGUI = gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
                 .setVariable("previous-page", String.valueOf(page))
                 .setVariable("next-page", String.valueOf(page + 2))
                 .setVariable("pages", String.valueOf(pages()));
         if (page > 0) this.previousPage.ifPresent((s, p) ->
-                gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
+                newGUI.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
         if (page + 1 < pages()) this.nextPage.ifPresent((s, p) ->
-                gui.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
-        gui.open(viewer);
+                newGUI.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page + 1))));
+        return newGUI;
+    }
+
+    /**
+     * Counts the empty slots of the current GUI.
+     * If {@link #setPreviousPage(int, GUIContent)} or {@link #setNextPage(int, GUIContent)}
+     * were used, their slots are removed from the final count.
+     *
+     * @return the slots
+     */
+    @Override
+    public @NotNull Set<Integer> emptySlots() {
+        final Set<Integer> slots = GUI.super.emptySlots();
+        this.previousPage.ifPresent((i, p) -> slots.remove(i));
+        this.nextPage.ifPresent((i, p) -> slots.remove(i));
+        return slots;
     }
 
     @Override
@@ -439,11 +478,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
-    public @NotNull Set<Integer> topSlots() {
-        return GUI.super.topSlots();
-    }
-
-    @Override
     public @NotNull PageableGUI setLeftSide(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftSide(contents);
     }
@@ -466,11 +500,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI unsetLeftSide() {
         return (PageableGUI) GUI.super.unsetLeftSide();
-    }
-
-    @Override
-    public @NotNull Set<Integer> leftSlots() {
-        return GUI.super.leftSlots();
     }
 
     @Override
@@ -499,11 +528,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
-    public @NotNull Set<Integer> bottomSlots() {
-        return GUI.super.bottomSlots();
-    }
-
-    @Override
     public @NotNull PageableGUI setRightSide(Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setRightSide(contents);
     }
@@ -526,11 +550,6 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull PageableGUI unsetRightSide() {
         return (PageableGUI) GUI.super.unsetRightSide();
-    }
-
-    @Override
-    public @NotNull Set<Integer> rightSlots() {
-        return GUI.super.rightSlots();
     }
 
     @Override
@@ -774,7 +793,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param size the size
      * @return the pageable gui
      */
-    public static PageableGUI newGUI(final int size) {
+    public static @NotNull PageableGUI newGUI(final int size) {
         return new PageableGUI(size);
     }
 
@@ -784,7 +803,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param type the type
      * @return the pageable gui
      */
-    public static PageableGUI newGUI(final @NotNull GUIType type) {
+    public static @NotNull PageableGUI newGUI(final @NotNull GUIType type) {
         return new PageableGUI(type);
     }
 

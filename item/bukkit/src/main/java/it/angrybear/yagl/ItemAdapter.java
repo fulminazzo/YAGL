@@ -9,7 +9,7 @@ import it.angrybear.yagl.items.recipes.ShapedRecipe;
 import it.angrybear.yagl.items.recipes.ShapelessRecipe;
 import it.angrybear.yagl.utils.EnumUtils;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -56,8 +56,7 @@ public final class ItemAdapter {
             invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), () ->
                     item.setUnbreakable(meta.spigot().isUnbreakable()));
             invokeNoSuchMethod(() -> {
-                int modelData = meta.getCustomModelData();
-                if (modelData > 0) item.setCustomModelData(modelData);
+                if (meta.hasCustomModelData()) item.setCustomModelData(meta.getCustomModelData());
             }, null);
         }
         return item;

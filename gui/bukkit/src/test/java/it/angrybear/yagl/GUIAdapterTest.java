@@ -1,5 +1,6 @@
 package it.angrybear.yagl;
 
+import it.angrybear.yagl.actions.GUIAction;
 import it.angrybear.yagl.contents.GUIContent;
 import it.angrybear.yagl.contents.ItemGUIContent;
 import it.angrybear.yagl.guis.GUI;
@@ -25,6 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -130,8 +132,28 @@ class GUIAdapterTest {
         assertThrowsExactly(PlayerOfflineException.class, () -> openGUI(GUI.newGUI(9)));
     }
 
+    @Test
+    void testCloseGUIForOfflinePlayer() {
+        BukkitUtils.removePlayer(this.player);
+        assertThrowsExactly(PlayerOfflineException.class, this::closeGUI);
+    }
+
+    @Test
+    void testOpenGUIAction() {
+        GUI gui = GUI.newGUI(9);
+        AtomicBoolean executed = new AtomicBoolean(false);
+        GUIAction openAction = (g, v) -> executed.set(true);
+        gui.onOpenGUI(openAction);
+        openGUI(gui);
+        assertTrue(executed.get(), "openAction was not executed");
+    }
+
     private void openGUI(GUI gui) {
         GUITestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
+    }
+
+    private void closeGUI() {
+        GUITestUtils.mockPlugin(p -> GUIAdapter.closeGUI(GUIManager.getViewer(this.player)));
     }
 
 }

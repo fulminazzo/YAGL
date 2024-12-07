@@ -9,7 +9,7 @@ import it.angrybear.yagl.items.Item;
 import it.angrybear.yagl.viewers.Viewer;
 import it.angrybear.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.Tuple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,8 @@ class PageableGUITest {
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter"))
+                    .thenReturn(MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {
                 gui.open(viewer, i);
@@ -87,7 +88,7 @@ class PageableGUITest {
         }
     }
 
-    private GUI generateExpected(GUI gui, int index) {
+    static GUI generateExpected(GUI gui, int index) {
         GUI g = GUI.newGUI(9)
                 .setContents(1, gui.getContents(1))
                 .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"))
@@ -136,7 +137,7 @@ class PageableGUITest {
                 Metadatable.class.getDeclaredMethod(method.getName(), method.getParameterTypes());
                 continue;
             } catch (NoSuchMethodException ignored) {}
-            method = ReflectionUtils.setAccessible(method);
+            method = ReflectionUtils.setAccessibleOrThrow(method);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
                     .map(o -> o instanceof Integer ? 9 : o)
@@ -232,7 +233,7 @@ class PageableGUITest {
                 .onChangeGUI("command");
     }
 
-    private static class MockViewer extends Viewer {
+    static class MockViewer extends Viewer {
         GUI openedGUI;
 
         protected MockViewer(UUID uniqueId, String name) {
@@ -241,12 +242,17 @@ class PageableGUITest {
 
         @Override
         public void playSound(@NotNull Sound sound) {
+            //
+        }
 
+        @Override
+        public void sendMessage(@NotNull String message) {
+            //
         }
 
         @Override
         public void executeCommand(@NotNull String command) {
-
+            //
         }
 
         @Override
@@ -255,7 +261,7 @@ class PageableGUITest {
         }
     }
 
-    private static class MockGUIAdapter {
+    static class MockGUIAdapter {
 
         public static void openGUI(GUI gui, MockViewer viewer) {
             viewer.openedGUI = gui;

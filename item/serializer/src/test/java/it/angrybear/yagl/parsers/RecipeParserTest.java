@@ -69,8 +69,8 @@ class RecipeParserTest extends ParserTestHelper<Recipe> {
         Recipe recipe2 = configuration.get(path, Recipe.class);
 
         for (final Field field : recipe.getClass().getDeclaredFields()) {
-            Object obj1 = ReflectionUtils.get(field, recipe);
-            Object obj2 = ReflectionUtils.get(field, recipe2);
+            Object obj1 = ReflectionUtils.getOrThrow(field, recipe);
+            Object obj2 = ReflectionUtils.getOrThrow(field, recipe2);
             assertEquals(obj1, obj2);
         }
     }
