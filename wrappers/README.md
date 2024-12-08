@@ -89,7 +89,7 @@ It holds the most important classes as
 ### Serializer
 The `serializer` submodule is entitled to **saving and loading** all the **wrappers objects**.
 A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
-However, for it to work properly, it is required to execute `WrappersYAGLParser#addAllParser()` **before any serialization operation**.
+However, for it to work properly, it is required to execute `WrappersYAGLParser#addAllParsers()` **before any serialization operation**.
 
 ### Bukkit
 The most useful class introduced by this module is 
