@@ -83,7 +83,9 @@ It holds the most important classes as
 [Particle](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#particle).
 
 ### Serializer
-
+The `serializer` submodule is entitled to **saving and loading** all the **wrappers objects**.
+A developer should not be concerned with the contents of this module as it should **never be used explicitly**.
+However, for it to work properly, it is required to execute `WrappersYAGLParser#addAllParser()` **before any serialization operation**.
 
 ### Bukkit
 
