@@ -93,5 +93,8 @@ but the most important (and useful) ones are [Item](https://github.com/Fulminazz
 and [Recipes](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#recipes).
 
 ### Serializer
+The `serializer` submodule is entitled to **saving and loading** all the **items related objects**.
+A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
+However, for it to work properly, it is required to execute `ItemYAGLParser#addAllParser()` **before any serialization operation**.
 
 ### Bukkit
