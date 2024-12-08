@@ -95,7 +95,9 @@ and [Recipes](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#recipe
 ### Serializer
 The `serializer` submodule is entitled to **saving and loading** all the **items related objects**.
 A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
-However, for it to work properly, it is required to execute `ItemYAGLParser#addAllParser()` **before any serialization operation**.
+However, for it to work properly, it is required to execute `ItemYAGLParser#addAllParsers()` **before any serialization operation**.
+Note that this **will include calls to `WrappersYAGLParser#addAllParsers()`**, 
+therefore it is **not necessary** to include it later.
 
 ### Bukkit
 `bukkit` allows the direct **conversion** from a **YAGL `Item`** to a **Bukkit `ItemStack`**.
