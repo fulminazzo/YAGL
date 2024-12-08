@@ -93,6 +93,12 @@ allprojects {
                 api(project(":common:common-${id}"))
         }
 
+        // Common modules dependencies
+        if (['common', 'wrappers', 'item', 'gui'].contains(projectName)) {
+            for (def s : ['base', 'serializer', 'bukkit'])
+                api(project(":${projectName}:${projectName}-${s}"))
+        }
+
         // Serializer dependencies
         if (projectName.contains('serializer')) api(libs.yamlparser)
 
