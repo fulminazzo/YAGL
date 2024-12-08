@@ -27,20 +27,20 @@ First introduce the **Fulminazzo repository**, from where the artifacts will be 
 Then, add the **dependency**
 ```xml
 <dependency>
-  <groupId>it.fulminazzo.YAGL.common</groupId>
-  <artifactId>common-{MODULE}</artifactId>
-  <version>{LATEST}</version>
+    <groupId>it.fulminazzo.YAGL.common</groupId>
+    <artifactId>common-{MODULE}</artifactId>
+    <version>{LATEST}</version>
 </dependency>
 ```
-substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`, 
+substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
 and `{LATEST}` the **version of interest**.
 
 To import **all three submodules together**, use:
 ```xml
 <dependency>
-  <groupId>it.fulminazzo.YAGL</groupId>
-  <artifactId>common</artifactId>
-  <version>{LATEST}</version>
+    <groupId>it.fulminazzo.YAGL</groupId>
+    <artifactId>common</artifactId>
+    <version>{LATEST}</version>
 </dependency>
 ```
   
