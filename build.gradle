@@ -67,6 +67,7 @@ allprojects {
     }
 
     dependencies {
+        // Common dependencies
         compileOnly libs.lombok
         annotationProcessor libs.lombok
         compileOnly libs.annotations
@@ -74,10 +75,28 @@ allprojects {
 
         implementation libs.fulmicollection
 
+        testCompileOnly libs.lombok
+        testAnnotationProcessor libs.lombok
+
         def projectName = project.name
 
+        // Common submodules dependencies
+        if (projectName.contains('-')) {
+            def name = projectName.substring(0, projectName.indexOf('-'))
+            def id = projectName.substring(projectName.indexOf('-') + 1)
+
+            // Import base if submodule is NOT base
+            if (!projectName.contains('base')) api(project(":${name}:${name}-base"))
+
+            // Import common corresponding submodule
+            if (name != 'common' && id != 'legacy' && id != 'obsolete')
+                api(project(":common:common-${id}"))
+        }
+
+        // Serializer dependencies
         if (projectName.contains('serializer')) api(libs.yamlparser)
 
+        // Bukkit dependencies
         if (projectName.contains('bukkit')) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
@@ -86,10 +105,12 @@ allprojects {
             String numVersion = latest_version.substring(2, latest_version.indexOf('.', 2))
             def index = numVersion.indexOf('-')
             if (index != -1) numVersion = numVersion.substring(0, index)
+            // JBukkit library
             if (Double.valueOf(numVersion) >= 13) testImplementation libs.jbukkit
             else testImplementation libs.jbukkit.legacy
         }
 
+        // Legacy dependencies
         if (projectName.contains('legacy')) {
             testCompileOnly libs.spigot.legacy
             testRuntimeOnly "org.spigotmc:spigot-api:${legacy_version}"
@@ -97,6 +118,7 @@ allprojects {
             testImplementation libs.jbukkit.legacy
         }
 
+        // Obsolete dependencies
         if (projectName.contains('obsolete')) {
             testCompileOnly libs.spigot.obsolete
             testRuntimeOnly "org.spigotmc:spigot-api:${obsolete_version}"
@@ -104,19 +126,10 @@ allprojects {
             testImplementation libs.jbukkit.legacy
         }
 
-        if (projectName.contains('-')) {
-            def name = projectName.substring(0, projectName.indexOf('-'))
-            def id = projectName.substring(projectName.indexOf('-') + 1)
-            if (!projectName.contains('base')) api(project(":${name}:${name}-base"))
-            if (name != 'common' && id != 'legacy' && id != 'obsolete')
-                api(project(":common:common-${id}"))
-        }
-
-        testCompileOnly libs.lombok
-        testAnnotationProcessor libs.lombok
-
+        // Test module
         if (project.name != TEST_MODULE) testImplementation project(":${TEST_MODULE}")
 
+        // Demo module
         if (project.name == DEMO_MODULE)
             rootProject.subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
