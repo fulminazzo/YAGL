@@ -1,10 +1,14 @@
 The `wrappers` module is the most **innovative** and **unique technology** in the library.
+
 It **apparently** does nothing apart from introducing more overhead to a project.
+
 But its real power is the capability to **extract Minecraft objects** and making them 
 **independent, portable and cross-version compatible**.
+
 To the developer is given the **power** to **easily serialize and deserialize Minecraft features**
 like **sounds**, **enchantments** and more, while still allowing an **easy maintenance** for the user,
 thanks to its simple **modification system**.
+
 Not only that, but the coder can also **transfer with ease** any object across **versions** or **even platforms**.
 
 | Table of contents               |
