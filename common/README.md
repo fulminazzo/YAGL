@@ -48,3 +48,7 @@ To import **all three submodules together**, use:
 ### Base
 The `base` submodule contains various **special data structures** and **utility classes**
 for **enums**, **objects** and more.
+
+### Serializer
+The `serializer` submodule olds few **important classes** for successfully **serializing** and **deserializing**
+**YAGL data**.
