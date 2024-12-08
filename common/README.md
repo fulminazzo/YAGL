@@ -52,3 +52,6 @@ for **enums**, **objects** and more.
 ### Serializer
 The `serializer` submodule olds few **important classes** for successfully **serializing** and **deserializing**
 **YAGL data**.
+
+### Bukkit
+At the time of writing, the `bukkit` module does nothing.
