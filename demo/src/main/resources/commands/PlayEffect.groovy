@@ -4,15 +4,15 @@
  * they are converted to the corresponding ParticleOption.
  * See {@link #getOption(Object, Object, Object, Object)} to find out how.
  */
-import it.angrybear.yagl.Color
-import it.angrybear.yagl.WrappersAdapter
-import it.angrybear.yagl.particles.ColorParticleOption
-import it.angrybear.yagl.particles.LegacyParticleType
-import it.angrybear.yagl.particles.MaterialDataOption
-import it.angrybear.yagl.particles.Particle
-import it.angrybear.yagl.particles.PotionParticleOption
-import it.angrybear.yagl.particles.PrimitiveParticleOption
-import it.angrybear.yagl.wrappers.Potion
+import it.fulminazzo.yagl.Color
+import it.fulminazzo.yagl.WrappersAdapter
+import it.fulminazzo.yagl.particles.ColorParticleOption
+import it.fulminazzo.yagl.particles.LegacyParticleType
+import it.fulminazzo.yagl.particles.MaterialDataOption
+import it.fulminazzo.yagl.particles.Particle
+import it.fulminazzo.yagl.particles.PotionParticleOption
+import it.fulminazzo.yagl.particles.PrimitiveParticleOption
+import it.fulminazzo.yagl.wrappers.Potion
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.entity.Player
 

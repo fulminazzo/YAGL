@@ -4,16 +4,16 @@
  * they are converted to the corresponding ParticleOption.
  * See {@link #getOption(Object, Object, Object, Object)} to find out how.
  */
-import it.angrybear.yagl.Color
-import it.angrybear.yagl.ItemAdapter
-import it.angrybear.yagl.WrappersAdapter
-import it.angrybear.yagl.particles.BlockDataOption
-import it.angrybear.yagl.particles.DustParticleOption
-import it.angrybear.yagl.particles.DustTransitionParticleOption
-import it.angrybear.yagl.particles.ItemParticleOption
-import it.angrybear.yagl.particles.Particle
-import it.angrybear.yagl.particles.ParticleType
-import it.angrybear.yagl.particles.PrimitiveParticleOption
+import it.fulminazzo.yagl.Color
+import it.fulminazzo.yagl.ItemAdapter
+import it.fulminazzo.yagl.WrappersAdapter
+import it.fulminazzo.yagl.particles.BlockDataOption
+import it.fulminazzo.yagl.particles.DustParticleOption
+import it.fulminazzo.yagl.particles.DustTransitionParticleOption
+import it.fulminazzo.yagl.particles.ItemParticleOption
+import it.fulminazzo.yagl.particles.Particle
+import it.fulminazzo.yagl.particles.ParticleType
+import it.fulminazzo.yagl.particles.PrimitiveParticleOption
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.Location
 import org.bukkit.entity.Player

@@ -1,8 +1,8 @@
-import it.angrybear.yagl.items.BukkitItem
-import it.angrybear.yagl.items.Item
-import it.angrybear.yagl.items.recipes.FurnaceRecipe
-import it.angrybear.yagl.items.recipes.ShapedRecipe
-import it.angrybear.yagl.items.recipes.ShapelessRecipe
+import it.fulminazzo.yagl.items.BukkitItem
+import it.fulminazzo.yagl.items.Item
+import it.fulminazzo.yagl.items.recipes.FurnaceRecipe
+import it.fulminazzo.yagl.items.recipes.ShapedRecipe
+import it.fulminazzo.yagl.items.recipes.ShapelessRecipe
 import org.bukkit.entity.Player
 
 static shaped(sender, label, args, output, name) {

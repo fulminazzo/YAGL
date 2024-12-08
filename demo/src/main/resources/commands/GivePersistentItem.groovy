@@ -1,10 +1,10 @@
-import it.angrybear.yagl.items.BukkitItem
-import it.angrybear.yagl.items.DeathAction
-import it.angrybear.yagl.items.Mobility
-import it.angrybear.yagl.items.PersistentItem
-import it.angrybear.yagl.items.fields.ItemFlag
-import it.angrybear.yagl.wrappers.Enchantment
-import it.angrybear.yagl.wrappers.WrapperParser
+import it.fulminazzo.yagl.items.BukkitItem
+import it.fulminazzo.yagl.items.DeathAction
+import it.fulminazzo.yagl.items.Mobility
+import it.fulminazzo.yagl.items.PersistentItem
+import it.fulminazzo.yagl.items.fields.ItemFlag
+import it.fulminazzo.yagl.wrappers.Enchantment
+import it.fulminazzo.yagl.wrappers.WrapperParser
 import org.bukkit.entity.Player
 
 def run = { sender, label, args ->

@@ -1,8 +1,8 @@
-import it.angrybear.yagl.GUIManager
-import it.angrybear.yagl.guis.GUIType
-import it.angrybear.yagl.guis.PageableGUI
-import it.angrybear.yagl.items.BukkitItem
-import it.angrybear.yagl.utils.EnumUtils
+import it.fulminazzo.yagl.GUIManager
+import it.fulminazzo.yagl.guis.GUIType
+import it.fulminazzo.yagl.guis.PageableGUI
+import it.fulminazzo.yagl.items.BukkitItem
+import it.fulminazzo.yagl.utils.EnumUtils
 import org.bukkit.Material
 import org.bukkit.entity.Player
 

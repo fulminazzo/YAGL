@@ -1,5 +1,5 @@
-import it.angrybear.yagl.WrappersAdapter
-import it.angrybear.yagl.wrappers.Sound
+import it.fulminazzo.yagl.WrappersAdapter
+import it.fulminazzo.yagl.wrappers.Sound
 import org.bukkit.entity.Player
 
 def run = { sender, label, args ->

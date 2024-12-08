@@ -1,5 +1,5 @@
-import it.angrybear.yagl.WrappersAdapter
-import it.angrybear.yagl.wrappers.Enchantment
+import it.fulminazzo.yagl.WrappersAdapter
+import it.fulminazzo.yagl.wrappers.Enchantment
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple
 import org.bukkit.Material
 import org.bukkit.entity.Player

@@ -1,10 +1,10 @@
-import it.angrybear.yagl.GUIManager
-import it.angrybear.yagl.contents.ItemGUIContent
-import it.angrybear.yagl.guis.GUI
-import it.angrybear.yagl.guis.GUIType
-import it.angrybear.yagl.items.Item
-import it.angrybear.yagl.items.fields.ItemFlag
-import it.angrybear.yagl.utils.EnumUtils
+import it.fulminazzo.yagl.GUIManager
+import it.fulminazzo.yagl.contents.ItemGUIContent
+import it.fulminazzo.yagl.guis.GUI
+import it.fulminazzo.yagl.guis.GUIType
+import it.fulminazzo.yagl.items.Item
+import it.fulminazzo.yagl.items.fields.ItemFlag
+import it.fulminazzo.yagl.utils.EnumUtils
 import org.bukkit.entity.Player
 
 def run = { sender, label, args ->
