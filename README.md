@@ -21,7 +21,7 @@ For example, with the [wrappers](wrappers/README.md) module:
 - access only the **base**:
 ```xml
 <dependency>
-    <groupId>it.angrybear.yagl.wrappers</groupId>
+    <groupId>it.fulminazzo.yagl.wrappers</groupId>
     <artifactId>wrappers-base</artifactId>
     <version>LATEST</version>
 </dependency>
@@ -29,7 +29,7 @@ For example, with the [wrappers](wrappers/README.md) module:
 - access **base**, **bukkit** and **serializer**:
 ```xml
 <dependency>
-    <groupId>it.angrybear.yagl</groupId>
+    <groupId>it.fulminazzo.yagl</groupId>
     <artifactId>wrappers</artifactId>
     <version>LATEST</version>
 </dependency>
