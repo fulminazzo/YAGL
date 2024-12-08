@@ -98,3 +98,11 @@ A developer **should not be concerned** with the **contents** of this module as 
 However, for it to work properly, it is required to execute `ItemYAGLParser#addAllParser()` **before any serialization operation**.
 
 ### Bukkit
+`bukkit` allows the direct **conversion** from a **YAGL `Item`** to a **Bukkit `ItemStack`**.
+It does so thanks to 
+[ItemAdapter](bukkit/src/main/java/it/fulminazzo/yagl/ItemAdapter.java) and
+[BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/items/BukkitItem.java),
+a special **extension of `Item`** with which it is possible to work **directly** with **Bukkit classes** such as
+`Material`, or `ItemMeta`.
+More specifically, thanks to the `BukkitItem#create(Class, Consumer)`, it is possible to **create an `ItemStack` from an `Item`**
+by **manipulating its `ItemMeta` first**.
