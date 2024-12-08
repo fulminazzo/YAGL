@@ -88,6 +88,9 @@ dependencies {
 
 ## Submodules
 ### Base
+The `base` submodule contains many classes responsible for **creation and customization** of **items**, 
+but the most important (and useful) ones are [Item](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#items)
+and [Recipes](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#recipes).
 
 ### Serializer
 
