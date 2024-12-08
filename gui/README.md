@@ -70,5 +70,10 @@ dependencies {
 ### Base
 
 ### Serializer
+The `serializer` submodule is entitled to **saving and loading** all the **guis related objects**.
+A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
+However, for it to work properly, it is required to execute `GUIYAGLParser#addAllParsers()` **before any serialization operation**.
+Note that this **will include calls to `WrappersYAGLParser#addAllParsers()` and `ItemYAGLParser#addAllParsers()`**,
+therefore it is **not necessary** to include them later.
 
 ### Bukkit
