@@ -78,7 +78,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     /**
-     * Adds all the parsers in the {@link it.angrybear.yagl.particles} package as {@link ParticleOptionParser}s.
+     * Adds all the parsers in the {@link it.fulminazzo.yagl.particles} package as {@link ParticleOptionParser}s.
      */
     public static void addAllParsers() {
         @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(ParticleOption.class.getPackage().getName());

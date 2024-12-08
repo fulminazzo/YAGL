@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl
 
 import groovy.transform.CompileStatic
-import it.angrybear.yagl.commands.ShellCommand
+import it.fulminazzo.yagl.commands.ShellCommand
 import it.fulminazzo.yagl.listeners.PersistentListener
 import it.fulminazzo.fulmicollection.objects.Refl
 import it.fulminazzo.fulmicollection.utils.JarUtils

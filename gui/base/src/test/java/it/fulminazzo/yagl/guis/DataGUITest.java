@@ -184,7 +184,7 @@ class DataGUITest {
 
         final PageableGUITest.MockViewer viewer = new PageableGUITest.MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter"))
+            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter"))
                     .thenReturn(PageableGUITest.MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {

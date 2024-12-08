@@ -53,7 +53,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
     public void open(@NotNull Viewer viewer) {
         final Class<?> guiUtils;
         try {
-            guiUtils = ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter");
+            guiUtils = ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter");
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
         }

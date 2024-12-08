@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl;
 
-import it.angrybear.yagl.commands.ShellCommand;
+import it.fulminazzo.yagl.commands.ShellCommand;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.JarUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;

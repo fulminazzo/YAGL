@@ -34,7 +34,7 @@ class PageableGUITest {
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
 
             gui.open(viewer);
             GUI expected = gui.getPage(0)
@@ -63,7 +63,7 @@ class PageableGUITest {
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter"))
+            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter"))
                     .thenReturn(MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {
@@ -113,7 +113,7 @@ class PageableGUITest {
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
         try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.angrybear.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
 
             for (int i = 0; i < gui.pages(); i++) {
                 gui.open(viewer, i);

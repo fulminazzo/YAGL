@@ -107,7 +107,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     }
 
     /**
-     * Adds all the parsers in the {@link it.angrybear.yagl.wrappers} package as {@link WrapperParser}s.
+     * Adds all the parsers in the {@link it.fulminazzo.yagl.wrappers} package as {@link WrapperParser}s.
      */
     public static void addAllParsers() {
         @NotNull Set<Class<?>> classes = ClassUtils.findClassesInPackage(Wrapper.class.getPackage().getName());

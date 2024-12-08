@@ -2,7 +2,6 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.yagl.items.AbstractItem;
 import it.fulminazzo.yagl.particles.*;
-import it.angrybear.yagl.particles.*;
 import it.fulminazzo.yagl.particles.Particle;
 import it.fulminazzo.yagl.wrappers.Enchantment;
 import it.fulminazzo.yagl.wrappers.PotionEffect;
