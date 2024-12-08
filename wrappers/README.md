@@ -88,4 +88,6 @@ A developer should not be concerned with the contents of this module as it shoul
 However, for it to work properly, it is required to execute `WrappersYAGLParser#addAllParser()` **before any serialization operation**.
 
 ### Bukkit
-
+The most useful class introduced by this module is 
+[WrappersAdapter](bukkit/src/main/java/it/fulminazzo/yagl/WrappersAdapter.java),
+which allows a **one to one conversion** for any **Bukkit object** to a **YAGL one** or **viceversa**.
