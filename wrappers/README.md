@@ -75,7 +75,12 @@ dependencies {
   
 ## Submodules
 ### Base
-
+`base` contains the **core** of the module.
+It holds the most important classes as
+[Enchantment](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#enchantment),
+[PotionEffect](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#potioneffect),
+[Sound](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#sound) and
+[Particle](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#particle).
 
 ### Serializer
 
