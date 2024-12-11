@@ -17,7 +17,7 @@ public class GUIItemClose implements GUIItemAction {
 
     @Override
     public String serialize() {
-        return "";
+        return null;
     }
 
 }
