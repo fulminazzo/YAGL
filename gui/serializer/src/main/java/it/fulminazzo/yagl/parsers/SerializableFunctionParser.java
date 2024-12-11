@@ -40,10 +40,16 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
             Class<?> clazz = typeToClass(getOClass(), type);
             // Get content
             String content = section.getString("content");
-            if (content == null) throw new IllegalArgumentException("'content' cannot be null");
             try {
-                Constructor<?> constructor = clazz.getConstructor(String.class);
-                return (F) constructor.newInstance(content);
+                if (content == null) {
+                    Constructor<?> constructor = clazz.getConstructor();
+                    constructor.setAccessible(true);
+                    return (F) constructor.newInstance();
+                } else {
+                    Constructor<?> constructor = clazz.getConstructor(String.class);
+                    constructor.setAccessible(true);
+                    return (F) constructor.newInstance(content);
+                }
             } catch (NoSuchMethodException e) {
                 return SerializeUtils.deserializeFromBase64(content);
             }
