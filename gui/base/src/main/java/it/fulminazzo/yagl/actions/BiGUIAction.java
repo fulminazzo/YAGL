@@ -8,6 +8,7 @@ import it.fulminazzo.yagl.viewers.Viewer;
 /**
  * A general functional interface accepting a {@link Viewer} and two {@link GUI}s.
  */
+@FunctionalInterface
 public interface BiGUIAction extends SerializableFunction {
 
     /**
