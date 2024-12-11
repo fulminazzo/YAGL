@@ -37,6 +37,7 @@ class ItemGUIContentTest {
     void testCopy() {
         ItemGUIContent expected = newInstance();
         ItemGUIContent actual = expected.copy();
+        assertEquals("value", actual.getVariable("name"));
         assertEquals(expected, actual);
         assertEquals((Item) new Refl<>(expected).getFieldObject("item"), new Refl<>(actual).getFieldObject("item"));
     }
@@ -67,7 +68,8 @@ class ItemGUIContentTest {
                 .addEnchantment("unbreaking", 3)
                 .addEnchantment("sharpness", 5)
                 .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
-                .setCustomModelData(1);
+                .setCustomModelData(1)
+                .setVariable("name", "value");
     }
 
     @Test
