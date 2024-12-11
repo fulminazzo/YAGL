@@ -1,84 +1,110 @@
-`item` is the module designed to handling simple items designing and association of custom recipes.
-It includes various submodules that can be used for specific tasks.
+The `item` module main interest are **items**,
+representation of **objects in game** that can be interacted with.
 
-| **Modules**                 |
-|-----------------------------|
-| [items](#items)             |
-| [bukkit](#bukkit)           |
-| [serializers](#serializers) |
+It provides a **unique, fast and reliable** system to **create items**, **modify attributes** such as
+**display name**, **lore**, **enchantments** and even add **custom recipes** bound to the item.
+All without the overhead added by the **Bukkit ItemMeta** system:
+```java
+Item.newItem("diamond_sword")
+    .setAmount(1)
+    .setDurability(0)
+    .setDisplayName("&e&lSuper sword")
+    .setLore("&cThis sword belongs to", "&cthe greatest samurai of Tokyo")
+    .addEnchantment("sharpness", 5).addEnchantment("unbreaking", 3)
+    .addItemFlags(ItemFlag.HIDE_UNBREAKABLE)
+    .setUnbreakable(true)
+    .setCustomModelData(1337);
+```
 
-# items
+As already seen in [Wrappers](../wrappers), also `item` supports **saving and loading** using the [serializer](#serializer) submodule,
+without any extra work from the developer. It is possible to save the item in a **nice format for the administrator**,
+who will encounter no issue into **modifying and customizing it** to fit their needs.
+
+| Table of contents               |
+|---------------------------------|
+| [How to import](#how-to-import) |
+| [Maven](#maven)                 |
+| [Gradle](#gradle)               |
+| [Submodules](#submodules)       |
+| [Base](#base)                   |
+| [Serializer](#serializer)       |
+| [Bukkit](#bukkit)               |
+
+## How to import
+It can be imported using both **Maven** and **Gradle** and specifying **one of its submodules**.
+
+### Maven
+First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
+```xml
+<repository>
+    <id>fulminazzo-repo</id>
+    <url>https://repo.fulminazzo.it/releases</url>
+</repository>
+```
+
+Then, add the **dependency**
+```xml
+<dependency>
+    <groupId>it.fulminazzo.YAGL.item</groupId>
+    <artifactId>item-{MODULE}</artifactId>
+    <version>{LATEST}</version>
+</dependency>
+```
+substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
+and `{LATEST}` the **version of interest**.
+
+To import **all three submodules together**, use:
 ```xml
 <dependency>
     <groupId>it.fulminazzo.YAGL</groupId>
     <artifactId>item</artifactId>
-    <version>LATEST</version>
+    <version>{LATEST}</version>
 </dependency>
 ```
 
-This is the main core of the module. 
-The most important class is [Item](src/main/java/it/fulminazzo/yagl/items/Item.java)
-from which it is possible to create an item:
-
-```java
-/* ... */
-Item.newItem();
-/* ... */
+### Gradle
+First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
+```groovy
+repositories {
+    maven { url = "https://repo.fulminazzo.it/releases" }
+}
 ```
 
-In case you are interested in the recipe of the item, an instance of [RecipeItem](src/main/java/it/fulminazzo/yagl/items/RecipeItem.java)
-is available using the function `Item#newRecipeItem`.
+Then, add the **dependency**
+```groovy
+dependencies {
+    implementation 'it.fulminazzo.YAGL.item:item-{MODULE}:{LATEST}'
+}
+```
+substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
+and `{LATEST}` the **version of interest**.
 
-## Recipes
-Recipes are a way of reconstructing specific items in the crafting table or in the furnace.
-To mimic the Minecraft default types, three classes are available:
-- [ShapedRecipe](src/main/java/it/fulminazzo/yagl/items/recipes/ShapedRecipe.java)
-for recipes that require a specific shape.
-One can set it using `ShapedRecipe#setRecipe(int int)` (maximum values: three rows, three columns);
-- [ShapelessRecipe](src/main/java/it/fulminazzo/yagl/items/recipes/ShapelessRecipe.java)
-for recipes that ignore the order in which the items are put;
-- [FurnaceRecipe](src/main/java/it/fulminazzo/yagl/items/recipes/FurnaceRecipe.java)
-for items resulted in smelting in the furnace.
-
-# bukkit
-```xml
-<dependency>
-    <groupId>it.fulminazzo.YAGL.item</groupId>
-    <artifactId>bukkit</artifactId>
-    <version>LATEST</version>
-</dependency>
+To import **all three submodules together**, use:
+```groovy
+dependencies {
+    implementation 'it.fulminazzo.YAGL:item:{LATEST}'
+}
 ```
 
-This module depends on the main core and adds some implementation-specific features.
+## Submodules
+### Base
+The `base` submodule contains many classes responsible for **creation and customization** of **items**,
+but the most important (and useful) ones are [Item](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#items)
+and [Recipes](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#recipes).
 
-First of all, it adds the [BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/items/BukkitItem.java) class,
-an implementation of [Item](src/main/java/it/fulminazzo/yagl/items/Item.java)
-that provides the `BukkitItem#create()` and `BukkitItem#create(Class<M  extends ItemMeta>, Consumer<M extends ItemMeta>)` 
-methods to convert an Item in Spigot ItemStacks.
+### Serializer
+The `serializer` submodule is entitled to **saving and loading** all the **items related objects**.
+A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
+However, for it to work properly, it is required to execute `ItemYAGLParser#addAllParsers()` **before any serialization operation**.
+Note that this **will include calls to `WrappersYAGLParser#addAllParsers()`**,
+therefore it is **not necessary** to include it later.
 
-## PersistentItem
-An implementation of [BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/items/BukkitItem.java) are
-[PersistentItem](bukkit/src/main/java/it/fulminazzo/yagl/items/PersistentItem.java) and
-[MovablePersistentItem](bukkit/src/main/java/it/fulminazzo/yagl/items/MovablePersistentItem.java).
-These are special items that prevents them from being moved from the player's inventory ([PersistentItem](bukkit/src/main/java/it/fulminazzo/yagl/items/PersistentItem.java) 
-disallows movement even inside it).
-
-**NOTE:** in order for this to function, it is required that [PersistentListener](bukkit/src/main/java/it/fulminazzo/yagl/listeners/PersistentListener.java)
-has been registered by the providing plugin.
-
-These provide various methods to handle events, specifically:
-- `PersistentItem#setDeathAction`: one of the option from [DeathAction](bukkit/src/main/java/it/fulminazzo/yagl/persistent/DeathAction.java);
-- `PersistentItem#onInteract`: executes the given [InteractItemAction](bukkit/src/main/java/it/fulminazzo/yagl/actions/InteractItemAction.java) upon interaction;
-- `PersistentItem#onClick`: executes the given [ClickItemAction](bukkit/src/main/java/it/fulminazzo/yagl/actions/ClickItemAction.java) upon clicking.
-
-# serializers
-```xml
-<dependency>
-    <groupId>it.fulminazzo.YAGL.item</groupId>
-    <artifactId>serializers</artifactId>
-    <version>LATEST</version>
-</dependency>
-```
-
-A simple module containing various classes to save items using [YAMLParser](https://github.com/Fulminazzo/YAMLParser).
-Specifically, it is suggested `YAGLParser#addAllParsers()` to correctly load and save everything.
+### Bukkit
+`bukkit` allows the direct **conversion** from a **YAGL `Item`** to a **Bukkit `ItemStack`**.
+It does so thanks to
+[ItemAdapter](bukkit/src/main/java/it/fulminazzo/yagl/ItemAdapter.java) and
+[BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/items/BukkitItem.java),
+a special **extension of `Item`** with which it is possible to work **directly** with **Bukkit classes** such as
+`Material`, or `ItemMeta`.
+More specifically, thanks to the `BukkitItem#create(Class, Consumer)`, it is possible to **create an `ItemStack` from an `Item`**
+by **manipulating its `ItemMeta` first**.
