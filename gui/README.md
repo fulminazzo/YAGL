@@ -77,6 +77,12 @@ dependencies {
 
 ## Submodules
 ### Base
+The `base` submodules introduces all the **components and features** of the module.
+It provides all the [types of GUIs](https://github.com/Fulminazzo/YAGL/wiki/GUI-For-Developers#types)
+with their associated classes, all the [GUI contents](https://github.com/Fulminazzo/YAGL/wiki/GUI-Contents-For-Developers)
+as well as different types of [actions](https://github.com/Fulminazzo/YAGL/wiki/GUI-For-Developers#actions).
+All of these and more can be found in the 
+[detailed documentation in the Wiki](https://github.com/Fulminazzo/YAGL/wiki/GUI-For-Developers).
 
 ### Serializer
 The `serializer` submodule is entitled to **saving and loading** all the **guis related objects**.
