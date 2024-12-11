@@ -92,3 +92,11 @@ Note that this **will include calls to `WrappersYAGLParser#addAllParsers()` and 
 therefore it is **not necessary** to include them later.
 
 ### Bukkit
+The `bukkit` module contains **Bukkit** related objects and converters.
+It provides two main classes:
+- [GUIManager](bukkit/src/main/java/it/fulminazzo/yagl/GUIManager.java), 
+  which acts as a **listener** for all the **GUI events**. 
+  As already stated from the Javadoc, the user **should not register it** in their plugin,
+  since this process is **automatic**;
+- [GUIAdapter](bukkit/src/main/java/it/fulminazzo/yagl/GUIAdapter.java),
+  which allows the developer to directly **convert YAGL GUIs to Bukkit inventories** and viceversa.
