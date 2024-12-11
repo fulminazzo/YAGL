@@ -107,9 +107,14 @@ class DataGUITest {
 
     @Test
     void testNoData() {
-        DataGUI<?> gui = DataGUI.newGUI(9, s -> null);
-        int page = 3;
-        assertDoesNotThrow(() -> gui.open(null, page));
+        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter"))
+                    .thenReturn(PageableGUITest.MockGUIAdapter.class);
+
+            DataGUI<?> gui = DataGUI.newGUI(9, s -> null);
+            int page = 3;
+            assertDoesNotThrow(() -> gui.open(new PageableGUITest.MockViewer(UUID.randomUUID(), "Mock"), page));
+        }
     }
 
     @Test
