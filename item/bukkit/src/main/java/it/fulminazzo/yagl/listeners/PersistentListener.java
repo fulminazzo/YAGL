@@ -1,9 +1,11 @@
 package it.fulminazzo.yagl.listeners;
 
+import it.fulminazzo.fulmicollection.utils.ThreadUtils;
+import it.fulminazzo.yagl.InstanceNotInitializedException;
+import it.fulminazzo.yagl.SingleInstance;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;
 import it.fulminazzo.yagl.items.PersistentItem;
-import it.fulminazzo.fulmicollection.utils.ThreadUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -34,8 +36,7 @@ import java.util.stream.Stream;
 /**
  * A listener for {@link PersistentItem}s.
  */
-public class PersistentListener implements Listener {
-    private static boolean INITIALIZED = false;
+public class PersistentListener extends SingleInstance implements Listener {
     /**
      * Timeout, in milliseconds, to check before calling {@link #on(PlayerInteractEvent)}.
      * This is used to prevent double calls.
@@ -51,8 +52,8 @@ public class PersistentListener implements Listener {
      * Instantiates a new Persistent listener.
      */
     public PersistentListener() {
+        initialize();
         this.lastUsed = new HashMap<>();
-        INITIALIZED = true;
     }
 
     @EventHandler
@@ -292,9 +293,14 @@ public class PersistentListener implements Listener {
     /**
      * Checks if the current listener has been initialized at least once.
      *
-     * @return true if it is {@link #INITIALIZED}
+     * @return true if it is
      */
     public static boolean isInitialized() {
-        return INITIALIZED;
+        try {
+            getInstance(PersistentListener.class);
+            return true;
+        } catch (InstanceNotInitializedException e) {
+            return false;
+        }
     }
 }

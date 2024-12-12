@@ -4,7 +4,6 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
-import it.fulminazzo.yagl.listeners.PersistentListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -34,7 +33,6 @@ class PersistentItemTest {
 
     @Test
     void testPersistentListenerNotInitialized() throws NoSuchFieldException {
-        new Refl<>(PersistentListener.class).setFieldObject("INITIALIZED", false);
         try (MockedStatic<Logger> ignored = mockStatic(Logger.class)) {
             Logger mockLogger = mock(Logger.class);
             when(Logger.getGlobal()).thenReturn(mockLogger);
