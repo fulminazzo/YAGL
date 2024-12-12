@@ -29,7 +29,8 @@ def run = { sender, label, args ->
         } catch (NumberFormatException ignored) {
             // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {
-            sender.sendMessage('Usage: /giveitem <material> <amount> <durability> <name> <lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
+            sender.sendMessage('Usage: /giveitem <material> <amount> <durability> <name> ' +
+                    '<lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
             sender.sendMessage('At least material is required!')
         }
     else sender.sendMessage('Console cannot execute this command!')
