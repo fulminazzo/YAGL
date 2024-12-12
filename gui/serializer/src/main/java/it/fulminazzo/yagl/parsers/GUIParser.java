@@ -68,7 +68,7 @@ public class GUIParser extends TypedParser<GUI> {
         FileConfiguration.removeParsers(this);
         YAMLParser<? extends @NotNull GUI> parser = FileConfiguration.getParser(gui.getClass());
         FileConfiguration.addParsers(this);
-        if (parser == null || !getOClass().isAssignableFrom(parser.getOClass())) return this;
+        if (parser == null) return this;
         return (YAMLParser<GUI>) parser;
     }
 
