@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl.items;
 
-import it.fulminazzo.yagl.items.fields.ItemFlag;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.yagl.items.fields.ItemFlag;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -10,21 +10,41 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 class PersistentItemTest {
 
     @BeforeEach
     void setUp() {
         BukkitUtils.setupServer();
+    }
+
+    @Test
+    void testPersistentListenerNotInitialized() {
+        try (MockedStatic<Logger> ignored = mockStatic(Logger.class)) {
+            Logger mockLogger = mock(Logger.class);
+            when(Logger.getGlobal()).thenReturn(mockLogger);
+
+            PersistentItem item = PersistentItem.newItem("diamond");
+            item.create();
+
+            Field warningMessageField = PersistentItem.class.getDeclaredField("WARNING_MESSAGE");
+            warningMessageField.setAccessible(true);
+            verify(mockLogger).warning((String) warningMessageField.get(PersistentItem.class));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
