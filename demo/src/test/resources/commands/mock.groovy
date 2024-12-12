@@ -1,2 +1,1 @@
 def str = 'content'
-
