@@ -41,8 +41,9 @@ public final class ObjectUtils {
             if (s.isEmpty()) return EMPTY_IDENTIFIER;
             else return String.format("\"%s\"", s);
         } else if (object instanceof Number) {
+            // If number is 0, to avoid pollution, it will be hidden.
             Number n = (Number) object;
-            if (n.doubleValue() > 0) return n.toString();
+            if (n.doubleValue() != 0) return n.toString();
             else return EMPTY_IDENTIFIER;
         } else if (ReflectionUtils.isPrimitiveOrWrapper(object.getClass())) return object.toString();
         else if (object instanceof Collection) {
