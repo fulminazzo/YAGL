@@ -14,7 +14,7 @@ import java.util.regex.Pattern
 @CompileStatic
 class ShellCommand extends Command {
     private static final String NUMBER_FORMAT_REGEX = '(catch *\\(NumberFormatException +ignored\\) *\\{\\n)[ \\t]*(?:// auto-generated code)?(\\n *})'
-    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(e.message.replace(\'For input string: \', \'Invalid number \'))'
+    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(ignored.message.replace(\'For input string: \', \'Invalid number \'))'
     private final String shellCode
 
     /**
