@@ -32,10 +32,11 @@ class ObjectUtilsTest {
                 new Object[]{Arrays.asList(1, 2, 3), "[1, 2, 3]"},
                 new Object[]{uuid, uuid.toString()},
                 new Object[]{date, simpleDateFormat.format(date)},
-                new Object[]{new HashMap<Integer, Boolean>(){{
+                new Object[]{new HashMap<Integer, Object>(){{
                     put(1, true);
                     put(2, false);
                     put(3, true);
+                    put(0, 0);
                 }}, "{1: true, 2: false, 3: true}"},
                 new Object[]{new ExampleClass(), "{\"i\": 10, \"n\": \"Alex\"}"},
                 new Object[]{new Object(), emptyIdentifier},
