@@ -1,0 +1,11 @@
+# 1.21.1-R0.1-SNAPSHOT
+name: MC 1.21
+
+on: [ push ]
+
+jobs:
+  test:
+    uses: ./.github/workflows/bukkit-test.yml
+    with:
+      java-version: 21
+      minecraft-version: "1.21.1-R0.1-SNAPSHOT"
