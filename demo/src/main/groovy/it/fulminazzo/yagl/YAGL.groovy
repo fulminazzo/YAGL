@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull
 
 @CompileStatic
 final class YAGL extends JavaPlugin {
-    private final List<ShellCommand> commands = new ArrayList<>()
+    private final List<ShellCommand> commands = []
 
     @Override
     void onEnable() {

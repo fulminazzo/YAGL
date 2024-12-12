@@ -23,7 +23,7 @@ def run = { sender, label, args ->
                         .setUnbreakable(Boolean.valueOf(args[7]))
                         .setCustomModelData(Integer.valueOf(args[8]))
             } catch (IndexOutOfBoundsException ignored) {
-
+                //
             }
             sender.inventory.addItem(item.copy(BukkitItem).create())
         } catch (NumberFormatException ignored) {

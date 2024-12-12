@@ -38,15 +38,16 @@ class ShellCommand extends Command {
     }
 
     @Override
-    boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+    boolean execute(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String[] args) {
         Binding binding = new Binding(['sender': sender, 'label': label, 'args': args])
         new GroovyShell(binding).evaluate(this.shellCode)
         return true
     }
 
     @Override
-    List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
-        return new ArrayList<>()
+    List<String> tabComplete(final @NotNull CommandSender sender, final @NotNull String alias,
+                             final @NotNull String[] args) throws IllegalArgumentException {
+        return []
     }
 
 }

@@ -1,3 +1,3 @@
 def run = { sender, label, args ->
-    sender.sendMessage("Hello world")
+    sender.sendMessage('Hello world')
 }
