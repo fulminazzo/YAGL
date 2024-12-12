@@ -30,7 +30,7 @@ class JavaDocUtils {
         if (!outputDir.mkdirs()) throw new IllegalStateException("Could not create directory ${output}")
 
         aggregateJavaDocRec(current, outputDir, ignoreDirs)
-        createModulesPage(name, version, outputDir)
+        generateModulesPage(name, version, outputDir)
     }
 
     /**
@@ -103,7 +103,7 @@ class JavaDocUtils {
                 }
     }
 
-    private static createModulesPage(String name, String version, File file) {
+    private static generateModulesPage(String name, String version, File file) {
         if (!file.directory) return
         def files = file.listFiles()
         if (files == null) return
@@ -111,7 +111,7 @@ class JavaDocUtils {
 
         RESOURCES.each { parseResource(file, it, name, version, files) }
 
-        files.each { createModulesPage(it.name, version, it) }
+        files.each { generateModulesPage(it.name, version, it) }
     }
 
     private static parseResource(File parentFile, String resource, String name, String version, File[] files) {
