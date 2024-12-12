@@ -87,7 +87,7 @@ public abstract class Wrapper extends FieldEquable {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return Printable.convertToJson(this);
     }
 }

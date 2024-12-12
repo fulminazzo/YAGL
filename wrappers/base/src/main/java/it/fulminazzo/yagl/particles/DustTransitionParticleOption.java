@@ -14,7 +14,7 @@ public class DustTransitionParticleOption extends ParticleOption<Triple<Color, C
 
     @SuppressWarnings("unused")
     private DustTransitionParticleOption() {
-        this(null, null, -1);
+        this(Color.BLACK, Color.BLACK, -1);
     }
 
     /**
