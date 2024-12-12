@@ -32,6 +32,7 @@ static getOption(CommandSender sender, ParticleType particleType, Class optionTy
     else if (particleType == ParticleType.VIBRATION) {
         Location start = sender.location
         Location end = start.clone().add(0, 10, 0)
+        // Qualified reference is necessary to permit retro-compatibility
         def dest = new org.bukkit.Vibration.Destination.BlockDestination(end)
         new PrimitiveParticleOption<>(new org.bukkit.Vibration(start, dest, Integer.valueOf(args[0])))
     } else if (particleType == ParticleType.SCULK_CHARGE)
