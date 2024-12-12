@@ -2,12 +2,58 @@ package it.fulminazzo.yagl.utils;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectUtilsTest {
+
+    private static Object[][] objectsForTestPrintAsJSON() throws NoSuchFieldException, IllegalAccessException {
+        Field identifierField = ObjectUtils.class.getDeclaredField("EMPTY_IDENTIFIER");
+        identifierField.setAccessible(true);
+        UUID uuid = UUID.randomUUID();
+        Date date = new Date();
+        Field dateFormatField = ObjectUtils.class.getDeclaredField("DATE_FORMAT");
+        dateFormatField.setAccessible(true);
+        SimpleDateFormat simpleDateFormat = (SimpleDateFormat) dateFormatField.get(ObjectUtils.class);
+        return new Object[][] {
+                new Object[]{null, identifierField.get(ObjectUtils.class)},
+                new Object[]{BasicEnum.EXAMPLE, BasicEnum.EXAMPLE.name()},
+                new Object[]{"Hello world", "\"Hello world\""},
+                new Object[]{10, "10"},
+                new Object[]{-10, "-10"},
+                new Object[]{new Character('c'), "c"},
+                new Object[]{Arrays.asList(1, 2, 3), "[1, 2, 3]"},
+                new Object[]{uuid, uuid.toString()},
+                new Object[]{date, simpleDateFormat.format(date)},
+                new Object[]{new HashMap<Integer, Boolean>(){{
+                    put(1, true);
+                    put(2, false);
+                    put(3, true);
+                }}, "{1: true, 2: false, 3: true}"},
+                new Object[]{new ExampleClass(), "{\"i\": 10, \"n\": \"Alex\"}"},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("objectsForTestPrintAsJSON")
+    void testPrintAsJSON(Object object, String expected) {
+        assertEquals(expected, ObjectUtils.printAsJSON(object));
+    }
+
+    private enum BasicEnum {
+        EXAMPLE
+    }
+
+    private static class ExampleClass {
+        private final int i = 10;
+        private final String n = "Alex";
+    }
 
     @Test
     void testCopyOfNoInterface() {
