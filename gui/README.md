@@ -101,6 +101,7 @@ therefore it is **not necessary** to include them later.
 
 The `bukkit` module contains **Bukkit** related objects and converters.
 It provides two main classes:
+
 - [GUIManager](bukkit/src/main/java/it/fulminazzo/yagl/GUIManager.java), 
   which acts as a **listener** for all the **GUI events**. 
   As already stated from the Javadoc, the user **should not register it** in their plugin,
