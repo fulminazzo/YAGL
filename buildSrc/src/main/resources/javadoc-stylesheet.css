@@ -2,7 +2,7 @@
 @import url('resources/fonts/dejavu.css');
 
 body {
-    background-color: #ffffff;
+    background-color: #FFF;
     color: #353833;
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -114,7 +114,7 @@ Document title and Copyright styles
 }
 
 .bar a, .bar a:link, .bar a:visited, .bar a:active {
-    color: #FFFFFF;
+    color: #FFF;
     text-decoration: none;
 }
 
@@ -123,8 +123,8 @@ Document title and Copyright styles
 }
 
 .tab {
-    background-color: #0066FF;
-    color: #ffffff;
+    background-color: #06F;
+    color: #FFF;
     padding: 8px;
     width: 5em;
     font-weight: bold;
@@ -135,7 +135,7 @@ Navigation bar styles
 */
 .bar {
     background-color: #4D7A97;
-    color: #FFFFFF;
+    color: #FFF;
     padding: .8em .5em .4em .8em;
     height: auto;
     font-size: 11px;
@@ -144,7 +144,7 @@ Navigation bar styles
 
 .top-nav {
     background-color: #4D7A97;
-    color: #FFFFFF;
+    color: #FFF;
     float: left;
     padding: 0;
     width: 100%;
@@ -158,7 +158,7 @@ Navigation bar styles
 .bottom-nav {
     margin-top: 10px;
     background-color: #4D7A97;
-    color: #FFFFFF;
+    color: #FFF;
     float: left;
     padding: 0;
     width: 100%;
@@ -203,7 +203,7 @@ ul.sub-nav-list li{
 }
 
 .top-nav a:link, .top-nav a:active, .top-nav a:visited, .bottom-nav a:link, .bottom-nav a:active, .bottom-nav a:visited {
-    color: #FFFFFF;
+    color: #FFF;
     text-decoration: none;
     text-transform: uppercase;
 }
@@ -255,16 +255,16 @@ Page header and footer styles
 }
 
 .sub-title {
-    margin: 5px 0 0 0;
+    margin: 5px 0 0;
 }
 
 .header ul {
-    margin: 0 0 15px 0;
+    margin: 0 0 15px;
     padding: 0;
 }
 
 .footer ul {
-    margin: 20px 0 5px 0;
+    margin: 20px 0 5px;
 }
 
 .header ul li, .footer ul li {
@@ -295,7 +295,7 @@ ul.block-list ul.block-list li.block-list h3 {
 }
 
 ul.block-list li.block-list h2 {
-    padding: 0 0 20px 0;
+    padding: 0 0 20px;
 }
 
 /*
@@ -315,7 +315,7 @@ Page layout container styles
 
 .index-container h2 {
     font-size: 13px;
-    padding: 0 0 3px 0;
+    padding: 0 0 3px;
 }
 
 .index-container ul {
@@ -331,12 +331,12 @@ Page layout container styles
 .content-container .description dl dt, .content-container .details dl dt, .serialized-form-container dl dt {
     font-size: 12px;
     font-weight: bold;
-    margin: 10px 0 0 0;
+    margin: 10px 0 0;
     color: #4E4E4E;
 }
 
 .content-container .description dl dd, .content-container .details dl dd, .serialized-form-container dl dd {
-    margin: 5px 0 10px 0;
+    margin: 5px 0 10px;
     font-size: 14px;
     font-family: 'DejaVu Sans Mono',monospace;
 }
@@ -379,7 +379,7 @@ ul.inheritance li ul.inheritance {
 }
 
 ul.block-list, ul.block-list-last {
-    margin: 10px 0 10px 0;
+    margin: 10px 0 10px;
     padding: 0;
 }
 
@@ -397,7 +397,7 @@ ul.block-list ul.block-list li.block-list, ul.block-list ul.block-list-last li.b
 
 ul.block-list ul.block-list ul.block-list li.block-list, ul.block-list ul.block-list ul.block-list-last li.block-list {
     padding: 0 0 5px 8px;
-    background-color: #ffffff;
+    background-color: #FFF;
     border: none;
 }
 
@@ -457,7 +457,7 @@ Table styles
 .use-summary caption a:active, .constants-summary caption a:active, .deprecated-summary caption a:active,
 .overview-summary caption a:visited, .member-summary caption a:visited, .type-summary caption a:visited,
 .use-summary caption a:visited, .constants-summary caption a:visited, .deprecated-summary caption a:visited {
-    color: #FFFFFF;
+    color: #FFF;
 }
 
 .overview-summary caption span, .member-summary caption span, .type-summary caption span,
@@ -583,15 +583,15 @@ td.col-one a:link, td.col-one a:active, td.col-one a:visited, td.col-one a:hover
 }
 
 .table-sub-heading-color {
-    background-color: #EEEEFF;
+    background-color: #EEF;
 }
 
 .alt-color {
-    background-color: #FFFFFF;
+    background-color: #FFF;
 }
 
 .row-color {
-    background-color: #EEEEEF;
+    background-color: #EEF;
 }
 
 /*
