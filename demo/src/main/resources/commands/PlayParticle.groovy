@@ -22,7 +22,7 @@ import org.bukkit.inventory.EquipmentSlot
 static getOption(sender, particleType, optionType, args) {
     if (optionType == DustParticleOption)
         new DustParticleOption(Color.fromARGB(args[0]), Float.valueOf(args[1]))
-    if (optionType == DustTransitionParticleOption)
+    else if (optionType == DustTransitionParticleOption)
         new DustTransitionParticleOption(Color.fromARGB(args[0]), Color.fromARGB(args[1]), Float.valueOf(args[2]))
     else if (optionType == ItemParticleOption)
         ItemAdapter.itemStackToItem(sender.inventory.getItem(EquipmentSlot.HAND))
