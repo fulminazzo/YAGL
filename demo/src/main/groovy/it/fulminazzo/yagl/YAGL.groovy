@@ -84,12 +84,14 @@ class YAGL extends JavaPlugin {
                 .getFieldObject('commandMap'))
     }
 
-    private static void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName,
+    private void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName,
                                             final @NotNull String resourceDir) {
         def file = new File(dir, fileName)
         if (file.exists()) FileUtils.deleteFile(file)
         FileUtils.createNewFile(file)
-        def input = getClass().getResourceAsStream("${resourceDir}/${fileName}")
+        def resourceName = "${resourceDir}/${fileName}"
+        def input = getClass().getResourceAsStream(resourceName)
+        if (input == null) input = getResource(resourceName)
         def output = new FileOutputStream(file)
         output << input
     }
