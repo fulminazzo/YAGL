@@ -16,13 +16,14 @@ class ObjectUtilsTest {
     private static Object[][] objectsForTestPrintAsJSON() throws NoSuchFieldException, IllegalAccessException {
         Field identifierField = ObjectUtils.class.getDeclaredField("EMPTY_IDENTIFIER");
         identifierField.setAccessible(true);
+        Object emptyIdentifier = identifierField.get(ObjectUtils.class);
         UUID uuid = UUID.randomUUID();
         Date date = new Date();
         Field dateFormatField = ObjectUtils.class.getDeclaredField("DATE_FORMAT");
         dateFormatField.setAccessible(true);
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) dateFormatField.get(ObjectUtils.class);
         return new Object[][] {
-                new Object[]{null, identifierField.get(ObjectUtils.class)},
+                new Object[]{null, emptyIdentifier},
                 new Object[]{BasicEnum.EXAMPLE, BasicEnum.EXAMPLE.name()},
                 new Object[]{"Hello world", "\"Hello world\""},
                 new Object[]{10, "10"},
@@ -37,6 +38,7 @@ class ObjectUtilsTest {
                     put(3, true);
                 }}, "{1: true, 2: false, 3: true}"},
                 new Object[]{new ExampleClass(), "{\"i\": 10, \"n\": \"Alex\"}"},
+                new Object[]{new Object(), emptyIdentifier},
         };
     }
 
