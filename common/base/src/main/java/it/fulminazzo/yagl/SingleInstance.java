@@ -16,14 +16,6 @@ public abstract class SingleInstance {
     private static final Map<Class<? extends SingleInstance>, SingleInstance> INSTANCES_MAP = new LinkedHashMap<>();
 
     /**
-     * Instantiates a new Single instance.
-     * By default, it invokes {@link #initialize()}.
-     */
-    public SingleInstance() {
-        initialize();
-    }
-
-    /**
      * Checks if the current instance is already present in {@link #INSTANCES_MAP}.
      * If it is, a {@link InstanceAlreadyInitializedException} is thrown with the instance itself as parameter.
      */
