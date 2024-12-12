@@ -129,7 +129,7 @@ class PersistentItemTest {
                     try {
                         return m.invoke(PersistentItem.class, params);
                     } catch (IllegalAccessException | InvocationTargetException e) {
-                        throw new RuntimeException(e);
+                        throw new IllegalStateException(e);
                     }
                 })
                 .map(m -> (PersistentItem) m)
