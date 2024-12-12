@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
  * An exception thrown upon executing {@link SingleInstance#getInstance(Class)}
  * without having it initialized first.
  */
-final class InstanceNotInitialized extends RuntimeException {
+public final class InstanceNotInitialized extends RuntimeException {
 
     /**
      * Instantiates a new Instance not initialized.
