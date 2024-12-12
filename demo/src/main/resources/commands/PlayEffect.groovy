@@ -14,9 +14,10 @@ import it.fulminazzo.yagl.particles.PotionParticleOption
 import it.fulminazzo.yagl.particles.PrimitiveParticleOption
 import it.fulminazzo.yagl.wrappers.Potion
 import it.fulminazzo.fulmicollection.objects.Refl
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-static getOption(sender, particleType, optionType, args) {
+static getOption(CommandSender sender, LegacyParticleType particleType, Class optionType, String[] args) {
     if (optionType == PotionParticleOption)
         new PotionParticleOption(new Potion(args[0], Integer.valueOf(args[1]),
                 Boolean.valueOf(args[2]), Boolean.valueOf(args[3])))
@@ -39,7 +40,7 @@ static getOption(sender, particleType, optionType, args) {
     else throw new IllegalArgumentException("Cannot get particle option of ${optionType}")
 }
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player) {
         try {
             LegacyParticleType type = LegacyParticleType.valueOf(args[0])

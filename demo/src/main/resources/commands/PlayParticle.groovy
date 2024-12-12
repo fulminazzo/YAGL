@@ -16,10 +16,11 @@ import it.fulminazzo.yagl.particles.ParticleType
 import it.fulminazzo.yagl.particles.PrimitiveParticleOption
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.Location
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 
-static getOption(sender, particleType, optionType, args) {
+static getOption(CommandSender sender, ParticleType particleType, Class optionType, String[] args) {
     if (optionType == DustParticleOption)
         new DustParticleOption(Color.fromARGB(args[0]), Float.valueOf(args[1]))
     else if (optionType == DustTransitionParticleOption)
@@ -40,7 +41,7 @@ static getOption(sender, particleType, optionType, args) {
     else throw new IllegalArgumentException("Cannot get particle option of ${optionType}")
 }
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player) {
         try {
             ParticleType type = ParticleType.valueOf(args[0])

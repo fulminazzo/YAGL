@@ -1,8 +1,9 @@
 import it.fulminazzo.yagl.WrappersAdapter
 import it.fulminazzo.yagl.wrappers.Sound
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player) {
         try {
             Sound sound = new Sound(args[0], Float.valueOf(args[1]), Float.valueOf(args[2]), args[3])

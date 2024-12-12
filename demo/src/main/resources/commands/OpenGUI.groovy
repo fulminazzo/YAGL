@@ -5,9 +5,10 @@ import it.fulminazzo.yagl.guis.GUIType
 import it.fulminazzo.yagl.items.Item
 import it.fulminazzo.yagl.items.fields.ItemFlag
 import it.fulminazzo.yagl.utils.EnumUtils
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
             def columns = 9

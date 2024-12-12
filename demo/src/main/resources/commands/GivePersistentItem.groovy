@@ -5,9 +5,10 @@ import it.fulminazzo.yagl.items.PersistentItem
 import it.fulminazzo.yagl.items.fields.ItemFlag
 import it.fulminazzo.yagl.wrappers.Enchantment
 import it.fulminazzo.yagl.wrappers.WrapperParser
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
             DeathAction action = DeathAction.valueOf(args[0].toUpperCase())
