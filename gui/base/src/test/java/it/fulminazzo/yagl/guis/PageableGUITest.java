@@ -262,7 +262,7 @@ class PageableGUITest {
 
         @Override
         public void closeGUI() {
-
+            //
         }
     }
 
