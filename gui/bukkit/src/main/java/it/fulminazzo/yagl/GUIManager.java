@@ -1,11 +1,11 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.contents.GUIContent;
-import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.viewers.Viewer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.contents.GUIContent;
+import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.viewers.Viewer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
@@ -28,16 +28,14 @@ import java.util.UUID;
  * A general manager class that controls most {@link GUI} features.
  * It is completely independent and not required from the end user to be loaded or registered.
  */
-public class GUIManager implements Listener {
-    private static GUIManager instance;
-
+public class GUIManager extends SingleInstance implements Listener {
     private final List<Viewer> viewers;
 
     /**
      * Instantiates a new GUI manager.
      */
     public GUIManager() {
-        instance = this;
+        initialize();
         this.viewers = new ArrayList<>();
     }
 
@@ -75,7 +73,7 @@ public class GUIManager implements Listener {
                     .map(Bukkit::getPlayer)
                     .filter(Objects::nonNull)
                     .forEach(HumanEntity::closeInventory);
-            instance = null;
+            terminate();
         }
     }
 
@@ -146,12 +144,13 @@ public class GUIManager implements Listener {
      * @return the instance
      */
     public static GUIManager getInstance() {
-        GUIManager manager = instance;
-        if (manager == null) {
-            manager = new GUIManager();
+        try {
+            return getInstance(GUIManager.class);
+        } catch (InstanceNotInitialized e) {
+            GUIManager manager = new GUIManager();
             Bukkit.getPluginManager().registerEvents(manager, getProvidingPlugin());
+            return manager;
         }
-        return manager;
     }
 
     private static @NotNull JavaPlugin getProvidingPlugin() {
