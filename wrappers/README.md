@@ -21,8 +21,10 @@ Not only that, but the coder can also **transfer with ease** any object across *
 | [Serializer](#serializer)       |
 | [Bukkit](#bukkit)               |
 
+
 ## How to import
 It can be imported using both **Maven** and **Gradle** and specifying **one of its submodules**.
+
 
 ### Maven
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
@@ -53,6 +55,7 @@ To import **all three submodules together**, use:
 </dependency>
 ```
 
+
 ### Gradle
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
 ```groovy
@@ -76,8 +79,10 @@ dependencies {
     implementation 'it.fulminazzo.YAGL:wrappers:{LATEST}'
 }
 ```
-  
+
+
 ## Submodules
+
 ### Base
 `base` contains the **core** of the module.
 It holds the most important classes as
@@ -86,10 +91,12 @@ It holds the most important classes as
 [Sound](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#sound) and
 [Particle](https://github.com/Fulminazzo/YAGL/wiki/Wrappers-For-Developers#particle).
 
+
 ### Serializer
 The `serializer` submodule is entitled to **saving and loading** all the **wrappers objects**.
 A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
 However, for it to work properly, it is required to execute `WrappersYAGLParser#addAllParsers()` **before any serialization operation**.
+
 
 ### Bukkit
 The most useful class introduced by this module is 

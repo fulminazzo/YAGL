@@ -19,8 +19,10 @@ in a **simple yet convenient way** for both **developers and admins**.
 | [Serializer](#serializer)       |
 | [Bukkit](#bukkit)               |
 
+
 ## How to import
 It can be imported using both **Maven** and **Gradle** and specifying **one of its submodules**.
+
 
 ### Maven
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
@@ -51,6 +53,7 @@ To import **all three submodules together**, use:
 </dependency>
 ```
 
+
 ### Gradle
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
 ```groovy
@@ -75,7 +78,9 @@ dependencies {
 }
 ```
 
+
 ## Submodules
+
 ### Base
 The `base` submodules introduces all the **components and features** of the module.
 It provides all the [types of GUIs](https://github.com/Fulminazzo/YAGL/wiki/GUI-For-Developers#types)
@@ -84,12 +89,14 @@ as well as different types of [actions](https://github.com/Fulminazzo/YAGL/wiki/
 All of these and more can be found in the 
 [detailed documentation in the Wiki](https://github.com/Fulminazzo/YAGL/wiki/GUI-For-Developers).
 
+
 ### Serializer
 The `serializer` submodule is entitled to **saving and loading** all the **guis related objects**.
 A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
 However, for it to work properly, it is required to execute `GUIYAGLParser#addAllParsers()` **before any serialization operation**.
 Note that this **will include calls to `WrappersYAGLParser#addAllParsers()` and `ItemYAGLParser#addAllParsers()`**,
 therefore it is **not necessary** to include them later.
+
 
 ### Bukkit
 The `bukkit` module contains **Bukkit** related objects and converters.

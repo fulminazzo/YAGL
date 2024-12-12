@@ -30,8 +30,10 @@ who will encounter no issue into **modifying and customizing it** to fit their n
 | [Serializer](#serializer)       |
 | [Bukkit](#bukkit)               |
 
+
 ## How to import
 It can be imported using both **Maven** and **Gradle** and specifying **one of its submodules**.
+
 
 ### Maven
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
@@ -62,6 +64,7 @@ To import **all three submodules together**, use:
 </dependency>
 ```
 
+
 ### Gradle
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
 ```groovy
@@ -86,11 +89,14 @@ dependencies {
 }
 ```
 
+
 ## Submodules
+
 ### Base
 The `base` submodule contains many classes responsible for **creation and customization** of **items**,
 but the most important (and useful) ones are [Item](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#items)
 and [Recipes](https://github.com/Fulminazzo/YAGL/wiki/Item-For-Developers#recipes).
+
 
 ### Serializer
 The `serializer` submodule is entitled to **saving and loading** all the **items related objects**.
@@ -98,6 +104,7 @@ A developer **should not be concerned** with the **contents** of this module as 
 However, for it to work properly, it is required to execute `ItemYAGLParser#addAllParsers()` **before any serialization operation**.
 Note that this **will include calls to `WrappersYAGLParser#addAllParsers()`**,
 therefore it is **not necessary** to include it later.
+
 
 ### Bukkit
 `bukkit` allows the direct **conversion** from a **YAGL `Item`** to a **Bukkit `ItemStack`**.
