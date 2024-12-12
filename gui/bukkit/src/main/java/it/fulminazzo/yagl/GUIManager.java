@@ -146,7 +146,7 @@ public class GUIManager extends SingleInstance implements Listener {
     public static GUIManager getInstance() {
         try {
             return getInstance(GUIManager.class);
-        } catch (InstanceNotInitialized e) {
+        } catch (InstanceNotInitializedException e) {
             GUIManager manager = new GUIManager();
             Bukkit.getPluginManager().registerEvents(manager, getProvidingPlugin());
             return manager;

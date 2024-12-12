@@ -39,8 +39,8 @@ class SingleInstanceTest {
     @Test
     void testTerminateNotInitialized() {
         SingleInstance instance = new MockInstance();
-        InstanceNotInitialized exception = assertThrowsExactly(
-                InstanceNotInitialized.class, instance::terminate
+        InstanceNotInitializedException exception = assertThrowsExactly(
+                InstanceNotInitializedException.class, instance::terminate
         );
         assertEquals("Instance of type \"" + MockInstance.class.getSimpleName() +
                 "\" has not been initialized yet", exception.getMessage());
@@ -48,8 +48,8 @@ class SingleInstanceTest {
 
     @Test
     void testGetInstanceNotInitialized() {
-        InstanceNotInitialized exception = assertThrowsExactly(
-                InstanceNotInitialized.class, () -> SingleInstance.getInstance(MockInstance.class)
+        InstanceNotInitializedException exception = assertThrowsExactly(
+                InstanceNotInitializedException.class, () -> SingleInstance.getInstance(MockInstance.class)
         );
         assertEquals("Instance of type \"" + MockInstance.class.getSimpleName() +
                 "\" has not been initialized yet", exception.getMessage());

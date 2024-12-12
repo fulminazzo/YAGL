@@ -27,16 +27,16 @@ public abstract class SingleInstance {
 
     /**
      * Removes the current instance from {@link #INSTANCES_MAP}.
-     * If it is already removed, a {@link InstanceNotInitialized} is thrown.
+     * If it is already removed, a {@link InstanceNotInitializedException} is thrown.
      */
     public void terminate() {
         if (INSTANCES_MAP.containsKey(getClass())) INSTANCES_MAP.remove(getClass());
-        else throw new InstanceNotInitialized(getClass());
+        else throw new InstanceNotInitializedException(getClass());
     }
 
     /**
      * Gets the instance corresponding to the type from {@link #INSTANCES_MAP}.
-     * If not present, a {@link InstanceNotInitialized} is thrown.
+     * If not present, a {@link InstanceNotInitializedException} is thrown.
      *
      * @param <T>   the type of the instance
      * @param clazz the class of the instance
@@ -45,7 +45,7 @@ public abstract class SingleInstance {
     @SuppressWarnings("unchecked")
     public static <T extends SingleInstance> @NotNull T getInstance(Class<T> clazz) {
         T instance = (T) INSTANCES_MAP.get(clazz);
-        if (instance == null) throw new InstanceNotInitialized(clazz);
+        if (instance == null) throw new InstanceNotInitializedException(clazz);
         return instance;
     }
 
