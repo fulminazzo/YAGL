@@ -53,6 +53,8 @@ class ObjectUtilsTest {
     private static class ExampleClass {
         private final int i = 10;
         private final String n = "Alex";
+        private final double d = 0; // Since d is 0, it should NOT be printed
+        private final Object o = null;
     }
 
     @Test
