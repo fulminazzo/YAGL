@@ -33,7 +33,7 @@ class PersistentItemTest {
     }
 
     @Test
-    void testPersistentListenerNotInitialized() {
+    void testPersistentListenerNotInitialized() throws NoSuchFieldException {
         new Refl<>(PersistentListener.class).setFieldObject("INITIALIZED", false);
         try (MockedStatic<Logger> ignored = mockStatic(Logger.class)) {
             Logger mockLogger = mock(Logger.class);
@@ -45,8 +45,6 @@ class PersistentItemTest {
             Field warningMessageField = PersistentItem.class.getDeclaredField("WARNING_MESSAGE");
             String warningMessage = (String) ReflectionUtils.get(warningMessageField, PersistentItem.class).orElseGet(null);
             verify(mockLogger).warning(warningMessage);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
         }
     }
 
