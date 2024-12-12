@@ -1,9 +1,9 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.commands.ShellCommand;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.JarUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.yagl.commands.ShellCommand;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -12,10 +12,12 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -177,6 +179,16 @@ class YAGLTest {
             assertNotNull(commands);
             assertEquals(1, commands.size(), "Commands size did not match expected");
         }
+    }
+
+    @Test
+    void simulateJarGetResources() {
+        JavaPlugin plugin = mock(JavaPlugin.class);
+        when(plugin.getResource(any())).thenReturn(new ByteArrayInputStream("".getBytes()));
+
+        YAGL.writeResourceToFile(this.plugin.getDataFolder(), "test", "resources", plugin);
+
+        verify(plugin).getResource("resources/test");
     }
 
     private void setupPluginManager() {
