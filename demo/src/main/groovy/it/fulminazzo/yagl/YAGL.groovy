@@ -67,13 +67,13 @@ class YAGL extends JavaPlugin {
         FileUtils.createFolder(commandsDir)
         getClass().getResourceAsStream(resourceDir).withReader { reader ->
             String fileName
-            while ((fileName = reader.readLine()) != null) writeResourceToFile(commandsDir, fileName, resourceDir)
+            while ((fileName = reader.readLine()) != null) writeResourceToFile(commandsDir, fileName, resourceDir, this)
         }
         Iterator<String> jarEntries = JarUtils.getEntries(YAGL, '')
         while (jarEntries.hasNext()) {
             def entry = jarEntries.next()
             if (entry.startsWith(resourceDir.substring(1)) && entry.length() > resourceDir.length())
-                writeResourceToFile(commandsDir, entry.substring(resourceDir.length()), resourceDir)
+                writeResourceToFile(commandsDir, entry.substring(resourceDir.length()), resourceDir, this)
         }
     }
 
@@ -84,14 +84,22 @@ class YAGL extends JavaPlugin {
                 .getFieldObject('commandMap'))
     }
 
-    private void writeResourceToFile(final @NotNull File dir, final @NotNull String fileName,
-                                            final @NotNull String resourceDir) {
-        def file = new File(dir, fileName)
+    /**
+     * Loads a resource from the class loader and stores it in the file system.
+     *
+     * @param directory the output directory
+     * @param fileName the name of the resource
+     * @param resourceDir the name of the directory where the resource is
+     * @param plugin the fallback plugin in case of a JAR context
+     */
+    static void writeResourceToFile(final @NotNull File directory, final @NotNull String fileName,
+                                    final @NotNull String resourceDir, final @NotNull JavaPlugin plugin) {
+        def file = new File(directory, fileName)
         if (file.exists()) FileUtils.deleteFile(file)
         FileUtils.createNewFile(file)
         def resourceName = "${resourceDir}/${fileName}"
-        def input = getClass().getResourceAsStream(resourceName)
-        if (input == null) input = getResource(resourceName)
+        def input = YAGL.getResourceAsStream(resourceName)
+        if (input == null) input = plugin.getResource(resourceName)
         def output = new FileOutputStream(file)
         output << input
     }
