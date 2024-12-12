@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.annotations.NotNull
 
 @CompileStatic
-class YAGL extends JavaPlugin {
+final class YAGL extends JavaPlugin {
     private final List<ShellCommand> commands = new ArrayList<>()
 
     @Override
