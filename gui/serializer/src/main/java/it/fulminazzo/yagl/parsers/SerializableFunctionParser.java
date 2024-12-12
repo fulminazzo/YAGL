@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl.parsers;
 
+import it.fulminazzo.fulmicollection.structures.tuples.Singlet;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.SerializableFunction;
 import it.fulminazzo.yagl.utils.ParserUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
@@ -41,15 +43,16 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
             // Get content
             String content = section.getString("content");
             try {
+                Singlet<Object> object;
                 if (content == null) {
                     Constructor<?> constructor = clazz.getConstructor();
-                    constructor.setAccessible(true);
-                    return (F) constructor.newInstance();
+                    object = ReflectionUtils.setAccessible(constructor).map(Constructor::newInstance);
                 } else {
                     Constructor<?> constructor = clazz.getConstructor(String.class);
-                    constructor.setAccessible(true);
-                    return (F) constructor.newInstance(content);
+                    object = ReflectionUtils.setAccessible(constructor).map(o -> o.newInstance(content));
                 }
+                return (F) object.orElseThrow(() ->
+                        new IllegalArgumentException("Constructor for class " + clazz.getSimpleName() + " is not accessible"));
             } catch (NoSuchMethodException e) {
                 return SerializeUtils.deserializeFromBase64(content);
             }

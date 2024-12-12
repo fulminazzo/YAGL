@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.items;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
 import it.fulminazzo.yagl.listeners.PersistentListener;
@@ -42,9 +43,9 @@ class PersistentItemTest {
             item.create();
 
             Field warningMessageField = PersistentItem.class.getDeclaredField("WARNING_MESSAGE");
-            warningMessageField.setAccessible(true);
-            verify(mockLogger).warning((String) warningMessageField.get(PersistentItem.class));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            String warningMessage = (String) ReflectionUtils.get(warningMessageField, PersistentItem.class).orElseGet(null);
+            verify(mockLogger).warning(warningMessage);
+        } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
     }

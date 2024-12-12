@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.utils;
 
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,15 +14,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectUtilsTest {
 
-    private static Object[][] objectsForTestPrintAsJSON() throws NoSuchFieldException, IllegalAccessException {
+    private static Object[][] objectsForTestPrintAsJSON() throws NoSuchFieldException {
         Field identifierField = ObjectUtils.class.getDeclaredField("EMPTY_IDENTIFIER");
-        identifierField.setAccessible(true);
-        Object emptyIdentifier = identifierField.get(ObjectUtils.class);
+        Object emptyIdentifier = ReflectionUtils.get(identifierField, ObjectUtils.class)
+                .orElseThrow(IllegalStateException::new);
         UUID uuid = UUID.randomUUID();
         Date date = new Date();
         Field dateFormatField = ObjectUtils.class.getDeclaredField("DATE_FORMAT");
-        dateFormatField.setAccessible(true);
-        SimpleDateFormat simpleDateFormat = (SimpleDateFormat) dateFormatField.get(ObjectUtils.class);
+        SimpleDateFormat simpleDateFormat = (SimpleDateFormat) ReflectionUtils.get(dateFormatField, ObjectUtils.class)
+                .orElseThrow(IllegalStateException::new);
         return new Object[][] {
                 new Object[]{null, emptyIdentifier},
                 new Object[]{BasicEnum.EXAMPLE, BasicEnum.EXAMPLE.name()},

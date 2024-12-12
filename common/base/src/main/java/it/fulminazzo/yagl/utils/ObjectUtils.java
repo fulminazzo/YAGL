@@ -120,8 +120,7 @@ public final class ObjectUtils {
             }
 
         final Refl<O> object = new Refl<>(clazz, new Object[0]);
-        for (final Field field : object.getNonStaticFields()) {
-            field.setAccessible(true);
+        for (final Field field : object.getNonStaticFields())
             try {
                 ReflectionUtils.get(field, t).map(obj1 -> {
                     if (obj1 == null) return null;
@@ -133,7 +132,6 @@ public final class ObjectUtils {
             } catch (IllegalArgumentException e) {
                 if (!e.getMessage().contains("Can not set")) throw e;
             }
-        }
         return object.getObject();
     }
 
