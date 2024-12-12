@@ -101,6 +101,18 @@ Document title and Copyright styles
     overflow: hidden;
 }
 
+.about-language {
+    float: right;
+    padding: 0 21px;
+    font-size: 11px;
+    z-index: 200;
+    margin-top: -9px;
+}
+
+.legal-copy {
+    margin-left: .5em;
+}
+
 .bar a, .bar a:link, .bar a:visited, .bar a:active {
     color: #FFF;
     text-decoration: none;
@@ -110,9 +122,25 @@ Document title and Copyright styles
     color: #bb7a2a;
 }
 
+.tab {
+    background-color: #06F;
+    color: #FFF;
+    padding: 8px;
+    width: 5em;
+    font-weight: bold;
+}
+
 /*
 Navigation bar styles
 */
+.bar {
+    background-color: #4D7A97;
+    color: #FFF;
+    padding: .8em .5em .4em .8em;
+    height: auto;
+    font-size: 11px;
+    margin: 0;
+}
 
 .top-nav {
     background-color: #4D7A97;
@@ -154,6 +182,12 @@ Navigation bar styles
     text-transform: uppercase;
 }
 
+ul.nav-list, ul.sub-nav-list {
+    float: left;
+    margin: 0 25px 0 0;
+    padding: 0;
+}
+
 ul.nav-list li{
     list-style: none;
     float: left;
@@ -184,9 +218,26 @@ ul.sub-nav-list li{
     margin: auto 5px;
 }
 
+.skip-nav {
+    position: absolute;
+    top: auto;
+    left: -9999px;
+    overflow: hidden;
+}
+
 /*
 Page header and footer styles
 */
+.header, .footer {
+    clear: both;
+    margin: 0 20px;
+    padding: 5px 0 0;
+}
+
+.index-header {
+    margin: 10px;
+    position: relative;
+}
 
 .index-header span{
     margin-right: 15px;
@@ -199,6 +250,10 @@ Page header and footer styles
 .title {
     color: #2c4557;
     margin: 10px 0;
+}
+
+.sub-title {
+    margin: 5px 0 0;
 }
 
 .header ul {
@@ -244,6 +299,17 @@ ul.block-list li.block-list h2 {
 /*
 Page layout container styles
 */
+.content-container, .source-container, .class-use-container, .serialized-form-container, .constant-values-container {
+    clear: both;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.index-container {
+    margin: 10px;
+    position: relative;
+    font-size: 12px;
+}
 
 .index-container h2 {
     font-size: 13px;
@@ -294,9 +360,56 @@ ul.horizontal li {
     font-size: 0.9em;
 }
 
+ul.inheritance {
+    margin: 0;
+    padding: 0;
+}
+
 ul.inheritance li {
     display: inline;
     list-style: none;
+}
+
+ul.inheritance li ul.inheritance {
+    margin-left: 15px;
+    padding-left: 15px;
+    padding-top: 1px;
+}
+
+ul.block-list, ul.block-list-last {
+    margin: 10px 0;
+    padding: 0;
+}
+
+ul.block-list li.block-list, ul.block-list-last li.block-list {
+    list-style: none;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+ul.block-list ul.block-list li.block-list, ul.block-list ul.block-list-last li.block-list {
+    padding: 0 20px 5px 10px;
+    border: 1px solid #ededed; 
+    background-color: #f8f8f8;
+}
+
+ul.block-list ul.block-list ul.block-list li.block-list, ul.block-list ul.block-list ul.block-list-last li.block-list {
+    padding: 0 0 5px 8px;
+    background-color: #FFF;
+    border: none;
+}
+
+ul.block-list ul.block-list ul.block-list ul.block-list li.block-list {
+    margin-left: 0;
+    padding-left: 0;
+    padding-bottom: 15px;
+    border: none;
+}
+
+ul.block-list ul.block-list ul.block-list ul.block-list li.block-list-last {
+    list-style: none;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 table tr td dl, table tr td dl dt, table tr td dl dd {
@@ -307,6 +420,16 @@ table tr td dl, table tr td dl dt, table tr td dl dd {
 /*
 Table styles
 */
+.overview-summary, .member-summary, .type-summary, .use-summary, .constants-summary, .deprecated-summary {
+    width: 100%;
+    border-left: 1px solid #EEE; 
+    border-right: 1px solid #EEE; 
+    border-bottom: 1px solid #EEE; 
+}
+
+.overview-summary, .member-summary  {
+    padding: 0;
+}
 
 .overview-summary caption, .member-summary caption, .type-summary caption,
 .use-summary caption, .constants-summary caption, .deprecated-summary caption {
@@ -368,6 +491,15 @@ Table styles
     height: 16px;
 }
 
+.member-summary caption span.table-tab, .member-summary caption span.active-table-tab {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    background-image: none;
+    float: none;
+    display: inline;
+}
+
 .overview-summary .tab-end, .member-summary .tab-end, .type-summary .tab-end,
 .use-summary .tab-end, .constants-summary .tab-end, .deprecated-summary .tab-end {
     display: none;
@@ -402,6 +534,20 @@ Table styles
     padding: 0 0 12px 10px;
 }
 
+th.col-one, th.col-first, th.col-last, .use-summary th, .constants-summary th,
+td.col-one, td.col-first, td.col-last, .use-summary td, .constants-summary td{
+    vertical-align: top;
+    padding-right: 0;
+    padding-top: 8px;
+    padding-bottom: 3px;
+}
+
+th.col-first, th.col-last, th.col-one, .constants-summary th {
+    background: #dee3e9;
+    text-align: left;
+    padding: 8px 3px 3px 7px;
+}
+
 td.col-first, th.col-first {
     white-space: nowrap;
     font-size: 13px;
@@ -411,12 +557,34 @@ td.col-last, th.col-last {
     font-size: 13px;
 }
 
+td.col-one, th.col-one {
+    font-size: 13px;
+}
+
+.overview-summary td.col-first, .overview-summary th.col-first,
+.use-summary td.col-first, .use-summary th.col-first,
+.overview-summary td.col-one, .overview-summary th.col-one,
+.member-summary td.col-first, .member-summary th.col-first,
+.member-summary td.col-one, .member-summary th.col-one,
+.type-summary td.col-first{
+    width: 25%;
+    vertical-align: top;
+}
+
 td.col-one a:link, td.col-one a:active, td.col-one a:visited, td.col-one a:hover, td.col-first a:link, td.col-first a:active, td.col-first a:visited, td.col-first a:hover, td.col-last a:link, td.col-last a:active, td.col-last a:visited, td.col-last a:hover, .constant-values-container td a:link, .constant-values-container td a:active, .constant-values-container td a:visited, .constant-values-container td a:hover {
     font-weight: bold;
 }
 
+.table-sub-heading-color {
+    background-color: #EEF;
+}
+
 .alt-color {
     background-color: #FFF;
+}
+
+.row-color {
+    background-color: #EEF;
 }
 
 /*
@@ -424,6 +592,15 @@ Content styles
 */
 .description pre {
     margin-top: 0;
+}
+
+.deprecated-content {
+    margin: 0;
+    padding: 10px 0;
+}
+
+.doc-summary {
+    padding: 0;
 }
 
 ul.block-list ul.block-list ul.block-list li.block-list h3 {
@@ -447,11 +624,36 @@ td.col-last a {
 /*
 Formatting effect styles
 */
+.source-line-no {
+    color: green;
+    padding: 0 30px 0 0;
+}
+
+h1.hidden {
+    visibility: hidden;
+    overflow: hidden;
+    font-size: 10px;
+}
 
 .block {
     display: block;
     margin: 3px 10px 2px 0;
     color: #474747;
+}
+
+.deprecated-label, .descframe-type-label, .member-name-label, .member-name-link,
+.override-specify-label, .package-hierarchy-label, .param-label, .return-label,
+.see-label, .simple-tag-label, .throws-label, .type-name-label, .type-name-link {
+    font-weight: bold;
+}
+
+.deprecation-comment, .emphasized-phrase, .interface-name {
+    font-style: italic;
+}
+
+div.block div.block span.deprecation-comment, div.block div.block span.emphasized-phrase,
+div.block div.block span.interface-name {
+    font-style: normal;
 }
 
 div.content-container ul.block-list li.block-list h2{
