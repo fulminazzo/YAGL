@@ -61,6 +61,12 @@ class BukkitViewerTest {
     }
 
     @Test
+    void testCloseGUI() {
+        this.viewer.closeGUI();
+        verify(this.player).closeInventory();
+    }
+
+    @Test
     void getOfflinePlayerShouldNotBePresent() {
         when(this.player.isOnline()).thenReturn(false);
         assertFalse(((BukkitViewer) this.viewer).getPlayer().isPresent());
