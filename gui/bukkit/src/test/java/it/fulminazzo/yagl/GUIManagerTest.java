@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,11 @@ class GUIManagerTest {
                     .addContent(Item.newItem("stone").setDisplayName("test"));
 
             GUIAdapter.openGUI(this.expected, GUIManager.getViewer(this.player));
+        }
+
+        @AfterEach
+        void tearDown() {
+            this.guiManager.terminate();
         }
 
         @Test
@@ -212,6 +218,7 @@ class GUIManagerTest {
                 this.guiManager.on(event);
                 verify(this.player).closeInventory();
             });
+            this.guiManager.initialize();
         }
 
         @Test
