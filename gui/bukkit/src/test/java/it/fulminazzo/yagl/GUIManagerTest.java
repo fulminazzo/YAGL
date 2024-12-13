@@ -55,8 +55,11 @@ class GUIManagerTest {
 
         @BeforeEach
         void setUp() {
-            this.guiManager = new GUIManager();
             BukkitUtils.setupServer();
+            try {
+               GUIManager.getInstance(GUIManager.class).terminate();
+            } catch (InstanceNotInitializedException ignored) {}
+            this.guiManager = new GUIManager();
 
             Server server = Bukkit.getServer();
             when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
