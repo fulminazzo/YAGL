@@ -1,8 +1,9 @@
 import it.fulminazzo.yagl.WrappersAdapter
 import it.fulminazzo.yagl.wrappers.PotionEffect
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player) {
         try {
             PotionEffect effect = new PotionEffect(args[0], Double.valueOf(args[1]),

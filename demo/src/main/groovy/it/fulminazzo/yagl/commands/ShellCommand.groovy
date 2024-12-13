@@ -13,8 +13,10 @@ import java.util.regex.Pattern
  */
 @CompileStatic
 class ShellCommand extends Command {
-    private static final String NUMBER_FORMAT_REGEX = '(catch *\\(NumberFormatException +ignored\\) *\\{\\n)[ \\t]*(?:// auto-generated code)?(\\n *})'
-    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(ignored.message.replace(\'For input string: \', \'Invalid number \'))'
+    private static final String NUMBER_FORMAT_REGEX = '(catch *\\(NumberFormatException +ignored\\) *\\{' +
+            '\\n)[ \\t]*(?:// auto-generated code)?(\\n *})'
+    private static final String INVALID_NUMBER_CODE = 'sender.sendMessage(ignored.message.replace(' +
+            '\'For input string: \', \'Invalid number \'))'
     private final String shellCode
 
     /**
@@ -39,7 +41,7 @@ class ShellCommand extends Command {
 
     @Override
     boolean execute(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String[] args) {
-        Binding binding = new Binding(['sender': sender, 'label': label, 'args': args])
+        Binding binding = new Binding(['sender':sender, 'label':label, 'args':args])
         new GroovyShell(binding).evaluate(this.shellCode)
         return true
     }

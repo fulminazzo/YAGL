@@ -3,9 +3,10 @@ import it.fulminazzo.yagl.items.Item
 import it.fulminazzo.yagl.items.fields.ItemFlag
 import it.fulminazzo.yagl.wrappers.Enchantment
 import it.fulminazzo.yagl.wrappers.WrapperParser
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
             Item item = Item.newItem(args[0])
@@ -29,7 +30,8 @@ def run = { sender, label, args ->
         } catch (NumberFormatException ignored) {
             // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {
-            sender.sendMessage('Usage: /giveitem <material> <amount> <durability> <name> <lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
+            sender.sendMessage('Usage: /giveitem <material> <amount> <durability> <name> ' +
+                    '<lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
             sender.sendMessage('At least material is required!')
         }
     else sender.sendMessage('Console cannot execute this command!')

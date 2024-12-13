@@ -158,7 +158,7 @@ public class ShapedRecipe extends RecipeImpl {
         }
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return String.format("Shape {rows: %s, columns: %s}", this.rows, this.columns);
         }
     }

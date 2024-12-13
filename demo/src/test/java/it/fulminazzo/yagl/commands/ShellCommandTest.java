@@ -40,7 +40,7 @@ class ShellCommandTest {
                 "    } catch (NumberFormatException ignored) {\n" +
                 "    sender.sendMessage(ignored.message.replace('For input string: ', 'Invalid number '))\n" +
                 "    }\n" +
-                "}\n" +
+                "}\n\n" +
                 "run(sender, label, args)";
         File file = new File("build/resources/test/number-format-exception-command.groovy");
 

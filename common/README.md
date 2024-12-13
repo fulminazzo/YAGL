@@ -13,9 +13,11 @@ therefore it is suggested to **not use it**.
 | [Bukkit](#bukkit)               |
 
 ## How to import
+
 It can be imported using both **Maven** and **Gradle** and specifying **one of its submodules**.
 
 ### Maven
+
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
 ```xml
 <repository>
@@ -45,6 +47,7 @@ To import **all three submodules together**, use:
 ```
 
 ### Gradle
+
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
 ```groovy
 repositories {
@@ -67,15 +70,19 @@ dependencies {
     implementation 'it.fulminazzo.YAGL:common:{LATEST}'
 }
 ```
-  
+
 ## Submodules
+
 ### Base
+
 The `base` submodule contains various **special data structures** and **utility classes**
 for **enums**, **objects** and more.
 
 ### Serializer
+
 The `serializer` submodule olds few **important classes** for successfully **serializing** and **deserializing**
 **YAGL data**.
 
 ### Bukkit
+
 At the time of writing, the `bukkit` module does nothing.

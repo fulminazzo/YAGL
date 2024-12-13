@@ -3,9 +3,10 @@ import it.fulminazzo.yagl.items.Item
 import it.fulminazzo.yagl.items.recipes.FurnaceRecipe
 import it.fulminazzo.yagl.items.recipes.ShapedRecipe
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-static shaped(sender, label, args, output, name) {
+static shaped(CommandSender sender, String[] args, String output, String name) {
     try {
         def rows = Integer.valueOf(args[0])
         def columns = Integer.valueOf(args[1])
@@ -22,7 +23,7 @@ static shaped(sender, label, args, output, name) {
     }
 }
 
-static shapeless(sender, label, args, output, name) {
+static shapeless(CommandSender sender, String[] args, String output, String name) {
     try {
         if (args.length == 0) throw new IndexOutOfBoundsException()
         BukkitItem.newRecipeItem(output)
@@ -39,7 +40,7 @@ static shapeless(sender, label, args, output, name) {
     }
 }
 
-static furnace(sender, label, args, output, name) {
+static furnace(CommandSender sender, String[] args, String output, String name) {
     try {
         BukkitItem.newRecipeItem(output)
                 .addRecipes(new FurnaceRecipe(name)
@@ -55,10 +56,10 @@ static furnace(sender, label, args, output, name) {
     }
 }
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
-            "${args[2].toLowerCase()}"(sender, label, Arrays.copyOfRange(args, 3, args.length), args[1], args[0])
+            "${args[2].toLowerCase()}"(sender, Arrays.copyOfRange(args, 3, args.length), args[1], args[0])
         } catch (NumberFormatException ignored) {
             // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {

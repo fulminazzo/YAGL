@@ -12,6 +12,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("unused")
 class ObjectUtilsTest {
 
     private static Object[][] objectsForTestPrintAsJSON() throws NoSuchFieldException {

@@ -13,7 +13,7 @@ public class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
 
     @SuppressWarnings("unused")
     private DustParticleOption() {
-        this(null, -1);
+        this(Color.BLACK, -1);
     }
 
     /**

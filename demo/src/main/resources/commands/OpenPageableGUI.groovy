@@ -4,9 +4,10 @@ import it.fulminazzo.yagl.guis.PageableGUI
 import it.fulminazzo.yagl.items.BukkitItem
 import it.fulminazzo.yagl.utils.EnumUtils
 import org.bukkit.Material
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-def run = { sender, label, args ->
+def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
             PageableGUI gui
