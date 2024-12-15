@@ -67,6 +67,7 @@ class GUIManagerTest {
 
             this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
             when(this.player.isOnline()).thenReturn(true);
+            when(this.player.getServer()).thenReturn(server);
 
             this.expected = GUI.newGUI(9)
                     .setTitle("Hello world")
