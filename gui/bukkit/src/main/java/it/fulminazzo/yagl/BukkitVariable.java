@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl;
 
 import lombok.Getter;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +11,12 @@ import java.util.function.Function;
  * Represents a variable. Uses the Bukkit class {@link Player} to retrieve the correct value.
  */
 class BukkitVariable {
+    public static final BukkitVariable[] DEFAULT_VARIABLES = new BukkitVariable[]{
+            new BukkitVariable("player_name", HumanEntity::getName),
+            new BukkitVariable("player_display_name", Player::getDisplayName),
+            new BukkitVariable("player_uuid", p -> p.getUniqueId().toString()),
+            new BukkitVariable("players_count", p -> String.valueOf(p.getServer().getOnlinePlayers().size())),
+    };
     @Getter
     private final @NotNull String name;
     private final @NotNull Function<Player, String> value;
