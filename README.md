@@ -6,36 +6,36 @@
 
 <p align="center">
   <p align="center">
-    <a href="../actions/workflows/bukkit-1.8.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.20.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.21.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.8.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.20.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.21.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
   </p>
   <p align="center">
-    <a href="./actions/workflows/bukkit-1.14.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.14.yml?style=flat&logo=github&label=MC%201.14" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.15.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.15.yml?style=flat&logo=github&label=MC%201.15" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.16.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.16.yml?style=flat&logo=github&label=MC%201.16" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.17.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.17.yml?style=flat&logo=github&label=MC%201.17" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.18.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.18.yml?style=flat&logo=github&label=MC%201.18" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.19.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.19.yml?style=flat&logo=github&label=MC%201.19" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.14.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.14.yml?style=flat&logo=github&label=MC%201.14" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.15.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.15.yml?style=flat&logo=github&label=MC%201.15" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.16.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.16.yml?style=flat&logo=github&label=MC%201.16" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.17.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.17.yml?style=flat&logo=github&label=MC%201.17" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.18.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.18.yml?style=flat&logo=github&label=MC%201.18" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.19.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.19.yml?style=flat&logo=github&label=MC%201.19" alt="" /></a>
   </p>
   <p align="center">
-    <a href="./actions/workflows/bukkit-1.9.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.9.yml?style=flat&logo=github&label=MC%201.9" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.10.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.10.yml?style=flat&logo=github&label=MC%201.10" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.11.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.11.yml?style=flat&logo=github&label=MC%201.11" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.12.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.12.yml?style=flat&logo=github&label=MC%201.12" alt="" /></a>
-    <a href="./actions/workflows/bukkit-1.13.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.13.yml?style=flat&logo=github&label=MC%201.13" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.9.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.9.yml?style=flat&logo=github&label=MC%201.9" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.10.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.10.yml?style=flat&logo=github&label=MC%201.10" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.11.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.11.yml?style=flat&logo=github&label=MC%201.11" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.12.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.12.yml?style=flat&logo=github&label=MC%201.12" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.13.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.13.yml?style=flat&logo=github&label=MC%201.13" alt="" /></a>
   </p>
 </p>
 
 <p align="center">
-  <a href="./releases/latest"><img src="https://img.shields.io/github/v/release/Fulminazzo/YAGL?display_name=tag&color=red" alt="Latest version" /></a>
-  <a href="./blob/main/build.gradle"><img src="https://img.shields.io/badge/java-1.8-%23ED8B00" alt="Java version" /></a>
-  <a href="./blob/main/build.gradle"><img src="https://fulminazzo.it/badge/gradle/Fulminazzo/YAGL" alt="Gradle version" ></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/github/v/release/Fulminazzo/YAGL?display_name=tag&color=red" alt="Latest version" /></a>
+  <a href="build.gradle"><img src="https://img.shields.io/badge/java-1.8-%23ED8B00" alt="Java version" /></a>
+  <a href="build.gradle"><img src="https://fulminazzo.it/badge/gradle/Fulminazzo/YAGL" alt="Gradle version" ></a>
 </p>
 
 <p align="center">
-  <a href="./commit/"><img src="https://img.shields.io/github/commits-since/Fulminazzo/YAGL/1.0" alt="GitHub commits"/></a>
-  <a href="./issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/Fulminazzo/YAGL?color=%23FF69B4" alt="Issues" ></a>
+  <a href="../../commit/"><img src="https://img.shields.io/github/commits-since/Fulminazzo/YAGL/1.0" alt="GitHub commits"/></a>
+  <a href="../../issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/Fulminazzo/YAGL?color=%23FF69B4" alt="Issues" ></a>
 </p>
 
 <p align="center">
@@ -44,14 +44,14 @@
 </p>
 
 **Need help?**
-[![](https://img.shields.io/badge/read-the_wiki-blue?style=for-the-badge)](./wiki)
+[![](https://img.shields.io/badge/read-the_wiki-blue?style=for-the-badge)](../../wiki)
 [![](https://img.shields.io/badge/read-the_docs-orange?style=for-the-badge)](https://yagl.fulminazzo.it/docs)
 
 **Welcome to the official YAGL page**
 
 **Yet Another GUI Library** (**YAGL** for short) is a **Java library** created to generate and manage **graphical user interfaces** in game.
 
-If you are a **server admin**, I suggest you [read the documentation](./wiki) to learn how to properly configure and change default values.
+If you are a **server admin**, I suggest you [read the documentation](../../wiki) to learn how to properly configure and change default values.
 
 If you are a **developer**, **YAGL** is composed of **three main modules**:
 - [wrappers](tree/main/wrappers), a module that contains common **Minecraft** objects like **enchantments**, **sounds**, **particles**. It offers the capability of **saving and loading** them in a **nice format** for the end user;
@@ -88,9 +88,9 @@ They can all be imported separately or together, following one of the three comm
   	<version>LATEST</version>
   </dependency>
   ```
-- **Manual** (discouraged): download the JAR file from the [latest release](./releases/latest) and import it using your IDE.
+- **Manual** (discouraged): download the JAR file from the [latest release](../../releases/latest) and import it using your IDE.
 
-For more information, [check the wiki](./wiki).
+For more information, [check the wiki](../../wiki).
 
 ## Why?
 > Wait, so in 2024 you wrote another GUI library, totally ignoring all the better options available? 
