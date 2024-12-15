@@ -34,8 +34,8 @@ def run = { CommandSender sender, String label, String[] args ->
         } catch (NumberFormatException ignored) {
             // auto-generated code
         } catch (IndexOutOfBoundsException ignored) {
-            sender.sendMessage('Usage: /givepersistentitem <death-action> <mobility> <material> <amount> ' +
-                    '<durability> <name> <lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
+            // Groovy does not like separations
+            sender.sendMessage('Usage: /givepersistentitem <death-action> <mobility> <material> <amount> <durability> <name> <lore> <enchantments> <item-flags> <unbreakable> <custom-model-data>')
             sender.sendMessage('At least death-action, mobility and material are required!')
         }
     else sender.sendMessage('Console cannot execute this command!')
