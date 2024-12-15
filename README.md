@@ -6,7 +6,7 @@
 
 <p align="center">
   <p align="center">
-    <a href="./actions/workflows/bukkit-1.8.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
+    <a href="../actions/workflows/bukkit-1.8.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
     <a href="./actions/workflows/bukkit-1.20.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
     <a href="./actions/workflows/bukkit-1.21.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
   </p>
