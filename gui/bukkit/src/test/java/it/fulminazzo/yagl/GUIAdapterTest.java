@@ -27,6 +27,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,6 +46,7 @@ class GUIAdapterTest {
         Server server = Bukkit.getServer();
         when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
         when(server.isPrimaryThread()).thenReturn(true);
+        when(server.getOnlinePlayers()).thenReturn(new ArrayList<>());
 
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         when(this.player.isOnline()).thenReturn(true);
@@ -53,6 +55,7 @@ class GUIAdapterTest {
                     this.inventory = a.getArgument(0);
                     return null;
                 });
+        when(this.player.getServer()).thenReturn(server);
     }
 
     private static GUI[] guis() {
@@ -119,14 +122,14 @@ class GUIAdapterTest {
     void testOpenGUIMeta() {
         GUI gui = GUI.newGUI(GUIType.CHEST)
                 .setTitle(null)
-                .addContent(Item.newItem(Material.PLAYER_HEAD.name()).setDisplayName("test"));
+                .addContent(Item.newItem(Material.PLAYER_HEAD.name()).setDisplayName("<player_name>"));
         GUITestUtils.mockPlugin(p -> GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player), m -> m.setUnbreakable(true)));
 
         assertNotNull(this.inventory);
 
         ItemStack expected = new ItemStack(Material.PLAYER_HEAD);
         ItemMeta meta = expected.getItemMeta();
-        meta.setDisplayName("test");
+        meta.setDisplayName(this.player.getName());
         meta.setUnbreakable(true);
         expected.setItemMeta(meta);
 
