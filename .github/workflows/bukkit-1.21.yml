@@ -1,7 +1,8 @@
 # 1.21.1-R0.1-SNAPSHOT
 name: MC 1.21
 
-on: [ push ]
+# TODO: Re-enable after further updates
+# on: [ push ]
 
 jobs:
   test:
