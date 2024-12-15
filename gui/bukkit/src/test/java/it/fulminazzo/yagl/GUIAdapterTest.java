@@ -76,6 +76,10 @@ class GUIAdapterTest {
     void testOpenInAsync() {
         Server server = Bukkit.getServer();
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        when(scheduler.runTask(any(), any(Runnable.class))).then(a -> {
+            ((Runnable) a.getArguments()[1]).run();
+            return null;
+        });
         when(server.isPrimaryThread()).thenReturn(false);
         when(server.getScheduler()).thenReturn(scheduler);
         JavaPlugin plugin = mock(JavaPlugin.class);
