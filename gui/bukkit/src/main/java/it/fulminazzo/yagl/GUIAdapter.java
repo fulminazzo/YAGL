@@ -77,6 +77,11 @@ public final class GUIAdapter {
                 reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
                 g.changeGUIAction().ifPresent(a -> a.execute(vi, g, gui));
             });
+            // Set global variables
+            gui.setVariable("player_name", player.getName());
+            gui.setVariable("player_display_name", player.getDisplayName());
+            gui.setVariable("player_uuid", uuid.toString());
+            gui.setVariable("players_count", String.valueOf(player.getServer().getOnlinePlayers().size()));
             // Open inventory
             Inventory inventory = guiToInventory(gui.apply(gui));
             for (int i = 0; i < gui.size(); i++) {
