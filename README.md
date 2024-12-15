@@ -1,41 +1,41 @@
 <p align="center">
-  <a href="https://yagl.fulminazzo.it/coverage"><img src="https://fulminazzo.it/badge/coverage/Fulminazzo/YAGL/gradle.yml" alt="Tests coverage" /></a>
-  <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/"><img src="https://img.shields.io/codacy/grade/8740bf6175de4d479851a4a9ed0ea18e?logo=codacy" alt="Codacy Grade" /></a>
-  <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/"><img src="https://tokei.rs/b1/github/Fulminazzo/YAGL?category=code&style=flat" alt="Lines of Code" /></a>
+  <a href="https://yagl.fulminazzo.it/coverage" target="_blank"><img src="https://fulminazzo.it/badge/coverage/Fulminazzo/YAGL/gradle.yml" alt="Tests coverage" /></a>
+  <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/" target="_blank"><img src="https://img.shields.io/codacy/grade/8740bf6175de4d479851a4a9ed0ea18e?logo=codacy" alt="Codacy Grade" /></a>
+  <a href="https://app.codacy.com/gh/Fulminazzo/YAGL/" target="_blank"><img src="https://tokei.rs/b1/github/Fulminazzo/YAGL?category=code&style=flat" alt="Lines of Code" /></a>
 </p>
 
 <p align="center">
   <p align="center">
-    <a href="../../actions/workflows/bukkit-1.8.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.20.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.21.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.8.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.20.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.21.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
   </p>
   <p align="center">
-    <a href="../../actions/workflows/bukkit-1.14.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.14.yml?style=flat&logo=github&label=MC%201.14" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.15.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.15.yml?style=flat&logo=github&label=MC%201.15" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.16.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.16.yml?style=flat&logo=github&label=MC%201.16" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.17.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.17.yml?style=flat&logo=github&label=MC%201.17" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.18.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.18.yml?style=flat&logo=github&label=MC%201.18" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.19.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.19.yml?style=flat&logo=github&label=MC%201.19" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.14.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.14.yml?style=flat&logo=github&label=MC%201.14" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.15.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.15.yml?style=flat&logo=github&label=MC%201.15" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.16.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.16.yml?style=flat&logo=github&label=MC%201.16" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.17.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.17.yml?style=flat&logo=github&label=MC%201.17" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.18.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.18.yml?style=flat&logo=github&label=MC%201.18" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.19.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.19.yml?style=flat&logo=github&label=MC%201.19" alt="" /></a>
   </p>
   <p align="center">
-    <a href="../../actions/workflows/bukkit-1.9.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.9.yml?style=flat&logo=github&label=MC%201.9" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.10.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.10.yml?style=flat&logo=github&label=MC%201.10" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.11.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.11.yml?style=flat&logo=github&label=MC%201.11" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.12.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.12.yml?style=flat&logo=github&label=MC%201.12" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.13.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.13.yml?style=flat&logo=github&label=MC%201.13" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.9.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.9.yml?style=flat&logo=github&label=MC%201.9" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.10.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.10.yml?style=flat&logo=github&label=MC%201.10" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.11.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.11.yml?style=flat&logo=github&label=MC%201.11" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.12.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.12.yml?style=flat&logo=github&label=MC%201.12" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.13.yml" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.13.yml?style=flat&logo=github&label=MC%201.13" alt="" /></a>
   </p>
 </p>
 
 <p align="center">
   <a href="../../releases/latest"><img src="https://img.shields.io/github/v/release/Fulminazzo/YAGL?display_name=tag&color=red" alt="Latest version" /></a>
-  <a href="build.gradle"><img src="https://img.shields.io/badge/java-1.8-%23ED8B00" alt="Java version" /></a>
-  <a href="build.gradle"><img src="https://fulminazzo.it/badge/gradle/Fulminazzo/YAGL" alt="Gradle version" ></a>
+  <a href="build.gradle" target="_blank"><img src="https://img.shields.io/badge/java-1.8-%23ED8B00" alt="Java version" /></a>
+  <a href="build.gradle" target="_blank"><img src="https://fulminazzo.it/badge/gradle/Fulminazzo/YAGL" alt="Gradle version" ></a>
 </p>
 
 <p align="center">
-  <a href="../../commit/"><img src="https://img.shields.io/github/commits-since/Fulminazzo/YAGL/1.0" alt="GitHub commits"/></a>
-  <a href="../../issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/Fulminazzo/YAGL?color=%23FF69B4" alt="Issues" ></a>
+  <a href="../../commit/" target="_blank"><img src="https://img.shields.io/github/commits-since/Fulminazzo/YAGL/1.0" alt="GitHub commits"/></a>
+  <a href="../../issues?q=is%3Aissue+is%3Aclosed" target="_blank"><img src="https://img.shields.io/github/issues-closed-raw/Fulminazzo/YAGL?color=%23FF69B4" alt="Issues" ></a>
 </p>
 
 <p align="center">
