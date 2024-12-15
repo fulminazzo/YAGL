@@ -60,12 +60,12 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
             }
             refl.setFieldObject("templateGUI", templateGUI);
 
-            ConfigurationSection previousPage = section.getConfigurationSection("previous-page");
+            ConfigurationSection previousPage = section.getConfigurationSection("previous_page");
             if (previousPage != null)
                 gui.setPreviousPage(previousPage.getInteger("slot"),
                         previousPage.get("content", GUIContent.class));
 
-            ConfigurationSection nextPage = section.getConfigurationSection("next-page");
+            ConfigurationSection nextPage = section.getConfigurationSection("next_page");
             if (nextPage != null)
                 gui.setNextPage(nextPage.getInteger("slot"),
                         nextPage.get("content", GUIContent.class));
@@ -116,14 +116,14 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
 
             Tuple<Integer, GUIContent> previousPage = refl.getFieldObject("previousPage");
             previousPage.ifPresent((i, g) -> {
-                ConfigurationSection previousSection = section.createSection("previous-page");
+                ConfigurationSection previousSection = section.createSection("previous_page");
                 previousSection.set("slot", i);
                 previousSection.set("content", g);
             });
 
             Tuple<Integer, GUIContent> nextPage = refl.getFieldObject("nextPage");
             nextPage.ifPresent((i, g) -> {
-                ConfigurationSection nextSection = section.createSection("next-page");
+                ConfigurationSection nextSection = section.createSection("next_page");
                 nextSection.set("slot", i);
                 nextSection.set("content", g);
             });

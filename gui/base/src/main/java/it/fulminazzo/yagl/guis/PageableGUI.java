@@ -202,8 +202,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
         GUI newGUI = gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
-                .setVariable("previous-page", String.valueOf(page))
-                .setVariable("next-page", String.valueOf(page + 2))
+                .setVariable("previous_page", String.valueOf(page))
+                .setVariable("next_page", String.valueOf(page + 2))
                 .setVariable("pages", String.valueOf(pages()));
         if (page > 0) this.previousPage.ifPresent((s, p) ->
                 newGUI.setContents(s, p.copy().onClickItem((v, g, i) -> open(v, page - 1))));
