@@ -2,7 +2,9 @@
 name: MC 1.21
 
 # TODO: Re-enable after further updates
-# on: [ push ]
+#on:
+#  push:
+#    branches: [ "main", "master" ]
 
 jobs:
   test:

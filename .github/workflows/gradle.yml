@@ -9,7 +9,7 @@ name: Tests
 
 on:
   push:
-    branches: [ "dev", "main", "master" ]
+    branches: [ "main", "master" ]
 
 jobs:
   test:

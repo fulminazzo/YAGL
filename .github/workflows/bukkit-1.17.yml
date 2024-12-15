@@ -1,7 +1,9 @@
 # 1.17.1-R0.1-SNAPSHOT
 name: MC 1.17
 
-on: [ push ]
+on:
+  push:
+    branches: [ "main", "master" ]
 
 jobs:
   test:
