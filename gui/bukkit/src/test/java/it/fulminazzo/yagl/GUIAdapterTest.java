@@ -41,6 +41,7 @@ class GUIAdapterTest {
 
         Server server = Bukkit.getServer();
         when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
+        when(server.isPrimaryThread()).thenReturn(true);
 
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         when(this.player.isOnline()).thenReturn(true);

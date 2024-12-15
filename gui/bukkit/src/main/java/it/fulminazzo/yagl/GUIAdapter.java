@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,35 +63,41 @@ public final class GUIAdapter {
      * @param itemMetaClass the ItemMeta class
      * @param metaFunction  the meta function
      */
-    public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer, @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
-        final UUID uuid = viewer.getUniqueId();
-        final Player player = Bukkit.getPlayer(uuid);
-        if (player == null) throw new PlayerOfflineException(viewer.getName());
-        final Refl<Viewer> reflViewer = new Refl<>(viewer);
-        // Add to GUIManager if not present
-        viewer = GUIManager.getViewer(player);
-        // Save previous GUI, if present
-        GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
-            reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
-            g.changeGUIAction().ifPresent(a -> a.execute(v, g, gui));
-        });
-        // Open inventory
-        Inventory inventory = guiToInventory(gui.apply(gui));
-        for (int i = 0; i < gui.size(); i++) {
-            GUIContent content = gui.getContent(viewer, i);
-            if (content != null) {
-                ItemStack o = content.copy().copyFrom(gui, false)
-                        .render()
-                        .copy(BukkitItem.class)
-                        .create(itemMetaClass, metaFunction);
-                inventory.setItem(i, o);
+    public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui, final @NotNull Viewer viewer,
+                                                    final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
+        Consumer<Viewer> runnable = v -> {
+            final UUID uuid = v.getUniqueId();
+            final Player player = Bukkit.getPlayer(uuid);
+            if (player == null) throw new PlayerOfflineException(v.getName());
+            final Refl<Viewer> reflViewer = new Refl<>(v);
+            // Add to GUIManager if not present
+            v = GUIManager.getViewer(player);
+            // Save previous GUI, if present
+            GUIManager.getOpenGUIViewer(uuid).ifPresent((vi, g) -> {
+                reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
+                g.changeGUIAction().ifPresent(a -> a.execute(vi, g, gui));
+            });
+            // Open inventory
+            Inventory inventory = guiToInventory(gui.apply(gui));
+            for (int i = 0; i < gui.size(); i++) {
+                GUIContent content = gui.getContent(v, i);
+                if (content != null) {
+                    ItemStack o = content.copy().copyFrom(gui, false)
+                            .render()
+                            .copy(BukkitItem.class)
+                            .create(itemMetaClass, metaFunction);
+                    inventory.setItem(i, o);
+                }
             }
-        }
-        player.openInventory(inventory);
-        // Set new GUI
-        reflViewer.setFieldObject("openGUI", gui);
-        // Execute action if present
-        gui.openGUIAction().ifPresent(a -> a.execute(reflViewer.getObject(), gui));
+            player.openInventory(inventory);
+            // Set new GUI
+            reflViewer.setFieldObject("openGUI", gui);
+            // Execute action if present
+            gui.openGUIAction().ifPresent(a -> a.execute(reflViewer.getObject(), gui));
+        };
+        // Check if context is Async and synchronize
+        if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
+        else Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
     }
 
     /**
