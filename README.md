@@ -58,7 +58,7 @@ If you are a **developer**, **YAGL** is composed of **three main modules**:
 - [item](tree/main/item), a module to **generate and customize items** and even **apply textures** to them;
 - [gui](tree/main/gui), the **core module**, that **displays the actual interfaces** to players.
 
-Each one of then is made of three submodules:
+Each one of them is made of three submodules:
 **base** (the core function of the module),
 **serializer** (saving and loading capabilities of the module) and **bukkit**
 (an implementation of the module for [Bukkit plugins](https://getbukkit.org/)).
