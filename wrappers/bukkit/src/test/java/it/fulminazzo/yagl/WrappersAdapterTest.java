@@ -105,6 +105,15 @@ class WrappersAdapterTest extends BukkitUtils {
         particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
         particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
+        // Remove particles not belonging to current Minecraft version
+        particles.removeIf(p -> {
+            try {
+                org.bukkit.Particle.valueOf(p.getType());
+                return false;
+            } catch (IllegalArgumentException e) {
+                return true;
+            }
+        });
         return particles.toArray(new Particle[0]);
     }
 
