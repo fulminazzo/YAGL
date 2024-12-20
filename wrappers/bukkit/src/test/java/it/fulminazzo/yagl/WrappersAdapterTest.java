@@ -293,10 +293,10 @@ class WrappersAdapterTest extends BukkitUtils {
 
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
         setupServer();
-        Refl<?> enchantmentClass = new Refl<>(org.bukkit.potion.PotionEffectType.class);
-        return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
+        Refl<?> potionEffectsClass = new Refl<>(org.bukkit.potion.PotionEffectType.class);
+        return potionEffectsClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
                         f.getType().isAssignableFrom(org.bukkit.potion.PotionEffectType.class)).stream()
-                .map(enchantmentClass::getFieldObject)
+                .map(potionEffectsClass::getFieldObject)
                 .map(f -> (org.bukkit.potion.PotionEffectType) f)
                 .map(f -> new org.bukkit.potion.PotionEffect(f, 0, 0, false, true))
                 .toArray(org.bukkit.potion.PotionEffect[]::new);
@@ -305,13 +305,12 @@ class WrappersAdapterTest extends BukkitUtils {
     @ParameterizedTest
     @MethodSource("getPotionEffects")
     void testPotionsConversion(org.bukkit.potion.PotionEffect expected) {
-        PotionEffect enchantment = WrappersAdapter.potionEffectToWPotionEffect(expected);
-        assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(enchantment));
+        PotionEffect potionEffect = WrappersAdapter.potionEffectToWPotionEffect(expected);
+        assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(potionEffect));
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
         setupServer();
-        setupEnchantments();
         Refl<?> enchantmentClass = new Refl<>(org.bukkit.enchantments.Enchantment.class);
         return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
                 f.getType().isAssignableFrom(org.bukkit.enchantments.Enchantment.class)).stream()
