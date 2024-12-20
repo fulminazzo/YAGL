@@ -214,7 +214,7 @@ class WrappersAdapterTest extends BukkitUtils {
     @Test
     void testInvalidParticleGeneralDataType() {
         Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
-                ParticleType.ASH.create(), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
+                ParticleType.FLAME.create(), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
         assertNotNull(conversion);
         assertNotNull(conversion.getKey());
         assertNull(conversion.getValue());
