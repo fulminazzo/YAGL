@@ -28,6 +28,7 @@ class ObsoleteItemAdapterTest extends BukkitUtils {
     protected void setUp() {
         super.setUp();
         BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
     }
 
     @Test

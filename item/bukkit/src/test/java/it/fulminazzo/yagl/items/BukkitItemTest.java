@@ -28,6 +28,7 @@ class BukkitItemTest {
     @BeforeAll
     static void setAllUp() {
         BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
     }
 
     private static Item[] getTestMaterialItems() {

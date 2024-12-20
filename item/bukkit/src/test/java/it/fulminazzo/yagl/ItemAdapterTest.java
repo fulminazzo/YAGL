@@ -38,6 +38,7 @@ class ItemAdapterTest extends BukkitUtils {
     protected void setUp() {
         super.setUp();
         setupServer();
+        setupEnchantments();
     }
 
     @Test

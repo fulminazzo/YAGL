@@ -29,6 +29,7 @@ class PersistentItemTest {
     @BeforeEach
     void setUp() {
         BukkitUtils.setupServer();
+        BukkitUtils.setupEnchantments();
     }
 
     @Test
