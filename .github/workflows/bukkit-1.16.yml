@@ -3,7 +3,7 @@ name: MC 1.16
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "dev" ]
 
 jobs:
   test:
