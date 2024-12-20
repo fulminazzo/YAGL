@@ -55,8 +55,6 @@ class WrappersAdapterTest extends BukkitUtils {
         particles.add(new Tuple<>(LegacyParticleType.COMPOSTER_FILL_ATTEMPT, new PrimitiveParticleOption<>(true)));
         particles.add(new Tuple<>(LegacyParticleType.BONE_MEAL_USE, new PrimitiveParticleOption<>(1)));
         particles.add(new Tuple<>(LegacyParticleType.INSTANT_POTION_BREAK, new ColorParticleOption(Color.AQUA)));
-        for (LegacyParticleType<?> type : LegacyParticleType.legacyValues())
-            particles.removeIf(t -> t.getKey().name().equalsIgnoreCase(type.name()));
         // Remove effects not belonging to current Minecraft version
         particles.removeIf(p -> {
             try {
