@@ -42,7 +42,9 @@ class ItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @After1_(14)
     void testItem() {
+        check();
         Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("flame", 10)
