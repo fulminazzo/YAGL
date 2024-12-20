@@ -30,8 +30,7 @@ public class Enchantment extends Wrapper {
      * @param level       the level (1 is the lowest)
      */
     public Enchantment(final @NotNull String name, final int level) {
-        this.name = name;
-        setLevel(level);
+        setName(name).setLevel(level);
     }
 
     /**
@@ -41,7 +40,7 @@ public class Enchantment extends Wrapper {
      * @return this enchantment
      */
     public Enchantment setName(final @NotNull String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
         return this;
     }
 
