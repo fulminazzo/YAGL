@@ -277,7 +277,7 @@ class WrappersAdapterTest extends BukkitUtils {
     void testPlaySoundInvalidCategory() {
         Player player = mock(Player.class);
         assertThrowsExactly(IllegalArgumentException.class, () ->
-                WrappersAdapter.playSound(player, new Sound(org.bukkit.Sound.BLOCK_AZALEA_FALL.name(),
+                WrappersAdapter.playSound(player, new Sound(org.bukkit.Sound.BLOCK_ANVIL_FALL.name(),
                         1f, 1f, "hostiles")));
     }
 
