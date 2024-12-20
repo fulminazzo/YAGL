@@ -22,15 +22,15 @@ allprojects {
     version = "${rootProject.version}"
     description = 'Yet Another GUI Library to create and manage custom items and user interfaces in Minecraft.'
 
-    def latest_version
-    def legacy_version
-    def obsolete_version
+    def latestVersion
+    def legacyVersion
+    def obsoleteVersion
 
     this.ext.setupMinecraftVersion = {
         final def minecraftVersion = System.getenv(VERSION_VARIABLE)
-        latest_version = minecraftVersion == null ? libs.versions.spigot.latest.get() : minecraftVersion
-        legacy_version = minecraftVersion == null ? libs.versions.spigot.legacy.get() : minecraftVersion
-        obsolete_version = minecraftVersion == null ? libs.versions.spigot.obsolete.get() : minecraftVersion
+        latestVersion = minecraftVersion == null ? libs.versions.spigot.latest.get() : minecraftVersion
+        legacyVersion = minecraftVersion == null ? libs.versions.spigot.legacy.get() : minecraftVersion
+        obsoleteVersion = minecraftVersion == null ? libs.versions.spigot.obsolete.get() : minecraftVersion
     }
 
     this.ext.getParentFromProject = { project ->
@@ -57,7 +57,7 @@ allprojects {
     }
 
     this.ext.getAppropriateJavaVersion = {
-        String numVersion = latest_version.substring(2, latest_version.indexOf('.', 2))
+        String numVersion = latestVersion.substring(2, latestVersion.indexOf('.', 2))
         def index = numVersion.indexOf('-')
         if (index != -1) numVersion = numVersion.substring(0, index)
         return numVersion as Integer >= 20 ? 17 : 8
@@ -123,26 +123,26 @@ allprojects {
         if (projectName.contains('bukkit') || projectName.contains('demo')) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
-            testRuntimeOnly "org.spigotmc:spigot-api:${latest_version}"
+            testRuntimeOnly "org.spigotmc:spigot-api:${latestVersion}"
 
             // JBukkit library
-            testImplementation getJBukkitModule(latest_version)
+            testImplementation getJBukkitModule(latestVersion)
         }
 
         // Legacy dependencies
         if (projectName.contains('legacy')) {
             testCompileOnly libs.spigot.legacy
-            testRuntimeOnly "org.spigotmc:spigot-api:${legacy_version}"
+            testRuntimeOnly "org.spigotmc:spigot-api:${legacyVersion}"
 
-            testImplementation getJBukkitModule(legacy_version)
+            testImplementation getJBukkitModule(legacyVersion)
         }
 
         // Obsolete dependencies
         if (projectName.contains('obsolete')) {
             testCompileOnly libs.spigot.obsolete
-            testRuntimeOnly "org.spigotmc:spigot-api:${obsolete_version}"
+            testRuntimeOnly "org.spigotmc:spigot-api:${obsoleteVersion}"
 
-            testImplementation getJBukkitModule(obsolete_version)
+            testImplementation getJBukkitModule(obsoleteVersion)
         }
 
         // Test module
@@ -166,9 +166,9 @@ allprojects {
         def projectName = project.name
 
         if (System.getenv(VERSION_VARIABLE) == null) {
-            if (projectName.contains('bukkit')) environment VERSION_VARIABLE, latest_version
-            else if (projectName.contains('legacy')) environment VERSION_VARIABLE, legacy_version
-            else if (projectName.contains('obsolete')) environment VERSION_VARIABLE, obsolete_version
+            if (projectName.contains('bukkit')) environment VERSION_VARIABLE, latestVersion
+            else if (projectName.contains('legacy')) environment VERSION_VARIABLE, legacyVersion
+            else if (projectName.contains('obsolete')) environment VERSION_VARIABLE, obsoleteVersion
         }
 
         def env = System.getenv(VERSION_VARIABLE)
@@ -180,7 +180,7 @@ allprojects {
         if (System.getenv(VERSION_VARIABLE) == null)
             throw new IllegalArgumentException("Please specify environment variable '${VERSION_VARIABLE}' before proceeding")
 
-        println "Running tests with Minecraft version ${latest_version} and Java version ${getAppropriateJavaVersion()}"
+        println "Running tests with Minecraft version ${latestVersion} and Java version ${getAppropriateJavaVersion()}"
         subprojects.findAll { it.path.contains('bukkit') }.each {
             dependsOn "${it.path}:clean"
             dependsOn "${it.path}:test"
