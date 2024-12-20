@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -306,7 +307,9 @@ class WrappersAdapterTest extends BukkitUtils {
     @MethodSource("getPotionEffects")
     void testPotionsConversion(org.bukkit.potion.PotionEffect expected) {
         PotionEffect potionEffect = WrappersAdapter.potionEffectToWPotionEffect(expected);
-        assertEquals(expected, WrappersAdapter.wPotionEffectToPotionEffect(potionEffect));
+        org.bukkit.potion.PotionEffect actual = WrappersAdapter.wPotionEffectToPotionEffect(potionEffect);
+        assertEquals(Printable.printObject(expected, ""), Printable.printObject(actual, ""));
+        assertEquals(expected, actual);
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
