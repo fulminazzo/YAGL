@@ -50,14 +50,32 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static Particle[] getTestLegacyParticles() {
-        List<Particle> particles = new ArrayList<>();
-        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(type.create());
+        List<Tuple<LegacyParticleType<?>, Object>> particles = new ArrayList<>();
+        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(new Tuple<>(type, null));
+        particles.add(new Tuple<>(LegacyParticleType.COMPOSTER_FILL_ATTEMPT, new PrimitiveParticleOption<>(true)));
+        particles.add(new Tuple<>(LegacyParticleType.BONE_MEAL_USE, new PrimitiveParticleOption<>(1)));
+        particles.add(new Tuple<>(LegacyParticleType.INSTANT_POTION_BREAK, new ColorParticleOption(Color.AQUA)));
         for (LegacyParticleType<?> type : LegacyParticleType.legacyValues())
-            particles.removeIf(t -> t.getType().equalsIgnoreCase(type.name()));
-        particles.add(LegacyParticleType.COMPOSTER_FILL_ATTEMPT.create(new PrimitiveParticleOption<>(true)));
-        particles.add(LegacyParticleType.BONE_MEAL_USE.create(new PrimitiveParticleOption<>(1)));
-        particles.add(LegacyParticleType.INSTANT_POTION_BREAK.create(new ColorParticleOption(Color.AQUA)));
-        return particles.toArray(new Particle[0]);
+            particles.removeIf(t -> t.getKey().name().equalsIgnoreCase(type.name()));
+        // Remove effects not belonging to current Minecraft version
+        particles.removeIf(p -> {
+            try {
+                Effect.valueOf(p.getKey().name());
+                return false;
+            } catch (IllegalArgumentException e) {
+                return true;
+            }
+        });
+        return particles.stream()
+                .map(t -> {
+                    LegacyParticleType<?> particle = t.getKey();
+                    Object option = t.getValue();
+                    if (option == null) return particle.create();
+                    else return new Refl<>(particle).invokeMethod("create",
+                            new Class<?>[]{option.getClass().getSuperclass()},
+                            option);
+                })
+                .toArray(Particle[]::new);
     }
 
     @ParameterizedTest
