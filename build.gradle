@@ -110,7 +110,7 @@ allprojects {
         if (projectName.contains('serializer')) api(libs.yamlparser)
 
         // Bukkit dependencies
-        if (projectName.contains('bukkit')) {
+        if (projectName.contains('bukkit') || projectName.contains('demo')) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
             testRuntimeOnly "org.spigotmc:spigot-api:${latest_version}"

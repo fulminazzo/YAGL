@@ -6,10 +6,6 @@ plugins {
 
 dependencies {
     implementation libs.groovy
-
-    compileOnly libs.spigot.latest
-    testImplementation libs.spigot.latest
-    testImplementation libs.jbukkit
 }
 
 shadowJar {
