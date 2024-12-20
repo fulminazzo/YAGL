@@ -57,8 +57,7 @@ allprojects {
     }
 
     this.ext.getAppropriateJavaVersion = {
-        def minecraftVersion = getMinecraftVersion()
-        String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf('.', 2))
+        String numVersion = latest_version.substring(2, latest_version.indexOf('.', 2))
         def index = numVersion.indexOf('-')
         if (index != -1) numVersion = numVersion.substring(0, index)
         return numVersion as Integer >= 20 ? 17 : 8
