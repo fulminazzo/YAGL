@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.SingleInstance;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;
 import it.fulminazzo.yagl.items.PersistentItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,7 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -291,6 +293,26 @@ public class PersistentListener extends SingleInstance implements Listener {
     }
 
     /**
+     * Gets an instance of {@link PersistentListener}.
+     * If none is currently loaded, it will be created.
+     *
+     * @return the instance
+     */
+    public static PersistentListener getInstance() {
+        try {
+            return getInstance(PersistentListener.class);
+        } catch (InstanceNotInitializedException e) {
+            PersistentListener listener = new PersistentListener();
+            Bukkit.getPluginManager().registerEvents(listener, getProvidingPlugin());
+            return listener;
+        }
+    }
+
+    private static @NotNull JavaPlugin getProvidingPlugin() {
+        return JavaPlugin.getProvidingPlugin(PersistentListener.class);
+    }
+
+    /**
      * Checks if the current listener has been initialized at least once.
      *
      * @return true if it is
@@ -303,4 +325,5 @@ public class PersistentListener extends SingleInstance implements Listener {
             return false;
         }
     }
+
 }
