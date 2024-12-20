@@ -1,23 +1,21 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.items.AbstractItem;
-import it.fulminazzo.yagl.particles.*;
-import it.fulminazzo.yagl.particles.Particle;
-import it.fulminazzo.yagl.wrappers.Enchantment;
-import it.fulminazzo.yagl.wrappers.PotionEffect;
-import it.fulminazzo.yagl.wrappers.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
+import it.fulminazzo.yagl.items.AbstractItem;
+import it.fulminazzo.yagl.particles.Particle;
+import it.fulminazzo.yagl.particles.*;
+import it.fulminazzo.yagl.wrappers.Enchantment;
+import it.fulminazzo.yagl.wrappers.PotionEffect;
+import it.fulminazzo.yagl.wrappers.Sound;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -294,6 +292,7 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
+        setupServer();
         Refl<?> enchantmentClass = new Refl<>(org.bukkit.potion.PotionEffect.class);
         return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
                         f.getType().isAssignableFrom(org.bukkit.potion.PotionEffect.class)).stream()
@@ -310,6 +309,8 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
+        setupServer();
+        setupEnchantments();
         Refl<?> enchantmentClass = new Refl<>(org.bukkit.enchantments.Enchantment.class);
         return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
                 f.getType().isAssignableFrom(org.bukkit.enchantments.Enchantment.class)).stream()
