@@ -71,7 +71,7 @@ They can all be imported separately or together, following one of the three comm
   }
 
   dependencies {
-  	implementation 'it.fulminazzo:YAGL:latest'
+  	implementation 'it.fulminazzo:yagl:latest'
   }
   ```
 - **Maven** (alternative):
@@ -84,7 +84,7 @@ They can all be imported separately or together, following one of the three comm
   ```xml
   <dependency>
   	<groupId>it.fulminazzo</groupId>
-  	<artifact>YAGL</artifact>
+  	<artifact>yagl</artifact>
   	<version>LATEST</version>
   </dependency>
   ```

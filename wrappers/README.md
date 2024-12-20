@@ -38,7 +38,7 @@ First introduce the **Fulminazzo repository**, from where the artifacts will be 
 Then, add the **dependency**
 ```xml
 <dependency>
-    <groupId>it.fulminazzo.YAGL.wrappers</groupId>
+    <groupId>it.fulminazzo.yagl.wrappers</groupId>
     <artifactId>wrappers-{MODULE}</artifactId>
     <version>{LATEST}</version>
 </dependency>
@@ -49,7 +49,7 @@ and `{LATEST}` the **version of interest**.
 To import **all three submodules together**, use:
 ```xml
 <dependency>
-    <groupId>it.fulminazzo.YAGL</groupId>
+    <groupId>it.fulminazzo.yagl</groupId>
     <artifactId>wrappers</artifactId>
     <version>{LATEST}</version>
 </dependency>
@@ -67,7 +67,7 @@ repositories {
 Then, add the **dependency**
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.YAGL.wrappers:wrappers-{MODULE}:{LATEST}'
+    implementation 'it.fulminazzo.yagl.wrappers:wrappers-{MODULE}:{LATEST}'
 }
 ```
 substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
@@ -76,7 +76,7 @@ and `{LATEST}` the **version of interest**.
 To import **all three submodules together**, use:
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.YAGL:wrappers:{LATEST}'
+    implementation 'it.fulminazzo.yagl:wrappers:{LATEST}'
 }
 ```
 

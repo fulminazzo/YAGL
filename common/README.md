@@ -29,7 +29,7 @@ First introduce the **Fulminazzo repository**, from where the artifacts will be 
 Then, add the **dependency**
 ```xml
 <dependency>
-    <groupId>it.fulminazzo.YAGL.common</groupId>
+    <groupId>it.fulminazzo.yagl.common</groupId>
     <artifactId>common-{MODULE}</artifactId>
     <version>{LATEST}</version>
 </dependency>
@@ -40,7 +40,7 @@ and `{LATEST}` the **version of interest**.
 To import **all three submodules together**, use:
 ```xml
 <dependency>
-    <groupId>it.fulminazzo.YAGL</groupId>
+    <groupId>it.fulminazzo.yagl</groupId>
     <artifactId>common</artifactId>
     <version>{LATEST}</version>
 </dependency>
@@ -58,7 +58,7 @@ repositories {
 Then, add the **dependency**
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.YAGL.common:common-{MODULE}:{LATEST}'
+    implementation 'it.fulminazzo.yagl.common:common-{MODULE}:{LATEST}'
 }
 ```
 substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
@@ -67,7 +67,7 @@ and `{LATEST}` the **version of interest**.
 To import **all three submodules together**, use:
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.YAGL:common:{LATEST}'
+    implementation 'it.fulminazzo.yagl:common:{LATEST}'
 }
 ```
 

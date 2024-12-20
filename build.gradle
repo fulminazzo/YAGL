@@ -200,8 +200,8 @@ allprojects {
     publishing {
         publications {
             maven(MavenPublication) {
-                groupId = getProjectGroupId()
-                artifactId = "${project.name}"
+                groupId = getProjectGroupId().toString().toLowerCase()
+                artifactId = "${project.name.toLowerCase()}"
                 version = "${rootProject.version}"
 
                 from components.java
