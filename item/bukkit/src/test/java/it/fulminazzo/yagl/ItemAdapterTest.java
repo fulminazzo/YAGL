@@ -54,9 +54,9 @@ class ItemAdapterTest extends BukkitUtils {
         assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
     }
 
-    private ItemFactory mockItemFactory(ItemMeta meta) {
+    private ItemFactory mockNullItemFactory() {
         ItemFactory itemFactory = mock(ItemFactory.class);
-        when(itemFactory.getItemMeta(any(Material.class))).thenReturn(meta);
+        when(itemFactory.getItemMeta(any(Material.class))).thenReturn(null);
         return itemFactory;
     }
 
@@ -76,7 +76,7 @@ class ItemAdapterTest extends BukkitUtils {
 
         @Test
         void testNullItemMeta() {
-            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(null));
+            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockNullItemFactory());
             assertDoesNotThrow(() -> ItemAdapter.itemStackToItem(new ItemStack(Material.STONE)));
         }
 
@@ -130,7 +130,7 @@ class ItemAdapterTest extends BukkitUtils {
 
         @Test
         void testNullItemMeta() {
-            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(null));
+            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockNullItemFactory());
             assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(BukkitItem.newItem(Material.STONE)));
         }
 
