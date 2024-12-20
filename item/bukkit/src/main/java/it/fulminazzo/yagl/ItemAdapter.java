@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
@@ -8,8 +10,6 @@ import it.fulminazzo.yagl.items.recipes.Recipe;
 import it.fulminazzo.yagl.items.recipes.ShapedRecipe;
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.yagl.utils.EnumUtils;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -41,7 +41,13 @@ public final class ItemAdapter {
     public static @Nullable Item itemStackToItem(final @Nullable ItemStack itemStack) {
         if (itemStack == null) return null;
         Item item = BukkitItem.newItem().setMaterial(itemStack.getType().name()).setAmount(itemStack.getAmount());
+
         ItemMeta meta = itemStack.getItemMeta();
+        invokeNoSuchMethod(() -> {
+            if (meta instanceof org.bukkit.inventory.meta.Damageable)
+                item.setDurability(((org.bukkit.inventory.meta.Damageable) meta).getDamage());
+        }, () -> item.setDurability(itemStack.getDurability()));
+
         if (meta != null) {
             String displayName = meta.getDisplayName();
             if (displayName != null) item.setDisplayName(displayName);
@@ -49,10 +55,6 @@ public final class ItemAdapter {
             if (lore != null) item.setLore(lore);
             meta.getEnchants().forEach((e, l) -> item.addEnchantments(WrappersAdapter.enchantToWEnchant(e, l)));
             meta.getItemFlags().forEach(f -> item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, f.name())));
-            invokeNoSuchMethod(() -> {
-                if (meta instanceof org.bukkit.inventory.meta.Damageable)
-                    item.setDurability(((org.bukkit.inventory.meta.Damageable) meta).getDamage());
-            }, item::getDurability);
             invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), () ->
                     item.setUnbreakable(meta.spigot().isUnbreakable()));
             invokeNoSuchMethod(() -> {
@@ -75,6 +77,11 @@ public final class ItemAdapter {
         ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
 
         final ItemMeta meta = getItemMeta(itemStack);
+        invokeNoSuchMethod(() -> {
+            if (meta instanceof org.bukkit.inventory.meta.Damageable)
+                ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
+        }, () -> itemStack.setDurability((short) item.getDurability()));
+
         if (meta != null) {
             meta.setDisplayName(item.getDisplayName());
             meta.setLore(item.getLore());
@@ -83,9 +90,6 @@ public final class ItemAdapter {
                 meta.addEnchant(tuple.getKey(), tuple.getValue(), true);
             });
             item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
-            invokeNoSuchMethod(() -> {
-                if (meta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
-            }, () -> item.setDurability(item.getDurability()));
             invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->
                     meta.spigot().setUnbreakable(item.isUnbreakable()));
             invokeNoSuchMethod(() -> {
