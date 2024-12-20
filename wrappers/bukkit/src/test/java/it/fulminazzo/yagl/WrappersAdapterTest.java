@@ -31,6 +31,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -299,7 +300,8 @@ class WrappersAdapterTest extends BukkitUtils {
                         f.getType().isAssignableFrom(org.bukkit.potion.PotionEffectType.class)).stream()
                 .map(potionEffectsClass::getFieldObject)
                 .map(f -> (org.bukkit.potion.PotionEffectType) f)
-                .map(f -> new org.bukkit.potion.PotionEffect(f, 0, 0, false, true))
+                .filter(Objects::nonNull)
+                .map(f -> new org.bukkit.potion.PotionEffect(f, 0, 0, true, true))
                 .toArray(org.bukkit.potion.PotionEffect[]::new);
     }
 
