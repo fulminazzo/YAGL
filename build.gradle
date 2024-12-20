@@ -177,12 +177,8 @@ allprojects {
     }
 
     tasks.register('testBukkit') {
-        final def minecraftVersion = getMinecraftVersion()
-        println "Using Minecraft version ${minecraftVersion}"
-        latest_version = minecraftVersion
-        legacy_version = minecraftVersion
-        obsolete_version = minecraftVersion
-
+        if (System.getenv(VERSION_VARIABLE) == null)
+            throw new IllegalArgumentException("Please specify environment variable '${VERSION_VARIABLE}' before proceeding")
         subprojects.findAll { it.path.contains('bukkit') }.each {dependsOn "${it.path}:test" }
     }
 
