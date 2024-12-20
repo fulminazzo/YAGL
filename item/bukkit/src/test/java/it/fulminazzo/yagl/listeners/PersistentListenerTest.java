@@ -1,14 +1,14 @@
 package it.fulminazzo.yagl.listeners;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
+import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;
 import it.fulminazzo.yagl.items.PersistentItem;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.jbukkit.inventory.MockInventory;
-import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,7 +39,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -299,7 +298,7 @@ class PersistentListenerTest {
         private Object[] notMovableItems() {
             return new Object[]{
                     PersistentItem.newItem(Material.IRON_HOE).setMobility(Mobility.INTERNAL),
-                    PersistentItem.newItem(Material.GOLDEN_HOE).setMobility(Mobility.STATIC)
+                    PersistentItem.newItem(Material.DIAMOND_AXE).setMobility(Mobility.STATIC)
             };
         }
 
@@ -333,7 +332,7 @@ class PersistentListenerTest {
 
         @Test
         void testClickInBottomInventoryWithNoKeyPress() {
-            PersistentItem persistentItem = PersistentItem.newItem(Material.ACACIA_BOAT);
+            PersistentItem persistentItem = PersistentItem.newItem(Material.DIAMOND_HELMET);
             InventoryView view = setupInventoryClickEventView();
             int slot = view.getTopInventory().getSize();
             view.getBottomInventory().setItem(0, persistentItem.create());
