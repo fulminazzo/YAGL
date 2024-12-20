@@ -48,6 +48,13 @@ allprojects {
         return minecraftVersion
     }
 
+    this.ext.getJBukkitModule = { minecraftVersion ->
+        String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf('.', 2))
+        def index = numVersion.indexOf('-')
+        if (index != -1) numVersion = numVersion.substring(0, index)
+        return "${libs.versions.jbukkitartifact.get()}:${numVersion}:${libs.versions.jbukkit.get()}"
+    }
+
     repositories {
         mavenCentral()
         maven {
