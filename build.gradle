@@ -179,7 +179,12 @@ allprojects {
     tasks.register('testBukkit') {
         if (System.getenv(VERSION_VARIABLE) == null)
             throw new IllegalArgumentException("Please specify environment variable '${VERSION_VARIABLE}' before proceeding")
-        subprojects.findAll { it.path.contains('bukkit') }.each {dependsOn "${it.path}:test" }
+
+        println "Running tests with Minecraft version ${latest_version} and Java version ${getAppropriateJavaVersion()}"
+        subprojects.findAll { it.path.contains('bukkit') }.each {
+            dependsOn "${it.path}:clean"
+            dependsOn "${it.path}:test"
+        }
     }
 
     tasks.register('sourcesJar', Jar) {
