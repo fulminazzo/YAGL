@@ -109,30 +109,41 @@ class WrappersAdapterTest extends BukkitUtils {
 
     private static Particle[] getTestParticles() {
         check();
-        List<Particle> particles = new ArrayList<>();
-        for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
-        particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
-        particles.add(ParticleType.SHRIEK.create(new PrimitiveParticleOption<>(11)));
-        particles.add(ParticleType.SHRIEK.create((PrimitiveParticleOption<Integer>) null));
-        particles.add(ParticleType.REDSTONE.create(new DustParticleOption(Color.RED, 12f)));
-        particles.add(ParticleType.DUST_COLOR_TRANSITION.create(new DustTransitionParticleOption(
+        List<Tuple<ParticleType<?>, Object>> particles = new ArrayList<>();
+        for (ParticleType<?> type : ParticleType.values()) particles.add(new Tuple<>(type, null));
+        particles.add(new Tuple<>(ParticleType.SCULK_CHARGE, new PrimitiveParticleOption<>(10f)));
+        particles.add(new Tuple<>(ParticleType.SHRIEK, new PrimitiveParticleOption<>(11)));
+        particles.add(new Tuple<>(ParticleType.SHRIEK, null));
+        particles.add(new Tuple<>(ParticleType.REDSTONE, new DustParticleOption(Color.RED, 12f)));
+        particles.add(new Tuple<>(ParticleType.DUST_COLOR_TRANSITION, new DustTransitionParticleOption(
                 Color.RED, Color.BLUE, 12f)));
-        particles.add(ParticleType.VIBRATION.create(new PrimitiveParticleOption<>(
-                new Vibration(mock(Location.class), mock(Vibration.Destination.class), 10))));
-        particles.add(ParticleType.ITEM_CRACK.create(new ItemParticleOption<>(mock(AbstractItem.class))));
-        particles.add(ParticleType.BLOCK_CRACK.create(new BlockDataOption("oak_log", "axis=y")));
-        particles.add(ParticleType.BLOCK_DUST.create(new BlockDataOption("oak_log", "axis=y")));
-        particles.add(ParticleType.FALLING_DUST.create(new BlockDataOption("oak_log", "axis=y")));
+        try {
+            particles.add(new Tuple<>(ParticleType.VIBRATION, new PrimitiveParticleOption<>(
+                    new org.bukkit.Vibration(mock(Location.class), mock(org.bukkit.Vibration.Destination.class), 10))));
+        } catch (NoClassDefFoundError ignored) {}
+        particles.add(new Tuple<>(ParticleType.ITEM_CRACK, new ItemParticleOption<>(mock(AbstractItem.class))));
+        particles.add(new Tuple<>(ParticleType.BLOCK_CRACK, new BlockDataOption("oak_log", "axis=y")));
+        particles.add(new Tuple<>(ParticleType.BLOCK_DUST, new BlockDataOption("oak_log", "axis=y")));
+        particles.add(new Tuple<>(ParticleType.FALLING_DUST, new BlockDataOption("oak_log", "axis=y")));
         // Remove particles not belonging to current Minecraft version
         particles.removeIf(p -> {
             try {
-                org.bukkit.Particle.valueOf(p.getType());
+                org.bukkit.Particle.valueOf(p.getKey().name());
                 return false;
             } catch (IllegalArgumentException e) {
                 return true;
             }
         });
-        return particles.toArray(new Particle[0]);
+        return particles.stream()
+                .map(t -> {
+                    ParticleType<?> particle = t.getKey();
+                    Object option = t.getValue();
+                    if (option == null) return particle.create();
+                    else return new Refl<>(particle).invokeMethod("create",
+                            new Class<?>[]{option.getClass().getSuperclass()},
+                            option);
+                })
+                .toArray(Particle[]::new);
     }
 
     @ParameterizedTest
