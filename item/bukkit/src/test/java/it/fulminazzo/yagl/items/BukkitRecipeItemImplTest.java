@@ -42,7 +42,7 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
         assertNull(getRecipe(key));
     }
 
-    private static org.bukkit.inventory.Recipe getRecipe(final org.bukkit.NamespacedKey key) {
+    private static org.bukkit.inventory.Recipe getRecipe(final Object key) {
         return Bukkit.getRecipesFor(new ItemStack(Material.STONE)).stream()
                 .filter(r -> key.equals(new Refl<>(r).getFieldObject("key")))
                 .findFirst().orElse(null);
