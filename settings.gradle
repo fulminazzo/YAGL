@@ -29,8 +29,8 @@ include 'item:item-base'
 project(':item:item-base').projectDir = file('item/base')
 include 'item:item-bukkit'
 project(':item:item-bukkit').projectDir = file('item/bukkit')
-include ':item:item-bukkit:item-obsolete'
-project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsolete')
+include ':item:item-bukkit:item-legacy'
+project(':item:item-bukkit:item-legacy').projectDir = file('item/bukkit/legacy')
 include 'item:item-serializer'
 project(':item:item-serializer').projectDir = file('item/serializer')
 
