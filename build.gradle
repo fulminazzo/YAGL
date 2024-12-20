@@ -22,9 +22,16 @@ allprojects {
     version = "${rootProject.version}"
     description = 'Yet Another GUI Library to create and manage custom items and user interfaces in Minecraft.'
 
-    def latest_version = libs.versions.spigot.latest.get()
-    def legacy_version = libs.versions.spigot.legacy.get()
-    def obsolete_version = libs.versions.spigot.obsolete.get()
+    def latest_version
+    def legacy_version
+    def obsolete_version
+
+    this.ext.setupMinecraftVersion() {
+        final def minecraftVersion = System.getenv(VERSION_VARIABLE)
+        latest_version = minecraftVersion == null ? libs.versions.spigot.latest.get() : minecraftVersion
+        legacy_version = minecraftVersion == null ? libs.versions.spigot.legacy.get() : minecraftVersion
+        obsolete_version = minecraftVersion == null ? libs.versions.spigot.obsolete.get() : minecraftVersion
+    }
 
     this.ext.getParentFromProject = { project ->
         return new HashMap<>(project.getProperties()).get('parent')
@@ -62,6 +69,8 @@ allprojects {
         if (index != -1) numVersion = numVersion.substring(0, index)
         return numVersion as Integer >= 20 ? 17 : 8
     }
+
+    setupMinecraftVersion()
 
     repositories {
         mavenCentral()
