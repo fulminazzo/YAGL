@@ -13,7 +13,6 @@ import it.fulminazzo.yagl.wrappers.Enchantment;
 import it.fulminazzo.yagl.wrappers.PotionEffect;
 import it.fulminazzo.yagl.wrappers.Sound;
 import org.bukkit.*;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -406,7 +405,7 @@ class WrappersAdapterTest extends BukkitUtils {
     @EnumSource(Material.class)
     void testAllBlockData(Material material) {
         initializeBlockData();
-        Executable executable = () -> WrappersAdapter.convertOption(BlockData.class, material.name());
+        Executable executable = () -> WrappersAdapter.convertOption(org.bukkit.block.data.BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
         else assertThrowsExactly(IllegalArgumentException.class, executable);
     }
@@ -428,7 +427,7 @@ class WrappersAdapterTest extends BukkitUtils {
 
     private static void initializeBlockData() {
         Server server = mock(Server.class);
-        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(BlockData.class));
+        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(org.bukkit.block.data.BlockData.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
     }
 
