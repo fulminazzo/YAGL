@@ -55,7 +55,8 @@ allprojects {
         return "${libs.versions.jbukkitartifact.get()}:${numVersion}:${libs.versions.jbukkit.get()}"
     }
 
-    this.ext.getAppropriateJavaVersion = { minecraftVersion ->
+    this.ext.getAppropriateJavaVersion = {
+        def minecraftVersion = getMinecraftVersion()
         String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf('.', 2))
         def index = numVersion.indexOf('-')
         if (index != -1) numVersion = numVersion.substring(0, index)
@@ -153,7 +154,7 @@ allprojects {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(getAppropriateJavaVersion(getMinecraftVersion()))
+            languageVersion = JavaLanguageVersion.of(getAppropriateJavaVersion())
         }
     }
 
