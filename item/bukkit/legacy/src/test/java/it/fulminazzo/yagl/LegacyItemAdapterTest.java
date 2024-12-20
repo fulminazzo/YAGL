@@ -98,7 +98,9 @@ class LegacyItemAdapterTest extends BukkitUtils {
     @Before1_(12.2)
     void testFurnaceRecipeConversion() {
         check();
-        org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new ItemStack(Material.STONE), Material.COAL);
+        org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(
+                new ItemStack(Material.STONE), Material.COAL
+        );
 
         // For 1.12
         Refl<?> r1 = getAssociatedRefl(expected);
@@ -140,7 +142,8 @@ class LegacyItemAdapterTest extends BukkitUtils {
 
         assertEquals(size, recipe.size(), "Invalid recipe size");
         for (Item item : recipe)
-            assertEquals(craftMaterial.name(), item.getMaterial(), String.format("Expected material %s", craftMaterial.name()));
+            assertEquals(craftMaterial.name(), item.getMaterial(), String.format("Expected material %s",
+                    craftMaterial.name()));
 
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
@@ -156,7 +159,8 @@ class LegacyItemAdapterTest extends BukkitUtils {
     private static @NotNull Refl<?> getAssociatedRefl(org.bukkit.inventory.Recipe expected) {
         Refl<?> r1 = new Refl<>(expected);
         try {
-            r1.setFieldObject("key", new Refl<>("org.bukkit.NamespacedKey", "yagl", "test").getObject());
+            r1.setFieldObject("key", new Refl<>("org.bukkit.NamespacedKey",
+                    "yagl", "test").getObject());
         } catch (IllegalArgumentException ignored) {}
         return r1;
     }

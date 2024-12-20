@@ -164,8 +164,10 @@ class ItemAdapterTest extends BukkitUtils {
         @After1_(13)
         void testShapedRecipe() {
             check();
-            org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
-                    new ItemStack(Material.STONE));
+            org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(
+                    new org.bukkit.NamespacedKey("yagl", "test"),
+                    new ItemStack(Material.STONE)
+            );
             expected.shape("ABC", "DEF");
             Material[] materials = new Material[]{Material.IRON_INGOT, Material.GOLD_INGOT, Material.REDSTONE,
                     Material.DIAMOND, Material.EMERALD, Material.LAPIS_LAZULI};
@@ -196,8 +198,10 @@ class ItemAdapterTest extends BukkitUtils {
         @After1_(13)
         void testShapelessRecipe() {
             check();
-            org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
-                    new ItemStack(Material.STONE));
+            org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(
+                    new org.bukkit.NamespacedKey("yagl", "test"),
+                    new ItemStack(Material.STONE)
+            );
             Refl<?> r1 = new Refl<>(expected);
             r1.invokeMethod("addIngredient", newRecipeChoice(new ItemStack(Material.GRASS)));
 
@@ -214,8 +218,10 @@ class ItemAdapterTest extends BukkitUtils {
         @After1_(13)
         void testFurnaceRecipe() {
             check();
-            org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new org.bukkit.NamespacedKey("yagl", "test"),
-                    new ItemStack(Material.STONE), Material.COAL, 10, 20);
+            org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(
+                    new org.bukkit.NamespacedKey("yagl", "test"),
+                    new ItemStack(Material.STONE), Material.COAL, 10, 20
+            );
             Refl<?> r1 = new Refl<>(expected);
             r1.setFieldObject("ingredient", newRecipeChoice(new ItemStack(Material.COAL)));
 
@@ -238,8 +244,10 @@ class ItemAdapterTest extends BukkitUtils {
             final BukkitItem returnItem = BukkitItem.newItem(Material.REDSTONE_BLOCK);
             final int size = 4;
 
-            org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new org.bukkit.NamespacedKey("yagl", id),
-                    returnItem.create());
+            org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(
+                    new org.bukkit.NamespacedKey("yagl", id),
+                    returnItem.create()
+            );
             expected.shape("AB", "CD");
             Refl<?> r1 = new Refl<>(expected);
             for (int i = 0; i < size; i++)
