@@ -64,6 +64,11 @@ class ItemAdapterTest extends BukkitUtils {
     @DisplayName("ItemStack to Item conversion")
     class ItemStackToItem {
 
+        @BeforeEach
+        void setUp() {
+            setupServer();
+        }
+
         @Test
         void testNullItemStackShouldReturnNull() {
             assertNull(ItemAdapter.itemStackToItem(null));
@@ -77,16 +82,11 @@ class ItemAdapterTest extends BukkitUtils {
 
         @Test
         void testNullDisplayNameAndLore() {
-            ItemMeta meta = mock(ItemMeta.class);
-            when(meta.getDisplayName()).thenReturn(null);
-            when(meta.getLore()).thenReturn(null);
-            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(meta));
             assertDoesNotThrow(() -> ItemAdapter.itemStackToItem(new ItemStack(Material.STONE)));
         }
 
         @Test
         void testNullFieldsItem() {
-            check();
             BukkitItem expected = BukkitItem.newItem(Material.STONE);
             ItemStack itemStack = new ItemStack(Material.STONE);
             ItemMeta meta = new MockItemMeta();
@@ -125,7 +125,6 @@ class ItemAdapterTest extends BukkitUtils {
 
         @Test
         void testNotDamageableItemMeta() {
-            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(new MockItemMeta()));
             assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(BukkitItem.newItem(Material.STONE)));
         }
 
