@@ -1,12 +1,11 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.particles.*;
-import it.fulminazzo.yagl.wrappers.Potion;
-import it.fulminazzo.yagl.wrappers.PotionEffect;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.jbukkit.annotations.Before1_;
+import it.fulminazzo.yagl.particles.*;
+import it.fulminazzo.yagl.wrappers.Potion;
+import it.fulminazzo.yagl.wrappers.PotionEffect;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,11 +21,9 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 @Before1_(12.2)
@@ -37,10 +34,7 @@ public class LegacyWrappersAdapterTest extends BukkitUtils {
     @Override
     protected void setUp() {
         super.setUp();
-    }
-
-    private static Color[] getColors() {
-        return Color.values();
+        setupServer();
     }
 
     private static Particle[] getTestLegacyParticles() {
@@ -72,11 +66,7 @@ public class LegacyWrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testWPotionEffectToPotionEffect() {
-        String name = "INCREASE_DAMAGE";
-        PotionEffectType type = mock(PotionEffectType.class);
-        when(type.getName()).thenReturn(name);
-        Map<String, PotionEffectType> map = new Refl<>(PotionEffectType.class).getFieldObject("byName");
-        map.put(name.toLowerCase(), type);
+        PotionEffectType type = PotionEffectType.ABSORPTION;
         PotionEffect potionEffect = new PotionEffect(type.getName(), 10, 1, false, true);
         assertEquals(new org.bukkit.potion.PotionEffect(type, (int) (10 * Constants.TICKS_IN_SECOND), 0, false, false),
                 WrappersAdapter.wPotionEffectToPotionEffect(potionEffect));
@@ -84,11 +74,7 @@ public class LegacyWrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testPotionEffectToWPotionEffect() {
-        String name = "INCREASE_DAMAGE";
-        PotionEffectType type = mock(PotionEffectType.class);
-        when(type.getName()).thenReturn(name);
-        Map<String, PotionEffectType> map = new Refl<>(PotionEffectType.class).getFieldObject("byName");
-        map.put(name.toLowerCase(), type);
+        PotionEffectType type = PotionEffectType.ABSORPTION;
         org.bukkit.potion.PotionEffect potionEffect = new org.bukkit.potion.PotionEffect(type, (int) (10 * Constants.TICKS_IN_SECOND), 0, false, false);
         assertEquals(new PotionEffect(type.getName(), 10, 1, false, true),
                 WrappersAdapter.potionEffectToWPotionEffect(potionEffect));
@@ -101,10 +87,15 @@ public class LegacyWrappersAdapterTest extends BukkitUtils {
         assertEquals(expected, WrappersAdapter.potionToWPotion(potion));
     }
 
+    private static Color[] getColors() {
+        return Color.values();
+    }
+
     @ParameterizedTest
     @MethodSource("getColors")
     void testColorConversion(Color expected) {
         org.bukkit.Color color = WrappersAdapter.wColorToColor(expected);
         assertEquals(expected, WrappersAdapter.colorToWColor(color));
     }
+
 }
