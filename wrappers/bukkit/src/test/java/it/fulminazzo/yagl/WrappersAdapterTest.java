@@ -294,19 +294,11 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
-        check();
-        List<PotionEffectType> potionEffects = new ArrayList<>();
-        for (Field field : PotionEffectType.class.getDeclaredFields())
-            if (field.getType().equals(PotionEffectType.class)) {
-                PotionEffectType type = ReflectionUtils.getOrThrow(field, PotionEffectType.class);
-                potionEffects.add(new MockPotionEffect(type.getId(), field.getName()));
-            }
-        // Register potion effects
-        Map<String, PotionEffectType> byName = new Refl<>(PotionEffectType.class)
-                .getFieldObject("byName");
-        if (byName != null) potionEffects.forEach(e -> byName.put(e.getName().toLowerCase(), e));
-        return potionEffects.stream()
-                .map(t -> new org.bukkit.potion.PotionEffect(t, 15, 2, true, true, false))
+        Refl<?> enchantmentClass = new Refl<>(org.bukkit.potion.PotionEffect.class);
+        return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
+                        f.getType().isAssignableFrom(org.bukkit.potion.PotionEffect.class)).stream()
+                .map(enchantmentClass::getFieldObject)
+                .map(f -> (org.bukkit.potion.PotionEffect) f)
                 .toArray(org.bukkit.potion.PotionEffect[]::new);
     }
 
