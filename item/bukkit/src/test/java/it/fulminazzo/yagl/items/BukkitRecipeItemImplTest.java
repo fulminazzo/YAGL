@@ -1,10 +1,12 @@
 package it.fulminazzo.yagl.items;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,13 +33,19 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
         BukkitRecipeItem recipeItem = BukkitItem.newRecipeItem(Material.STONE);
         recipeItem.setRecipes(new ShapelessRecipe(id).addIngredient(Item.newItem("STONE")));
 
-        assertNull(Bukkit.getRecipe(key));
+        assertNull(getRecipe(key));
 
         recipeItem.registerRecipes();
-        assertNotNull(Bukkit.getRecipe(key));
+        assertNotNull(getRecipe(key));
 
         recipeItem.unregisterRecipes();
-        assertNull(Bukkit.getRecipe(key));
+        assertNull(getRecipe(key));
+    }
+
+    private static org.bukkit.inventory.Recipe getRecipe(final org.bukkit.NamespacedKey key) {
+        return Bukkit.getRecipesFor(new ItemStack(Material.STONE)).stream()
+                .filter(r -> key.equals(new Refl<>(r).getFieldObject("key")))
+                .findFirst().orElse(null);
     }
 
     @Test
