@@ -80,7 +80,7 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @ParameterizedTest
     @MethodSource("getTestLegacyParticles")
-    void testSpawnPlayerEffect(Particle particle) {
+    void testPlayerSpawnEffect(Particle particle) {
         Player player = mock(Player.class);
 
         testSpawnEffect(Player.class, player, player, particle);
@@ -88,7 +88,7 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @ParameterizedTest
     @MethodSource("getTestLegacyParticles")
-    void testSpawnWorldEffect(Particle particle) {
+    void testWorldSpawnEffect(Particle particle) {
         Player player = mock(Player.class);
         World world = mock(World.class);
         when(world.getPlayers()).thenReturn(Collections.singletonList(player));
