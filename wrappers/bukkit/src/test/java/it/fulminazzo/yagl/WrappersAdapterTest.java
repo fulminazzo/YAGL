@@ -90,6 +90,7 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static Particle[] getTestParticles() {
+        check();
         List<Particle> particles = new ArrayList<>();
         for (ParticleType<?> type : ParticleType.values()) particles.add(type.create());
         particles.add(ParticleType.SCULK_CHARGE.create(new PrimitiveParticleOption<>(10f)));
@@ -284,6 +285,7 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
+        check();
         List<PotionEffectType> potionEffects = new ArrayList<>();
         for (Field field : PotionEffectType.class.getDeclaredFields())
             if (field.getType().equals(PotionEffectType.class)) {
@@ -307,6 +309,7 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
+        check();
         List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
         for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
             if (field.getType().equals(org.bukkit.enchantments.Enchantment.class)) {
