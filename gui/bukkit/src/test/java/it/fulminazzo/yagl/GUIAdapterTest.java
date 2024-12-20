@@ -27,10 +27,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -119,17 +119,32 @@ class GUIAdapterTest {
 
     @Test
     void testOpenGUIMeta() {
+        Material playerHead;
+        try {
+            playerHead = Material.valueOf("PLAYER_HEAD");
+        } catch (IllegalArgumentException e) {
+            playerHead = Material.valueOf("SKULL");
+        }
+        Consumer<ItemMeta> setMetaUnbreakable = m -> {
+            Refl<?> meta = new Refl<>(m);
+            try {
+                meta.invokeMethod("setUnbreakable", true);
+            } catch (IllegalArgumentException e) {
+                meta.invokeMethodRefl("spigot").invokeMethod("setUnbreakable", true);
+            }
+        };
+
         GUI gui = GUI.newGUI(GUIType.CHEST)
                 .setTitle(null)
-                .addContent(Item.newItem(Material.PLAYER_HEAD.name()).setDisplayName("<player_name>"));
-        GUITestUtils.mockPlugin(p -> GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player), m -> m.setUnbreakable(true)));
+                .addContent(Item.newItem(playerHead.name()).setDisplayName("<player_name>"));
+        GUITestUtils.mockPlugin(p -> GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player), setMetaUnbreakable));
 
         assertNotNull(this.inventory);
 
-        ItemStack expected = new ItemStack(Material.PLAYER_HEAD);
+        ItemStack expected = new ItemStack(playerHead);
         ItemMeta meta = expected.getItemMeta();
         meta.setDisplayName(this.player.getName());
-        meta.setUnbreakable(true);
+        setMetaUnbreakable.accept(meta);
         expected.setItemMeta(meta);
 
         assertEquals(expected, this.inventory.getItem(0));
