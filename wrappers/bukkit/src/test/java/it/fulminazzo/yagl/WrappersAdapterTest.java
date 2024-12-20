@@ -310,18 +310,12 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
-        check();
-        List<org.bukkit.enchantments.Enchantment> enchantments = new ArrayList<>();
-        for (Field field : org.bukkit.enchantments.Enchantment.class.getDeclaredFields())
-            if (field.getType().equals(org.bukkit.enchantments.Enchantment.class)) {
-                org.bukkit.enchantments.Enchantment enchant = ReflectionUtils.getOrThrow(field, org.bukkit.enchantments.Enchantment.class);
-                enchantments.add(new MockEnchantment(enchant.getKey()));
-            }
-        // Register enchantments
-        Map<NamespacedKey, org.bukkit.enchantments.Enchantment> byKey = new Refl<>(org.bukkit.enchantments.Enchantment.class)
-                .getFieldObject("byKey");
-        if (byKey != null) enchantments.forEach(e -> byKey.put(e.getKey(), e));
-        return enchantments.toArray(new org.bukkit.enchantments.Enchantment[0]);
+        Refl<?> enchantmentClass = new Refl<>(org.bukkit.enchantments.Enchantment.class);
+        return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
+                f.getType().isAssignableFrom(org.bukkit.enchantments.Enchantment.class)).stream()
+                .map(enchantmentClass::getFieldObject)
+                .map(f -> (org.bukkit.enchantments.Enchantment) f)
+                .toArray(org.bukkit.enchantments.Enchantment[]::new);
     }
 
     @ParameterizedTest
