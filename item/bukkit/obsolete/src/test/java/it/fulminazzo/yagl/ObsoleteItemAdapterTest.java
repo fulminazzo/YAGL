@@ -35,8 +35,8 @@ class ObsoleteItemAdapterTest extends BukkitUtils {
         BukkitUtils.setupEnchantments();
         Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
-                .addEnchantment("ARROW_INFINITE", 20)
-                .addEnchantment("ARROW_FIRE", 10)
+                .addEnchantment("INFINITY", 20)
+                .addEnchantment("FLAME", 10)
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
                 .setUnbreakable(true);
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
