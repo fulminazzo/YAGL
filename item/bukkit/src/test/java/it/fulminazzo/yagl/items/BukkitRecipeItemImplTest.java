@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl.items;
 
-import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
+import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +20,11 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
     @Override
     protected void setUp() {
         super.setUp();
+        BukkitUtils.setupServer();
     }
 
     @Test
     void testRegisterAndUnregisterRecipe() {
-        BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
         final String id = "test";
         final org.bukkit.NamespacedKey key = new org.bukkit.NamespacedKey("yagl", id);
 
@@ -43,9 +42,6 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
 
     @Test
     void testUnregisterNotRegisteredRecipe() {
-        BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
-
         BukkitRecipeItem recipeItem = BukkitItem.newRecipeItem(Material.STONE);
         recipeItem.setRecipes(new ShapelessRecipe("test").addIngredient(Item.newItem("STONE")));
 

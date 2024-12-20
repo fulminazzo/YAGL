@@ -76,7 +76,6 @@ class PersistentItemTest {
 
     @Test
     void testGetPersistentItem() {
-        BukkitUtils.setupEnchantments();
         PersistentItem expected = PersistentItem.newItem(Material.DIAMOND_SWORD, 1)
                 .addLore("Extremely deep lore").setDisplayName("Cool sword")
                 .addEnchantment("flame", 3).addItemFlags(ItemFlag.HIDE_ATTRIBUTES)

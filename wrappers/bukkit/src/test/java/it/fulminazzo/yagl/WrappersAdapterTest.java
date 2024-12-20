@@ -45,7 +45,6 @@ class WrappersAdapterTest extends BukkitUtils {
     protected void setUp() {
         super.setUp();
         setupServer();
-        setupEnchantments();
     }
 
     private static Particle[] getTestLegacyParticles() {

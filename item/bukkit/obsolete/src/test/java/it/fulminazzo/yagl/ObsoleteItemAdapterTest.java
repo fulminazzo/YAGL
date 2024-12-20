@@ -32,7 +32,6 @@ class ObsoleteItemAdapterTest extends BukkitUtils {
 
     @Test
     void testItemConversion() {
-        BukkitUtils.setupEnchantments();
         Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("INFINITY", 20)

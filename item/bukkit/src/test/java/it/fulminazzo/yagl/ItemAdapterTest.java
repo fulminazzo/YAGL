@@ -1,5 +1,10 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
+import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
@@ -7,16 +12,10 @@ import it.fulminazzo.yagl.items.recipes.FurnaceRecipe;
 import it.fulminazzo.yagl.items.recipes.Recipe;
 import it.fulminazzo.yagl.items.recipes.ShapedRecipe;
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
-import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.jbukkit.annotations.After1_;
-import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +42,6 @@ class ItemAdapterTest extends BukkitUtils {
 
     @Test
     void testItem() {
-        setupEnchantments();
         Item expected = Item.newItem("STONE").setAmount(2).setDurability(15)
                 .setDisplayName("&7Cool stone").setLore("Click on this", "To be OP")
                 .addEnchantment("flame", 10)

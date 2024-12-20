@@ -1,9 +1,9 @@
 package it.fulminazzo.yagl.items;
 
+import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
-import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -28,7 +28,6 @@ class BukkitItemTest {
     @BeforeAll
     static void setAllUp() {
         BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
     }
 
     private static Item[] getTestMaterialItems() {
