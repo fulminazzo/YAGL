@@ -55,6 +55,13 @@ allprojects {
         return "${libs.versions.jbukkitartifact.get()}:${numVersion}:${libs.versions.jbukkit.get()}"
     }
 
+    this.ext.getAppropriateJavaVersion = { minecraftVersion ->
+        String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf('.', 2))
+        def index = numVersion.indexOf('-')
+        if (index != -1) numVersion = numVersion.substring(0, index)
+        return numVersion as Integer >= 20 ? 17 : 8
+    }
+
     repositories {
         mavenCentral()
         maven {
@@ -142,6 +149,12 @@ allprojects {
         if (project.name == DEMO_MODULE)
             rootProject.subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(getAppropriateJavaVersion())
+        }
     }
 
     if (project.name == TEST_MODULE) return
