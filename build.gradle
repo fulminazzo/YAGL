@@ -115,12 +115,8 @@ allprojects {
             testCompileOnly libs.spigot.latest
             testRuntimeOnly "org.spigotmc:spigot-api:${latest_version}"
 
-            String numVersion = latest_version.substring(2, latest_version.indexOf('.', 2))
-            def index = numVersion.indexOf('-')
-            if (index != -1) numVersion = numVersion.substring(0, index)
             // JBukkit library
-            if (Double.valueOf(numVersion) >= 13) testImplementation libs.jbukkit
-            else testImplementation libs.jbukkit.legacy
+            testImplementation getJBukkitModule(latest_version)
         }
 
         // Legacy dependencies
@@ -128,7 +124,7 @@ allprojects {
             testCompileOnly libs.spigot.legacy
             testRuntimeOnly "org.spigotmc:spigot-api:${legacy_version}"
 
-            testImplementation libs.jbukkit.legacy
+            testImplementation getJBukkitModule(legacy_version)
         }
 
         // Obsolete dependencies
@@ -136,7 +132,7 @@ allprojects {
             testCompileOnly libs.spigot.obsolete
             testRuntimeOnly "org.spigotmc:spigot-api:${obsolete_version}"
 
-            testImplementation libs.jbukkit.legacy
+            testImplementation getJBukkitModule(obsolete_version)
         }
 
         // Test module
