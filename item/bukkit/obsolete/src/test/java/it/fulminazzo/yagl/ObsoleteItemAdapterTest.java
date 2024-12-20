@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-@Before1_(11.2)
+@Before1_(12.2)
 class ObsoleteItemAdapterTest extends BukkitUtils {
 
     @BeforeEach
