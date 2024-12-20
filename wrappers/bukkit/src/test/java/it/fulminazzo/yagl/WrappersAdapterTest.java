@@ -30,7 +30,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -329,10 +328,6 @@ class WrappersAdapterTest extends BukkitUtils {
     @Test
     void testEnchantmentConversionByName() {
         org.bukkit.enchantments.Enchantment expected = org.bukkit.enchantments.Enchantment.SILK_TOUCH;
-        // Register enchantments
-        Map<String, org.bukkit.enchantments.Enchantment> byName = new Refl<>(org.bukkit.enchantments.Enchantment.class)
-                .getFieldObject("byName");
-        if (byName != null) byName.put(expected.getName(), expected);
         Enchantment enchantment = new Enchantment(expected.getName());
         assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getKey());
     }
