@@ -55,6 +55,8 @@ class PersistentListenerTest {
     @BeforeAll
     static void setAllUp() {
         BukkitUtils.setupServer();
+        List<PersistentItem> list = new Refl<>(PersistentItem.class).getFieldObject("PERSISTENT_ITEMS");
+        list.clear();
         maintain = PersistentItem.newItem(Material.DIAMOND_SWORD, 1).setDisplayName("Maintain").setDeathAction(DeathAction.MAINTAIN);
         disappear = PersistentItem.newItem(Material.IRON_SWORD, 1).setDisplayName("Disappear").setDeathAction(DeathAction.DISAPPEAR);
         none = PersistentItem.newItem(Material.STONE_SWORD, 1).setDisplayName("None").setDeathAction(null);
