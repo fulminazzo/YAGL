@@ -50,7 +50,7 @@ public final class ItemAdapter {
 
         if (meta != null) {
             String displayName = meta.getDisplayName();
-            if (displayName != null) item.setDisplayName(displayName);
+            if (displayName != null && !displayName.isEmpty()) item.setDisplayName(displayName);
             List<String> lore = meta.getLore();
             if (lore != null) item.setLore(lore);
             meta.getEnchants().forEach((e, l) -> item.addEnchantments(WrappersAdapter.enchantToWEnchant(e, l)));
