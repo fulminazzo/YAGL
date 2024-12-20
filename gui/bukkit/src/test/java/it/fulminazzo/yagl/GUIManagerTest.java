@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.GUITestUtils;
@@ -236,9 +238,8 @@ class GUIManagerTest {
         }
 
         private @NotNull InventoryView getView() {
-            InventoryView view = mock(InventoryView.class);
-            when(view.getPlayer()).thenReturn(this.player);
-            return view;
+            MockInventory inventory = new MockInventory(9);
+            return new MockInventoryView(inventory, this.player, "");
         }
 
     }
