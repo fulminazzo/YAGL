@@ -6,24 +6,24 @@
 
 <p align="center">
   <p align="center">
-    <a href="../../actions/workflows/bukkit-1.8.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.20.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.21.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.8.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.8.yml?style=flat&logo=github&label=MC%201.8" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.20.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.20.yml?style=flat&logo=github&label=MC%201.20" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.21.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.21.yml?style=flat&logo=github&label=MC%201.21" alt="" /></a>
   </p>
   <p align="center">
-    <a href="../../actions/workflows/bukkit-1.14.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.14.yml?style=flat&logo=github&label=MC%201.14" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.15.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.15.yml?style=flat&logo=github&label=MC%201.15" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.16.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.16.yml?style=flat&logo=github&label=MC%201.16" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.17.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.17.yml?style=flat&logo=github&label=MC%201.17" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.18.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.18.yml?style=flat&logo=github&label=MC%201.18" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.19.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.19.yml?style=flat&logo=github&label=MC%201.19" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.14.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.14.yml?style=flat&logo=github&label=MC%201.14" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.15.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.15.yml?style=flat&logo=github&label=MC%201.15" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.16.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.16.yml?style=flat&logo=github&label=MC%201.16" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.17.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.17.yml?style=flat&logo=github&label=MC%201.17" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.18.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.18.yml?style=flat&logo=github&label=MC%201.18" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.19.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.19.yml?style=flat&logo=github&label=MC%201.19" alt="" /></a>
   </p>
   <p align="center">
-    <a href="../../actions/workflows/bukkit-1.9.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.9.yml?style=flat&logo=github&label=MC%201.9" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.10.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.10.yml?style=flat&logo=github&label=MC%201.10" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.11.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.11.yml?style=flat&logo=github&label=MC%201.11" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.12.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.12.yml?style=flat&logo=github&label=MC%201.12" alt="" /></a>
-    <a href="../../actions/workflows/bukkit-1.13.yml"><img src="https://fulminazzo.it/badge/actions/Fulminazzo/YAGL/bukkit-1.13.yml?style=flat&logo=github&label=MC%201.13" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.9.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.9.yml?style=flat&logo=github&label=MC%201.9" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.10.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.10.yml?style=flat&logo=github&label=MC%201.10" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.11.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.11.yml?style=flat&logo=github&label=MC%201.11" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.12.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.12.yml?style=flat&logo=github&label=MC%201.12" alt="" /></a>
+    <a href="../../actions/workflows/bukkit-1.13.yml"><img src="https://img.shields.io/github/actions/workflow/status/Fulminazzo/YAGL/bukkit-1.13.yml?style=flat&logo=github&label=MC%201.13" alt="" /></a>
   </p>
 </p>
 
