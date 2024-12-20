@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.listeners;
 
+import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;
@@ -253,26 +254,7 @@ class PersistentListenerTest {
     }
 
     private static InventoryView getInventoryView(Player player, Inventory inventory) {
-        InventoryView view = mock(InventoryView.class);
-        PlayerInventory playerInventory = player.getInventory();
-        when(view.getBottomInventory()).thenAnswer(a -> playerInventory);
-        when(view.getTopInventory()).thenReturn(inventory);
-        when(player.getOpenInventory()).thenReturn(view);
-        when(view.getPlayer()).thenReturn(player);
-        when(view.getItem(any(int.class))).thenCallRealMethod();
-        when(view.getCursor()).thenCallRealMethod();
-        when(view.convertSlot(any(int.class))).thenAnswer(a -> {
-            int slot = a.getArgument(0);
-            int size = inventory.getSize();
-            if (slot >= size) slot -= size;
-            return slot;
-        });
-        when(view.getInventory(any(int.class))).thenAnswer(a -> {
-            int slot = a.getArgument(0);
-            if (slot < inventory.getSize()) return inventory;
-            return playerInventory;
-        });
-        return view;
+        return new MockInventoryView(inventory, player, "");
     }
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
