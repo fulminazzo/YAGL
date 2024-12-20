@@ -196,6 +196,40 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    void testInvalidClassProvided() {
+        Refl<?> refl = new Refl<>(WrappersAdapter.class);
+        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
+                ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.RED, 3f),
+                org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.REDSTONE.getDataType()));
+    }
+
+    @Test
+    void testNoConstructorDataTypeProvided() {
+        Refl<?> refl = new Refl<>(WrappersAdapter.class);
+        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
+                ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class,
+                (Function<?, Class<?>>) s -> AbstractItem.class));
+    }
+
+    @Test
+    void testInvalidParticleGeneralDataType() {
+        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
+                ParticleType.ASH.create(), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
+        assertNotNull(conversion);
+        assertNotNull(conversion.getKey());
+        assertNull(conversion.getValue());
+    }
+
+    @Test
+    void testInvalidDataTypeButNotOption() {
+        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
+                ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
+        assertNotNull(conversion);
+        assertNotNull(conversion.getKey());
+        assertNull(conversion.getValue());
+    }
+
+    @Test
     void testPlaySound() {
         Sound sound = new Sound(org.bukkit.Sound.BLOCK_GLASS_STEP.name(),10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
@@ -343,22 +377,6 @@ class WrappersAdapterTest extends BukkitUtils {
         assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.wEnchantToEnchant(new Enchantment("mock")));
     }
 
-    @Test
-    void testInvalidClassProvided() {
-        Refl<?> refl = new Refl<>(WrappersAdapter.class);
-        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
-                ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.RED, 3f),
-                org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.REDSTONE.getDataType()));
-    }
-
-    @Test
-    void testNoConstructorDataTypeProvided() {
-        Refl<?> refl = new Refl<>(WrappersAdapter.class);
-        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
-                ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class,
-                (Function<?, Class<?>>) s -> AbstractItem.class));
-    }
-
     private static Color[] getColors() {
         return Color.values();
     }
@@ -390,24 +408,6 @@ class WrappersAdapterTest extends BukkitUtils {
         Executable executable = () -> WrappersAdapter.convertOption(BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
         else assertThrowsExactly(IllegalArgumentException.class, executable);
-    }
-
-    @Test
-    void testInvalidParticleGeneralDataType() {
-        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
-                ParticleType.ASH.create(), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
-        assertNotNull(conversion);
-        assertNotNull(conversion.getKey());
-        assertNull(conversion.getValue());
-    }
-
-    @Test
-    void testInvalidDataTypeButNotOption() {
-        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
-                ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
-        assertNotNull(conversion);
-        assertNotNull(conversion.getKey());
-        assertNull(conversion.getValue());
     }
 
     @Test
