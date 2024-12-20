@@ -2,6 +2,12 @@ plugins {
     id 'com.gradle.enterprise' version '3.16.2'
 }
 
+/**
+ * default = 1.13+
+ * legacy = 1.9 - 1.12.2
+ * obsolete = 1.8
+ */
+
 rootProject.name = 'YAGL'
 
 include 'common'
