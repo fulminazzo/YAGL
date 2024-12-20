@@ -49,12 +49,6 @@ allprojects {
         return "${rootProject.group}${groupId}"
     }
 
-    this.ext.getMinecraftVersion = {
-        def minecraftVersion = System.getenv(VERSION_VARIABLE)
-        if (minecraftVersion == null) minecraftVersion = libs.versions.spigot.latest.get()
-        return minecraftVersion
-    }
-
     this.ext.getJBukkitModule = { minecraftVersion ->
         String numVersion = minecraftVersion.substring(2, minecraftVersion.indexOf('.', 2))
         def index = numVersion.indexOf('-')
