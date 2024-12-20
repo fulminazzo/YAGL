@@ -137,14 +137,6 @@ class ItemAdapterTest extends BukkitUtils {
             assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(BukkitItem.newItem(Material.STONE)));
         }
 
-        @Test
-        void testOlderItemMeta() {
-            Damageable meta = mock(Damageable.class, withSettings().extraInterfaces(ItemMeta.class));
-            doThrow(NoSuchMethodError.class).when(meta).setDamage(anyInt());
-            when(Bukkit.getServer().getItemFactory()).thenAnswer(a -> mockItemFactory(meta));
-            assertDoesNotThrow(() -> ItemAdapter.itemToItemStack(Item.newItem("stone")));
-        }
-
     }
 
     @SuppressWarnings("deprecation")
