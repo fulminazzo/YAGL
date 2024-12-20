@@ -1,5 +1,8 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
@@ -7,11 +10,9 @@ import it.fulminazzo.yagl.items.recipes.FurnaceRecipe;
 import it.fulminazzo.yagl.items.recipes.Recipe;
 import it.fulminazzo.yagl.items.recipes.ShapedRecipe;
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.jbukkit.annotations.Before1_;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,9 +46,15 @@ class LegacyItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(12.2)
     void testShapedRecipeConversion() {
+        check();
         org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(new ItemStack(Material.STONE));
         expected.shape("ABC", "DEF");
+
+        // For 1.12
+        Refl<?> r1 = getAssociatedRefl(expected);
+
         Material[] materials = new Material[]{Material.IRON_INGOT, Material.GOLD_INGOT, Material.REDSTONE,
                 Material.DIAMOND, Material.EMERALD, Material.INK_SACK};
         for (int i = 0; i < materials.length; i++)
@@ -57,7 +64,6 @@ class LegacyItemAdapterTest extends BukkitUtils {
                 .setOutput(Item.newItem("STONE")).setShape(2, 3);
         for (int i = 0; i < materials.length; i++) recipe.setIngredient(i, BukkitItem.newItem(materials[i]));
 
-        Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
         for (Field field : r1.getNonStaticFields()) {
@@ -70,14 +76,18 @@ class LegacyItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(12.2)
     void testShapelessRecipeConversion() {
+        check();
         org.bukkit.inventory.ShapelessRecipe expected = new org.bukkit.inventory.ShapelessRecipe(new ItemStack(Material.STONE));
         expected.addIngredient(new ItemStack(Material.GRASS).getData());
+
+        // For 1.12
+        Refl<?> r1 = getAssociatedRefl(expected);
 
         ShapelessRecipe recipe = new ShapelessRecipe("test")
                 .setOutput(Item.newItem("STONE")).addIngredient(Item.newItem("GRASS"));
 
-        Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
         for (Field field : r1.getNonStaticFields())
@@ -85,15 +95,20 @@ class LegacyItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(12.2)
     void testFurnaceRecipeConversion() {
+        check();
         org.bukkit.inventory.FurnaceRecipe expected = new org.bukkit.inventory.FurnaceRecipe(new ItemStack(Material.STONE), Material.COAL);
-        new Refl<>(expected).setFieldObject("ingredient", new ItemStack(Material.COAL));
+
+        // For 1.12
+        Refl<?> r1 = getAssociatedRefl(expected);
+
+        r1.setFieldObject("ingredient", new ItemStack(Material.COAL));
 
         FurnaceRecipe recipe = new FurnaceRecipe("test")
                 .setOutput(Item.newItem("STONE")).setIngredient(Item.newItem("COAL"))
                 .setExperience(10).setCookingTime(1);
 
-        Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
         for (Field field : r1.getNonStaticFields())
@@ -101,7 +116,9 @@ class LegacyItemAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(12.2)
     void testResizeRecipe() {
+        check();
         final String id = "test";
         final Material craftMaterial = Material.REDSTONE;
         final BukkitItem returnItem = BukkitItem.newItem(Material.REDSTONE_BLOCK);
@@ -110,6 +127,9 @@ class LegacyItemAdapterTest extends BukkitUtils {
         org.bukkit.inventory.ShapedRecipe expected = new org.bukkit.inventory.ShapedRecipe(returnItem.create());
         expected.shape("AB", "CD");
         for (int i = 0; i < size; i++) expected.setIngredient((char) ('A' + i), new ItemStack(craftMaterial).getData());
+
+        // For 1.12
+        Refl<?> r1 = getAssociatedRefl(expected);
 
         ShapedRecipe recipe = new ShapedRecipe(id)
                 .setOutput(returnItem).setShape(3, 3);
@@ -122,7 +142,6 @@ class LegacyItemAdapterTest extends BukkitUtils {
         for (Item item : recipe)
             assertEquals(craftMaterial.name(), item.getMaterial(), String.format("Expected material %s", craftMaterial.name()));
 
-        Refl<?> r1 = new Refl<>(expected);
         Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
         for (Field field : r1.getNonStaticFields()) {
@@ -134,8 +153,17 @@ class LegacyItemAdapterTest extends BukkitUtils {
         }
     }
 
+    private static @NotNull Refl<?> getAssociatedRefl(org.bukkit.inventory.Recipe expected) {
+        Refl<?> r1 = new Refl<>(expected);
+        try {
+            r1.setFieldObject("key", new Refl<>("org.bukkit.NamespacedKey", "yagl", "test").getObject());
+        } catch (IllegalArgumentException ignored) {}
+        return r1;
+    }
+
     @Test
     void testInvalidRecipeType() {
         assertThrowsExactly(IllegalArgumentException.class, () -> ItemAdapter.recipeToMinecraft(mock(Recipe.class)));
     }
+
 }
