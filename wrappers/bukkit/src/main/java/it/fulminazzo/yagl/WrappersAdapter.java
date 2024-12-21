@@ -570,22 +570,39 @@ public final class WrappersAdapter {
 
     /**
      * Converts the given wrapper {@link Potion} to a Bukkit potion.
+     * Because of Bukkit recent changes (1.20.6+), <code>org.bukkit.potion.Potion</code> does not exist anymore.
+     * For retro-compatibility reasons, this class will return a {@link PotionWrapper} instead,
+     * from which the actual <code>org.bukkit.potion.Potion</code> object can be retrieved.
      *
      * @param potion the potion
-     * @return the potion
+     * @return the wrapped potion
      */
-    public static @NotNull org.bukkit.potion.Potion wPotionToPotion(final @NotNull Potion potion) {
-        return new org.bukkit.potion.Potion(EnumUtils.valueOf(PotionType.class, potion.getName()),
+    public static @NotNull PotionWrapper wPotionToPotion(final @NotNull Potion potion) {
+        return new PotionWrapper(EnumUtils.valueOf(PotionType.class, potion.getName()),
                 potion.getLevel(), potion.isSplash(), potion.isExtended());
     }
 
     /**
      * Converts the given Bukkit potion to a wrapper {@link Potion}.
+     * Because of Bukkit recent changes (1.20.6+), <code>org.bukkit.potion.Potion</code> does not exist anymore.
+     * For retro-compatibility reasons, this class allows a generic parameter to be passed,
+     * but it will require an object of type org.bukkit.potion.Potion.
      *
-     * @param potion the potion
+     * @param <P>    the type of the potion (org.bukkit.potion.Potion).
+     * @param potion the bukkit potion
      * @return the potion
      */
-    public static @NotNull Potion potionToWPotion(final @NotNull org.bukkit.potion.Potion potion) {
+    public static <P> @NotNull Potion potionToWPotion(final @NotNull P potion) {
+        return potionToWPotion(new PotionWrapper(potion));
+    }
+
+    /**
+     * Converts the given potion wrapper to a wrapper {@link Potion}.
+     *
+     * @param potion the potion wrapper
+     * @return the potion
+     */
+    public static @NotNull Potion potionToWPotion(final @NotNull PotionWrapper potion) {
         return new Potion(potion.getType().name(), potion.getLevel(), potion.isSplash(), potion.hasExtendedDuration());
     }
 

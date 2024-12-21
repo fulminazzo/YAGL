@@ -83,7 +83,7 @@ public class LegacyWrappersAdapterTest extends BukkitUtils {
     @Test
     void testPotionConversion() {
         Potion expected = new Potion(PotionType.JUMP.name(), 1, true, false);
-        org.bukkit.potion.Potion potion = WrappersAdapter.wPotionToPotion(expected);
+        org.bukkit.potion.Potion potion = WrappersAdapter.wPotionToPotion(expected).getInternalPotion();
         assertEquals(expected, WrappersAdapter.potionToWPotion(potion));
     }
 
