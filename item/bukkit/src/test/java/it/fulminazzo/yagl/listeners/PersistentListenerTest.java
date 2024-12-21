@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.listeners;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
@@ -358,7 +359,7 @@ class PersistentListenerTest {
             contents[5] = none.create();
             List<ItemStack> drops = new LinkedList<>(Arrays.asList(contents));
 
-            PlayerDeathEvent event = new PlayerDeathEvent(player, drops, 3, "Player died");
+            PlayerDeathEvent event = generatePlayerDeathEvent(player, drops);
             listener.on(event);
             // Simulate removal of contents
             Arrays.fill(contents, null);
@@ -381,7 +382,7 @@ class PersistentListenerTest {
             Player player = getPlayer();
             ItemStack[] contents = player.getInventory().getContents();
             contents[3] = maintain.create();
-            PlayerDeathEvent event = new PlayerDeathEvent(player, null, 3, "Player died");
+            PlayerDeathEvent event = generatePlayerDeathEvent(player, null);
             listener.on(event);
             // Simulate removal of contents
             Arrays.fill(contents, null);
@@ -396,7 +397,7 @@ class PersistentListenerTest {
         void simulateNothingToRestore() throws InterruptedException {
             Player player = getPlayer();
             ItemStack[] contents = player.getInventory().getContents();
-            PlayerDeathEvent event = new PlayerDeathEvent(player, Arrays.asList(contents), 3, "Player died");
+            PlayerDeathEvent event = generatePlayerDeathEvent(player, Arrays.asList(contents));
             listener.on(event);
             // Simulate removal of contents
             Arrays.fill(contents, null);
@@ -405,6 +406,17 @@ class PersistentListenerTest {
 
             for (ItemStack i : contents)
                 assertNull(i, "Nothing should be restored");
+        }
+
+        private PlayerDeathEvent generatePlayerDeathEvent(Player player, List<ItemStack> drops) {
+            try {
+                return new PlayerDeathEvent(player, drops, 3, "Player died");
+            } catch (NoSuchMethodError e) {
+                // Versions higher than 1.20.6
+                return new Refl<>(PlayerDeathEvent.class, player,
+                        mock(ReflectionUtils.getClass("org.bukkit.damage.DamageSource")),
+                        drops, 3, "Player died").getObject();
+            }
         }
 
     }
