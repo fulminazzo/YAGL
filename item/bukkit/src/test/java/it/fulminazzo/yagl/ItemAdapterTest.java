@@ -203,10 +203,10 @@ class ItemAdapterTest extends BukkitUtils {
                     new ItemStack(Material.STONE)
             );
             Refl<?> r1 = new Refl<>(expected);
-            r1.invokeMethod("addIngredient", newRecipeChoice(new ItemStack(Material.GRASS)));
+            r1.invokeMethod("addIngredient", newRecipeChoice(new ItemStack(Material.DIAMOND)));
 
             ShapelessRecipe recipe = new ShapelessRecipe("test")
-                    .setOutput(Item.newItem("STONE")).addIngredient(Item.newItem("GRASS"));
+                    .setOutput(Item.newItem("STONE")).addIngredient(Item.newItem("DIAMOND"));
 
             Refl<?> r2 = new Refl<>(ItemAdapter.recipeToMinecraft(recipe));
 
