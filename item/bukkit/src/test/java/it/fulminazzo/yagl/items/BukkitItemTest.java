@@ -62,9 +62,9 @@ class BukkitItemTest {
 
         BukkitItem actual = BukkitItem.newItem(Material.STONE).setAmount(3)
                 .setDisplayName("Hello world").addLore("An interesting lore...")
-                .addEnchantment("flame", 3);
+                .addEnchantment("silk_touch", 3);
 
-        assertTrue(actual.isSimilar(expected));
+        assertTrue(actual.isSimilar(expected), String.format("%s should have been similar to %s", actual, expected));
     }
 
     @Test
