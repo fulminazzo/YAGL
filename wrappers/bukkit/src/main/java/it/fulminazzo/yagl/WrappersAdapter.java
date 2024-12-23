@@ -338,10 +338,13 @@ public final class WrappersAdapter {
         return wParticleToGeneral(particle, Effect.class, Effect::getData);
     }
 
+    @SuppressWarnings("unchecked")
     private static <T extends Enum<?>> @NotNull Tuple<T, ?> wParticleToGeneral(final @NotNull Particle particle,
                                                                                final @NotNull Class<T> tClass,
                                                                                final @NotNull Function<T, Class<?>> dataTypeGetter) {
-        T actual = EnumUtils.valueOf(tClass, particle.getType());
+        T actual;
+        if (org.bukkit.Particle.class.isAssignableFrom(tClass)) actual = (T) ParticleConverter.convertToBukkit(particle);
+        else actual = EnumUtils.valueOf(tClass, particle.getType());
         Object option = particle.getOption();
         Class<?> dataType = dataTypeGetter.apply(actual);
         if (option == null || dataType == null) return new Tuple<>(actual, null);
