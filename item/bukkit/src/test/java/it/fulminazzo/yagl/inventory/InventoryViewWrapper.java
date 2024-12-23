@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.listeners;
+package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * This is required for Minecraft version 1.20.6+ tests since
  * InventoryView is not an abstract class anymore.
  */
-class InventoryViewWrapper {
+public class InventoryViewWrapper {
     private final Refl<?> internalObject;
 
     /**
