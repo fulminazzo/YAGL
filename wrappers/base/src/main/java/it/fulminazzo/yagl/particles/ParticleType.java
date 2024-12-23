@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings({"unused", "unchecked"})
 public final class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final ParticleType<?> ASH = new ParticleType<>();
+    public static final ParticleType<?> BARRIER = new ParticleType<>();
     public static final ParticleType<BlockDataOption> BLOCK_MARKER = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_CRACK = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_DUST = new ParticleType<>(BlockDataOption.class);
