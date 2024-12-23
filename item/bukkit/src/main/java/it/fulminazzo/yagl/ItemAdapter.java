@@ -83,7 +83,8 @@ public final class ItemAdapter {
         }, () -> itemStack.setDurability((short) item.getDurability()));
 
         if (meta != null) {
-            meta.setDisplayName(item.getDisplayName());
+            String displayName = item.getDisplayName();
+            if (!displayName.isEmpty()) meta.setDisplayName(displayName);
             meta.setLore(item.getLore());
             item.getEnchantments().forEach(e -> {
                 @NotNull Tuple<Enchantment, Integer> tuple = WrappersAdapter.wEnchantToEnchant(e);
