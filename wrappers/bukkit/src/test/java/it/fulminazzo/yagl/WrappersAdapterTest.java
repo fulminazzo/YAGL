@@ -446,7 +446,7 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static Material[] nonLegacyMaterials() {
-        return Arrays.stream(Material.values()).filter(m -> !m.isLegacy()).toArray(Material[]::new);
+        return Arrays.stream(Material.values()).filter(m -> !m.name().contains("LEGACY")).toArray(Material[]::new);
     }
 
     @ParameterizedTest
