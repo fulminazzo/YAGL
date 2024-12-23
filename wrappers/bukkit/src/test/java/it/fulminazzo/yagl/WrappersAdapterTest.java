@@ -30,9 +30,9 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("deprecation")
@@ -47,6 +47,21 @@ class WrappersAdapterTest extends BukkitUtils {
         setupEnchantments();
         when(Bukkit.getServer().createBlockData(any(Material.class), any(String.class)))
                 .thenReturn(mock(org.bukkit.block.data.BlockData.class));
+    }
+
+    @ParameterizedTest
+    @EnumSource(org.bukkit.Particle.class)
+    void testAllBukkitParticlesAreConverted(org.bukkit.Particle particle) {
+        assumeFalse(particle.name().contains("LEGACY"));
+        for (ParticleType<?> type : ParticleType.values()) {
+            try {
+                Tuple<org.bukkit.Particle, ?> converted = WrappersAdapter.wParticleToParticle(type.create());
+                if (converted.getKey().equals(particle)) return;
+            } catch (IllegalArgumentException ignored) {
+                // Older version trying to use newer particles
+            }
+        }
+        fail("Could not convert particle: " + particle);
     }
 
     private static Particle[] getTestLegacyParticles() {
