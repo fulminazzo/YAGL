@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings({"unused", "unchecked"})
 public final class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final ParticleType<?> ASH = new ParticleType<>();
+    public static final ParticleType<BlockDataOption> BLOCK_MARKER = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_CRACK = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_DUST = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<?> BUBBLE_COLUMN_UP = new ParticleType<>();
@@ -21,6 +22,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> DAMAGE_INDICATOR = new ParticleType<>();
     public static final ParticleType<?> DOLPHIN = new ParticleType<>();
     public static final ParticleType<?> DRAGON_BREATH = new ParticleType<>();
+    public static final ParticleType<?> DRIPPING_CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> DRIPPING_DRIPSTONE_LAVA = new ParticleType<>();
     public static final ParticleType<?> DRIPPING_DRIPSTONE_WATER = new ParticleType<>();
     public static final ParticleType<?> DRIPPING_HONEY = new ParticleType<>();
@@ -35,6 +37,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> EXPLOSION_HUGE = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_LARGE = new ParticleType<>();
     public static final ParticleType<?> EXPLOSION_NORMAL = new ParticleType<>();
+    public static final ParticleType<?> FALLING_CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> FALLING_DRIPSTONE_LAVA = new ParticleType<>();
     public static final ParticleType<?> FALLING_DRIPSTONE_WATER = new ParticleType<>();
     public static final ParticleType<BlockDataOption> FALLING_DUST = new ParticleType<>(BlockDataOption.class);
@@ -54,6 +57,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
      * This particle type requires the <i>item:base</i> module to be added.
      */
     public static final ParticleType<ItemParticleOption<?>> ITEM_CRACK = new ParticleType<>((Class<ItemParticleOption<?>>) (Class<?>) ItemParticleOption.class);
+    public static final ParticleType<?> LANDING_CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> LANDING_HONEY = new ParticleType<>();
     public static final ParticleType<?> LANDING_LAVA = new ParticleType<>();
     public static final ParticleType<?> LANDING_OBSIDIAN_TEAR = new ParticleType<>();
