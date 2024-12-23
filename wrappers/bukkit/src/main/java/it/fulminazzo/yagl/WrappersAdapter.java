@@ -343,7 +343,7 @@ public final class WrappersAdapter {
                                                                                final @NotNull Class<T> tClass,
                                                                                final @NotNull Function<T, Class<?>> dataTypeGetter) {
         T actual;
-        if (org.bukkit.Particle.class.isAssignableFrom(tClass)) actual = (T) ParticleConverter.convertToBukkit(particle);
+        if (tClass.getCanonicalName().equals("org.bukkit.Particle.class")) actual = (T) ParticleConverter.convertToBukkit(particle);
         else actual = EnumUtils.valueOf(tClass, particle.getType());
         Object option = particle.getOption();
         Class<?> dataType = dataTypeGetter.apply(actual);
