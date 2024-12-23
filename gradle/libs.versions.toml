@@ -1,6 +1,6 @@
 [versions]
-delombok = "8.4"
-groovy = "4.0.16"
+delombok = "8.11"
+groovy = "4.0.24"
 
 fulmicollection = "1.6.3"
 yamlparser = "1.6.3"
@@ -12,10 +12,11 @@ spigot_legacy = "1.12.2-R0.1-SNAPSHOT"
 # Newer versions tests are run from GitHub Actions
 spigot_latest = "1.19.4-R0.1-SNAPSHOT"
 
-lombok = "1.18.30"
-annotations = "24.1.0"
+lombok = "1.18.36"
+annotations = "26.0.1"
 
-junit = "5.9.1"
+junit = "5.11.4"
+# Required for Java 1.8 compatibility
 mockito = "4.11.0"
 
 jbukkitartifact = "it.fulminazzo.jbukkit"
