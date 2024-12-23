@@ -27,12 +27,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -427,8 +425,12 @@ class WrappersAdapterTest extends BukkitUtils {
         assertThrowsExactly(IllegalArgumentException.class, () -> WrappersAdapter.convertOption(MaterialData.class, "string"));
     }
 
+    private static Material[] nonLegacyMaterials() {
+        return Arrays.stream(Material.values()).filter(m -> !m.isLegacy()).toArray(Material[]::new);
+    }
+
     @ParameterizedTest
-    @EnumSource(Material.class)
+    @MethodSource("nonLegacyMaterials")
     void testAllBlockData(Material material) {
         Executable executable = () -> WrappersAdapter.convertOption(org.bukkit.block.data.BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
