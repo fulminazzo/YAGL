@@ -216,7 +216,7 @@ class WrappersAdapterTest extends BukkitUtils {
 
         Object value = captors[0].getValue();
         assertInstanceOf(org.bukkit.Particle.class, value);
-        assertEquals(particle.getType(), ((org.bukkit.Particle) value).name());
+        assertEquals(BukkitUtils.getNumericalVersion() >= 20.6 ? "ITEM" : particle.getType(), ((org.bukkit.Particle) value).name());
 
         ArgumentCaptor<?> extra = captors[captors.length - 1];
         ItemStack expected = new ItemStack(Material.STONE, 7);
