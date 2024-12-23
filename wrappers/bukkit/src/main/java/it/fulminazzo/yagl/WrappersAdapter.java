@@ -542,8 +542,16 @@ public final class WrappersAdapter {
      * @return the potion effect
      */
     public static @NotNull org.bukkit.potion.PotionEffect wPotionEffectToPotionEffect(final @NotNull PotionEffect potionEffect) {
-        final String effect = potionEffect.getName();
-        final PotionEffectType type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
+        String effect = potionEffect.getName();
+        PotionEffectType type;
+        try {
+            type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
+        } catch (IllegalArgumentException e) {
+            // For Minecraft 1.20.6 and above
+            effect = effect.replace(" ", "_").toLowerCase();
+            if (effect.equalsIgnoreCase("bad_luck")) effect = "unluck";
+            type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
+        }
         try {
             return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
                     potionEffect.isShowingParticles(), potionEffect.isShowingParticles(),
