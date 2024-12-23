@@ -47,6 +47,8 @@ class WrappersAdapterTest extends BukkitUtils {
         super.setUp();
         setupServer();
         setupEnchantments();
+        when(Bukkit.getServer().createBlockData(any(Material.class), any(String.class)))
+                .thenReturn(mock(org.bukkit.block.data.BlockData.class));
     }
 
     private static Particle[] getTestLegacyParticles() {
@@ -157,9 +159,6 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private <T> void testSpawnParticle(Class<T> targetClass, Particle particle) {
-        // Initialize Bukkit variables
-        initializeBlockData();
-
         T target = mock(targetClass);
 
         final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator;
@@ -431,7 +430,6 @@ class WrappersAdapterTest extends BukkitUtils {
     @ParameterizedTest
     @EnumSource(Material.class)
     void testAllBlockData(Material material) {
-        initializeBlockData();
         Executable executable = () -> WrappersAdapter.convertOption(org.bukkit.block.data.BlockData.class, material.name());
         if (material.isBlock()) assertDoesNotThrow(executable);
         else assertThrowsExactly(IllegalArgumentException.class, executable);
@@ -450,12 +448,6 @@ class WrappersAdapterTest extends BukkitUtils {
             assertThrowsExactly(IllegalStateException.class, () -> WrappersAdapter.itemToItemStack(null),
                     "Should throw exception signaling missing item module");
         }
-    }
-
-    private static void initializeBlockData() {
-        Server server = mock(Server.class);
-        when(server.createBlockData(any(Material.class), any(String.class))).thenReturn(mock(org.bukkit.block.data.BlockData.class));
-        new Refl<>(Bukkit.class).setFieldObject("server", server);
     }
 
     @SuppressWarnings("unused")
