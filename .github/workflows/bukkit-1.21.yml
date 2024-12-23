@@ -1,14 +1,13 @@
-# 1.21.1-R0.1-SNAPSHOT
+# 1.21.4-R0.1-SNAPSHOT
 name: MC 1.21
 
-# TODO: Re-enable after further updates
-#on:
-#  push:
-#    branches: [ "main", "master", "dev" ]
+on:
+  push:
+    branches: [ "main", "master", "dev", "feat-1.21" ]
 
 jobs:
   test:
     uses: ./.github/workflows/bukkit-test.yml
     with:
-      java-version: 21
-      minecraft-version: "1.21.1-R0.1-SNAPSHOT"
+      java-version: 17
+      minecraft-version: "1.21.4-R0.1-SNAPSHOT"
