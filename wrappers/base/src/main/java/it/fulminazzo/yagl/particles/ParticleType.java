@@ -70,6 +70,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> LANDING_LAVA = new ParticleType<>();
     public static final ParticleType<?> LANDING_OBSIDIAN_TEAR = new ParticleType<>();
     public static final ParticleType<?> LAVA = new ParticleType<>();
+    public static final ParticleType<?> LIGHT = new ParticleType<>();
     public static final ParticleType<?> MOB_APPEARANCE = new ParticleType<>();
     public static final ParticleType<?> NAUTILUS = new ParticleType<>();
     public static final ParticleType<?> NOTE = new ParticleType<>();
