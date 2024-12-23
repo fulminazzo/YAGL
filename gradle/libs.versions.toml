@@ -20,7 +20,7 @@ junit = "5.11.4"
 mockito = "4.11.0"
 
 jbukkitartifact = "it.fulminazzo.jbukkit"
-jbukkit = "3.1"
+jbukkit = "3.2"
 
 [libraries]
 groovy = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
