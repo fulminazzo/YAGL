@@ -21,7 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
@@ -49,10 +48,16 @@ class WrappersAdapterTest extends BukkitUtils {
                 .thenReturn(mock(org.bukkit.block.data.BlockData.class));
     }
 
+    private static Object[] getParticles() {
+        check();
+        return org.bukkit.Particle.values();
+    }
+
     @ParameterizedTest
-    @EnumSource(org.bukkit.Particle.class)
-    void testAllBukkitParticlesAreConverted(org.bukkit.Particle particle) {
-        assumeFalse(particle.name().contains("LEGACY"));
+    @MethodSource("getParticles")
+    void testAllBukkitParticlesAreConverted(Object particle) {
+        String name = new Refl<>(particle).invokeMethod("name");
+        assumeFalse(name.contains("LEGACY"));
         for (ParticleType<?> type : ParticleType.values()) {
             try {
                 Tuple<org.bukkit.Particle, ?> converted = WrappersAdapter.wParticleToParticle(type.create());
