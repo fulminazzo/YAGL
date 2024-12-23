@@ -30,6 +30,8 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> DRIP_LAVA = new ParticleType<>();
     public static final ParticleType<?> DRIP_WATER = new ParticleType<>();
     public static final ParticleType<DustTransitionParticleOption> DUST_COLOR_TRANSITION = new ParticleType<>(DustTransitionParticleOption.class);
+    public static final ParticleType<BlockDataOption> DUST_PILLAR = new ParticleType<>(BlockDataOption.class);
+    public static final ParticleType<?> DUST_PLUME = new ParticleType<>();
     public static final ParticleType<?> EGG_CRACK = new ParticleType<>();
     public static final ParticleType<?> ELECTRIC_SPARK = new ParticleType<>();
     public static final ParticleType<?> ENCHANTMENT_TABLE = new ParticleType<>();
@@ -52,11 +54,16 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> FLASH = new ParticleType<>();
     public static final ParticleType<?> GLOW = new ParticleType<>();
     public static final ParticleType<?> GLOW_SQUID_INK = new ParticleType<>();
+    public static final ParticleType<?> GUST = new ParticleType<>();
+    public static final ParticleType<?> GUST_EMITTER_LARGE = new ParticleType<>();
+    public static final ParticleType<?> GUST_EMITTER_SMALL = new ParticleType<>();
     public static final ParticleType<?> HEART = new ParticleType<>();
+    public static final ParticleType<?> INFESTED = new ParticleType<>();
     /**
      * This particle type requires the <i>item:base</i> module to be added.
      */
     public static final ParticleType<ItemParticleOption<?>> ITEM_CRACK = new ParticleType<>((Class<ItemParticleOption<?>>) (Class<?>) ItemParticleOption.class);
+    public static final ParticleType<?> ITEM_COBWEB = new ParticleType<>();
     public static final ParticleType<?> LANDING_CHERRY_LEAVES = new ParticleType<>();
     public static final ParticleType<?> LANDING_HONEY = new ParticleType<>();
     public static final ParticleType<?> LANDING_LAVA = new ParticleType<>();
@@ -65,7 +72,9 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> MOB_APPEARANCE = new ParticleType<>();
     public static final ParticleType<?> NAUTILUS = new ParticleType<>();
     public static final ParticleType<?> NOTE = new ParticleType<>();
+    public static final ParticleType<?> OMINOUS_SPAWNING = new ParticleType<>();
     public static final ParticleType<?> PORTAL = new ParticleType<>();
+    public static final ParticleType<?> RAID_OMEN = new ParticleType<>();
     public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>(DustParticleOption.class);
     public static final ParticleType<?> REVERSE_PORTAL = new ParticleType<>();
     public static final ParticleType<?> SCRAPE = new ParticleType<>();
@@ -75,6 +84,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<PrimitiveParticleOption<Integer>> SHRIEK = new ParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
     public static final ParticleType<?> SLIME = new ParticleType<>();
     public static final ParticleType<?> SMALL_FLAME = new ParticleType<>();
+    public static final ParticleType<?> SMALL_GUST = new ParticleType<>();
     public static final ParticleType<?> SMOKE_LARGE = new ParticleType<>();
     public static final ParticleType<?> SMOKE_NORMAL = new ParticleType<>();
     public static final ParticleType<?> SNEEZE = new ParticleType<>();
@@ -97,6 +107,10 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> SWEEP_ATTACK = new ParticleType<>();
     public static final ParticleType<?> TOTEM = new ParticleType<>();
     public static final ParticleType<?> TOWN_AURA = new ParticleType<>();
+    public static final ParticleType<?> TRIAL_OMEN = new ParticleType<>();
+    public static final ParticleType<?> TRIAL_SPAWNER_DETECTION = new ParticleType<>();
+    public static final ParticleType<?> TRIAL_SPAWNER_DETECTION_OMINOUS = new ParticleType<>();
+    public static final ParticleType<?> VAULT_CONNECTION = new ParticleType<>();
     /**
      * Because of the little use case that Vibration has
      * at the time of writing this comment, there is no
@@ -116,6 +130,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> WAX_OFF = new ParticleType<>();
     public static final ParticleType<?> WAX_ON = new ParticleType<>();
     public static final ParticleType<?> WHITE_ASH = new ParticleType<>();
+    public static final ParticleType<?> WHITE_SMOKE = new ParticleType<>();
 
     private ParticleType() {
         this(null);
