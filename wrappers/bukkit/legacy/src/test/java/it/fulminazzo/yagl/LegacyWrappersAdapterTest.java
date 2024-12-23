@@ -46,6 +46,15 @@ public class LegacyWrappersAdapterTest extends BukkitUtils {
         particles.add(LegacyParticleType.TILE_BREAK.create(new MaterialDataOption(Material.STONE.name())));
         particles.add(LegacyParticleType.TILE_DUST.create(new MaterialDataOption(Material.STONE.name(), 10)));
         particles.add(LegacyParticleType.POTION_BREAK.create(new PotionParticleOption(new Potion(PotionType.JUMP.name()))));
+        // Remove effects not belonging to current Minecraft version
+        particles.removeIf(p -> {
+            try {
+                Effect.valueOf(p.getType());
+                return false;
+            } catch (IllegalArgumentException e) {
+                return true;
+            }
+        });
         return particles.toArray(new Particle[0]);
     }
 
