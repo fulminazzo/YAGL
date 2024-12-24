@@ -49,6 +49,13 @@ include 'gui:gui-serializer'
 project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
 include 'testing'
+include 'testing:testing-base'
+project(':testing:testing-base').projectDir = file('testing/base')
+include 'testing:testing-bukkit'
+project(':testing:testing-bukkit').projectDir = file('testing/bukkit')
+include 'testing:testing-serializer'
+project(':testing:testing-serializer').projectDir = file('testing/serializer')
+
 include 'demo'
 
 gradleEnterprise {
