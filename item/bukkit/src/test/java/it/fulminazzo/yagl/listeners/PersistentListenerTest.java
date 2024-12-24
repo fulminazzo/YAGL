@@ -5,7 +5,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
-import it.fulminazzo.yagl.testing.inventory.InventoryViewWrapper;
+import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;

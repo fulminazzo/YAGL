@@ -1,7 +1,6 @@
-package it.fulminazzo.yagl.testing.inventory;
+package it.fulminazzo.yagl.testing;
 
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
-import it.fulminazzo.yagl.testing.Wrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
