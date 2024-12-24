@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,6 +57,26 @@ class ItemAdapterTest extends BukkitUtils {
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
 
         assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
+    }
+
+    @Test
+    @After1_(14)
+    void testItemStackNullDisplayNameAndLore() {
+        check();
+
+        ItemStack itemStack = mock(ItemStack.class);
+        // Necessary to avoid null checks
+        ItemMeta itemMeta = mock(MockItemMeta.class, CALLS_REAL_METHODS);
+        new Refl<>(itemMeta)
+                .setFieldObject("enchants", new HashMap<>())
+                .setFieldObject("itemFlags", new HashSet<>());
+        when(itemMeta.getDisplayName()).thenReturn(null);
+
+        when(itemStack.getType()).thenReturn(Material.STONE);
+        when(itemStack.getAmount()).thenReturn(1);
+        when(itemStack.getItemMeta()).thenReturn(itemMeta);
+
+        assertEquals(Item.newItem("STONE"), ItemAdapter.itemStackToItem(itemStack));
     }
 
     private ItemFactory mockNullItemFactory() {
