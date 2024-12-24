@@ -2,6 +2,8 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.yagl.particles.Particle;
 import it.fulminazzo.yagl.utils.EnumUtils;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,6 +47,7 @@ enum ParticleConverter {
     WATER_WAKE("FISHING"),
     ;
 
+    @Getter(AccessLevel.PACKAGE)
     private final String particleName;
 
     ParticleConverter(final @NotNull String particleName) {
