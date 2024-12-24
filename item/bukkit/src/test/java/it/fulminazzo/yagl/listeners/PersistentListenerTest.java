@@ -92,7 +92,11 @@ class PersistentListenerTest {
     @ParameterizedTest
     @MethodSource("inventoryClickEvents")
     void simulateInventoryClick(InventoryClickEvent event) {
-        if (event.getRawSlot() == 2) cursor = maintain.create();
+        if (event.getRawSlot() == 2) {
+            Refl<?> view = new Refl<>(event.getView());
+            cursor = maintain.setMobility(Mobility.INTERNAL).create();
+            view.invokeMethod("setCursor", cursor);
+        }
 
         assertFalse(this.clicked, "Clicked should be initialized as false");
         assertFalse(event.isCancelled(), "Event should not be cancelled");
@@ -286,7 +290,11 @@ class PersistentListenerTest {
         @ParameterizedTest
         @MethodSource("inventoryClickEvents")
         void simulateInventoryClick(InventoryClickEvent event) {
-            if (event.getRawSlot() == 2) cursor = maintain.setMobility(Mobility.INTERNAL).create();
+            if (event.getRawSlot() == 2) {
+                Refl<?> view = new Refl<>(event.getView());
+                cursor = maintain.setMobility(Mobility.INTERNAL).create();
+                view.invokeMethod("setCursor", cursor);
+            }
 
             assertFalse(clicked, "Clicked should be initialized as false");
             assertFalse(event.isCancelled(), "Event should not be cancelled");
