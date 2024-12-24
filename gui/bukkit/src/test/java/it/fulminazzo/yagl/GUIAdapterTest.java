@@ -18,14 +18,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockedStatic;
 
 import java.util.List;
 import java.util.UUID;
@@ -84,15 +82,13 @@ class GUIAdapterTest {
         });
         when(server.isPrimaryThread()).thenReturn(false);
         when(server.getScheduler()).thenReturn(scheduler);
-        JavaPlugin plugin = mock(JavaPlugin.class);
 
-        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-            when(JavaPlugin.getProvidingPlugin(any())).thenReturn(plugin);
+        BukkitTestUtils.mockPlugin(p -> {
             GUI gui = GUI.newGUI(GUIType.CHEST);
             GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
-        }
 
-        verify(server.getScheduler()).runTask(eq(plugin), any(Runnable.class));
+            verify(server.getScheduler()).runTask(eq(p), any(Runnable.class));
+        });
     }
 
     @ParameterizedTest
