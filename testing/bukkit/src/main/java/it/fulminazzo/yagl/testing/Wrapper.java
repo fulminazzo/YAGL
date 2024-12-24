@@ -16,8 +16,8 @@ public abstract class Wrapper<O> {
     /**
      * Instantiates a new Wrapper.
      *
-     * @param clazz the clazz
-     * @param parameters  the parameters
+     * @param clazz      the clazz
+     * @param parameters the parameters
      */
     protected Wrapper(final @NotNull Class<O> clazz, final Object @NotNull ... parameters) {
         this.internalObject = new Refl<>(clazz, parameters);
@@ -26,10 +26,12 @@ public abstract class Wrapper<O> {
     /**
      * Gets the wrapped object.
      *
+     * @param <T> the type to convert the internal object to
      * @return the object
      */
-    public @NotNull O getWrapped() {
-        return this.internalObject.getObject();
+    @SuppressWarnings("unchecked")
+    public @NotNull <T> T getWrapped() {
+        return (T) this.internalObject.getObject();
     }
 
 }
