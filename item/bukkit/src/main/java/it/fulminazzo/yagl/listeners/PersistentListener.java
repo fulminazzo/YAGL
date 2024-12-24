@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.listeners;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ThreadUtils;
 import it.fulminazzo.yagl.InstanceNotInitializedException;
 import it.fulminazzo.yagl.SingleInstance;
@@ -176,7 +177,8 @@ public class PersistentListener extends SingleInstance implements Listener {
      */
     protected @NotNull Consumer<PersistentItem> clickConsumer(final @NotNull InventoryClickEvent event, final @NotNull Player player) {
         return e -> {
-            Inventory open = player.getOpenInventory().getTopInventory();
+            // Reflections necessary for tests
+            Inventory open = new Refl<>(player).invokeMethodRefl("getOpenInventory").invokeMethod("getTopInventory");
             int rawSlot = event.getRawSlot();
             if (e.getMobility() != Mobility.INTERNAL || (rawSlot < open.getSize() || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)))
                 cancelled(event).accept(e);
