@@ -44,8 +44,8 @@
 </p>
 
 **Need help?**
-[![](https://img.shields.io/badge/read-the_wiki-blue?style=for-the-badge)](../../wiki)
-[![](https://img.shields.io/badge/read-the_docs-orange?style=for-the-badge)](https://yagl.fulminazzo.it/docs)
+[![Read the wiki](https://img.shields.io/badge/read-the_wiki-blue?style=for-the-badge)](../../wiki)
+[![Read the docs](https://img.shields.io/badge/read-the_docs-orange?style=for-the-badge)](https://yagl.fulminazzo.it/docs)
 
 **Welcome to the official YAGL page**
 
