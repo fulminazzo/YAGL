@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
 import org.mockito.exceptions.misusing.NotAMockException;
+import org.mockito.internal.progress.MockingProgress;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingProgress;
 
 /**
  * The type Test utils.
@@ -55,10 +57,13 @@ public final class TestUtils {
             ArgumentCaptor<?> @NotNull [] captors = testSingleMethod(executor, method, staticObjects, target, invokedMethod, invokedMethodParamTypes);
             captorsValidator.accept(captors);
             // Clean up
-            try {reset(executor);}
-            catch (NotAMockException ignored) {}
-            try {reset(target);}
-            catch (NotAMockException ignored) {}
+            try {
+                MockingProgress mockingProgress = mockingProgress();
+                mockingProgress.validateState();
+                mockingProgress.reset();
+                mockingProgress.resetOngoingStubbing();
+                reset(target);
+            } catch (NotAMockException ignored) {}
         }
     }
 
