@@ -1,13 +1,13 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
-import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.inventory.InventoryViewWrapper;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.GUITestUtils;
 import it.fulminazzo.yagl.viewers.Viewer;
 import it.fulminazzo.yagl.wrappers.Sound;
-import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,7 +15,6 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -91,7 +90,7 @@ class GUIManagerTest {
                     .onChangeGUI((v, g1, g2) -> expected.set(true))
                     .onCloseGUI((v, g) -> notExpected.set(true));
             doAnswer(a -> {
-                InventoryCloseEvent event = new InventoryCloseEvent(getView());
+                InventoryCloseEvent event = new InventoryCloseEvent(getView().getWrapped());
                 this.guiManager.on(event);
                 return null;
             }).when(this.player).closeInventory();
@@ -109,8 +108,8 @@ class GUIManagerTest {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
 
-            InventoryView view = getView();
-            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
                     0, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -123,8 +122,8 @@ class GUIManagerTest {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
 
-            InventoryView view = getView();
-            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
                     1, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -137,8 +136,8 @@ class GUIManagerTest {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
 
-            InventoryView view = getView();
-            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
                     this.expected.size() + 1, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -153,8 +152,8 @@ class GUIManagerTest {
             when(this.player.getLocation()).thenReturn(location);
             this.expected.getContents(0).forEach(c -> c.setClickSound(sound));
 
-            InventoryView view = getView();
-            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
                     0, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -169,8 +168,8 @@ class GUIManagerTest {
             this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
             this.expected.setAllMovable();
 
-            InventoryView view = getView();
-            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
                     0, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -186,8 +185,8 @@ class GUIManagerTest {
             this.expected.onClickOutside((v, g) -> expected.set(true));
             this.expected.setAllMovable();
 
-            InventoryView view = getView();
-            InventoryClickEvent event = new InventoryClickEvent(view, InventoryType.SlotType.CONTAINER,
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
                     -1, ClickType.LEFT, InventoryAction.CLONE_STACK);
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -198,8 +197,8 @@ class GUIManagerTest {
 
         @Test
         void testDragEvent() {
-            InventoryView view = getView();
-            InventoryDragEvent event = new InventoryDragEvent(view, null, new ItemStack(Material.STONE),
+            InventoryViewWrapper view = getView();
+            InventoryDragEvent event = new InventoryDragEvent(view.getWrapped(), null, new ItemStack(Material.STONE),
                     false, new HashMap<>());
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
@@ -211,9 +210,9 @@ class GUIManagerTest {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.onCloseGUI((v, g) -> expected.set(true));
 
-            InventoryView view = getView();
+            InventoryViewWrapper view = getView();
 
-            this.guiManager.on(new InventoryCloseEvent(view));
+            this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
 
             assertTrue(expected.get(), "CloseGUI action was not invoked");
         }
@@ -237,9 +236,9 @@ class GUIManagerTest {
             });
         }
 
-        private @NotNull InventoryView getView() {
+        private @NotNull InventoryViewWrapper getView() {
             MockInventory inventory = new MockInventory(9);
-            return new MockInventoryView(inventory, this.player, "");
+            return new InventoryViewWrapper(inventory, this.player, "");
         }
 
     }
