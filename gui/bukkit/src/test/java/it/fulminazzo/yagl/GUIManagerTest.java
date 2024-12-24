@@ -3,7 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.inventory.InventoryViewWrapper;
+import it.fulminazzo.yagl.wrappers.inventory.InventoryViewWrapper;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.GUITestUtils;
 import it.fulminazzo.yagl.viewers.Viewer;

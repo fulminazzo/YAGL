@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.inventory;
+package it.fulminazzo.yagl.wrappers.inventory;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
