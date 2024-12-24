@@ -10,6 +10,7 @@ import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;
 import it.fulminazzo.yagl.items.PersistentItem;
+import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -70,10 +71,20 @@ class PersistentListenerTest {
     }
 
     @Test
-    void testGetInstance() {
+    void testGetInstanceInitialized() {
         PersistentListener listener = PersistentListener.getInstance();
         assertNotNull(listener, "Expected getInstance listener to not be null");
         assertEquals(PersistentListenerTest.listener, listener, "Listeners were not equal");
+    }
+
+    @Test
+    void testGetInstanceNotInitialized() {
+        BukkitTestUtils.mockPlugin(p -> {
+            listener.terminate();
+            PersistentListener listener = PersistentListener.getInstance();
+            assertNotNull(listener, "Expected getInstance listener to not be null");
+            assertNotEquals(PersistentListenerTest.listener, listener, "Listeners should not be equal");
+        });
     }
 
     private static InventoryViewWrapper setupInventoryClickEventView() {
