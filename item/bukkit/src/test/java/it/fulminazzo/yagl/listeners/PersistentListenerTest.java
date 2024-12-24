@@ -409,8 +409,9 @@ class PersistentListenerTest {
 
         private PlayerDeathEvent generatePlayerDeathEvent(Player player, List<ItemStack> drops) {
             try {
-                return new PlayerDeathEvent(player, drops, 3, "Player died");
-            } catch (NoSuchMethodError e) {
+                return new Refl<>(PlayerDeathEvent.class, player,
+                        drops, 3, "Player died").getObject();
+            } catch (IllegalArgumentException e) {
                 // Versions higher than 1.20.6
                 return new Refl<>(PlayerDeathEvent.class, player,
                         mock(ReflectionUtils.getClass("org.bukkit.damage.DamageSource")),
