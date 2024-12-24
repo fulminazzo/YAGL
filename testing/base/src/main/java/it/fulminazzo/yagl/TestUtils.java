@@ -65,15 +65,18 @@ public final class TestUtils {
 
     /**
      * Allows testing the given <i>targetMethod</i>.
-     * It verifies that the <i>executor</i> invokes <i>targetMethod</i> and that,
-     * upon execution, <i>target</i> invokes <i>invokedMethod</i>.
+     * It first invokes <i>targetMethod</i> from <i>executor</i>
+     * with the given static objects as parameters.
+     * Then, it verifies using <b>Mock</b> that the <i>target</i> object
+     * invoked <i>invokedMethod</i> during the execution of the prior method.
      *
      * @param executor                the executor
      * @param targetMethod            the target method
      * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
      * @param target                  the target
      * @param invokedMethod           the invoked method
-     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>. These will also be the types of the returned captors
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>.
+     *                                These will also be the types of the returned captors
      * @return the argument captors of the invoked parameters
      */
     public static ArgumentCaptor<?> @NotNull [] testSingleMethod(final @NotNull Object executor, final @NotNull Method targetMethod,
