@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -55,6 +56,13 @@ class TestUtilsTest {
                     new Object[0], executor, "throwException");
             assertNull(object);
         }
+    }
+
+    @Test
+    void testTestReturnTypeIllegalArgumentException() {
+        assertThrowsExactly(AssertionFailedError.class, () -> TestUtils.testReturnType(
+                new MockExecutorImpl(), MockExecutorImpl.class, String.class,
+                m -> !m.getName().equals("getThis")));
     }
 
 }
