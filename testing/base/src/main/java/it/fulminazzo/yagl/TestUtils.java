@@ -209,7 +209,6 @@ public final class TestUtils {
         if (Boolean.class.isAssignableFrom(clazz)) return false;
         if (clazz.isEnum()) {
             Enum<?>[] enums = new Refl<>(clazz).invokeMethod("values");
-            if (enums == null) return null;
             return enums[0];
         }
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
