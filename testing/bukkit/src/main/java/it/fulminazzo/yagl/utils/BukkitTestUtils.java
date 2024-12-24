@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.utils;
 
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -14,7 +15,8 @@ import static org.mockito.Mockito.*;
 /**
  * A collection of utilities used to test the module
  */
-public class BukkitTestUtils {
+@NoArgsConstructor
+public final class BukkitTestUtils {
 
     /**
      * Mocks the returned value of {@link JavaPlugin#getProvidingPlugin(Class)} and executes the given function.
