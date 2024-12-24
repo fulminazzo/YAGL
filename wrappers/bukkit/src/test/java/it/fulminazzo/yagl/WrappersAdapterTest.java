@@ -24,7 +24,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
-import sun.reflect.Reflection;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -240,8 +239,8 @@ class WrappersAdapterTest extends BukkitUtils {
                         mock(Location.class), 0, 0.0, 1.0, 0.0, 0.0));
     }
 
-    @After1_(17)
     @Test
+    @After1_(17)
     void testInvalidClassProvided() {
         check();
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
