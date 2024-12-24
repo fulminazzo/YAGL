@@ -242,9 +242,12 @@ class WrappersAdapterTest extends BukkitUtils {
     @Test
     void testInvalidClassProvided() {
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
-        assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
+        IllegalArgumentException e = assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
                 ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.RED, 3f),
                 org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.FALLING_DUST.getDataType()));
+        assertTrue(e.getMessage().contains("Invalid option"),
+                String.format("Message \"%s\" did not contain expected message",
+                        e.getMessage()));
     }
 
     @Test
