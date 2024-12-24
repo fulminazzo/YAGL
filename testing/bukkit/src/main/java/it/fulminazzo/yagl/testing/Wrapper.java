@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.wrappers;
+package it.fulminazzo.yagl.testing;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
