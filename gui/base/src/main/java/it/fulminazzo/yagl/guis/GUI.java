@@ -1342,31 +1342,36 @@ public interface GUI extends Metadatable {
         if (other.size() != size())
             throw new IllegalArgumentException(String.format("Cannot copy from GUI with different size %s != %s",
                     size(), other.size()));
-        if (other.getTitle() == null || replace) other.setTitle(getTitle());
-        copyAll((Metadatable) other, replace);
-        for (int i = 0; i < size(); i++) {
-            final @NotNull List<GUIContent> contents = getContents(i);
-            if (contents.isEmpty()) continue;
-            if (other.getContents(i).isEmpty() || replace)
-                other.setContents(i, contents.toArray(new GUIContent[0]));
+        else {
+            if (other.getTitle() == null || replace) other.setTitle(getTitle());
+
+            copyAll((Metadatable) other, replace);
+
+            for (int i = 0; i < size(); i++) {
+                final @NotNull List<GUIContent> contents = getContents(i);
+                if (!contents.isEmpty() && (other.getContents(i).isEmpty() || replace))
+                    other.setContents(i, contents.toArray(new GUIContent[0]));
+            }
+
+            openGUIAction().ifPresent(a -> {
+                @NotNull Optional<GUIAction> open = other.openGUIAction();
+                if (!open.isPresent() || replace) other.onOpenGUI(a);
+            });
+            closeGUIAction().ifPresent(a -> {
+                @NotNull Optional<GUIAction> close = other.closeGUIAction();
+                if (!close.isPresent() || replace) other.onCloseGUI(a);
+            });
+            changeGUIAction().ifPresent(a -> {
+                @NotNull Optional<BiGUIAction> change = other.changeGUIAction();
+                if (!change.isPresent() || replace) other.onChangeGUI(a);
+            });
+            clickOutsideAction().ifPresent(a -> {
+                @NotNull Optional<GUIAction> clickOutside = other.clickOutsideAction();
+                if (!clickOutside.isPresent() || replace) other.onClickOutside(a);
+            });
+
+            return this;
         }
-        openGUIAction().ifPresent(a -> {
-            @NotNull Optional<GUIAction> open = other.openGUIAction();
-            if (!open.isPresent() || replace) other.onOpenGUI(a);
-        });
-        closeGUIAction().ifPresent(a -> {
-            @NotNull Optional<GUIAction> close = other.closeGUIAction();
-            if (!close.isPresent() || replace) other.onCloseGUI(a);
-        });
-        changeGUIAction().ifPresent(a -> {
-            @NotNull Optional<BiGUIAction> change = other.changeGUIAction();
-            if (!change.isPresent() || replace) other.onChangeGUI(a);
-        });
-        clickOutsideAction().ifPresent(a -> {
-            @NotNull Optional<GUIAction> clickOutside = other.clickOutsideAction();
-            if (!clickOutside.isPresent() || replace) other.onClickOutside(a);
-        });
-        return this;
     }
 
     /**
