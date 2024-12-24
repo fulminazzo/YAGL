@@ -115,8 +115,11 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
      * Because of the little use case that Trail has
      * at the time of writing this comment, there is no
      * specific {@link ParticleOption} for it.
+     * <br>
      * One can use a {@link PrimitiveParticleOption} and
      * pass the actual Particle.Trail object to it.
+     * <br>
+     * <br>
      * <b>NOTE</b> it will not be serialized automatically.
      */
     public static final ParticleType<PrimitiveParticleOption<Object>> TRAIL = new ParticleType<>((Class<PrimitiveParticleOption<Object>>) (Class<?>) PrimitiveParticleOption.class);
@@ -128,8 +131,11 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
      * Because of the little use case that Vibration has
      * at the time of writing this comment, there is no
      * specific {@link ParticleOption} for it.
+     * <br>
      * One can use a {@link PrimitiveParticleOption} and
      * pass the actual Vibration object to it.
+     * <br>
+     * <br>
      * <b>NOTE</b> it will not be serialized automatically.
      */
     public static final ParticleType<PrimitiveParticleOption<Object>> VIBRATION = new ParticleType<>((Class<PrimitiveParticleOption<Object>>) (Class<?>) PrimitiveParticleOption.class);
