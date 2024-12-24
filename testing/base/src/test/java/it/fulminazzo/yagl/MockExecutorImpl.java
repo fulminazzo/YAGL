@@ -9,6 +9,10 @@ class MockExecutorImpl {
         throw new MockException();
     }
 
+    MockExecutorImpl getThis() {
+        return this;
+    }
+
     public static class MockException extends RuntimeException {
 
     }
