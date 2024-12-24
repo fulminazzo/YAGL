@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.wrappers.inventory;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
+import it.fulminazzo.yagl.wrappers.Wrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -12,8 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * This is required for Minecraft version 1.20.6+ tests since
  * InventoryView is not an abstract class anymore.
  */
-public class InventoryViewWrapper {
-    private final Refl<?> internalObject;
+public class InventoryViewWrapper extends Wrapper<MockInventoryView> {
 
     /**
      * Instantiates a new Inventory view wrapper.
@@ -23,18 +22,7 @@ public class InventoryViewWrapper {
      * @param title     the title
      */
     public InventoryViewWrapper(@NotNull Inventory inventory, @NotNull Player player, @NotNull String title) {
-        this.internalObject = new Refl<>(MockInventoryView.class, inventory, player, title);
-    }
-
-    /**
-     * Gets the wrapped view.
-     *
-     * @param <V> the type of the view
-     * @return the view
-     */
-    @SuppressWarnings("unchecked")
-    public <V> V getWrapped() {
-        return (V) this.internalObject.getObject();
+        super(MockInventoryView.class, inventory, player, title);
     }
 
     /**
