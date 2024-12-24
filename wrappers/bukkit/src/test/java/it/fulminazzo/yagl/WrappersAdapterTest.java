@@ -16,6 +16,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -395,6 +396,26 @@ class WrappersAdapterTest extends BukkitUtils {
         org.bukkit.potion.PotionEffect actual = WrappersAdapter.wPotionEffectToPotionEffect(potionEffect);
         assertEquals(Printable.printObject(expected, ""), Printable.printObject(actual, ""));
         assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getPotionEffects")
+    void testPotionsConversionNewerVersions(org.bukkit.potion.PotionEffect expected) {
+        String type = expected.getType().getName().replace("_", " ");
+        if (type.equals("UNLUCK")) type = "BAD LUCK";
+        if (!type.contains(" ")) type += " ";
+        try (MockedStatic<PotionEffectType> ignored = mockStatic(PotionEffectType.class)) {
+            when(PotionEffectType.getByName(any())).thenAnswer(a -> {
+                String name = a.getArgument(0);
+                if (name.contains(" "))
+                    throw new IllegalArgumentException("Could not find potion type with name: " + name);
+                else return PotionEffectType.ABSORPTION;
+            });
+
+            PotionEffect potionEffect = new PotionEffect(type);
+            Object converted = WrappersAdapter.wPotionEffectToPotionEffect(potionEffect);
+            assertNotNull(converted, "Converted should have not been null");
+        }
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
