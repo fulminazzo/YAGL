@@ -146,10 +146,14 @@ allprojects {
         }
 
         if (!projectName.contains(TEST_MODULE)) {
+            def modulesMap = [
+                    'base':'base', 'serializer':'serializer', 'bukkit':'bukkit',
+                    'obsolete':'bukkit', 'legacy':'bukkit'
+            ]
             // If not test module, import corresponding test module
-            for (m in ['base', 'serializer', 'bukkit'])
+            for (m in modulesMap.keySet())
                 if (projectName.contains(m))
-                    testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-${m}")
+                    testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-${modulesMap[m]}")
         } else if (projectName.contains('bukkit')) {
             // If test module (bukkit version), implement JBukkit
             implementation getJBukkitModule(latestVersion)
