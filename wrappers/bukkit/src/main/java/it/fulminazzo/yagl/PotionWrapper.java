@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A wrapper for {@link Potion} objects.
  */
+@SuppressWarnings("deprecation")
 @Getter
 public class PotionWrapper {
     private final Potion internalPotion;
