@@ -206,11 +206,10 @@ class PersistentListenerTest {
         listener.on(event);
         assertTrue(value.get());
 
-        // ???
         // Simulate rapid click
-        // value.set(false);
-        // listener.on(event);
-        // assertFalse(value.get());
+        value.set(false);
+        listener.on(event);
+        assertFalse(value.get());
     }
 
     @Test
