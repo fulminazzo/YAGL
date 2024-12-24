@@ -5,6 +5,9 @@ import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.*;
@@ -17,6 +20,21 @@ class TestUtilsTest {
                 new MockExecutor(), m -> false, a -> {}, new Object[0],
                 new MockExecutor(), "throwException"
         ));
+    }
+
+    @Test
+    void testResetFailure() {
+        try (MockedStatic<TestUtils> ignored = mockStatic(TestUtils.class)) {
+            when(TestUtils.testSingleMethod(any(), any(), any(), any(), any())).thenAnswer(a -> null);
+            when(new Refl<>(TestUtils.class).invokeMethod("testMultipleMethods",
+                    new Class[]{Object.class, Predicate.class, Consumer.class, Object[].class, Object.class, String.class, Class[].class},
+                    any(), any(), any(), any(), any(), any(), any())).thenCallRealMethod();
+
+            TestUtils.testMultipleMethods(
+                    new MockExecutor(), m -> true, a -> {}, new Object[0],
+                    new MockExecutor(), "throwException"
+            );
+        }
     }
 
     @Test
