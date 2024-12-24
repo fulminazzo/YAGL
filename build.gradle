@@ -155,8 +155,8 @@ allprojects {
                 if (projectName.contains(m))
                     testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-${modulesMap[m]}")
         } else if (projectName.contains('bukkit')) {
-            // If test module (bukkit version), implement JBukkit
-            implementation getJBukkitModule(latestVersion)
+            // If test module (bukkit version), implement base JBukkit
+            implementation "${libs.versions.jbukkitartifact.get()}:base:${libs.versions.jbukkit.get()}"
         }
 
         // Demo module
