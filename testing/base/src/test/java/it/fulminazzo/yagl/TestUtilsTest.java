@@ -12,6 +12,14 @@ import static org.mockito.Mockito.*;
 class TestUtilsTest {
 
     @Test
+    void testMultipleMethodsEmpty() {
+        assertThrowsExactly(IllegalArgumentException.class, () -> TestUtils.testMultipleMethods(
+                new MockExecutor(), m -> false, a -> {}, new Object[0],
+                new MockExecutor(), "throwException"
+        ));
+    }
+
+    @Test
     void testTestSingleMethod() {
         MockExecutor executor = new MockExecutor();
         assertThrowsExactly(MockExecutor.MockException.class, () ->
