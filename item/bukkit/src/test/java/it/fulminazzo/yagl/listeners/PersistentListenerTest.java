@@ -69,6 +69,13 @@ class PersistentListenerTest {
         cursor = null;
     }
 
+    @Test
+    void testGetInstance() {
+        PersistentListener listener = PersistentListener.getInstance();
+        assertNotNull(listener, "Expected getInstance listener to not be null");
+        assertEquals(PersistentListenerTest.listener, listener, "Listeners were not equal");
+    }
+
     private static InventoryViewWrapper setupInventoryClickEventView() {
         Inventory inventory = new MockInventory(9);
         inventory.setItem(0, maintain.create());
