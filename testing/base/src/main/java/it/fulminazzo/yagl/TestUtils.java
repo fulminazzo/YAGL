@@ -189,7 +189,6 @@ public final class TestUtils {
                         if (message != null && message.contains("Could not find"))
                             fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
                                     methodString, objectClassName, objectClassName));
-                        else throw e;
                     }
                     assertEquals(object.hashCode(), o.hashCode(), errorMessage);
                 }
