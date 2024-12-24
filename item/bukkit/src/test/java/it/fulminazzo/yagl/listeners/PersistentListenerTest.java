@@ -5,11 +5,11 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
-import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;
 import it.fulminazzo.yagl.items.PersistentItem;
+import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,6 +32,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedConstruction;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,8 +41,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("deprecation")
 class PersistentListenerTest {
@@ -207,9 +207,17 @@ class PersistentListenerTest {
         assertTrue(value.get());
 
         // Simulate rapid click
-        value.set(false);
-        listener.on(event);
-        assertFalse(value.get());
+        try (MockedConstruction<Date> ignored = mockConstruction(Date.class, (mock, context) -> {
+            when(mock.getTime()).thenAnswer(a -> {
+                Refl<PersistentListener> refl = new Refl<>(listener);
+                Map<UUID, Long> map = refl.getFieldObject("lastUsed");
+                return map.get(player.getUniqueId()) + (long) refl.getFieldObject("INTERACT_DELAY") - 1;
+            });
+        })) {
+            value.set(false);
+            listener.on(event);
+            assertFalse(value.get());
+        }
     }
 
     @Test
