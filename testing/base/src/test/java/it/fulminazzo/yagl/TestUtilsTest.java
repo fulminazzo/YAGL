@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.opentest4j.AssertionFailedError;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -63,6 +64,17 @@ class TestUtilsTest {
         assertThrowsExactly(AssertionFailedError.class, () -> TestUtils.testReturnType(
                 new MockExecutorImpl(), MockExecutorImpl.class, String.class,
                 m -> !m.getName().equals("getThis")));
+    }
+
+    @Test
+    void testTestReturnTypeGeneralException() {
+        try (MockedStatic<ExceptionUtils> exceptionUtils = mockStatic(ExceptionUtils.class)) {
+            when(new Refl<>(ExceptionUtils.class).invokeMethod("throwException", any(Exception.class))).then(a -> null);
+            TestUtils.testReturnType(
+                    new MockExecutorImpl(), MockExecutorImpl.class, MockExecutorImpl.class,
+                    m -> !m.getName().equals("throwException"));
+            exceptionUtils.verify(() -> ExceptionUtils.throwException(any(InvocationTargetException.class)));
+        }
     }
 
 }

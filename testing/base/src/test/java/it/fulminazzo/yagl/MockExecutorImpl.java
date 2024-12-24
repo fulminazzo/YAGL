@@ -5,7 +5,7 @@ package it.fulminazzo.yagl;
  */
 class MockExecutorImpl {
 
-    void throwException() {
+    MockExecutorImpl throwException() {
         throw new MockException();
     }
 
