@@ -185,10 +185,8 @@ public final class TestUtils {
                     try {
                         ReflectionUtils.getMethod(objectClass, expectedReturnType, method.getName(), method.getParameterTypes());
                     } catch (IllegalArgumentException e) {
-                        final String message = e.getMessage();
-                        if (message != null && message.contains("Could not find"))
-                            fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
-                                    methodString, objectClassName, objectClassName));
+                        fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
+                                methodString, objectClassName, objectClassName));
                     }
                     assertEquals(object.hashCode(), o.hashCode(), errorMessage);
                 }
