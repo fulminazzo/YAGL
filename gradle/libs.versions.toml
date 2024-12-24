@@ -3,8 +3,8 @@ delombok = "8.11"
 groovy = "4.0.24"
 
 # Latest versions
-fulmicollection = "+"
-yamlparser = "+"
+fulmicollection = "latest.release"
+yamlparser = "latest.release"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 spigot_obsolete = "1.8.8-R0.1-SNAPSHOT"
