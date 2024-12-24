@@ -4,7 +4,7 @@ import it.fulminazzo.yagl.GUIManager;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.utils.GUITestUtils;
+import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.Viewer;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
@@ -46,7 +46,7 @@ public class BukkitCommandActionTest {
     @ParameterizedTest
     @MethodSource("guiActions")
     void testGUICommandActions(Consumer<GUI> setupAction, BiConsumer<Viewer, GUI> runAction) {
-        GUITestUtils.mockPlugin(p -> {
+        BukkitTestUtils.mockPlugin(p -> {
             Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
             when(player.isOnline()).thenReturn(true);
 

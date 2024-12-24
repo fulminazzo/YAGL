@@ -5,7 +5,7 @@ import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.yagl.utils.GUITestUtils;
+import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.Viewer;
 import it.fulminazzo.yagl.wrappers.Sound;
 import org.bukkit.Bukkit;
@@ -37,14 +37,14 @@ class GUIManagerTest {
     void testGetOpenGUIViewerPlayer() {
         BukkitUtils.setupServer();
         Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
-        GUITestUtils.mockPlugin(p ->
+        BukkitTestUtils.mockPlugin(p ->
                 assertFalse(GUIManager.getOpenGUIViewer(player).isPresent(), "Should not be present"));
     }
 
     @Test
     void testGetOpenGUIViewerUUID() {
         BukkitUtils.setupServer();
-        GUITestUtils.mockPlugin(p ->
+        BukkitTestUtils.mockPlugin(p ->
                 assertFalse(GUIManager.getOpenGUIViewer(UUID.randomUUID()).isPresent(), "Should not be present"));
     }
 
@@ -219,7 +219,7 @@ class GUIManagerTest {
 
         @Test
         void testDisableThisPlugin() {
-            GUITestUtils.mockPlugin(p -> {
+            BukkitTestUtils.mockPlugin(p -> {
                 PluginDisableEvent event = new PluginDisableEvent(p);
                 this.guiManager.on(event);
                 verify(this.player).closeInventory();
@@ -229,7 +229,7 @@ class GUIManagerTest {
 
         @Test
         void testDisableNotThisPlugin() {
-            GUITestUtils.mockPlugin(p -> {
+            BukkitTestUtils.mockPlugin(p -> {
                 PluginDisableEvent event = new PluginDisableEvent(mock(JavaPlugin.class));
                 this.guiManager.on(event);
                 verify(this.player, never()).closeInventory();

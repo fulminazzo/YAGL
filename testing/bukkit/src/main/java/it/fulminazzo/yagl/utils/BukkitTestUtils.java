@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 /**
  * A collection of utilities used to test the module
  */
-public class GUITestUtils {
+public class BukkitTestUtils {
 
     /**
      * Mocks the returned value of {@link JavaPlugin#getProvidingPlugin(Class)} and executes the given function.
@@ -30,4 +30,5 @@ public class GUITestUtils {
             function.accept(plugin);
         }
     }
+
 }

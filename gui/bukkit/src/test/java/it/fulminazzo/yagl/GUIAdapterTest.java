@@ -8,7 +8,7 @@ import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.yagl.utils.GUITestUtils;
+import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -137,7 +137,7 @@ class GUIAdapterTest {
         GUI gui = GUI.newGUI(GUIType.CHEST)
                 .setTitle(null)
                 .addContent(Item.newItem(playerHead.name()).setDisplayName("<player_name>"));
-        GUITestUtils.mockPlugin(p -> GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player), setMetaUnbreakable));
+        BukkitTestUtils.mockPlugin(p -> GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player), setMetaUnbreakable));
 
         assertNotNull(this.inventory);
 
@@ -191,11 +191,11 @@ class GUIAdapterTest {
     }
 
     private void openGUI(GUI gui) {
-        GUITestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
+        BukkitTestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
     }
 
     private void closeGUI() {
-        GUITestUtils.mockPlugin(p -> GUIAdapter.closeGUI(GUIManager.getViewer(this.player)));
+        BukkitTestUtils.mockPlugin(p -> GUIAdapter.closeGUI(GUIManager.getViewer(this.player)));
     }
 
 }
