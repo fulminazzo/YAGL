@@ -17,8 +17,8 @@ class TestUtilsTest {
     @Test
     void testMultipleMethodsEmpty() {
         assertThrowsExactly(IllegalArgumentException.class, () -> TestUtils.testMultipleMethods(
-                new MockExecutor(), m -> false, a -> {}, new Object[0],
-                new MockExecutor(), "throwException"
+                new MockExecutorImpl(), m -> false, a -> {}, new Object[0],
+                new MockExecutorImpl(), "throwException"
         ));
     }
 
@@ -31,17 +31,17 @@ class TestUtilsTest {
                     any(), any(), any(), any(), any(), any(), any())).thenCallRealMethod();
 
             TestUtils.testMultipleMethods(
-                    new MockExecutor(), m -> true, a -> {}, new Object[0],
-                    new MockExecutor(), "throwException"
+                    new MockExecutorImpl(), m -> true, a -> {}, new Object[0],
+                    new MockExecutorImpl(), "throwException"
             );
         }
     }
 
     @Test
     void testTestSingleMethod() {
-        MockExecutor executor = new MockExecutor();
-        assertThrowsExactly(MockExecutor.MockException.class, () ->
-                TestUtils.testSingleMethod(executor, MockExecutor.class.getDeclaredMethod("throwException"),
+        MockExecutorImpl executor = new MockExecutorImpl();
+        assertThrowsExactly(MockExecutorImpl.MockException.class, () ->
+                TestUtils.testSingleMethod(executor, MockExecutorImpl.class.getDeclaredMethod("throwException"),
                         new Object[0], executor, "throwException"));
     }
 
@@ -49,9 +49,9 @@ class TestUtilsTest {
     void mockNoExceptionThrownForJacocoCoverage() throws NoSuchMethodException {
         try (MockedStatic<ExceptionUtils> ignored = mockStatic(ExceptionUtils.class)) {
             when(new Refl<>(ExceptionUtils.class).invokeMethod("throwException", any(Exception.class))).then(a -> null);
-            MockExecutor executor = new MockExecutor();
+            MockExecutorImpl executor = new MockExecutorImpl();
             Object object = TestUtils.testSingleMethod(executor,
-                    MockExecutor.class.getDeclaredMethod("throwException"),
+                    MockExecutorImpl.class.getDeclaredMethod("throwException"),
                     new Object[0], executor, "throwException");
             assertNull(object);
         }

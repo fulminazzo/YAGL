@@ -3,7 +3,7 @@ package it.fulminazzo.yagl;
 /**
  * A class used by {@link TestUtilsTest}
  */
-class MockExecutor {
+class MockExecutorImpl {
 
     void throwException() {
         throw new MockException();
