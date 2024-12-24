@@ -54,6 +54,7 @@
 If you are a **server admin**, I suggest you [read the documentation](../../wiki) to learn how to properly configure and change default values.
 
 If you are a **developer**, **YAGL** is composed of **three main modules**:
+
 - [wrappers](tree/main/wrappers), a module that contains common **Minecraft** objects like **enchantments**, **sounds**, **particles**. It offers the capability of **saving and loading** them in a **nice format** for the end user;
 - [item](tree/main/item), a module to **generate and customize items** and even **apply textures** to them;
 - [gui](tree/main/gui), the **core module**, that **displays the actual interfaces** to players.
@@ -64,6 +65,7 @@ Each one of them is made of three submodules:
 (an implementation of the module for [Bukkit plugins](https://getbukkit.org/)).
 
 They can all be imported separately or together, following one of the three common methods:
+
 - **Gradle** (preferred):
   ```groovy
   repositories {
@@ -93,10 +95,12 @@ They can all be imported separately or together, following one of the three comm
 For more information, [check the wiki](../../wiki).
 
 ## Why?
+
 > Wait, so in 2024 you wrote another GUI library, totally ignoring all the better options available? 
 > You are not that smart, are you?
 
 When **YAGL** was nothing more than a simple thought, it had many goals:
+
 - it had to be **platform independent**, meaning that it could potentially be used by even other platforms to implement their own versions (check [Roadmap](#roadmap) for more);
 - it had to be **cross-compatible** among **older Minecraft versions**, specifically from **1.8**.
   Many may argue that such a version is so obsolete that it should not even be distributed anymore,
@@ -115,6 +119,7 @@ Because of its incredible modularity, **YAGL** can be used for more projects rel
 As of right now, **they are not planned**, but there is possibility in the future.
 
 ## Roadmap
+
 While it being such a huge project, **YAGL** can still be expanded a lot.
 These are some of the pending features that are planned for the future:
 
