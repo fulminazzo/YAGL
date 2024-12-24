@@ -19,8 +19,17 @@ public abstract class Wrapper<O> {
      * @param clazz      the clazz
      * @param parameters the parameters
      */
-    protected Wrapper(final @NotNull Class<O> clazz, final Object @NotNull ... parameters) {
-        this.internalObject = new Refl<>(clazz, parameters);
+    public Wrapper(final @NotNull Class<O> clazz, final Object @NotNull ... parameters) {
+        this(new Refl<>(clazz, parameters));
+    }
+
+    /**
+     * Instantiates a new Wrapper.
+     *
+     * @param internalObject the internal object
+     */
+    public Wrapper(final @NotNull Refl<O> internalObject) {
+        this.internalObject = internalObject;
     }
 
     /**
