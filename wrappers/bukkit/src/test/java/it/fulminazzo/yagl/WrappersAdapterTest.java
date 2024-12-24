@@ -275,7 +275,7 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testPlaySound() {
-        Sound sound = new Sound(org.bukkit.Sound.BLOCK_GLASS_STEP.name(),10, 2, SoundCategory.BLOCKS.name());
+        Sound sound = new Sound("BLOCK_GLASS_STEP",10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
 
         when(player.getLocation()).thenReturn(new Location(null, 0, 1, 0));
@@ -289,7 +289,7 @@ class WrappersAdapterTest extends BukkitUtils {
         verify(player).playSound(any(Location.class), soundArg.capture(),
                 categoryArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getName(), soundArg.getValue().name());
+        assertEquals(sound.getName(), new Refl<>(soundArg).invokeMethodRefl("getValue").invokeMethod("name"));
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
@@ -299,7 +299,7 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testPlaySoundNoCategory() {
-        Sound sound = new Sound(org.bukkit.Sound.BLOCK_GLASS_STEP.name(),10, 2);
+        Sound sound = new Sound("BLOCK_GLASS_STEP",10, 2);
         Player player = mock(Player.class);
 
         when(player.getLocation()).thenReturn(new Location(null, 0, 1, 0));
@@ -311,7 +311,7 @@ class WrappersAdapterTest extends BukkitUtils {
         ArgumentCaptor<Float> pitchArg = ArgumentCaptor.forClass(Float.class);
         verify(player).playSound(any(Location.class), soundArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getName(), soundArg.getValue().name());
+        assertEquals(sound.getName(), new Refl<>(soundArg).invokeMethodRefl("getValue").invokeMethod("name"));
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
@@ -321,7 +321,7 @@ class WrappersAdapterTest extends BukkitUtils {
     void testPlaySoundInvalidCategory() {
         Player player = mock(Player.class);
         assertThrowsExactly(IllegalArgumentException.class, () ->
-                WrappersAdapter.playSound(player, new Sound(org.bukkit.Sound.BLOCK_ANVIL_FALL.name(),
+                WrappersAdapter.playSound(player, new Sound("BLOCK_ANVIL_FALL",
                         1f, 1f, "hostiles")));
     }
 
