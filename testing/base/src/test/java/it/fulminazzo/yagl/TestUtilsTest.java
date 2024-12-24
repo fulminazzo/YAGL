@@ -2,9 +2,9 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-import org.opentest4j.AssertionFailedError;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
@@ -61,9 +61,11 @@ class TestUtilsTest {
 
     @Test
     void testTestReturnTypeIllegalArgumentException() {
-        assertThrowsExactly(AssertionFailedError.class, () -> TestUtils.testReturnType(
-                new MockExecutorImpl(), MockExecutorImpl.class, String.class,
-                m -> !m.getName().equals("getThis")));
+        try (MockedStatic<Assertions> assertions = mockStatic(Assertions.class)) {
+            TestUtils.testReturnType(new MockExecutorImpl(), MockExecutorImpl.class, String.class,
+                    m -> !m.getName().equals("getThis"));
+            assertions.verify(() -> Assertions.fail("Method 'getThis()' of class 'MockExecutorImpl' did not have return type of 'MockExecutorImpl'"));
+        }
     }
 
     @Test
