@@ -23,8 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.MockedStatic;
+import org.mockito.*;
+import sun.reflect.Reflection;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -495,6 +495,16 @@ class WrappersAdapterTest extends BukkitUtils {
 
             assertThrowsExactly(IllegalStateException.class, () -> WrappersAdapter.itemToItemStack(null),
                     "Should throw exception signaling missing item module");
+        }
+    }
+
+    @Test
+    void testGetNamespacedKeyClassNotExisting() {
+        try (MockedStatic<WrappersAdapter> ignored = mockStatic(WrappersAdapter.class, CALLS_REAL_METHODS)) {
+            when(new Refl<>(WrappersAdapter.class).invokeMethod("getNamespacedKeyClass"))
+                    .thenThrow(ClassNotFoundException.class);
+
+            assertThrowsExactly(IllegalStateException.class, () -> WrappersAdapter.getNamespacedKey("mock"));
         }
     }
 
