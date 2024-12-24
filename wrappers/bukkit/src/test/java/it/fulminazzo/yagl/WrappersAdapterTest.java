@@ -239,12 +239,14 @@ class WrappersAdapterTest extends BukkitUtils {
                         mock(Location.class), 0, 0.0, 1.0, 0.0, 0.0));
     }
 
+    @After1_(17)
     @Test
     void testInvalidClassProvided() {
+        check();
         Refl<?> refl = new Refl<>(WrappersAdapter.class);
-        IllegalArgumentException e = assertThrowsExactly(IllegalArgumentException.class, () -> refl.invokeMethod("wParticleToGeneral",
-                ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.RED, 3f),
-                org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.FALLING_DUST.getDataType()));
+        IllegalArgumentException e = assertThrowsExactly(IllegalArgumentException.class, () ->
+                refl.invokeMethod("wParticleToGeneral", ParticleType.DUST_COLOR_TRANSITION.create(Color.RED, Color.RED, 3f),
+                org.bukkit.Particle.class, (Function<?, Class<?>>) s -> org.bukkit.Particle.DustOptions.class));
         assertTrue(e.getMessage().contains("Invalid option"),
                 String.format("Message \"%s\" did not contain expected message",
                         e.getMessage()));
