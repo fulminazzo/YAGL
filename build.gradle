@@ -160,9 +160,12 @@ allprojects {
         }
 
         // Demo module
-        if (projectName == DEMO_MODULE)
-            rootProject.subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
+        if (projectName == DEMO_MODULE) {
+            rootProject.subprojects
+                    .findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
+            testImplementation getJBukkitModule(latestVersion)
+        }
     }
 
     java {
