@@ -8,6 +8,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> BARRIER = new ParticleType<>();
     public static final ParticleType<BlockDataOption> BLOCK_MARKER = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_CRACK = new ParticleType<>(BlockDataOption.class);
+    public static final ParticleType<BlockDataOption> BLOCK_CRUMBLE = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<BlockDataOption> BLOCK_DUST = new ParticleType<>(BlockDataOption.class);
     public static final ParticleType<?> BUBBLE_COLUMN_UP = new ParticleType<>();
     public static final ParticleType<?> BUBBLE_POP = new ParticleType<>();
@@ -75,6 +76,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> NAUTILUS = new ParticleType<>();
     public static final ParticleType<?> NOTE = new ParticleType<>();
     public static final ParticleType<?> OMINOUS_SPAWNING = new ParticleType<>();
+    public static final ParticleType<?> PALE_OAK_LEAVES = new ParticleType<>();
     public static final ParticleType<?> PORTAL = new ParticleType<>();
     public static final ParticleType<?> RAID_OMEN = new ParticleType<>();
     public static final ParticleType<DustParticleOption> REDSTONE = new ParticleType<>(DustParticleOption.class);
@@ -109,6 +111,15 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> SWEEP_ATTACK = new ParticleType<>();
     public static final ParticleType<?> TOTEM = new ParticleType<>();
     public static final ParticleType<?> TOWN_AURA = new ParticleType<>();
+    /**
+     * Because of the little use case that Trail has
+     * at the time of writing this comment, there is no
+     * specific {@link ParticleOption} for it.
+     * One can use a {@link PrimitiveParticleOption} and
+     * pass the actual Particle.Trail object to it.
+     * <b>NOTE</b> it will not be serialized automatically.
+     */
+    public static final ParticleType<PrimitiveParticleOption<Object>> TRAIL = new ParticleType<>((Class<PrimitiveParticleOption<Object>>) (Class<?>) PrimitiveParticleOption.class);
     public static final ParticleType<?> TRIAL_OMEN = new ParticleType<>();
     public static final ParticleType<?> TRIAL_SPAWNER_DETECTION = new ParticleType<>();
     public static final ParticleType<?> TRIAL_SPAWNER_DETECTION_OMINOUS = new ParticleType<>();
