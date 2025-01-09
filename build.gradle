@@ -86,6 +86,9 @@ allprojects {
     dependencies {
         constraints {
             implementation(libs.fulmicollection) {
+                version {
+                    reject '1.7', '1.6.6', '1.6.5', '1.6.4'
+                }
                 because 'newer versions have unresolved bugs'
             }
         }
