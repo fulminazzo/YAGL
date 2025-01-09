@@ -84,6 +84,12 @@ allprojects {
     }
 
     dependencies {
+        constraints {
+            implementation(libs.fulmicollection) {
+                because 'newer versions have unresolved bugs'
+            }
+        }
+
         // Common dependencies
         compileOnly libs.lombok
         annotationProcessor libs.lombok
