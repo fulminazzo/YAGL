@@ -100,7 +100,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> SOUL_FIRE_FLAME = new ParticleType<>();
     public static final ParticleType<?> SPELL = new ParticleType<>();
     public static final ParticleType<?> SPELL_INSTANT = new ParticleType<>();
-    public static final ParticleType<?> SPELL_MOB = new ParticleType<>();
+    public static final ParticleType<ColorParticleOption> SPELL_MOB = new ParticleType<>();
     public static final ParticleType<?> SPELL_MOB_AMBIENT = new ParticleType<>();
     public static final ParticleType<?> SPELL_WITCH = new ParticleType<>();
     public static final ParticleType<?> SPIT = new ParticleType<>();
