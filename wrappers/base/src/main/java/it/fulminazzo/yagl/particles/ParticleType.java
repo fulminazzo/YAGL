@@ -52,6 +52,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> FALLING_SPORE_BLOSSOM = new ParticleType<>();
     public static final ParticleType<?> FALLING_WATER = new ParticleType<>();
     public static final ParticleType<?> FIREWORKS_SPARK = new ParticleType<>();
+    public static final ParticleType<?> FIREFLY = new ParticleType<>();
     public static final ParticleType<?> FLAME = new ParticleType<>();
     public static final ParticleType<?> FLASH = new ParticleType<>();
     public static final ParticleType<?> GLOW = new ParticleType<>();
@@ -109,6 +110,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> SUSPENDED = new ParticleType<>();
     public static final ParticleType<?> SUSPENDED_DEPTH = new ParticleType<>();
     public static final ParticleType<?> SWEEP_ATTACK = new ParticleType<>();
+    public static final ParticleType<ColorParticleOption> TINTED_LEAVES = new ParticleType<>();
     public static final ParticleType<?> TOTEM = new ParticleType<>();
     public static final ParticleType<?> TOWN_AURA = new ParticleType<>();
     /**
