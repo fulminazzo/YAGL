@@ -1,13 +1,13 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.exceptions.NotImplemented;
 import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,9 +18,7 @@ import org.mockito.MockedStatic;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -174,8 +172,8 @@ class DataGUITest {
 
         Double[] data = new Double[] {
                 0.0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.7,
-                     1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
-                     2.1, 2.2, 2.3, 2.5, 2.6, 2.7, 2.8,
+                1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
+                2.1, 2.2, 2.3, 2.5, 2.6, 2.7, 2.8,
         };
         Function<Double, GUIContent> cc = d -> ItemGUIContent.newInstance()
                 .setDisplayName("Data: " + d)
@@ -233,27 +231,33 @@ class DataGUITest {
 
     private static Object[][] constructorParameters() {
         return new Object[][]{
-                new Object[]{27, null, null},
-                new Object[]{27, null, new Object[]{"Hello", "World"}},
-                new Object[]{27, null, Arrays.asList("Hello", "World")},
-                new Object[]{GUIType.CHEST, null, null},
-                new Object[]{GUIType.CHEST, null, new Object[]{"Hello", "World"}},
-                new Object[]{GUIType.CHEST, null, Arrays.asList("Hello", "World")},
+                new Object[]{new Class<?>[]{int.class, Function.class},
+                        new Object[]{27, null}},
+                new Object[]{new Class<?>[]{int.class, Function.class, Object[].class},
+                        new Object[]{27, null, new Object[]{"Hello", "World"}}},
+                new Object[]{new Class<?>[]{int.class, Function.class, Collection.class},
+                        new Object[]{27, null, Arrays.asList("Hello", "World")}},
+                new Object[]{new Class<?>[]{GUIType.class, Function.class},
+                        new Object[]{GUIType.CHEST, null}},
+                new Object[]{new Class<?>[]{GUIType.class, Function.class, Object[].class},
+                        new Object[]{GUIType.CHEST, null, new Object[]{"Hello", "World"}}},
+                new Object[]{new Class<?>[]{GUIType.class, Function.class, Collection.class},
+                        new Object[]{GUIType.CHEST, null, Arrays.asList("Hello", "World")}}
         };
     }
 
     @ParameterizedTest
     @MethodSource("constructorParameters")
-    void testConstructors(Object obj1, Object obj2, Object obj3) {
-        @NotNull DataGUI<Object> expected = obj1 instanceof GUIType ?
+    void testConstructors(Class<?>[] objectClasses, Object[] objects) {
+        @NotNull DataGUI<Object> expected = objects[0] instanceof GUIType ?
                 new DataGUI<>(GUIType.CHEST, null) :
                 new DataGUI<>(27, null);
         expected.setData("Hello", "World");
         DataGUI<Object> actual;
-        if (obj3 == null) {
-            actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", obj1, obj2);
+        if (objects.length < 3) {
+            actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", objectClasses, objects);
             actual.setData("Hello", "World");
-        } else actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", obj1, obj2, obj3);
+        } else actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", objectClasses, objects);
         assertEquals(expected, actual);
     }
 }
