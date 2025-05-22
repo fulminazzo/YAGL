@@ -21,6 +21,7 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
@@ -170,7 +171,7 @@ class DataGUITest {
                 new int[]{1, 2, 3, 5, 6, 7, 8}
         };
 
-        Double[] data = new Double[] {
+        Double[] data = new Double[]{
                 0.0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.7,
                 1.1, 1.2, 1.3, 1.5, 1.6, 1.7,
                 2.1, 2.2, 2.3, 2.5, 2.6, 2.7, 2.8,
@@ -229,35 +230,28 @@ class DataGUITest {
         assertEquals(expected, actual);
     }
 
-    private static Object[][] constructorParameters() {
-        return new Object[][]{
-                new Object[]{new Class<?>[]{int.class, Function.class},
-                        new Object[]{27, null}},
-                new Object[]{new Class<?>[]{int.class, Function.class, Object[].class},
-                        new Object[]{27, null, new Object[]{"Hello", "World"}}},
-                new Object[]{new Class<?>[]{int.class, Function.class, Collection.class},
-                        new Object[]{27, null, Arrays.asList("Hello", "World")}},
-                new Object[]{new Class<?>[]{GUIType.class, Function.class},
-                        new Object[]{GUIType.CHEST, null}},
-                new Object[]{new Class<?>[]{GUIType.class, Function.class, Object[].class},
-                        new Object[]{GUIType.CHEST, null, new Object[]{"Hello", "World"}}},
-                new Object[]{new Class<?>[]{GUIType.class, Function.class, Collection.class},
-                        new Object[]{GUIType.CHEST, null, Arrays.asList("Hello", "World")}}
+    private static Object[] constructorParameters() {
+        return new Object[]{
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(27, null), false, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(27, null, "Hello", "World"), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(27, null, Arrays.asList("Hello", "World")), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(GUIType.CHEST, null), true, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
         };
     }
 
     @ParameterizedTest
     @MethodSource("constructorParameters")
-    void testConstructors(Class<?>[] objectClasses, Object[] objects) {
-        @NotNull DataGUI<Object> expected = objects[0] instanceof GUIType ?
+    void testConstructors(Supplier<DataGUI<Object>> supplier, boolean typeProvided, boolean dataProvided) {
+        @NotNull DataGUI<Object> expected = typeProvided ?
                 new DataGUI<>(GUIType.CHEST, null) :
                 new DataGUI<>(27, null);
         expected.setData("Hello", "World");
-        DataGUI<Object> actual;
-        if (objects.length < 3) {
-            actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", objectClasses, objects);
+        DataGUI<Object> actual = supplier.get();
+        if (!dataProvided) {
             actual.setData("Hello", "World");
-        } else actual = new Refl<>(DataGUI.class).invokeMethod("newGUI", objectClasses, objects);
+        }
         assertEquals(expected, actual);
     }
 }
