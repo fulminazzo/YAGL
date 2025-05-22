@@ -23,12 +23,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.lang.reflect.*;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -178,8 +174,8 @@ class ItemAdapterTest extends BukkitUtils {
             }
         }
 
-        private Object newRecipeChoice(final Object @NotNull ... args) {
-            return new Refl<>(RECIPE_CHOICE_CLASS, args).getObject();
+        private Object newRecipeChoice(final ItemStack @NotNull ... args) {
+            return new Refl<>(RECIPE_CHOICE_CLASS, (Object) args).getObject();
         }
 
         @Test
