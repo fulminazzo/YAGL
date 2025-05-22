@@ -126,7 +126,10 @@ allprojects {
         }
 
         // Serializer dependencies
-        if (projectName.contains('serializer')) api(libs.yamlparser)
+        if (projectName.contains('serializer'))
+            api(libs.yamlparser) {
+                exclude group: 'it.fulminazzo', module: 'FulmiCollection'
+            }
 
         // Bukkit dependencies
         if (projectName.contains('bukkit') || projectName.contains('demo')) {
