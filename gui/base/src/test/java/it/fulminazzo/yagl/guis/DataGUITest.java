@@ -18,9 +18,11 @@ import org.mockito.MockedStatic;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,20 +88,18 @@ class DataGUITest {
     }
 
     private static Object[] removeDataParameters() {
-        return new Object[]{
-                "hello,world",
-                Arrays.asList("hello", "world"),
-                (Predicate<String>) s -> s.equals("hello") || s.equals("world")
+        return new Consumer[]{
+                (Consumer<DataGUI<String>>) g -> g.removeData("hello", "world"),
+                (Consumer<DataGUI<String>>) g -> g.removeData(Arrays.asList("hello", "world")),
+                (Consumer<DataGUI<String>>) g -> g.removeData(s -> s.equals("hello") || s.equals("world"))
         };
     }
 
     @ParameterizedTest
     @MethodSource("removeDataParameters")
-    void testRemoveData(Object object) {
-        if (object instanceof String)
-            object = Arrays.stream(object.toString().split(",")).toArray(Object[]::new);
+    void testRemoveData(Consumer<DataGUI<String>> consumer) {
         DataGUI<String> gui = DataGUI.newGUI(9, s -> null, "hello", "world");
-        new Refl<>(gui).invokeMethod("removeData", object);
+        consumer.accept(gui);
         @NotNull List<String> data = gui.getData();
         assertTrue(data.isEmpty(), String.format("Expected empty but was '%s'", data));
     }
