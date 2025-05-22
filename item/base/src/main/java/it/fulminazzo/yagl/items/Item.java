@@ -3,7 +3,7 @@ package it.fulminazzo.yagl.items;
 import it.fulminazzo.yagl.items.fields.ItemField;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
 import it.fulminazzo.yagl.utils.MessageUtils;
-import it.fulminazzo.yagl.utils.ObjectUtils;
+import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.wrappers.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

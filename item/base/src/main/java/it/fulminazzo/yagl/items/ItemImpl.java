@@ -4,7 +4,7 @@ import it.fulminazzo.yagl.items.fields.ItemField;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
 import it.fulminazzo.yagl.structures.EnchantmentSet;
 import it.fulminazzo.yagl.utils.MessageUtils;
-import it.fulminazzo.yagl.utils.ObjectUtils;
+import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.wrappers.Enchantment;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;

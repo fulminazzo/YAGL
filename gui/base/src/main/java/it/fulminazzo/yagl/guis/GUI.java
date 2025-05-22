@@ -8,7 +8,7 @@ import it.fulminazzo.yagl.actions.GUICommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.yagl.utils.ObjectUtils;
+import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
