@@ -142,7 +142,6 @@ public final class ItemAdapter {
         return result;
     }
 
-    @SuppressWarnings("DataFlowIssue")
     private static org.bukkit.inventory.Recipe recipeToMinecraft(final @Nullable ShapedRecipe recipe) {
         if (recipe == null) return null;
 
@@ -199,6 +198,7 @@ public final class ItemAdapter {
         if (recipe == null) return null;
 
         final Object ingredient = getItemOrRecipeChoice(recipe.getIngredients().get(0));
+        System.out.println(ingredient);
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
         final int cookingTime = (int) (recipe.getCookingTime() * Constants.TICKS_IN_SECOND);
         final float experience = recipe.getExperience();
@@ -220,7 +220,9 @@ public final class ItemAdapter {
         if (item == null) return null;
         ItemStack itemStack = item.copy(BukkitItem.class).create();
         try {
-            return new Refl<>("org.bukkit.inventory.RecipeChoice.ExactChoice", itemStack).getObject();
+            return new Refl<>("org.bukkit.inventory.RecipeChoice.ExactChoice",
+                    new Class[]{ItemStack[].class},
+                    (Object) new ItemStack[]{itemStack}).getObject();
         } catch (Exception e) {
             return itemStack;
         }
