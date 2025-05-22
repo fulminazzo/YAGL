@@ -3,8 +3,8 @@ delombok = "8.11"
 groovy = "4.0.24"
 
 # Latest versions
-fulmicollection = "1.6.3"
-yamlparser = "latest.release"
+fulmicollection = "1.7.3"
+yamlparser = "1.6.3"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 spigot_obsolete = "1.8.8-R0.1-SNAPSHOT"
@@ -21,7 +21,7 @@ junit = "5.11.4"
 mockito = "4.11.0"
 
 jbukkitartifact = "it.fulminazzo.jbukkit"
-jbukkit = "3.2"
+jbukkit = "3.4"
 
 [libraries]
 groovy = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
