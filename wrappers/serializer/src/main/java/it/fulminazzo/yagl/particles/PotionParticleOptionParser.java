@@ -20,7 +20,7 @@ public class PotionParticleOptionParser extends YAMLParser<PotionParticleOption>
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, PotionParticleOption> getLoader() {
+    protected BiFunctionException<IConfiguration, String, PotionParticleOption, Exception> getLoader() {
         return (c, s) -> {
             Potion potion = c.get(s, Potion.class);
             if (potion == null) return null;

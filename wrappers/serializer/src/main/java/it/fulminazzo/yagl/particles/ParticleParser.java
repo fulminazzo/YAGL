@@ -21,7 +21,7 @@ public class ParticleParser extends YAMLParser<Particle> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Particle> getLoader() {
+    protected BiFunctionException<IConfiguration, String, Particle, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection particleSection = c.getConfigurationSection(s);
             if (particleSection == null) return null;

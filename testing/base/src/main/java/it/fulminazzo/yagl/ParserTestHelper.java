@@ -46,7 +46,7 @@ public abstract class ParserTestHelper<T> {
      *
      * @return the loader
      */
-    protected BiFunctionException<IConfiguration, String, T> getLoader() {
+    protected BiFunctionException<IConfiguration, String, T, Exception> getLoader() {
         return getYamlParser().invokeMethod("getLoader");
     }
 

@@ -19,7 +19,7 @@ public class ColorParser extends YAMLParser<Color> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Color> getLoader() {
+    protected BiFunctionException<IConfiguration, String, Color, Exception> getLoader() {
         return (c, s) -> {
             String name = c.getString(s);
             if (name == null) return null;

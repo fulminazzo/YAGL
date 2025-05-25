@@ -23,7 +23,7 @@ public class ShapeParser extends YAMLParser<ShapedRecipe.Shape> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, ShapedRecipe.Shape> getLoader() {
+    protected BiFunctionException<IConfiguration, String, ShapedRecipe.Shape, Exception> getLoader() {
         return (c, s) -> {
             String converted = c.getString(s);
             if (converted == null) return null;

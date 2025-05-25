@@ -24,7 +24,7 @@ public class MockGUIParser extends YAMLParser<MockGUIParser.MockGUI> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, MockGUI> getLoader() {
+    protected BiFunctionException<IConfiguration, String, MockGUI, Exception> getLoader() {
         return (c, s) -> new MockGUI();
     }
 

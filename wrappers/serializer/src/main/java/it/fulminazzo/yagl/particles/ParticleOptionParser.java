@@ -34,7 +34,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, P> getLoader() {
+    protected BiFunctionException<IConfiguration, String, P, Exception> getLoader() {
         return (c, s) -> {
             Refl<?> reflP = new Refl<>(getOClass(), new Object[0]);
 

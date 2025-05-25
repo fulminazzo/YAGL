@@ -27,7 +27,7 @@ public class GUIParser extends TypedParser<GUI> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, GUI> getLoader() {
+    protected BiFunctionException<IConfiguration, String, GUI, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;

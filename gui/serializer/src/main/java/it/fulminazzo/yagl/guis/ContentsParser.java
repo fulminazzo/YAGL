@@ -23,7 +23,7 @@ public class ContentsParser extends YAMLParser<GUIImpl.Contents> {
     }
 
     @Override
-    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, GUIImpl.@Nullable Contents> getLoader() {
+    protected BiFunctionException<@NotNull IConfiguration, @NotNull String, GUIImpl.@Nullable Contents, Exception> getLoader() {
         return (c, s) -> {
             List<GUIContent> contents = c.getList(s, GUIContent.class);
             if (contents == null) return null;

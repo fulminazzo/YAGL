@@ -20,7 +20,7 @@ public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption<?>> 
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, ItemParticleOption<?>> getLoader() {
+    protected BiFunctionException<IConfiguration, String, ItemParticleOption<?, Exception>> getLoader() {
         return (c, s) -> {
             AbstractItem item = c.get(s, ReflectionUtils.getClass("it.fulminazzo.yagl.items.Item"));
             if (item == null) return null;

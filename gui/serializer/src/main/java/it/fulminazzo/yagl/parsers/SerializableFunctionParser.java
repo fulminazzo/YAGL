@@ -32,7 +32,7 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, F> getLoader() {
+    protected BiFunctionException<IConfiguration, String, F, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;

@@ -34,7 +34,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, W> getLoader() {
+    protected BiFunctionException<IConfiguration, String, W, Exception> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;

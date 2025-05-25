@@ -24,7 +24,7 @@ public class RecipeParser extends TypedParser<Recipe> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Recipe> getLoader() {
+    protected BiFunctionException<IConfiguration, String, Recipe, Exception> getLoader() {
         return (c, s) -> {
             Recipe r = super.getLoader().apply(c, s);
             if (r == null) return null;

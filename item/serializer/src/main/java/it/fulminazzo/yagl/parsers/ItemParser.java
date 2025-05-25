@@ -29,7 +29,7 @@ public class ItemParser extends YAMLParser<Item> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Item> getLoader() {
+    protected BiFunctionException<IConfiguration, String, Item, Exception> getLoader() {
         return (c, s) -> {
             final ConfigurationSection itemSection = c.getConfigurationSection(s);
             if (itemSection == null) return null;

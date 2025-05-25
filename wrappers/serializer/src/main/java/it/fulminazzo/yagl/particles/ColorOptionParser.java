@@ -20,7 +20,7 @@ public class ColorOptionParser extends YAMLParser<ColorParticleOption> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, ColorParticleOption> getLoader() {
+    protected BiFunctionException<IConfiguration, String, ColorParticleOption, Exception> getLoader() {
         return (c, s) -> {
             Color color = c.get(s, Color.class);
             if (color == null) return null;

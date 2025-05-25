@@ -34,16 +34,16 @@ class WrapperTest {
 
     private static Object[][] getTestSetters() {
         return new Object[][]{
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setValue(0), 1, 9},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.setValue(10), 1, 9},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.minOnly(0), 1, null},
-                new Object[]{(ConsumerException<MockWrapper>) wrapper -> wrapper.getMaxOnly(10), null, 9},
+                new Object[]{(ConsumerException<MockWrapper, Exception>) wrapper -> wrapper.setValue(0), 1, 9},
+                new Object[]{(ConsumerException<MockWrapper, Exception>) wrapper -> wrapper.setValue(10), 1, 9},
+                new Object[]{(ConsumerException<MockWrapper, Exception>) wrapper -> wrapper.minOnly(0), 1, null},
+                new Object[]{(ConsumerException<MockWrapper, Exception>) wrapper -> wrapper.getMaxOnly(10), null, 9},
         };
     }
 
     @ParameterizedTest
     @MethodSource("getTestSetters")
-    void testSettersRanges(ConsumerException<MockWrapper> consumer, Integer min, Integer max) {
+    void testSettersRanges(ConsumerException<MockWrapper, Exception> consumer, Integer min, Integer max) {
         final Class<? extends Exception> expected = IllegalArgumentException.class;
         try {
             MockWrapper wrapper = new MockWrapper();

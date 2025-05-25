@@ -20,7 +20,7 @@ public class MaterialDataOptionParser extends YAMLParser<MaterialDataOption> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, MaterialDataOption> getLoader() {
+    protected BiFunctionException<IConfiguration, String, MaterialDataOption, Exception> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null) return null;

@@ -19,7 +19,7 @@ public class BlockDataOptionParser extends YAMLParser<BlockDataOption> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, BlockDataOption> getLoader() {
+    protected BiFunctionException<IConfiguration, String, BlockDataOption, Exception> getLoader() {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null) return null;
