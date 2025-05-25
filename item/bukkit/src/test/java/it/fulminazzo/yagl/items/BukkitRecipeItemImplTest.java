@@ -6,7 +6,10 @@ import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +65,21 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
         assertDoesNotThrow(recipeItem::unregisterRecipes);
 
         assertEquals(1, countIterator(Bukkit.getServer().recipeIterator()), "Server should still have registered recipe");
+    }
 
+    @Test
+    void testInternalMetaCreation() {
+        ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
+        ItemMeta meta = expected.getItemMeta();
+        ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.SILK_TOUCH, 1, true);
+        expected.setItemMeta(meta);
+
+        ItemStack actual = BukkitItem.newItem(Material.ENCHANTED_BOOK)
+                .copy(BukkitRecipeItem.class)
+                .setMetadata(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.SILK_TOUCH, 1, true))
+                .create();
+
+        assertEquals(expected, actual);
     }
 
     private int countIterator(Iterator<?> iterator) {
