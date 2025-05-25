@@ -77,6 +77,13 @@ class DataGUITest {
         }
     }
 
+    @Test
+    void testThatDataGUIWithDifferentDataConverterAreEqual() {
+        DataGUI<String> first = DataGUI.newGUI(27, ItemGUIContent::newInstance);
+        DataGUI<String> second = DataGUI.newGUI(27, ItemGUIContent::newInstance);
+        assertEquals(first, second);
+    }
+
     private static @NotNull DataGUI<Integer> setupGUI(int contents, int data, boolean prev, boolean next, GUIContent convertedContent) {
         DataGUI<Integer> dataGUI = DataGUI.newGUI(27, s -> convertedContent);
         if (prev) dataGUI.setPreviousPage(0, Item.newItem());
