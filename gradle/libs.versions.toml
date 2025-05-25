@@ -4,7 +4,7 @@ groovy = "4.0.24"
 
 # Latest versions
 fulmicollection = "1.8.1"
-yamlparser = "1.6.3"
+yamlparser = "1.6.4"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 spigot_obsolete = "1.8.8-R0.1-SNAPSHOT"
