@@ -29,13 +29,11 @@ public interface BukkitItem extends Item {
 
     /**
      * Create an item stack from this item.
+     * Uses the values previously set in {@link #setMetadata(Class, Consumer)}.
      *
      * @return the item stack
      */
-    @NotNull
-    default ItemStack create() {
-        return create(null, null);
-    }
+    @NotNull ItemStack create();
 
     /**
      * Create an item stack from this item.
