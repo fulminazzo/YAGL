@@ -1,15 +1,20 @@
 package it.fulminazzo.yagl.items;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.items.recipes.Recipe;
 import it.fulminazzo.yagl.utils.EnumUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -17,6 +22,8 @@ import java.util.function.Predicate;
  */
 class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     private final List<org.bukkit.inventory.Recipe> recipeCache = new ArrayList<>();
+    private @Nullable Class<? extends ItemMeta> itemMetaClass;
+    private @Nullable Consumer<? extends ItemMeta> metaFunction;
 
     /**
      * Instantiates a new Bukkit recipe item.
@@ -42,6 +49,18 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
             if (this.recipeCache.contains(r)) recipes.remove();
         }
         this.recipeCache.clear();
+    }
+
+    @Override
+    public @NotNull ItemStack create() {
+        return new Refl<>(this).invokeMethod("create", this.itemMetaClass, this.metaFunction);
+    }
+
+    @Override
+    public @NotNull <M extends ItemMeta> BukkitRecipeItem setMetadata(@Nullable Class<M> itemMetaClass, @Nullable Consumer<M> metaFunction) {
+        this.itemMetaClass = itemMetaClass;
+        this.metaFunction = metaFunction;
+        return this;
     }
 
     @Override
