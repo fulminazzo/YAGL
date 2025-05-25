@@ -1,15 +1,22 @@
 package it.fulminazzo.yagl.items;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.utils.EnumUtils;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * An implementation of {@link BukkitItem}.
  */
 class BukkitItemImpl extends ItemImpl implements BukkitItem {
+    private @Nullable Class<? extends ItemMeta> itemMetaClass;
+    private @Nullable Consumer<? extends ItemMeta> metaFunction;
 
     /**
      * Instantiates a new Bukkit item.
@@ -26,6 +33,18 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
      */
     public BukkitItemImpl(String material, int amount) {
         super(material, amount);
+    }
+
+    @Override
+    public @NotNull ItemStack create() {
+        return new Refl<>(this).invokeMethod("create", this.itemMetaClass, this.metaFunction);
+    }
+
+    @Override
+    public @NotNull <M extends ItemMeta> BukkitItem setMetadata(@Nullable Class<M> itemMetaClass, @Nullable Consumer<M> metaFunction) {
+        this.itemMetaClass = itemMetaClass;
+        this.metaFunction = metaFunction;
+        return this;
     }
 
     @Override
