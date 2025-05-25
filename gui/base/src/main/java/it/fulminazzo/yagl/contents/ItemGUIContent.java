@@ -31,7 +31,7 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     }
 
     private ItemGUIContent(final @NotNull Item item) {
-        this.item = item.copy(Item.class);
+        this.item = item;
     }
 
     @Override
