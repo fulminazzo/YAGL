@@ -779,7 +779,16 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     @Override
     public @NotNull PageableGUI copyAll(@NotNull GUI other, boolean replace) {
-        return (PageableGUI) GUI.super.copyAll(other, replace);
+        GUI.super.copyAll(other, replace);
+        if (other instanceof PageableGUI) {
+            PageableGUI otherGUI = (PageableGUI) other;
+            if (replace) otherGUI.setPages(pages());
+            if (!otherGUI.previousPage.isPresent() || replace)
+                previousPage.map((i, c) -> new Tuple<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
+            if (!otherGUI.nextPage.isPresent() || replace)
+                nextPage.map((i, c) -> new Tuple<>(i, c.copy())).ifPresent(otherGUI::setNextPage);
+        }
+        return this;
     }
 
     @Override
