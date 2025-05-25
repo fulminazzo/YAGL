@@ -28,6 +28,23 @@ import static org.mockito.Mockito.mockStatic;
 class PageableGUITest {
 
     @Test
+    void testCopyAllCopiesPageableInternalData() {
+        PageableGUI gui = PageableGUI.newGUI(GUIType.ANVIL).setPages(1);
+        gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
+        gui.setVariable("hello", "world");
+        gui.setPreviousPage(2, Item.newItem("blue_concrete"));
+        gui.setNextPage(3, Item.newItem("green_concrete"));
+
+        PageableGUI newGUI = PageableGUI.newGUI(GUIType.ANVIL).copyFrom(gui, true);
+
+        assertEquals(gui.templateGUI, newGUI.templateGUI, "TemplateGUI was not equal");
+        assertEquals(gui.pages(), newGUI.pages(), "Pages were not equal");
+        assertEquals(gui.variables(), newGUI.variables(), "Variables were not equal");
+        assertEquals(gui.previousPage, newGUI.previousPage, "Previous page was not equal");
+        assertEquals(gui.nextPage, newGUI.nextPage, "Next page was not equal");
+    }
+
+    @Test
     void testOpen() {
         PageableGUI gui = PageableGUI.newGUI(9).setPages(1);
         gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
