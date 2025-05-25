@@ -3,9 +3,12 @@ package it.fulminazzo.yagl.items;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
 import it.fulminazzo.yagl.items.recipes.Recipe;
 import it.fulminazzo.yagl.wrappers.Enchantment;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -28,6 +31,9 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     default BukkitRecipeItem clearRecipes() {
         return (BukkitRecipeItem) RecipeItem.super.clearRecipes();
     }
+
+    @Override
+    @NotNull <M extends ItemMeta> BukkitRecipeItem setMetadata(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction);
 
     @Override
     BukkitRecipeItem setMaterial(final @NotNull String material);
