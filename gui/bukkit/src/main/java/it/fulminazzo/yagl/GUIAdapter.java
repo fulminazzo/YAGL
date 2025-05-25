@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
@@ -8,7 +9,6 @@ import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.utils.MessageUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -85,10 +85,12 @@ public final class GUIAdapter {
             for (int i = 0; i < gui.size(); i++) {
                 GUIContent content = gui.getContent(v, i);
                 if (content != null) {
-                    ItemStack o = content.copy().copyFrom(gui, false)
+                    BukkitItem render = content.copy().copyFrom(gui, false)
                             .render()
-                            .copy(BukkitItem.class)
-                            .create(itemMetaClass, metaFunction);
+                            .copy(BukkitItem.class);
+                    final ItemStack o;
+                    if (itemMetaClass == null || metaFunction == null) o = render.create();
+                    else o = render.create(itemMetaClass, metaFunction);
                     inventory.setItem(i, o);
                 }
             }
