@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.items;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.TestUtils;
@@ -19,6 +20,7 @@ import org.mockito.MockedStatic;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -79,6 +81,21 @@ class BukkitItemTest {
                 .create();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCopyCopiesInternalMeta() {
+        Class<ItemMeta> clazz = ItemMeta.class;
+        Consumer<ItemMeta> consumer = c -> {};
+
+        BukkitItem src = BukkitItem.newItem().setMetadata(clazz, consumer);
+        BukkitItem dst = src.copy();
+
+        Refl<?> srcRefl = new Refl<>(src);
+        Refl<?> dstRefl = new Refl<>(dst);
+
+        assertEquals((Class<?>) srcRefl.getFieldObject("itemMetaClass"), dstRefl.getFieldObject("itemMetaClass"));
+        assertEquals((Consumer<?>) srcRefl.getFieldObject("metaFunction"), dstRefl.getFieldObject("metaFunction"));
     }
 
     @Test
