@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.IgnoreField;
 import it.fulminazzo.yagl.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
@@ -27,6 +28,7 @@ public class DataGUI<T> extends PageableGUI {
 
     @Getter
     private final @NotNull List<T> data;
+    @IgnoreField
     private final @NotNull Function<T, GUIContent> dataConverter;
 
     private DataGUI() {
