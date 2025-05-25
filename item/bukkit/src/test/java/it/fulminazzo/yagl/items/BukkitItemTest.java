@@ -68,6 +68,20 @@ class BukkitItemTest {
     }
 
     @Test
+    void testInternalMetaCreation() {
+        ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
+        ItemMeta meta = expected.getItemMeta();
+        ((EnchantmentStorageMeta) meta).addStoredEnchant(Enchantment.SILK_TOUCH, 1, true);
+        expected.setItemMeta(meta);
+
+        ItemStack actual = BukkitItem.newItem(Material.ENCHANTED_BOOK)
+                .setMetadata(EnchantmentStorageMeta.class, m -> m.addStoredEnchant(Enchantment.SILK_TOUCH, 1, true))
+                .create();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testMetaCreation() {
         ItemStack expected = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = expected.getItemMeta();
