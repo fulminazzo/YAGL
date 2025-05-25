@@ -60,6 +60,18 @@ public interface BukkitItem extends Item {
     }
 
     /**
+     * Sets the {@link ItemMeta} data for the current item.
+     * These will then be used by {@link #create()} to create the corresponding {@link ItemStack},
+     * as if {@link #create(Class, Consumer)} was invoked.
+     *
+     * @param <M>           the type of the item meta
+     * @param itemMetaClass the item meta class
+     * @param metaFunction  the meta function
+     * @return this item
+     */
+    <M extends ItemMeta> @NotNull BukkitItem setMetadata(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction);
+
+    /**
      * Sets material.
      *
      * @param material the material
