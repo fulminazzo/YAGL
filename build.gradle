@@ -167,6 +167,7 @@ allprojects {
             rootProject.subprojects
                     .findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
+            testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-bukkit")
             testImplementation getJBukkitModule(latestVersion)
         }
     }
