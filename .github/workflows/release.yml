@@ -4,19 +4,6 @@ name: Automatic Release
 on:
   workflow_run:
     workflows:
-      - "MC 1.8"
-      - "MC 1.9"
-      - "MC 1.10"
-      - "MC 1.11"
-      - "MC 1.12"
-      - "MC 1.13"
-      - "MC 1.14"
-      - "MC 1.15"
-      - "MC 1.16"
-      - "MC 1.17"
-      - "MC 1.18"
-      - "MC 1.19"
-      - "MC 1.20"
       - "MC 1.21"
     types:
       - completed
