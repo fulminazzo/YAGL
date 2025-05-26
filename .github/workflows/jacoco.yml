@@ -9,7 +9,7 @@ name: Update JaCoCo badge and Codacy
 
 on:
   push:
-    branches: [ "main", "master", "test" ]
+    branches: [ "main", "master" ]
 
 jobs:
   jacoco:
