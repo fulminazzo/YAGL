@@ -165,7 +165,7 @@ allprojects {
         // Demo module
         if (projectName == DEMO_MODULE) {
             rootProject.subprojects
-                    .findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
+                    .findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
             testImplementation getJBukkitModule(latestVersion)
         }
@@ -177,7 +177,7 @@ allprojects {
         }
     }
 
-    if (project.name == TEST_MODULE) return
+    if (project.name.contains(TEST_MODULE)) return
 
     test {
         def projectName = project.name
