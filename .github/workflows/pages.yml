@@ -3,7 +3,7 @@ name: Deploy static content to Pages
 
 on:
   workflow_run:
-    workflows: [ "Execute tests with Gradle" ]
+    workflows: [ "Automatic Release" ]
     types:
       - completed
     branches: [ "main", "master" ]
