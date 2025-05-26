@@ -14,6 +14,10 @@ on:
       - completed
     branches: [ "main", "master" ]
 
+concurrency:
+  group: jacoco
+  cancel-in-progress: true
+
 jobs:
   jacoco:
     runs-on: ubuntu-latest

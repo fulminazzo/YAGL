@@ -24,6 +24,10 @@ on:
       - "master"
       - "main"
 
+concurrency:
+  group: release
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

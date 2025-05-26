@@ -10,6 +10,10 @@ name: Execute tests with Gradle
 on:
   push:
 
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
