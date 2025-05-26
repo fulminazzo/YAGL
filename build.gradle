@@ -264,4 +264,3 @@ testCodeCoverageReport {
         csv.required = true
     }
 }
-
