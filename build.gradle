@@ -123,7 +123,7 @@ allprojects {
             }
 
         // Bukkit dependencies
-        if (projectName.contains('bukkit') || projectName.contains('demo')) {
+        if (projectName.contains('bukkit') || projectName.contains(DEMO_MODULE)) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
             testRuntimeOnly "org.spigotmc:spigot-api:${latestVersion}"
@@ -203,6 +203,8 @@ allprojects {
             dependsOn "${it.path}:test"
         }
     }
+
+    if (project.name == DEMO_MODULE) return
 
     tasks.register('sourcesJar', Jar) {
         from sourceSets.main.delombokTask
