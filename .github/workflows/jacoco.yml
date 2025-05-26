@@ -8,7 +8,10 @@
 name: Update JaCoCo badge and Codacy
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "Execute tests with Gradle" ]
+    types:
+      - completed
     branches: [ "main", "master" ]
 
 jobs:
