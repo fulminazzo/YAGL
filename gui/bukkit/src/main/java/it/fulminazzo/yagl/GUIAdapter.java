@@ -118,8 +118,8 @@ public final class GUIAdapter {
         // Save previous GUI, if present
         GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
-            g.closeGUIAction().ifPresent(a -> a.execute(v, g));
             player.closeInventory();
+            g.closeGUIAction().ifPresent(a -> a.execute(v, g));
         });
     }
 
