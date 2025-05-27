@@ -119,7 +119,9 @@ public final class GUIAdapter {
         GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
             player.closeInventory();
-            g.closeGUIAction().ifPresent(a -> a.execute(v, g));
+            g.closeGUIAction().ifPresent(a ->
+                    Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> a.execute(v, g))
+            );
         });
     }
 
