@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.contents;
 
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.actions.GUIItemAction;
+import it.fulminazzo.yagl.actions.GUIItemCommand;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.items.fields.ItemField;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
@@ -8,6 +10,8 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,10 +37,19 @@ class ItemGUIContentTest {
         assertEquals(expected, guiContent.render());
     }
 
-    @Test
-    void testCopy() {
-        ItemGUIContent expected = newInstance();
-        ItemGUIContent actual = expected.copy();
+    private static Object[] actions() {
+        return new Object[]{
+                null,
+                (GUIItemAction) (v, g, c) -> System.out.println("Hello, world"),
+                new GUIItemCommand("say Hello, world")
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("actions")
+    void testCopy(GUIItemAction action) {
+        ItemGUIContent expected = newInstance().onClickItem(action);
+        ItemGUIContent actual = expected.copy().onClickItem(action);
         assertEquals("value", actual.getVariable("name"));
         assertEquals(expected, actual);
         assertEquals((Item) new Refl<>(expected).getFieldObject("item"), new Refl<>(actual).getFieldObject("item"));
