@@ -1,13 +1,15 @@
 package it.fulminazzo.yagl.contents;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.actions.GUIItemCommand;
+import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
+import it.fulminazzo.yagl.contents.requirements.RequirementChecker;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.items.fields.ItemField;
 import it.fulminazzo.yagl.items.fields.ItemFlag;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,19 +39,25 @@ class ItemGUIContentTest {
         assertEquals(expected, guiContent.render());
     }
 
-    private static Object[] actions() {
-        return new Object[]{
-                null,
-                (GUIItemAction) (v, g, c) -> System.out.println("Hello, world"),
-                new GUIItemCommand("say Hello, world")
+    private static Object[][] actions() {
+        return new Object[][]{
+                new Object[]{null, null},
+                new Object[]{
+                        (GUIItemAction) (v, g, c) -> System.out.println("Hello, world"),
+                        (RequirementChecker) (v) -> false
+                },
+                new Object[]{
+                        new GUIItemCommand("say Hello, world"),
+                        new PermissionRequirement("permission")
+                }
         };
     }
 
     @ParameterizedTest
     @MethodSource("actions")
-    void testCopy(GUIItemAction action) {
-        ItemGUIContent expected = newInstance().onClickItem(action);
-        ItemGUIContent actual = expected.copy().onClickItem(action);
+    void testCopy(GUIItemAction action, RequirementChecker requirement) {
+        ItemGUIContent expected = newInstance().onClickItem(action).setViewRequirements(requirement);
+        ItemGUIContent actual = expected.copy().onClickItem(action).setViewRequirements(requirement);
         assertEquals("value", actual.getVariable("name"));
         assertEquals(expected, actual);
         assertEquals((Item) new Refl<>(expected).getFieldObject("item"), new Refl<>(actual).getFieldObject("item"));
