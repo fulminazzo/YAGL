@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.contents;
 import it.fulminazzo.yagl.Metadatable;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.actions.GUIItemCommand;
+import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
 import it.fulminazzo.yagl.contents.requirements.RequirementChecker;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.items.fields.ItemField;
@@ -219,7 +220,9 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     @Override
     public @NotNull ItemGUIContent copy() {
         ItemGUIContent copy = ItemGUIContent.newInstance(this.item.copy()).copyFrom(this, true);
-        copy.requirements = this.requirements;
+        copy.requirements = this.requirements instanceof PermissionRequirement ?
+                new PermissionRequirement(this.requirements.serialize()) :
+                this.requirements;
         copy.clickAction = this.clickAction instanceof GUIItemCommand ?
                 new GUIItemCommand(this.clickAction.serialize()) :
                 this.clickAction;
