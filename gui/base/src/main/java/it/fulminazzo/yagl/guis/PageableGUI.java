@@ -84,7 +84,14 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
         int s;
         while ((s = this.pages.size()) - pages > 0) this.pages.remove(s - 1);
-        while (pages - this.pages.size() > 0) this.pages.add(this.templateGUI.copy().clear());
+        while (pages - this.pages.size() > 0) {
+            final GUI newPage;
+            if (this.templateGUI instanceof TypeGUI)
+                newPage = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
+            else newPage = GUI.newGUI(this.templateGUI.size());
+
+            this.pages.add(newPage);
+        }
         return this;
     }
 
