@@ -1,8 +1,10 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.actions.GUIAction;
+import it.fulminazzo.yagl.actions.GUIItemCommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.GUI;
@@ -10,6 +12,7 @@ import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
+import it.fulminazzo.yagl.viewers.Viewer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -53,6 +56,30 @@ class GUIAdapterTest {
                     return null;
                 });
         when(this.player.getServer()).thenReturn(server);
+    }
+
+    @Test
+    void testItemCommandReplacesVariables() {
+        BukkitTestUtils.mockPlugin(p -> {
+            GUI gui = GUI.newGUI(9).setContents(0,
+                    ItemGUIContent.newInstance("stone")
+                            .onClickItem(new GUIItemCommand("say Hello, my name is <player_name>"))
+            );
+
+            GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
+
+            @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(openGUI.isPresent());
+
+            GUIContent content = openGUI.getValue().getContent(openGUI.getKey(), 0);
+            assertNotNull(content);
+
+            content.clickItemAction().ifPresent(a ->
+                    a.execute(openGUI.getKey(), openGUI.getValue(), content)
+            );
+
+            verify(Bukkit.getServer()).dispatchCommand(this.player, "say Hello, my name is Alex");
+        });
     }
 
     private static GUI[] guis() {
