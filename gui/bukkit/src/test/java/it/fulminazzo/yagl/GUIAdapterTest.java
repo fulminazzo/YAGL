@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.actions.GUIAction;
+import it.fulminazzo.yagl.actions.GUICommand;
 import it.fulminazzo.yagl.actions.GUIItemCommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
@@ -59,12 +60,12 @@ class GUIAdapterTest {
     }
 
     @Test
-    void testItemCommandReplacesVariables() {
+    void testCommandActionsReplaceVariables() {
         BukkitTestUtils.mockPlugin(p -> {
             GUI gui = GUI.newGUI(9).setContents(0,
                     ItemGUIContent.newInstance("stone")
-                            .onClickItem(new GUIItemCommand("say Hello, my name is <player_name>"))
-            );
+                            .onClickItem(new GUIItemCommand("say <player_name> clicked the content"))
+            ).onOpenGUI(new GUICommand("say Opening GUI for <player_name>"));
 
             GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
 
@@ -78,7 +79,8 @@ class GUIAdapterTest {
                     a.execute(openGUI.getKey(), openGUI.getValue(), content)
             );
 
-            verify(Bukkit.getServer()).dispatchCommand(this.player, "say Hello, my name is Alex");
+            verify(Bukkit.getServer()).dispatchCommand(this.player, "say Opening GUI for Alex");
+            verify(Bukkit.getServer()).dispatchCommand(this.player, "say Alex clicked the content");
         });
     }
 
