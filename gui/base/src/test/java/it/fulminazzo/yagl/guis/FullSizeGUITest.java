@@ -9,8 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -35,7 +34,7 @@ class FullSizeGUITest {
         assertEquals(expected, actual);
     }
 
-    private static Object[][] slotsGUIs() {
+    private static Object[][] slotsGUIsClasses() {
         return new Object[][]{
                 new Object[]{0, TypeGUI.class},
                 new Object[]{27, DefaultGUI.class},
@@ -46,12 +45,39 @@ class FullSizeGUITest {
     }
 
     @ParameterizedTest
-    @MethodSource("slotsGUIs")
+    @MethodSource("slotsGUIsClasses")
     void testGetCorrespondingGUIReturnsCorrectGUI(int slot, Class<? extends GUI> expectedClass) {
         FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
         GUI actual = gui.getCorrespondingGUI(slot);
 
         assertInstanceOf(expectedClass, actual);
+    }
+
+    private static Object[][] slotsGUIs() {
+        return new Object[][]{
+                new Object[]{0, 0, GUI.newGUI(GUIType.CHEST)},
+                new Object[]{27, 0, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{26, 26, GUI.newGUI(GUIType.CHEST)},
+                new Object[]{28, 1, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{71, 44, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)}
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("slotsGUIs")
+    void testIsMovableReturnsCorrectValue(int slot, int actual, GUI internalGUI) {
+        FullSizeGUI gui = setupGUI(internalGUI);
+
+        internalGUI.setMovable(actual, true);
+
+        assertTrue(gui.isMovable(slot));
+    }
+
+    private static FullSizeGUI setupGUI(GUI internalGUI) {
+        Refl<FullSizeGUI> refl = new Refl<>(new FullSizeGUI(GUIType.CHEST));
+        if (internalGUI instanceof TypeGUI) refl.setFieldObject("upperGUI", internalGUI);
+        else refl.setFieldObject("lowerGUI", internalGUI);
+        return refl.getObject();
     }
 
     @ParameterizedTest
