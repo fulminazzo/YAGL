@@ -140,6 +140,25 @@ class FullSizeGUITest {
     }
 
     @Test
+    void testGetContentsReturnsCorrectValues() {
+        GUIContent firstContent = ItemGUIContent.newInstance("stone");
+        GUIContent secondContent = ItemGUIContent.newInstance("stone");
+
+        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+        Refl<?> refl = new Refl<>(gui);
+
+        GUI upperGUI = refl.getFieldObject("upperGUI");
+        upperGUI.setContents(0, firstContent);
+
+        GUI lowerGUI = refl.getFieldObject("lowerGUI");
+        lowerGUI.setContents(1, secondContent);
+
+        @NotNull List<GUIContent> contents = gui.getContents();
+
+        assertIterableEquals(Arrays.asList(firstContent, secondContent), contents);
+    }
+
+    @Test
     void testRows() {
         FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
 
