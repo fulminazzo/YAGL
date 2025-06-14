@@ -121,7 +121,7 @@ public class FullSizeGUI extends FieldEquable implements GUI {
             try {
                 this.upperGUI.addContent(contents[i]);
             } catch (IllegalArgumentException e) {
-                IllegalArgumentException ex = GUIUtils.cannotAddContentAtIndexException(i);
+                IllegalArgumentException ex = GUIUtils.cannotAddContentAtIndexException(0);
                 // If another IllegalArgumentException, rethrow
                 if (ex.getMessage().equals(e.getMessage())) break;
                 else throw e;
