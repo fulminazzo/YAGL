@@ -5,6 +5,8 @@ import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.commands.BiGUICommand;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.actions.commands.GUICommand;
+import it.fulminazzo.yagl.actions.messages.BiGUIMessage;
+import it.fulminazzo.yagl.actions.messages.GUIMessage;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.items.Item;
@@ -1216,6 +1218,16 @@ public interface GUI extends Metadatable {
     @NotNull GUI clear();
 
     /**
+     * Sends the {@link Viewer} the given message when clicking outside the GUI (will not include player's inventory slots).
+     *
+     * @param message the message
+     * @return the gui
+     */
+    default @NotNull GUI onClickOutsideSend(final @NotNull String message) {
+        return onClickOutside(new GUIMessage(message));
+    }
+
+    /**
      * Forces the {@link Viewer} to execute the given command when clicking outside the GUI (will not include player's inventory slots).
      *
      * @param command the command
@@ -1241,6 +1253,16 @@ public interface GUI extends Metadatable {
     @NotNull Optional<GUIAction> clickOutsideAction();
 
     /**
+     * Sends the {@link Viewer} the given message when opening this GUI.
+     *
+     * @param message the message
+     * @return the gui
+     */
+    default @NotNull GUI onOpenGUISend(final @NotNull String message) {
+        return onOpenGUI(new GUIMessage(message));
+    }
+
+    /**
      * Forces the {@link Viewer} to execute the given command when opening this GUI.
      *
      * @param command the command
@@ -1264,6 +1286,18 @@ public interface GUI extends Metadatable {
      * @return the action
      */
     @NotNull Optional<GUIAction> openGUIAction();
+
+    /**
+     * Sends the {@link Viewer} the given message when closing this GUI.
+     * This will NOT be called when an action is passed to {@link #onChangeGUI(BiGUIAction)}
+     * and another GUI is open.
+     *
+     * @param message the message
+     * @return the gui
+     */
+    default @NotNull GUI onCloseGUISend(final @NotNull String message) {
+        return onCloseGUI(new GUIMessage(message));
+    }
 
     /**
      * Forces the {@link Viewer} to execute the given command when closing this GUI.
@@ -1293,6 +1327,17 @@ public interface GUI extends Metadatable {
      * @return the action
      */
     @NotNull Optional<GUIAction> closeGUIAction();
+
+    /**
+     * Sends the {@link Viewer} the given message when opening another GUI while having this one already open.
+     * This will NOT call the action passed {@link #onCloseGUI(GUIAction)}.
+     *
+     * @param message the message
+     * @return the gui
+     */
+    default @NotNull GUI onChangeGUISend(final @NotNull String message) {
+        return onChangeGUI(new BiGUIMessage(message));
+    }
 
     /**
      * Forces the {@link Viewer} to execute the given command when opening another GUI while having this one already open.

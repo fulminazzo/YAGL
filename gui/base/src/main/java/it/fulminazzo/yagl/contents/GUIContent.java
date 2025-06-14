@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.Metadatable;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.actions.GUIItemClose;
 import it.fulminazzo.yagl.actions.commands.GUIItemCommand;
+import it.fulminazzo.yagl.actions.messages.GUIItemMessage;
 import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
 import it.fulminazzo.yagl.contents.requirements.RequirementChecker;
 import it.fulminazzo.yagl.items.Item;
@@ -93,6 +94,16 @@ public interface GUIContent extends Metadatable {
      */
     default @NotNull GUIContent onClickItemClose() {
         return onClickItem(new GUIItemClose());
+    }
+
+    /**
+     * Sends the {@link Viewer} the given message when clicking on this GUIContent in a GUI.
+     *
+     * @param message the message
+     * @return this content
+     */
+    default @NotNull GUIContent onClickItemSend(final @NotNull String message) {
+        return onClickItem(new GUIItemMessage(message));
     }
 
     /**
