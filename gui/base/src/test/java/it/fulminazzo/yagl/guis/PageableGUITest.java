@@ -273,6 +273,11 @@ class PageableGUITest {
         }
 
         @Override
+        public void consoleExecuteCommand(@NotNull String command) {
+            //
+        }
+
+        @Override
         public boolean hasPermission(@NotNull String permission) {
             return false;
         }

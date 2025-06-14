@@ -45,6 +45,11 @@ class BukkitViewer extends Viewer {
     }
 
     @Override
+    public void consoleExecuteCommand(@NotNull String command) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+
+    @Override
     public boolean hasPermission(@NotNull String permission) {
         return getPlayer().filter(p -> p.hasPermission(permission)).isPresent();
     }
