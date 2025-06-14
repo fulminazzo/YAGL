@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * A collection of utilities for this package.
  */
@@ -30,9 +32,12 @@ final class GUIUtils {
      * @return the illegal argument exception
      */
     public static @NotNull IllegalArgumentException cannotAddContentAtIndexException(int index) {
-        return new IllegalArgumentException(
+        IllegalArgumentException exception = new IllegalArgumentException(
                 String.format("Could not set content at index %s because contents are already full", index)
         );
+        StackTraceElement[] stackTrace = exception.getStackTrace();
+        exception.setStackTrace(Arrays.copyOfRange(stackTrace, 1, stackTrace.length));
+        return exception;
     }
 
 }
