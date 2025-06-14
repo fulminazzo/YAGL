@@ -15,11 +15,12 @@ class ActionParsersTest {
 
     private static CommandAction[] getActions() {
         return new CommandAction[]{
-                new BiGUICommand("command"),
-                new GUIItemCommand("command2"),
-                new GUIItemConsoleCommand("command3"),
-                new GUICommand("command4"),
-                new GUIConsoleCommand("command5"),
+                new BiGUICommand("command1"),
+                new BiGUIConsoleCommand("command2"),
+                new GUIItemCommand("command3"),
+                new GUIItemConsoleCommand("command4"),
+                new GUICommand("command5"),
+                new GUIConsoleCommand("command6")
         };
     }
 
