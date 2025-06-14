@@ -2,6 +2,7 @@ package it.fulminazzo.yagl;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -62,8 +63,8 @@ class PlayersInventoryCache {
      */
     public void restorePlayerContents(final @NotNull Player player) {
         ItemStack[] cache = this.internalCache.get(player.getUniqueId());
-        ItemStack[] playerContents = player.getInventory().getStorageContents();
-        System.arraycopy(cache, 0, playerContents, 0, playerContents.length);
+        PlayerInventory inventory = player.getInventory();
+        for (int i = 0; i < cache.length; i++) inventory.setItem(i, cache[i]);
     }
 
     /**
