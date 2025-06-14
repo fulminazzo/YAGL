@@ -38,6 +38,14 @@ public class DataGUI<T> extends PageableGUI {
         };
     }
 
+    private DataGUI(final @NotNull GUI templateGUI) {
+        super(templateGUI);
+        this.data = new LinkedList<>();
+        this.dataConverter = t -> {
+            throw new NotImplemented();
+        };
+    }
+
     /**
      * Instantiates a new Data gui.
      *
