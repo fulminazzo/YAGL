@@ -39,7 +39,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     private DataGUI(final int size) {
-        this(size, t -> {
+        this(null, t -> {
             throw new NotImplemented();
         });
     }
@@ -47,23 +47,11 @@ public class DataGUI<T> extends PageableGUI {
     /**
      * Instantiates a new Data gui.
      *
-     * @param size          the size
+     * @param templateGUI   the templateGUI
      * @param dataConverter the data converter
      */
-    DataGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter) {
-        super(size);
-        this.data = new LinkedList<>();
-        this.dataConverter = dataConverter;
-    }
-
-    /**
-     * Instantiates a new Data gui.
-     *
-     * @param type          the type
-     * @param dataConverter the data converter
-     */
-    DataGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter) {
-        super(type);
+    DataGUI(final @NotNull GUI templateGUI, final @NotNull Function<T, GUIContent> dataConverter) {
+        super(templateGUI);
         this.data = new LinkedList<>();
         this.dataConverter = dataConverter;
     }
@@ -241,8 +229,8 @@ public class DataGUI<T> extends PageableGUI {
      * The index starts from <b>0</b>.
      *
      * @param page the page
-     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
      * @return the corresponding {@link GUI} page
+     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
      */
     @Override
     @Deprecated
@@ -254,8 +242,8 @@ public class DataGUI<T> extends PageableGUI {
      * Sets pages.
      *
      * @param pages the pages
-     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
      * @return this gui
+     * @deprecated In {@link DataGUI}s pages are not pre-defined, but rather calculated upon opening.
      */
     @Override
     @Deprecated
@@ -832,7 +820,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(size, dataConverter);
+        return new DataGUI<>(GUI.newGUI(size), dataConverter);
     }
 
     /**
@@ -846,8 +834,8 @@ public class DataGUI<T> extends PageableGUI {
      */
     @SafeVarargs
     public static <T> @NotNull DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
-                                        final T @NotNull ... data) {
-        return new DataGUI<>(size, dataConverter).setData(data);
+                                                 final T @NotNull ... data) {
+        return new DataGUI<>(GUI.newGUI(size), dataConverter).setData(data);
     }
 
     /**
@@ -860,8 +848,8 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
-                                        final @NotNull Collection<T> data) {
-        return new DataGUI<>(size, dataConverter).setData(data);
+                                                 final @NotNull Collection<T> data) {
+        return new DataGUI<>(GUI.newGUI(size), dataConverter).setData(data);
     }
 
     /**
@@ -873,7 +861,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(type, dataConverter);
+        return new DataGUI<>(GUI.newGUI(type), dataConverter);
     }
 
     /**
@@ -887,8 +875,8 @@ public class DataGUI<T> extends PageableGUI {
      */
     @SafeVarargs
     public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
-                                        final T @NotNull ... data) {
-        return new DataGUI<>(type, dataConverter).setData(data);
+                                                 final T @NotNull ... data) {
+        return new DataGUI<>(GUI.newGUI(type), dataConverter).setData(data);
     }
 
     /**
@@ -901,8 +889,8 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
-                                        final @NotNull Collection<T> data) {
-        return new DataGUI<>(type, dataConverter).setData(data);
+                                                 final @NotNull Collection<T> data) {
+        return new DataGUI<>(GUI.newGUI(type), dataConverter).setData(data);
     }
 
 }

@@ -27,27 +27,18 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
 
     /**
      * Instantiates a new Pageable gui.
+     *
+     * @param templateGUI the template gui
+     */
+    PageableGUI(final @NotNull GUI templateGUI) {
+        this.templateGUI = templateGUI;
+    }
+
+    /**
+     * Instantiates a new Pageable gui.
      */
     PageableGUI() {
-        this.templateGUI = new DefaultGUI();
-    }
-
-    /**
-     * Instantiates a new Pageable gui.
-     *
-     * @param size the size
-     */
-    PageableGUI(final int size) {
-        this.templateGUI = GUI.newGUI(size);
-    }
-
-    /**
-     * Instantiates a new Pageable gui.
-     *
-     * @param type the type
-     */
-    PageableGUI(final @NotNull GUIType type) {
-        this.templateGUI = GUI.newGUI(type);
+        this(new DefaultGUI());
     }
 
     /**
@@ -845,7 +836,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the pageable gui
      */
     public static @NotNull PageableGUI newGUI(final int size) {
-        return new PageableGUI(size);
+        return new PageableGUI(GUI.newGUI(size));
     }
 
     /**
@@ -855,7 +846,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the pageable gui
      */
     public static @NotNull PageableGUI newGUI(final @NotNull GUIType type) {
-        return new PageableGUI(type);
+        return new PageableGUI(GUI.newGUI(type));
     }
 
     @Override
