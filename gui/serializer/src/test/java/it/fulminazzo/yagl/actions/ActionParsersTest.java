@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActionParsersTest {
 
-    private static CommandAction[] getActions() {
+    private static CommandAction[] getCommandActions() {
         return new CommandAction[]{
                 new BiGUICommand("command1"),
                 new BiGUIConsoleCommand("command2"),
@@ -25,7 +25,7 @@ class ActionParsersTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getActions")
+    @MethodSource("getCommandActions")
     void testCommandActions(CommandAction action) throws IOException {
         ActionParsers.addParsers();
         File file = new File("build/resources/test/command-action.yml");
@@ -36,6 +36,29 @@ class ActionParsersTest {
         configuration.save();
         configuration = new FileConfiguration(file);
         CommandAction action1 = configuration.get("tmp", action.getClass());
+        assertEquals(action, action1);
+    }
+
+    private static MessageAction[] getMessageActions() {
+        return new MessageAction[]{
+                new BiGUIMessage("message1"),
+                new GUIItemMessage("message3"),
+                new GUIMessage("message5"),
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getMessageActions")
+    void testMessageActions(MessageAction action) throws IOException {
+        ActionParsers.addParsers();
+        File file = new File("build/resources/test/message-action.yml");
+        if (file.exists()) FileUtils.deleteFile(file);
+        FileUtils.createNewFile(file);
+        FileConfiguration configuration = new FileConfiguration(file);
+        configuration.set("tmp", action);
+        configuration.save();
+        configuration = new FileConfiguration(file);
+        MessageAction action1 = configuration.get("tmp", action.getClass());
         assertEquals(action, action1);
     }
 
