@@ -116,8 +116,19 @@ public class FullSizeGUI extends FieldEquable implements GUI {
 
     @Override
     public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
-        //TODO:
-        return null;
+        int i;
+        for (i = 0; i < contents.length; i++)
+            try {
+                this.upperGUI.addContent(contents[i]);
+            } catch (IllegalArgumentException e) {
+                IllegalArgumentException ex = GUIUtils.cannotAddContentAtIndexException(i);
+                // If another IllegalArgumentException, rethrow
+                if (ex.getMessage().equals(e.getMessage())) break;
+                else throw e;
+            }
+        if (i != contents.length)
+            this.lowerGUI.addContent(Arrays.copyOfRange(contents, i, contents.length));
+        return this;
     }
 
     @Override
