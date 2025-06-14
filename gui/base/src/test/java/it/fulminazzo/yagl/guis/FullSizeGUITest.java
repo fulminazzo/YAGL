@@ -15,8 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class FullSizeGUITest {
 
@@ -64,6 +63,22 @@ class FullSizeGUITest {
             ItemGUIContent item = (ItemGUIContent) content;
             assertEquals(materials[i], item.getMaterial());
         }
+    }
+
+    @Test
+    void testThatAddContentThrowsIfOtherException() {
+        Refl<FullSizeGUI> refl = new Refl<>(new FullSizeGUI(9));
+
+        GUI upperGUI = mock(GUI.class);
+        when(upperGUI.addContent(any(GUIContent.class))).thenAnswer(a -> {
+            throw new IllegalArgumentException("Should not be captured");
+        });
+
+        refl.setFieldObject("upperGUI", upperGUI);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                refl.getObject().addContent(ItemGUIContent.newInstance("stone"))
+        );
     }
 
     private static Object[] slots() {
