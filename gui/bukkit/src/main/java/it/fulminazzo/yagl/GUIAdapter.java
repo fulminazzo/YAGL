@@ -85,9 +85,9 @@ public final class GUIAdapter {
             for (int i = 0; i < gui.size(); i++) {
                 GUIContent content = gui.getContent(v, i);
                 if (content != null) {
-                    GUIContent copy = content.copy().copyFrom(gui, false);
-                    BukkitItem render = copy
-                            .apply(copy)
+                    gui.apply(content.copyFrom(gui, false));
+                    BukkitItem render = content
+                            .apply(content)
                             .render()
                             .copy(BukkitItem.class);
                     final ItemStack o;
