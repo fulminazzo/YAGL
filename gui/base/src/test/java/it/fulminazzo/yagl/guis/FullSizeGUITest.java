@@ -26,7 +26,7 @@ class FullSizeGUITest {
                 new Object[]{27, 0},
                 new Object[]{26, 26},
                 new Object[]{28, 1},
-                new Object[]{71, 44}
+                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, FullSizeGUI.SECOND_INVENTORY_SIZE - 1}
         };
     }
 
@@ -45,7 +45,7 @@ class FullSizeGUITest {
                 new Object[]{27, DefaultGUI.class},
                 new Object[]{26, TypeGUI.class},
                 new Object[]{28, DefaultGUI.class},
-                new Object[]{71, DefaultGUI.class}
+                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, DefaultGUI.class}
         };
     }
 
@@ -64,7 +64,7 @@ class FullSizeGUITest {
                 new Object[]{27, 0, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
                 new Object[]{26, 26, GUI.newGUI(GUIType.CHEST)},
                 new Object[]{28, 1, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
-                new Object[]{71, 44, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)}
+                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, FullSizeGUI.SECOND_INVENTORY_SIZE - 1, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)}
         };
     }
 
