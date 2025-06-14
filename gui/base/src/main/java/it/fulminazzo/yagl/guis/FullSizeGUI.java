@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  */
 @Getter
 public class FullSizeGUI extends FieldEquable implements GUI {
-    private static final int SECOND_INVENTORY_SIZE = 45;
+    static final int SECOND_INVENTORY_SIZE = 45;
 
     private final @NotNull GUI upperGUI;
     private final @NotNull GUI lowerGUI;
