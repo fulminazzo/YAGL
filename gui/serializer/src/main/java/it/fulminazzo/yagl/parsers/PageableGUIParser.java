@@ -58,7 +58,12 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
                     throw new IllegalArgumentException(message);
                 }
                 refl.setFieldObject("templateGUI", templateGUI);
-                gui.setPages(pages);
+
+                try {
+                    gui.setPages(pages);
+                } catch (IllegalStateException e) {
+                    // DataGUI does not support pages
+                }
 
                 ConfigurationSection previousPage = section.getConfigurationSection("previous_page");
                 if (previousPage != null)
