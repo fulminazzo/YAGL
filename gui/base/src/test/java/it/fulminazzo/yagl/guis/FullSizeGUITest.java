@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
+import it.fulminazzo.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -273,6 +274,11 @@ class FullSizeGUITest {
         fullSizeGUI.invokeMethod(methodName, parameters);
 
         new Refl<>(verify(upperGUI)).invokeMethod(methodName, parameters);
+    }
+
+    @Test
+    void testOpenWithNoBukkitModule() {
+        assertThrowsExactly(IllegalStateException.class, () -> new FullSizeGUI(9).open(mock(Viewer.class)));
     }
 
 }
