@@ -59,6 +59,13 @@ public abstract class Viewer {
     public abstract void executeCommand(final @NotNull String command);
 
     /**
+     * Forces the execution of the given command from the console.
+     *
+     * @param command the command
+     */
+    public abstract void consoleExecuteCommand(final @NotNull String command);
+
+    /**
      * Check if the viewer has the given permission
      *
      * @param permission the permission
