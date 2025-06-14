@@ -77,10 +77,11 @@ public final class ItemAdapter {
         ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
 
         final ItemMeta meta = getItemMeta(itemStack);
-        invokeNoSuchMethod(() -> {
-            if (meta instanceof org.bukkit.inventory.meta.Damageable)
-                ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
-        }, () -> itemStack.setDurability((short) item.getDurability()));
+        if (item.getDurability() != 0)
+            invokeNoSuchMethod(() -> {
+                if (meta instanceof org.bukkit.inventory.meta.Damageable)
+                    ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
+            }, () -> itemStack.setDurability((short) item.getDurability()));
 
         if (meta != null) {
             String displayName = item.getDisplayName();
