@@ -769,6 +769,26 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
+    public @NotNull DataGUI<T> onClickOutsideSend(@NotNull String message) {
+        return (DataGUI<T>) super.onClickOutsideSend(message);
+    }
+
+    @Override
+    public @NotNull DataGUI<T> onOpenGUISend(@NotNull String message) {
+        return (DataGUI<T>) super.onOpenGUISend(message);
+    }
+
+    @Override
+    public @NotNull DataGUI<T> onCloseGUISend(@NotNull String message) {
+        return (DataGUI<T>) super.onCloseGUISend(message);
+    }
+
+    @Override
+    public @NotNull DataGUI<T> onChangeGUISend(@NotNull String message) {
+        return (DataGUI<T>) super.onChangeGUISend(message);
+    }
+
+    @Override
     public @NotNull DataGUI<T> setVariable(@NotNull String name, @NotNull String value) {
         return (DataGUI<T>) super.setVariable(name, value);
     }

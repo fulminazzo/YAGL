@@ -265,6 +265,11 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
     }
 
     @Override
+    public @NotNull ItemGUIContent onClickItemSend(@NotNull String message) {
+        return (ItemGUIContent) super.onClickItemSend(message);
+    }
+
+    @Override
     public @NotNull ItemGUIContent copyFrom(@NotNull Metadatable other, boolean replace) {
         return (ItemGUIContent) super.copyFrom(other, replace);
     }

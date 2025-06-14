@@ -528,6 +528,26 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    public @NotNull ResizableGUI onClickOutsideSend(@NotNull String message) {
+        return (ResizableGUI) super.onClickOutsideSend(message);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onOpenGUISend(@NotNull String message) {
+        return (ResizableGUI) super.onOpenGUISend(message);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onCloseGUISend(@NotNull String message) {
+        return (ResizableGUI) super.onCloseGUISend(message);
+    }
+
+    @Override
+    public @NotNull ResizableGUI onChangeGUISend(@NotNull String message) {
+        return (ResizableGUI) super.onChangeGUISend(message);
+    }
+
+    @Override
     public @NotNull ResizableGUI setVariable(@NotNull String name, @NotNull String value) {
         return (ResizableGUI) super.setVariable(name, value);
     }
