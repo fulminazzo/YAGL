@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -136,6 +137,20 @@ class FullSizeGUITest {
         if (internalGUI instanceof TypeGUI) refl.setFieldObject("upperGUI", internalGUI);
         else refl.setFieldObject("lowerGUI", internalGUI);
         return refl.getObject();
+    }
+
+    @Test
+    void testRows() {
+        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+
+        assertEquals(7, gui.rows());
+    }
+
+    @Test
+    void testColumns() {
+        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+
+        assertEquals(9, gui.columns());
     }
 
     @ParameterizedTest
