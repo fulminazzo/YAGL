@@ -19,6 +19,7 @@ import it.fulminazzo.yagl.viewers.Viewer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -70,6 +71,7 @@ class GUIAdapterTest {
             ).onOpenGUI(new GUICommand("say Opening GUI for <player_name>"));
 
             GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
+            verify(Bukkit.getServer()).dispatchCommand(this.player, "say Opening GUI for Alex");
 
             @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(openGUI.isPresent());
@@ -81,7 +83,6 @@ class GUIAdapterTest {
                     a.execute(openGUI.getKey(), openGUI.getValue(), content)
             );
 
-            verify(Bukkit.getServer()).dispatchCommand(this.player, "say Opening GUI for Alex");
             verify(Bukkit.getServer()).dispatchCommand(this.player, "say Alex clicked the content");
         });
     }
@@ -89,12 +90,17 @@ class GUIAdapterTest {
     @Test
     void testConsoleCommandActionsReplaceVariables() {
         BukkitTestUtils.mockPlugin(p -> {
+            Server server = Bukkit.getServer();
+            ConsoleCommandSender console = mock(ConsoleCommandSender.class);
+            when(server.getConsoleSender()).thenReturn(console);
+
             GUI gui = GUI.newGUI(9).setContents(0,
                     ItemGUIContent.newInstance("stone")
                             .onClickItem(new GUIItemConsoleCommand("say <player_name> clicked the content"))
             ).onOpenGUI(new GUIConsoleCommand("say Opening GUI for <player_name>"));
 
             GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
+            verify(server).dispatchCommand(console, "say Opening GUI for Alex");
 
             @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(openGUI.isPresent());
@@ -106,8 +112,7 @@ class GUIAdapterTest {
                     a.execute(openGUI.getKey(), openGUI.getValue(), content)
             );
 
-            verify(Bukkit.getServer()).dispatchCommand(Bukkit.getConsoleSender(), "say Opening GUI for Alex");
-            verify(Bukkit.getServer()).dispatchCommand(Bukkit.getConsoleSender(), "say Alex clicked the content");
+            verify(server).dispatchCommand(console, "say Alex clicked the content");
         });
     }
 
