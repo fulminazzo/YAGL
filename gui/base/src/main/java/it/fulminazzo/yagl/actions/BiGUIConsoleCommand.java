@@ -21,6 +21,6 @@ public class BiGUIConsoleCommand extends CommandAction implements BiGUIAction {
 
     @Override
     public void execute(@NotNull Viewer viewer, @NotNull GUI gui1, @NotNull GUI gui2) {
-        viewer.consoleExecute(this.command);
+        viewer.consoleExecuteCommand(this.command);
     }
 }

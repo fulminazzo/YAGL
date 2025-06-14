@@ -21,6 +21,6 @@ public class GUIConsoleCommand extends CommandAction implements GUIAction {
 
     @Override
     public void execute(@NotNull Viewer viewer, @NotNull GUI gui) {
-        viewer.consoleExecute(this.command);
+        viewer.consoleExecuteCommand(this.command);
     }
 }

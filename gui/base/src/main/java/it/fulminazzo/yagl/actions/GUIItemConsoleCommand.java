@@ -22,6 +22,6 @@ public class GUIItemConsoleCommand extends CommandAction implements GUIItemActio
 
     @Override
     public void execute(@NotNull Viewer viewer, @NotNull GUI gui, @NotNull GUIContent content) {
-        viewer.consoleExecute(this.command);
+        viewer.consoleExecuteCommand(this.command);
     }
 }
