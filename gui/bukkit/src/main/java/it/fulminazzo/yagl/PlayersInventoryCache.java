@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * A cache to handle the storing of {@link Player}s inventory contents.
  */
-class PlayersInventoryCache {
+public class PlayersInventoryCache {
     private final @NotNull Map<UUID, ItemStack[]> internalCache;
 
     /**
