@@ -22,6 +22,26 @@ class PlayersInventoryCache {
     }
 
     /**
+     * Checks if a contents list is stored for the given player.
+     *
+     * @param player the player
+     * @return true if it is
+     */
+    public boolean areContentsStored(final @NotNull Player player) {
+        return areContentsStored(player.getUniqueId());
+    }
+
+    /**
+     * Checks if a contents list is stored for the given player.
+     *
+     * @param uuid the player's uuid
+     * @return true if it is
+     */
+    public boolean areContentsStored(final @NotNull UUID uuid) {
+        return this.internalCache.containsKey(uuid);
+    }
+
+    /**
      * Stores the given player contents in the current cache.
      * Overwrites any previously saved value.
      *
