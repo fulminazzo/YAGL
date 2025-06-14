@@ -66,7 +66,6 @@ public final class GUIAdapter {
     public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui, final @NotNull Viewer viewer,
                                                     final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
         Consumer<Viewer> runnable = v -> {
-            gui.apply(gui);
             final UUID uuid = v.getUniqueId();
             final Player player = Bukkit.getPlayer(uuid);
             if (player == null) throw new PlayerOfflineException(v.getName());
@@ -82,6 +81,7 @@ public final class GUIAdapter {
             for (final @NotNull BukkitVariable variable : BukkitVariable.DEFAULT_VARIABLES)
                 gui.setVariable(variable.getName(), variable.getValue(player));
             // Open inventory
+            gui.apply(gui);
             Inventory inventory = guiToInventory(gui);
             for (int i = 0; i < gui.size(); i++) {
                 GUIContent content = gui.getContent(v, i);
