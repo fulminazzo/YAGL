@@ -2,6 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.contents.GUIContent;
+import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -82,8 +84,23 @@ public final class GUIAdapter {
             for (final @NotNull BukkitVariable variable : BukkitVariable.DEFAULT_VARIABLES)
                 gui.setVariable(variable.getName(), variable.getValue(player));
             // Open inventory
-            Inventory inventory = guiToInventory(gui);
-            populateInventoryWithGUIContents(gui, itemMetaClass, metaFunction, v, inventory);
+            final Inventory inventory;
+            // Check if GUI is FullSize
+            if (gui instanceof FullSizeGUI) {
+                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
+
+                GUI upperGUI = fullSizeGUI.getUpperGUI();
+                inventory = guiToInventory(upperGUI);
+                populateInventoryWithGUIContents(upperGUI, itemMetaClass, metaFunction, v, inventory);
+
+                GUIManager.getInstance().getInventoryCache().storePlayerContents(player);
+                PlayerInventory playerInventory = player.getInventory();
+                playerInventory.clear();
+                populateInventoryWithGUIContents(fullSizeGUI.getLowerGUI(), itemMetaClass, metaFunction, v, playerInventory);
+            } else {
+                inventory = guiToInventory(gui);
+                populateInventoryWithGUIContents(gui, itemMetaClass, metaFunction, v, inventory);
+            }
             player.openInventory(inventory);
             // Set new GUI
             reflViewer.setFieldObject("openGUI", gui);
