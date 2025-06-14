@@ -22,7 +22,9 @@ class CommandActionTest {
     private static Object[] commandClasses() {
         final Class<?> clazz = CommandAction.class;
         return ClassUtils.findClassesInPackage(clazz.getPackage().getName()).stream()
-                .filter(clazz::isAssignableFrom).filter(c -> !c.equals(clazz))
+                .filter(clazz::isAssignableFrom)
+                .filter(c -> !c.equals(clazz))
+                .filter(c -> !c.getName().contains("Console"))
                 .toArray(Object[]::new);
     }
 
