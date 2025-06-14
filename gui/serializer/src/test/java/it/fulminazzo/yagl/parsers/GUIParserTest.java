@@ -1,10 +1,7 @@
 package it.fulminazzo.yagl.parsers;
 
 import it.fulminazzo.yagl.ParserTestHelper;
-import it.fulminazzo.yagl.actions.BiGUICommand;
-import it.fulminazzo.yagl.actions.GUICommand;
-import it.fulminazzo.yagl.actions.GUIItemCommand;
-import it.fulminazzo.yagl.actions.GUIItemConsoleCommand;
+import it.fulminazzo.yagl.actions.*;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
@@ -44,6 +41,7 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         GUI expected = GUI.newGUI(9)
                 .onChangeGUI(new BiGUICommand("command"))
                 .onCloseGUI((v, g) -> v.executeCommand("help"))
+                .onClickOutside(new GUIConsoleCommand("command"))
                 .onOpenGUI(new GUICommand("command"))
                 .setContents(0, expectedContent1)
                 .setContents(1, expectedContent2);

@@ -19,6 +19,7 @@ class ActionParsersTest {
                 new GUIItemCommand("command2"),
                 new GUIItemConsoleCommand("command3"),
                 new GUICommand("command4"),
+                new GUIConsoleCommand("command5"),
         };
     }
 
