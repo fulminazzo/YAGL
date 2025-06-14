@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.actions;
+package it.fulminazzo.yagl.actions.messages;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.yagl.SerializableFunction;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link SerializableFunction} that sends the given {@link #message} to the viewer upon {@link #execute(Viewer)}.
  */
-abstract class MessageAction extends FieldEquable implements SerializableFunction {
+public abstract class MessageAction extends FieldEquable implements SerializableFunction {
     protected final String message;
 
     /**
@@ -26,7 +26,7 @@ abstract class MessageAction extends FieldEquable implements SerializableFunctio
      *
      * @param viewer the viewer
      */
-    protected void execute(final @NotNull Viewer viewer) {
+    public void execute(final @NotNull Viewer viewer) {
         viewer.sendMessage(MessageUtils.color(this.message));
     }
 

@@ -1,5 +1,6 @@
-package it.fulminazzo.yagl.actions;
+package it.fulminazzo.yagl.actions.messages;
 
+import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
