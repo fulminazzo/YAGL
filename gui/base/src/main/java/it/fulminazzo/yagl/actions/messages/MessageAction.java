@@ -7,7 +7,7 @@ import it.fulminazzo.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An implementation of {@link SerializableFunction} that sends the given {@link #message} to the viewer upon {@link #execute(Viewer)}.
+ * An implementation of {@link SerializableFunction} that sends the given {@link #message} to the viewer upon {@link #sendMessage(Viewer)}.
  */
 public abstract class MessageAction extends FieldEquable implements SerializableFunction {
     protected final String message;
@@ -22,11 +22,11 @@ public abstract class MessageAction extends FieldEquable implements Serializable
     }
 
     /**
-     * Execute.
+     * Send message.
      *
      * @param viewer the viewer
      */
-    public void execute(final @NotNull Viewer viewer) {
+    public void sendMessage(final @NotNull Viewer viewer) {
         viewer.sendMessage(MessageUtils.color(this.message));
     }
 

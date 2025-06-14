@@ -6,7 +6,7 @@ import it.fulminazzo.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An implementation of {@link BiGUIAction} that sends the given message to the viewer upon {@link #execute(Viewer)}.
+ * An implementation of {@link BiGUIAction} that sends the given message to the viewer upon {@link #sendMessage(Viewer)}.
  */
 public class BiGUIMessage extends MessageAction implements BiGUIAction {
 
@@ -21,6 +21,6 @@ public class BiGUIMessage extends MessageAction implements BiGUIAction {
 
     @Override
     public void execute(@NotNull Viewer viewer, @NotNull GUI gui1, @NotNull GUI gui2) {
-        super.execute(viewer);
+        super.sendMessage(viewer);
     }
 }
