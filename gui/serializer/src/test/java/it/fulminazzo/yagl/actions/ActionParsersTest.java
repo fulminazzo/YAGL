@@ -17,7 +17,8 @@ class ActionParsersTest {
         return new CommandAction[]{
                 new BiGUICommand("command"),
                 new GUIItemCommand("command2"),
-                new GUICommand("command3"),
+                new GUIItemConsoleCommand("command3"),
+                new GUICommand("command4"),
         };
     }
 

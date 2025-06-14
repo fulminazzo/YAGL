@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.ParserTestHelper;
 import it.fulminazzo.yagl.actions.BiGUICommand;
 import it.fulminazzo.yagl.actions.GUICommand;
 import it.fulminazzo.yagl.actions.GUIItemCommand;
+import it.fulminazzo.yagl.actions.GUIItemConsoleCommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
@@ -32,15 +33,20 @@ class GUIParserTest extends ParserTestHelper<GUI> {
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
         GUIYAGLParser.addAllParsers();
-        GUIContent expectedContent = ItemGUIContent.newInstance()
+        GUIContent expectedContent1 = ItemGUIContent.newInstance()
                 .setMaterial("stone")
                 .onClickItem(new GUIItemCommand("command"))
+                .setViewRequirements(new PermissionRequirement("permission"));
+        GUIContent expectedContent2 = ItemGUIContent.newInstance()
+                .setMaterial("stone")
+                .onClickItem(new GUIItemConsoleCommand("command"))
                 .setViewRequirements(new PermissionRequirement("permission"));
         GUI expected = GUI.newGUI(9)
                 .onChangeGUI(new BiGUICommand("command"))
                 .onCloseGUI((v, g) -> v.executeCommand("help"))
                 .onOpenGUI(new GUICommand("command"))
-                .setContents(0, expectedContent);
+                .setContents(0, expectedContent1)
+                .setContents(1, expectedContent2);
         File file = new File("build/resources/test/actions-and-requirements.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -60,7 +66,9 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         assertFalse(contents.isEmpty());
         GUIContent content = contents.get(0);
         assertNotNull(content);
-        assertEquals((Object) new Refl<>(expectedContent).getFieldObject("requirements"),
+        assertEquals((Object) new Refl<>(expectedContent1).getFieldObject("requirements"),
+                new Refl<>(content).getFieldObject("requirements"));
+        assertEquals((Object) new Refl<>(expectedContent2).getFieldObject("requirements"),
                 new Refl<>(content).getFieldObject("requirements"));
     }
 
