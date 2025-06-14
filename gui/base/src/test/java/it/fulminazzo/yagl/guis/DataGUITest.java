@@ -252,8 +252,8 @@ class DataGUITest {
     @MethodSource("constructorParameters")
     void testConstructors(Supplier<DataGUI<Object>> supplier, boolean typeProvided, boolean dataProvided) {
         @NotNull DataGUI<Object> expected = typeProvided ?
-                new DataGUI<>(GUIType.CHEST, null) :
-                new DataGUI<>(27, null);
+                new DataGUI<>(GUI.newGUI(GUIType.CHEST), null) :
+                new DataGUI<>(GUI.newGUI(27), null);
         expected.setData("Hello", "World");
         DataGUI<Object> actual = supplier.get();
         if (!dataProvided) {
