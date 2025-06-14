@@ -117,6 +117,20 @@ class FullSizeGUITest {
         assertEquals(content, contents.get(0));
     }
 
+    @ParameterizedTest
+    @MethodSource("slotsGUIs")
+    void testUnsetContentRemovesContents(int slot, int actual, GUI internalGUI) {
+        FullSizeGUI gui = setupGUI(internalGUI);
+        GUIContent content = ItemGUIContent.newInstance("stone");
+
+        internalGUI.setContents(actual, content);
+
+        gui.unsetContent(slot);
+
+        @NotNull List<GUIContent> contents = internalGUI.getContents(actual);
+        assertTrue(contents.isEmpty());
+    }
+
     private static FullSizeGUI setupGUI(GUI internalGUI) {
         Refl<FullSizeGUI> refl = new Refl<>(new FullSizeGUI(GUIType.CHEST));
         if (internalGUI instanceof TypeGUI) refl.setFieldObject("upperGUI", internalGUI);
