@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
@@ -71,7 +73,13 @@ public class FullSizeGUI extends FieldEquable implements GUI {
 
     @Override
     public void open(@NotNull Viewer viewer) {
-        //TODO:
+        final Class<?> guiUtils;
+        try {
+            guiUtils = ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
+        }
+        new Refl<>(guiUtils).invokeMethod("openGUI", this, viewer);
     }
 
     @Override
