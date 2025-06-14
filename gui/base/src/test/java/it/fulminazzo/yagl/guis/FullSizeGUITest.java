@@ -20,6 +20,52 @@ import static org.mockito.Mockito.verify;
 
 class FullSizeGUITest {
 
+    @Test
+    void testAddContentMethod() {
+        String[] materials = new String[]{
+                "stone", "grass_block", "dirt", "cobblestone", "oak_planks",
+                "bedrock", "sand", "gravel", "gold_ore", "iron_ore",
+                "coal_ore", "oak_log", "oak_leaves", "glass", "lapis_ore",
+                "lapis_block", "dispenser", "sandstone", "gold_block", "iron_block",
+                "bricks", "tnt", "bookshelf", "mossy_cobblestone", "obsidian",
+                "torch", "fire", "water", "lava", "diamond_ore",
+                "diamond_block", "crafting_table", "furnace", "redstone_ore", "ice",
+                "cactus", "jukebox", "netherrack", "soul_sand", "glowstone",
+                "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
+        };
+
+        FullSizeGUI gui = new FullSizeGUI(9);
+        gui.addContent(Arrays.stream(materials)
+                .map(ItemGUIContent::newInstance)
+                .toArray(ItemGUIContent[]::new));
+
+        Refl<?> refl = new Refl<>(gui);
+
+        GUI upperGUI = refl.getFieldObject("upperGUI");
+        for (int i = 0; i < 9; i++) {
+            @NotNull List<GUIContent> contents = upperGUI.getContents(i);
+            assertFalse(contents.isEmpty());
+
+            GUIContent content = contents.get(0);
+            assertInstanceOf(ItemGUIContent.class, content);
+
+            ItemGUIContent item = (ItemGUIContent) content;
+            assertEquals(materials[i], item.getMaterial());
+        }
+
+        GUI lowerGUI = refl.getFieldObject("lowerGUI");
+        for (int i = 9; i < materials.length; i++) {
+            @NotNull List<GUIContent> contents = lowerGUI.getContents(i - 9);
+            assertFalse(contents.isEmpty());
+
+            GUIContent content = contents.get(0);
+            assertInstanceOf(ItemGUIContent.class, content);
+
+            ItemGUIContent item = (ItemGUIContent) content;
+            assertEquals(materials[i], item.getMaterial());
+        }
+    }
+
     private static Object[] slots() {
         return new Object[][]{
                 new Object[]{0, 0},
