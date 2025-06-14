@@ -153,6 +153,22 @@ class FullSizeGUITest {
         assertEquals(9, gui.columns());
     }
 
+    @Test
+    void testClearClearsBothGUIs() {
+        GUI upperGUI = mock(GUI.class);
+        GUI lowerGUI = mock(GUI.class);
+
+        FullSizeGUI gui = new Refl<>(new FullSizeGUI(GUIType.CHEST))
+                .setFieldObject("upperGUI", upperGUI)
+                .setFieldObject("lowerGUI", lowerGUI)
+                .getObject();
+
+        gui.clear();
+
+        verify(upperGUI).clear();
+        verify(lowerGUI).clear();
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"setTitle", "getTitle",
             "onClickOutside", "clickOutsideAction",
