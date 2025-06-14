@@ -36,14 +36,11 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
-            Integer size = section.getInteger("size");
-            if (size == null) throw new IllegalArgumentException("'size' cannot be null");
+
             Integer pages = section.getInteger("pages");
             if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
-            final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section, size);
-            try {
-                gui.setPages(pages);
-            } catch (IllegalStateException ignored) {}
+            final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section, (Object) null);
+
             final Refl<PageableGUI> refl = new Refl<>(gui);
 
             final String guiType = section.getString("gui-type");
@@ -59,6 +56,7 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
                 throw new IllegalArgumentException(message);
             }
             refl.setFieldObject("templateGUI", templateGUI);
+            gui.setPages(pages);
 
             ConfigurationSection previousPage = section.getConfigurationSection("previous_page");
             if (previousPage != null)
