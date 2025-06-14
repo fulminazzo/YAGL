@@ -139,7 +139,7 @@ public class FullSizeGUI extends FieldEquable implements GUI {
 
     @Override
     public int columns() {
-        return this.upperGUI.columns() + this.lowerGUI.columns();
+        return this.lowerGUI.columns();
     }
 
     @Override
