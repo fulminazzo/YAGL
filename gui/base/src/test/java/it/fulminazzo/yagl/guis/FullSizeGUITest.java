@@ -2,12 +2,16 @@ package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.contents.GUIContent;
+import it.fulminazzo.yagl.contents.ItemGUIContent;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -71,6 +75,33 @@ class FullSizeGUITest {
         internalGUI.setMovable(actual, true);
 
         assertTrue(gui.isMovable(slot));
+    }
+
+    @ParameterizedTest
+    @MethodSource("slotsGUIs")
+    void testSetMovableSetsCorrectSlot(int slot, int actual, GUI internalGUI) {
+        FullSizeGUI gui = setupGUI(internalGUI);
+
+        assertFalse(internalGUI.isMovable(actual));
+
+        gui.setMovable(slot, true);
+
+        assertTrue(internalGUI.isMovable(actual));
+    }
+
+    @ParameterizedTest
+    @MethodSource("slotsGUIs")
+    void testSetContentsSetsCorrectValue(int slot, int actual, GUI internalGUI) {
+        FullSizeGUI gui = setupGUI(internalGUI);
+        GUIContent content = ItemGUIContent.newInstance("stone");
+
+        assertTrue(internalGUI.getContents(actual).isEmpty());
+
+        gui.setContents(slot, content);
+
+        @NotNull List<GUIContent> contents = internalGUI.getContents(actual);
+        assertFalse(contents.isEmpty());
+        assertEquals(content, contents.get(0));
     }
 
     private static FullSizeGUI setupGUI(GUI internalGUI) {
