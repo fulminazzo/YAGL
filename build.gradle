@@ -10,7 +10,7 @@ final def DEMO_MODULE = 'demo'
 final def VERSION_VARIABLE = 'MINECRAFT_VERSION'
 
 group = 'it.fulminazzo'
-version = '4.3'
+version = '4.4'
 
 allprojects {
     apply plugin: 'java-library'
@@ -123,7 +123,7 @@ allprojects {
             }
 
         // Bukkit dependencies
-        if (projectName.contains('bukkit') || projectName.contains('demo')) {
+        if (projectName.contains('bukkit') || projectName.contains(DEMO_MODULE)) {
             compileOnly libs.spigot
             testCompileOnly libs.spigot.latest
             testRuntimeOnly "org.spigotmc:spigot-api:${latestVersion}"
@@ -165,8 +165,9 @@ allprojects {
         // Demo module
         if (projectName == DEMO_MODULE) {
             rootProject.subprojects
-                    .findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE }
+                    .findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
+            testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-bukkit")
             testImplementation getJBukkitModule(latestVersion)
         }
     }
@@ -177,7 +178,7 @@ allprojects {
         }
     }
 
-    if (project.name == TEST_MODULE) return
+    if (project.name.contains(TEST_MODULE)) return
 
     test {
         def projectName = project.name
@@ -203,6 +204,8 @@ allprojects {
             dependsOn "${it.path}:test"
         }
     }
+
+    if (project.name == DEMO_MODULE) return
 
     tasks.register('sourcesJar', Jar) {
         from sourceSets.main.delombokTask
@@ -243,8 +246,8 @@ allprojects {
 }
 
 dependencies {
-    subprojects.findAll { it.name != TEST_MODULE && it.name != DEMO_MODULE } .each { api project(it.path) }
-    implementation project(":${DEMO_MODULE}")
+    subprojects.findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE } .each { api project(it.path) }
+    compileOnly project(":${DEMO_MODULE}")
 }
 
 tasks.register("aggregateJavaDoc") {

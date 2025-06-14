@@ -3,8 +3,8 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.items.Item;
+import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.Viewer;
 import it.fulminazzo.yagl.wrappers.Sound;
@@ -18,6 +18,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,6 +66,13 @@ class GUIManagerTest {
             Server server = Bukkit.getServer();
             when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
             when(server.isPrimaryThread()).thenReturn(true);
+
+            BukkitScheduler scheduler = mock(BukkitScheduler.class);
+            when(scheduler.runTask(any(), any(Runnable.class))).thenAnswer(a -> {
+                ((Runnable) a.getArguments()[1]).run();
+                return null;
+            });
+            when(server.getScheduler()).thenReturn(scheduler);
 
             this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
             when(this.player.isOnline()).thenReturn(true);
@@ -207,14 +215,16 @@ class GUIManagerTest {
 
         @Test
         void testCloseEvent() {
-            AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.onCloseGUI((v, g) -> expected.set(true));
+            BukkitTestUtils.mockPlugin(p -> {
+                AtomicBoolean expected = new AtomicBoolean(false);
+                this.expected.onCloseGUI((v, g) -> expected.set(true));
 
-            InventoryViewWrapper view = getView();
+                InventoryViewWrapper view = getView();
 
-            this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
+                this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
 
-            assertTrue(expected.get(), "CloseGUI action was not invoked");
+                assertTrue(expected.get(), "CloseGUI action was not invoked");
+            });
         }
 
         @Test

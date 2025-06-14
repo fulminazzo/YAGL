@@ -30,6 +30,7 @@ public class PotionWrapper {
      * Instantiates a new Potion wrapper.
      *
      * @param potion the potion (must be of type {@link Potion}
+     * @param <P>    the type of the potion to create from
      */
     public <P> PotionWrapper(final @NotNull P potion) {
         if (potion instanceof Potion) this.internalPotion = (Potion) potion;

@@ -85,7 +85,9 @@ public final class GUIAdapter {
             for (int i = 0; i < gui.size(); i++) {
                 GUIContent content = gui.getContent(v, i);
                 if (content != null) {
-                    BukkitItem render = content.copy().copyFrom(gui, false)
+                    GUIContent copy = content.copy().copyFrom(gui, false);
+                    BukkitItem render = copy
+                            .apply(copy)
                             .render()
                             .copy(BukkitItem.class);
                     final ItemStack o;
@@ -118,8 +120,10 @@ public final class GUIAdapter {
         // Save previous GUI, if present
         GUIManager.getOpenGUIViewer(uuid).ifPresent((v, g) -> {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
-            g.closeGUIAction().ifPresent(a -> a.execute(v, g));
             player.closeInventory();
+            g.closeGUIAction().ifPresent(a ->
+                    Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> a.execute(v, g))
+            );
         });
     }
 

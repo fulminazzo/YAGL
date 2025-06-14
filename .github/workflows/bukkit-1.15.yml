@@ -2,11 +2,18 @@
 name: MC 1.15
 
 on:
-  push:
-    branches: [ "main", "master", "dev" ]
+  workflow_run:
+    workflows: [ "Execute tests with Gradle" ]
+    types:
+      - completed
+
+concurrency:
+  group: mc-1.15-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    if: github.event.workflow_run.conclusion == 'success'
     uses: ./.github/workflows/bukkit-test.yml
     with:
       java-version: 8
