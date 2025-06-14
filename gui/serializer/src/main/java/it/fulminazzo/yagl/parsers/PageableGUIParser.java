@@ -37,46 +37,51 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
 
-            Integer pages = section.getInteger("pages");
-            if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
-            final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section, (Object) null);
-
-            final Refl<PageableGUI> refl = new Refl<>(gui);
-
-            final String guiType = section.getString("gui-type");
-            if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
-            section.set("type", guiType);
-
-            final GUI templateGUI;
+            final String previousType = section.getString("type");
             try {
-                templateGUI = c.get(s, GUI.class);
-                templateGUI.variables().clear();
-            } catch (Exception e) {
-                String message = String.format("Cannot properly load template GUI for PageableGUI: %s", e.getMessage());
-                throw new IllegalArgumentException(message);
+                Integer pages = section.getInteger("pages");
+                if (pages == null) throw new IllegalArgumentException("'pages' cannot be null");
+                final PageableGUI gui = (PageableGUI) getObjectFromType(GUI.class, section, (Object) null);
+
+                final Refl<PageableGUI> refl = new Refl<>(gui);
+
+                final String guiType = section.getString("gui-type");
+                if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
+                section.set("type", guiType);
+
+                final GUI templateGUI;
+                try {
+                    templateGUI = c.get(s, GUI.class);
+                    templateGUI.variables().clear();
+                } catch (Exception e) {
+                    String message = String.format("Cannot properly load template GUI for PageableGUI: %s", e.getMessage());
+                    throw new IllegalArgumentException(message);
+                }
+                refl.setFieldObject("templateGUI", templateGUI);
+                gui.setPages(pages);
+
+                ConfigurationSection previousPage = section.getConfigurationSection("previous_page");
+                if (previousPage != null)
+                    gui.setPreviousPage(previousPage.getInteger("slot"),
+                            previousPage.get("content", GUIContent.class));
+
+                ConfigurationSection nextPage = section.getConfigurationSection("next_page");
+                if (nextPage != null)
+                    gui.setNextPage(nextPage.getInteger("slot"),
+                            nextPage.get("content", GUIContent.class));
+
+                Map<?, ?> variables = section.get("variables", Map.class);
+                if (variables != null) variables.forEach((k, v) -> {
+                    if (k != null && v != null) gui.setVariable(k.toString(), v.toString());
+                });
+
+                final ConfigurationSection pagesSection = section.getConfigurationSection("gui-pages");
+                if (pagesSection != null) loadPages(section, pagesSection, gui, IGNORE_FIELDS);
+
+                return gui;
+            } finally {
+                section.set("type", previousType);
             }
-            refl.setFieldObject("templateGUI", templateGUI);
-            gui.setPages(pages);
-
-            ConfigurationSection previousPage = section.getConfigurationSection("previous_page");
-            if (previousPage != null)
-                gui.setPreviousPage(previousPage.getInteger("slot"),
-                        previousPage.get("content", GUIContent.class));
-
-            ConfigurationSection nextPage = section.getConfigurationSection("next_page");
-            if (nextPage != null)
-                gui.setNextPage(nextPage.getInteger("slot"),
-                        nextPage.get("content", GUIContent.class));
-
-            Map<?, ?> variables = section.get("variables", Map.class);
-            if (variables != null) variables.forEach((k, v) -> {
-                if (k != null && v != null) gui.setVariable(k.toString(), v.toString());
-            });
-
-            final ConfigurationSection pagesSection = section.getConfigurationSection("gui-pages");
-            if (pagesSection != null) loadPages(section, pagesSection, gui, IGNORE_FIELDS);
-
-            return gui;
         };
     }
 
