@@ -22,11 +22,13 @@ public class FullSizeGUI extends FieldEquable {
     }
 
     int getCorrespondingSlot(final int slot) {
+        GUIUtils.checkSlot(slot, size());
         if (slot >= upperGUI.size()) return slot - upperGUI.size();
         else return slot;
     }
 
     @NotNull GUI getCorrespondingGUI(final int slot) {
+        GUIUtils.checkSlot(slot, size());
         if (slot >= upperGUI.size()) return lowerGUI;
         else return upperGUI;
     }

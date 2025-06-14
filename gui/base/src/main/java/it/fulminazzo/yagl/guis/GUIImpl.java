@@ -79,6 +79,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
 
     @Override
     public @NotNull GUI setMovable(int slot, boolean movable) {
+        GUIUtils.checkSlot(slot, size());
         if (movable) this.movableSlots.add(slot);
         else this.movableSlots.remove(slot);
         return this;
@@ -86,11 +87,13 @@ abstract class GUIImpl extends FieldEquable implements GUI {
 
     @Override
     public boolean isMovable(int slot) {
+        GUIUtils.checkSlot(slot, size());
         return this.movableSlots.contains(slot);
     }
 
     @Override
     public @NotNull List<GUIContent> getContents(int slot) {
+        GUIUtils.checkSlot(slot, size());
         Contents contents = this.contents.get(slot);
         if (contents == null) return new LinkedList<>();
         return contents.getContents();
@@ -127,12 +130,14 @@ abstract class GUIImpl extends FieldEquable implements GUI {
 
     @Override
     public @NotNull GUI setContents(int slot, GUIContent @NotNull ... contents) {
+        GUIUtils.checkSlot(slot, size());
         this.contents.set(slot, new Contents(contents));
         return this;
     }
 
     @Override
     public @NotNull GUI unsetContent(int slot) {
+        GUIUtils.checkSlot(slot, size());
         this.contents.set(slot, null);
         return this;
     }
