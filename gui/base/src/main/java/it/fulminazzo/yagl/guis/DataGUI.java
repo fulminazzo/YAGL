@@ -38,12 +38,6 @@ public class DataGUI<T> extends PageableGUI {
         };
     }
 
-    private DataGUI(final int size) {
-        this(null, t -> {
-            throw new NotImplemented();
-        });
-    }
-
     /**
      * Instantiates a new Data gui.
      *
