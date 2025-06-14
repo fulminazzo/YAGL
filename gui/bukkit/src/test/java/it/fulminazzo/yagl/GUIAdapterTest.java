@@ -5,7 +5,9 @@ import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.actions.GUICommand;
+import it.fulminazzo.yagl.actions.GUIConsoleCommand;
 import it.fulminazzo.yagl.actions.GUIItemCommand;
+import it.fulminazzo.yagl.actions.GUIItemConsoleCommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.GUI;
@@ -81,6 +83,31 @@ class GUIAdapterTest {
 
             verify(Bukkit.getServer()).dispatchCommand(this.player, "say Opening GUI for Alex");
             verify(Bukkit.getServer()).dispatchCommand(this.player, "say Alex clicked the content");
+        });
+    }
+
+    @Test
+    void testConsoleCommandActionsReplaceVariables() {
+        BukkitTestUtils.mockPlugin(p -> {
+            GUI gui = GUI.newGUI(9).setContents(0,
+                    ItemGUIContent.newInstance("stone")
+                            .onClickItem(new GUIItemConsoleCommand("say <player_name> clicked the content"))
+            ).onOpenGUI(new GUIConsoleCommand("say Opening GUI for <player_name>"));
+
+            GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
+
+            @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(openGUI.isPresent());
+
+            GUIContent content = openGUI.getValue().getContent(openGUI.getKey(), 0);
+            assertNotNull(content);
+
+            content.clickItemAction().ifPresent(a ->
+                    a.execute(openGUI.getKey(), openGUI.getValue(), content)
+            );
+
+            verify(Bukkit.getServer()).dispatchCommand(Bukkit.getConsoleSender(), "say Opening GUI for Alex");
+            verify(Bukkit.getServer()).dispatchCommand(Bukkit.getConsoleSender(), "say Alex clicked the content");
         });
     }
 
