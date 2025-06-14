@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.actions.commands;
 
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.fulmicollection.utils.ClassUtils;
+import it.fulminazzo.yagl.viewers.Viewer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,6 +43,36 @@ class CommandActionTest {
             doCallRealMethod().when(action).execute(any());
             method.invoke(action, params);
             verify(action).execute(any());
+        }
+    }
+
+    private static Object[] consoleCommandClasses() {
+        final Class<?> clazz = CommandAction.class;
+        return ClassUtils.findClassesInPackage(clazz.getPackage().getName()).stream()
+                .filter(clazz::isAssignableFrom)
+                .filter(c -> !c.equals(clazz))
+                .filter(c -> c.getName().contains("Console"))
+                .toArray(Object[]::new);
+    }
+
+    @ParameterizedTest
+    @MethodSource("consoleCommandClasses")
+    @DisplayName("Console Command Action Inheritors Should Call consoleExecuteCommand Method On Viewer")
+    void testConsoleCommandActionImplementations(Class<? extends CommandAction> clazz) throws InvocationTargetException, IllegalAccessException {
+        CommandAction action = mock(clazz);
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.getParameterCount() == 1) continue;
+            if (!method.getName().equals("execute")) continue;
+
+            Class<?>[] paramTypes = method.getParameterTypes();
+            Object[] params = Arrays.stream(paramTypes).map(TestUtils::mockParameter).toArray(Object[]::new);
+            Viewer viewer = mock(Viewer.class);
+            params[0] = viewer;
+
+            when(method.invoke(action, params)).thenCallRealMethod();
+            doCallRealMethod().when(action).execute(any());
+            method.invoke(action, params);
+            verify(viewer).consoleExecuteCommand(any());
         }
     }
 
