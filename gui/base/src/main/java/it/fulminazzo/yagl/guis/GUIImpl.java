@@ -105,7 +105,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
         for (int i = 0; i < contents.length; i++) {
             j = addSingle(contents[i], j);
             if (j >= size())
-                throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
+                throw GUIUtils.cannotAddContentAtIndexException(i);
         }
         return this;
     }
