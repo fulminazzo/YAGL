@@ -6,8 +6,10 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.viewers.Viewer;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -29,7 +31,9 @@ import java.util.UUID;
  * It is completely independent and not required from the end user to be loaded or registered.
  */
 public class GUIManager extends SingleInstance implements Listener {
-    private final List<Viewer> viewers;
+    private final @NotNull List<Viewer> viewers;
+    @Getter
+    private final @NotNull PlayersInventoryCache inventoryCache;
 
     /**
      * Instantiates a new GUI manager.
@@ -37,6 +41,7 @@ public class GUIManager extends SingleInstance implements Listener {
     public GUIManager() {
         initialize();
         this.viewers = new ArrayList<>();
+        this.inventoryCache = new PlayersInventoryCache();
     }
 
     @EventHandler
@@ -59,7 +64,12 @@ public class GUIManager extends SingleInstance implements Listener {
 
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
-        GUIAdapter.closeGUI(getViewer(event.getPlayer()));
+        Player player = (Player) event.getPlayer();
+        GUIAdapter.closeGUI(getViewer(player));
+        if (inventoryCache.areContentsStored(player)) {
+            inventoryCache.restorePlayerContents(player);
+            inventoryCache.clearPlayerContents(player);
+        }
     }
 
     @EventHandler
