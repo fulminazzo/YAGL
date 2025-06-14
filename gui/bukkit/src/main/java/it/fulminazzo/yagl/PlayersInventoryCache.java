@@ -44,7 +44,24 @@ class PlayersInventoryCache {
         ItemStack[] cache = this.internalCache.get(player.getUniqueId());
         ItemStack[] playerContents = player.getInventory().getStorageContents();
         System.arraycopy(cache, 0, playerContents, 0, playerContents.length);
-        this.internalCache.remove(player.getUniqueId());
+    }
+
+    /**
+     * Clears the player contents from the internal cache.
+     *
+     * @param player the player
+     */
+    public void clearPlayerContents(final @NotNull Player player) {
+        clearPlayerContents(player.getUniqueId());
+    }
+
+    /**
+     * Clears the player contents from the internal cache.
+     *
+     * @param uuid the player's uuid
+     */
+    public void clearPlayerContents(final @NotNull UUID uuid) {
+        this.internalCache.remove(uuid);
     }
 
 }
