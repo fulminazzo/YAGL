@@ -1,0 +1,33 @@
+# Synchronizes the main branch with dev by pushing any commits on the former.
+name: Sync main to dev
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: sync-main-dev
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Update branches
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout dev
+          git merge origin/main --no-edit
+          git push origin dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
