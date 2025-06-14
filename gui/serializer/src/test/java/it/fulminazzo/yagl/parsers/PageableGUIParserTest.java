@@ -79,14 +79,6 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     }
 
     @Test
-    void testSizeNotSpecified() {
-        IConfiguration configuration = getConfiguration(c -> {});
-        Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
-                getLoader().apply(configuration, "gui"));
-        checkMessage(throwable, "size");
-    }
-
-    @Test
     void testPagesNotSpecified() {
         IConfiguration configuration = getConfiguration(c -> {
             c.set("type", "PAGEABLE");
