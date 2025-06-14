@@ -1,9 +1,7 @@
-package it.fulminazzo.yagl.actions;
+package it.fulminazzo.yagl.actions.commands;
 
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.fulmicollection.utils.ClassUtils;
-import it.fulminazzo.yagl.actions.commands.CommandAction;
-import it.fulminazzo.yagl.actions.commands.GUICommand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
