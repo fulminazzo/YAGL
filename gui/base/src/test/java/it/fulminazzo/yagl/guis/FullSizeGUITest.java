@@ -91,6 +91,19 @@ class FullSizeGUITest {
 
     @ParameterizedTest
     @MethodSource("slotsGUIs")
+    void testGetContentsReturnsCorrectValue(int slot, int actual, GUI internalGUI) {
+        FullSizeGUI gui = setupGUI(internalGUI);
+        GUIContent content = ItemGUIContent.newInstance("stone");
+
+        internalGUI.setContents(actual, content);
+
+        @NotNull List<GUIContent> contents = gui.getContents(slot);
+        assertFalse(contents.isEmpty());
+        assertEquals(content, contents.get(0));
+    }
+
+    @ParameterizedTest
+    @MethodSource("slotsGUIs")
     void testSetContentsSetsCorrectValue(int slot, int actual, GUI internalGUI) {
         FullSizeGUI gui = setupGUI(internalGUI);
         GUIContent content = ItemGUIContent.newInstance("stone");
