@@ -83,20 +83,7 @@ public final class GUIAdapter {
                 gui.setVariable(variable.getName(), variable.getValue(player));
             // Open inventory
             Inventory inventory = guiToInventory(gui);
-            for (int i = 0; i < gui.size(); i++) {
-                GUIContent content = gui.getContent(v, i);
-                if (content != null) {
-                    content.copyFrom(gui, false);
-                    BukkitItem render = content
-                            .apply(content)
-                            .render()
-                            .copy(BukkitItem.class);
-                    final ItemStack o;
-                    if (itemMetaClass == null || metaFunction == null) o = render.create();
-                    else o = render.create(itemMetaClass, metaFunction);
-                    inventory.setItem(i, o);
-                }
-            }
+            populateInventoryWithGUIContents(gui, itemMetaClass, metaFunction, v, inventory);
             player.openInventory(inventory);
             // Set new GUI
             reflViewer.setFieldObject("openGUI", gui);
@@ -105,7 +92,29 @@ public final class GUIAdapter {
         };
         // Check if context is Async and synchronize
         if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
-        else Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+        else
+            Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+    }
+
+    private static <M extends ItemMeta> void populateInventoryWithGUIContents(final @NotNull GUI gui,
+                                                                              final @Nullable Class<M> itemMetaClass,
+                                                                              final @Nullable Consumer<M> metaFunction,
+                                                                              final @NotNull Viewer v,
+                                                                              final @NotNull Inventory inventory) {
+        for (int i = 0; i < gui.size(); i++) {
+            GUIContent content = gui.getContent(v, i);
+            if (content != null) {
+                content.copyFrom(gui, false);
+                BukkitItem render = content
+                        .apply(content)
+                        .render()
+                        .copy(BukkitItem.class);
+                final ItemStack o;
+                if (itemMetaClass == null || metaFunction == null) o = render.create();
+                else o = render.create(itemMetaClass, metaFunction);
+                inventory.setItem(i, o);
+            }
+        }
     }
 
     /**
