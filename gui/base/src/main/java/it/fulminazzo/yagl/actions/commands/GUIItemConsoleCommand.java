@@ -1,5 +1,6 @@
-package it.fulminazzo.yagl.actions;
+package it.fulminazzo.yagl.actions.commands;
 
+import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.viewers.Viewer;

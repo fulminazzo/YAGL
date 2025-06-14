@@ -1,5 +1,6 @@
-package it.fulminazzo.yagl.actions;
+package it.fulminazzo.yagl.actions.commands;
 
+import it.fulminazzo.yagl.actions.GUIAction;
 import org.jetbrains.annotations.NotNull;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.viewers.Viewer;

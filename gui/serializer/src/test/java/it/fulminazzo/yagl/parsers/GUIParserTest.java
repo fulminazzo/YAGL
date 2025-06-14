@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.parsers;
 
 import it.fulminazzo.yagl.ParserTestHelper;
-import it.fulminazzo.yagl.actions.*;
+import it.fulminazzo.yagl.actions.commands.*;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
