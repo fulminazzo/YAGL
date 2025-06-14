@@ -14,11 +14,26 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class FullSizeGUITest {
+
+    private static Object[][] guisInitializers() {
+        return new Object[][]{
+                new Object[]{(Supplier<GUI>) () -> GUI.newFullSizeGUI(9), new FullSizeGUI(9)},
+                new Object[]{(Supplier<GUI>) () -> GUI.newFullSizeGUI(GUIType.ANVIL), new FullSizeGUI(GUIType.ANVIL)}
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("guisInitializers")
+    void testGUIInitFunctions(Supplier<GUI> supplier, FullSizeGUI expected) {
+        GUI actual = supplier.get();
+        assertEquals(expected, actual);
+    }
 
     @Test
     void testAddContentMethod() {
