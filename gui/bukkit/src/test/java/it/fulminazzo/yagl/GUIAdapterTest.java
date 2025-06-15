@@ -101,11 +101,20 @@ class GUIAdapterTest {
                 assertEquals(expected, itemStack.getType(), "Item at slot " + i + " did not match expected type");
             }
 
-            for (int i = 0; i < 36; i++) {
+            for (int i = 0; i < 27; i++) {
+                int slot = i + 9;
+                ItemStack itemStack = playerInventory.getItem(slot);
+                assertNotNull(itemStack, "Item at slot " + slot + " was null");
+
+                Material expected = Material.valueOf(materials[slot].toUpperCase());
+                assertEquals(expected, itemStack.getType(), "Item at slot " + slot + " did not match expected type");
+            }
+
+            for (int i = 0; i < 9; i++) {
                 ItemStack itemStack = playerInventory.getItem(i);
                 assertNotNull(itemStack, "Item at slot " + i + " was null");
 
-                Material expected = Material.valueOf(materials[i + 9].toUpperCase());
+                Material expected = Material.valueOf(materials[i + 36].toUpperCase());
                 assertEquals(expected, itemStack.getType(), "Item at slot " + i + " did not match expected type");
             }
         });
