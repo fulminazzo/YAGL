@@ -106,6 +106,46 @@ public final class GUIAdapter {
     }
 
     /**
+     * Updates the player's open {@link FullSizeGUI} by setting the updated contents in
+     * the player's inventory.
+     *
+     * @param gui    the gui
+     * @param viewer the viewer
+     */
+    public static void updatePlayerGUI(final @NotNull GUI gui,
+                                       final @NotNull Viewer viewer) {
+        updatePlayerGUI(gui, viewer, null, null);
+    }
+
+    /**
+     * Updates the player's open {@link FullSizeGUI} by setting the updated contents in
+     * the player's inventory.
+     * Uses the given {@link ItemMeta} class and function to {@link BukkitItem#create(Class, Consumer)} the contents.
+     *
+     * @param <M>           the type of the item meta
+     * @param gui           the gui
+     * @param viewer        the viewer
+     * @param itemMetaClass the ItemMeta class
+     * @param metaFunction  the meta function
+     */
+    public static <M extends ItemMeta> void updatePlayerGUI(final @NotNull GUI gui,
+                                                            final @NotNull Viewer viewer,
+                                                            final @Nullable Class<M> itemMetaClass,
+                                                            final @Nullable Consumer<M> metaFunction) {
+        openGUIHelper(gui, viewer, (p, v) -> {
+            if (gui instanceof FullSizeGUI) {
+                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
+                GUI upperGUI = fullSizeGUI.getUpperGUI();
+                GUI lowerGUI = fullSizeGUI.getLowerGUI();
+
+                int upperGUISize = upperGUI.size();
+                int lowerGUISize = lowerGUI.size();
+                setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
+            } else throw new IllegalArgumentException("updatePlayerGUI can only be used with FullSizeGUI");
+        });
+    }
+
+    /**
      * Support function for {@link #openGUI(GUI, Viewer, Class, Consumer)}.
      *
      * @param gui    the gui
