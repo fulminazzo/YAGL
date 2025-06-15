@@ -3,11 +3,15 @@ package it.fulminazzo.yagl.guis;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class SearchGUITest {
 
@@ -46,6 +50,48 @@ class SearchGUITest {
                         if (s.equals(m.getName())) return true;
                     return false;
                 });
+    }
+    
+    @Nested
+    class SearchFullSizeGUITest {
+
+        @Test
+        void testGetQueryCallsSearchGUIGetQuery() {
+            SearchGUI<?> gui = mock(SearchGUI.class);
+
+            SearchGUI.SearchFullSizeGUI fullSizeGUI = new SearchGUI.SearchFullSizeGUI();
+            fullSizeGUI.setSearchGui(gui);
+
+            fullSizeGUI.getQuery();
+
+            verify(gui).getQuery();
+        }
+
+        @Test
+        void testSetQueryCallsSearchGUISetQuery() {
+            SearchGUI<?> gui = mock(SearchGUI.class);
+
+            SearchGUI.SearchFullSizeGUI fullSizeGUI = new SearchGUI.SearchFullSizeGUI();
+            fullSizeGUI.setSearchGui(gui);
+
+            fullSizeGUI.setQuery("any");
+
+            verify(gui).setQuery("any");
+        }
+
+        @Test
+        void testGetSearchGUIThrowsIfInitialized() {
+            SearchGUI.SearchFullSizeGUI fullSizeGUI = new SearchGUI.SearchFullSizeGUI();
+            assertThrows(IllegalStateException.class, fullSizeGUI::getSearchGui);
+        }
+
+        @Test
+        void testCopyMethod() {
+            SearchGUI.SearchFullSizeGUI src = new SearchGUI.SearchFullSizeGUI();
+            SearchGUI.SearchFullSizeGUI dst = new SearchGUI.SearchFullSizeGUI();
+            assertEquals(dst, src);
+        }
+        
     }
 
 }
