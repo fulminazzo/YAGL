@@ -52,7 +52,7 @@ class ResizableGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(this.gui, GUI.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(new ResizableGUI(45), GUI.class, m -> m.getName().equals("copy"));
     }
 
     @Test

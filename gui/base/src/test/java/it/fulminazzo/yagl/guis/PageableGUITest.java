@@ -187,7 +187,7 @@ class PageableGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(PageableGUI.newGUI(9), GUI.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(PageableGUI.newGUI(45), GUI.class, m -> m.getName().equals("copy"));
     }
 
     @Test
