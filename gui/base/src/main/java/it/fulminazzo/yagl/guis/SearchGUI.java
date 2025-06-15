@@ -706,7 +706,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
-        return (SearchGUI<T>) new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -726,7 +726,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final T @NotNull ... data) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
-        return (SearchGUI<T>) new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
+        return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -741,7 +741,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
-        return (SearchGUI<T>) new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -760,7 +760,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Collection<T> data) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
-        return (SearchGUI<T>) new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
+        return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
 
     /**
