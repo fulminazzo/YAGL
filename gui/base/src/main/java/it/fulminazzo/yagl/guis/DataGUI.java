@@ -142,7 +142,12 @@ public class DataGUI<T> extends PageableGUI {
 
     @Override
     public void open(@NotNull Viewer viewer, int page) {
-        fillContents(prepareOpenGUI(this.templateGUI, page), page).open(viewer);
+        prepareOpenGUI(this.templateGUI, page).open(viewer);
+    }
+
+    @Override
+    protected @NotNull GUI prepareOpenGUI(@NotNull GUI gui, int page) {
+        return fillContents(super.prepareOpenGUI(gui, page), page);
     }
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
