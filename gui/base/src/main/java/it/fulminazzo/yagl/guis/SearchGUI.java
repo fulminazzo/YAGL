@@ -7,9 +7,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * A special implementation of {@link DataGUI} that supports dynamic
@@ -37,6 +38,13 @@ public final class SearchGUI<T> extends DataGUI<T> {
         super(templateGUI, dataConverter);
         this.searchFunction = searchFunction;
         templateGUI.setSearchGui(this);
+    }
+
+    @Override
+    protected @NotNull List<T> getDataList() {
+        return super.getDataList().stream()
+                .filter(t -> this.searchFunction.test(t, this.query))
+                .collect(Collectors.toList());
     }
 
     /**
