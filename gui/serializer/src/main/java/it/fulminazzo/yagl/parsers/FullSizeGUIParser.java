@@ -65,9 +65,9 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
             ConfigurationSection section = c.getConfigurationSection(s);
 
-            section.set("contents", g.getContents());
-            final String valueClass = "contents.value-class";
-            if (section.contains(valueClass)) section.set(valueClass, null);
+            g.getFullContents().forEach((k, v) -> {
+                if (!v.isEmpty()) section.setList("contents." + k, v);
+            });
 
             section.set("gui-type", section.getString("type"));
             section.set("type", ParserUtils.classToType(GUI.class, g.getClass()));
