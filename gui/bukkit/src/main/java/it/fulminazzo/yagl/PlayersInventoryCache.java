@@ -86,14 +86,18 @@ public class PlayersInventoryCache {
     }
 
     /**
-     * Clears the player storage.
+     * Clears the player storage for the given amount of items.
+     * It does NOT use Bukkit inventory counting system,
+     * meaning that the first slot is NOT the hotbar, but rather the first
+     * in the storage.
      *
      * @param player the player
+     * @param amount the amount of items to clear
      */
-    public void clearPlayerStorage(final @NotNull Player player) {
+    public void clearPlayerStorage(final @NotNull Player player, final int amount) {
         PlayerInventory inventory = player.getInventory();
-        ItemStack[] playerContents = inventory.getStorageContents();
-        for (int i = 0; i < playerContents.length; i++) inventory.setItem(i, null);
+        for (int i = 0; i < Math.min(27, amount); i++) inventory.setItem(i + 9, null);
+        for (int i = 27; i < amount; i++) inventory.setItem(i - 27, null);
     }
 
 }

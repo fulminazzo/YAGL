@@ -90,22 +90,21 @@ public final class GUIAdapter {
             // Check if GUI is FullSize
             if (gui instanceof FullSizeGUI) {
                 FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
-
                 GUI upperGUI = fullSizeGUI.getUpperGUI();
+                GUI lowerGUI = fullSizeGUI.getLowerGUI();
+
                 inventory = guiToInventory(upperGUI);
                 populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
                 player.openInventory(inventory);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
                 inventoryCache.storePlayerContents(player);
-                inventoryCache.clearPlayerStorage(player);
+                inventoryCache.clearPlayerStorage(player, lowerGUI.size());
                 PlayerInventory playerInventory = player.getInventory();
 
                 // Since Minecraft handles player inventory in a "particular" way,
                 // it is necessary to manually set each item.
                 List<ItemStack> itemStacks = new ArrayList<>();
-
-                GUI lowerGUI = fullSizeGUI.getLowerGUI();
 
                 // Hotbar contents
                 for (int i = 27; i < lowerGUI.size(); i++) {
