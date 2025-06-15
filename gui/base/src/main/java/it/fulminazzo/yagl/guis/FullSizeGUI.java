@@ -22,6 +22,9 @@ import java.util.stream.Stream;
  */
 @Getter
 public class FullSizeGUI extends FieldEquable implements GUI {
+    /**
+     * The Second inventory size.
+     */
     static final int SECOND_INVENTORY_SIZE = 36;
 
     private final @NotNull GUI upperGUI;
@@ -74,6 +77,17 @@ public class FullSizeGUI extends FieldEquable implements GUI {
         GUIUtils.checkSlot(slot, size());
         if (slot >= upperGUI.size()) return lowerGUI;
         else return upperGUI;
+    }
+
+    /**
+     * Gets all the {@link GUIContent}s per slot.
+     *
+     * @return the full contents
+     */
+    public @NotNull Map<Integer, List<GUIContent>> getFullContents() {
+        Map<Integer, List<GUIContent>> contents = new LinkedHashMap<>();
+        for (int i = 0; i < size(); i++) contents.put(i, getContents(i));
+        return contents;
     }
 
     @Override
