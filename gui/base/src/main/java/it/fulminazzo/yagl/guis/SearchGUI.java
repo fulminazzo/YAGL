@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.IgnoreField;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
@@ -768,6 +769,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
      */
     static class SearchFullSizeGUI extends FullSizeGUI {
         @Setter
+        @IgnoreField
         private @Nullable SearchGUI<?> searchGui;
 
         /**
