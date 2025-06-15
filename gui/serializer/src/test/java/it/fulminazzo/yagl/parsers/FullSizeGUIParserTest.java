@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
@@ -14,7 +15,9 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class FullSizeGUIParserTest {
 
@@ -39,6 +42,18 @@ class FullSizeGUIParserTest {
         GUI actual = configuration.get(path, GUI.class);
         assertNotNull(actual);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGUITypeNotSpecified() {
+        IConfiguration configuration = mock(IConfiguration.class);
+        ConfigurationSection section = new ConfigurationSection(configuration, "path");
+        when(configuration.getConfigurationSection(any())).thenReturn(section);
+
+        IllegalArgumentException ex = assertThrowsExactly(IllegalArgumentException.class, () ->
+                new FullSizeGUIParser().load(configuration, "path")
+        );
+        assertEquals("'gui-type' cannot be null", ex.getMessage());
     }
 
     @Test
