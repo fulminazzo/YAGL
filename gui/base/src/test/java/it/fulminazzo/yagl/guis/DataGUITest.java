@@ -265,11 +265,17 @@ class DataGUITest {
     private static Object[] fullSizeConstructorParameters() {
         return new Object[]{
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null), false, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, FullSizeGUI.SECOND_INVENTORY_SIZE, null), false, false},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null, "Hello", "World"), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, FullSizeGUI.SECOND_INVENTORY_SIZE, null, "Hello", "World"), false, true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null, Arrays.asList("Hello", "World")), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, FullSizeGUI.SECOND_INVENTORY_SIZE, null, Arrays.asList("Hello", "World")), false, true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null), true, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, FullSizeGUI.SECOND_INVENTORY_SIZE, null), true, false},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, FullSizeGUI.SECOND_INVENTORY_SIZE, null, "Hello", "World"), true, true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, FullSizeGUI.SECOND_INVENTORY_SIZE, null, Arrays.asList("Hello", "World")), true, true},
         };
     }
 
