@@ -670,8 +670,9 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Creates a new {@link SearchGUI} with the given type and a converter.
      *
-     * @param <T>           the type of the data
-     * @param dataConverter the data converter
+     * @param <T>            the type of the data
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data according to the query
      * @return the search gui
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
@@ -683,9 +684,10 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Creates a new {@link SearchGUI} with the given type and a converter.
      *
-     * @param <T>           the type of the data
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
+     * @param <T>            the type of the data
+     * @param lowerGUISize   the size of the lower GUI
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data according to the query
      * @return the search gui
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
@@ -700,9 +702,10 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Creates a new {@link SearchGUI} with the given type, converter and data.
      *
-     * @param <T>           the type of the data
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param <T>            the type of the data
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data according to the query
+     * @param data           the data
      * @return the search gui
      */
     @SafeVarargs
@@ -716,10 +719,11 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Creates a new {@link SearchGUI} with the given type, converter and data.
      *
-     * @param <T>           the type of the data
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param <T>            the type of the data
+     * @param lowerGUISize   the size of the lower GUI
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data according to the query
+     * @param data           the data
      * @return the search gui
      */
     @SafeVarargs
@@ -736,9 +740,10 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Creates a new {@link SearchGUI} with the given type, converter and data.
      *
-     * @param <T>           the type of the data
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param <T>            the type of the data
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data according to the query
+     * @param data           the data
      * @return the search gui
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
@@ -751,10 +756,11 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Creates a new {@link SearchGUI} with the given type, converter and data.
      *
-     * @param <T>           the type of the data
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param <T>            the type of the data
+     * @param lowerGUISize   the size of the lower GUI
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data according to the query
+     * @param data           the data
      * @return the search gui
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
