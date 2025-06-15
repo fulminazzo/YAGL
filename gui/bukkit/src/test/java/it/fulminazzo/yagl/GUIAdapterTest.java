@@ -152,6 +152,7 @@ class GUIAdapterTest {
         BukkitTestUtils.mockPlugin(p -> {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             playerInventory.setItem(0, new ItemStack(Material.DIAMOND_SWORD));
+            playerInventory.setItem(27, new ItemStack(Material.GOLDEN_APPLE));
             when(this.player.getInventory()).thenReturn(playerInventory);
 
             final PageableGUI gui;
@@ -190,6 +191,10 @@ class GUIAdapterTest {
             assertNotNull(firstHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND_SWORD, firstHotbarStack.getType());
 
+            ItemStack firstStorageStack = playerInventory.getItem(27);
+            assertNotNull(firstStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
+            assertEquals(Material.GOLDEN_APPLE, firstStorageStack.getType());
+
             @NotNull Tuple<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(firstOpenGUI.isPresent(), "Player should have an open GUI");
 
@@ -209,6 +214,10 @@ class GUIAdapterTest {
             assertNotNull(secondHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND_SWORD, secondHotbarStack.getType());
 
+            ItemStack secondStorageStack = playerInventory.getItem(27);
+            assertNotNull(secondStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
+            assertEquals(Material.GOLDEN_APPLE, secondStorageStack.getType());
+
             @NotNull Tuple<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(secondOpenGUI.isPresent(), "Player should have an open GUI");
 
@@ -227,6 +236,10 @@ class GUIAdapterTest {
             ItemStack thirdHotbarStack = playerInventory.getItem(0);
             assertNotNull(thirdHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND_SWORD, thirdHotbarStack.getType());
+
+            ItemStack thirdStorageStack = playerInventory.getItem(27);
+            assertNotNull(thirdStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
+            assertEquals(Material.GOLDEN_APPLE, thirdStorageStack.getType());
         });
     }
 
