@@ -30,7 +30,6 @@ public final class SearchGUI<T> extends DataGUI<T> {
     private final @NotNull BiPredicate<T, String> searchFunction;
 
     @Getter
-    @Setter
     private @Nullable String query;
 
     /**
@@ -46,6 +45,17 @@ public final class SearchGUI<T> extends DataGUI<T> {
         super(templateGUI, dataConverter);
         this.searchFunction = searchFunction;
         templateGUI.setSearchGui(this);
+    }
+
+    /**
+     * Sets query.
+     *
+     * @param query the query
+     * @return this gui
+     */
+    public @NotNull SearchGUI<T> setQuery(final @Nullable String query) {
+        this.query = query;
+        return this;
     }
 
     @Override
