@@ -92,6 +92,7 @@ public final class GUIAdapter {
                 GUI upperGUI = fullSizeGUI.getUpperGUI();
                 inventory = guiToInventory(upperGUI);
                 populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size(), 0, 0);
+                player.openInventory(inventory);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
                 inventoryCache.storePlayerContents(player);
@@ -111,8 +112,8 @@ public final class GUIAdapter {
             } else {
                 inventory = guiToInventory(gui);
                 populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size(), 0, 0);
+                player.openInventory(inventory);
             }
-            player.openInventory(inventory);
             // Set new GUI
             reflViewer.setFieldObject("openGUI", gui);
             // Execute action if present
