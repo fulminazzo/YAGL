@@ -923,7 +923,12 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         GUI.super.copyAll(other, replace);
         if (other instanceof PageableGUI) {
             PageableGUI otherGUI = (PageableGUI) other;
-            if (replace) otherGUI.setPages(pages());
+            if (replace)
+                try {
+                    otherGUI.setPages(pages());
+                } catch (IllegalStateException ignored) {
+                    // DataGUI does not support pages
+                }
             if (!otherGUI.previousPage.isPresent() || replace)
                 previousPage.map((i, c) -> new Tuple<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
             if (!otherGUI.nextPage.isPresent() || replace)
