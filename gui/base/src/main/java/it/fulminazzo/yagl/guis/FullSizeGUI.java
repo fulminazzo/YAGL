@@ -27,6 +27,11 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     private final @NotNull GUI upperGUI;
     private final @NotNull GUI lowerGUI;
 
+    private FullSizeGUI() {
+        this.upperGUI = new DefaultGUI();
+        this.lowerGUI = GUI.newGUI(SECOND_INVENTORY_SIZE);
+    }
+
     /**
      * Instantiates a new Full size gui.
      *
