@@ -121,17 +121,25 @@ public final class GUIAdapter {
         for (int i = 0; i < gui.size(); i++) {
             GUIContent content = gui.getContent(v, i);
             if (content != null) {
-                content.copyFrom(gui, false);
-                BukkitItem render = content
-                        .apply(content)
-                        .render()
-                        .copy(BukkitItem.class);
-                final ItemStack o;
-                if (itemMetaClass == null || metaFunction == null) o = render.create();
-                else o = render.create(itemMetaClass, metaFunction);
+                final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
                 inventory.setItem(i, o);
             }
         }
+    }
+
+    private static <M extends ItemMeta> @NotNull ItemStack convertToItemStack(final @NotNull GUI gui,
+                                                                              final @Nullable Class<M> itemMetaClass,
+                                                                              final @Nullable Consumer<M> metaFunction,
+                                                                              final @NotNull GUIContent content) {
+        content.copyFrom(gui, false);
+        BukkitItem render = content
+                .apply(content)
+                .render()
+                .copy(BukkitItem.class);
+        final ItemStack itemStack;
+        if (itemMetaClass == null || metaFunction == null) itemStack = render.create();
+        else itemStack = render.create(itemMetaClass, metaFunction);
+        return itemStack;
     }
 
     /**
