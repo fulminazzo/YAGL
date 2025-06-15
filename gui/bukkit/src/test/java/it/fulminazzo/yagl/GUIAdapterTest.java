@@ -75,6 +75,43 @@ class GUIAdapterTest {
         ).toArray(Object[]::new);
     }
 
+    @Test
+    void testUpdatePlayerGUI() {
+        BukkitTestUtils.mockPlugin(p -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            Viewer viewer = GUIManager.getViewer(this.player);
+
+            FullSizeGUI gui = GUI.newFullSizeGUI(9);
+            gui.setContents(9, ItemGUIContent.newInstance("diamond"));
+
+            gui.open(viewer);
+
+            ItemStack firstSlotItemStack1 = this.player.getInventory().getItem(9);
+            assertNotNull(firstSlotItemStack1,
+                    "ItemStack at slot 9 in player inventory should not be null before update");
+            assertEquals(Material.DIAMOND, firstSlotItemStack1.getType(),
+                    "ItemStack at slot 9 in player inventory should be diamond before update");
+
+            gui.setContents(10, ItemGUIContent.newInstance("emerald"));
+
+            gui.update(viewer);
+
+            ItemStack firstSlotItemStack2 = this.player.getInventory().getItem(9);
+            assertNotNull(firstSlotItemStack2,
+                    "ItemStack at slot 9 in player inventory should not be null after update");
+            assertEquals(Material.DIAMOND, firstSlotItemStack2.getType(),
+                    "ItemStack at slot 9 in player inventory should be diamond after update");
+
+            ItemStack secondSlotItemStack = this.player.getInventory().getItem(10);
+            assertNotNull(secondSlotItemStack,
+                    "ItemStack at slot 10 in player inventory should not be null after update");
+            assertEquals(Material.EMERALD, secondSlotItemStack.getType(),
+                    "ItemStack at slot 10 in player inventory should be emerald after update");
+        });
+    }
+
     @ParameterizedTest
     @MethodSource("pageableFullSizeGUIParameters")
     void testOpenPageableFullSizeGUI(Object initializer) {
