@@ -108,11 +108,11 @@ public final class GUIAdapter {
                     }
                 }
 
-                for (int i = 27; i < lowerGUI.size(); i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size());
+                for (int i = 0; i < lowerGUI.size() - 27; i++) {
+                    GUIContent content = gui.getContent(v, i + upperGUI.size() + 27);
                     if (content != null) {
                         final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
-                        playerInventory.setItem(i - 27, o);
+                        playerInventory.setItem(i, o);
                     }
                 }
             } else {
