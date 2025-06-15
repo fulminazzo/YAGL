@@ -13,6 +13,8 @@ import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,10 +24,27 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
-import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.*;
 
 class PageableGUITest {
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "topSlots", "leftSlots", "bottomSlots", "rightSlots",
+            "northWest", "north", "northEast",
+            "middleLine", "middleWest", "middle", "middleEast",
+            "southLine", "southWest", "south", "southEast",
+            "rows", "columns"
+    })
+    void testThatPageableGUIDelegatesToInternalTemplateGUI(String methodName) {
+        GUI templateGUI = mock(GUI.class);
+
+        PageableGUI pageableGUI = new PageableGUI(templateGUI);
+
+        new Refl<>(pageableGUI).invokeMethod(methodName);
+
+        new Refl<>(verify(templateGUI)).invokeMethod(methodName);
+    }
 
     @Test
     void testCopyAllCopiesPageableInternalData() {
