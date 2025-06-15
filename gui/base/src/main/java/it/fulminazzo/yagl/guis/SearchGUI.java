@@ -672,7 +672,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
             final @NotNull Function<T, GUIContent> dataConverter,
-            @NotNull BiPredicate<T, String> searchFunction) {
+            final @NotNull BiPredicate<T, String> searchFunction) {
         return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction);
     }
 
@@ -687,7 +687,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
     public static <T> @NotNull SearchGUI<T> newGUI(
             final int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
-            @NotNull BiPredicate<T, String> searchFunction) {
+            final @NotNull BiPredicate<T, String> searchFunction) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
         return new SearchGUI<>(gui, dataConverter, searchFunction);
@@ -704,7 +704,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
     @SafeVarargs
     public static <T> @NotNull SearchGUI<T> newGUI(
             final @NotNull Function<T, GUIContent> dataConverter,
-            @NotNull BiPredicate<T, String> searchFunction,
+            final @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
         return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
     }
@@ -722,7 +722,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
     public static <T> @NotNull SearchGUI<T> newGUI(
             final int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
-            @NotNull BiPredicate<T, String> searchFunction,
+            final @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
@@ -739,7 +739,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
             final @NotNull Function<T, GUIContent> dataConverter,
-            @NotNull BiPredicate<T, String> searchFunction,
+            final @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
         return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
     }
@@ -756,7 +756,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
     public static <T> @NotNull SearchGUI<T> newGUI(
             final int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
-            @NotNull BiPredicate<T, String> searchFunction,
+            final @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
