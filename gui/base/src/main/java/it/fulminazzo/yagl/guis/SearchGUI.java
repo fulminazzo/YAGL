@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.contents.GUIContent;
 import lombok.Getter;
 import lombok.Setter;
@@ -74,6 +75,14 @@ public final class SearchGUI<T> extends DataGUI<T> {
             return this.searchGui;
         }
 
+        @Override
+        public FullSizeGUI copy() {
+            return new Refl<>(new SearchFullSizeGUI())
+                    .setFieldObject("upperGUI", getUpperGUI().copy())
+                    .setFieldObject("lowerGUI", getLowerGUI().copy())
+                    .setFieldObject("searchGui", this.searchGui)
+                    .getObject();
+        }
     }
 
 }
