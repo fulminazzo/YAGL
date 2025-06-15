@@ -19,14 +19,11 @@ def run = { CommandSender sender, String label, String[] args ->
                 sender.sendMessage('Usage: /openpageablegui <type|size> <pages>')
                 return
             }
-            def size = gui.size()
-            def middle = (int) Math.min(size / 2, 9 / 2)
-            if (size > 1) {
-                size -= 1
-                gui.setContents(size - middle, BukkitItem.newItem(Material.OBSIDIAN).setDisplayName('&7Page: &e<page>'))
-                        .setPreviousPage(size - middle * 2, BukkitItem.newItem(Material.REDSTONE_BLOCK)
+            if (gui.size() > 1) {
+                gui.setContents(gui.south(), BukkitItem.newItem(Material.OBSIDIAN).setDisplayName('&7Page: &e<page>'))
+                        .setPreviousPage(gui.south() - 2, BukkitItem.newItem(Material.REDSTONE_BLOCK)
                                 .setDisplayName('&7Go to page &e<previous_page>'))
-                        .setNextPage(size, BukkitItem.newItem(Material.EMERALD_BLOCK)
+                        .setNextPage(gui.south() + 2, BukkitItem.newItem(Material.EMERALD_BLOCK)
                                 .setDisplayName('&7Go to page &e<next_page>'))
             }
 
