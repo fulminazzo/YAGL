@@ -18,21 +18,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class FullSizeGUITest {
 
-    private static Object[][] middleLineGUIs() {
-        return new Object[][]{
+    private static Object[] middleLineGUIs() {
+        List<Object> objects = new ArrayList<>(Arrays.asList(
                 new Object[]{9, 18},
                 new Object[]{18, 18},
                 new Object[]{27, 27},
                 new Object[]{36, 27},
                 new Object[]{45, 36},
-                new Object[]{54, 36},
-        };
+                new Object[]{54, 36}
+        ));
+        objects.addAll(Arrays.stream(GUIType.values())
+                .filter(t -> t.getSize() == 9)
+                .map(t -> new Object[]{t, 18})
+                .collect(Collectors.toList())
+        );
+        objects.addAll(Arrays.stream(GUIType.values())
+                .filter(t -> t.getSize() == 27 || t.getSize() == 36)
+                .map(t -> new Object[]{t, 27})
+                .collect(Collectors.toList())
+        );
+        objects.addAll(Arrays.stream(GUIType.values())
+                .filter(t -> t.getSize() != 9)
+                .filter(t -> t.getSize() != 27)
+                .map(t -> new Object[]{t, t.getSize() + 9})
+                .collect(Collectors.toList())
+        );
+        return objects.toArray(new Object[0]);
     }
 
     @ParameterizedTest
