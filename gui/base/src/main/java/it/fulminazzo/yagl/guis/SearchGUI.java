@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * A special implementation of {@link SearchGUI} that supports dynamic
  * searching of data from a string.
  *
- * @param <T> the type parameter
+ * @param <T> the type of the data
  */
 public final class SearchGUI<T> extends DataGUI<T> {
     private final @NotNull BiPredicate<T, String> searchFunction;
