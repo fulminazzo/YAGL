@@ -296,4 +296,9 @@ class FullSizeGUITest {
         assertThrowsExactly(IllegalStateException.class, () -> new FullSizeGUI(9).open(mock(Viewer.class)));
     }
 
+    @Test
+    void testReturnTypes() {
+        TestUtils.testReturnType(new FullSizeGUI(9), GUI.class, m -> m.getName().equals("copy"));
+    }
+
 }
