@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -104,21 +105,22 @@ public final class GUIAdapter {
 
                 // Since Minecraft handles player inventory in a "particular" way,
                 // it is necessary to manually set each item.
-                List<ItemStack> itemStacks = new ArrayList<>();
+                List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
 
                 // Hotbar contents
                 for (int i = 27; i < lowerGUI.size(); i++) {
                     GUIContent content = gui.getContent(v, i + upperGUI.size());
-                    if (content == null) itemStacks.add(null);
-                    else itemStacks.add(convertToItemStack(gui, itemMetaClass, metaFunction, content));
+                    int slot = i - 27;
+                    if (content == null) itemStacks.set(slot, null);
+                    else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
                 }
-                while (itemStacks.size() < 9) itemStacks.add(null);
 
                 // Storage contents
                 for (int i = 0; i < Math.min(lowerGUI.size(), 27); i++) {
                     GUIContent content = gui.getContent(v, i + upperGUI.size());
-                    if (content == null) itemStacks.add(null);
-                    else itemStacks.add(convertToItemStack(gui, itemMetaClass, metaFunction, content));
+                    int slot = i + 9;
+                    if (content == null) itemStacks.set(slot, null);
+                    else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
                 }
 
                 playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
