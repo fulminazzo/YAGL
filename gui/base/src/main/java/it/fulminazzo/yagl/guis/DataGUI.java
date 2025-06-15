@@ -213,7 +213,7 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     public int pages() {
-        int dataSize = this.data.size();
+        int dataSize = getDataList().size();
         if (dataSize == 0) return 1;
         final int emptySlots = getPageEmptySlots();
         final int firstPageSlots = getFirstPageEmptySlots();
