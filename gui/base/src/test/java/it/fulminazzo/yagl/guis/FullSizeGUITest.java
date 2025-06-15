@@ -25,6 +25,19 @@ import static org.mockito.Mockito.*;
 
 class FullSizeGUITest {
 
+    @ParameterizedTest
+    @EnumSource(GUIType.class)
+    void testNorthCoordinates(GUIType type) {
+        GUI upperGUI = GUI.newGUI(type);
+        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+
+        assertEquals(upperGUI.northWest(), gui.northWest());
+        assertEquals(upperGUI.north(), gui.north());
+        assertEquals(upperGUI.northEast(), gui.northEast());
+
+        assertEquals(upperGUI.topSlots(), gui.topSlots());
+    }
+
     private static Object[] middleLineGUIs() {
         List<Object> objects = new ArrayList<>(Arrays.asList(
                 new Object[]{9, 18},
