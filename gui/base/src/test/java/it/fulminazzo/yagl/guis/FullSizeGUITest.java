@@ -2,6 +2,8 @@ package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.actions.BiGUIAction;
+import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.viewers.Viewer;
@@ -9,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -265,22 +266,31 @@ class FullSizeGUITest {
         verify(lowerGUI).clear();
     }
 
+    private static Object[][] methods() {
+        return new Object[][]{
+                new Object[]{"setTitle", new Class<?>[]{String.class}},
+                new Object[]{"getTitle", new Class<?>[]{}},
+                new Object[]{"onClickOutside", new Class<?>[]{GUIAction.class}},
+                new Object[]{"clickOutsideAction", new Class<?>[]{}},
+                new Object[]{"onOpenGUI", new Class<?>[]{GUIAction.class}},
+                new Object[]{"openGUIAction", new Class<?>[]{}},
+                new Object[]{"onCloseGUI", new Class<?>[]{GUIAction.class}},
+                new Object[]{"closeGUIAction", new Class<?>[]{}},
+                new Object[]{"onChangeGUI", new Class<?>[]{BiGUIAction.class}},
+                new Object[]{"changeGUIAction", new Class<?>[]{}},
+                new Object[]{"variables", new Class<?>[]{}}
+        };
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = {"setTitle", "getTitle",
-            "onClickOutside", "clickOutsideAction",
-            "onOpenGUI", "openGUIAction",
-            "onCloseGUI", "closeGUIAction",
-            "onChangeGUI", "changeGUIAction",
-            "variables"})
-    void testFullSizeGUIDelegatesToUpperGUI(String methodName) {
+    @MethodSource("methods")
+    void testFullSizeGUIDelegatesToUpperGUI(String methodName, Class<?>[] parameterTypes) {
         Refl<?> fullSizeGUI = new Refl<>(new FullSizeGUI(9));
 
         GUI upperGUI = mock(GUI.class);
         fullSizeGUI.setFieldObject("upperGUI", upperGUI);
 
-        Method method = Arrays.stream(FullSizeGUI.class.getMethods())
-                .filter(m -> m.getName().equals(methodName))
-                .findFirst().orElseThrow(IllegalStateException::new);
+        Method method = fullSizeGUI.getMethod(methodName, parameterTypes);
 
         Object[] parameters = Arrays.stream(method.getParameterTypes())
                 .map(TestUtils::mockParameter)
