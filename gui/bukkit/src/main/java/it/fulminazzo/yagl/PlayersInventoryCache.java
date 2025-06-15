@@ -85,4 +85,15 @@ public class PlayersInventoryCache {
         this.internalCache.remove(uuid);
     }
 
+    /**
+     * Clears the player storage.
+     *
+     * @param player the player
+     */
+    public void clearPlayerStorage(final @NotNull Player player) {
+        PlayerInventory inventory = player.getInventory();
+        ItemStack[] playerContents = inventory.getStorageContents();
+        for (int i = 0; i < playerContents.length; i++) inventory.setItem(i, null);
+    }
+
 }
