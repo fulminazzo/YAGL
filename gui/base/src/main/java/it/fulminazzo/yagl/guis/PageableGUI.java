@@ -275,6 +275,81 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     }
 
     @Override
+    public @NotNull Set<Integer> topSlots() {
+        return this.templateGUI.topSlots();
+    }
+
+    @Override
+    public @NotNull Set<Integer> leftSlots() {
+        return this.templateGUI.leftSlots();
+    }
+
+    @Override
+    public @NotNull Set<Integer> bottomSlots() {
+        return this.templateGUI.bottomSlots();
+    }
+
+    @Override
+    public @NotNull Set<Integer> rightSlots() {
+        return this.templateGUI.rightSlots();
+    }
+
+    @Override
+    public int northWest() {
+        return this.templateGUI.northWest();
+    }
+
+    @Override
+    public int north() {
+        return this.templateGUI.north();
+    }
+
+    @Override
+    public int northEast() {
+        return this.templateGUI.northEast();
+    }
+
+    @Override
+    public int middleLine() {
+        return this.templateGUI.middleLine();
+    }
+
+    @Override
+    public int middleWest() {
+        return this.templateGUI.middleWest();
+    }
+
+    @Override
+    public int middle() {
+        return this.templateGUI.middle();
+    }
+
+    @Override
+    public int middleEast() {
+        return this.templateGUI.middleEast();
+    }
+
+    @Override
+    public int southLine() {
+        return this.templateGUI.southLine();
+    }
+
+    @Override
+    public int southWest() {
+        return this.templateGUI.southWest();
+    }
+
+    @Override
+    public int south() {
+        return this.templateGUI.south();
+    }
+
+    @Override
+    public int southEast() {
+        return this.templateGUI.southEast();
+    }
+
+    @Override
     public int rows() {
         return this.templateGUI.rows();
     }
