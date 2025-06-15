@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -42,6 +44,39 @@ class FullSizeGUIParserTest {
         GUI actual = configuration.get(path, GUI.class);
         assertNotNull(actual);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testLoadWithNullContents() throws Exception {
+        IConfiguration configuration = mock(IConfiguration.class);
+        ConfigurationSection section = new ConfigurationSection(configuration, "path");
+        section.set("gui-type", "DEFAULT");
+        when(configuration.getConfigurationSection(any())).thenReturn(section);
+        when(configuration.get("path", GUI.class)).thenReturn(GUI.newGUI(9));
+
+        GUI gui = new FullSizeGUIParser().load(configuration, "path");
+
+        assertInstanceOf(FullSizeGUI.class, gui);
+    }
+
+    @Test
+    void testLoadWithNullContent() throws Exception {
+        IConfiguration configuration = mock(IConfiguration.class);
+
+        ConfigurationSection contentsSection = mock(ConfigurationSection.class);
+        when(contentsSection.getKeys(false)).thenReturn(new LinkedHashSet<>(Arrays.asList("1", "2", "3")));
+        when(contentsSection.getList(any(), any())).thenReturn(null);
+
+        ConfigurationSection section = new ConfigurationSection(configuration, "path");
+        section.set("gui-type", "DEFAULT");
+        section.set("contents", contentsSection);
+
+        when(configuration.getConfigurationSection(any())).thenReturn(section);
+        when(configuration.get("path", GUI.class)).thenReturn(GUI.newGUI(9));
+
+        GUI gui = new FullSizeGUIParser().load(configuration, "path");
+
+        assertInstanceOf(FullSizeGUI.class, gui);
     }
 
     @Test
