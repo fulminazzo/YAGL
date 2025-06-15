@@ -55,6 +55,15 @@ public final class SearchGUI<T> extends DataGUI<T> {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public SearchGUI<T> copy() {
+        return new SearchGUI<>(
+                (SearchFullSizeGUI) this.templateGUI.copy(),
+                this.dataConverter,
+                this.searchFunction
+        );
+    }
+
     @SafeVarargs
     @Override
     public final @NotNull SearchGUI<T> addData(T @NotNull ... data) {
@@ -646,11 +655,6 @@ public final class SearchGUI<T> extends DataGUI<T> {
     @Override
     public @NotNull SearchGUI<T> copyFrom(@NotNull GUI other, boolean replace) {
         return (SearchGUI<T>) super.copyFrom(other, replace);
-    }
-
-    @Override
-    public SearchGUI<T> copy() {
-        return (SearchGUI<T>) super.copy();
     }
 
     @Override
