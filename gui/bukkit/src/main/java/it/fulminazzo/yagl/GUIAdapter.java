@@ -62,7 +62,7 @@ public final class GUIAdapter {
      * Opens the given {@link GUI} for the specified {@link Viewer}.
      * Uses the given {@link ItemMeta} class and function to {@link BukkitItem#create(Class, Consumer)} the contents.
      *
-     * @param <M>           the type parameter
+     * @param <M>           the type of the item meta
      * @param gui           the gui
      * @param viewer        the viewer
      * @param itemMetaClass the ItemMeta class
@@ -106,29 +106,7 @@ public final class GUIAdapter {
                 }
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
-                PlayerInventory playerInventory = player.getInventory();
-
-                // Since Minecraft handles player inventory in a "particular" way,
-                // it is necessary to manually set each item.
-                List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
-
-                // Hotbar contents
-                for (int i = 27; i < lowerGUISize; i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUISize);
-                    int slot = i - 27;
-                    if (content == null) itemStacks.set(slot, null);
-                    else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
-                }
-
-                // Storage contents
-                for (int i = 0; i < Math.min(lowerGUISize, 27); i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUISize);
-                    int slot = i + 9;
-                    if (content == null) itemStacks.set(slot, null);
-                    else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
-                }
-
-                playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
+                updatePlayerInventory(gui, itemMetaClass, metaFunction, player, lowerGUISize, upperGUISize);
             } else {
                 inventory = guiToInventory(gui);
                 populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
@@ -144,6 +122,47 @@ public final class GUIAdapter {
         if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
         else
             Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+    }
+
+    /**
+     * Updates the player inventory with the given GUI contents.
+     *
+     * @param <M>            the type of the item meta
+     * @param gui            the gui
+     * @param itemMetaClass  the ItemMeta class
+     * @param metaFunction   the meta function
+     * @param player         the player
+     * @param contentsSize   the amount of contents to set
+     * @param contentsOffset the offset upon which to start getting the contents
+     */
+    static <M extends ItemMeta> void updatePlayerInventory(final @NotNull GUI gui,
+                                                           final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
+                                                           final @NotNull Player player,
+                                                           final int contentsSize, final int contentsOffset) {
+        Viewer viewer = GUIManager.getViewer(player);
+        PlayerInventory playerInventory = player.getInventory();
+
+        // Since Minecraft handles player inventory in a "particular" way,
+        // it is necessary to manually set each item.
+        List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
+
+        // Hotbar contents
+        for (int i = 27; i < contentsSize; i++) {
+            GUIContent content = gui.getContent(viewer, i + contentsOffset);
+            int slot = i - 27;
+            if (content == null) itemStacks.set(slot, null);
+            else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
+        }
+
+        // Storage contents
+        for (int i = 0; i < Math.min(contentsSize, 27); i++) {
+            GUIContent content = gui.getContent(viewer, i + contentsOffset);
+            int slot = i + 9;
+            if (content == null) itemStacks.set(slot, null);
+            else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
+        }
+
+        playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
     }
 
     private static <M extends ItemMeta> void populateInventoryWithGUIContents(
