@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -70,6 +71,45 @@ public final class GUIAdapter {
      */
     public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui, final @NotNull Viewer viewer,
                                                     final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
+        openGUIHelper(gui, viewer, (p, v) -> {
+            // Open inventory
+            final Inventory inventory;
+            // Check if GUI is FullSize
+            if (gui instanceof FullSizeGUI) {
+                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
+                GUI upperGUI = fullSizeGUI.getUpperGUI();
+                GUI lowerGUI = fullSizeGUI.getLowerGUI();
+
+                inventory = guiToInventory(upperGUI);
+                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
+                p.openInventory(inventory);
+
+                PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
+                if (v.getNextGUI() == null) {
+                    inventoryCache.storePlayerContents(p);
+                    inventoryCache.clearPlayerStorage(p, lowerGUI.size());
+                }
+                int upperGUISize = upperGUI.size();
+                int lowerGUISize = lowerGUI.size();
+                setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
+            } else {
+                inventory = guiToInventory(gui);
+                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
+                p.openInventory(inventory);
+            }
+        });
+    }
+
+    /**
+     * Support function for {@link #openGUI(GUI, Viewer, Class, Consumer)}.
+     *
+     * @param gui    the gui
+     * @param viewer the viewer
+     * @param action the action to execute
+     */
+    static void openGUIHelper(final @NotNull GUI gui,
+                              final @NotNull Viewer viewer,
+                              final @NotNull BiConsumer<Player, Viewer> action) {
         Consumer<Viewer> runnable = v -> {
             final UUID uuid = v.getUniqueId();
             final Player player = Bukkit.getPlayer(uuid);
@@ -86,32 +126,8 @@ public final class GUIAdapter {
             // Set global variables
             for (final @NotNull BukkitVariable variable : BukkitVariable.DEFAULT_VARIABLES)
                 gui.setVariable(variable.getName(), variable.getValue(player));
-            // Open inventory
             gui.apply(gui);
-            final Inventory inventory;
-            // Check if GUI is FullSize
-            if (gui instanceof FullSizeGUI) {
-                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
-                GUI upperGUI = fullSizeGUI.getUpperGUI();
-                GUI lowerGUI = fullSizeGUI.getLowerGUI();
-
-                inventory = guiToInventory(upperGUI);
-                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
-                player.openInventory(inventory);
-
-                PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
-                if (v.getNextGUI() == null) {
-                    inventoryCache.storePlayerContents(player);
-                    inventoryCache.clearPlayerStorage(player, lowerGUI.size());
-                }
-                int upperGUISize = upperGUI.size();
-                int lowerGUISize = lowerGUI.size();
-                setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, player, lowerGUISize, upperGUISize);
-            } else {
-                inventory = guiToInventory(gui);
-                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
-                player.openInventory(inventory);
-            }
+            action.accept(player, v);
             // Set new GUI
             reflViewer.setFieldObject("openGUI", gui);
             reflViewer.setFieldObject("nextGUI", null);
