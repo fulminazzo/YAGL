@@ -1,4 +1,5 @@
 import it.fulminazzo.yagl.GUIManager
+import it.fulminazzo.yagl.contents.ItemGUIContent
 import it.fulminazzo.yagl.guis.GUIType
 import it.fulminazzo.yagl.guis.PageableGUI
 import it.fulminazzo.yagl.items.BukkitItem
@@ -28,6 +29,7 @@ def run = { CommandSender sender, String label, String[] args ->
             }
 
             gui.setTitle('Page #<page>')
+                    .setBottomSide(ItemGUIContent.newInstance(Material.BLACK_STAINED_GLASS_PANE.name()).setDisplayName(' '))
                     .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
                     .onOpenGUI((v, g) -> v.sendMessage(g.apply('Opening page <page>')))
                     .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))
