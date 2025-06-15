@@ -106,13 +106,17 @@ public final class GUIAdapter {
                 List<ItemStack> itemStacks = new ArrayList<>();
 
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
-                for (int i = 0; i < lowerGUI.size() - 27; i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size() + 27);
+
+                // Hotbar contents
+                for (int i = 27; i < lowerGUI.size(); i++) {
+                    GUIContent content = gui.getContent(v, i + upperGUI.size());
                     if (content == null) itemStacks.add(null);
                     else itemStacks.add(convertToItemStack(gui, itemMetaClass, metaFunction, content));
                 }
+                while (itemStacks.size() < 9) itemStacks.add(null);
 
-                for (int i = 0; i < 27; i++) {
+                // Storage contents
+                for (int i = 0; i < Math.min(lowerGUI.size(), 27); i++) {
                     GUIContent content = gui.getContent(v, i + upperGUI.size());
                     if (content == null) itemStacks.add(null);
                     else itemStacks.add(convertToItemStack(gui, itemMetaClass, metaFunction, content));
