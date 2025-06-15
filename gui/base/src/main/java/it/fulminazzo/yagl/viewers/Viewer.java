@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.wrappers.Sound;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -16,6 +17,11 @@ public abstract class Viewer {
     protected final String name;
     protected GUI previousGUI;
     protected GUI openGUI;
+    /**
+     * Represents the next {@link GUI} that will be immediately open.
+     * Usually set only during a change GUI event.
+     */
+    protected GUI nextGUI;
 
     /**
      * Instantiates a new Viewer.
