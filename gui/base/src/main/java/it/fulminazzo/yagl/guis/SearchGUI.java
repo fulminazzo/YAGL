@@ -7,13 +7,19 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * A special implementation of {@link DataGUI} that supports dynamic
  * searching of data from a string.
+ *
+ * @param <T> the type parameter
  */
 public final class SearchGUI<T> extends DataGUI<T> {
+    private final @NotNull BiPredicate<T, String> searchFunction;
+
     @Getter
     @Setter
     private @Nullable String query;
@@ -21,11 +27,15 @@ public final class SearchGUI<T> extends DataGUI<T> {
     /**
      * Instantiates a new Search gui.
      *
-     * @param templateGUI   the templateGUI
-     * @param dataConverter the data converter
+     * @param templateGUI    the templateGUI
+     * @param dataConverter  the data converter
+     * @param searchFunction the function to use to filter the data
      */
-    SearchGUI(@NotNull SearchFullSizeGUI templateGUI, @NotNull Function<T, GUIContent> dataConverter) {
+    SearchGUI(@NotNull SearchFullSizeGUI templateGUI,
+              @NotNull Function<T, GUIContent> dataConverter,
+              @NotNull BiPredicate<T, String> searchFunction) {
         super(templateGUI, dataConverter);
+        this.searchFunction = searchFunction;
         templateGUI.setSearchGui(this);
     }
 
