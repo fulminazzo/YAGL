@@ -10,9 +10,11 @@ import it.fulminazzo.yagl.viewers.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -21,6 +23,24 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class FullSizeGUITest {
+
+    @ParameterizedTest
+    @EnumSource(GUIType.class)
+    void testSouthCoordinates(GUIType type) {
+        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+
+        int expectedSouthLine = FullSizeGUI.SECOND_INVENTORY_SIZE - 9 + type.getSize();
+
+        assertEquals(expectedSouthLine, gui.southLine());
+        assertEquals(expectedSouthLine, gui.southWest());
+        assertEquals(expectedSouthLine + 4, gui.south());
+        assertEquals(expectedSouthLine + 8, gui.southEast());
+
+        List<Integer> bottomSlots = new ArrayList<>();
+        for (int i = 0; i < 9; i++) bottomSlots.add(expectedSouthLine + i);
+
+        assertIterableEquals(bottomSlots, gui.bottomSlots());
+    }
 
     private static Object[][] guisInitializers() {
         return new Object[][]{
