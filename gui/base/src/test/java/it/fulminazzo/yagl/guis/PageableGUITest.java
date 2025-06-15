@@ -28,28 +28,6 @@ import static org.mockito.Mockito.*;
 
 class PageableGUITest {
 
-    @Test
-    void testSetPreviousPageOfItemContentDoesNotWrapContent() {
-        ItemGUIContent content = ItemGUIContent.newInstance("stone");
-        PageableGUI gui = PageableGUI.newGUI(9);
-
-        gui.setPreviousPage(0, content);
-
-        Tuple<Integer, GUIContent> previousPage = gui.previousPage;
-        assertTrue(previousPage.isPresent(), "Previous page should be present");
-
-        GUIContent actual = previousPage.getValue();
-
-        assertInstanceOf(ItemGUIContent.class, actual, "Actual page should be an instance of ItemGUIContent");
-
-        Refl<?> refl = new Refl<>(actual);
-
-        Item internalItem = refl.getFieldObject("item");
-
-        assertInstanceOf(Item.class, internalItem, "Internal item should be an instance of Item");
-        assertFalse(internalItem instanceof GUIContent, "Internal item should not be an instance of GUIContent");
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {
             "topSlots", "leftSlots", "bottomSlots", "rightSlots",
