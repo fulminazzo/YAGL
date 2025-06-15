@@ -65,8 +65,9 @@ public class GUIManager extends SingleInstance implements Listener {
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        GUIAdapter.closeGUI(getViewer(player));
-        if (inventoryCache.areContentsStored(player)) {
+        Viewer viewer = getViewer(player);
+        GUIAdapter.closeGUI(viewer);
+        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
             inventoryCache.restorePlayerContents(player);
             inventoryCache.clearPlayerContents(player);
         }

@@ -80,6 +80,7 @@ public final class GUIAdapter {
             // Save previous GUI, if present
             GUIManager.getOpenGUIViewer(uuid).ifPresent((vi, g) -> {
                 reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
+                reflViewer.setFieldObject("nextGUI", gui);
                 g.changeGUIAction().ifPresent(a -> a.execute(vi, g, gui));
             });
             // Set global variables
@@ -99,8 +100,10 @@ public final class GUIAdapter {
                 player.openInventory(inventory);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
-                inventoryCache.storePlayerContents(player);
-                inventoryCache.clearPlayerStorage(player, lowerGUI.size());
+                if (viewer.getNextGUI() == null) {
+                    inventoryCache.storePlayerContents(player);
+                    inventoryCache.clearPlayerStorage(player, lowerGUI.size());
+                }
                 PlayerInventory playerInventory = player.getInventory();
 
                 // Since Minecraft handles player inventory in a "particular" way,
@@ -131,6 +134,7 @@ public final class GUIAdapter {
             }
             // Set new GUI
             reflViewer.setFieldObject("openGUI", gui);
+            reflViewer.setFieldObject("nextGUI", null);
             // Execute action if present
             gui.openGUIAction().ifPresent(a -> a.execute(reflViewer.getObject(), gui));
         };
