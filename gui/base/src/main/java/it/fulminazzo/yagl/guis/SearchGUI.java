@@ -19,16 +19,14 @@ public final class SearchGUI {
      * the corresponding {@link SearchGUI}.
      */
     static class SearchFullSizeGUI extends FullSizeGUI {
-        private final @NotNull SearchGUI gui;
+        @Setter
+        private @Nullable SearchGUI searchGui;
 
         /**
          * Instantiates a new Search full size gui.
-         *
-         * @param gui the gui
          */
-        SearchFullSizeGUI(final @NotNull SearchGUI gui) {
+        SearchFullSizeGUI() {
             super(GUIType.ANVIL);
-            this.gui = gui;
         }
 
         /**
@@ -37,7 +35,7 @@ public final class SearchGUI {
          * @return the query
          */
         public @Nullable String getQuery() {
-            return this.gui.getQuery();
+            return getSearchGui().getQuery();
         }
 
         /**
@@ -47,8 +45,19 @@ public final class SearchGUI {
          * @return this gui
          */
         public @NotNull SearchFullSizeGUI setQuery(final @Nullable String query) {
-            this.gui.setQuery(query);
+            getSearchGui().setQuery(query);
             return this;
+        }
+
+        /**
+         * Gets the internal search gui.
+         * Throws {@link IllegalStateException} if not provided.
+         *
+         * @return the search gui
+         */
+        public @NotNull SearchGUI getSearchGui() {
+            if (this.searchGui == null) throw new IllegalStateException("SearchGUI has not been set yet.");
+            return this.searchGui;
         }
 
     }
