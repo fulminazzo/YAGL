@@ -42,7 +42,8 @@ public final class GUIAdapter {
      * @param gui    the gui
      * @param viewer the viewer
      */
-    public static void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer) {
+    public static void openGUI(final @NotNull GUI gui,
+                               final @NotNull Viewer viewer) {
         openGUI(gui, viewer, null, null);
     }
 
@@ -55,7 +56,9 @@ public final class GUIAdapter {
      * @param viewer       the viewer
      * @param metaFunction the meta function
      */
-    public static void openGUI(final @NotNull GUI gui, @NotNull Viewer viewer, final @NotNull Consumer<ItemMeta> metaFunction) {
+    public static void openGUI(final @NotNull GUI gui,
+                               final @NotNull Viewer viewer,
+                               final @NotNull Consumer<ItemMeta> metaFunction) {
         openGUI(gui, viewer, ItemMeta.class, metaFunction);
     }
 
@@ -69,8 +72,10 @@ public final class GUIAdapter {
      * @param itemMetaClass the ItemMeta class
      * @param metaFunction  the meta function
      */
-    public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui, final @NotNull Viewer viewer,
-                                                    final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
+    public static <M extends ItemMeta> void openGUI(final @NotNull GUI gui,
+                                                    final @NotNull Viewer viewer,
+                                                    final @Nullable Class<M> itemMetaClass,
+                                                    final @Nullable Consumer<M> metaFunction) {
         openGUIHelper(gui, viewer, (p, v) -> {
             // Open inventory
             final Inventory inventory;
@@ -152,7 +157,8 @@ public final class GUIAdapter {
      * @param contentsOffset the offset upon which to start getting the contents
      */
     static <M extends ItemMeta> void setGUIContentsToPlayerInventory(final @NotNull GUI gui,
-                                                                     final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
+                                                                     final @Nullable Class<M> itemMetaClass,
+                                                                     final @Nullable Consumer<M> metaFunction,
                                                                      final @NotNull Player player,
                                                                      final int contentsSize, final int contentsOffset) {
         Viewer viewer = GUIManager.getViewer(player);
