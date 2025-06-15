@@ -11,7 +11,6 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,18 +38,20 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
             if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
             section.set("type", guiType);
 
-            List<GUIContent> contents = section.getList("contents", GUIContent.class);
-            section.set("contents", new ArrayList<>());
-
             final GUI upperGUI = c.get(s, GUI.class).clear();
 
             final FullSizeGUI gui = new Refl<>(GUI.newFullSizeGUI(9))
                     .setFieldObject("upperGUI", upperGUI)
                     .getObject();
 
-            if (contents != null) gui.addContent(contents.toArray(new GUIContent[0]));
+            ConfigurationSection contents = section.getConfigurationSection("contents");
+            if (contents != null)
+                for (String key : contents.getKeys(false)) {
+                    int slot = Integer.parseInt(key);
+                    List<GUIContent> guiContents = contents.getList(key, GUIContent.class);
+                    if (guiContents != null) gui.setContents(slot, guiContents);
+                }
 
-            section.set("contents", contents);
             section.set("type", previousType);
             return gui;
         };
