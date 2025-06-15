@@ -423,4 +423,9 @@ class FullSizeGUITest {
         assertThrows(IllegalArgumentException.class, () -> new FullSizeGUI(9).getLowerGUI().resize(size));
     }
 
+    @Test
+    void testUpdateThrowsIfNoModuleProvided() {
+        assertThrowsExactly(IllegalStateException.class, () -> new FullSizeGUI(9).update(null));
+    }
+
 }
