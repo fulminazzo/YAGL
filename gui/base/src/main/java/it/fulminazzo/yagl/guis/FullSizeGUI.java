@@ -770,4 +770,17 @@ public class FullSizeGUI extends FieldEquable implements GUI {
         return (FullSizeGUI) GUI.super.copyFrom(other, replace);
     }
 
+    /**
+     * An implementation of {@link ResizableGUI} that supports a maximum size of {@link #SECOND_INVENTORY_SIZE}.
+     */
+    static class FullSizeResizableGUI extends ResizableGUI {
+
+        @Override
+        void checkSize(int size) {
+            if (size < COLUMNS || size > SECOND_INVENTORY_SIZE)
+                throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and %s!", COLUMNS, SECOND_INVENTORY_SIZE));
+        }
+
+    }
+
 }
