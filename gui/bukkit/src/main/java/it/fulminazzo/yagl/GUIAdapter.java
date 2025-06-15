@@ -91,7 +91,7 @@ public final class GUIAdapter {
 
                 GUI upperGUI = fullSizeGUI.getUpperGUI();
                 inventory = guiToInventory(upperGUI);
-                populateInventoryWithGUIContents(upperGUI, itemMetaClass, metaFunction, v, inventory);
+                populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size(), 0, 0);
 
                 GUIManager.getInstance().getInventoryCache().storePlayerContents(player);
                 PlayerInventory playerInventory = player.getInventory();
@@ -117,7 +117,7 @@ public final class GUIAdapter {
                 }
             } else {
                 inventory = guiToInventory(gui);
-                populateInventoryWithGUIContents(gui, itemMetaClass, metaFunction, v, inventory);
+                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size(), 0, 0);
             }
             player.openInventory(inventory);
             // Set new GUI
@@ -131,16 +131,17 @@ public final class GUIAdapter {
             Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
     }
 
-    private static <M extends ItemMeta> void populateInventoryWithGUIContents(final @NotNull GUI gui,
-                                                                              final @Nullable Class<M> itemMetaClass,
-                                                                              final @Nullable Consumer<M> metaFunction,
-                                                                              final @NotNull Viewer v,
-                                                                              final @NotNull Inventory inventory) {
-        for (int i = 0; i < gui.size(); i++) {
-            GUIContent content = gui.getContent(v, i);
+    private static <M extends ItemMeta> void populateInventoryWithGUIContents(
+            final @NotNull GUI gui, final @NotNull Viewer v,
+            final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
+            final @NotNull Inventory inventory,
+            final int size, final int contentOffset, final int itemOffset
+    ) {
+        for (int i = 0; i < size; i++) {
+            GUIContent content = gui.getContent(v, i + contentOffset);
             if (content != null) {
                 final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
-                inventory.setItem(i, o);
+                inventory.setItem(i + itemOffset, o);
             }
         }
     }
