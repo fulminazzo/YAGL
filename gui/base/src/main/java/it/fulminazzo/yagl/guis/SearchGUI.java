@@ -1,7 +1,12 @@
 package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.actions.BiGUIAction;
+import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
+import it.fulminazzo.yagl.contents.ItemGUIContent;
+import it.fulminazzo.yagl.items.Item;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +52,614 @@ public final class SearchGUI<T> extends DataGUI<T> {
         return super.getDataList().stream()
                 .filter(t -> this.searchFunction.test(t, this.query))
                 .collect(Collectors.toList());
+    }
+
+    @SafeVarargs
+    @Override
+    public final @NotNull SearchGUI<T> addData(T @NotNull ... data) {
+        return (SearchGUI<T>) super.addData(data);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> addData(@NotNull Collection<T> data) {
+        return (SearchGUI<T>) super.addData(data);
+    }
+
+    @SafeVarargs
+    @Override
+    public final @NotNull SearchGUI<T> setData(T @NotNull ... data) {
+        return (SearchGUI<T>) super.setData(data);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setData(@NotNull Collection<T> data) {
+        return (SearchGUI<T>) super.setData(data);
+    }
+
+    @SafeVarargs
+    @Override
+    public final @NotNull SearchGUI<T> removeData(T @NotNull ... data) {
+        return (SearchGUI<T>) super.removeData(data);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> removeData(@NotNull Collection<T> data) {
+        return (SearchGUI<T>) super.removeData(data);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> removeData(@NotNull Predicate<T> function) {
+        return (SearchGUI<T>) super.removeData(function);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> clearData() {
+        return (SearchGUI<T>) super.clearData();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setPages(int pages) {
+        return (SearchGUI<T>) super.setPages(pages);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setPreviousPage(int slot, @NotNull Item previousPage) {
+        return (SearchGUI<T>) super.setPreviousPage(slot, previousPage);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setPreviousPage(int slot, @NotNull GUIContent previousPage) {
+        return (SearchGUI<T>) super.setPreviousPage(slot, previousPage);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetPreviousPage() {
+        return (SearchGUI<T>) super.unsetPreviousPage();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNextPage(int slot, @NotNull Item nextPage) {
+        return (SearchGUI<T>) super.setNextPage(slot, nextPage);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNextPage(int slot, @NotNull GUIContent nextPage) {
+        return (SearchGUI<T>) super.setNextPage(slot, nextPage);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetNextPage() {
+        return (SearchGUI<T>) super.unsetNextPage();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTitle(@Nullable String title) {
+        return (SearchGUI<T>) super.setTitle(title);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMovable(int slot, boolean movable) {
+        return (SearchGUI<T>) super.setMovable(slot, movable);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> addContent(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.addContent(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setContents(int slot, GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setContents(int slot, @NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetContent(int slot) {
+        return (SearchGUI<T>) super.unsetContent(slot);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onClickOutside(@NotNull GUIAction action) {
+        return (SearchGUI<T>) super.onClickOutside(action);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onOpenGUI(@NotNull GUIAction action) {
+        return (SearchGUI<T>) super.onOpenGUI(action);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onCloseGUI(@NotNull GUIAction action) {
+        return (SearchGUI<T>) super.onCloseGUI(action);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onChangeGUI(@NotNull BiGUIAction action) {
+        return (SearchGUI<T>) super.onChangeGUI(action);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setAllMovable() {
+        return (SearchGUI<T>) super.setAllMovable();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setAllUnmovable() {
+        return (SearchGUI<T>) super.setAllUnmovable();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> addContent(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.addContent(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> addContent(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.addContent(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setContents(int slot, Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setContents(int slot, ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setAllSides(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setAllSides(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setAllSides(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setAllSides(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setAllSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetAllSides() {
+        return (SearchGUI<T>) super.unsetAllSides();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopAndBottomSides(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopAndBottomSides(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopAndBottomSides(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setTopAndBottomSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetTopAndBottomSides() {
+        return (SearchGUI<T>) super.unsetTopAndBottomSides();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftAndRightSides(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftAndRightSides(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftAndRightSides(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setLeftAndRightSides(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetLeftAndRightSides() {
+        return (SearchGUI<T>) super.unsetLeftAndRightSides();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopSide(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopSide(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopSide(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setTopSide(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setTopSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetTopSide() {
+        return (SearchGUI<T>) super.unsetTopSide();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftSide(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftSide(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftSide(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setLeftSide(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setLeftSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetLeftSide() {
+        return (SearchGUI<T>) super.unsetLeftSide();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setBottomSide(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setBottomSide(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setBottomSide(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setBottomSide(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setBottomSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetBottomSide() {
+        return (SearchGUI<T>) super.unsetBottomSide();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setRightSide(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setRightSide(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setRightSide(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setRightSide(@NotNull Collection<GUIContent> contents) {
+        return (SearchGUI<T>) super.setRightSide(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetRightSide() {
+        return (SearchGUI<T>) super.unsetRightSide();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorthWest(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorthWest(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorthWest(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorthWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetNorthWest() {
+        return (SearchGUI<T>) super.unsetNorthWest();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorth(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorth(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorth(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorth(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetNorth() {
+        return (SearchGUI<T>) super.unsetNorth();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorthEast(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorthEast(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setNorthEast(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setNorthEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetNorthEast() {
+        return (SearchGUI<T>) super.unsetNorthEast();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddleWest(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddleWest(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddleWest(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddleWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetMiddleWest() {
+        return (SearchGUI<T>) super.unsetMiddleWest();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddle(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddle(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddle(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddle(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetMiddle() {
+        return (SearchGUI<T>) super.unsetMiddle();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddleEast(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddleEast(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setMiddleEast(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setMiddleEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetMiddleEast() {
+        return (SearchGUI<T>) super.unsetMiddleEast();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouthWest(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouthWest(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouthWest(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouthWest(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetSouthWest() {
+        return (SearchGUI<T>) super.unsetSouthWest();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouth(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouth(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouth(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouth(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetSouth() {
+        return (SearchGUI<T>) super.unsetSouth();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouthEast(Item @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouthEast(ItemGUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setSouthEast(GUIContent @NotNull ... contents) {
+        return (SearchGUI<T>) super.setSouthEast(contents);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetSouthEast() {
+        return (SearchGUI<T>) super.unsetSouthEast();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> fill(@NotNull Item content) {
+        return (SearchGUI<T>) super.fill(content);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> fill(@NotNull ItemGUIContent content) {
+        return (SearchGUI<T>) super.fill(content);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> fill(@NotNull GUIContent content) {
+        return (SearchGUI<T>) super.fill(content);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> clear() {
+        return (SearchGUI<T>) super.clear();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onClickOutside(@NotNull String command) {
+        return (SearchGUI<T>) super.onClickOutside(command);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onOpenGUI(@NotNull String command) {
+        return (SearchGUI<T>) super.onOpenGUI(command);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onCloseGUI(@NotNull String command) {
+        return (SearchGUI<T>) super.onCloseGUI(command);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onChangeGUI(@NotNull String command) {
+        return (SearchGUI<T>) super.onChangeGUI(command);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onClickOutsideSend(@NotNull String message) {
+        return (SearchGUI<T>) super.onClickOutsideSend(message);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onOpenGUISend(@NotNull String message) {
+        return (SearchGUI<T>) super.onOpenGUISend(message);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onCloseGUISend(@NotNull String message) {
+        return (SearchGUI<T>) super.onCloseGUISend(message);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> onChangeGUISend(@NotNull String message) {
+        return (SearchGUI<T>) super.onChangeGUISend(message);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> setVariable(@NotNull String name, @NotNull String value) {
+        return (SearchGUI<T>) super.setVariable(name, value);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> unsetVariable(@NotNull String name) {
+        return (SearchGUI<T>) super.unsetVariable(name);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> copyAll(@NotNull GUI other, boolean replace) {
+        return (SearchGUI<T>) super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> copyFrom(@NotNull GUI other, boolean replace) {
+        return (SearchGUI<T>) super.copyFrom(other, replace);
+    }
+
+    @Override
+    public SearchGUI<T> copy() {
+        return (SearchGUI<T>) super.copy();
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> copyAll(@NotNull Metadatable other, boolean replace) {
+        return (SearchGUI<T>) super.copyAll(other, replace);
+    }
+
+    @Override
+    public @NotNull SearchGUI<T> copyFrom(@NotNull Metadatable other, boolean replace) {
+        return (SearchGUI<T>) super.copyFrom(other, replace);
     }
 
     /**
@@ -91,7 +705,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
-        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+        return (SearchGUI<T>) new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -111,7 +725,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final T @NotNull ... data) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
-        return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
+        return (SearchGUI<T>) new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -126,7 +740,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
-        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+        return (SearchGUI<T>) new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -145,7 +759,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Collection<T> data) {
         SearchFullSizeGUI gui = new SearchFullSizeGUI();
         gui.getLowerGUI().resize(lowerGUISize);
-        return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
+        return (SearchGUI<T>) new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
 
     /**
