@@ -24,6 +24,30 @@ import static org.mockito.Mockito.*;
 
 class FullSizeGUITest {
 
+    private static Object[][] middleLineGUIs() {
+        return new Object[][]{
+                new Object[]{9, 18},
+                new Object[]{18, 18},
+                new Object[]{27, 27},
+                new Object[]{36, 27},
+                new Object[]{45, 36},
+                new Object[]{54, 36},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("middleLineGUIs")
+    void testMiddleLine(Object initializer, int expected) {
+        FullSizeGUI gui;
+        if (initializer instanceof Integer)
+            gui = GUI.newFullSizeGUI((Integer) initializer);
+        else if (initializer instanceof GUIType)
+            gui = GUI.newFullSizeGUI((GUIType) initializer);
+        else throw new IllegalArgumentException(initializer.toString());
+
+        assertEquals(expected, gui.middleLine());
+    }
+
     @ParameterizedTest
     @EnumSource(GUIType.class)
     void testSouthCoordinates(GUIType type) {
