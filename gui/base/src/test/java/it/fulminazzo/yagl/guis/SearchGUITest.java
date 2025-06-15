@@ -3,10 +3,14 @@ package it.fulminazzo.yagl.guis;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,6 +54,30 @@ class SearchGUITest {
                         if (s.equals(m.getName())) return true;
                     return false;
                 });
+    }
+
+    private static Object[] constructorParameters() {
+        return new Object[]{
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, "Hello", "World"), true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, new String[]{"Hello", "World"}), true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, Arrays.asList("Hello", "World")), true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, Arrays.asList("Hello", "World")), true}
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorParameters")
+    void testConstructors(Supplier<DataGUI<Object>> supplier, boolean dataProvided) {
+        @NotNull DataGUI<Object> expected = SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false);
+        expected.setData("Hello", "World");
+        DataGUI<Object> actual = supplier.get();
+        if (!dataProvided) {
+            actual.setData("Hello", "World");
+        }
+        new Refl<>(actual).setFieldObject("searchFunction", new Refl<>(expected).getFieldObject("searchFunction"));
+        assertEquals(expected, actual);
     }
     
     @Nested
