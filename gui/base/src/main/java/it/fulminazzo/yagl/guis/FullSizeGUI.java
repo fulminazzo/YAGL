@@ -174,6 +174,21 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     }
 
     @Override
+    public int northWest() {
+        return this.upperGUI.northWest();
+    }
+
+    @Override
+    public int north() {
+        return this.upperGUI.north();
+    }
+
+    @Override
+    public int northEast() {
+        return this.upperGUI.northEast();
+    }
+
+    @Override
     public int middleLine() {
         if (this.upperGUI.columns() == this.lowerGUI.columns()) return GUI.super.middleLine();
         else return this.upperGUI.size() + this.lowerGUI.middleLine();
