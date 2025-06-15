@@ -174,6 +174,11 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     }
 
     @Override
+    public int southLine() {
+        return this.upperGUI.size() + this.lowerGUI.southLine();
+    }
+
+    @Override
     public int rows() {
         return this.upperGUI.rows() + this.lowerGUI.rows();
     }
