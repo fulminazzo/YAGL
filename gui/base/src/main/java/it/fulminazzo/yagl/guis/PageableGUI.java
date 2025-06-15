@@ -114,7 +114,7 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the previous page
      */
     public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull ItemGUIContent previousPage) {
-        return setPreviousPage(slot, (GUIContent) ItemGUIContent.newInstance(previousPage));
+        return setPreviousPage(slot, (GUIContent) previousPage);
     }
 
     /**
