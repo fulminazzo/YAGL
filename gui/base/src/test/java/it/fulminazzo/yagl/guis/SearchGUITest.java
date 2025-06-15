@@ -9,11 +9,15 @@ class SearchGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(SearchGUI.newGUI(27, c -> null, (t, s) -> false), DataGUI.class, m -> {
-            for (String s : Arrays.asList("copy", "setPages", "getPage"))
-                if (s.equals(m.getName())) return true;
-            return false;
-        });
+        TestUtils.testReturnType(SearchGUI.newGUI(27,
+                        c -> null,
+                        (t, s) -> false),
+                DataGUI.class,
+                m -> {
+                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyAll"))
+                        if (s.equals(m.getName())) return true;
+                    return false;
+                });
     }
 
 }
