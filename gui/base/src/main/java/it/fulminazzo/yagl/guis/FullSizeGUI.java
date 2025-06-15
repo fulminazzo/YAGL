@@ -240,6 +240,14 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     }
 
     @Override
+    public FullSizeGUI copy() {
+        return new Refl<>(new FullSizeGUI())
+                .setFieldObject("upperGUI", this.upperGUI.copy())
+                .setFieldObject("lowerGUI", this.lowerGUI.copy())
+                .getObject();
+    }
+
+    @Override
     public @NotNull FullSizeGUI setAllMovable() {
         return (FullSizeGUI) GUI.super.setAllMovable();
     }
@@ -712,11 +720,6 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     @Override
     public @NotNull FullSizeGUI copyFrom(@NotNull Metadatable other, boolean replace) {
         return (FullSizeGUI) GUI.super.copyFrom(other, replace);
-    }
-
-    @Override
-    public FullSizeGUI copy() {
-        return (FullSizeGUI) GUI.super.copy();
     }
 
 }
