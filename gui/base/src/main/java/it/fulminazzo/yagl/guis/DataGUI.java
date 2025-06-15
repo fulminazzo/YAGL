@@ -908,6 +908,20 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     /**
+     * Creates a new {@link DataGUI} with the given size, converter and a full size {@link #templateGUI}.
+     *
+     * @param <T>           the type of the data
+     * @param size          the size
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @return the data gui
+     */
+    public static <T> @NotNull DataGUI<T> newFullSizeGUI(final int size,
+                                                         final int lowerGUISize, final @NotNull Function<T, GUIContent> dataConverter) {
+        return new DataGUI<>(GUI.newFullSizeGUI(size), dataConverter);
+    }
+
+    /**
      * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
      *
      * @param <T>           the type of the data
@@ -918,8 +932,25 @@ public class DataGUI<T> extends PageableGUI {
      */
     @SafeVarargs
     public static <T> @NotNull DataGUI<T> newFullSizeGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final T @NotNull ... data) {
+                                                         final T @NotNull ... data) {
         return new DataGUI<>(GUI.newFullSizeGUI(size), dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
+     *
+     * @param <T>           the type of the data
+     * @param size          the size
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    @SafeVarargs
+    public static <T> @NotNull DataGUI<T> newFullSizeGUI(final int size,
+                                                         final int lowerGUISize, final @NotNull Function<T, GUIContent> dataConverter,
+                                                         final T @NotNull ... data) {
+        return new DataGUI<>(GUI.newFullSizeGUI(size, lowerGUISize), dataConverter).setData(data);
     }
 
     /**
@@ -932,8 +963,24 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newFullSizeGUI(final int size, final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final @NotNull Collection<T> data) {
+                                                         final @NotNull Collection<T> data) {
         return new DataGUI<>(GUI.newFullSizeGUI(size), dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
+     *
+     * @param <T>           the type of the data
+     * @param size          the size
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    public static <T> @NotNull DataGUI<T> newFullSizeGUI(final int size,
+                                                         final int lowerGUISize, final @NotNull Function<T, GUIContent> dataConverter,
+                                                         final @NotNull Collection<T> data) {
+        return new DataGUI<>(GUI.newFullSizeGUI(size, lowerGUISize), dataConverter).setData(data);
     }
 
     /**
@@ -949,6 +996,20 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     /**
+     * Creates a new {@link DataGUI} with the given type, converter and a full size {@link #templateGUI}.
+     *
+     * @param <T>           the type of the data
+     * @param type          the type
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @return the data gui
+     */
+    public static <T> @NotNull DataGUI<T> newFullSizeGUI(final @NotNull GUIType type,
+                                                         final int lowerGUISize, final @NotNull Function<T, GUIContent> dataConverter) {
+        return new DataGUI<>(GUI.newFullSizeGUI(type, lowerGUISize), dataConverter);
+    }
+
+    /**
      * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
      *
      * @param <T>           the type of the data
@@ -959,8 +1020,25 @@ public class DataGUI<T> extends PageableGUI {
      */
     @SafeVarargs
     public static <T> @NotNull DataGUI<T> newFullSizeGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final T @NotNull ... data) {
+                                                         final T @NotNull ... data) {
         return new DataGUI<>(GUI.newFullSizeGUI(type), dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
+     *
+     * @param <T>           the type of the data
+     * @param type          the type
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    @SafeVarargs
+    public static <T> @NotNull DataGUI<T> newFullSizeGUI(final @NotNull GUIType type,
+                                                         final int lowerGUISize, final @NotNull Function<T, GUIContent> dataConverter,
+                                                         final T @NotNull ... data) {
+        return new DataGUI<>(GUI.newFullSizeGUI(type, lowerGUISize), dataConverter).setData(data);
     }
 
     /**
@@ -973,8 +1051,24 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newFullSizeGUI(final @NotNull GUIType type, final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final @NotNull Collection<T> data) {
+                                                         final @NotNull Collection<T> data) {
         return new DataGUI<>(GUI.newFullSizeGUI(type), dataConverter).setData(data);
+    }
+
+    /**
+     * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
+     *
+     * @param <T>           the type of the data
+     * @param type          the type
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the data gui
+     */
+    public static <T> @NotNull DataGUI<T> newFullSizeGUI(final @NotNull GUIType type,
+                                                         final int lowerGUISize, final @NotNull Function<T, GUIContent> dataConverter,
+                                                         final @NotNull Collection<T> data) {
+        return new DataGUI<>(GUI.newFullSizeGUI(type, lowerGUISize), dataConverter).setData(data);
     }
 
 }
