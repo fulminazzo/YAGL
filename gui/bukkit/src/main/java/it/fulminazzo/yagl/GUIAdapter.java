@@ -100,21 +100,13 @@ public final class GUIAdapter {
                 // Since Minecraft handles player inventory in a "particular" way,
                 // it is necessary to manually set each item.
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
-                for (int i = 0; i < 27; i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size());
-                    if (content != null) {
-                        final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
-                        playerInventory.setItem(i + 9, o);
-                    }
-                }
+                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, playerInventory,
+                        27, upperGUI.size(), 9
+                );
 
-                for (int i = 0; i < lowerGUI.size() - 27; i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size() + 27);
-                    if (content != null) {
-                        final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
-                        playerInventory.setItem(i, o);
-                    }
-                }
+                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, playerInventory,
+                        lowerGUI.size() - 27, upperGUI.size() + 27, 0
+                );
             } else {
                 inventory = guiToInventory(gui);
                 populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size(), 0, 0);
