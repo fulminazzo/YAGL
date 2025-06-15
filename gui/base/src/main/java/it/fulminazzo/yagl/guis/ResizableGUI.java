@@ -61,10 +61,12 @@ public class ResizableGUI extends DefaultGUI {
      * Must be a multiple of 9 not higher than {@link #MAX_SIZE}.
      *
      * @param size the size
+     * @return this gui
      */
-    public void resize(int size) {
+    public @NotNull ResizableGUI resize(int size) {
         checkSize(size);
         this.contents = createContents(size, this.contents);
+        return this;
     }
 
     @Override
