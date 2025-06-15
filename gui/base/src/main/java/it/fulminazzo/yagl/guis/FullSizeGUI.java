@@ -174,6 +174,28 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     }
 
     @Override
+    public @NotNull Set<Integer> leftSlots() {
+        return Stream.concat(
+                this.upperGUI.leftSlots().stream(),
+                this.lowerGUI.leftSlots().stream()
+                        .map(s -> s + this.upperGUI.size())
+        )
+                .sorted(Comparator.comparing(s -> s))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    @Override
+    public @NotNull Set<Integer> rightSlots() {
+        return Stream.concat(
+                this.upperGUI.rightSlots().stream(),
+                this.lowerGUI.rightSlots().stream()
+                        .map(s -> s + this.upperGUI.size())
+        )
+                .sorted(Comparator.comparing(s -> s))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    @Override
     public int northWest() {
         return this.upperGUI.northWest();
     }
