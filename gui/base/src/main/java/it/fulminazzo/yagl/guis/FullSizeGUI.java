@@ -31,11 +31,11 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     static final int SECOND_INVENTORY_SIZE = 36;
 
     private final @NotNull GUI upperGUI;
-    private final @NotNull GUI lowerGUI;
+    private final @NotNull ResizableGUI lowerGUI;
 
     private FullSizeGUI() {
         this.upperGUI = new DefaultGUI();
-        this.lowerGUI = GUI.newGUI(SECOND_INVENTORY_SIZE);
+        this.lowerGUI = new FullSizeResizableGUI().resize(SECOND_INVENTORY_SIZE);
     }
 
     /**
@@ -45,7 +45,7 @@ public class FullSizeGUI extends FieldEquable implements GUI {
      */
     FullSizeGUI(final int size) {
         this.upperGUI = GUI.newGUI(size);
-        this.lowerGUI = GUI.newGUI(SECOND_INVENTORY_SIZE);
+        this.lowerGUI = new FullSizeResizableGUI().resize(SECOND_INVENTORY_SIZE);
     }
 
     /**
@@ -55,7 +55,7 @@ public class FullSizeGUI extends FieldEquable implements GUI {
      */
     FullSizeGUI(final @NotNull GUIType type) {
         this.upperGUI = GUI.newGUI(type);
-        this.lowerGUI = GUI.newGUI(SECOND_INVENTORY_SIZE);
+        this.lowerGUI = new FullSizeResizableGUI().resize(SECOND_INVENTORY_SIZE);
     }
 
     /**
