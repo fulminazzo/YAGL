@@ -87,6 +87,13 @@ class SearchGUITest {
     }
 
     @Test
+    void testSetPagesThrows() {
+        assertThrows(IllegalStateException.class, () ->
+                SearchGUI.newGUI(s -> null, (f, s) -> true)
+                        .setPages(2));
+    }
+
+    @Test
     void testReturnTypes() {
         TestUtils.testReturnType(SearchGUI.newGUI(27,
                         c -> null,
