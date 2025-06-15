@@ -99,6 +99,21 @@ class GUIAdapterTest {
             ItemStack firstPlayerStack = playerInventory.getItem(0);
             assertNotNull(firstPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND, firstPlayerStack.getType());
+
+            @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(openGUI.isPresent(), "Player should have an open GUI");
+
+            GUIContent content = openGUI.getValue().getContent(openGUI.getKey(), nextPageSlot);
+            assertNotNull(content, "Next page item should not be null");
+            content.clickItemAction().ifPresent(a -> a.execute(openGUI.getKey(), openGUI.getValue(), content));
+
+            ItemStack secondStack = this.inventory.getItem(0);
+            assertNotNull(secondStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.EMERALD, secondStack.getType());
+
+            ItemStack secondPlayerStack = playerInventory.getItem(0);
+            assertNotNull(secondPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.EMERALD, secondPlayerStack.getType());
         });
     }
 
