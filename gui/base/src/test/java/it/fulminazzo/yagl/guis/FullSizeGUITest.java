@@ -245,10 +245,10 @@ class FullSizeGUITest {
     private static Object[][] slotsGUIs() {
         return new Object[][]{
                 new Object[]{0, 0, GUI.newGUI(GUIType.CHEST)},
-                new Object[]{27, 0, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{27, 0, GUI.newResizableGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
                 new Object[]{26, 26, GUI.newGUI(GUIType.CHEST)},
-                new Object[]{28, 1, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
-                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, FullSizeGUI.SECOND_INVENTORY_SIZE - 1, GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)}
+                new Object[]{28, 1, GUI.newResizableGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, FullSizeGUI.SECOND_INVENTORY_SIZE - 1, GUI.newResizableGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)}
         };
     }
 
@@ -359,7 +359,7 @@ class FullSizeGUITest {
     @Test
     void testClearClearsBothGUIs() {
         GUI upperGUI = mock(GUI.class);
-        GUI lowerGUI = mock(GUI.class);
+        GUI lowerGUI = mock(ResizableGUI.class);
 
         FullSizeGUI gui = new Refl<>(new FullSizeGUI(GUIType.CHEST))
                 .setFieldObject("upperGUI", upperGUI)
