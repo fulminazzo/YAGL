@@ -14,6 +14,7 @@ import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
+import it.fulminazzo.yagl.guis.PageableGUI;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
@@ -33,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
@@ -64,6 +66,40 @@ class GUIAdapterTest {
                     return null;
                 });
         when(this.player.getServer()).thenReturn(server);
+    }
+
+    @ParameterizedTest
+    @EnumSource(GUIType.class)
+    void testOpenPageableFullSizeGUIType(GUIType type) {
+        BukkitTestUtils.mockPlugin(p -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            PageableGUI gui = PageableGUI.newFullSizeGUI(type).setPages(2);
+            int previousPageSlot = gui.south() - 2;
+            gui.setPreviousPage(previousPageSlot, ItemGUIContent.newInstance("book"));
+
+            int nextPageSlot = gui.south() + 2;
+            gui.setNextPage(nextPageSlot, ItemGUIContent.newInstance("book"));
+
+            gui.getPage(0)
+                    .setContents(0, ItemGUIContent.newInstance("diamond"))
+                    .setContents(gui.southWest(), ItemGUIContent.newInstance("diamond"));
+
+            gui.getPage(1)
+                    .setContents(0, ItemGUIContent.newInstance("emerald"))
+                    .setContents(gui.southWest(), ItemGUIContent.newInstance("emerald"));
+
+            gui.open(GUIManager.getViewer(this.player));
+
+            ItemStack firstStack = this.inventory.getItem(0);
+            assertNotNull(firstStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, firstStack.getType());
+
+            ItemStack firstPlayerStack = playerInventory.getItem(0);
+            assertNotNull(firstPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, firstPlayerStack.getType());
+        });
     }
 
     @Test
