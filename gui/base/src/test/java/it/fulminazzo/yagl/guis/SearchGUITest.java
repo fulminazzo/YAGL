@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
@@ -10,14 +11,56 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 class SearchGUITest {
+
+    @Test
+    void testFilter() {
+        String[] materials = new String[]{
+                "stone", "grass_block", "dirt", "cobblestone", "oak_planks",
+                "bedrock", "sand", "gravel", "gold_ore", "iron_ore",
+                "coal_ore", "oak_log", "oak_leaves", "glass", "lapis_ore",
+                "lapis_block", "dispenser", "sandstone", "gold_block", "iron_block",
+                "bricks", "tnt", "bookshelf", "mossy_cobblestone", "obsidian",
+                "torch", "fire", "water", "lava", "diamond_ore",
+                "diamond_block", "crafting_table", "furnace", "redstone_ore", "ice",
+                "cactus", "jukebox", "netherrack", "soul_sand", "glowstone",
+                "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
+        };
+
+        SearchGUI<String> searchGUI = SearchGUI.newGUI(
+                ItemGUIContent::newInstance,
+                String::contains,
+                materials
+        ).setQuery("_");
+
+        GUI gui = new Refl<>(searchGUI).getFieldObject("templateGUI");
+        gui = searchGUI.prepareOpenGUI(gui, 0);
+
+        List<String> expected = Arrays.stream(materials)
+                .filter(c -> c.contains("_"))
+                .collect(Collectors.toList());
+
+        assertEquals(expected.size(), gui.getContents().size(), "GUI should show only expected contents");
+
+        for (int i = 0; i < expected.size(); i++) {
+            @NotNull List<GUIContent> contents = gui.getContents(i);
+            assertFalse(contents.isEmpty(), "Contents at slot " + i + " should not be empty");
+
+            GUIContent content = contents.get(0);
+            assertInstanceOf(ItemGUIContent.class, content, "Contents at slot " + i + " should be ItemGUIContent");
+
+            ItemGUIContent itemGUIContent = (ItemGUIContent) content;
+            assertEquals(expected.get(i), itemGUIContent.getMaterial());
+        }
+    }
 
     @Test
     void testCopy() {
@@ -79,7 +122,7 @@ class SearchGUITest {
         new Refl<>(actual).setFieldObject("searchFunction", new Refl<>(expected).getFieldObject("searchFunction"));
         assertEquals(expected, actual);
     }
-    
+
     @Nested
     class SearchFullSizeGUITest {
 
@@ -119,7 +162,7 @@ class SearchGUITest {
             SearchGUI.SearchFullSizeGUI dst = new SearchGUI.SearchFullSizeGUI();
             assertEquals(dst, src);
         }
-        
+
     }
 
 }
