@@ -1,5 +1,8 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.yagl.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
@@ -7,8 +10,6 @@ import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.viewers.Viewer;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,10 +79,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         while (pages - this.pages.size() > 0) {
             final GUI newPage;
             if (this.templateGUI instanceof FullSizeGUI) {
-                GUI upperGUI = ((FullSizeGUI) this.templateGUI).getUpperGUI();
-                if (upperGUI instanceof TypeGUI)
-                    newPage = GUI.newFullSizeGUI(((TypeGUI) upperGUI).getInventoryType());
-                else newPage = GUI.newFullSizeGUI(upperGUI.size());
+                FullSizeGUI fullSizeGUI = (FullSizeGUI) this.templateGUI;
+                newPage = new Refl<>(GUI.newFullSizeGUI(9))
+                        .setFieldObject("upperGUI", fullSizeGUI.getUpperGUI().copy())
+                        .setFieldObject("lowerGUI", fullSizeGUI.getLowerGUI().copy())
+                        .getObject();
             } else {
                 if (this.templateGUI instanceof TypeGUI)
                     newPage = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
