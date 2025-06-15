@@ -261,4 +261,29 @@ class DataGUITest {
         }
         assertEquals(expected, actual);
     }
+
+    private static Object[] fullSizeConstructorParameters() {
+        return new Object[]{
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null), false, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null, "Hello", "World"), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null, Arrays.asList("Hello", "World")), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null), true, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("fullSizeConstructorParameters")
+    void testFullSizeConstructors(Supplier<DataGUI<Object>> supplier, boolean typeProvided, boolean dataProvided) {
+        @NotNull DataGUI<Object> expected = typeProvided ?
+                new DataGUI<>(GUI.newFullSizeGUI(GUIType.CHEST), null) :
+                new DataGUI<>(GUI.newFullSizeGUI(27), null);
+        expected.setData("Hello", "World");
+        DataGUI<Object> actual = supplier.get();
+        if (!dataProvided) {
+            actual.setData("Hello", "World");
+        }
+        assertEquals(expected, actual);
+    }
 }
