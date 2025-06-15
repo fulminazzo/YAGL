@@ -93,7 +93,7 @@ public final class GUIAdapter {
 
                 GUI upperGUI = fullSizeGUI.getUpperGUI();
                 inventory = guiToInventory(upperGUI);
-                populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size(), 0, 0);
+                populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
                 player.openInventory(inventory);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
@@ -107,7 +107,7 @@ public final class GUIAdapter {
 
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
                 for (int i = 0; i < lowerGUI.size() - 27; i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size() + 27 );
+                    GUIContent content = gui.getContent(v, i + upperGUI.size() + 27);
                     if (content == null) itemStacks.add(null);
                     else itemStacks.add(convertToItemStack(gui, itemMetaClass, metaFunction, content));
                 }
@@ -121,7 +121,7 @@ public final class GUIAdapter {
                 playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
             } else {
                 inventory = guiToInventory(gui);
-                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size(), 0, 0);
+                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
                 player.openInventory(inventory);
             }
             // Set new GUI
@@ -139,13 +139,13 @@ public final class GUIAdapter {
             final @NotNull GUI gui, final @NotNull Viewer v,
             final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
             final @NotNull Inventory inventory,
-            final int size, final int contentOffset, final int itemOffset
+            final int size
     ) {
         for (int i = 0; i < size; i++) {
-            GUIContent content = gui.getContent(v, i + contentOffset);
+            GUIContent content = gui.getContent(v, i);
             if (content != null) {
                 final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
-                inventory.setItem(i + itemOffset, o);
+                inventory.setItem(i, o);
             }
         }
     }
