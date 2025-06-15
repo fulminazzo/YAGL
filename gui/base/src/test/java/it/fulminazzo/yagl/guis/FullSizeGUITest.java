@@ -89,8 +89,7 @@ class FullSizeGUITest {
                 .collect(Collectors.toList())
         );
         objects.addAll(Arrays.stream(GUIType.values())
-                .filter(t -> t.getSize() != 9)
-                .filter(t -> t.getSize() != 27)
+                .filter(t -> t.getSize() % 9 != 0)
                 .map(t -> new Object[]{t, t.getSize() + 9})
                 .collect(Collectors.toList())
         );
