@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +13,23 @@ import java.util.Arrays;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class GUIUtils {
+
+    /**
+     * Executes the given function using the GUIAdapter.
+     * Throws {@link IllegalStateException} if the bukkit module is not provided.
+     *
+     * @param functionName the function name
+     * @param parameters   the parameters
+     */
+    public static void executeGUIAdapterFunction(final @NotNull String functionName, final Object @NotNull ... parameters) {
+        final Class<?> guiAdapter;
+        try {
+            guiAdapter = ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
+        }
+        new Refl<>(guiAdapter).invokeMethod(functionName, parameters);
+    }
 
     /**
      * Checks that the given slot is between bounds.
