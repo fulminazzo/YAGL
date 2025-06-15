@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,36 @@ class FullSizeGUITest {
         assertEquals(upperGUI.northEast(), gui.northEast());
 
         assertEquals(upperGUI.topSlots(), gui.topSlots());
+    }
+
+    @ParameterizedTest
+    @EnumSource(GUIType.class)
+    void testLeftSlots(GUIType type) {
+        GUI upperGUI = GUI.newGUI(type);
+        GUI lowerGUI = GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE);
+        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+
+        Set<Integer> expectedSlots = upperGUI.leftSlots();
+        expectedSlots.addAll(lowerGUI.leftSlots().stream()
+                .map(s -> s + type.getSize())
+                .collect(Collectors.toList()));
+
+        assertEquals(expectedSlots, gui.leftSlots());
+    }
+
+    @ParameterizedTest
+    @EnumSource(GUIType.class)
+    void testRightSlots(GUIType type) {
+        GUI upperGUI = GUI.newGUI(type);
+        GUI lowerGUI = GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE);
+        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+
+        Set<Integer> expectedSlots = upperGUI.rightSlots();
+        expectedSlots.addAll(lowerGUI.rightSlots().stream()
+                .map(s -> s + type.getSize())
+                .collect(Collectors.toList()));
+
+        assertEquals(expectedSlots, gui.rightSlots());
     }
 
     private static Object[] middleLineGUIs() {
