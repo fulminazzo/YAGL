@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -414,6 +415,12 @@ class FullSizeGUITest {
     @Test
     void testReturnTypes() {
         TestUtils.testReturnType(new FullSizeGUI(9), GUI.class, m -> m.getName().equals("copy"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {8, 0, -1, FullSizeGUI.SECOND_INVENTORY_SIZE + 1})
+    void testLowerGUIResizeFails(int size) {
+        assertThrows(IllegalArgumentException.class, () -> new FullSizeGUI(9).getLowerGUI().resize(size));
     }
 
 }
