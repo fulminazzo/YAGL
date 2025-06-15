@@ -104,6 +104,21 @@ public class FullSizeGUI extends FieldEquable implements GUI {
         new Refl<>(guiUtils).invokeMethod("openGUI", this, viewer);
     }
 
+    /**
+     * Updates the viewer open {@link FullSizeGUI} by updating the {@link #lowerGUI} contents.
+     *
+     * @param viewer the viewer
+     */
+    public void update(@NotNull Viewer viewer) {
+        final Class<?> guiUtils;
+        try {
+            guiUtils = ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
+        }
+        new Refl<>(guiUtils).invokeMethod("updatePlayerGUI", this, viewer);
+    }
+
     @Override
     public @NotNull FullSizeGUI setTitle(@Nullable String title) {
         this.upperGUI.setTitle(title);
