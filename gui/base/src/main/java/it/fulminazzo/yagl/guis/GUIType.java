@@ -14,7 +14,7 @@ public enum GUIType {
     WORKBENCH(10),
     ENCHANTING(2),
     BREWING(5),
-    PLAYER(41),
+    PLAYER(36),
     ENDER_CHEST(27),
     ANVIL(3),
     SMITHING(3),

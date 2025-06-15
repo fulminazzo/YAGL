@@ -1474,6 +1474,16 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Creates a new {@link GUI} that will display over the player's inventory.
+     *
+     * @param size the size
+     * @return the full size gui
+     */
+    static @NotNull FullSizeGUI newFullSizeGUI(final int size) {
+        return new FullSizeGUI(size);
+    }
+
+    /**
      * Creates a new {@link TypeGUI}.
      *
      * @param type the type
@@ -1481,5 +1491,15 @@ public interface GUI extends Metadatable {
      */
     static @NotNull GUI newGUI(final @NotNull GUIType type) {
         return new TypeGUI(type);
+    }
+
+    /**
+     * Creates a new {@link GUI} that will display over the player's inventory.
+     *
+     * @param type the type
+     * @return the full size gui
+     */
+    static @NotNull FullSizeGUI newFullSizeGUI(final @NotNull GUIType type) {
+        return new FullSizeGUI(type);
     }
 }
