@@ -22,7 +22,7 @@ class FullSizeGUIParserTest {
     void testSaveAndLoad() throws IOException {
         GUIYAGLParser.addAllParsers();
 
-        FullSizeGUI expected = (FullSizeGUI) GUI.newFullSizeGUI(GUIType.ANVIL)
+        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.ANVIL)
                 .setContents(0, ItemGUIContent.newInstance("stone"))
                 .setContents(1, ItemGUIContent.newInstance("cobblestone"))
                 .setContents(3, ItemGUIContent.newInstance("grass"))
