@@ -29,7 +29,7 @@ public class DataGUI<T> extends PageableGUI {
     @Getter
     private final @NotNull List<T> data;
     @IgnoreField
-    private final @NotNull Function<T, GUIContent> dataConverter;
+    protected final @NotNull Function<T, GUIContent> dataConverter;
 
     private DataGUI() {
         this.data = new LinkedList<>();
