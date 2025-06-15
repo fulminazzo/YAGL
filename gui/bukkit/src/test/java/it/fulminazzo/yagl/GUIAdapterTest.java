@@ -151,6 +151,7 @@ class GUIAdapterTest {
     void testOpenPageableResizedFullSizeGUI(Object initializer) {
         BukkitTestUtils.mockPlugin(p -> {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            playerInventory.setItem(0, new ItemStack(Material.DIAMOND_SWORD));
             when(this.player.getInventory()).thenReturn(playerInventory);
 
             final PageableGUI gui;
@@ -182,8 +183,12 @@ class GUIAdapterTest {
             assertEquals(Material.DIAMOND, firstStack.getType());
 
             ItemStack firstPlayerStack = playerInventory.getItem(18);
-            assertNotNull(firstPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertNotNull(firstPlayerStack, "ItemStack on 18th slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND, firstPlayerStack.getType());
+
+            ItemStack firstHotbarStack = playerInventory.getItem(0);
+            assertNotNull(firstHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND_SWORD, firstHotbarStack.getType());
 
             @NotNull Tuple<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(firstOpenGUI.isPresent(), "Player should have an open GUI");
@@ -197,8 +202,12 @@ class GUIAdapterTest {
             assertEquals(Material.EMERALD, secondStack.getType());
 
             ItemStack secondPlayerStack = playerInventory.getItem(18);
-            assertNotNull(secondPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertNotNull(secondPlayerStack, "ItemStack on 18th slot of player inventory was supposed to be not null");
             assertEquals(Material.EMERALD, secondPlayerStack.getType());
+
+            ItemStack secondHotbarStack = playerInventory.getItem(0);
+            assertNotNull(secondHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND_SWORD, secondHotbarStack.getType());
 
             @NotNull Tuple<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(secondOpenGUI.isPresent(), "Player should have an open GUI");
@@ -212,8 +221,12 @@ class GUIAdapterTest {
             assertEquals(Material.DIAMOND, thirdStack.getType());
 
             ItemStack thirdPlayerStack = playerInventory.getItem(18);
-            assertNotNull(thirdPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertNotNull(thirdPlayerStack, "ItemStack on 18th slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND, thirdPlayerStack.getType());
+
+            ItemStack thirdHotbarStack = playerInventory.getItem(0);
+            assertNotNull(thirdHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND_SWORD, thirdHotbarStack.getType());
         });
     }
 
