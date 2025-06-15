@@ -7,13 +7,14 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * A special implementation of {@link DataGUI} that supports dynamic
+ * A special implementation of {@link SearchGUI} that supports dynamic
  * searching of data from a string.
  *
  * @param <T> the type parameter
@@ -45,6 +46,106 @@ public final class SearchGUI<T> extends DataGUI<T> {
         return super.getDataList().stream()
                 .filter(t -> this.searchFunction.test(t, this.query))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Creates a new {@link SearchGUI} with the given type and a converter.
+     *
+     * @param <T>           the type of the data
+     * @param dataConverter the data converter
+     * @return the search gui
+     */
+    public static <T> @NotNull SearchGUI<T> newGUI(
+            final @NotNull Function<T, GUIContent> dataConverter,
+            @NotNull BiPredicate<T, String> searchFunction) {
+        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction);
+    }
+
+    /**
+     * Creates a new {@link SearchGUI} with the given type and a converter.
+     *
+     * @param <T>           the type of the data
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @return the search gui
+     */
+    public static <T> @NotNull SearchGUI<T> newGUI(
+            final int lowerGUISize,
+            final @NotNull Function<T, GUIContent> dataConverter,
+            @NotNull BiPredicate<T, String> searchFunction) {
+        SearchFullSizeGUI gui = new SearchFullSizeGUI();
+        gui.getLowerGUI().resize(lowerGUISize);
+        return new SearchGUI<>(gui, dataConverter, searchFunction);
+    }
+
+    /**
+     * Creates a new {@link SearchGUI} with the given type, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the search gui
+     */
+    @SafeVarargs
+    public static <T> @NotNull SearchGUI<T> newGUI(
+            final @NotNull Function<T, GUIContent> dataConverter,
+            @NotNull BiPredicate<T, String> searchFunction,
+            final T @NotNull ... data) {
+        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+    }
+
+    /**
+     * Creates a new {@link SearchGUI} with the given type, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the search gui
+     */
+    @SafeVarargs
+    public static <T> @NotNull SearchGUI<T> newGUI(
+            final int lowerGUISize,
+            final @NotNull Function<T, GUIContent> dataConverter,
+            @NotNull BiPredicate<T, String> searchFunction,
+            final T @NotNull ... data) {
+        SearchFullSizeGUI gui = new SearchFullSizeGUI();
+        gui.getLowerGUI().resize(lowerGUISize);
+        return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
+    }
+
+    /**
+     * Creates a new {@link SearchGUI} with the given type, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the search gui
+     */
+    public static <T> @NotNull SearchGUI<T> newGUI(
+            final @NotNull Function<T, GUIContent> dataConverter,
+            @NotNull BiPredicate<T, String> searchFunction,
+            final @NotNull Collection<T> data) {
+        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+    }
+
+    /**
+     * Creates a new {@link SearchGUI} with the given type, converter and data.
+     *
+     * @param <T>           the type of the data
+     * @param lowerGUISize  the size of the lower GUI
+     * @param dataConverter the data converter
+     * @param data          the data
+     * @return the search gui
+     */
+    public static <T> @NotNull SearchGUI<T> newGUI(
+            final int lowerGUISize,
+            final @NotNull Function<T, GUIContent> dataConverter,
+            @NotNull BiPredicate<T, String> searchFunction,
+            final @NotNull Collection<T> data) {
+        SearchFullSizeGUI gui = new SearchFullSizeGUI();
+        gui.getLowerGUI().resize(lowerGUISize);
+        return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
 
     /**
