@@ -2,12 +2,16 @@ package it.fulminazzo.yagl.parsers;
 
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.utils.ParserUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+
+import java.util.List;
 
 /**
  * A parser to serialize {@link FullSizeGUI}
@@ -24,7 +28,28 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
     @Override
     protected BiFunctionException<IConfiguration, String, FullSizeGUI, Exception> getLoader() {
-        return null;
+        return (c, s) -> {
+            ConfigurationSection section = c.getConfigurationSection(s);
+            if (section == null) return null;
+
+            final String previousType = section.getString("type");
+
+            final String guiType = section.getString("gui-type");
+            if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
+            section.set("type", guiType);
+
+            final GUI upperGUI = c.get(s, GUI.class).clear();
+
+            final FullSizeGUI gui = new Refl<>(GUI.newFullSizeGUI(9))
+                    .setFieldObject("upperGUI", upperGUI)
+                    .getObject();
+
+            List<GUIContent> contents = section.getList("contents", GUIContent.class);
+            if (contents != null) gui.addContent(contents.toArray(new GUIContent[0]));
+
+            section.set("type", previousType);
+            return gui;
+        };
     }
 
     @Override
