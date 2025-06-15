@@ -1484,6 +1484,19 @@ public interface GUI extends Metadatable {
     }
 
     /**
+     * Creates a new {@link GUI} that will display over the player's inventory.
+     *
+     * @param size         the size
+     * @param lowerGUISize the size of the lower GUI
+     * @return the full size gui
+     */
+    static @NotNull FullSizeGUI newFullSizeGUI(final int size, final int lowerGUISize) {
+        FullSizeGUI gui = new FullSizeGUI(size);
+        gui.getLowerGUI().resize(lowerGUISize);
+        return gui;
+    }
+
+    /**
      * Creates a new {@link TypeGUI}.
      *
      * @param type the type
@@ -1501,5 +1514,18 @@ public interface GUI extends Metadatable {
      */
     static @NotNull FullSizeGUI newFullSizeGUI(final @NotNull GUIType type) {
         return new FullSizeGUI(type);
+    }
+
+    /**
+     * Creates a new {@link GUI} that will display over the player's inventory.
+     *
+     * @param type         the type
+     * @param lowerGUISize the size of the lower GUI
+     * @return the full size gui
+     */
+    static @NotNull FullSizeGUI newFullSizeGUI(final @NotNull GUIType type, final int lowerGUISize) {
+        FullSizeGUI gui = new FullSizeGUI(type);
+        gui.getLowerGUI().resize(lowerGUISize);
+        return gui;
     }
 }
