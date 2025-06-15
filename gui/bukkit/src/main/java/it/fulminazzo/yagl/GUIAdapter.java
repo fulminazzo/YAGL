@@ -100,10 +100,12 @@ public final class GUIAdapter {
                 player.openInventory(inventory);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
-                if (viewer.getNextGUI() == null) {
+                if (v.getNextGUI() == null) {
                     inventoryCache.storePlayerContents(player);
                     inventoryCache.clearPlayerStorage(player, lowerGUI.size());
                 }
+                int upperGUISize = upperGUI.size();
+                int lowerGUISize = lowerGUI.size();
                 PlayerInventory playerInventory = player.getInventory();
 
                 // Since Minecraft handles player inventory in a "particular" way,
@@ -111,16 +113,16 @@ public final class GUIAdapter {
                 List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
 
                 // Hotbar contents
-                for (int i = 27; i < lowerGUI.size(); i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size());
+                for (int i = 27; i < lowerGUISize; i++) {
+                    GUIContent content = gui.getContent(v, i + upperGUISize);
                     int slot = i - 27;
                     if (content == null) itemStacks.set(slot, null);
                     else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
                 }
 
                 // Storage contents
-                for (int i = 0; i < Math.min(lowerGUI.size(), 27); i++) {
-                    GUIContent content = gui.getContent(v, i + upperGUI.size());
+                for (int i = 0; i < Math.min(lowerGUISize, 27); i++) {
+                    GUIContent content = gui.getContent(v, i + upperGUISize);
                     int slot = i + 9;
                     if (content == null) itemStacks.set(slot, null);
                     else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
