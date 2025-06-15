@@ -93,9 +93,10 @@ public final class GUIAdapter {
                 inventory = guiToInventory(upperGUI);
                 populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size(), 0, 0);
 
-                GUIManager.getInstance().getInventoryCache().storePlayerContents(player);
+                PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
+                inventoryCache.storePlayerContents(player);
+                inventoryCache.clearPlayerStorage(player);
                 PlayerInventory playerInventory = player.getInventory();
-                playerInventory.clear();
 
                 // Since Minecraft handles player inventory in a "particular" way,
                 // it is necessary to manually set each item.
