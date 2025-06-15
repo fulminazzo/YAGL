@@ -96,7 +96,7 @@ public final class GUIAdapter {
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
 
                 inventory = guiToInventory(upperGUI);
-                populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
+                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
                 player.openInventory(inventory);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
@@ -106,10 +106,10 @@ public final class GUIAdapter {
                 }
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
-                updatePlayerInventory(gui, itemMetaClass, metaFunction, player, lowerGUISize, upperGUISize);
+                setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, player, lowerGUISize, upperGUISize);
             } else {
                 inventory = guiToInventory(gui);
-                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
+                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
                 player.openInventory(inventory);
             }
             // Set new GUI
@@ -125,7 +125,7 @@ public final class GUIAdapter {
     }
 
     /**
-     * Updates the player inventory with the given GUI contents.
+     * Sets the given {@link GUI} contents to the {@link Player}'s inventory.
      *
      * @param <M>            the type of the item meta
      * @param gui            the gui
@@ -135,10 +135,10 @@ public final class GUIAdapter {
      * @param contentsSize   the amount of contents to set
      * @param contentsOffset the offset upon which to start getting the contents
      */
-    static <M extends ItemMeta> void updatePlayerInventory(final @NotNull GUI gui,
-                                                           final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
-                                                           final @NotNull Player player,
-                                                           final int contentsSize, final int contentsOffset) {
+    static <M extends ItemMeta> void setGUIContentsToPlayerInventory(final @NotNull GUI gui,
+                                                                     final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
+                                                                     final @NotNull Player player,
+                                                                     final int contentsSize, final int contentsOffset) {
         Viewer viewer = GUIManager.getViewer(player);
         PlayerInventory playerInventory = player.getInventory();
 
@@ -151,7 +151,7 @@ public final class GUIAdapter {
             GUIContent content = gui.getContent(viewer, i + contentsOffset);
             int slot = i - 27;
             if (content == null) itemStacks.set(slot, null);
-            else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
+            else itemStacks.set(slot, convertContentToItemStack(gui, itemMetaClass, metaFunction, content));
         }
 
         // Storage contents
@@ -159,36 +159,54 @@ public final class GUIAdapter {
             GUIContent content = gui.getContent(viewer, i + contentsOffset);
             int slot = i + 9;
             if (content == null) itemStacks.set(slot, null);
-            else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
+            else itemStacks.set(slot, convertContentToItemStack(gui, itemMetaClass, metaFunction, content));
         }
 
         playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
     }
 
-    private static <M extends ItemMeta> void populateInventoryWithGUIContents(
-            final @NotNull GUI gui, final @NotNull Viewer v,
+    /**
+     * Fills the given inventory with the gui contents.
+     *
+     * @param <M>           the type of the item meta
+     * @param gui           the gui
+     * @param viewer        the viewer
+     * @param itemMetaClass the ItemMeta class
+     * @param metaFunction  the meta function
+     * @param inventory     the inventory
+     * @param size          the size of the inventory
+     */
+    static <M extends ItemMeta> void fillInventoryWithGUIContents(
+            final @NotNull GUI gui, final @NotNull Viewer viewer,
             final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
             final @NotNull Inventory inventory,
             final int size
     ) {
         for (int i = 0; i < size; i++) {
-            GUIContent content = gui.getContent(v, i);
+            GUIContent content = gui.getContent(viewer, i);
             if (content != null) {
-                final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
+                final ItemStack o = convertContentToItemStack(gui, itemMetaClass, metaFunction, content);
                 inventory.setItem(i, o);
             }
         }
     }
 
-    private static <M extends ItemMeta> @NotNull ItemStack convertToItemStack(final @NotNull GUI gui,
-                                                                              final @Nullable Class<M> itemMetaClass,
-                                                                              final @Nullable Consumer<M> metaFunction,
-                                                                              final @NotNull GUIContent content) {
+    /**
+     * Converts the given content to a {@link ItemStack}, using the given data.
+     *
+     * @param <M>           the type of the item meta
+     * @param gui           the gui
+     * @param itemMetaClass the ItemMeta class
+     * @param metaFunction  the meta function
+     * @param content       the content
+     * @return the item stack
+     */
+    static <M extends ItemMeta> @NotNull ItemStack convertContentToItemStack(final @NotNull GUI gui,
+                                                                             final @Nullable Class<M> itemMetaClass,
+                                                                             final @Nullable Consumer<M> metaFunction,
+                                                                             final @NotNull GUIContent content) {
         content.copyFrom(gui, false);
-        BukkitItem render = content
-                .apply(content)
-                .render()
-                .copy(BukkitItem.class);
+        BukkitItem render = content.apply(content).render().copy(BukkitItem.class);
         final ItemStack itemStack;
         if (itemMetaClass == null || metaFunction == null) itemStack = render.create();
         else itemStack = render.create(itemMetaClass, metaFunction);
