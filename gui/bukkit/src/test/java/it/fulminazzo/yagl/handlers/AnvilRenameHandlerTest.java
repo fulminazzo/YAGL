@@ -3,11 +3,8 @@ package it.fulminazzo.yagl.handlers;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoop;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
-import it.fulminazzo.yagl.utils.NMSUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -19,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,14 +59,9 @@ class AnvilRenameHandlerTest {
     @Test
     void testInject() {
         BukkitTestUtils.mockNMSUtils(c -> {
-            ChannelPipeline pipeline = mock(ChannelPipeline.class);
-
-            when(NMSUtils.getPlayerChannel(any())).thenReturn(c);
-            when(c.pipeline()).thenReturn(pipeline);
-
             this.handler.inject();
 
-            verify(pipeline).addBefore(
+            verify(c.pipeline()).addBefore(
                     "packet_handler",
                     AnvilRenameHandler.class.getSimpleName() +
                             "-" +
@@ -83,21 +74,9 @@ class AnvilRenameHandlerTest {
     @Test
     void testRemove() {
         BukkitTestUtils.mockNMSUtils(c -> {
-            ChannelPipeline pipeline = mock(ChannelPipeline.class);
-            EventLoop eventLoop = mock(EventLoop.class);
-
-            when(eventLoop.submit(any(Callable.class))).thenAnswer(a -> {
-                Callable<?> callable = a.getArgument(0);
-                return callable.call();
-            });
-
-            when(NMSUtils.getPlayerChannel(any())).thenReturn(c);
-            when(c.pipeline()).thenReturn(pipeline);
-            when(c.eventLoop()).thenReturn(eventLoop);
-
             this.handler.remove();
 
-            verify(pipeline).remove(
+            verify(c.pipeline()).remove(
                     AnvilRenameHandler.class.getSimpleName() +
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_")
