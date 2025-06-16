@@ -15,6 +15,7 @@ def run = { CommandSender sender, String label, String[] args ->
 
             def data = Arrays.stream(Material.values())
                     .filter(m -> m.isBlock())
+                    .filter(m -> !m.name().contains("LEGACY"))
                     .collect(Collectors.toList())
             SearchGUI gui = SearchGUI.newGUI(
                     m -> ItemGUIContent.newInstance(m.name()),
