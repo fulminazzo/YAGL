@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.Getter;
@@ -116,7 +117,16 @@ public class GUIManager extends SingleInstance implements Listener {
         AnvilRenameHandler handler = new AnvilRenameHandler(
                 plugin.getLogger(),
                 player,
-                null
+                (p, n) -> getOpenGUIViewer(p).ifPresent((v, g) -> {
+                    Class<?> clazz = g.getClass();
+                    Class<?> expectedClass = ReflectionUtils.getClass(SearchGUI.class.getSimpleName() + ".SearchFullSizeGUI");
+
+                    if (expectedClass.equals(clazz)) {
+                        SearchGUI<?> searchGUI = new Refl<>(g).invokeMethod("getSearchGui");
+                        searchGUI.setQuery(n);
+                        GUIAdapter.updatePlayerGUI(searchGUI, v);
+                    }
+                })
         );
         handler.inject();
         this.anvilRenameHandlers.add(handler);
