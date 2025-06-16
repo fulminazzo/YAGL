@@ -11,10 +11,7 @@ import it.fulminazzo.yagl.actions.commands.GUIItemCommand;
 import it.fulminazzo.yagl.actions.commands.GUIItemConsoleCommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
-import it.fulminazzo.yagl.guis.FullSizeGUI;
-import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.guis.GUIType;
-import it.fulminazzo.yagl.guis.PageableGUI;
+import it.fulminazzo.yagl.guis.*;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
@@ -73,6 +70,51 @@ class GUIAdapterTest {
                 Stream.of(9, 18, 27, 36, 45, 54),
                 Arrays.stream(GUIType.values())
         ).toArray(Object[]::new);
+    }
+
+    @Test
+    void integrationTestSearchGUI() {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            Viewer viewer = GUIManager.getViewer(this.player);
+
+            List<Material> materials = Arrays.asList(
+                    Material.POTATO, Material.DIAMOND, Material.REDSTONE,
+                    Material.STONE, Material.COBBLESTONE, Material.EMERALD,
+                    Material.STICK, Material.GRASS, Material.DIRT
+            );
+
+            SearchGUI<Material> gui = SearchGUI.newGUI(18,
+                            m -> ItemGUIContent.newInstance(m.name()),
+                            (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
+                            materials
+                    )
+                    //TODO: temporary contents, should be automatically set
+                    .setContents(0, ItemGUIContent.newInstance("stone"))
+                    .setContents(1, ItemGUIContent.newInstance("stone"))
+                    .setContents(2, ItemGUIContent.newInstance("stone"))
+                    .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
+
+            gui.open(viewer);
+
+            for (int i = 9; i < 18; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(materials.get(i - 9), itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+
+            for (int i = 18; i < 27; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(Material.GLASS, itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+        });
     }
 
     @Test
