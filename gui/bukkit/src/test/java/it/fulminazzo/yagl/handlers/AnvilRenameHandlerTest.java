@@ -118,6 +118,13 @@ class AnvilRenameHandlerTest {
     }
 
     @Test
+    void testReadOfOtherPacketDoesNotCallAction() throws Exception {
+        this.handler.channelRead(this.context, new Object());
+
+        assertNull(this.lastRead);
+    }
+
+    @Test
     void testExceptionDoesNotThrow() {
         assertDoesNotThrow(() -> this.handler.channelRead(this.context, null));
     }
