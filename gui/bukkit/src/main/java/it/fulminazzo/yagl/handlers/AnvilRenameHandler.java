@@ -6,8 +6,11 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.GUIManager;
 import it.fulminazzo.yagl.utils.NMSUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -77,7 +80,9 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                     return;
             }
 
-            this.handler.accept(this.player, name);
+            Bukkit.getScheduler().runTaskAsynchronously(getProvidingPlugin(), () ->
+                    this.handler.accept(this.player, name)
+            );
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
@@ -121,6 +126,10 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                 getClass().getSimpleName(),
                 this.player.getUniqueId().toString().replace("-", "_")
         );
+    }
+
+    private static @NotNull JavaPlugin getProvidingPlugin() {
+        return JavaPlugin.getProvidingPlugin(GUIManager.class);
     }
 
 }
