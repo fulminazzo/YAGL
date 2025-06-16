@@ -31,14 +31,22 @@ public class DataGUI<T> extends PageableGUI {
     @IgnoreField
     protected final @NotNull Function<T, GUIContent> dataConverter;
 
-    private DataGUI() {
+    /**
+     * Instantiates a new Data gui.
+     */
+    DataGUI() {
         this.data = new LinkedList<>();
         this.dataConverter = t -> {
             throw new NotImplemented();
         };
     }
 
-    private DataGUI(final @NotNull GUI templateGUI) {
+    /**
+     * Instantiates a new Data gui.
+     *
+     * @param templateGUI the template gui
+     */
+    DataGUI(final @NotNull GUI templateGUI) {
         super(templateGUI);
         this.data = new LinkedList<>();
         this.dataConverter = t -> {
