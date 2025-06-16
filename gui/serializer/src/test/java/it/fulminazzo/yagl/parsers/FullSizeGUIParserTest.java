@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.parsers;
 
-import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
@@ -16,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,11 +25,8 @@ class FullSizeGUIParserTest {
     void testSaveAndLoad() throws IOException {
         GUIYAGLParser.addAllParsers();
 
-        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.ANVIL, 9)
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .setContents(1, ItemGUIContent.newInstance("cobblestone"))
-                .setContents(3, ItemGUIContent.newInstance("grass"))
-                .setContents(4, ItemGUIContent.newInstance("dirt"));
+        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.ANVIL, 9);
+        GUIParserTest.setupContents(expected);
 
         File file = new File("build/resources/test/fullsize-gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
