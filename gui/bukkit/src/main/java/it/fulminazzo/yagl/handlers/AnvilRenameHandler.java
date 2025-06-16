@@ -65,4 +65,16 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
         });
     }
 
+    /**
+     * Gets name of the current handler.
+     *
+     * @return the name
+     */
+    public @NotNull String getName() {
+        return String.format("%s-%s",
+                getClass().getSimpleName(),
+                this.player.getUniqueId().toString().replace("-", "_")
+        );
+    }
+
 }
