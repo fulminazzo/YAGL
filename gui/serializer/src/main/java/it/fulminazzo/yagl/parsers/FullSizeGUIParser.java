@@ -53,6 +53,10 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
                     .setFieldObject("upperGUI", upperGUI)
                     .getObject();
 
+            Integer lowerGuiSize = section.getInteger("lower-gui-size");
+            if (lowerGuiSize != null)
+                gui.getLowerGUI().resize(lowerGuiSize);
+
             ConfigurationSection contents = section.getConfigurationSection("contents");
             if (contents != null)
                 for (String key : contents.getKeys(false)) {
@@ -80,6 +84,7 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
             });
 
             section.set("upper-gui-type", section.getString("type"));
+            section.set("lower-gui-size", g.getLowerGUI().size());
             section.set("type", ParserUtils.classToType(GUI.class, g.getClass()));
         };
     }
