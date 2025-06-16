@@ -7,6 +7,7 @@ import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
+import it.fulminazzo.yagl.exceptions.NotImplemented;
 import it.fulminazzo.yagl.items.Item;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,22 @@ public final class SearchGUI<T> extends DataGUI<T> {
 
     @Getter
     private @NotNull String query;
+
+    private SearchGUI() {
+        super();
+        this.searchFunction = (t, s) -> {
+            throw new NotImplemented();
+        };
+        this.query = "";
+    }
+
+    private SearchGUI(@NotNull GUI templateGUI) {
+        super(templateGUI);
+        this.searchFunction = (t, s) -> {
+            throw new NotImplemented();
+        };
+        this.query = "";
+    }
 
     /**
      * Instantiates a new Search gui.
