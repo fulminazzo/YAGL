@@ -109,10 +109,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
      */
     public void remove() {
         Channel channel = NMSUtils.getPlayerChannel(this.player);
-        channel.eventLoop().submit(() -> {
-            channel.pipeline().remove(getName());
-            return null;
-        });
+        channel.eventLoop().submit(() -> channel.pipeline().remove(getName()));
     }
 
     /**
