@@ -1,9 +1,11 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
@@ -16,6 +18,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -110,6 +113,32 @@ class GUIManagerTest {
                                 any(),
                                 any()
                         );
+                    })
+            );
+        }
+
+        @Test
+        void testOnQuitPlayerIsRemovedAnvilRenameHandler() {
+            BukkitTestUtils.mockPlugin(p ->
+                    BukkitTestUtils.mockNMSUtils(c -> {
+                        AnvilRenameHandler handler = new AnvilRenameHandler(
+                                null,
+                                this.player,
+                                null
+                        );
+
+                        new Refl<>(this.guiManager)
+                                .getFieldRefl("anvilRenameHandlers")
+                                .invokeMethod("add", handler);
+
+                        PlayerQuitEvent event = new PlayerQuitEvent(
+                                this.player,
+                                null
+                        );
+
+                        this.guiManager.on(event);
+
+                        verify(c.pipeline()).remove(any(String.class));
                     })
             );
         }
