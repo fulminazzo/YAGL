@@ -168,6 +168,18 @@ class GUIManagerTest {
         }
 
         @Test
+        void testOnQuitPlayerDoesNotThrowIfNoAnvilHandlerIsPresent() {
+            assertDoesNotThrow(() -> {
+                PlayerQuitEvent event = new PlayerQuitEvent(
+                        this.player,
+                        null
+                );
+
+                this.guiManager.on(event);
+            });
+        }
+
+        @Test
         void testChangeGUI() {
             AtomicBoolean expected = new AtomicBoolean(false);
             AtomicBoolean notExpected = new AtomicBoolean(false);
