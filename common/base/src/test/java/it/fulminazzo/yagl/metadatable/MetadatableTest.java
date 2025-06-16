@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl;
+package it.fulminazzo.yagl.metadatable;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
