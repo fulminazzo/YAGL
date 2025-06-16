@@ -10,7 +10,6 @@ import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.charset.Charset;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
@@ -58,9 +57,11 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                         ByteBuf copy = buf.copy();
 
                         // First read the size of the buffer
-                        copy.readByte();
+                        int size = copy.readByte();
 
-                        name = copy.toString(Charset.defaultCharset());
+                        byte[] data = new byte[size];
+                        copy.readBytes(data);
+                        name = new String(data);
                     } else return; // Other packet
                     break;
                 // 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4
