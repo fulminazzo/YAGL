@@ -9,6 +9,7 @@ import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.exceptions.NotImplemented;
 import it.fulminazzo.yagl.items.Item;
+import it.fulminazzo.yagl.utils.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -99,11 +100,15 @@ public final class SearchGUI<T> extends DataGUI<T> {
             @NotNull List<GUIContent> contents = getContents(i);
             if (contents.isEmpty())
                 setContents(i, ItemGUIContent.newInstance("glass_pane").setDisplayName(" "));
-            if (i == 0)
+            if (i == 0) {
+                String colorChar = new Refl<>(MessageUtils.class).getFieldObject("COLOR_CHAR");
+                String query = getQuery().isEmpty() ? MessageUtils.color("&8&r") : getQuery()
+                        .replaceAll(colorChar + "[A-Z0-9]", "");
                 getContents(i).stream()
                         .filter(c -> c instanceof ItemGUIContent)
                         .map(c -> (ItemGUIContent) c)
-                        .forEach(c -> c.setDisplayName(getQuery()));
+                        .forEach(c -> c.setDisplayName(query));
+            }
         }
         return super.prepareOpenGUI(gui, page);
     }
