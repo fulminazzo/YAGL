@@ -50,7 +50,7 @@ class FullSizeGUIParserTest {
     void testLoadWithNullContents() throws Exception {
         IConfiguration configuration = mock(IConfiguration.class);
         ConfigurationSection section = new ConfigurationSection(configuration, "path");
-        section.set("gui-type", "DEFAULT");
+        section.set("upper-gui-type", "DEFAULT");
         when(configuration.getConfigurationSection(any())).thenReturn(section);
         when(configuration.get("path", GUI.class)).thenReturn(GUI.newGUI(9));
 
@@ -68,7 +68,7 @@ class FullSizeGUIParserTest {
         when(contentsSection.getList(any(), any())).thenReturn(null);
 
         ConfigurationSection section = new ConfigurationSection(configuration, "path");
-        section.set("gui-type", "DEFAULT");
+        section.set("upper-gui-type", "DEFAULT");
         section.set("contents", contentsSection);
 
         when(configuration.getConfigurationSection(any())).thenReturn(section);
@@ -88,7 +88,7 @@ class FullSizeGUIParserTest {
         IllegalArgumentException ex = assertThrowsExactly(IllegalArgumentException.class, () ->
                 new FullSizeGUIParser().load(configuration, "path")
         );
-        assertEquals("'gui-type' cannot be null", ex.getMessage());
+        assertEquals("'upper-gui-type' cannot be null", ex.getMessage());
     }
 
     @Test

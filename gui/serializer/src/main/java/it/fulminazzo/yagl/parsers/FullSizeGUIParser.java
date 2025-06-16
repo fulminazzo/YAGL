@@ -34,8 +34,8 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
             final String previousType = section.getString("type");
 
-            final String guiType = section.getString("gui-type");
-            if (guiType == null) throw new IllegalArgumentException("'gui-type' cannot be null");
+            final String guiType = section.getString("upper-gui-type");
+            if (guiType == null) throw new IllegalArgumentException("'upper-gui-type' cannot be null");
             section.set("type", guiType);
 
             final GUI upperGUI = c.get(s, GUI.class).clear();
@@ -70,7 +70,7 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
                 if (!v.isEmpty()) section.setList("contents." + k, v);
             });
 
-            section.set("gui-type", section.getString("type"));
+            section.set("upper-gui-type", section.getString("type"));
             section.set("type", ParserUtils.classToType(GUI.class, g.getClass()));
         };
     }
