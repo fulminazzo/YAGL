@@ -151,9 +151,10 @@ class SearchGUITest {
 
     @Test
     void testSetPagesThrows() {
-        assertThrows(IllegalStateException.class, () ->
+        IllegalStateException e = assertThrows(IllegalStateException.class, () ->
                 SearchGUI.newGUI(s -> null, (f, s) -> true)
                         .setPages(2));
+        assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), e.getMessage());
     }
 
     @Test
