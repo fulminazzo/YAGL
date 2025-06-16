@@ -716,9 +716,12 @@ class GUIAdapterTest {
 
     @Test
     void testUpdatePlayerGUINonFullSize() {
-        assertThrowsExactly(IllegalArgumentException.class, () ->
-                GUIAdapter.updatePlayerGUI(GUI.newGUI(9), GUIManager.getViewer(this.player))
-        );
+        BukkitTestUtils.mockPlugin(p -> {
+            IllegalArgumentException exception = assertThrowsExactly(IllegalArgumentException.class, () ->
+                    GUIAdapter.updatePlayerGUI(GUI.newGUI(9), GUIManager.getViewer(this.player))
+            );
+            assertEquals("updatePlayerGUI can only be used with FullSizeGUI", exception.getMessage());
+        });
     }
 
     private void openGUI(GUI gui) {
