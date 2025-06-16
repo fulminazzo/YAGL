@@ -124,6 +124,7 @@ public class GUIManager extends SingleInstance implements Listener {
 
                     if (expectedClass.equals(clazz)) {
                         SearchGUI<?> searchGUI = new Refl<>(g).invokeMethod("getSearchGui");
+                        if (n.equals(searchGUI.getQuery())) return;
                         searchGUI.setQuery(n);
                         GUIAdapter.updatePlayerGUI(searchGUI.getFirstPage(), v);
                     }
