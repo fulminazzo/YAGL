@@ -40,9 +40,13 @@ import static org.mockito.Mockito.*;
 
 class GUIManagerTest {
 
+    @BeforeEach
+    void setUp() {
+        BukkitUtils.setupServer();
+    }
+
     @Test
     void testInitializationOfGUIManagerInjectsOnlinePlayers() {
-        BukkitUtils.setupServer();
         Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
             new GUIManager();
@@ -58,7 +62,6 @@ class GUIManagerTest {
 
     @Test
     void testGetOpenGUIViewerPlayer() {
-        BukkitUtils.setupServer();
         Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         BukkitTestUtils.mockPlugin(p ->
                 assertFalse(GUIManager.getOpenGUIViewer(player).isPresent(), "Should not be present"));
