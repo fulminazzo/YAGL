@@ -325,11 +325,25 @@ class GUIManagerTest {
 
         @Test
         void testDisableThisPlugin() {
-            BukkitTestUtils.mockPlugin(p -> {
-                PluginDisableEvent event = new PluginDisableEvent(p);
-                this.guiManager.on(event);
-                verify(this.player).closeInventory();
-            });
+            BukkitTestUtils.mockPlugin(p ->
+                BukkitTestUtils.mockNMSUtils(c -> {
+                    AnvilRenameHandler handler = new AnvilRenameHandler(
+                            null,
+                            this.player,
+                            null
+                    );
+
+                    new Refl<>(this.guiManager)
+                            .getFieldRefl("anvilRenameHandlers")
+                            .invokeMethod("add", handler);
+
+                    PluginDisableEvent event = new PluginDisableEvent(p);
+                    this.guiManager.on(event);
+                    verify(this.player).closeInventory();
+
+                    verify(c.pipeline()).remove(any(String.class));
+                })
+            );
             this.guiManager.initialize();
         }
 
