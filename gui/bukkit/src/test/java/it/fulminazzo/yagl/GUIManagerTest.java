@@ -110,6 +110,7 @@ class GUIManagerTest {
         @AfterEach
         void tearDown() {
             this.guiManager.terminate();
+            BukkitUtils.removePlayer(this.player);
         }
 
         @Test
