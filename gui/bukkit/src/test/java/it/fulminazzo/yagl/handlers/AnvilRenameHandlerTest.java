@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoop;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,16 +62,16 @@ class AnvilRenameHandlerTest {
                 (p, n) -> this.lastRead = n
         );
     }
-    
+
     @Test
     void testInject() {
         try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class)) {
             Channel channel = mock(Channel.class);
             ChannelPipeline pipeline = mock(ChannelPipeline.class);
-            
+
             when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
             when(channel.pipeline()).thenReturn(pipeline);
-            
+
             this.handler.inject();
 
             verify(pipeline).addBefore(
@@ -78,6 +80,32 @@ class AnvilRenameHandlerTest {
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_"),
                     this.handler
+            );
+        }
+    }
+
+    @Test
+    void testRemove() {
+        try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class)) {
+            Channel channel = mock(Channel.class);
+            ChannelPipeline pipeline = mock(ChannelPipeline.class);
+            EventLoop eventLoop = mock(EventLoop.class);
+
+            when(eventLoop.submit(any(Callable.class))).thenAnswer(a -> {
+                Callable<?> callable = a.getArgument(0);
+                return callable.call();
+            });
+
+            when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
+            when(channel.pipeline()).thenReturn(pipeline);
+            when(channel.eventLoop()).thenReturn(eventLoop);
+
+            this.handler.remove();
+
+            verify(pipeline).remove(
+                    AnvilRenameHandler.class.getSimpleName() +
+                            "-" +
+                            this.player.getUniqueId().toString().replace("-", "_")
             );
         }
     }
