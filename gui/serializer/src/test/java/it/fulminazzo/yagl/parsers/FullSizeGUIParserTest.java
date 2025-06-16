@@ -25,7 +25,8 @@ class FullSizeGUIParserTest {
     void testSaveAndLoad() throws IOException {
         GUIYAGLParser.addAllParsers();
 
-        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.ANVIL, 9);
+        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.BREWING, 9)
+                .setTitle("Full Size GUI");
         GUIParserTest.setupContents(expected);
 
         File file = new File("build/resources/test/fullsize-gui.yml");
