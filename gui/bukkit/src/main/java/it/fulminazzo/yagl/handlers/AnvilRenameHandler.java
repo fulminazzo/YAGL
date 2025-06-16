@@ -30,13 +30,13 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     /**
      * Instantiates a new Anvil rename handler.
      *
-     * @param player  the player
-     * @param handler the action to execute upon successful reading
+     * @param playerId the player id
+     * @param handler  the action to execute upon successful reading
      */
-    public AnvilRenameHandler(final @NotNull Player player,
+    public AnvilRenameHandler(final @NotNull UUID playerId,
                               final @NotNull BiConsumer<Player, String> handler) {
         this.logger = getProvidingPlugin().getLogger();
-        this.playerId = player.getUniqueId();
+        this.playerId = playerId;
         this.handler = handler;
     }
 

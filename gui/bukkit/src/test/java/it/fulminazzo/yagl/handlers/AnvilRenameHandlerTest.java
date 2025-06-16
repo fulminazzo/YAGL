@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,7 +50,7 @@ class AnvilRenameHandlerTest {
 
         BukkitTestUtils.mockPlugin(p ->
                 this.handler = new AnvilRenameHandler(
-                        this.player,
+                        this.player.getUniqueId(),
                         (p2, n) -> this.lastRead = n
                 )
         );
@@ -163,7 +162,7 @@ class AnvilRenameHandlerTest {
         when(player.getUniqueId()).thenReturn(UUID.randomUUID());
         BukkitTestUtils.mockPlugin(p ->
                 assertThrowsExactly(IllegalStateException.class, () ->
-                        new AnvilRenameHandler(player, null).getPlayer())
+                        new AnvilRenameHandler(player.getUniqueId(), null).getPlayer())
         );
     }
 

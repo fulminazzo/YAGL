@@ -114,7 +114,7 @@ public class GUIManager extends SingleInstance implements Listener {
      */
     void addNewAnvilRenameHandler(final @NotNull Player player) {
         AnvilRenameHandler handler = new AnvilRenameHandler(
-                player,
+                player.getUniqueId(),
                 (p, n) -> getOpenGUIViewer(p).ifPresent((v, g) -> {
                     Class<?> clazz = g.getClass();
                     String expectedClassName = SearchGUI.class.getCanonicalName() + ".SearchFullSizeGUI";
