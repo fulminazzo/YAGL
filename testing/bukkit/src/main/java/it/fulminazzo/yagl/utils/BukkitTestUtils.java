@@ -1,7 +1,9 @@
 package it.fulminazzo.yagl.utils;
 
+import io.netty.channel.Channel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +32,20 @@ public final class BukkitTestUtils {
             when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
 
             function.accept(plugin);
+        }
+    }
+
+    /**
+     * Mocks the returned value of {@link NMSUtils#getPlayerChannel(Player)} and executes the given function.
+     *
+     * @param function the function
+     */
+    public static void mockNMSUtils(final @NotNull Consumer<Channel> function) {
+        try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class)) {
+            Channel channel = mock(Channel.class);
+            when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
+
+            function.accept(channel);
         }
     }
 
