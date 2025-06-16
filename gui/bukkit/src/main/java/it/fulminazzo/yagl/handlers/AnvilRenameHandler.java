@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
+import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 /**
@@ -22,15 +23,21 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
 
     private final @NotNull Player player;
 
+    private final @NotNull BiConsumer<Player, String> handler;
+
     /**
      * Instantiates a new Anvil rename handler.
      *
-     * @param logger the logger
-     * @param player the player
+     * @param logger  the logger
+     * @param player  the player
+     * @param handler the action to execute upon successful reading
      */
-    public AnvilRenameHandler(final @NotNull Logger logger, @NotNull Player player) {
+    public AnvilRenameHandler(final @NotNull Logger logger,
+                              final @NotNull Player player,
+                              final @NotNull BiConsumer<Player, String> handler) {
         this.logger = logger;
         this.player = player;
+        this.handler = handler;
     }
 
     @Override
@@ -69,7 +76,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                     return;
             }
 
-            // Name handling logic
+            this.handler.accept(this.player, name);
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
