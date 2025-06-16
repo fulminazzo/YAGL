@@ -17,7 +17,6 @@ import org.mockito.MockedStatic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -151,15 +150,15 @@ class DataGUITest {
         assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
     }
 
-    private static Constructor<?>[] privateConstructors() {
+    private static Constructor<?>[] serializationConstructors() {
         return Arrays.stream(DataGUI.class.getDeclaredConstructors())
-                .filter(c -> Modifier.isPrivate(c.getModifiers()))
+                .filter(c -> c.getParameterCount() <= 1)
                 .toArray(Constructor[]::new);
     }
 
     @ParameterizedTest
-    @MethodSource("privateConstructors")
-    void testPrivateConstructorsConverter(Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+    @MethodSource("serializationConstructors")
+    void testConstructorsConverter(Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
         Object[] parameters = Arrays.stream(constructor.getParameterTypes())
                 .map(TestUtils::mockParameter)
                 .map(o -> o instanceof Number ? 9 : o)
