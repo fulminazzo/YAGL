@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -32,6 +33,7 @@ import java.util.UUID;
  */
 public class GUIManager extends SingleInstance implements Listener {
     private final @NotNull List<Viewer> viewers;
+    private final @NotNull List<AnvilRenameHandler> anvilRenameHandlers;
     @Getter
     private final @NotNull PlayersInventoryCache inventoryCache;
 
@@ -41,6 +43,7 @@ public class GUIManager extends SingleInstance implements Listener {
     public GUIManager() {
         initialize();
         this.viewers = new ArrayList<>();
+        this.anvilRenameHandlers = new ArrayList<>();
         this.inventoryCache = new PlayersInventoryCache();
     }
 
@@ -85,6 +88,37 @@ public class GUIManager extends SingleInstance implements Listener {
                     .filter(Objects::nonNull)
                     .forEach(HumanEntity::closeInventory);
             terminate();
+        }
+    }
+
+    /**
+     * Adds a new {@link AnvilRenameHandler} for the given player.
+     *
+     * @param player the player
+     */
+    void addNewAnvilRenameHandler(final @NotNull Player player) {
+        JavaPlugin plugin = getProvidingPlugin();
+        AnvilRenameHandler handler = new AnvilRenameHandler(
+                plugin.getLogger(),
+                player,
+                null
+        );
+        handler.inject();
+        this.anvilRenameHandlers.add(handler);
+    }
+
+    /**
+     * Removes the {@link AnvilRenameHandler} of the given player.
+     *
+     * @param player the player
+     */
+    void removeAnvilRenameHandler(final @NotNull Player player) {
+        AnvilRenameHandler handler = this.anvilRenameHandlers.stream()
+                .filter(h -> h.belongsTo(player))
+                .findFirst().orElse(null);
+        if (handler != null) {
+            handler.remove();
+            this.anvilRenameHandlers.remove(handler);
         }
     }
 
