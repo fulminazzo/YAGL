@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -61,8 +62,9 @@ class GUIManagerTest {
         void setUp() {
             BukkitUtils.setupServer();
             try {
-               GUIManager.getInstance(GUIManager.class).terminate();
-            } catch (InstanceNotInitializedException ignored) {}
+                GUIManager.getInstance(GUIManager.class).terminate();
+            } catch (InstanceNotInitializedException ignored) {
+            }
             this.guiManager = new GUIManager();
 
             Server server = Bukkit.getServer();
@@ -90,6 +92,26 @@ class GUIManagerTest {
         @AfterEach
         void tearDown() {
             this.guiManager.terminate();
+        }
+
+        @Test
+        void testOnJoinPlayerIsInjectedAnvilRenameHandler() {
+            BukkitTestUtils.mockPlugin(p ->
+                    BukkitTestUtils.mockNMSUtils(c -> {
+                        PlayerJoinEvent event = new PlayerJoinEvent(
+                                this.player,
+                                null
+                        );
+
+                        this.guiManager.on(event);
+
+                        verify(c.pipeline()).addBefore(
+                                eq("packet_handler"),
+                                any(),
+                                any()
+                        );
+                    })
+            );
         }
 
         @Test
