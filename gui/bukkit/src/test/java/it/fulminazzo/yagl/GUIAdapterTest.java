@@ -16,6 +16,7 @@ import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -91,20 +92,43 @@ class GUIAdapterTest {
                             (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
                             materials
                     )
-                    //TODO: temporary contents, should be automatically set
-                    .setContents(0, ItemGUIContent.newInstance("stone"))
-                    .setContents(1, ItemGUIContent.newInstance("stone"))
-                    .setContents(2, ItemGUIContent.newInstance("stone"))
                     .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
 
             gui.open(viewer);
 
-            for (int i = 9; i < 18; i++) {
+            for (int i = 9; i < 9 + 9; i++) {
                 ItemStack itemStack = playerInventory.getItem(i);
                 assertNotNull(itemStack,
                         "ItemStack at player inventory slot " + i + " should be not null");
                 assertEquals(materials.get(i - 9), itemStack.getType(),
                         "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+
+            for (int i = 18; i < 27; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(Material.GLASS, itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+
+            c.pipeline().fireChannelRead(new PacketPlayInItemName("stone"));
+
+            List<Material> expected = Arrays.asList(
+                    Material.REDSTONE,
+                    Material.STONE, Material.COBBLESTONE
+            );
+            for (int i = 9; i < 9 + 3; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(expected.get(i - 9), itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+            for (int i = 9 + 3; i < 9 + 9; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be null");
             }
 
             for (int i = 18; i < 27; i++) {
@@ -567,6 +591,16 @@ class GUIAdapterTest {
 
     private void closeGUI() {
         BukkitTestUtils.mockPlugin(p -> GUIAdapter.closeGUI(GUIManager.getViewer(this.player)));
+    }
+
+    @Getter
+    static class PacketPlayInItemName {
+        private final String itemName;
+
+        PacketPlayInItemName(String itemName) {
+            this.itemName = itemName;
+        }
+
     }
 
 }
