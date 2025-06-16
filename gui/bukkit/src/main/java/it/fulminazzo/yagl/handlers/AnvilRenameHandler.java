@@ -127,6 +127,16 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     }
 
     /**
+     * Checks if the current handler belongs to the specified player.
+     *
+     * @param player the player
+     * @return true if the {@link #playerId} matches
+     */
+    public boolean belongsTo(final @NotNull Player player) {
+        return player.getUniqueId().equals(this.playerId);
+    }
+
+    /**
      * Gets the player.
      *
      * @return the player
