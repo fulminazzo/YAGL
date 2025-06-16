@@ -68,6 +68,29 @@ public final class SearchGUI<T> extends DataGUI<T> {
         return super.prepareOpenGUI(this.templateGUI, 0);
     }
 
+    /**
+     * Occupies the slots of the {@link GUIType#ANVIL} upperGUI,
+     * if not already occupied.
+     *
+     * @param gui  the gui
+     * @param page the page
+     * @return the parsed gui
+     */
+    @Override
+    protected @NotNull GUI prepareOpenGUI(@NotNull GUI gui, int page) {
+        for (int i = 0; i < GUIType.ANVIL.getSize(); i++) {
+            @NotNull List<GUIContent> contents = getContents(i);
+            if (contents.isEmpty())
+                setContents(i, ItemGUIContent.newInstance("glass_pane").setDisplayName(" "));
+            if (i == 0)
+                getContents(i).stream()
+                        .filter(c -> c instanceof ItemGUIContent)
+                        .map(c -> (ItemGUIContent) c)
+                        .forEach(c -> c.setDisplayName(getQuery()));
+        }
+        return super.prepareOpenGUI(gui, page);
+    }
+
     @Override
     protected @NotNull List<T> getDataList() {
         return super.getDataList().stream()
