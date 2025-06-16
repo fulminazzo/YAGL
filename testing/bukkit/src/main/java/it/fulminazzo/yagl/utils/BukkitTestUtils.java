@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.mockito.MockedStatic;
 
 import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.mockito.Mockito.*;
@@ -22,6 +23,17 @@ import static org.mockito.Mockito.*;
  */
 @NoArgsConstructor
 public final class BukkitTestUtils {
+
+    /**
+     * Mocks the returned value of {@link JavaPlugin#getProvidingPlugin(Class)}
+     * and the returned value of {@link NMSUtils#getPlayerChannel(Player)}
+     * and executes the given function.
+     *
+     * @param function the function
+     */
+    public static void mockPluginAndNMSUtils(final @NotNull BiConsumer<Plugin, Channel> function) {
+        mockPlugin(p -> mockNMSUtils(c -> function.accept(p, c)));
+    }
 
     /**
      * Mocks the returned value of {@link JavaPlugin#getProvidingPlugin(Class)} and executes the given function.
