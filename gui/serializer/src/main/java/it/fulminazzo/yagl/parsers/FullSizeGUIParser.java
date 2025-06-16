@@ -3,9 +3,11 @@ package it.fulminazzo.yagl.parsers;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.utils.ParserUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
@@ -40,7 +42,14 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
             final GUI upperGUI = c.get(s, GUI.class).clear();
 
-            final FullSizeGUI gui = new Refl<>(GUI.newFullSizeGUI(9))
+            final FullSizeGUI gui;
+
+            // Section for SearchGUI
+            final String searchFullSizeGUIName = SearchGUI.class.getCanonicalName() + ".SearchFullSizeGUI";
+            Class<? extends FullSizeGUI> searchFullSizeGUI = ReflectionUtils.getClass(searchFullSizeGUIName);
+            if (ParserUtils.classToType(GUI.class, searchFullSizeGUI).equals(previousType))
+                gui = new Refl<FullSizeGUI>(searchFullSizeGUIName).getObject();
+            else gui = new Refl<>(GUI.newFullSizeGUI(9))
                     .setFieldObject("upperGUI", upperGUI)
                     .getObject();
 
