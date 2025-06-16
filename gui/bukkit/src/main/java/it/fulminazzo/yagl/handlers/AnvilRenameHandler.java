@@ -6,7 +6,6 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.GUIManager;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -129,7 +128,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     }
 
     private static @NotNull JavaPlugin getProvidingPlugin() {
-        return JavaPlugin.getProvidingPlugin(GUIManager.class);
+        return JavaPlugin.getProvidingPlugin(AnvilRenameHandler.class);
     }
 
 }
