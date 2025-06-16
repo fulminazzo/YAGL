@@ -1,6 +1,4 @@
 dependencies {
     compileOnly libs.io.netty
     api project(':item:item-bukkit')
-
-    testImplementation libs.io.netty
 }
