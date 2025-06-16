@@ -81,14 +81,12 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                     return;
             }
 
-            Bukkit.getScheduler().runTaskAsynchronously(getProvidingPlugin(), () ->
-                    this.handler.accept(player, name)
-            );
+            this.handler.accept(player, name);
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
             // to avoid the player getting kicked
-            logger.severe(String.format("An error occurred while reading a packet from player '%s': %s",
+            this.logger.severe(String.format("An error occurred while reading a packet from player '%s': %s",
                     player.getName(),
                     e.getMessage()));
             e.printStackTrace();
