@@ -84,6 +84,8 @@ public final class GUIAdapter {
                 FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
                 GUI upperGUI = fullSizeGUI.getUpperGUI();
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
+                upperGUI.apply(upperGUI);
+                lowerGUI.apply(lowerGUI);
 
                 inventory = guiToInventory(upperGUI);
                 fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
@@ -137,6 +139,8 @@ public final class GUIAdapter {
                 FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
                 GUI upperGUI = fullSizeGUI.getUpperGUI();
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
+                upperGUI.apply(upperGUI);
+                lowerGUI.apply(lowerGUI);
 
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
