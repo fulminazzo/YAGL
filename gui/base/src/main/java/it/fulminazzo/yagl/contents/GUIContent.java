@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.contents;
 
-import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.actions.GUIItemClose;
 import it.fulminazzo.yagl.actions.commands.GUIItemCommand;

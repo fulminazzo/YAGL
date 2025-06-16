@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl;
+package it.fulminazzo.yagl.metadatable;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;

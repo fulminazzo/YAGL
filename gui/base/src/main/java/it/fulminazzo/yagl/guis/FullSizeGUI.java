@@ -2,7 +2,7 @@ package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
