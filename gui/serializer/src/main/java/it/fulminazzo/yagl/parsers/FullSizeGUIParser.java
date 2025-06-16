@@ -7,6 +7,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.guis.ResizableGUI;
 import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.utils.ParserUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
@@ -14,6 +15,9 @@ import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A parser to serialize {@link FullSizeGUI}
@@ -22,7 +26,6 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
     /**
      * Instantiates a new Full size gui parser.
-     *
      */
     public FullSizeGUIParser() {
         super(FullSizeGUI.class);
@@ -65,17 +68,24 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
                     if (guiContents != null) gui.setContents(slot, guiContents);
                 }
 
+            List<Integer> movableSlots = section.getList("movable-slots", Integer.class);
+            if (movableSlots != null)
+                movableSlots.forEach(i -> gui.setMovable(i, true));
+
             section.set("type", previousType);
             return gui;
         };
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected TriConsumer<IConfiguration, String, FullSizeGUI> getDumper() {
         return (c, s, g) -> {
             c.set(s, null);
             if (g == null) return;
-            c.set(s, g.getUpperGUI());
+            GUI upperGUI = g.getUpperGUI();
+            ResizableGUI lowerGUI = g.getLowerGUI();
+            c.set(s, upperGUI);
 
             ConfigurationSection section = c.getConfigurationSection(s);
 
@@ -84,7 +94,12 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
             });
 
             section.set("upper-gui-type", section.getString("type"));
-            section.set("lower-gui-size", g.getLowerGUI().size());
+            section.set("movable-slots", Stream.concat(
+                    ((Set<Integer>) new Refl<>(upperGUI).getFieldObject("movableSlots")).stream(),
+                    ((Set<Integer>) new Refl<>(lowerGUI).getFieldObject("movableSlots")).stream()
+                            .map(i -> i + upperGUI.size())
+            ).collect(Collectors.toList()));
+            section.set("lower-gui-size", lowerGUI.size());
             section.set("type", ParserUtils.classToType(GUI.class, g.getClass()));
         };
     }
