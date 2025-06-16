@@ -521,7 +521,11 @@ public final class WrappersAdapter {
     private static <T> void playInternalSound(final @NotNull Player player, final @NotNull Location location,
                                               final @NotNull Sound sound, final @NotNull Function<Sound, T> actualSound) {
         final Refl<Player> playerRefl = new Refl<>(player);
-        final T actual = actualSound.apply(sound);
+        Object actual = actualSound.apply(sound);
+        try {
+            actual = org.bukkit.Sound.valueOf(actual.toString().toUpperCase());
+        } catch (IllegalArgumentException ignored) {
+        }
         try {
             String category = sound.getCategory();
             if (category != null) {

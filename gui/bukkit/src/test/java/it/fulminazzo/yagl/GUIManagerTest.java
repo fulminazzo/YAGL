@@ -317,6 +317,34 @@ class GUIManagerTest {
         }
 
         @Test
+        void testContentsNotRestoredOnCloseEventAndNextGUIPresent() {
+            BukkitTestUtils.mockPlugin(p -> {
+                Viewer viewer = GUIManager.getViewer(this.player);
+                new Refl<>(viewer).setFieldObject("nextGUI", GUI.newGUI(9));
+
+                ItemStack expected = new ItemStack(Material.STONE);
+
+                PlayerInventory inventory = new MockPlayerInventory(this.player);
+                inventory.setItem(0, expected);
+                when(this.player.getInventory()).thenReturn(inventory);
+
+                PlayersInventoryCache cache = this.guiManager.getInventoryCache();
+                cache.storePlayerContents(this.player);
+
+                inventory.clear();
+                ItemStack itemStack = inventory.getItem(0);
+                assertNull(itemStack);
+
+                this.guiManager.on(new InventoryCloseEvent(getView().getWrapped()));
+
+                assertTrue(cache.areContentsStored(this.player));
+
+                itemStack = inventory.getItem(0);
+                assertNull(itemStack);
+            });
+        }
+
+        @Test
         void testCloseEvent() {
             BukkitTestUtils.mockPlugin(p -> {
                 AtomicBoolean expected = new AtomicBoolean(false);

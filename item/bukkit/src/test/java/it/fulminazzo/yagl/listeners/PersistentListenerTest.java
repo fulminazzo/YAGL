@@ -102,8 +102,10 @@ class PersistentListenerTest {
 
         return new InventoryClickEvent[]{
                 new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.CLONE_STACK),
+                new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER, 0, ClickType.LEFT, InventoryAction.MOVE_TO_OTHER_INVENTORY),
                 new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER, 2, ClickType.LEFT, InventoryAction.CLONE_STACK),
                 new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER, 3, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 0),
+                new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER, 9, ClickType.NUMBER_KEY, InventoryAction.MOVE_TO_OTHER_INVENTORY, 0),
         };
     }
 
