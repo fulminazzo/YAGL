@@ -1,13 +1,16 @@
 package it.fulminazzo.yagl.handlers;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
 /**
@@ -31,9 +34,42 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext context, Object packet) throws Exception {
+    public void channelRead(final @NotNull ChannelHandlerContext context,
+                            final @NotNull Object packet) throws Exception {
         try {
-            // Reading logic
+            String packetName = packet.getClass().getSimpleName();
+            Refl<?> packetRefl = new Refl<>(packet);
+            final String name;
+
+            switch (packetName) {
+                // 1.8.8, 1.9.4, 1.10.2, 1.11.2, 1.12.2
+                case "PacketPlayInCustomPayload":
+                    String type = packetRefl.getFieldObject(String.class);
+                    if ("MC|ItemName".equals(type)) {
+                        Refl<?> refl = packetRefl.getFieldRefl("b");
+                        ByteBuf buf = refl.getFieldObject(ByteBuf.class);
+                        ByteBuf copy = buf.copy();
+
+                        // First read the size of the buffer
+                        copy.readByte();
+
+                        name = copy.toString(Charset.defaultCharset());
+                    } else return; // Other packet
+                    break;
+                // 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4
+                case "PacketPlayInItemName":
+                    name = packetRefl.getFieldObject(String.class);
+                    break;
+                // 1.20.6, 1.21.4, ...
+                case "ServerboundRenameItemPacket":
+                    name = packetRefl.getFieldObject(String.class);
+                    break;
+                // Other packet
+                default:
+                    return;
+            }
+
+            // Name handling logic
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
