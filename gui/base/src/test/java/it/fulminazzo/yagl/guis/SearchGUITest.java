@@ -1,15 +1,19 @@
 package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
+import it.fulminazzo.yagl.exceptions.NotImplemented;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -162,6 +166,25 @@ class SearchGUITest {
                         if (s.equals(m.getName())) return true;
                     return false;
                 });
+    }
+
+    private static Constructor<?>[] serializationConstructors() {
+        return Arrays.stream(SearchGUI.class.getDeclaredConstructors())
+                .filter(c -> c.getParameterCount() <= 1)
+                .toArray(Constructor[]::new);
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationConstructors")
+    void testConstructorsConverter(Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object[] parameters = Arrays.stream(constructor.getParameterTypes())
+                .map(TestUtils::mockParameter)
+                .map(o -> o instanceof Number ? 9 : o)
+                .toArray(Object[]::new);
+        Object object = ReflectionUtils.setAccessibleOrThrow(constructor).newInstance(parameters);
+        assertThrowsExactly(NotImplemented.class, () -> new Refl<>(object)
+                .getFieldRefl("searchFunction")
+                .invokeMethod("test", (Object) null, null));
     }
 
     private static Object[] constructorParameters() {
