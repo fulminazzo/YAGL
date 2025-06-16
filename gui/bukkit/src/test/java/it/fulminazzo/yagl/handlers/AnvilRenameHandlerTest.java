@@ -2,9 +2,12 @@ package it.fulminazzo.yagl.handlers;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -14,17 +17,17 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class AnvilRenameHandlerTest {
 
-    private Logger logger;
     private Player player;
     private ChannelHandlerContext context;
 
@@ -47,14 +50,36 @@ class AnvilRenameHandlerTest {
 
     @BeforeEach
     void setUp() {
-        this.logger = Logger.getLogger(getClass().getSimpleName());
+        Logger logger = Logger.getLogger(getClass().getSimpleName());
         this.player = mock(Player.class);
+        when(this.player.getUniqueId()).thenReturn(UUID.randomUUID());
         this.context = mock(ChannelHandlerContext.class);
 
         this.handler = new AnvilRenameHandler(
-                this.logger, this.player,
+                logger, this.player,
                 (p, n) -> this.lastRead = n
         );
+    }
+    
+    @Test
+    void testInject() {
+        try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class)) {
+            Channel channel = mock(Channel.class);
+            ChannelPipeline pipeline = mock(ChannelPipeline.class);
+            
+            when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
+            when(channel.pipeline()).thenReturn(pipeline);
+            
+            this.handler.inject();
+
+            verify(pipeline).addBefore(
+                    "packet_handler",
+                    AnvilRenameHandler.class.getSimpleName() +
+                            "-" +
+                            this.player.getUniqueId().toString().replace("-", "_"),
+                    this.handler
+            );
+        }
     }
 
     @Test
