@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -172,6 +173,14 @@ class SearchGUITest {
         return Arrays.stream(SearchGUI.class.getDeclaredConstructors())
                 .filter(c -> c.getParameterCount() <= 1)
                 .toArray(Constructor[]::new);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"getPage", "setPages"})
+    void testPagesRelatedMethodShouldThrowException(String method) {
+        Throwable throwable = assertThrowsExactly(IllegalStateException.class, () ->
+                new Refl<>(SearchGUI.newGUI(s -> null, (t, s) -> false)).invokeMethod(method, 1));
+        assertEquals(new Refl<>(SearchGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
     }
 
     @ParameterizedTest
