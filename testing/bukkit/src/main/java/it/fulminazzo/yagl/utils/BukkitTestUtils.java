@@ -1,8 +1,6 @@
 package it.fulminazzo.yagl.utils;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoop;
+import io.netty.channel.*;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.MockedStatic;
 
+import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -61,7 +60,23 @@ public final class BukkitTestUtils {
             when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
 
             ChannelPipeline pipeline = mock(ChannelPipeline.class);
+            LinkedList<ChannelDuplexHandler> handlers = new LinkedList<>();
             when(channel.pipeline()).thenReturn(pipeline);
+            when(pipeline.addBefore(any(), any(), any())).thenAnswer(a -> {
+                ChannelHandler handler = a.getArgument(2);
+                handlers.addFirst((ChannelDuplexHandler) handler);
+                return null;
+            });
+            when(pipeline.fireChannelRead(any())).thenAnswer(a -> {
+                handlers.forEach(h -> {
+                    try {
+                        h.channelRead(mock(ChannelHandlerContext.class), a.getArgument(0));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                return null;
+            });
 
             EventLoop eventLoop = mock(EventLoop.class);
             when(channel.eventLoop()).thenReturn(eventLoop);
