@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
 public final class AnvilRenameHandler extends ChannelDuplexHandler {
     private final @NotNull Logger logger;
 
-    private final @NotNull Player player;
+    private final @NotNull UUID playerId;
 
     private final @NotNull BiConsumer<Player, String> handler;
 
@@ -37,13 +38,14 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                               final @NotNull Player player,
                               final @NotNull BiConsumer<Player, String> handler) {
         this.logger = logger;
-        this.player = player;
+        this.playerId = player.getUniqueId();
         this.handler = handler;
     }
 
     @Override
     public void channelRead(final @NotNull ChannelHandlerContext context,
                             final @NotNull Object packet) throws Exception {
+        Player player = getPlayer();
         try {
             String packetName = packet.getClass().getSimpleName();
             Refl<?> packetRefl = new Refl<>(packet);
@@ -80,14 +82,14 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
             }
 
             Bukkit.getScheduler().runTaskAsynchronously(getProvidingPlugin(), () ->
-                    this.handler.accept(this.player, name)
+                    this.handler.accept(player, name)
             );
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
             // to avoid the player getting kicked
-            logger.severe(String.format("An error occurred while reading a packet from player %s: %s",
-                    this.player.getName(),
+            logger.severe(String.format("An error occurred while reading a packet from player '%s': %s",
+                    player.getName(),
                     e.getMessage()));
             e.printStackTrace();
         } finally {
@@ -99,7 +101,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
      * Inserts the current handler in the player's channel.
      */
     public void inject() {
-        Channel channel = NMSUtils.getPlayerChannel(this.player);
+        Channel channel = NMSUtils.getPlayerChannel(getPlayer());
         ChannelPipeline pipeline = channel.pipeline();
         pipeline.addBefore("packet_handler", getName(), this);
     }
@@ -108,7 +110,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
      * Removes the current handler from the player's channel.
      */
     public void remove() {
-        Channel channel = NMSUtils.getPlayerChannel(this.player);
+        Channel channel = NMSUtils.getPlayerChannel(getPlayer());
         channel.eventLoop().submit(() -> channel.pipeline().remove(getName()));
     }
 
@@ -120,8 +122,20 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     public @NotNull String getName() {
         return String.format("%s-%s",
                 getClass().getSimpleName(),
-                this.player.getUniqueId().toString().replace("-", "_")
+                this.playerId.toString().replace("-", "_")
         );
+    }
+
+    /**
+     * Gets the player.
+     *
+     * @return the player
+     */
+    @NotNull Player getPlayer() {
+        Player player = Bukkit.getPlayer(this.playerId);
+        if (player == null)
+            throw new IllegalStateException(String.format("Player '%s' is not online", this.playerId));
+        return player;
     }
 
     private static @NotNull JavaPlugin getProvidingPlugin() {
