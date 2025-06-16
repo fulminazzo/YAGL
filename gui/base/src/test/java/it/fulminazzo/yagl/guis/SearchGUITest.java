@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,7 +99,10 @@ class SearchGUITest {
         GUI gui = new Refl<>(searchGUI).getFieldObject("templateGUI");
         gui = searchGUI.prepareOpenGUI(gui, 0);
 
-        List<String> expected = Arrays.stream(materials)
+        List<String> expected = Stream.concat(
+                        Stream.of("glass_pane", "glass_pane", "glass_pane"),
+                        Arrays.stream(materials)
+                )
                 .filter(c -> c.contains("_"))
                 .collect(Collectors.toList());
 
