@@ -32,7 +32,13 @@ public final class BukkitTestUtils {
      * @param function the function
      */
     public static void mockPluginAndNMSUtils(final @NotNull BiConsumer<Plugin, Channel> function) {
-        mockPlugin(p -> mockNMSUtils(c -> function.accept(p, c)));
+        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
+            JavaPlugin plugin = mock(JavaPlugin.class);
+            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
+            when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
+
+            mockNMSUtils(c -> function.accept(plugin, c));
+        }
     }
 
     /**
@@ -41,13 +47,7 @@ public final class BukkitTestUtils {
      * @param function the function
      */
     public static void mockPlugin(final @NotNull Consumer<Plugin> function) {
-        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-            JavaPlugin plugin = mock(JavaPlugin.class);
-            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
-            when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
-
-            function.accept(plugin);
-        }
+        mockPluginAndNMSUtils((p, c) -> function.accept(p));
     }
 
     /**
