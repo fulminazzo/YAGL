@@ -9,6 +9,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -29,14 +30,12 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     /**
      * Instantiates a new Anvil rename handler.
      *
-     * @param logger  the logger
      * @param player  the player
      * @param handler the action to execute upon successful reading
      */
-    public AnvilRenameHandler(final @NotNull Logger logger,
-                              final @NotNull Player player,
+    public AnvilRenameHandler(final @NotNull Player player,
                               final @NotNull BiConsumer<Player, String> handler) {
-        this.logger = logger;
+        this.logger = getProvidingPlugin().getLogger();
         this.playerId = player.getUniqueId();
         this.handler = handler;
     }
@@ -143,6 +142,10 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
         if (player == null)
             throw new IllegalStateException(String.format("Player '%s' is not online", this.playerId));
         return player;
+    }
+
+    private static @NotNull JavaPlugin getProvidingPlugin() {
+        return JavaPlugin.getProvidingPlugin(AnvilRenameHandler.class);
     }
 
 }

@@ -147,7 +147,6 @@ class GUIManagerTest {
         void testOnQuitPlayerIsRemovedAnvilRenameHandler() {
             BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
                 AnvilRenameHandler handler = new AnvilRenameHandler(
-                        null,
                         this.player,
                         null
                 );
@@ -374,7 +373,6 @@ class GUIManagerTest {
         void testDisableThisPlugin() {
             BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
                 AnvilRenameHandler handler = new AnvilRenameHandler(
-                        null,
                         this.player,
                         null
                 );

@@ -113,9 +113,7 @@ public class GUIManager extends SingleInstance implements Listener {
      * @param player the player
      */
     void addNewAnvilRenameHandler(final @NotNull Player player) {
-        JavaPlugin plugin = getProvidingPlugin();
         AnvilRenameHandler handler = new AnvilRenameHandler(
-                plugin.getLogger(),
                 player,
                 (p, n) -> getOpenGUIViewer(p).ifPresent((v, g) -> {
                     Class<?> clazz = g.getClass();

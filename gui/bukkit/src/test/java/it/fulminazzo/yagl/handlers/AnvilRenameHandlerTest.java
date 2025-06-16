@@ -46,13 +46,14 @@ class AnvilRenameHandlerTest {
 
     @BeforeEach
     void setUp() {
-        Logger logger = Logger.getLogger(getClass().getSimpleName());
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
         this.context = mock(ChannelHandlerContext.class);
 
-        this.handler = new AnvilRenameHandler(
-                logger, this.player,
-                (p, n) -> this.lastRead = n
+        BukkitTestUtils.mockPlugin(p ->
+                this.handler = new AnvilRenameHandler(
+                        this.player,
+                        (p2, n) -> this.lastRead = n
+                )
         );
     }
 
@@ -160,8 +161,10 @@ class AnvilRenameHandlerTest {
     void testGetPlayerOfOfflineThrows() {
         Player player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(UUID.randomUUID());
-        assertThrowsExactly(IllegalStateException.class, () ->
-                new AnvilRenameHandler(null, player, null).getPlayer());
+        BukkitTestUtils.mockPlugin(p ->
+                assertThrowsExactly(IllegalStateException.class, () ->
+                        new AnvilRenameHandler(player, null).getPlayer())
+        );
     }
 
     @Getter
