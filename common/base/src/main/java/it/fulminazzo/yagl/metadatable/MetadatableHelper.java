@@ -45,7 +45,7 @@ class MetadatableHelper implements Metadatable {
     public <T> T apply(final T object) {
         if (object == null) return null;
 
-        if (this.alreadyApplied.contains(object)) return object;
+        if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass()) && this.alreadyApplied.contains(object)) return object;
         this.alreadyApplied.add(object);
 
         if (object.getClass().isEnum()) return object;
