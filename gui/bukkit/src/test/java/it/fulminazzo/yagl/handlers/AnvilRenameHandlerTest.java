@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class AnvilRenameHandlerTest {
@@ -77,6 +76,11 @@ class AnvilRenameHandlerTest {
         this.handler.channelRead(this.context, packet);
 
         assertEquals(expected, this.lastRead);
+    }
+
+    @Test
+    void testExceptionDoesNotThrow() {
+        assertDoesNotThrow(() -> this.handler.channelRead(this.context, null));
     }
 
     @Getter

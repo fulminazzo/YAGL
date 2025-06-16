@@ -81,7 +81,9 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
             // Usually catching Exception is bad,
             // but in this case is necessary
             // to avoid the player getting kicked
-            logger.severe(String.format("An error occurred while reading a packet from player %s: %s", this.player.getName(), e.getMessage()));
+            logger.severe(String.format("An error occurred while reading a packet from player %s: %s",
+                    this.player.getName(),
+                    e.getMessage()));
             e.printStackTrace();
         } finally {
             super.channelRead(context, packet);
