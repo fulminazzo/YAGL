@@ -124,6 +124,12 @@ public final class SearchGUI<T> extends DataGUI<T> {
         );
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull SearchGUI<T> setPages(int pages) {
+        throw new IllegalStateException(ERROR_MESSAGE);
+    }
+
     @SafeVarargs
     @Override
     public final @NotNull SearchGUI<T> addData(T @NotNull ... data) {
@@ -165,12 +171,6 @@ public final class SearchGUI<T> extends DataGUI<T> {
     @Override
     public @NotNull SearchGUI<T> clearData() {
         return (SearchGUI<T>) super.clearData();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public @NotNull SearchGUI<T> setPages(int pages) {
-        return (SearchGUI<T>) super.setPages(pages);
     }
 
     @Override

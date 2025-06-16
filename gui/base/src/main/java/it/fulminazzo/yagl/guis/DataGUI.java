@@ -24,7 +24,7 @@ import java.util.function.Predicate;
  */
 @SuppressWarnings("unchecked")
 public class DataGUI<T> extends PageableGUI {
-    private static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
+    static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
 
     @Getter
     private final @NotNull List<T> data;
