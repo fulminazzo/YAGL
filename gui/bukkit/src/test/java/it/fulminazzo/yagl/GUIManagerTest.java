@@ -41,6 +41,23 @@ import static org.mockito.Mockito.*;
 class GUIManagerTest {
 
     @Test
+    void testInitializationOfGUIManagerInjectsOnlinePlayers() {
+        BukkitUtils.setupServer();
+        BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
+        BukkitTestUtils.mockPlugin(p ->
+                BukkitTestUtils.mockNMSUtils(c -> {
+                    new GUIManager();
+
+                    verify(c.pipeline()).addBefore(
+                            eq("packet_handler"),
+                            any(),
+                            any()
+                    );
+                })
+        );
+    }
+
+    @Test
     void testGetOpenGUIViewerPlayer() {
         BukkitUtils.setupServer();
         Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
