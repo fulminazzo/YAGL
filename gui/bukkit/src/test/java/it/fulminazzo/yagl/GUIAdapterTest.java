@@ -628,6 +628,13 @@ class GUIAdapterTest {
         assertTrue(executed.get(), "openAction was not executed");
     }
 
+    @Test
+    void testUpdatePlayerGUINonFullSize() {
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                GUIAdapter.updatePlayerGUI(GUI.newGUI(9), GUIManager.getViewer(this.player))
+        );
+    }
+
     private void openGUI(GUI gui) {
         BukkitTestUtils.mockPlugin(p -> gui.open(GUIManager.getViewer(this.player)));
     }
