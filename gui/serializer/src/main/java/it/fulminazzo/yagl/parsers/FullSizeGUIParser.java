@@ -15,6 +15,7 @@ import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,6 +45,9 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
             section.set("type", guiType);
 
             final GUI upperGUI = c.get(s, GUI.class).clear();
+            Refl<?> upperGUIRefl = new Refl<>(upperGUI);
+            Set<Integer> upperGUIMovableSlots = upperGUIRefl.getFieldObject("movableSlots");
+            upperGUIMovableSlots.removeIf(i -> i >= upperGUI.size());
 
             final FullSizeGUI gui;
 
@@ -87,7 +91,7 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
             ResizableGUI lowerGUI = g.getLowerGUI();
             c.set(s, upperGUI);
 
-            ConfigurationSection section = c.getConfigurationSection(s);
+            ConfigurationSection section = Objects.requireNonNull(c.getConfigurationSection(s));
 
             g.getFullContents().forEach((k, v) -> {
                 if (!v.isEmpty()) section.setList("contents." + k, v);
