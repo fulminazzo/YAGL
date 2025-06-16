@@ -35,6 +35,17 @@ class AnvilRenameHandlerTest {
     }
 
     @Test
+    void testLegacyRead() throws Exception {
+        String expected = "Hello, world!";
+
+        Object packet = new PacketPlayInItemName(expected);
+
+        this.handler.channelRead(this.context, packet);
+
+        assertEquals(expected, this.lastRead);
+    }
+
+    @Test
     void testRead() throws Exception {
         String expected = "Hello, world!";
 
@@ -43,6 +54,16 @@ class AnvilRenameHandlerTest {
         this.handler.channelRead(this.context, packet);
 
         assertEquals(expected, this.lastRead);
+    }
+
+    @Getter
+    static class PacketPlayInItemName {
+        private final @NotNull String name;
+
+        PacketPlayInItemName(@NotNull String name) {
+            this.name = name;
+        }
+
     }
 
     @Getter
