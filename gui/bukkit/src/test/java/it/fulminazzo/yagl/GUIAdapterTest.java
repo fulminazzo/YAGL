@@ -118,14 +118,14 @@ class GUIAdapterTest {
                     Material.REDSTONE,
                     Material.STONE, Material.COBBLESTONE
             );
-            for (int i = 9; i < 9 + 3; i++) {
+            for (int i = 9; i < 12; i++) {
                 ItemStack itemStack = playerInventory.getItem(i);
                 assertNotNull(itemStack,
                         "ItemStack at player inventory slot " + i + " should be not null");
                 assertEquals(expected.get(i - 9), itemStack.getType(),
                         "ItemStack at player inventory slot " + i + " does not match expected item");
             }
-            for (int i = 9 + 3; i < 9 + 9; i++) {
+            for (int i = 12; i < 9 + 9; i++) {
                 ItemStack itemStack = playerInventory.getItem(i);
                 assertNull(itemStack,
                         "ItemStack at player inventory slot " + i + " should be null");
