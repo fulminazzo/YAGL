@@ -1,7 +1,10 @@
 package it.fulminazzo.yagl.handlers;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,6 +43,26 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
         } finally {
             super.channelRead(context, packet);
         }
+    }
+
+    /**
+     * Inserts the current handler in the player's channel.
+     */
+    public void inject() {
+        Channel channel = NMSUtils.getPlayerChannel(this.player);
+        ChannelPipeline pipeline = channel.pipeline();
+        pipeline.addBefore("packet_handler", getName(), this);
+    }
+
+    /**
+     * Removes the current handler from the player's channel.
+     */
+    public void remove() {
+        Channel channel = NMSUtils.getPlayerChannel(this.player);
+        channel.eventLoop().submit(() -> {
+            channel.pipeline().remove(getName());
+            return null;
+        });
     }
 
 }
