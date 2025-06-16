@@ -2,7 +2,6 @@ package it.fulminazzo.yagl.handlers;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoop;
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -64,12 +62,11 @@ class AnvilRenameHandlerTest {
 
     @Test
     void testInject() {
-        try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class)) {
-            Channel channel = mock(Channel.class);
+        BukkitTestUtils.mockNMSUtils(c -> {
             ChannelPipeline pipeline = mock(ChannelPipeline.class);
 
-            when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
-            when(channel.pipeline()).thenReturn(pipeline);
+            when(NMSUtils.getPlayerChannel(any())).thenReturn(c);
+            when(c.pipeline()).thenReturn(pipeline);
 
             this.handler.inject();
 
@@ -80,13 +77,12 @@ class AnvilRenameHandlerTest {
                             this.player.getUniqueId().toString().replace("-", "_"),
                     this.handler
             );
-        }
+        });
     }
 
     @Test
     void testRemove() {
-        try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class)) {
-            Channel channel = mock(Channel.class);
+        BukkitTestUtils.mockNMSUtils(c -> {
             ChannelPipeline pipeline = mock(ChannelPipeline.class);
             EventLoop eventLoop = mock(EventLoop.class);
 
@@ -95,9 +91,9 @@ class AnvilRenameHandlerTest {
                 return callable.call();
             });
 
-            when(NMSUtils.getPlayerChannel(any())).thenReturn(channel);
-            when(channel.pipeline()).thenReturn(pipeline);
-            when(channel.eventLoop()).thenReturn(eventLoop);
+            when(NMSUtils.getPlayerChannel(any())).thenReturn(c);
+            when(c.pipeline()).thenReturn(pipeline);
+            when(c.eventLoop()).thenReturn(eventLoop);
 
             this.handler.remove();
 
@@ -106,7 +102,7 @@ class AnvilRenameHandlerTest {
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_")
             );
-        }
+        });
     }
 
     @Test
