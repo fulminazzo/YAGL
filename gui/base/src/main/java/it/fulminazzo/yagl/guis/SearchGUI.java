@@ -30,7 +30,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
     private final @NotNull BiPredicate<T, String> searchFunction;
 
     @Getter
-    private @Nullable String query;
+    private @NotNull String query;
 
     /**
      * Instantiates a new Search gui.
@@ -44,6 +44,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
               @NotNull BiPredicate<T, String> searchFunction) {
         super(templateGUI, dataConverter);
         this.searchFunction = searchFunction;
+        this.query = "";
         templateGUI.setSearchGui(this);
     }
 
@@ -53,7 +54,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
      * @param query the query
      * @return this gui
      */
-    public @NotNull SearchGUI<T> setQuery(final @Nullable String query) {
+    public @NotNull SearchGUI<T> setQuery(final @NotNull String query) {
         this.query = query;
         return this;
     }
@@ -126,6 +127,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
         return (SearchGUI<T>) super.clearData();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public @NotNull SearchGUI<T> setPages(int pages) {
         return (SearchGUI<T>) super.setPages(pages);
