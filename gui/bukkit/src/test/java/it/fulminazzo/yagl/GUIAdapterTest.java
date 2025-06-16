@@ -29,6 +29,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -64,6 +65,11 @@ class GUIAdapterTest {
                     return null;
                 });
         when(this.player.getServer()).thenReturn(server);
+    }
+
+    @AfterEach
+    void tearDown() {
+        GUIManager.getInstance().terminate();
     }
 
     private static Object[] pageableFullSizeGUIParameters() {
