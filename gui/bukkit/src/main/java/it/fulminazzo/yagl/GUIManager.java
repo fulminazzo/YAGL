@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +47,18 @@ public class GUIManager extends SingleInstance implements Listener {
         this.viewers = new ArrayList<>();
         this.anvilRenameHandlers = new ArrayList<>();
         this.inventoryCache = new PlayersInventoryCache();
+
+        Bukkit.getOnlinePlayers().forEach(this::addNewAnvilRenameHandler);
+    }
+
+    @EventHandler
+    void on(final @NotNull PlayerJoinEvent event) {
+        addNewAnvilRenameHandler(event.getPlayer());
+    }
+
+    @EventHandler
+    void on(final @NotNull PlayerQuitEvent event) {
+        removeAnvilRenameHandler(event.getPlayer());
     }
 
     @EventHandler
@@ -87,6 +101,7 @@ public class GUIManager extends SingleInstance implements Listener {
                     .map(Bukkit::getPlayer)
                     .filter(Objects::nonNull)
                     .forEach(HumanEntity::closeInventory);
+            Bukkit.getOnlinePlayers().forEach(this::removeAnvilRenameHandler);
             terminate();
         }
     }
