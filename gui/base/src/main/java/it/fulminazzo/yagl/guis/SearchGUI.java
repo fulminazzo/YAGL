@@ -58,6 +58,15 @@ public final class SearchGUI<T> extends DataGUI<T> {
         return this;
     }
 
+    /**
+     * Gets the first page of this GUI.
+     *
+     * @return the gui
+     */
+    public @NotNull GUI getFirstPage() {
+        return super.prepareOpenGUI(this.templateGUI, 0);
+    }
+
     @Override
     protected @NotNull List<T> getDataList() {
         return super.getDataList().stream()
