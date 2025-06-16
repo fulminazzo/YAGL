@@ -800,26 +800,6 @@ public final class SearchGUI<T> extends DataGUI<T> {
         }
 
         /**
-         * Gets the search text from the search GUI.
-         *
-         * @return the query
-         */
-        public @Nullable String getQuery() {
-            return getSearchGui().getQuery();
-        }
-
-        /**
-         * Sets the search text to the search GUI.
-         *
-         * @param query the query
-         * @return this gui
-         */
-        public @NotNull SearchFullSizeGUI setQuery(final @Nullable String query) {
-            getSearchGui().setQuery(query);
-            return this;
-        }
-
-        /**
          * Gets the internal search gui.
          * Throws {@link IllegalStateException} if not provided.
          *

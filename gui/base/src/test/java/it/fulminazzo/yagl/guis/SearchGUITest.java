@@ -16,8 +16,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 class SearchGUITest {
 
@@ -132,30 +130,6 @@ class SearchGUITest {
 
     @Nested
     class SearchFullSizeGUITest {
-
-        @Test
-        void testGetQueryCallsSearchGUIGetQuery() {
-            SearchGUI<?> gui = mock(SearchGUI.class);
-
-            SearchGUI.SearchFullSizeGUI fullSizeGUI = new SearchGUI.SearchFullSizeGUI();
-            fullSizeGUI.setSearchGui(gui);
-
-            fullSizeGUI.getQuery();
-
-            verify(gui).getQuery();
-        }
-
-        @Test
-        void testSetQueryCallsSearchGUISetQuery() {
-            SearchGUI<?> gui = mock(SearchGUI.class);
-
-            SearchGUI.SearchFullSizeGUI fullSizeGUI = new SearchGUI.SearchFullSizeGUI();
-            fullSizeGUI.setSearchGui(gui);
-
-            fullSizeGUI.setQuery("any");
-
-            verify(gui).setQuery("any");
-        }
 
         @Test
         void testGetSearchGUIThrowsIfInitialized() {
