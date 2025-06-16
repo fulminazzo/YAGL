@@ -53,8 +53,7 @@ class AnvilRenameHandlerTest {
     @BeforeEach
     void setUp() {
         Logger logger = Logger.getLogger(getClass().getSimpleName());
-        this.player = mock(Player.class);
-        when(this.player.getUniqueId()).thenReturn(UUID.randomUUID());
+        this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
         this.context = mock(ChannelHandlerContext.class);
 
         this.handler = new AnvilRenameHandler(
