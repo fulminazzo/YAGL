@@ -43,6 +43,7 @@ class GUIManagerTest {
     @BeforeEach
     void setUp() {
         BukkitUtils.setupServer();
+        Bukkit.getOnlinePlayers().forEach(BukkitUtils::removePlayer);
     }
 
     @Test
@@ -88,6 +89,7 @@ class GUIManagerTest {
         @BeforeEach
         void setUp() {
             BukkitUtils.setupServer();
+            Bukkit.getOnlinePlayers().forEach(BukkitUtils::removePlayer);
             try {
                 GUIManager.getInstance(GUIManager.class).terminate();
             } catch (InstanceNotInitializedException ignored) {
