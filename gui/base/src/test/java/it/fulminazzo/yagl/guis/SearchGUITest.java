@@ -20,6 +20,62 @@ import static org.junit.jupiter.api.Assertions.*;
 class SearchGUITest {
 
     @Test
+    void testPrepareOpenGUIDoesNotFillExisting() {
+        SearchGUI<?> searchGUI = SearchGUI.newGUI(
+                9,
+                ItemGUIContent::newInstance,
+                String::contains,
+                Arrays.asList("stone", "grass_block")
+        ).setQuery("search");
+
+        for (int i = 0; i < 3; i++)
+            searchGUI.setContents(i, ItemGUIContent.newInstance("barrier")
+                    .setDisplayName("Barrier"));
+
+        GUI templateGUI = new Refl<>(searchGUI).getFieldObject("templateGUI");
+        GUI preparedGUI = searchGUI.prepareOpenGUI(templateGUI, 0);
+
+        for (int i = 0; i < 3; i++) {
+            @NotNull List<GUIContent> contents = preparedGUI.getContents(i);
+            assertFalse(contents.isEmpty(),
+                    "Contents at slot " + i + " should not be empty");
+
+            GUIContent content = contents.get(0);
+            assertEquals(content,
+                    ItemGUIContent.newInstance("barrier")
+                            .setDisplayName(i == 0 ? "search" : "Barrier"),
+                    "Content at slot " + i + " did not match expected"
+            );
+        }
+    }
+
+    @Test
+    void testPrepareOpenGUIFillsMissing() {
+        SearchGUI<?> searchGUI = SearchGUI.newGUI(
+                9,
+                ItemGUIContent::newInstance,
+                String::contains,
+                Arrays.asList("stone", "grass_block")
+        ).setQuery("search");
+
+        GUI templateGUI = new Refl<>(searchGUI).getFieldObject("templateGUI");
+        GUI preparedGUI = searchGUI.prepareOpenGUI(templateGUI, 0);
+
+        for (int i = 0; i < 3; i++) {
+            @NotNull List<GUIContent> contents = preparedGUI.getContents(i);
+            assertFalse(contents.isEmpty(),
+                    "Contents at slot " + i + " should not be empty");
+
+            GUIContent content = contents.get(0);
+            assertEquals(content,
+                    ItemGUIContent.newInstance("glass_pane")
+                            .setDisplayName(i == 0 ? "search" : " "),
+                    "Content at slot " + i + " did not match expected"
+            );
+        }
+    }
+
+    @Test
     void testFilter() {
         String[] materials = new String[]{
                 "stone", "grass_block", "dirt", "cobblestone", "oak_planks",
