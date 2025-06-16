@@ -49,6 +49,10 @@ class GUIManagerTest {
     void testInitializationOfGUIManagerInjectsOnlinePlayers() {
         Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            try {
+                GUIManager.getInstance(GUIManager.class).terminate();
+            } catch (InstanceNotInitializedException ignored) {
+            }
             new GUIManager();
 
             verify(c.pipeline()).addBefore(
