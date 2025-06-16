@@ -207,6 +207,43 @@ class GUIAdapterTest {
         assertEquals(expected, this.inventory.getItem(0));
     }
 
+    private static Object[][] metaClasses() {
+        return new Object[][]{
+                new Object[]{ItemMeta.class, (Consumer<ItemMeta>) m -> {
+                }},
+                new Object[]{null, (Consumer<ItemMeta>) m -> {
+                }},
+                new Object[]{ItemMeta.class, null},
+                new Object[]{null, null}
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("metaClasses")
+    void testOpenGUIMetaAndClass(Class<ItemMeta> itemMetaClass, Consumer<ItemMeta> metaFunction) {
+        GUI expected = GUI.newGUI(9).setContents(0, ItemGUIContent.newInstance("stone"));
+
+        BukkitTestUtils.mockPlugin(p ->
+                GUIAdapter.openGUI(expected, GUIManager.getViewer(this.player), itemMetaClass, metaFunction)
+        );
+
+        assertNotNull(this.inventory);
+        assertEquals(expected.size(), this.inventory.getSize());
+        assertEquals(expected.getTitle(), new Refl<>(this.inventory).getFieldObject("title"));
+
+        for (int i = 0; i < expected.size(); i++) {
+            @NotNull List<GUIContent> contents = expected.getContents(i);
+            GUIContent guiContent = contents.isEmpty() ? null : contents.get(0);
+            ItemStack actual = this.inventory.getItem(i);
+            if (guiContent == null) assertNull(actual);
+            else {
+                Item item = new Refl<>(guiContent).getFieldObject("item");
+                ItemStack exp = ItemAdapter.itemToItemStack(item);
+                assertEquals(exp, actual);
+            }
+        }
+    }
+
     @Test
     void testOpenGUIRequirements() {
         when(this.player.hasPermission(anyString())).thenReturn(false);
