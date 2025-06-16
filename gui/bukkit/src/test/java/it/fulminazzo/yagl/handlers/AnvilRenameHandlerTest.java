@@ -156,6 +156,14 @@ class AnvilRenameHandlerTest {
         assertDoesNotThrow(() -> this.handler.channelRead(this.context, null));
     }
 
+    @Test
+    void testGetPlayerOfOfflineThrows() {
+        Player player = mock(Player.class);
+        when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+        assertThrowsExactly(IllegalStateException.class, () ->
+                new AnvilRenameHandler(null, player, null).getPlayer());
+    }
+
     @Getter
     static class PacketPlayInCustomPayload {
         private final @NotNull String name;
