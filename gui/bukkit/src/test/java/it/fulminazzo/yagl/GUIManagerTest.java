@@ -31,6 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,7 +44,7 @@ class GUIManagerTest {
     @BeforeEach
     void setUp() {
         BukkitUtils.setupServer();
-        Bukkit.getOnlinePlayers().forEach(BukkitUtils::removePlayer);
+        new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
     }
 
     @Test
@@ -89,7 +90,7 @@ class GUIManagerTest {
         @BeforeEach
         void setUp() {
             BukkitUtils.setupServer();
-            Bukkit.getOnlinePlayers().forEach(BukkitUtils::removePlayer);
+            new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
             try {
                 GUIManager.getInstance(GUIManager.class).terminate();
             } catch (InstanceNotInitializedException ignored) {
