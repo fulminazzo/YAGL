@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.utils;
 
+import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,19 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NMSUtils {
+
+    /**
+     * Gets the {@link Channel} associated with the player connection.
+     *
+     * @param player the player
+     * @return the player channel
+     */
+    public static @NotNull Channel getPlayerChannel(final @NotNull Player player) {
+        @NotNull Refl<?> handle = getHandle(player);
+        @NotNull Refl<?> connection = getPlayerConnection(handle);
+        @NotNull Refl<?> networkManager = getNetworkManager(connection);
+        return networkManager.getFieldObject(Channel.class);
+    }
 
     /**
      * Gets the handle of the player.
