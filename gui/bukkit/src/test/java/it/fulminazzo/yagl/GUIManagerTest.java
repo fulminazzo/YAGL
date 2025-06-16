@@ -44,17 +44,15 @@ class GUIManagerTest {
     void testInitializationOfGUIManagerInjectsOnlinePlayers() {
         BukkitUtils.setupServer();
         BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
-        BukkitTestUtils.mockPlugin(p ->
-                BukkitTestUtils.mockNMSUtils(c -> {
-                    new GUIManager();
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            new GUIManager();
 
-                    verify(c.pipeline()).addBefore(
-                            eq("packet_handler"),
-                            any(),
-                            any()
-                    );
-                })
-        );
+            verify(c.pipeline()).addBefore(
+                    eq("packet_handler"),
+                    any(),
+                    any()
+            );
+        });
     }
 
     @Test
@@ -116,48 +114,44 @@ class GUIManagerTest {
 
         @Test
         void testOnJoinPlayerIsInjectedAnvilRenameHandler() {
-            BukkitTestUtils.mockPlugin(p ->
-                    BukkitTestUtils.mockNMSUtils(c -> {
-                        PlayerJoinEvent event = new PlayerJoinEvent(
-                                this.player,
-                                null
-                        );
+            BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                PlayerJoinEvent event = new PlayerJoinEvent(
+                        this.player,
+                        null
+                );
 
-                        this.guiManager.on(event);
+                this.guiManager.on(event);
 
-                        verify(c.pipeline()).addBefore(
-                                eq("packet_handler"),
-                                any(),
-                                any()
-                        );
-                    })
-            );
+                verify(c.pipeline()).addBefore(
+                        eq("packet_handler"),
+                        any(),
+                        any()
+                );
+            });
         }
 
         @Test
         void testOnQuitPlayerIsRemovedAnvilRenameHandler() {
-            BukkitTestUtils.mockPlugin(p ->
-                    BukkitTestUtils.mockNMSUtils(c -> {
-                        AnvilRenameHandler handler = new AnvilRenameHandler(
-                                null,
-                                this.player,
-                                null
-                        );
+            BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                AnvilRenameHandler handler = new AnvilRenameHandler(
+                        null,
+                        this.player,
+                        null
+                );
 
-                        new Refl<>(this.guiManager)
-                                .getFieldRefl("anvilRenameHandlers")
-                                .invokeMethod("add", handler);
+                new Refl<>(this.guiManager)
+                        .getFieldRefl("anvilRenameHandlers")
+                        .invokeMethod("add", handler);
 
-                        PlayerQuitEvent event = new PlayerQuitEvent(
-                                this.player,
-                                null
-                        );
+                PlayerQuitEvent event = new PlayerQuitEvent(
+                        this.player,
+                        null
+                );
 
-                        this.guiManager.on(event);
+                this.guiManager.on(event);
 
-                        verify(c.pipeline()).remove(any(String.class));
-                    })
-            );
+                verify(c.pipeline()).remove(any(String.class));
+            });
         }
 
         @Test
@@ -325,25 +319,23 @@ class GUIManagerTest {
 
         @Test
         void testDisableThisPlugin() {
-            BukkitTestUtils.mockPlugin(p ->
-                BukkitTestUtils.mockNMSUtils(c -> {
-                    AnvilRenameHandler handler = new AnvilRenameHandler(
-                            null,
-                            this.player,
-                            null
-                    );
+            BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                AnvilRenameHandler handler = new AnvilRenameHandler(
+                        null,
+                        this.player,
+                        null
+                );
 
-                    new Refl<>(this.guiManager)
-                            .getFieldRefl("anvilRenameHandlers")
-                            .invokeMethod("add", handler);
+                new Refl<>(this.guiManager)
+                        .getFieldRefl("anvilRenameHandlers")
+                        .invokeMethod("add", handler);
 
-                    PluginDisableEvent event = new PluginDisableEvent(p);
-                    this.guiManager.on(event);
-                    verify(this.player).closeInventory();
+                PluginDisableEvent event = new PluginDisableEvent(p);
+                this.guiManager.on(event);
+                verify(this.player).closeInventory();
 
-                    verify(c.pipeline()).remove(any(String.class));
-                })
-            );
+                verify(c.pipeline()).remove(any(String.class));
+            });
             this.guiManager.initialize();
         }
 
