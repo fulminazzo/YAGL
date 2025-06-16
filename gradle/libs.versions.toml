@@ -23,6 +23,8 @@ mockito = "4.11.0"
 jbukkitartifact = "it.fulminazzo.jbukkit"
 jbukkit = "3.6"
 
+io_netty = "4.1.112.Final"
+
 [libraries]
 groovy = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
 fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }
@@ -38,3 +40,5 @@ annotations = { module = "org.jetbrains:annotations", version.ref = "annotations
 
 junit-platform = { module = "org.junit:junit-bom", version.ref = "junit" }
 mockito = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
+
+io_netty = { module = "io.netty:netty-all", version.ref = "io_netty" }
