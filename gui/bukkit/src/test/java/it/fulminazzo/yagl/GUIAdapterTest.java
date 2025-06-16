@@ -148,6 +148,33 @@ class GUIAdapterTest {
     }
 
     @Test
+    void testAnvilPacketOnNonSearchGUI() {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            Viewer viewer = GUIManager.getViewer(this.player);
+
+            GUI gui = GUI.newGUI(9).setContents(0, ItemGUIContent.newInstance("diamond"));
+            gui.open(viewer);
+
+            ItemStack firstItemStack = this.inventory.getItem(0);
+            assertNotNull(firstItemStack,
+                    "ItemStack at player inventory slot 0 should be not null");
+            assertEquals(Material.DIAMOND, firstItemStack.getType(),
+                    "ItemStack at player inventory slot 0 does not match expected item");
+
+            c.pipeline().fireChannelRead(new PacketPlayInItemName("stone"));
+
+            ItemStack secondItemStack = this.inventory.getItem(0);
+            assertNotNull(secondItemStack,
+                    "ItemStack at player inventory slot 0 should be not null");
+            assertEquals(Material.DIAMOND, secondItemStack.getType(),
+                    "ItemStack at player inventory slot 0 does not match expected item");
+        });
+    }
+
+    @Test
     void testUpdatePlayerGUI() {
         BukkitTestUtils.mockPlugin(p -> {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
