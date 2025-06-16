@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
 
@@ -35,6 +36,7 @@ public final class BukkitTestUtils {
             JavaPlugin plugin = mock(JavaPlugin.class);
             when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
             when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
+            when(plugin.getLogger()).thenReturn(Logger.getLogger(BukkitTestUtils.class.getName()));
 
             mockNMSUtils(c -> function.accept(plugin, c));
         }
