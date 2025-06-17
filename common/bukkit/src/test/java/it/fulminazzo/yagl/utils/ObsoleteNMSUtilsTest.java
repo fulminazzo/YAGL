@@ -46,9 +46,7 @@ class ObsoleteNMSUtilsTest {
     void testObsoleteConstructUpdateInventoryTitlePacket() {
         TestUtils.mockReflectionUtils(() -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
-                    .thenAnswer(a -> {
-                        throw new IllegalArgumentException("Class not found");
-                    });
+                    .thenThrow(new IllegalArgumentException("Class not found"));
 
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),

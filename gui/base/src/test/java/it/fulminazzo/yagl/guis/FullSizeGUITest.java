@@ -193,9 +193,7 @@ class FullSizeGUITest {
         Refl<FullSizeGUI> refl = new Refl<>(new FullSizeGUI(9));
 
         GUI upperGUI = mock(GUI.class);
-        when(upperGUI.addContent(any(GUIContent.class))).thenAnswer(a -> {
-            throw new IllegalArgumentException("Should not be captured");
-        });
+        when(upperGUI.addContent(any(GUIContent.class))).thenThrow(new IllegalArgumentException("Should not be captured"));
 
         refl.setFieldObject("upperGUI", upperGUI);
 

@@ -50,9 +50,7 @@ class LegacyNMSUtilsTest {
     void testUpdateInventoryTitle() {
         TestUtils.mockReflectionUtils(m -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
-                    .thenAnswer(a -> {
-                        throw new IllegalArgumentException("Class not found");
-                    });
+                    .thenThrow(new IllegalArgumentException("Class not found"));
             m.when(() -> ReflectionUtils.getMethod(eq(InventoryView.class), any(Predicate.class)))
                     .thenThrow(new IllegalArgumentException("Method not found"));
 
@@ -74,9 +72,7 @@ class LegacyNMSUtilsTest {
     void testConstructUpdateInventoryTitlePacket() {
         TestUtils.mockReflectionUtils(() -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
-                    .thenAnswer(a -> {
-                        throw new IllegalArgumentException("Class not found");
-                    });
+                    .thenThrow(new IllegalArgumentException("Class not found"));
 
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),
@@ -180,9 +176,7 @@ class LegacyNMSUtilsTest {
     void testSendPacket() {
         TestUtils.mockReflectionUtils(() -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
-                    .thenAnswer(a -> {
-                        throw new IllegalArgumentException("Class not found");
-                    });
+                    .thenThrow(new IllegalArgumentException("Class not found"));
 
             Packet packet = mock(Packet.class);
 
