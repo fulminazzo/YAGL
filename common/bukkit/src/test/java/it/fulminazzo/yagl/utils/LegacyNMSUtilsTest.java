@@ -4,12 +4,23 @@ import io.netty.channel.Channel;
 import lombok.Getter;
 import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.entity.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class LegacyNMSUtilsTest {
+    private Player player;
+
+    @BeforeEach
+    void setUp() {
+        CraftPlayer<LegacyEntityPlayer> craftPlayer = mock(CraftPlayer.class,
+                withSettings().extraInterfaces(Player.class)
+        );
+        when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
+        this.player = (Player) craftPlayer;
+    }
 
     @Test
     void testLegacyChatBaseComponent() {

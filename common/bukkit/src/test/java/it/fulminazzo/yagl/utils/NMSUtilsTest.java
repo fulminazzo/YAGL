@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.*;
 
 class NMSUtilsTest {
+    private Player player;
+
+    @BeforeEach
+    void setUp() {
+        CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class,
+                withSettings().extraInterfaces(Player.class)
+        );
+        when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
+        this.player = (Player) craftPlayer;
+    }
 
     @Test
     void testChatBaseComponent() {
