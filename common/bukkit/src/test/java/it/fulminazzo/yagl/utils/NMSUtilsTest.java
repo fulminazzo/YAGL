@@ -3,7 +3,6 @@ package it.fulminazzo.yagl.utils;
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
-import it.fulminazzo.yagl.utils.current.CraftPlayer;
 import it.fulminazzo.yagl.utils.current.EntityPlayer;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;

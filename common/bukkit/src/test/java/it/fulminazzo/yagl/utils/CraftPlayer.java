@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.utils.current;
+package it.fulminazzo.yagl.utils;
 
 import lombok.Getter;
 

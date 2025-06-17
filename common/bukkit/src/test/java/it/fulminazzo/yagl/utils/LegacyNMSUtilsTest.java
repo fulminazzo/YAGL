@@ -5,7 +5,6 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.legacy.Container;
-import it.fulminazzo.yagl.utils.legacy.CraftPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
