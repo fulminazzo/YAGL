@@ -84,39 +84,37 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testUpdatePlayerInternalContainersTitle() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            InventoryContainer container = new InventoryContainer(
-                    DefaultContainers.GENERIC_9x3,
-                    null,
-                    new LegacyContainer("previousTitle")
-            );
+        InventoryContainer container = new InventoryContainer(
+                DefaultContainers.GENERIC_9x3,
+                null,
+                new LegacyContainer("previousTitle")
+        );
 
-            DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
-            ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+        DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
+        ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
 
-            LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
-                    null, this.player,
-                    "previousTitle", container
-            );
+        LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
+                null, this.player,
+                "previousTitle", container
+        );
 
-            when(this.player.getOpenInventory()).thenReturn(inventoryView);
+        when(this.player.getOpenInventory()).thenReturn(inventoryView);
 
-            NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
+        NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
-            assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
-                            .getInventory())
-                            .getTitle(),
-                    "Actual container title was not changed"
-            );
-            assertEquals("title", delegateContainer.getCachedTitle(),
-                    "Delegate container title was not changed");
-            assertEquals("title", ((ObsoleteContainer) delegateContainer
-                            .getDelegate()
-                            .getContainer())
-                            .getTitle(),
-                    "Delegate container internal container title was not changed"
-            );
-        });
+        assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
+                        .getInventory())
+                        .getTitle(),
+                "Actual container title was not changed"
+        );
+        assertEquals("title", delegateContainer.getCachedTitle(),
+                "Delegate container title was not changed");
+        assertEquals("title", ((ObsoleteContainer) delegateContainer
+                        .getDelegate()
+                        .getContainer())
+                        .getTitle(),
+                "Delegate container internal container title was not changed"
+        );
     }
 
     @ParameterizedTest
@@ -155,31 +153,27 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testSendPacket() {
-        BukkitTestUtils.mockNMSUtils(() ->
-                TestUtils.mockReflectionUtils(() -> {
-                    when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
-                            .thenAnswer(a -> {
-                                throw new IllegalArgumentException("Class not found");
-                            });
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
+                    .thenAnswer(a -> {
+                        throw new IllegalArgumentException("Class not found");
+                    });
 
-                    Packet packet = mock(Packet.class);
+            Packet packet = mock(Packet.class);
 
-                    NMSUtils.sendPacket(this.player, packet);
+            NMSUtils.sendPacket(this.player, packet);
 
-                    LegacyEntityPlayer player = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
-                    List<Packet> sentPackets = player.getPlayerConnection().getSentPackets();
-                    assertTrue(sentPackets.contains(packet),
-                            String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
-                })
-        );
+            LegacyEntityPlayer player = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
+            List<Packet> sentPackets = player.getPlayerConnection().getSentPackets();
+            assertTrue(sentPackets.contains(packet),
+                    String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
+        });
     }
 
     @Test
     void testChatBaseComponent() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
-            assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
-        });
+        Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+        assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
     }
 
     @Test
