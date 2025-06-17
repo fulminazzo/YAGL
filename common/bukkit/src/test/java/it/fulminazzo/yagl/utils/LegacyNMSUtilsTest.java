@@ -47,9 +47,9 @@ class LegacyNMSUtilsTest {
 
         Inventory inventory = new MockInventory(type.getSize());
         new Refl<>(inventory).setFieldObject("type", type.getInventoryType());
+        container.setOpenInventory(inventory);
 
         Object actual = NMSUtils.getContainerType(container);
-        container.setOpenInventory(inventory);
 
         assertEquals(type, actual);
     }
