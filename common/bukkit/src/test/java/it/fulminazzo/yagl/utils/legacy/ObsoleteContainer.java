@@ -1,13 +1,12 @@
 package it.fulminazzo.yagl.utils.legacy;
 
 import lombok.Getter;
+import lombok.Setter;
 
-/**
- * Mimics the 1.8 Container class.
- */
 @Getter
+@Setter
 public final class ObsoleteContainer extends Container {
-    private final String title;
+    private String title;
 
     public ObsoleteContainer(String title) {
         this.title = title;
