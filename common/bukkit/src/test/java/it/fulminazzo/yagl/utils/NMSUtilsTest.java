@@ -50,39 +50,37 @@ class NMSUtilsTest {
      */
     @Test
     void testConstructUpdateInventoryTitlePacket() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
-                    withSettings().extraInterfaces(Player.class)
-            );
-            when(player.getHandle()).thenReturn(new EntityPlayerContainer());
+        CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
+                withSettings().extraInterfaces(Player.class)
+        );
+        when(player.getHandle()).thenReturn(new EntityPlayerContainer());
 
-            MockInventoryView inventoryView = new MockInventoryView(
-                    new MockInventory(27),
-                    (Player) player,
-                    "Hello"
-            );
+        MockInventoryView inventoryView = new MockInventoryView(
+                new MockInventory(27),
+                (Player) player,
+                "Hello"
+        );
 
-            Container container = Container.newContainer();
-            container.setOpenInventory(inventoryView);
+        Container container = Container.newContainer();
+        container.setOpenInventory(inventoryView);
 
-            EntityPlayerContainer handle = player.getHandle();
-            handle.setContainer(container);
+        EntityPlayerContainer handle = player.getHandle();
+        handle.setContainer(container);
 
-            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket((Player) player, "Hello, world!");
+        Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket((Player) player, "Hello, world!");
 
-            assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
-                    "Packet was supposed to be PacketPlayOutOpenWindow");
+        assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
+                "Packet was supposed to be PacketPlayOutOpenWindow");
 
-            PacketPlayOutOpenWindow packet = (PacketPlayOutOpenWindow) actualPacket;
+        PacketPlayOutOpenWindow packet = (PacketPlayOutOpenWindow) actualPacket;
 
-            assertEquals(container.getId(), packet.getId(),
-                    "Packet id was supposed to be the same as container id");
+        assertEquals(container.getId(), packet.getId(),
+                "Packet id was supposed to be the same as container id");
 
-            assertEquals(container.getType(), packet.getContainerType(),
-                    "Packet type was supposed to be the same as container type");
+        assertEquals(container.getType(), packet.getContainerType(),
+                "Packet type was supposed to be the same as container type");
 
-            assertEquals(CraftChatMessage.fromString("Hello, world!")[0], packet.getTitle());
-        });
+        assertEquals(CraftChatMessage.fromString("Hello, world!")[0], packet.getTitle());
     }
 
     @Test
@@ -106,10 +104,8 @@ class NMSUtilsTest {
 
     @Test
     void testChatBaseComponent() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
-            assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
-        });
+        Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+        assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
     }
 
     @Test
