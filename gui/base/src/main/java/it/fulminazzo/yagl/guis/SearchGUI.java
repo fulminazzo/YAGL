@@ -84,7 +84,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
      * @return the gui
      */
     public @NotNull GUI getFirstPage() {
-        return super.prepareOpenGUI(this.templateGUI, 0);
+        return prepareOpenGUI(this.templateGUI, 0);
     }
 
     /**
