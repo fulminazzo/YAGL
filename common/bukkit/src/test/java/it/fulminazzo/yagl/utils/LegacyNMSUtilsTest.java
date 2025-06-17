@@ -163,6 +163,36 @@ class LegacyNMSUtilsTest {
         );
     }
 
+    @Test
+    void testUpdatePlayerInternalContainersTitleNullDelegate() {
+        InventoryContainer container = new InventoryContainer(
+                DefaultContainers.GENERIC_9x3,
+                null,
+                new LegacyContainer("previousTitle")
+        );
+
+        DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
+        new Refl<>(delegateContainer).setFieldObject("delegate", null);
+        ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+
+        LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
+                null, this.player,
+                "previousTitle", container
+        );
+
+        when(this.player.getOpenInventory()).thenReturn(inventoryView);
+
+        NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
+
+        assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
+                        .getInventory())
+                        .getTitle(),
+                "Actual container title was not changed"
+        );
+        assertEquals("title", delegateContainer.getCachedTitle(),
+                "Delegate container title was not changed");
+    }
+
     @ParameterizedTest
     @EnumSource(DefaultContainers.class)
     void testGetContainerType(DefaultContainers type) {
