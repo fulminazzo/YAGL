@@ -159,6 +159,10 @@ public final class NMSUtils {
         }
     }
 
+    /**
+     * CLASSES
+     */
+
     private static @NotNull Class<?> getPacketClass() {
         try {
             // 1.17.1+
@@ -168,6 +172,18 @@ public final class NMSUtils {
             // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
             final String packetName = String.format("net.minecraft.server.%s.Packet", getNMSVersion());
             return ReflectionUtils.getClass(packetName);
+        }
+    }
+
+    private static @NotNull Class<?> getPacketPlayOutOpenWindowClass() {
+        try {
+            // 1.17.1+
+            final String packetPlayOutOpenWindowName = "net.minecraft.network.protocol.game.PacketPlayOutOpenWindow";
+            return ReflectionUtils.getClass(packetPlayOutOpenWindowName);
+        } catch (IllegalArgumentException e) {
+            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
+            final String packetPlayOutOpenWindowName = String.format("net.minecraft.server.%s.PacketPlayOutOpenWindow", getNMSVersion());
+            return ReflectionUtils.getClass(packetPlayOutOpenWindowName);
         }
     }
 
