@@ -42,7 +42,7 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testLegacyUpdatePlayerInternalContainersTitle() {
-        BukkitTestUtils.mockNMSUtils(c -> {
+        BukkitTestUtils.mockNMSUtils(() -> {
             when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
