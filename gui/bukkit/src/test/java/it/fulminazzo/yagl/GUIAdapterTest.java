@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.actions.commands.GUICommand;
@@ -85,6 +86,12 @@ class GUIAdapterTest {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
+            new MockInventoryView(
+                    mock(Inventory.class),
+                    this.player,
+                    ""
+            );
+
             Viewer viewer = GUIManager.getViewer(this.player);
 
             List<Material> materials = Arrays.asList(
@@ -98,6 +105,7 @@ class GUIAdapterTest {
                             (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
                             materials
                     )
+                    .setTitle("Update")
                     .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
 
             gui.open(viewer);
@@ -238,6 +246,12 @@ class GUIAdapterTest {
         BukkitTestUtils.mockPlugin(p -> {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
+
+            new MockInventoryView(
+                    mock(Inventory.class),
+                    this.player,
+                    ""
+            );
 
             Viewer viewer = GUIManager.getViewer(this.player);
 
