@@ -13,14 +13,14 @@ import java.util.Random;
 public abstract class Container {
     private final Containers type;
     private final int ignored;
-    private final int windowId;
+    private final int id;
 
     private InventoryView openInventory;
 
     public Container() {
         this.type = DefaultContainers.GENERIC_9x3;
         this.ignored = -1;
-        this.windowId = new Random().nextInt();
+        this.id = new Random().nextInt();
     }
 
     @Getter

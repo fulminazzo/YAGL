@@ -71,7 +71,7 @@ class NMSUtilsTest {
 
             PacketPlayOutOpenWindow packet = (PacketPlayOutOpenWindow) actualPacket;
 
-            assertEquals(container.getWindowId(), packet.getId(),
+            assertEquals(container.getId(), packet.getId(),
                     "Packet id was supposed to be the same as container id");
 
             assertEquals(container.getType(), packet.getContainerType(),
