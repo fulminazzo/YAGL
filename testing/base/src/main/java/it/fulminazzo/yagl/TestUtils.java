@@ -45,6 +45,17 @@ public final class TestUtils {
     }
 
     /**
+     * Mocks {@link ReflectionUtils} and executes the given function.
+     *
+     * @param runnable the function
+     */
+    public static void mockReflectionUtils(final @NotNull Consumer<MockedStatic<ReflectionUtils>> runnable) {
+        try (MockedStatic<ReflectionUtils> reflectionUtils = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            runnable.accept(reflectionUtils);
+        }
+    }
+
+    /**
      * Allows testing all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
      * Each one of them is first invoked using {@link #testSingleMethod(Object, Method, Object[], Object, String, Class[])}.
      * Then, it uses <i>captorsValidator</i> to validate the passed parameters.
