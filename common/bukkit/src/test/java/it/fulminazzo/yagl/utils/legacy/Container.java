@@ -1,12 +1,20 @@
 package it.fulminazzo.yagl.utils.legacy;
 
+import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
+
+import static org.mockito.Mockito.mock;
 
 @Getter
 public class Container {
     private final Containers type;
+
+    private InventoryView openInventory;
 
     public Container() {
         this(Containers.GENERIC_9x3);
@@ -14,6 +22,10 @@ public class Container {
 
     public Container(Containers type) {
         this.type = type;
+    }
+
+    public void setOpenInventory(final @NotNull Inventory inventory) {
+        this.openInventory = new MockInventoryView(inventory, mock(Player.class), "");
     }
 
     @Getter
