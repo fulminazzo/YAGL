@@ -1,5 +1,8 @@
 package it.fulminazzo.yagl.utils.legacy.containers;
 
+import lombok.Getter;
+
+@Getter
 public class InventoryContainer extends Container {
     private final Container inventory;
 
