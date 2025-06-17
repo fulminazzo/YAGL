@@ -4,11 +4,14 @@ import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
-import it.fulminazzo.yagl.utils.legacy.*;
+import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
+import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import it.fulminazzo.yagl.utils.legacy.containers.*;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
+import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
@@ -41,6 +44,40 @@ class LegacyNMSUtilsTest {
         this.player = (Player) craftPlayer;
     }
 
+    /**
+     * 1.14-1.17
+     */
+    @Test
+    void testConstructUpdateInventoryTitlePacket() {
+        BukkitTestUtils.mockNMSUtils(() -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
+
+            MockInventoryView inventoryView = new MockInventoryView(mock(Inventory.class), this.player, "Hello");
+
+            Container container = new Container(DefaultContainers.GENERIC_9x3);
+            container.setOpenInventory(inventoryView);
+
+            LegacyEntityPlayer handle = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
+            handle.setOpenContainer(container);
+
+            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
+
+            assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
+                    "Packet was supposed to be PacketPlayOutOpenWindow");
+
+            PacketPlayOutOpenWindow packet = (PacketPlayOutOpenWindow) actualPacket;
+
+            assertEquals(container.getWindowId(), packet.getId(),
+                    "Packet id was supposed to be the same as container id");
+
+            assertEquals(container.getType(), packet.getContainerType(),
+                    "Packet type was supposed to be the same as container type");
+
+            assertEquals(CraftChatMessage.fromString("Hello, world!")[0], packet.getTitle());
+        });
+    }
+
     @Test
     void testUpdatePlayerInternalContainersTitle() {
         BukkitTestUtils.mockNMSUtils(() -> {
@@ -66,16 +103,16 @@ class LegacyNMSUtilsTest {
             NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
             assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
-                    .getInventory())
-                    .getTitle(),
+                            .getInventory())
+                            .getTitle(),
                     "Actual container title was not changed"
             );
             assertEquals("title", delegateContainer.getCachedTitle(),
                     "Delegate container title was not changed");
             assertEquals("title", ((ObsoleteContainer) delegateContainer
-                    .getDelegate()
-                    .getContainer())
-                    .getTitle(),
+                            .getDelegate()
+                            .getContainer())
+                            .getTitle(),
                     "Delegate container internal container title was not changed"
             );
         });
