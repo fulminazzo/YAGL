@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.utils;
 
+import com.google.common.base.Predicate;
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -47,11 +48,13 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testUpdateInventoryTitle() {
-        TestUtils.mockReflectionUtils(() -> {
+        TestUtils.mockReflectionUtils(m -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenAnswer(a -> {
                         throw new IllegalArgumentException("Class not found");
                     });
+            m.when(() -> ReflectionUtils.getMethod(eq(InventoryView.class), any(Predicate.class)))
+                    .thenThrow(new IllegalArgumentException("Method not found"));
 
             MockInventoryView view = new MockInventoryView(
                     new MockInventory(9),
