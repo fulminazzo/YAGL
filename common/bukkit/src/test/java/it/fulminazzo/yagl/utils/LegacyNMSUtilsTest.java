@@ -17,8 +17,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
@@ -35,6 +34,12 @@ class LegacyNMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @Test
+    void testGetPlayerOpenContainer() {
+        Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
+        assertInstanceOf(Container.class, openContainer.getObject());
     }
 
     @Test

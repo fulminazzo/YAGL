@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.protocol.Packet;
@@ -26,6 +27,12 @@ class NMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @Test
+    void testGetPlayerOpenContainer() {
+        Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
+        assertInstanceOf(AbstractContainerMenu.class, openContainer.getObject());
     }
 
     @Test
