@@ -3,7 +3,7 @@ package net.minecraft.network.protocol.game;
 import it.fulminazzo.yagl.utils.legacy.containers.Containers;
 import lombok.Getter;
 import net.minecraft.network.protocol.Packet;
-import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
+import org.bukkit.craftbukkit.util.CraftChatMessage;
 
 @Getter
 public class PacketPlayOutOpenWindow extends Packet {
