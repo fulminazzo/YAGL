@@ -1,12 +1,12 @@
 package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
 import it.fulminazzo.yagl.utils.current.EntityPlayer;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +30,9 @@ class NMSUtilsTest {
 
     @Test
     void testGetPlayerOpenContainer() {
-        Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
-        assertInstanceOf(AbstractContainerMenu.class, openContainer.getObject());
-        assertFalse(openContainer.getObject() instanceof AbstractContainerMenu.PlayerContainerMenu);
+        @NotNull Object openContainer = NMSUtils.getPlayerOpenContainer(this.player);
+        assertInstanceOf(AbstractContainerMenu.class, openContainer);
+        assertFalse(openContainer instanceof AbstractContainerMenu.PlayerContainerMenu);
     }
 
     @Test

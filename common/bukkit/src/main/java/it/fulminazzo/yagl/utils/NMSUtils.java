@@ -44,7 +44,7 @@ public final class NMSUtils {
 
         try {
             // 1.14.4, 1.15.2, 1.16.5
-            Refl<?> openContainer = getPlayerOpenContainer(player);
+            Refl<?> openContainer = new Refl<>(getPlayerOpenContainer(player));
             openContainer.setFieldObject("cachedTitle", title);
 
             openContainer
@@ -91,7 +91,7 @@ public final class NMSUtils {
      * @param player the player
      * @return the open container
      */
-    static @NotNull Refl<?> getPlayerOpenContainer(final @NotNull Player player) {
+    static @NotNull Object getPlayerOpenContainer(final @NotNull Player player) {
         Refl<?> entityPlayer = getHandle(player);
         @NotNull List<Field> containers = entityPlayer.getFields(f ->
                 f.getType().getSimpleName().equals("Container") ||
@@ -100,7 +100,7 @@ public final class NMSUtils {
         );
         // First container is for player inventory in older versions
         Field containerField = containers.get(Math.min(2, containers.size()) - 1);
-        return entityPlayer.getFieldRefl(containerField);
+        return entityPlayer.getFieldObject(containerField);
     }
 
     /**

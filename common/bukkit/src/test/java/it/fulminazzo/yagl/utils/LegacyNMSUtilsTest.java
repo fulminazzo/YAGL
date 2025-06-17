@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -69,8 +70,8 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testGetPlayerOpenContainer() {
-        Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
-        assertInstanceOf(Container.class, openContainer.getObject());
+        @NotNull Object openContainer = NMSUtils.getPlayerOpenContainer(this.player);
+        assertInstanceOf(Container.class, openContainer);
     }
 
     @Test
