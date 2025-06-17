@@ -39,7 +39,7 @@ public final class TestUtils {
      * @param runnable the function
      */
     public static void mockReflectionUtils(final @NotNull Runnable runnable) {
-        try (MockedStatic<ReflectionUtils> ignored = mockStatic(ReflectionUtils.class)) {
+        try (MockedStatic<ReflectionUtils> ignored = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
             runnable.run();
         }
     }
