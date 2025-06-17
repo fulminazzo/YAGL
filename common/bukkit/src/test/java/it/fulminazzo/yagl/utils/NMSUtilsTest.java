@@ -7,9 +7,13 @@ import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,11 +64,63 @@ class NMSUtilsTest {
         });
     }
 
-    @Test
-    void testGetInventoryTypeThrowsOnInvalidTypes() {
-        assertThrowsExactly(IllegalArgumentException.class, () ->
-                NMSUtils.getInventoryTypeStringFromBukkitType(InventoryType.PLAYER)
-        );
+    private static Object[][] inventoryTypeStrings() {
+        return Arrays.stream(InventoryType.values())
+                .map(t -> new Object[]{t, null})
+                .peek(t -> {
+                    InventoryType inventoryType = (InventoryType) t[0];
+                    switch (inventoryType) {
+                        case CHEST:
+                        case ENDER_CHEST:
+                            t[1] = "chest";
+                            break;
+                        case FURNACE:
+                            t[1] = "furnace";
+                            break;
+                        case WORKBENCH:
+                            t[1] = "crafting_table";
+                            break;
+                        case ANVIL:
+                            t[1] = "anvil";
+                            break;
+                        case BREWING:
+                            t[1] = "brewing_stand";
+                            break;
+                        case DISPENSER:
+                        case DROPPER:
+                            t[1] = "dropper";
+                            break;
+                        case HOPPER:
+                            t[1] = "hopper";
+                            break;
+                        case BEACON:
+                            t[1] = "beacon";
+                            break;
+                        case ENCHANTING:
+                            t[1] = "enchanting_table";
+                            break;
+                        case MERCHANT:
+                            t[1] = "villager";
+                            break;
+                        case SHULKER_BOX:
+                            t[1] = "shulker_box";
+                            break;
+                    }
+                })
+                .toArray(Object[][]::new);
+    }
+
+    @ParameterizedTest
+    @MethodSource("inventoryTypeStrings")
+    void testGetInventoryTypeStringFromBukkitType(InventoryType inventoryType, @Nullable String expected) {
+        if (expected == null)
+            assertThrowsExactly(IllegalArgumentException.class, () ->
+                    NMSUtils.getInventoryTypeStringFromBukkitType(inventoryType)
+            );
+        else {
+            expected = "minecraft:" + expected;
+            assertEquals(expected, NMSUtils.getInventoryTypeStringFromBukkitType(inventoryType));
+        }
     }
 
     @Test
