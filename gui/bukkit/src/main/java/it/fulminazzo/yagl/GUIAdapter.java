@@ -143,6 +143,10 @@ public final class GUIAdapter {
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
 
+                fillInventoryWithGUIContents(upperGUI, v,
+                        itemMetaClass, metaFunction,
+                        p.getOpenInventory().getTopInventory(), upperGUI.size());
+
                 String title = gui.getTitle();
                 if (title != null) NMSUtils.updateInventoryTitle(p, title);
 
