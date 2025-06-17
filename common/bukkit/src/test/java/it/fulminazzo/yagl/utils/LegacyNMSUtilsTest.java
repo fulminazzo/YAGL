@@ -87,7 +87,6 @@ class LegacyNMSUtilsTest {
     }
 
     @Getter
-    @Setter
     static class CraftPlayer<H> {
         private final H handle;
 
@@ -98,6 +97,7 @@ class LegacyNMSUtilsTest {
     }
 
     @Getter
+    @Setter
     static class LegacyEntityPlayer {
         private final PlayerConnection playerConnection;
         private final Container playerContainer;

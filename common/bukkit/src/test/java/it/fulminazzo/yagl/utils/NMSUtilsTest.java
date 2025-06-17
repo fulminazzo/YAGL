@@ -81,7 +81,6 @@ class NMSUtilsTest {
     }
 
     @Getter
-    @Setter
     static class CraftPlayer<H> {
         private final H handle;
 
@@ -92,6 +91,7 @@ class NMSUtilsTest {
     }
 
     @Getter
+    @Setter
     static class EntityPlayer {
         private final ServerGamePacketListenerImpl connection;
         private final PlayerContainerMenu playerContainer;
