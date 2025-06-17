@@ -24,6 +24,38 @@ import java.util.Objects;
 public final class NMSUtils {
 
     /**
+     * Support function for {@link #updateInventoryTitle(Player, String)}.
+     * Updates all the internal containers titles of the given {@link Player},
+     * to avoid inconsistencies with Bukkit API.
+     *
+     * @param player the player
+     * @param title  the title
+     */
+    static void updatePlayerInternalContainersTitle(@NotNull Player player, @NotNull String title) {
+        Refl<?> internalContainer = new Refl<>(player.getOpenInventory())
+                // Get the first field, only one expected
+                .getFieldRefl(f -> true)
+                // Name depends on the Minecraft version
+                .getFieldRefl(f -> f.getName().equals("container") || f.getName().equals("inventory"));
+
+        if (internalContainer.getFieldObject("title") instanceof String)
+            internalContainer.setFieldObject("title", title);
+        else internalContainer.setFieldObject("title", getIChatBaseComponent(title));
+
+        try {
+            // 1.14.4, 1.15.2, 1.16.5
+            Refl<?> openContainer = getPlayerOpenContainer(player);
+            openContainer.setFieldObject("cachedTitle", title);
+
+            openContainer
+                    .getFieldRefl(f -> f.getName().equals("delegate"))
+                    .getFieldRefl(f -> f.getName().equals("container"))
+                    .setFieldObject("title", title);
+        } catch (IllegalArgumentException ignored) {
+        }
+    }
+
+    /**
      * Gets the container type from the given container.
      * Solves a problem found in Minecraft 1.14, where getting the direct container
      * of a modified size chest inventory, will wrongfully return <code>GENERIC_9X3</code>.
