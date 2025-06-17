@@ -3,12 +3,21 @@ package it.fulminazzo.yagl.utils;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.*;
 
 class NMSUtilsTest {
+
+    @Test
+    void testGetInventoryTypeThrowsOnInvalidTypes() {
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                NMSUtils.getInventoryTypeStringFromBukkitType(InventoryType.PLAYER)
+        );
+    }
 
     @Test
     void testGetPlayerChannelLegacy() {
