@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
@@ -81,12 +82,22 @@ class LegacyNMSUtilsTest {
     }
 
     @Getter
+    @Setter
     static class CraftPlayer<H> {
         private final H handle;
 
+        private Container openContainer;
+        private final Container playerContainer;
+
         CraftPlayer(H handle) {
             this.handle = handle;
+            this.openContainer = new Container();
+            this.playerContainer = new Container();
         }
+
+    }
+
+    static class Container {
 
     }
 
