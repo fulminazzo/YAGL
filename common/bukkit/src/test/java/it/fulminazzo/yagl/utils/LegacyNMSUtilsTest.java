@@ -1,10 +1,14 @@
 package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import lombok.Getter;
+import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +26,9 @@ class LegacyNMSUtilsTest {
 
     @BeforeEach
     void setUp() {
+        Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
+
         CraftPlayer<LegacyEntityPlayer> craftPlayer = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
@@ -31,25 +38,23 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testSendPacket() {
-        BukkitTestUtils.mockNMSUtils(c -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+        BukkitTestUtils.mockNMSUtils(() ->
+                TestUtils.mockReflectionUtils(() -> {
+                    when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
+                            .thenAnswer(a -> {
+                                throw new IllegalArgumentException("Class not found");
+                            });
 
-            TestUtils.mockReflectionUtils(() -> {
-                when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
-                        .thenAnswer(a -> {
-                            throw new IllegalArgumentException("Class not found");
-                        });
+                    Packet packet = mock(Packet.class);
 
-                Packet packet = mock(Packet.class);
+                    NMSUtils.sendPacket(this.player, packet);
 
-                NMSUtils.sendPacket(this.player, packet);
-
-                LegacyEntityPlayer player = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
-                List<Packet> sentPackets = player.getPlayerConnection().getSentPackets();
-                assertTrue(sentPackets.contains(packet),
-                        String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
-            });
-        });
+                    LegacyEntityPlayer player = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
+                    List<Packet> sentPackets = player.getPlayerConnection().getSentPackets();
+                    assertTrue(sentPackets.contains(packet),
+                            String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
+                })
+        );
     }
 
     @Test
