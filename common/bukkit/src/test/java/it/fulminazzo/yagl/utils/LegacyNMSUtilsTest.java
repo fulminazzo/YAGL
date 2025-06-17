@@ -4,8 +4,9 @@ import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
-import lombok.Getter;
-import lombok.Setter;
+import it.fulminazzo.yagl.utils.legacy.Container;
+import it.fulminazzo.yagl.utils.legacy.CraftPlayer;
+import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
@@ -14,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -84,62 +84,6 @@ class LegacyNMSUtilsTest {
 
         Channel actual = NMSUtils.getPlayerChannel((Player) player);
         assertEquals(expected, actual);
-    }
-
-    @Getter
-    static class CraftPlayer<H> {
-        private final H handle;
-
-        CraftPlayer(H handle) {
-            this.handle = handle;
-        }
-
-    }
-
-    @Getter
-    @Setter
-    static class LegacyEntityPlayer {
-        private final PlayerConnection playerConnection;
-        private final Container playerContainer;
-
-        private Container openContainer;
-
-        LegacyEntityPlayer(Channel channel) {
-            this.playerConnection = new PlayerConnection(channel);
-            this.playerContainer = new Container();
-            this.openContainer = new Container();
-        }
-
-    }
-
-    static class Container {
-
-    }
-
-    @Getter
-    static class PlayerConnection {
-        private final NetworkManager networkManager;
-        private final List<Packet> sentPackets;
-
-        PlayerConnection(Channel channel) {
-            this.networkManager = new NetworkManager(channel);
-            this.sentPackets = new ArrayList<>();
-        }
-
-        public void sendPacket(Packet packet) {
-            this.sentPackets.add(packet);
-        }
-
-    }
-
-    @Getter
-    static class NetworkManager {
-        private final Channel channel;
-
-        NetworkManager(Channel channel) {
-            this.channel = channel;
-        }
-
     }
 
 }
