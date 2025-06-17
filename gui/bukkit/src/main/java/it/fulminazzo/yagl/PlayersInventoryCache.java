@@ -1,13 +1,12 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.guis.FullSizeGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * A cache to handle the storing of {@link Player}s inventory contents.
@@ -49,9 +48,10 @@ public class PlayersInventoryCache {
      * @param player the player
      */
     public void storePlayerContents(final @NotNull Player player) {
-        ItemStack[] playerContents = player.getInventory().getStorageContents();
-        ItemStack[] cache = new ItemStack[playerContents.length];
-        System.arraycopy(playerContents, 0, cache, 0, playerContents.length);
+        List<ItemStack> playerContents = Arrays.asList(player.getInventory().getContents())
+                .subList(0, FullSizeGUI.SECOND_INVENTORY_SIZE);
+        ItemStack[] cache = new ItemStack[playerContents.size()];
+        for (int i = 0; i < playerContents.size(); i++) cache[i] = playerContents.get(i);
         this.internalCache.put(player.getUniqueId(), cache);
     }
 
