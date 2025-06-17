@@ -23,7 +23,7 @@ class LegacyNMSUtilsTest {
     }
 
     @Test
-    void testLegacyChatBaseComponent() {
+    void testChatBaseComponent() {
         BukkitTestUtils.mockNMSUtils(c -> {
             when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
@@ -34,7 +34,7 @@ class LegacyNMSUtilsTest {
     }
 
     @Test
-    void testGetPlayerChannelLegacy() {
+    void testGetPlayerChannel() {
         Channel expected = mock(Channel.class);
         CraftPlayer<LegacyEntityPlayer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
