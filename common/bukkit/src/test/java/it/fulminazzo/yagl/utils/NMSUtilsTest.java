@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
+import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +44,7 @@ class NMSUtilsTest {
         when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
         this.player = (Player) craftPlayer;
     }
-    
+
     /**
      * 1.17-1.19
      */
@@ -107,12 +107,8 @@ class NMSUtilsTest {
     @Test
     void testChatBaseComponent() {
         BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getNMSVersion()).thenAnswer(a -> {
-                throw new IllegalStateException("NMS Version Mismatch");
-            });
-
             Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
-            assertEquals("IChatBaseComponent{Hello, world}", baseComponent);
+            assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
         });
     }
 
