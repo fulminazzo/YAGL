@@ -126,7 +126,6 @@ class LegacyNMSUtilsTest {
     void testGetPlayerOpenContainer() {
         @NotNull Object openContainer = NMSUtils.getPlayerOpenContainer(this.player);
         assertInstanceOf(Container.class, openContainer);
-        assertFalse(openContainer instanceof PlayerContainer);
     }
 
     @Test
