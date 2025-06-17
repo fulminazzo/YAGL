@@ -34,6 +34,10 @@ public class Container {
         this.windowId = new Random().nextInt();
     }
 
+    public void setOpenInventory(InventoryView openInventory) {
+        this.openInventory = openInventory;
+    }
+
     public void setOpenInventory(final @NotNull Inventory inventory) {
         this.openInventory = new MockInventoryView(inventory, mock(Player.class), "");
     }
