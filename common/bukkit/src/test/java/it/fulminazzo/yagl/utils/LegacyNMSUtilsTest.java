@@ -47,10 +47,10 @@ class LegacyNMSUtilsTest {
             when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
-            Container container = new Container(
+            InventoryContainer container = new InventoryContainer(
                     DefaultContainers.GENERIC_9x3,
-                    new LegacyContainer("previousTitle"),
-                    null
+                    null,
+                    new LegacyContainer("previousTitle")
             );
 
             LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
@@ -63,7 +63,7 @@ class LegacyNMSUtilsTest {
             NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
             assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
-                    .getContainer())
+                    .getInventory())
                     .getTitle()
             );
         });
