@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.utils.legacy;
+package it.fulminazzo.yagl.utils.legacy.containers;
 
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import lombok.Getter;

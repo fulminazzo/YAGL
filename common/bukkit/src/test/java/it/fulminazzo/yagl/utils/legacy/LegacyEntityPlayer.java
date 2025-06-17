@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.utils.legacy;
 
 import io.netty.channel.Channel;
+import it.fulminazzo.yagl.utils.legacy.containers.Container;
+import it.fulminazzo.yagl.utils.legacy.containers.PlayerContainer;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.v1_14_R1.Packet;

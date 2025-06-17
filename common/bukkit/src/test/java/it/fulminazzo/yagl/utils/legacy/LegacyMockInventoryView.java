@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.utils.legacy;
 
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
+import it.fulminazzo.yagl.utils.legacy.containers.Container;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
