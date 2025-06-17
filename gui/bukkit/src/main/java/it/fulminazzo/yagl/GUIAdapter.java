@@ -8,6 +8,7 @@ import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.utils.MessageUtils;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.AccessLevel;
@@ -141,6 +142,9 @@ public final class GUIAdapter {
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
+
+                String title = gui.getTitle();
+                if (title != null) NMSUtils.updateInventoryTitle(p, title);
 
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
