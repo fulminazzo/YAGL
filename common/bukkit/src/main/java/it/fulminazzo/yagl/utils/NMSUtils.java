@@ -34,7 +34,7 @@ public final class NMSUtils {
         try {
             // 1.19.4+
             new Refl<>(player.getOpenInventory()).invokeMethod("setTitle", title);
-        } catch (NoSuchMethodError er) {
+        } catch (IllegalArgumentException ex) {
             // Older versions did not have setTitle,
             // so we must send our own packet.
             Object packet = constructUpdateInventoryTitlePacket(player, title);
