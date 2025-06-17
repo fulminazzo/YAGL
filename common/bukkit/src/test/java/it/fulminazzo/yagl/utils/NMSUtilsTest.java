@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -72,12 +73,22 @@ class NMSUtilsTest {
     }
 
     @Getter
+    @Setter
     static class CraftPlayer<H> {
         private final H handle;
 
+        private AbstractContainerMenu openContainer;
+        private final AbstractContainerMenu playerContainer;
+
         CraftPlayer(H handle) {
             this.handle = handle;
+            this.openContainer = new AbstractContainerMenu();
+            this.playerContainer = new AbstractContainerMenu();
         }
+
+    }
+
+    static class AbstractContainerMenu {
 
     }
 
