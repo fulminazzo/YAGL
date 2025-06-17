@@ -17,6 +17,7 @@ import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,12 @@ class LegacyNMSUtilsTest {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
             m.when(() -> ReflectionUtils.getMethod(any(), any(Predicate.class)))
-                    .thenThrow(new IllegalArgumentException("Method not found"));
+                    .thenAnswer(a -> {
+                        Class<?> clazz = a.getArgument(0);
+                        if (InventoryView.class.isAssignableFrom(clazz))
+                            throw new IllegalArgumentException("Method not found");
+                        else return a.callRealMethod();
+                    });
 
             MockInventoryView view = new MockInventoryView(
                     new MockInventory(9),
