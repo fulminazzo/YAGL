@@ -66,9 +66,10 @@ class LegacyNMSUtilsTest {
                         else return a.callRealMethod();
                     });
 
+            LegacyContainer internalContainer = new LegacyContainer("Previous title");
             Container container = new Container(
                     DefaultContainers.GENERIC_9x3,
-                    new LegacyContainer("Previous title")
+                    internalContainer
             );
             InventoryView view = new LegacyMockInventoryView(
                     new MockInventory(9),
@@ -80,7 +81,8 @@ class LegacyNMSUtilsTest {
             ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(container);
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
-            assertEquals("Title", view.getTitle());
+
+            assertEquals(CraftChatMessage.fromString("Title")[0], internalContainer.getTitle());
 
             CraftPlayer<LegacyEntityPlayer> craftPlayer = (CraftPlayer<LegacyEntityPlayer>) this.player;
             List<Packet> packets = craftPlayer.getHandle().getPlayerConnection().getSentPackets();
