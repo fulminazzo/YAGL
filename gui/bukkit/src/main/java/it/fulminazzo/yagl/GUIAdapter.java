@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -143,12 +144,16 @@ public final class GUIAdapter {
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
 
-                fillInventoryWithGUIContents(upperGUI, v,
-                        itemMetaClass, metaFunction,
-                        p.getOpenInventory().getTopInventory(), upperGUI.size());
-
+                InventoryView inventoryView = p.getOpenInventory();
                 String title = gui.getTitle();
-                if (title != null) NMSUtils.updateInventoryTitle(p, title);
+
+                if (!inventoryView.getTitle().equals(title)) {
+                    fillInventoryWithGUIContents(upperGUI, v,
+                            itemMetaClass, metaFunction,
+                            inventoryView.getTopInventory(), upperGUI.size());
+
+                    if (title != null) NMSUtils.updateInventoryTitle(p, title);
+                }
 
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
