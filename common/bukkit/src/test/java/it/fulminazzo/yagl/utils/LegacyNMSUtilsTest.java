@@ -7,9 +7,13 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings("unchecked")
 class LegacyNMSUtilsTest {
     private Player player;
 
@@ -68,12 +72,15 @@ class LegacyNMSUtilsTest {
     @Getter
     static class PlayerConnection {
         private final NetworkManager networkManager;
+        private final List<Packet> sentPackets;
 
         PlayerConnection(Channel channel) {
             this.networkManager = new NetworkManager(channel);
+            this.sentPackets = new ArrayList<>();
         }
 
         public void sendPacket(Packet packet) {
+            this.sentPackets.add(packet);
         }
 
     }

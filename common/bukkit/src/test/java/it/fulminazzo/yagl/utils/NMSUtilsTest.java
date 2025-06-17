@@ -8,10 +8,14 @@ import org.bukkit.event.inventory.InventoryType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings("unchecked")
 class NMSUtilsTest {
     private Player player;
 
@@ -79,12 +83,15 @@ class NMSUtilsTest {
     @Getter
     static class ServerGamePacketListenerImpl {
         private final Connection networkManager;
+        private final List<Packet> sentPackets;
 
         ServerGamePacketListenerImpl(Channel channel) {
             this.networkManager = new Connection(channel);
+            this.sentPackets = new ArrayList<>();
         }
 
         public void sendPacket(Packet packet) {
+            this.sentPackets.add(packet);
         }
 
     }
