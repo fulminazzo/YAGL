@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
@@ -26,6 +25,18 @@ class NMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @Test
+    void testSendPacket() {
+        Packet packet = mock(Packet.class);
+
+        NMSUtils.sendPacket(this.player, packet);
+
+        EntityPlayer player = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+        List<Packet> sentPackets = player.getConnection().getSentPackets();
+        assertTrue(sentPackets.contains(packet),
+                String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
     }
 
     @Test
