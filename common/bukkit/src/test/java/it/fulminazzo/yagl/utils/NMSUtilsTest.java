@@ -2,15 +2,15 @@ package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import lombok.Getter;
-import lombok.Setter;
+import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
+import it.fulminazzo.yagl.utils.current.CraftPlayer;
+import it.fulminazzo.yagl.utils.current.EntityPlayer;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +33,7 @@ class NMSUtilsTest {
     void testGetPlayerOpenContainer() {
         Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
         assertInstanceOf(AbstractContainerMenu.class, openContainer.getObject());
-        assertFalse(openContainer.getObject() instanceof PlayerContainerMenu);
+        assertFalse(openContainer.getObject() instanceof AbstractContainerMenu.PlayerContainerMenu);
     }
 
     @Test
@@ -78,66 +78,6 @@ class NMSUtilsTest {
 
         Channel actual = NMSUtils.getPlayerChannel((Player) player);
         assertEquals(expected, actual);
-    }
-
-    @Getter
-    static class CraftPlayer<H> {
-        private final H handle;
-
-        CraftPlayer(H handle) {
-            this.handle = handle;
-        }
-
-    }
-
-    @Getter
-    @Setter
-    static class EntityPlayer {
-        private final ServerGamePacketListenerImpl connection;
-        private final PlayerContainerMenu playerContainer;
-
-        private AbstractContainerMenu openContainer;
-
-        EntityPlayer(Channel channel) {
-            this.connection = new ServerGamePacketListenerImpl(channel);
-            this.playerContainer = new PlayerContainerMenu();
-            this.openContainer = new AbstractContainerMenu();
-        }
-
-    }
-
-    static class AbstractContainerMenu {
-
-    }
-
-    static class PlayerContainerMenu extends AbstractContainerMenu {
-
-    }
-
-    @Getter
-    static class ServerGamePacketListenerImpl {
-        private final Connection networkManager;
-        private final List<Packet> sentPackets;
-
-        ServerGamePacketListenerImpl(Channel channel) {
-            this.networkManager = new Connection(channel);
-            this.sentPackets = new ArrayList<>();
-        }
-
-        public void sendPacket(Packet packet) {
-            this.sentPackets.add(packet);
-        }
-
-    }
-
-    @Getter
-    static class Connection {
-        private final Channel channel;
-
-        Connection(Channel channel) {
-            this.channel = channel;
-        }
-
     }
 
 }
