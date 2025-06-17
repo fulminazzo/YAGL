@@ -13,6 +13,30 @@ import static org.mockito.Mockito.*;
 class NMSUtilsTest {
 
     @Test
+    void testChatBaseComponent() {
+        BukkitTestUtils.mockNMSUtils(c -> {
+            when(NMSUtils.getNMSVersion()).thenAnswer(a -> {
+                throw new IllegalStateException("NMS Version Mismatch");
+            });
+            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
+
+            Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+            assertEquals("IChatBaseComponent{Hello, world}", baseComponent);
+        });
+    }
+
+    @Test
+    void testLegacyChatBaseComponent() {
+        BukkitTestUtils.mockNMSUtils(c -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
+
+            Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+            assertEquals("IChatBaseComponent{Hello, world}", baseComponent);
+        });
+    }
+
+    @Test
     void testGetInventoryTypeThrowsOnInvalidTypes() {
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 NMSUtils.getInventoryTypeStringFromBukkitType(InventoryType.PLAYER)
