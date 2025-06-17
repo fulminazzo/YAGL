@@ -9,10 +9,10 @@ import it.fulminazzo.yagl.utils.current.EntityPlayer;
 import it.fulminazzo.yagl.utils.current.EntityPlayerContainer;
 import it.fulminazzo.yagl.utils.current.containers.Container;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
+import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -118,7 +118,7 @@ class NMSUtilsTest {
 
     @Test
     void testGetNMSVersionOfNewerServer() {
-        Server server = (Server) mock(org.bukkit.craftbukkit.CraftServer.class, withSettings().extraInterfaces(Server.class));
+        Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
         assertThrowsExactly(IllegalStateException.class, NMSUtils::getNMSVersion);
