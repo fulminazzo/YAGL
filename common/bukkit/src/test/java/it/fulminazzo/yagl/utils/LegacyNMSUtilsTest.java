@@ -76,6 +76,8 @@ class LegacyNMSUtilsTest {
                 null
         );
 
+        new Refl<>(this.player).setFieldObject("playerContainer", new Container());
+
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                 null, this.player,
                 "previousTitle", container
