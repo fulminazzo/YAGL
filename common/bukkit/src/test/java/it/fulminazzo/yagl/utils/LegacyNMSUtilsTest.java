@@ -53,6 +53,9 @@ class LegacyNMSUtilsTest {
                     new LegacyContainer("previousTitle")
             );
 
+            DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
+            ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+
             LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                     null, this.player,
                     "previousTitle", container
@@ -64,7 +67,16 @@ class LegacyNMSUtilsTest {
 
             assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
                     .getInventory())
-                    .getTitle()
+                    .getTitle(),
+                    "Actual container title was not changed"
+            );
+            assertEquals("title", delegateContainer.getCachedTitle(),
+                    "Delegate container title was not changed");
+            assertEquals("title", ((ObsoleteContainer) delegateContainer
+                    .getDelegate()
+                    .getContainer())
+                    .getTitle(),
+                    "Delegate container internal container title was not changed"
             );
         });
     }
