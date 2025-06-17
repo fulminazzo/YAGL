@@ -17,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 
@@ -41,8 +40,8 @@ class LegacyNMSUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(Container.Containers.class)
-    void testGetContainerType(Container.Containers type) {
+    @EnumSource(Container.DefaultContainers.class)
+    void testGetContainerType(Container.DefaultContainers type) {
         Container container = new Container(type);
 
         Inventory inventory = new MockInventory(type.getSize());

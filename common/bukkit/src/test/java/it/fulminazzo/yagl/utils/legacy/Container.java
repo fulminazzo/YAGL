@@ -17,7 +17,7 @@ public class Container {
     private InventoryView openInventory;
 
     public Container() {
-        this(Containers.GENERIC_9x3);
+        this(DefaultContainers.GENERIC_9x3);
     }
 
     public Container(Containers type) {
@@ -28,8 +28,12 @@ public class Container {
         this.openInventory = new MockInventoryView(inventory, mock(Player.class), "");
     }
 
+    public interface Containers {
+
+    }
+
     @Getter
-    public enum Containers {
+    public enum DefaultContainers implements Containers {
 
         GENERIC_9x1(9, InventoryType.CHEST),
         GENERIC_9x2(18, InventoryType.CHEST),
@@ -58,17 +62,17 @@ public class Container {
         private final int size;
         private final @NotNull InventoryType inventoryType;
 
-        Containers() {
+        DefaultContainers() {
             InventoryType inventoryType = InventoryType.valueOf(name());
             this.size = inventoryType.getDefaultSize();
             this.inventoryType = inventoryType;
         }
 
-        Containers(final @NotNull InventoryType inventoryType) {
+        DefaultContainers(final @NotNull InventoryType inventoryType) {
             this(inventoryType.getDefaultSize(), inventoryType);
         }
 
-        Containers(final int size, final @NotNull InventoryType inventoryType) {
+        DefaultContainers(final int size, final @NotNull InventoryType inventoryType) {
             this.size = size;
             this.inventoryType = inventoryType;
         }
