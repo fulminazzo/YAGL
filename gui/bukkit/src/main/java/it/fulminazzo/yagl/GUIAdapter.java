@@ -214,7 +214,7 @@ public final class GUIAdapter {
 
         // Since Minecraft handles player inventory in a "particular" way,
         // it is necessary to manually set each item.
-        List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
+        List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getContents()));
 
         // Hotbar contents
         for (int i = 27; i < contentsSize; i++) {
@@ -232,7 +232,7 @@ public final class GUIAdapter {
             else itemStacks.set(slot, convertContentToItemStack(gui, itemMetaClass, metaFunction, content));
         }
 
-        playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
+        playerInventory.setContents(itemStacks.toArray(new ItemStack[0]));
     }
 
     /**
