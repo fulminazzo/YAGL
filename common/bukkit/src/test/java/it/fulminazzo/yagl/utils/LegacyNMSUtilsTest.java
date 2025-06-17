@@ -7,6 +7,8 @@ import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.legacy.Container;
 import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
+import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
+import it.fulminazzo.yagl.utils.legacy.ObsoleteContainer;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
@@ -38,6 +40,29 @@ class LegacyNMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @Test
+    void testObsoleteUpdatePlayerInternalContainersTitle() {
+        Container container = new Container(
+                Container.DefaultContainers.GENERIC_9x3,
+                new ObsoleteContainer("previousTitle"),
+                null
+        );
+
+        LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
+                null, this.player,
+                "previousTitle", container
+        );
+
+        when(this.player.getOpenInventory()).thenReturn(inventoryView);
+
+        NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
+
+        assertEquals("title", ((ObsoleteContainer) container
+                .getContainer())
+                .getTitle()
+        );
     }
 
     @ParameterizedTest
