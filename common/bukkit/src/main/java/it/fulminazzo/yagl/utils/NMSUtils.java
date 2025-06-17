@@ -24,6 +24,31 @@ import java.util.Objects;
 public final class NMSUtils {
 
     /**
+     * Updates the {@link Player} open inventory title.
+     *
+     * @param player the player
+     * @param title  the new title
+     */
+    public static void updateInventoryTitle(final @NotNull Player player,
+                                            final @NotNull String title) {
+        try {
+            // 1.19.4+
+            new Refl<>(player.getOpenInventory()).invokeMethod("setTitle", title);
+        } catch (NoSuchMethodError er) {
+            // Older versions did not have setTitle,
+            // so we must send our own packet.
+            Object packet = constructUpdateInventoryTitlePacket(player, title);
+            sendPacket(player, packet);
+
+            // Update title on internal fields
+            updatePlayerInternalContainersTitle(player, title);
+
+            // Update inventory
+            player.updateInventory();
+        }
+    }
+
+    /**
      * Support function for {@link #updateInventoryTitle(Player, String)}.
      * Updates all the internal containers titles of the given {@link Player},
      * to avoid inconsistencies with Bukkit API.
