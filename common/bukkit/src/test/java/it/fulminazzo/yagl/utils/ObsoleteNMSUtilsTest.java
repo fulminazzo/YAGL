@@ -44,7 +44,6 @@ class ObsoleteNMSUtilsTest {
     void testObsoleteConstructUpdateInventoryTitlePacket() {
         BukkitTestUtils.mockNMSUtils(() -> {
             when(NMSUtils.getNMSVersion()).thenReturn("v1_8_R3");
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),

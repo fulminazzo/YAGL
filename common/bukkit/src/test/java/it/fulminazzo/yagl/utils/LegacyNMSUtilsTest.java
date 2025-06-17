@@ -50,8 +50,6 @@ class LegacyNMSUtilsTest {
     @Test
     void testConstructUpdateInventoryTitlePacket() {
         BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
-
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),
                     this.player,
@@ -84,8 +82,6 @@ class LegacyNMSUtilsTest {
     @Test
     void testUpdatePlayerInternalContainersTitle() {
         BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
-
             InventoryContainer container = new InventoryContainer(
                     DefaultContainers.GENERIC_9x3,
                     null,
@@ -177,9 +173,7 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testChatBaseComponent() {
-        BukkitTestUtils.mockNMSUtils(c -> {
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
-
+        BukkitTestUtils.mockNMSUtils(() -> {
             Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
             assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
         });

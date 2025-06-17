@@ -51,8 +51,6 @@ class NMSUtilsTest {
     @Test
     void testConstructUpdateInventoryTitlePacket() {
         BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
-
             CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
                     withSettings().extraInterfaces(Player.class)
             );
@@ -108,11 +106,10 @@ class NMSUtilsTest {
 
     @Test
     void testChatBaseComponent() {
-        BukkitTestUtils.mockNMSUtils(c -> {
+        BukkitTestUtils.mockNMSUtils(() -> {
             when(NMSUtils.getNMSVersion()).thenAnswer(a -> {
                 throw new IllegalStateException("NMS Version Mismatch");
             });
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
             Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
             assertEquals("IChatBaseComponent{Hello, world}", baseComponent);
