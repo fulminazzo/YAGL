@@ -5,14 +5,12 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.TestUtils;
-import it.fulminazzo.yagl.utils.legacy.Container;
-import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
-import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
-import it.fulminazzo.yagl.utils.legacy.ObsoleteContainer;
+import it.fulminazzo.yagl.utils.legacy.*;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +38,34 @@ class LegacyNMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @Test
+    void testLegacyUpdatePlayerInternalContainersTitle() {
+        BukkitTestUtils.mockNMSUtils(c -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
+
+            Container container = new Container(
+                    Container.DefaultContainers.GENERIC_9x3,
+                    new LegacyContainer("previousTitle"),
+                    null
+            );
+
+            LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
+                    null, this.player,
+                    "previousTitle", container
+            );
+
+            when(this.player.getOpenInventory()).thenReturn(inventoryView);
+
+            NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
+
+            assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
+                    .getContainer())
+                    .getTitle()
+            );
+        });
     }
 
     @Test
