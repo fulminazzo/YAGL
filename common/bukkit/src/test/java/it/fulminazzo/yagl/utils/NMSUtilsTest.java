@@ -50,7 +50,6 @@ class NMSUtilsTest {
     @Test
     void testConstructUpdateInventoryTitlePacket() {
         BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
             MockInventoryView inventoryView = new MockInventoryView(
