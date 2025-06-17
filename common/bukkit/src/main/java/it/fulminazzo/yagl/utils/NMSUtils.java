@@ -77,7 +77,7 @@ public final class NMSUtils {
                     .getFieldRefl(f -> f.getName().equals("delegate"))
                     .getFieldRefl(f -> f.getName().equals("container"))
                     .setFieldObject("title", title);
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException | IllegalStateException ignored) {
         }
     }
 
