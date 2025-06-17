@@ -6,10 +6,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.legacy.*;
-import it.fulminazzo.yagl.utils.legacy.containers.Container;
-import it.fulminazzo.yagl.utils.legacy.containers.LegacyContainer;
-import it.fulminazzo.yagl.utils.legacy.containers.ObsoleteContainer;
-import it.fulminazzo.yagl.utils.legacy.containers.PlayerContainer;
+import it.fulminazzo.yagl.utils.legacy.containers.*;
 import net.minecraft.server.v1_14_R1.CraftServer;
 import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
@@ -51,7 +48,7 @@ class LegacyNMSUtilsTest {
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
             Container container = new Container(
-                    Container.DefaultContainers.GENERIC_9x3,
+                    DefaultContainers.GENERIC_9x3,
                     new LegacyContainer("previousTitle"),
                     null
             );
@@ -75,7 +72,7 @@ class LegacyNMSUtilsTest {
     @Test
     void testObsoleteUpdatePlayerInternalContainersTitle() {
         Container container = new Container(
-                Container.DefaultContainers.GENERIC_9x3,
+                DefaultContainers.GENERIC_9x3,
                 new ObsoleteContainer("previousTitle"),
                 null
         );
@@ -98,8 +95,8 @@ class LegacyNMSUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(Container.DefaultContainers.class)
-    void testGetContainerType(Container.DefaultContainers type) {
+    @EnumSource(DefaultContainers.class)
+    void testGetContainerType(DefaultContainers type) {
         Container container = new Container(type);
 
         Inventory inventory = new MockInventory(type.getSize());
@@ -112,8 +109,8 @@ class LegacyNMSUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(Container.ObfuscatedContainers.class)
-    void testGetObfuscatedContainerType(Container.ObfuscatedContainers type) {
+    @EnumSource(ObfuscatedContainers.class)
+    void testGetObfuscatedContainerType(ObfuscatedContainers type) {
         Container container = new Container(type);
 
         Inventory inventory = new MockInventory(type.getSize());
