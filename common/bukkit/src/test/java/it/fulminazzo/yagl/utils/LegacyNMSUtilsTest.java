@@ -51,6 +51,8 @@ class LegacyNMSUtilsTest {
         TestUtils.mockReflectionUtils(m -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
+            when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
+                    .thenThrow(new IllegalArgumentException("Class not found"));
             m.when(() -> ReflectionUtils.getMethod(any(), any(Predicate.class)))
                     .thenAnswer(a -> {
                         Class<?> clazz = a.getArgument(0);
