@@ -31,7 +31,8 @@ public final class NMSUtils {
      * @param player the player
      * @param title  the title
      */
-    static void updatePlayerInternalContainersTitle(@NotNull Player player, @NotNull String title) {
+    static void updatePlayerInternalContainersTitle(final @NotNull Player player,
+                                                    final @NotNull String title) {
         Refl<?> internalContainer = new Refl<>(player.getOpenInventory())
                 // Get the first field, only one expected
                 .getFieldRefl(f -> true)
@@ -109,8 +110,8 @@ public final class NMSUtils {
      * @param player the player
      * @param packet the packet
      */
-    public static void sendPacket(final Player player,
-                                  final Object packet) {
+    public static void sendPacket(final @NotNull Player player,
+                                  final @NotNull Object packet) {
         Refl<?> playerConnection = getPlayerConnection(getHandle(player));
         playerConnection.invokeMethod(Void.TYPE,
                 new Class[]{getPacketClass()},
