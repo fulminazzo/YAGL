@@ -6,6 +6,7 @@ import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
 import it.fulminazzo.yagl.utils.current.EntityPlayer;
+import it.fulminazzo.yagl.utils.current.EntityPlayerContainer;
 import it.fulminazzo.yagl.utils.current.containers.Container;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.v1_14_R1.CraftServer;
@@ -52,19 +53,24 @@ class NMSUtilsTest {
         BukkitTestUtils.mockNMSUtils(() -> {
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
+            CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
+                    withSettings().extraInterfaces(Player.class)
+            );
+            when(player.getHandle()).thenReturn(new EntityPlayerContainer());
+
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),
-                    this.player,
+                    (Player) player,
                     "Hello"
             );
 
             Container container = Container.newContainer();
             container.setOpenInventory(inventoryView);
 
-            EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+            EntityPlayerContainer handle = player.getHandle();
             handle.setContainer(container);
 
-            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
+            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket((Player) player, "Hello, world!");
 
             assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
                     "Packet was supposed to be PacketPlayOutOpenWindow");
