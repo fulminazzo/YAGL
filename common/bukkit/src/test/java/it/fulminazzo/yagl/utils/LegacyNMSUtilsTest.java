@@ -53,7 +53,11 @@ class LegacyNMSUtilsTest {
             when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
-            MockInventoryView inventoryView = new MockInventoryView(mock(Inventory.class), this.player, "Hello");
+            MockInventoryView inventoryView = new MockInventoryView(
+                    new MockInventory(27),
+                    this.player,
+                    "Hello"
+            );
 
             Container container = new Container(DefaultContainers.GENERIC_9x3);
             container.setOpenInventory(inventoryView);
