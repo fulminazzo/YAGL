@@ -64,6 +64,9 @@ class LegacyNMSUtilsTest {
                     this.player,
                     "Previous title"
             );
+            Container container = new Container();
+            container.setOpenInventory(view);
+            ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(container);
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
             assertEquals("Title", view.getTitle());
