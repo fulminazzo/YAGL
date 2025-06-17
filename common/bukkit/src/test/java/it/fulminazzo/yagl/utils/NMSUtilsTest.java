@@ -33,6 +33,7 @@ class NMSUtilsTest {
     void testGetPlayerOpenContainer() {
         Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
         assertInstanceOf(AbstractContainerMenu.class, openContainer.getObject());
+        assertFalse(openContainer.getObject() instanceof PlayerContainerMenu);
     }
 
     @Test
@@ -93,19 +94,23 @@ class NMSUtilsTest {
     @Getter
     static class EntityPlayer {
         private final ServerGamePacketListenerImpl connection;
-        private final AbstractContainerMenu playerContainer;
+        private final PlayerContainerMenu playerContainer;
 
         private AbstractContainerMenu openContainer;
 
         EntityPlayer(Channel channel) {
             this.connection = new ServerGamePacketListenerImpl(channel);
-            this.playerContainer = new AbstractContainerMenu();
+            this.playerContainer = new PlayerContainerMenu();
             this.openContainer = new AbstractContainerMenu();
         }
 
     }
 
     static class AbstractContainerMenu {
+
+    }
+
+    static class PlayerContainerMenu extends AbstractContainerMenu {
 
     }
 
