@@ -73,8 +73,7 @@ class LegacyNMSUtilsTest {
     void testObsoleteUpdatePlayerInternalContainersTitle() {
         Container container = new Container(
                 DefaultContainers.GENERIC_9x3,
-                new ObsoleteContainer("previousTitle"),
-                null
+                new ObsoleteContainer("previousTitle")
         );
 
         new Refl<>(((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle())

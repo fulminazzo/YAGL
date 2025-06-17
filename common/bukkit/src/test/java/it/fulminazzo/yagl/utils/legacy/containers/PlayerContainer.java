@@ -13,8 +13,7 @@ public class PlayerContainer extends Container {
     public PlayerContainer() {
         this.delegate = new Container(
                 DefaultContainers.GENERIC_9x3,
-                new ObsoleteContainer(""),
-                null
+                new ObsoleteContainer("")
         );
     }
 

@@ -13,7 +13,6 @@ import static org.mockito.Mockito.mock;
 public class Container {
     private final Containers type;
     private final Container container;
-    private final Container inventory;
 
     private InventoryView openInventory;
 
@@ -22,13 +21,12 @@ public class Container {
     }
 
     public Container(Containers type) {
-        this(type, null, null);
+        this(type, null);
     }
 
-    public Container(Containers type, Container container, Container inventory) {
+    public Container(Containers type, Container container) {
         this.type = type;
         this.container = container;
-        this.inventory = inventory;
     }
 
     public void setOpenInventory(final @NotNull Inventory inventory) {
