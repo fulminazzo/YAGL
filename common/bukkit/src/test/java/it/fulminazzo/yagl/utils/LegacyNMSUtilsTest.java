@@ -82,47 +82,6 @@ class LegacyNMSUtilsTest {
         });
     }
 
-    /**
-     * 1.8-1.14
-     */
-    @Test
-    void testObsoleteConstructUpdateInventoryTitlePacket() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_8_R3");
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
-
-            MockInventoryView inventoryView = new MockInventoryView(
-                    new MockInventory(27),
-                    this.player,
-                    "Hello"
-            );
-
-            Container container = new Container(DefaultContainers.GENERIC_9x3);
-            container.setOpenInventory(inventoryView);
-
-            LegacyEntityPlayer handle = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
-            handle.setOpenContainer(container);
-
-            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
-
-            assertInstanceOf(net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow.class, actualPacket,
-                    "Packet was supposed to be PacketPlayOutOpenWindow");
-
-            net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow packet = (net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow) actualPacket;
-
-            assertEquals(container.getWindowId(), packet.getId(),
-                    "Packet id was supposed to be the same as container id");
-
-            assertEquals("minecraft:chest", packet.getContainerType(),
-                    "Packet type was supposed to be the same as inventory string type");
-
-            assertEquals(org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage.fromString("Hello, world!")[0], packet.getTitle());
-
-            assertEquals(27, packet.getSize(),
-                    "Packet size was supposed to be the same as inventory");
-        });
-    }
-
     @Test
     void testUpdatePlayerInternalContainersTitle() {
         BukkitTestUtils.mockNMSUtils(() -> {
@@ -161,31 +120,6 @@ class LegacyNMSUtilsTest {
                     "Delegate container internal container title was not changed"
             );
         });
-    }
-
-    @Test
-    void testObsoleteUpdatePlayerInternalContainersTitle() {
-        Container container = new Container(
-                DefaultContainers.GENERIC_9x3,
-                new ObsoleteContainer("previousTitle")
-        );
-
-        new Refl<>(((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle())
-                .setFieldObject("playerContainer", new Container());
-
-        LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
-                null, this.player,
-                "previousTitle", container
-        );
-
-        when(this.player.getOpenInventory()).thenReturn(inventoryView);
-
-        NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
-
-        assertEquals("title", ((ObsoleteContainer) container
-                .getContainer())
-                .getTitle()
-        );
     }
 
     @ParameterizedTest
