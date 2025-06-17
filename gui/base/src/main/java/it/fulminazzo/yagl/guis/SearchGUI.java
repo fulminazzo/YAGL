@@ -111,7 +111,11 @@ public final class SearchGUI<T> extends DataGUI<T> {
                         .forEach(c -> c.setDisplayName(query));
             }
         }
-        return super.prepareOpenGUI(gui, page);
+        return super.prepareOpenGUI(gui
+                .setVariable("query", getQuery())
+                .setVariable("search", getQuery()),
+                page
+        );
     }
 
     @Override
