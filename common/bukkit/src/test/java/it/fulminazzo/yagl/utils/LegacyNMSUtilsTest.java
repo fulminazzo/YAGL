@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.utils;
 
-import com.google.common.base.Predicate;
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
@@ -18,7 +17,6 @@ import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +24,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -51,7 +50,7 @@ class LegacyNMSUtilsTest {
         TestUtils.mockReflectionUtils(m -> {
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
-            m.when(() -> ReflectionUtils.getMethod(eq(InventoryView.class), any(Predicate.class)))
+            m.when(() -> ReflectionUtils.getMethod(any(), any(Predicate.class)))
                     .thenThrow(new IllegalArgumentException("Method not found"));
 
             MockInventoryView view = new MockInventoryView(
@@ -62,6 +61,10 @@ class LegacyNMSUtilsTest {
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
             assertEquals("Title", view.getTitle());
+
+            CraftPlayer<LegacyEntityPlayer> craftPlayer = (CraftPlayer<LegacyEntityPlayer>) this.player;
+            List<Packet> packets = craftPlayer.getHandle().getPlayerConnection().getSentPackets();
+            assertEquals(1, packets.size(), "Expected at least one packet to be sent");
         });
     }
 
