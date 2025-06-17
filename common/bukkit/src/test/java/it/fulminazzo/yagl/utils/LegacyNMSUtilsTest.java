@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.utils;
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.legacy.Container;
 import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
@@ -11,8 +12,12 @@ import net.minecraft.server.v1_14_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 
@@ -33,6 +38,20 @@ class LegacyNMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @ParameterizedTest
+    @EnumSource(Container.Containers.class)
+    void testGetContainerType(Container.Containers type) {
+        Container container = new Container(type);
+
+        Inventory inventory = new MockInventory(type.getSize());
+        new Refl<>(inventory).setFieldObject("type", type.getInventoryType());
+
+        Object actual = NMSUtils.getContainerType(container);
+        container.setOpenInventory(inventory);
+
+        assertEquals(type, actual);
     }
 
     @Test
