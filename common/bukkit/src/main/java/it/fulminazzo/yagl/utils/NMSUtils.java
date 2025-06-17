@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -20,6 +22,36 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NMSUtils {
+
+    /**
+     * Gets the container type from the given container.
+     * Solves a problem found in Minecraft 1.14, where getting the direct container
+     * of a modified size chest inventory, will wrongfully return <code>GENERIC_9X3</code>.
+     *
+     * @param container the container
+     * @return the container type
+     * @since Minecraft 1.14
+     */
+    static @NotNull Object getContainerType(final @NotNull Object container) {
+        Refl<?> containerRefl = new Refl<>(container);
+
+        InventoryView view = containerRefl.getFieldObject(InventoryView.class);
+        Inventory openInventory = view.getTopInventory();
+
+        Object type = containerRefl.getFieldObject(f -> f.getType().getSimpleName().equals("Containers"));
+        // If inventory is chest, manually get type from size to avoid conflicts
+        if (openInventory.getType().equals(InventoryType.CHEST)) {
+            Class<?> containersClass = type.getClass();
+            Refl<?> containers = new Refl<>(containersClass);
+            int size = openInventory.getSize() / 9;
+            try {
+                type = containers.getFieldObject("GENERIC_9X" + size);
+            } catch (IllegalArgumentException e) {
+                // Not available with deobfuscated name, since 1.17
+            }
+        }
+        return type;
+    }
 
     /**
      * Gets the {@link Player} open inventory in the form of an NMS container.
