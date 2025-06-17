@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl.utils.current.containers;
 
+import it.fulminazzo.yagl.utils.legacy.containers.Containers;
+import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.InventoryView;
@@ -9,16 +11,16 @@ import java.util.Random;
 @Getter
 @Setter
 public abstract class Container {
-    private final Containers containers;
+    private final Containers type;
     private final int ignored;
-    private final int id;
+    private final int windowId;
 
     private InventoryView openInventory;
 
     public Container() {
-        this.containers = Containers.GENERIC9x3;
+        this.type = DefaultContainers.GENERIC_9x3;
         this.ignored = -1;
-        this.id = new Random().nextInt();
+        this.windowId = new Random().nextInt();
     }
 
     @Getter
