@@ -57,6 +57,51 @@ public final class NMSUtils {
     }
 
     /**
+     * Creates a new packet (<i>PlayOutOpenWindow</i>) to update the current
+     * {@link Player#getOpenInventory()} title.
+     *
+     * @param player the player
+     * @param title  the title
+     * @return the packet
+     */
+    public static @NotNull Object constructUpdateInventoryTitlePacket(final @NotNull Player player,
+                                                                      final @NotNull String title) {
+        final Inventory openInventory = player.getOpenInventory().getTopInventory();
+        final Class<?> packetPlayOutOpenWindowClass = getPacketPlayOutOpenWindowClass();
+
+        Refl<?> container = new Refl<>(getPlayerOpenContainer(player));
+
+        int id;
+        try {
+            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
+            id = container.getFieldObject("windowId");
+        } catch (IllegalArgumentException e) {
+            // 1.17.1, 1.18.2
+            // Second int of Container class
+            @NotNull List<Field> ids = container.getFields(f ->
+                    f.getType().equals(int.class) &&
+                            f.getDeclaringClass().getSimpleName().equals("Container")
+            );
+            id = container.getFieldObject(ids.get(1));
+        }
+
+        Object chatComponentTitle = getIChatBaseComponent(title);
+
+        Refl<?> packet;
+        try {
+            // 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2
+            Object containerType = getContainerType(container.getObject());
+            packet = new Refl<>(packetPlayOutOpenWindowClass, id, containerType, chatComponentTitle);
+        } catch (IllegalArgumentException e) {
+            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2
+            String inventoryType = getInventoryTypeStringFromBukkitType(openInventory.getType());
+            packet = new Refl<>(packetPlayOutOpenWindowClass, id, inventoryType, chatComponentTitle, openInventory.getSize());
+        }
+
+        return packet.getObject();
+    }
+
+    /**
      * Gets the container type from the given container.
      * Solves a problem found in Minecraft 1.14, where getting the direct container
      * of a modified size chest inventory, will wrongfully return <code>GENERIC_9X3</code>.
