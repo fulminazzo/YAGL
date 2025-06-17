@@ -26,33 +26,10 @@ class NMSUtilsTest {
     }
 
     @Test
-    void testLegacyChatBaseComponent() {
-        BukkitTestUtils.mockNMSUtils(c -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
-            when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
-
-            Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
-            assertEquals("IChatBaseComponent{Hello, world}", baseComponent);
-        });
-    }
-
-    @Test
     void testGetInventoryTypeThrowsOnInvalidTypes() {
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 NMSUtils.getInventoryTypeStringFromBukkitType(InventoryType.PLAYER)
         );
-    }
-
-    @Test
-    void testGetPlayerChannelLegacy() {
-        Channel expected = mock(Channel.class);
-        CraftPlayer<LegacyEntityPlayer> player = mock(CraftPlayer.class,
-                withSettings().extraInterfaces(Player.class)
-        );
-        when(player.getHandle()).thenReturn(new LegacyEntityPlayer(expected));
-
-        Channel actual = NMSUtils.getPlayerChannel((Player) player);
-        assertEquals(expected, actual);
     }
 
     @Test
@@ -78,51 +55,21 @@ class NMSUtilsTest {
     }
 
     @Getter
-    static class LegacyEntityPlayer {
-        private final PlayerConnection playerConnection;
-
-        LegacyEntityPlayer(Channel channel) {
-            this.playerConnection = new PlayerConnection(channel);
-        }
-
-    }
-
-    @Getter
-    static class PlayerConnection {
-        private final NetworkManager networkManager;
-
-        PlayerConnection(Channel channel) {
-            this.networkManager = new NetworkManager(channel);
-        }
-
-    }
-
-    @Getter
-    static class NetworkManager {
-        private final Channel channel;
-
-        NetworkManager(Channel channel) {
-            this.channel = channel;
-        }
-
-    }
-
-    @Getter
     static class EntityPlayer {
-        private final ServerGamePacketListenerImpl gamePacketListener;
+        private final ServerGamePacketListenerImpl connection;
 
         EntityPlayer(Channel channel) {
-            this.gamePacketListener = new ServerGamePacketListenerImpl(channel);
+            this.connection = new ServerGamePacketListenerImpl(channel);
         }
 
     }
 
     @Getter
     static class ServerGamePacketListenerImpl {
-        private final Connection connection;
+        private final Connection networkManager;
 
         ServerGamePacketListenerImpl(Channel channel) {
-            this.connection = new Connection(channel);
+            this.networkManager = new Connection(channel);
         }
 
     }
