@@ -27,7 +27,7 @@ public class FullSizeGUI extends FieldEquable implements GUI {
     /**
      * The Second inventory size.
      */
-    static final int SECOND_INVENTORY_SIZE = 36;
+    public static final int SECOND_INVENTORY_SIZE = 36;
 
     private final @NotNull GUI upperGUI;
     private final @NotNull ResizableGUI lowerGUI;
