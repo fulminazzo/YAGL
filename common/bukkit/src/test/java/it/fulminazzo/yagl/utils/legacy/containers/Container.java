@@ -7,12 +7,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 import static org.mockito.Mockito.mock;
 
 @Getter
 public class Container {
     private final Containers type;
     private final Container container;
+
+    private final int windowId;
 
     private InventoryView openInventory;
 
@@ -27,6 +31,7 @@ public class Container {
     public Container(Containers type, Container container) {
         this.type = type;
         this.container = container;
+        this.windowId = new Random().nextInt();
     }
 
     public void setOpenInventory(final @NotNull Inventory inventory) {
