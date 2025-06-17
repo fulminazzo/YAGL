@@ -53,6 +53,20 @@ class LegacyNMSUtilsTest {
         assertEquals(type, actual);
     }
 
+    @ParameterizedTest
+    @EnumSource(Container.ObfuscatedContainers.class)
+    void testGetObfuscatedContainerType(Container.ObfuscatedContainers type) {
+        Container container = new Container(type);
+
+        Inventory inventory = new MockInventory(type.getSize());
+        new Refl<>(inventory).setFieldObject("type", type.getInventoryType());
+        container.setOpenInventory(inventory);
+
+        Object actual = NMSUtils.getContainerType(container);
+
+        assertEquals(type, actual);
+    }
+
     @Test
     void testGetPlayerOpenContainer() {
         Refl<?> openContainer = NMSUtils.getPlayerOpenContainer(this.player);
