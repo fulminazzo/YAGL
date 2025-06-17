@@ -1,7 +1,6 @@
 package it.fulminazzo.yagl.utils.current;
 
 import io.netty.channel.Channel;
-import it.fulminazzo.yagl.utils.current.containers.Container;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.protocol.Packet;
@@ -16,8 +15,6 @@ public class EntityPlayer {
     private final AbstractContainerMenu.PlayerContainerMenu playerContainer;
 
     private AbstractContainerMenu openContainer;
-
-    private Container container;
 
     public EntityPlayer(Channel channel) {
         this.connection = new ServerGamePacketListenerImpl(channel);
