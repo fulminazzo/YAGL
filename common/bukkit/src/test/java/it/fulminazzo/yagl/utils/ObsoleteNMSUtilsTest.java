@@ -1,8 +1,10 @@
 package it.fulminazzo.yagl.utils;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
+import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import it.fulminazzo.yagl.utils.legacy.containers.Container;
@@ -11,7 +13,7 @@ import it.fulminazzo.yagl.utils.legacy.containers.ObsoleteContainer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,10 +44,11 @@ class ObsoleteNMSUtilsTest {
      */
     @Test
     void testObsoleteConstructUpdateInventoryTitlePacket() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_8_R3");
-            when(new Refl<>(NMSUtils.class).invokeMethod("getPacketPlayOutOpenWindowClass"))
-                    .thenReturn(PacketPlayOutOpenWindow.class);
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
+                    .thenAnswer(a -> {
+                        throw new IllegalArgumentException("Class not found");
+                    });
 
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),

@@ -49,9 +49,11 @@ class LegacyNMSUtilsTest {
      */
     @Test
     void testConstructUpdateInventoryTitlePacket() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            when(new Refl<>(NMSUtils.class).invokeMethod("getPacketPlayOutOpenWindowClass"))
-                    .thenReturn(net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow.class);
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
+                    .thenAnswer(a -> {
+                        throw new IllegalArgumentException("Class not found");
+                    });
 
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),
