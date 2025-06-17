@@ -20,6 +20,20 @@ import java.util.Objects;
 public final class NMSUtils {
 
     /**
+     * Sends the given packet to the specified player.
+     *
+     * @param player the player
+     * @param packet the packet
+     */
+    public static void sendPacket(final Player player,
+                                  final Object packet) {
+        Refl<?> playerConnection = getPlayerConnection(getHandle(player));
+        playerConnection.invokeMethod(Void.TYPE,
+                new Class[]{getPacketClass()},
+                packet);
+    }
+
+    /**
      * Gets an NMS chat component from the given string.
      *
      * @param message the message
@@ -142,6 +156,18 @@ public final class NMSUtils {
         } catch (IllegalArgumentException e) {
             // 1.20+
             return playerConnection.getFieldRefl(f -> f.getType().getSimpleName().equals("Connection"));
+        }
+    }
+
+    private static @NotNull Class<?> getPacketClass() {
+        try {
+            // 1.17.1+
+            final String packetName = "net.minecraft.network.protocol.Packet";
+            return ReflectionUtils.getClass(packetName);
+        } catch (IllegalArgumentException e) {
+            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
+            final String packetName = String.format("net.minecraft.server.%s.Packet", getNMSVersion());
+            return ReflectionUtils.getClass(packetName);
         }
     }
 
