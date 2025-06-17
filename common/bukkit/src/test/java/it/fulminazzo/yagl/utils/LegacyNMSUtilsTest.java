@@ -17,6 +17,7 @@ import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,25 @@ class LegacyNMSUtilsTest {
         );
         when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
         this.player = (Player) craftPlayer;
+    }
+
+    @Test
+    void testUpdateInventoryTitle() {
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
+                    .thenAnswer(a -> {
+                        throw new IllegalArgumentException("Class not found");
+                    });
+
+            MockInventoryView view = new MockInventoryView(
+                    new MockInventory(9),
+                    this.player,
+                    "Previous title"
+            );
+
+            NMSUtils.updateInventoryTitle(this.player, "Title");
+            assertEquals("Title", view.getTitle());
+        });
     }
 
     /**
