@@ -91,28 +91,28 @@ class LegacyNMSUtilsTest {
     static class CraftPlayer<H> {
         private final H handle;
 
-        private Container openContainer;
-        private final Container playerContainer;
-
         CraftPlayer(H handle) {
             this.handle = handle;
-            this.openContainer = new Container();
-            this.playerContainer = new Container();
         }
-
-    }
-
-    static class Container {
 
     }
 
     @Getter
     static class LegacyEntityPlayer {
         private final PlayerConnection playerConnection;
+        private final Container playerContainer;
+
+        private Container openContainer;
 
         LegacyEntityPlayer(Channel channel) {
             this.playerConnection = new PlayerConnection(channel);
+            this.playerContainer = new Container();
+            this.openContainer = new Container();
         }
+
+    }
+
+    static class Container {
 
     }
 

@@ -84,28 +84,28 @@ class NMSUtilsTest {
     static class CraftPlayer<H> {
         private final H handle;
 
-        private AbstractContainerMenu openContainer;
-        private final AbstractContainerMenu playerContainer;
-
         CraftPlayer(H handle) {
             this.handle = handle;
-            this.openContainer = new AbstractContainerMenu();
-            this.playerContainer = new AbstractContainerMenu();
         }
-
-    }
-
-    static class AbstractContainerMenu {
 
     }
 
     @Getter
     static class EntityPlayer {
         private final ServerGamePacketListenerImpl connection;
+        private final AbstractContainerMenu playerContainer;
+
+        private AbstractContainerMenu openContainer;
 
         EntityPlayer(Channel channel) {
             this.connection = new ServerGamePacketListenerImpl(channel);
+            this.playerContainer = new AbstractContainerMenu();
+            this.openContainer = new AbstractContainerMenu();
         }
+
+    }
+
+    static class AbstractContainerMenu {
 
     }
 
