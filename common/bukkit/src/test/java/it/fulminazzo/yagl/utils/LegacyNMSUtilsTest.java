@@ -42,7 +42,7 @@ class LegacyNMSUtilsTest {
     }
 
     @Test
-    void testLegacyUpdatePlayerInternalContainersTitle() {
+    void testUpdatePlayerInternalContainersTitle() {
         BukkitTestUtils.mockNMSUtils(() -> {
             when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
@@ -77,7 +77,8 @@ class LegacyNMSUtilsTest {
                 null
         );
 
-        new Refl<>(this.player).setFieldObject("playerContainer", new Container());
+        new Refl<>(((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle())
+                .setFieldObject("playerContainer", new Container());
 
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                 null, this.player,
@@ -157,7 +158,7 @@ class LegacyNMSUtilsTest {
             when(NMSUtils.getIChatBaseComponent(any())).thenCallRealMethod();
 
             Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
-            assertEquals("IChatBaseComponent{Hello, world}", baseComponent);
+            assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
         });
     }
 
