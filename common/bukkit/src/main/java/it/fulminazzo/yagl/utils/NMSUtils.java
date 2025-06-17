@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -17,6 +18,25 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NMSUtils {
+
+    /**
+     * Gets an NMS chat component from the given string.
+     *
+     * @param message the message
+     * @return the chat base component
+     */
+    public static @NotNull Object getIChatBaseComponent(final @NotNull String message) {
+        String iChatBaseComponentClassName;
+        try {
+            iChatBaseComponentClassName = String.format("org.bukkit.craftbukkit.%s.util.CraftChatMessage", getNMSVersion());
+        } catch (IllegalStateException e) {
+            // 1.20+
+            iChatBaseComponentClassName = "org.bukkit.craftbukkit.util.CraftChatMessage";
+        }
+        Class<?> iChatBaseComponent = ReflectionUtils.getClass(iChatBaseComponentClassName);
+        Object[] components = new Refl<>(iChatBaseComponent).invokeMethod("fromString", message);
+        return components[0];
+    }
 
     /**
      * Gets the associated Minecraft inventory type from the {@link InventoryType}.
