@@ -66,12 +66,16 @@ class LegacyNMSUtilsTest {
                         else return a.callRealMethod();
                     });
 
-            MockInventoryView view = new MockInventoryView(
+            Container container = new Container(
+                    DefaultContainers.GENERIC_9x3,
+                    new LegacyContainer("Previous title")
+            );
+            InventoryView view = new LegacyMockInventoryView(
                     new MockInventory(9),
                     this.player,
-                    "Previous title"
+                    "Previous title",
+                    container
             );
-            Container container = new Container();
             container.setOpenInventory(view);
             ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(container);
 
