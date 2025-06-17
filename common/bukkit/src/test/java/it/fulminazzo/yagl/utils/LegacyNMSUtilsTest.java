@@ -25,6 +25,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,11 +54,15 @@ class LegacyNMSUtilsTest {
                     .thenThrow(new IllegalArgumentException("Class not found"));
             when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
+
+            AtomicBoolean firstCall = new AtomicBoolean(true);
             m.when(() -> ReflectionUtils.getMethod(any(), any(Predicate.class)))
                     .thenAnswer(a -> {
                         Class<?> clazz = a.getArgument(0);
-                        if (InventoryView.class.isAssignableFrom(clazz))
+                        if (InventoryView.class.isAssignableFrom(clazz) && firstCall.get()) {
+                            firstCall.set(false);
                             throw new IllegalArgumentException("Method not found");
+                        }
                         else return a.callRealMethod();
                     });
 
