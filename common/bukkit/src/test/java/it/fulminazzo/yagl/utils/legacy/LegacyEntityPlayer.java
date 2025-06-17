@@ -18,7 +18,7 @@ public class LegacyEntityPlayer {
 
     public LegacyEntityPlayer(Channel channel) {
         this.playerConnection = new PlayerConnection(channel);
-        this.playerContainer = new Container();
+        this.playerContainer = new PlayerContainer();
         this.openContainer = new Container();
     }
 
