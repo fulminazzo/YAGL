@@ -45,6 +45,17 @@ class NMSUtilsTest {
         this.player = (Player) craftPlayer;
     }
 
+    @Test
+    void testUpdateInventoryTitle() {
+        MockInventoryView view = new MockInventoryView(
+                new MockInventory(9),
+                this.player,
+                "Previous title"
+        );
+        NMSUtils.updateInventoryTitle(this.player, "Title");
+        assertEquals("Title", view.getTitle());
+    }
+
     /**
      * 1.17-1.19
      */
