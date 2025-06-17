@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,6 +20,24 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NMSUtils {
+
+    /**
+     * Gets the {@link Player} open inventory in the form of an NMS container.
+     *
+     * @param player the player
+     * @return the open container
+     */
+    static @NotNull Refl<?> getPlayerOpenContainer(final @NotNull Player player) {
+        Refl<?> entityPlayer = getHandle(player);
+        @NotNull List<Field> containers = entityPlayer.getFields(f ->
+                f.getType().getSimpleName().equals("Container") ||
+                        // 1.20+
+                        f.getType().getSimpleName().equals("AbstractContainerMenu")
+        );
+        // First container is for player inventory in older versions
+        Field containerField = containers.get(Math.min(2, containers.size()) - 1);
+        return entityPlayer.getFieldRefl(containerField);
+    }
 
     /**
      * Sends the given packet to the specified player.
