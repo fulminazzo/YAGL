@@ -116,6 +116,14 @@ class NMSUtilsTest {
         });
     }
 
+    @Test
+    void testGetNMSVersionOfNewerServer() {
+        Server server = (Server) mock(org.bukkit.craftbukkit.CraftServer.class, withSettings().extraInterfaces(Server.class));
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
+
+        assertThrowsExactly(IllegalStateException.class, NMSUtils::getNMSVersion);
+    }
+
     private static Object[][] inventoryTypeStrings() {
         return Arrays.stream(InventoryType.values())
                 .map(t -> new Object[]{t, null})
