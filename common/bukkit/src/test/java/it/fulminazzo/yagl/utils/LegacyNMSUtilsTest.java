@@ -50,6 +50,9 @@ class LegacyNMSUtilsTest {
     @Test
     void testConstructUpdateInventoryTitlePacket() {
         BukkitTestUtils.mockNMSUtils(() -> {
+            when(new Refl<>(NMSUtils.class).invokeMethod("getPacketPlayOutOpenWindowClass"))
+                    .thenReturn(net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow.class);
+
             MockInventoryView inventoryView = new MockInventoryView(
                     new MockInventory(27),
                     this.player,
