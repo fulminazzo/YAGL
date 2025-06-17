@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.utils.legacy;
 
 import lombok.Getter;
+import org.bukkit.event.inventory.InventoryType;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class Container {
@@ -14,33 +16,50 @@ public class Container {
         this.type = type;
     }
 
+    @Getter
     public enum Containers {
 
-        GENERIC_9x1,
-        GENERIC_9x2,
-        GENERIC_9x3,
-        GENERIC_9x4,
-        GENERIC_9x5,
-        GENERIC_9x6,
-        GENERIC_3x3,
-        CRAFTER_3x3,
+        GENERIC_9x1(9, InventoryType.CHEST),
+        GENERIC_9x2(18, InventoryType.CHEST),
+        GENERIC_9x3(InventoryType.CHEST),
+        GENERIC_9x4(36, InventoryType.CHEST),
+        GENERIC_9x5(45, InventoryType.CHEST),
+        GENERIC_9x6(54, InventoryType.CHEST),
+        GENERIC_3x3(InventoryType.DROPPER),
         ANVIL,
         BEACON,
         BLAST_FURNACE,
-        BREWING_STAND,
+        BREWING_STAND(InventoryType.BREWING),
         CRAFTING,
-        ENCHANTMENT,
+        ENCHANTMENT(InventoryType.ENCHANTING),
         FURNACE,
         GRINDSTONE,
         HOPPER,
         LECTERN,
         LOOM,
-        MERCHANT,
         SHULKER_BOX,
         SMITHING,
         SMOKER,
-        CARTOGRAPHY_TABLE,
-        STONECUTTER
+        CARTOGRAPHY_TABLE(InventoryType.CARTOGRAPHY),
+        STONECUTTER;
+
+        private final int size;
+        private final @NotNull InventoryType inventoryType;
+
+        Containers() {
+            InventoryType inventoryType = InventoryType.valueOf(name());
+            this.size = inventoryType.getDefaultSize();
+            this.inventoryType = inventoryType;
+        }
+
+        Containers(final @NotNull InventoryType inventoryType) {
+            this(inventoryType.getDefaultSize(), inventoryType);
+        }
+
+        Containers(final int size, final @NotNull InventoryType inventoryType) {
+            this.size = size;
+            this.inventoryType = inventoryType;
+        }
 
     }
 
