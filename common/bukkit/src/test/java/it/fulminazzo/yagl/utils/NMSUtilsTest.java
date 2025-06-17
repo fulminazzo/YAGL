@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.Channel;
 import lombok.Getter;
+import net.minecraft.network.protocol.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.junit.jupiter.api.Test;
@@ -70,6 +71,9 @@ class NMSUtilsTest {
 
         ServerGamePacketListenerImpl(Channel channel) {
             this.networkManager = new Connection(channel);
+        }
+
+        public void sendPacket(Packet packet) {
         }
 
     }
