@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -16,6 +17,43 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NMSUtils {
+
+    /**
+     * Gets the associated Minecraft inventory type from the {@link InventoryType}.
+     * Used in obsolete Minecraft versions like 1.8.
+     *
+     * @param inventoryType the inventory type
+     * @return the minecraft inventory type
+     */
+    static @NotNull String getInventoryTypeStringFromBukkitType(final @NotNull InventoryType inventoryType) {
+        switch (inventoryType) {
+            case CHEST:
+            case ENDER_CHEST:
+                return "minecraft:chest";
+            case FURNACE:
+                return "minecraft:furnace";
+            case WORKBENCH:
+                return "minecraft:crafting_table";
+            case ANVIL:
+                return "minecraft:anvil";
+            case BREWING:
+                return "minecraft:brewing_stand";
+            case DISPENSER:
+            case DROPPER:
+                return "minecraft:dropper";
+            case HOPPER:
+                return "minecraft:hopper";
+            case BEACON:
+                return "minecraft:beacon";
+            case ENCHANTING:
+                return "minecraft:enchanting_table";
+            case MERCHANT:
+                return "minecraft:villager";
+            case SHULKER_BOX:
+                return "minecraft:shulker_box";
+        }
+        throw new IllegalArgumentException("Could not find associated legacy inventory type from Bukkit type: " + inventoryType);
+    }
 
     /**
      * Gets the NMS version of the current version.
