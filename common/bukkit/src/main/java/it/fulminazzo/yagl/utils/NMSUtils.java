@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A collection of utilities to work with NMS.
@@ -259,6 +261,24 @@ public final class NMSUtils {
                 return "minecraft:shulker_box";
         }
         throw new IllegalArgumentException("Could not find associated legacy inventory type from Bukkit type: " + inventoryType);
+    }
+
+    /**
+     * Returns the current server version in a double format.
+     * If the server version is "1.X.Y", the number returned is "X.Y".
+     *
+     * @return the version
+     */
+    public static double getServerVersion() {
+        Pattern pattern = Pattern.compile("[0-9]+\\.([0-9]+)(?:\\.([0-9]+))?-R[0-9]+\\.[0-9]+-SNAPSHOT");
+        String version = Bukkit.getBukkitVersion();
+        Matcher matcher = pattern.matcher(version);
+        if (matcher.matches()) {
+            String first = matcher.group(1);
+            String second = matcher.group(2);
+            if (second == null) second = "0";
+            return Double.parseDouble(first + "." + second);
+        } else throw new IllegalStateException("Could not find numeric version from server version: " + version);
     }
 
     /**
