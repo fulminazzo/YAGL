@@ -59,4 +59,23 @@ class InventoryWrapperTest {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("inventoryData")
+    void testCreateInventoryTitle(InventoryType type,
+                                  double serverVersion,
+                                  Class<?> expectedType) {
+        BukkitTestUtils.mockNMSUtils(() -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+            when(NMSUtils.getServerVersion()).thenReturn(serverVersion);
+
+            InventoryWrapper wrapper = InventoryWrapper.createInventory(
+                    mock(Player.class),
+                    type,
+                    "Hello, world"
+            );
+
+            assertInstanceOf(expectedType, wrapper);
+        });
+    }
+
 }
