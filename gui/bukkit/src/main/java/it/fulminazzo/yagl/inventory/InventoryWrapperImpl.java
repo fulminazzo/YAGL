@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * A basic {@link InventoryWrapper} that simply wraps the provided inventory.
  */
 @Getter
-class InventoryWrapperImpl implements InventoryWrapper {
+final class InventoryWrapperImpl implements InventoryWrapper {
     private final @NotNull Inventory actualInventory;
 
     /**
