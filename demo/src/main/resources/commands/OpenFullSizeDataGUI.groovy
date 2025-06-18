@@ -67,7 +67,7 @@ def run = { CommandSender sender, String label, String[] args ->
 
             def corner = (NMSUtils.serverVersion >= 13 ?
                     ItemGUIContent.newInstance(Material.BLACK_STAINED_GLASS_PANE) :
-                    ItemGUIContent.newInstance(Material.STAINED_GLASS_PANE).setDurability(15))
+                    ItemGUIContent.newInstance(Material.valueOf('STAINED_GLASS_PANE')).setDurability(15))
                     .setDisplayName(' ')
 
             gui.setTitle('Page #<page>')
