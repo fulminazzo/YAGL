@@ -89,7 +89,7 @@ public final class GUIAdapter {
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
 
-                inventory = guiToInventory(upperGUI);
+                inventory = guiToInventory(p, upperGUI);
                 fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
                 p.openInventory(inventory);
 
@@ -102,7 +102,7 @@ public final class GUIAdapter {
                 int lowerGUISize = lowerGUI.size();
                 setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
             } else {
-                inventory = guiToInventory(gui);
+                inventory = guiToInventory(p, gui);
                 fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
                 p.openInventory(inventory);
             }
@@ -315,22 +315,24 @@ public final class GUIAdapter {
     /**
      * Converts the given {@link GUI} to a {@link Inventory}.
      *
-     * @param gui the gui
+     * @param gui   the gui
+     * @param owner the owner of the inventory
      * @return the inventory
      */
-    public static Inventory guiToInventory(final @NotNull GUI gui) {
+    public static Inventory guiToInventory(final @NotNull Player owner,
+                                           final @NotNull GUI gui) {
         String title = MessageUtils.color(gui.getTitle());
         final Inventory inventory;
         if (title == null) {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
-                inventory = Bukkit.createInventory(null, type);
-            } else inventory = Bukkit.createInventory(null, gui.size());
+                inventory = Bukkit.createInventory(owner, type);
+            } else inventory = Bukkit.createInventory(owner, gui.size());
         } else {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
-                inventory = Bukkit.createInventory(null, type, title);
-            } else inventory = Bukkit.createInventory(null, gui.size(), title);
+                inventory = Bukkit.createInventory(owner, type, title);
+            } else inventory = Bukkit.createInventory(owner, gui.size(), title);
         }
         return inventory;
     }
