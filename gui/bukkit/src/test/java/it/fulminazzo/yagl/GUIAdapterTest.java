@@ -15,6 +15,7 @@ import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.*;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.Getter;
@@ -83,6 +84,8 @@ class GUIAdapterTest {
     @Test
     void integrationTestSearchGUI() {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
@@ -158,6 +161,8 @@ class GUIAdapterTest {
     @Test
     void integrationTestSearchGUIWithSameSearch() {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
@@ -287,7 +292,9 @@ class GUIAdapterTest {
     @ParameterizedTest
     @MethodSource("pageableFullSizeGUIParameters")
     void testOpenPageableFullSizeGUI(Object initializer) {
-        BukkitTestUtils.mockPlugin(p -> {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
@@ -358,7 +365,9 @@ class GUIAdapterTest {
     @ParameterizedTest
     @MethodSource("pageableFullSizeGUIParameters")
     void testOpenPageableResizedFullSizeGUI(Object initializer) {
-        BukkitTestUtils.mockPlugin(p -> {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             playerInventory.setItem(0, new ItemStack(Material.DIAMOND_SWORD));
             playerInventory.setItem(27, new ItemStack(Material.GOLDEN_APPLE));
