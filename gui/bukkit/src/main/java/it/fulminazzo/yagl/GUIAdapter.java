@@ -81,7 +81,7 @@ public final class GUIAdapter {
                                                     final @Nullable Consumer<M> metaFunction) {
         openGUIHelper(gui, viewer, (p, v) -> {
             // Open inventory
-            final Inventory inventory;
+            final InventoryWrapper inventory;
             // Check if GUI is FullSize
             if (gui instanceof FullSizeGUI) {
                 FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
@@ -91,8 +91,8 @@ public final class GUIAdapter {
                 lowerGUI.apply(lowerGUI);
 
                 inventory = guiToInventory(p, upperGUI);
-                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
-                p.openInventory(inventory);
+                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory.getActualInventory(), upperGUI.size());
+                inventory.open(p);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
                 if (v.getNextGUI() == null) {
@@ -104,8 +104,8 @@ public final class GUIAdapter {
                 setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
             } else {
                 inventory = guiToInventory(p, gui);
-                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
-                p.openInventory(inventory);
+                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory.getActualInventory(), gui.size());
+                inventory.open(p);
             }
         });
     }
