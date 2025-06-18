@@ -36,6 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,8 +82,9 @@ class GUIAdapterTest {
         ).toArray(Object[]::new);
     }
 
-    @Test
-    void integrationTestSearchGUI() {
+    @ParameterizedTest
+    @ValueSource(strings = {"Title", "Update", ""})
+    void integrationTestSearchGUI(String title) {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
             when(NMSUtils.getServerVersion()).thenReturn(17.0);
 
@@ -92,7 +94,7 @@ class GUIAdapterTest {
             new MockInventoryView(
                     mock(Inventory.class),
                     this.player,
-                    ""
+                    title
             );
 
             Viewer viewer = GUIManager.getViewer(this.player);
