@@ -6,11 +6,11 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import it.fulminazzo.yagl.utils.legacy.containers.*;
-import net.minecraft.server.v1_14_R1.Packet;
-import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
@@ -50,9 +50,9 @@ class LegacyNMSUtilsTest {
     @Test
     void testUpdateInventoryTitle() {
         TestUtils.mockReflectionUtils(m -> {
-            when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
+            when(ReflectionUtils.getClass(PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
-            when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
+            when(ReflectionUtils.getClass(Packet.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
 
             AtomicBoolean firstCall = new AtomicBoolean(true);
@@ -85,7 +85,7 @@ class LegacyNMSUtilsTest {
             assertEquals(CraftChatMessage.fromString("Title")[0], internalContainer.getTitle());
 
             CraftPlayer<LegacyEntityPlayer> craftPlayer = (CraftPlayer<LegacyEntityPlayer>) this.player;
-            List<Packet> packets = craftPlayer.getHandle().getPlayerConnection().getSentPackets();
+            List<net.minecraft.server.v1_14_R1.Packet> packets = craftPlayer.getHandle().getPlayerConnection().getSentPackets();
             assertEquals(1, packets.size(), "Expected at least one packet to be sent");
         });
     }
@@ -96,7 +96,7 @@ class LegacyNMSUtilsTest {
     @Test
     void testConstructUpdateInventoryTitlePacket() {
         TestUtils.mockReflectionUtils(() -> {
-            when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
+            when(ReflectionUtils.getClass(PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
 
             MockInventoryView inventoryView = new MockInventoryView(
@@ -113,10 +113,10 @@ class LegacyNMSUtilsTest {
 
             Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
 
-            assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
+            assertInstanceOf(net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow.class, actualPacket,
                     "Packet was supposed to be PacketPlayOutOpenWindow");
 
-            PacketPlayOutOpenWindow packet = (PacketPlayOutOpenWindow) actualPacket;
+            net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow packet = (net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow) actualPacket;
 
             assertEquals(container.getWindowId(), packet.getId(),
                     "Packet id was supposed to be the same as container id");
@@ -230,15 +230,15 @@ class LegacyNMSUtilsTest {
     @Test
     void testSendPacket() {
         TestUtils.mockReflectionUtils(() -> {
-            when(ReflectionUtils.getClass(net.minecraft.network.protocol.Packet.class.getCanonicalName()))
+            when(ReflectionUtils.getClass(Packet.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
 
-            Packet packet = mock(Packet.class);
+            net.minecraft.server.v1_14_R1.Packet packet = mock(net.minecraft.server.v1_14_R1.Packet.class);
 
             NMSUtils.sendPacket(this.player, packet);
 
             LegacyEntityPlayer player = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
-            List<Packet> sentPackets = player.getPlayerConnection().getSentPackets();
+            List<net.minecraft.server.v1_14_R1.Packet> sentPackets = player.getPlayerConnection().getSentPackets();
             assertTrue(sentPackets.contains(packet),
                     String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
         });

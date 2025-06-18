@@ -5,12 +5,12 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
+import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import it.fulminazzo.yagl.utils.legacy.containers.Container;
 import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
 import it.fulminazzo.yagl.utils.legacy.containers.ObsoleteContainer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
@@ -45,7 +45,7 @@ class ObsoleteNMSUtilsTest {
     @Test
     void testObsoleteConstructUpdateInventoryTitlePacket() {
         TestUtils.mockReflectionUtils(() -> {
-            when(ReflectionUtils.getClass(net.minecraft.network.protocol.game.PacketPlayOutOpenWindow.class.getCanonicalName()))
+            when(ReflectionUtils.getClass(PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
 
             MockInventoryView inventoryView = new MockInventoryView(
@@ -62,10 +62,10 @@ class ObsoleteNMSUtilsTest {
 
             Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
 
-            assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
+            assertInstanceOf(net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow.class, actualPacket,
                     "Packet was supposed to be PacketPlayOutOpenWindow");
 
-            PacketPlayOutOpenWindow packet = (PacketPlayOutOpenWindow) actualPacket;
+            net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow packet = (net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow) actualPacket;
 
             assertEquals(container.getWindowId(), packet.getId(),
                     "Packet id was supposed to be the same as container id");
