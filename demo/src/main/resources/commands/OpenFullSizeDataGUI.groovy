@@ -43,7 +43,10 @@ def run = { CommandSender sender, String label, String[] args ->
                     'Theresa', 'Roy', 'Diana', 'Ralph', 'Brittany', 'Bobby', 'Doris', 'Russell', 'Kayla',
                     'Bradley', 'Alexis', 'Philip', 'Lori', 'Eugene', 'Marie',
             ]
-            Function<String, GUIContent> converter = s -> ItemGUIContent.newInstance(Material.PLAYER_HEAD.name())
+            def content = NMSUtils.serverVersion >= 13 ?
+                    ItemGUIContent.newInstance(Material.PLAYER_HEAD.name()) :
+                    ItemGUIContent.newInstance(Material.valueOf('SKULL').name()).setDurability(3)
+            Function<String, GUIContent> converter = s -> content.copy()
                     .setDisplayName("&e${s}'s head")
                     .setLore("&7This head belongs to &e${s}&7.",
                             '&7Make sure to give it back to them',
