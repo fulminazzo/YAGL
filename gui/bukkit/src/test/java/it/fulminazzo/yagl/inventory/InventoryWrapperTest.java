@@ -9,7 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,10 +26,19 @@ class InventoryWrapperTest {
     }
 
     private static Object[][] inventoryData() {
-        return new Object[][]{
-                // TODO: populate with proper data
-                new Object[]{InventoryType.ANVIL, 16, AnvilInventoryWrapper.class}
-        };
+        return Arrays.stream(InventoryType.values())
+                .map(t -> {
+                    List<Object[]> data = new ArrayList<>();
+                    for (int i = 8; i <= 21; i++) data.add(new Object[]{t, i});
+                    return data;
+                })
+                .flatMap(Collection::stream)
+                .map(o -> new Object[]{o[0], o[1], InventoryWrapperImpl.class})
+                .peek(o -> {
+                    if (o[0] == InventoryType.ANVIL && (int) o[1] < 17)
+                        o[2] = AnvilInventoryWrapper.class;
+                })
+                .toArray(Object[][]::new);
     }
 
     @ParameterizedTest
