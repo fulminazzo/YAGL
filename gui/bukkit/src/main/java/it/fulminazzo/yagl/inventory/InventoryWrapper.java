@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.inventory;
 
-import it.fulminazzo.yagl.exceptions.NotImplemented;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -47,7 +46,8 @@ public interface InventoryWrapper {
      */
     static @NotNull InventoryWrapper createInventory(final @NotNull Player player,
                                                      final @NotNull InventoryType type) {
-        throw new NotImplemented();
+        //TODO: 1.16- compatibility for ANVIL types.
+        return new InventoryWrapperImpl(Bukkit.createInventory(player, type));
     }
 
     /**
@@ -75,7 +75,8 @@ public interface InventoryWrapper {
     static @NotNull InventoryWrapper createInventory(final @NotNull Player player,
                                                      final @NotNull InventoryType type,
                                                      final @NotNull String title) {
-        throw new NotImplemented();
+        //TODO: 1.16- compatibility for ANVIL types.
+        return new InventoryWrapperImpl(Bukkit.createInventory(player, type, title));
     }
 
 }
