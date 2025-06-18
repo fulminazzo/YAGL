@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
+import it.fulminazzo.yagl.inventory.InventoryWrapper;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.utils.MessageUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
@@ -199,7 +200,7 @@ public final class GUIAdapter {
         // Check if context is Async and synchronize
         if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
         else
-            Bukkit.getScheduler().runTask(getProvidingPlugin(), () -> runnable.accept(viewer));
+            Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
     }
 
     /**
@@ -307,7 +308,7 @@ public final class GUIAdapter {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
             player.closeInventory();
             g.closeGUIAction().ifPresent(a ->
-                    Bukkit.getScheduler().runTask(getProvidingPlugin(), () -> a.execute(v, g))
+                    Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> a.execute(v, g))
             );
         });
     }
@@ -319,20 +320,20 @@ public final class GUIAdapter {
      * @param owner the owner of the inventory
      * @return the inventory
      */
-    public static @NotNull Inventory guiToInventory(final @NotNull Player owner,
+    public static @NotNull InventoryWrapper guiToInventory(final @NotNull Player owner,
                                            final @NotNull GUI gui) {
         String title = MessageUtils.color(gui.getTitle());
-        final Inventory inventory;
+        final InventoryWrapper inventory;
         if (title == null) {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
-                inventory = Bukkit.createInventory(owner, type);
-            } else inventory = Bukkit.createInventory(owner, gui.size());
+                inventory = InventoryWrapper.createInventory(owner, type);
+            } else inventory = InventoryWrapper.createInventory(owner, gui.size());
         } else {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
-                inventory = Bukkit.createInventory(owner, type, title);
-            } else inventory = Bukkit.createInventory(owner, gui.size(), title);
+                inventory = InventoryWrapper.createInventory(owner, type, title);
+            } else inventory = InventoryWrapper.createInventory(owner, gui.size(), title);
         }
         return inventory;
     }
