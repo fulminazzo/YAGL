@@ -92,7 +92,6 @@ public final class NMSUtils {
     public static @NotNull Object constructUpdateInventoryTitlePacket(final @NotNull Player player,
                                                                       final @NotNull String title) {
         final Inventory openInventory = player.getOpenInventory().getTopInventory();
-        final Class<?> packetPlayOutOpenWindowClass = getPacketPlayOutOpenWindowClass();
 
         Refl<?> container = new Refl<>(getPlayerOpenContainer(player));
 
@@ -110,17 +109,35 @@ public final class NMSUtils {
             id = container.getFieldObject(ids.get(1));
         }
 
+        return newOpenWindowPacket(container.getObject(), id, title, openInventory);
+    }
+
+    /**
+     * Creates a new open window packet.
+     *
+     * @param container the container to open
+     * @param id        the id to assign the container
+     * @param title     the title of the inventory
+     * @param inventory the corresponding {@link Bukkit} inventory. Only required in legacy versions
+     * @return the object
+     */
+    public static @NotNull Object newOpenWindowPacket(final @NotNull Object container,
+                                                      final int id,
+                                                      final @NotNull String title,
+                                                      final Inventory inventory) {
+        final Class<?> packetPlayOutOpenWindowClass = getPacketPlayOutOpenWindowClass();
+
         Object chatComponentTitle = getIChatBaseComponent(title);
 
         Refl<?> packet;
         try {
             // 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2
-            Object containerType = getContainerType(container.getObject());
+            Object containerType = getContainerType(container);
             packet = new Refl<>(packetPlayOutOpenWindowClass, id, containerType, chatComponentTitle);
         } catch (IllegalArgumentException e) {
             // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2
-            String inventoryType = getInventoryTypeStringFromBukkitType(openInventory.getType());
-            packet = new Refl<>(packetPlayOutOpenWindowClass, id, inventoryType, chatComponentTitle, openInventory.getSize());
+            String inventoryType = getInventoryTypeStringFromBukkitType(inventory.getType());
+            packet = new Refl<>(packetPlayOutOpenWindowClass, id, inventoryType, chatComponentTitle, inventory.getSize());
         }
 
         return packet.getObject();
