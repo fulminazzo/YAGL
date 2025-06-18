@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -196,6 +197,31 @@ class NMSUtilsTest {
 
         Channel actual = NMSUtils.getPlayerChannel((Player) player);
         assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1.20.4-R0.1-SNAPSHOT:20.4",
+            "1.20-R0.1-SNAPSHOT:20.0",
+            "1.8.9-R0.1-SNAPSHOT:8.9",
+            "1.8-R0.1-SNAPSHOT:8.0",
+    })
+    void testGetServerVersion(String data) {
+        String[] tmp = data.split(":");
+        String version = tmp[0];
+        double expected = Double.parseDouble(tmp[1]);
+
+        when(Bukkit.getServer().getBukkitVersion()).thenReturn(version);
+
+        double actual = NMSUtils.getServerVersion();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetServerVersionOfInvalidVersion() {
+        when(Bukkit.getServer().getBukkitVersion()).thenReturn("INVALID_VERSION");
+        assertThrowsExactly(IllegalStateException.class, NMSUtils::getServerVersion);
     }
 
 }
