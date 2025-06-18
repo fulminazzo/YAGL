@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.utils.legacy.containers;
 
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import lombok.Getter;
+import net.minecraft.server.v1_14_R1.containers.Containers;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;

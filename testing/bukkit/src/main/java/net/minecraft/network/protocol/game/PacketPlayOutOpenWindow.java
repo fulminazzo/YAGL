@@ -1,6 +1,6 @@
 package net.minecraft.network.protocol.game;
 
-import it.fulminazzo.yagl.utils.legacy.containers.Containers;
+import net.minecraft.server.v1_14_R1.containers.Containers;
 import lombok.Getter;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.craftbukkit.util.CraftChatMessage;

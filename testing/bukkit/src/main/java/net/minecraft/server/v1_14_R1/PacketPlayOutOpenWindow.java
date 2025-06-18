@@ -1,6 +1,6 @@
 package net.minecraft.server.v1_14_R1;
 
-import it.fulminazzo.yagl.utils.legacy.containers.Containers;
+import net.minecraft.server.v1_14_R1.containers.Containers;
 import lombok.Getter;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 

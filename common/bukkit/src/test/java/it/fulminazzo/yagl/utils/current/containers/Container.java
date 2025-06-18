@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.utils.current.containers;
 
-import it.fulminazzo.yagl.utils.legacy.containers.Containers;
+import net.minecraft.server.v1_14_R1.containers.Containers;
 import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
 import lombok.Getter;
 import lombok.Setter;
