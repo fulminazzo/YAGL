@@ -2,6 +2,7 @@ import it.fulminazzo.yagl.GUIManager
 import it.fulminazzo.yagl.contents.ItemGUIContent
 import it.fulminazzo.yagl.guis.SearchGUI
 import it.fulminazzo.yagl.items.BukkitItem
+import it.fulminazzo.yagl.utils.NMSUtils
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -11,7 +12,10 @@ import java.util.stream.Collectors
 def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
-            def cornerMaterial = Material.BLACK_STAINED_GLASS_PANE
+            def corner = (NMSUtils.serverVersion >= 13 ?
+                    ItemGUIContent.newInstance(Material.BLACK_STAINED_GLASS_PANE) :
+                    ItemGUIContent.newInstance(Material.STAINED_GLASS_PANE).setDurability(15))
+                    .setDisplayName(' ')
 
             def data = Arrays.stream(Material.values())
                     .filter(m -> m.isBlock())
@@ -29,10 +33,10 @@ def run = { CommandSender sender, String label, String[] args ->
                             .setDisplayName('&7Go to page &e<next_page>'))
 
             gui.setTitle('Page #<page>')
-                    .setBottomSide(ItemGUIContent.newInstance(cornerMaterial.name()).setDisplayName(' '))
-                    .setContents(0, ItemGUIContent.newInstance(cornerMaterial.name()).setDisplayName(' '))
-                    .setContents(1, ItemGUIContent.newInstance(cornerMaterial.name()).setDisplayName(' '))
-                    .setContents(2, ItemGUIContent.newInstance(cornerMaterial.name()).setDisplayName(' '))
+                    .setBottomSide(corner.copy())
+                    .setContents(0, corner.copy())
+                    .setContents(1, corner.copy())
+                    .setContents(2, corner.copy())
                     .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
                     .onOpenGUI((v, g) -> v.sendMessage(g.apply('Opening page <page>')))
                     .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))
