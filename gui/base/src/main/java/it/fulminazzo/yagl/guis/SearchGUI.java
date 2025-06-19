@@ -30,6 +30,14 @@ import java.util.stream.Collectors;
  * @param <T> the type of the data
  */
 public final class SearchGUI<T> extends DataGUI<T> {
+    /**
+     * Because of how Minecraft works,
+     * it is necessary to add a default empty name
+     * for the content, to avoid displaying the item
+     * default Minecraft name.
+     */
+    public static final String EMPTY_RENAME_TEXT = "\u200B";
+
     private final @NotNull BiPredicate<T, String> searchFunction;
 
     @Getter
@@ -68,12 +76,25 @@ public final class SearchGUI<T> extends DataGUI<T> {
     }
 
     /**
-     * Sets query.
+     * Gets the {@link #query}.
+     * If it is empty, {@link #EMPTY_RENAME_TEXT} is returned instead.
+     *
+     * @return the parsed query
+     */
+    @NotNull String getParsedQuery() {
+        String query = getQuery();
+        return query.isEmpty() ? EMPTY_RENAME_TEXT : query;
+    }
+
+    /**
+     * Sets the {@link #query}.
+     * If it starts with {@link #EMPTY_RENAME_TEXT}, the character is removed.
      *
      * @param query the query
      * @return this gui
      */
-    public @NotNull SearchGUI<T> setQuery(final @NotNull String query) {
+    public @NotNull SearchGUI<T> setQuery(@NotNull String query) {
+        if (query.startsWith(EMPTY_RENAME_TEXT)) query = query.substring(1);
         this.query = query;
         return this;
     }
