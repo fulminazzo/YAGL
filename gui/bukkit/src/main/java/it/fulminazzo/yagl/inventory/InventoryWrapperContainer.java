@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * A basic {@link InventoryWrapper} that simply wraps the provided inventory.
  */
 @Getter
-final class InventoryWrapperContainer implements InventoryWrapper {
+final class InventoryWrapperContainer extends InventoryWrapperImpl {
     private final @NotNull Inventory actualInventory;
 
     /**
@@ -22,7 +22,7 @@ final class InventoryWrapperContainer implements InventoryWrapper {
     }
 
     @Override
-    public void open(final @NotNull Player player) {
+    public void internalOpen(final @NotNull Player player) {
         player.openInventory(this.actualInventory);
     }
 
