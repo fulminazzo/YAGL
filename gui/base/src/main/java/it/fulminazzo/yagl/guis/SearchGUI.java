@@ -93,7 +93,8 @@ public final class SearchGUI<T> extends DataGUI<T> {
      * @return this gui
      */
     public @NotNull SearchGUI<T> setQuery(@NotNull String query) {
-        if (query.startsWith(EMPTY_RENAME_TEXT)) query = query.substring(1);
+        if (query.startsWith(EMPTY_RENAME_TEXT))
+            query = query.substring(EMPTY_RENAME_TEXT.length());
         this.query = query;
         return this;
     }
