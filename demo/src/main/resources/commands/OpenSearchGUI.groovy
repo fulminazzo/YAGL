@@ -58,10 +58,8 @@ def run = { CommandSender sender, String label, String[] args ->
                     .setContents(0, corner.copy())
                     .setContents(1, corner.copy())
                     .setContents(2, corner.copy())
-                    .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
-                    .onOpenGUI((v, g) -> v.sendMessage(g.apply('Opening page <page>')))
-                    .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))
-                    .open(GUIManager.getViewer(sender))
+            gui.emptySlots().forEach(s -> gui.setMovable(s, true))
+            gui.open(GUIManager.getViewer(sender))
         } catch (NumberFormatException ignored) {
             // auto-generated code
         } catch (Exception e) {
