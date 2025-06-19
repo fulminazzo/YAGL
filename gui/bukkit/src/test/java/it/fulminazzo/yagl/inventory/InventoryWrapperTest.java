@@ -3,26 +3,49 @@ package it.fulminazzo.yagl.inventory;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class InventoryWrapperTest {
 
     @BeforeEach
     void setUp() {
         BukkitUtils.setupServer();
+    }
+
+    @Test
+    void testOpenSchedulesIfNotOnPrimaryThread() {
+        BukkitTestUtils.mockPlugin(p -> {
+            when(Bukkit.getServer().isPrimaryThread()).thenReturn(false);
+
+            BukkitScheduler scheduler = mock(BukkitScheduler.class);
+            when(scheduler.runTask(any(), any(Runnable.class))).thenAnswer(a -> {
+                Runnable runnable = a.getArgument(1);
+                runnable.run();
+                return null;
+            });
+            when(Bukkit.getServer().getScheduler()).thenReturn(scheduler);
+
+            InventoryWrapperImpl inventory = mock(InventoryWrapperImpl.class);
+            doCallRealMethod().when(inventory).open(any());
+
+            Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Fulminazzo");
+
+            inventory.open(player);
+
+            verify(inventory).internalOpen(player);
+        });
     }
 
     private static Object[][] inventoryData() {
