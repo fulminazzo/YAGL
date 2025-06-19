@@ -35,7 +35,7 @@ public interface InventoryWrapper {
      */
     static @NotNull InventoryWrapper createInventory(final @NotNull Player player,
                                                      final int size) {
-        return new InventoryWrapperImpl(Bukkit.createInventory(player, size));
+        return new InventoryWrapperContainer(Bukkit.createInventory(player, size));
     }
 
     /**
@@ -49,7 +49,7 @@ public interface InventoryWrapper {
                                                      final @NotNull InventoryType type) {
         if (type == InventoryType.ANVIL && NMSUtils.getServerVersion() < 17)
             return new AnvilInventoryWrapper(player);
-        else return new InventoryWrapperImpl(Bukkit.createInventory(player, type));
+        else return new InventoryWrapperContainer(Bukkit.createInventory(player, type));
     }
 
     /**
@@ -63,7 +63,7 @@ public interface InventoryWrapper {
     static @NotNull InventoryWrapper createInventory(final @NotNull Player player,
                                                      final int size,
                                                      final @NotNull String title) {
-        return new InventoryWrapperImpl(Bukkit.createInventory(player, size, title));
+        return new InventoryWrapperContainer(Bukkit.createInventory(player, size, title));
     }
 
     /**
@@ -79,7 +79,7 @@ public interface InventoryWrapper {
                                                      final @NotNull String title) {
         if (type == InventoryType.ANVIL && NMSUtils.getServerVersion() < 17)
             return new AnvilInventoryWrapper(player, title);
-        else return new InventoryWrapperImpl(Bukkit.createInventory(player, type, title));
+        else return new InventoryWrapperContainer(Bukkit.createInventory(player, type, title));
     }
 
 }

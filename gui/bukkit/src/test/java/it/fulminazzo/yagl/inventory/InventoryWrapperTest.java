@@ -33,7 +33,7 @@ class InventoryWrapperTest {
                     return data;
                 })
                 .flatMap(Collection::stream)
-                .map(o -> new Object[]{o[0], o[1], InventoryWrapperImpl.class})
+                .map(o -> new Object[]{o[0], o[1], InventoryWrapperContainer.class})
                 .peek(o -> {
                     if (o[0] == InventoryType.ANVIL && (int) o[1] < 17)
                         o[2] = AnvilInventoryWrapper.class;
