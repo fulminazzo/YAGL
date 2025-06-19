@@ -181,7 +181,7 @@ public final class NMSUtils {
      * @param player the player
      * @return the open container
      */
-    static @NotNull Object getPlayerOpenContainer(final @NotNull Player player) {
+    public static @NotNull Object getPlayerOpenContainer(final @NotNull Player player) {
         Refl<?> entityPlayer = getHandle(player);
         @NotNull List<Field> containers = entityPlayer.getFields(f ->
                 f.getType().getSimpleName().equals("Container") ||
