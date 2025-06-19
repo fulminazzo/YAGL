@@ -2,15 +2,14 @@ package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.IgnoreField;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.metadatable.IgnoreApply;
-import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.exceptions.NotImplemented;
 import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.yagl.utils.MessageUtils;
+import it.fulminazzo.yagl.metadatable.IgnoreApply;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -123,9 +122,7 @@ public final class SearchGUI<T> extends DataGUI<T> {
             if (contents.isEmpty())
                 setContents(i, ItemGUIContent.newInstance("glass_pane").setDisplayName(" "));
             if (i == 0) {
-                String colorChar = new Refl<>(MessageUtils.class).getFieldObject("COLOR_CHAR");
-                String query = getQuery().isEmpty() ? MessageUtils.color("&8&r") : getQuery()
-                        .replaceAll(colorChar + "[A-Z0-9]", "");
+                String query = getParsedQuery();
                 getContents(i).stream()
                         .filter(c -> c instanceof ItemGUIContent)
                         .map(c -> (ItemGUIContent) c)
