@@ -12,10 +12,16 @@ import java.util.stream.Collectors
 def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
+            boolean texture = args.length > 0 && args[0] == "texture"
+
             def corner = (NMSUtils.serverVersion >= 13 ?
                     ItemGUIContent.newInstance(Material.BLACK_STAINED_GLASS_PANE.name()) :
                     ItemGUIContent.newInstance(Material.valueOf('STAINED_GLASS_PANE').name()).setDurability(15))
-                    .setDisplayName(' ')
+            if (texture) corner = (NMSUtils.serverVersion >= 13 ?
+                    ItemGUIContent.newInstance(Material.LIGHT_GRAY_STAINED_GLASS_PANE.name()) :
+                    ItemGUIContent.newInstance(Material.valueOf('STAINED_GLASS_PANE').name()).setDurability(8))
+                    .setCustomModelData(1337)
+            corner.setDisplayName(' ')
 
             def data = Arrays.stream(Material.values())
                     .filter(m -> m.isBlock())
@@ -26,13 +32,28 @@ def run = { CommandSender sender, String label, String[] args ->
                     (m, s) -> m.name().contains(s.toUpperCase()),
                     data
             )
-            gui.setContents(gui.south(), BukkitItem.newItem(Material.OBSIDIAN).setDisplayName('&7Page: &e<page>'))
-                    .setPreviousPage(gui.south() - 2, BukkitItem.newItem(Material.REDSTONE_BLOCK)
-                            .setDisplayName('&7Go to page &e<previous_page>'))
-                    .setNextPage(gui.south() + 2, BukkitItem.newItem(Material.EMERALD_BLOCK)
-                            .setDisplayName('&7Go to page &e<next_page>'))
 
-            gui.setTitle('Page #<page>')
+            def previousPage = (texture ?
+                    (NMSUtils.serverVersion >= 13 ?
+                            ItemGUIContent.newInstance(Material.RED_STAINED_GLASS_PANE.name()) :
+                            ItemGUIContent.newInstance(Material.valueOf('STAINED_GLASS_PANE').name()).setDurability(14))
+                            .setCustomModelData(1337) :
+                    BukkitItem.newItem(Material.REDSTONE_BLOCK))
+                    .setDisplayName('&7Go to page &e<previous_page>')
+
+            def nextPage = (texture ?
+                    (NMSUtils.serverVersion >= 13 ?
+                            ItemGUIContent.newInstance(Material.GREEN_STAINED_GLASS_PANE.name()) :
+                            ItemGUIContent.newInstance(Material.valueOf('STAINED_GLASS_PANE').name()).setDurability(13))
+                            .setCustomModelData(1337) :
+                    BukkitItem.newItem(Material.EMERALD_BLOCK))
+                    .setDisplayName('&7Go to page &e<next_page>')
+
+            gui.setContents(gui.south(), BukkitItem.newItem(Material.OBSIDIAN).setDisplayName('&7Page: &e<page>'))
+                    .setPreviousPage(gui.south() - 2, previousPage)
+                    .setNextPage(gui.south() + 2, nextPage)
+
+            gui.setTitle(texture ? '\uE000&r&f\uE001' : 'Page #<page>')
                     .setBottomSide(corner.copy())
                     .setContents(0, corner.copy())
                     .setContents(1, corner.copy())
