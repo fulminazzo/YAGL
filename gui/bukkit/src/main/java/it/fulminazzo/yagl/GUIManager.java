@@ -93,7 +93,7 @@ public class GUIManager extends SingleInstance implements Listener {
 
     @EventHandler
     void on(final @NotNull PluginDisableEvent event) {
-        JavaPlugin plugin = getProvidingPlugin();
+        JavaPlugin plugin = GUIAdapter.getProvidingPlugin();
         Plugin disablingPlugin = event.getPlugin();
         if (plugin.equals(disablingPlugin)) {
             this.viewers.stream()
@@ -218,12 +218,9 @@ public class GUIManager extends SingleInstance implements Listener {
             return getInstance(GUIManager.class);
         } catch (InstanceNotInitializedException e) {
             GUIManager manager = new GUIManager();
-            Bukkit.getPluginManager().registerEvents(manager, getProvidingPlugin());
+            Bukkit.getPluginManager().registerEvents(manager, GUIAdapter.getProvidingPlugin());
             return manager;
         }
     }
 
-    private static @NotNull JavaPlugin getProvidingPlugin() {
-        return JavaPlugin.getProvidingPlugin(GUIManager.class);
-    }
 }

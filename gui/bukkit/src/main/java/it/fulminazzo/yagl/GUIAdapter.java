@@ -199,7 +199,7 @@ public final class GUIAdapter {
         // Check if context is Async and synchronize
         if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
         else
-            Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+            Bukkit.getScheduler().runTask(getProvidingPlugin(), () -> runnable.accept(viewer));
     }
 
     /**
@@ -307,7 +307,7 @@ public final class GUIAdapter {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
             player.closeInventory();
             g.closeGUIAction().ifPresent(a ->
-                    Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> a.execute(v, g))
+                    Bukkit.getScheduler().runTask(getProvidingPlugin(), () -> a.execute(v, g))
             );
         });
     }
