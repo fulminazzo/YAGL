@@ -10,6 +10,7 @@ import it.fulminazzo.yagl.exceptions.NotImplemented;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.metadatable.IgnoreApply;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.utils.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,8 @@ public final class SearchGUI<T> extends DataGUI<T> {
      * for the content, to avoid displaying the item
      * default Minecraft name.
      */
-    public static final String EMPTY_RENAME_TEXT = "\u200B";
+    public static final String EMPTY_RENAME_TEXT =
+            new Refl<>(MessageUtils.class).getFieldObject("COLOR_CHAR") + "r";
 
     private final @NotNull BiPredicate<T, String> searchFunction;
 
