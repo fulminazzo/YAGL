@@ -30,10 +30,18 @@ public class Container {
         this(type, null);
     }
 
+    public Container(Containers type, int windowId) {
+        this(type, null, windowId);
+    }
+
     public Container(Containers type, Container container) {
+        this(type, container, new Random().nextInt());
+    }
+
+    public Container(Containers type, Container container, int windowId) {
         this.type = type;
         this.container = container;
-        this.windowId = new Random().nextInt();
+        this.windowId = windowId;
     }
 
     public void setOpenInventory(InventoryView openInventory) {
