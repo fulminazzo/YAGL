@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.inventory;
 
-import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -47,8 +46,7 @@ public interface InventoryWrapper {
      */
     static @NotNull InventoryWrapper createInventory(final @NotNull Player player,
                                                      final @NotNull InventoryType type) {
-        if (type == InventoryType.ANVIL && NMSUtils.getServerVersion() < 17)
-            return new AnvilInventoryWrapper(player);
+        if (type == InventoryType.ANVIL) return AnvilInventoryWrapper.newWrapper(player);
         else return new InventoryWrapperContainer(Bukkit.createInventory(player, type));
     }
 
@@ -77,8 +75,7 @@ public interface InventoryWrapper {
     static @NotNull InventoryWrapper createInventory(final @NotNull Player player,
                                                      final @NotNull InventoryType type,
                                                      final @NotNull String title) {
-        if (type == InventoryType.ANVIL && NMSUtils.getServerVersion() < 17)
-            return new AnvilInventoryWrapper(player, title);
+        if (type == InventoryType.ANVIL) return AnvilInventoryWrapper.newWrapper(player, title);
         else return new InventoryWrapperContainer(Bukkit.createInventory(player, type, title));
     }
 
