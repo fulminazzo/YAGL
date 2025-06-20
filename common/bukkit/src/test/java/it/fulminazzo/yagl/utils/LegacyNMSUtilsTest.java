@@ -94,7 +94,7 @@ class LegacyNMSUtilsTest {
      * 1.14-1.17
      */
     @Test
-    void testConstructUpdateInventoryTitlePacket() {
+    void testNewUpdateInventoryTitlePacket() {
         TestUtils.mockReflectionUtils(() -> {
             when(ReflectionUtils.getClass(PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
@@ -111,7 +111,7 @@ class LegacyNMSUtilsTest {
             LegacyEntityPlayer handle = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
             handle.setOpenContainer(container);
 
-            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
+            Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
 
             assertInstanceOf(net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow.class, actualPacket,
                     "Packet was supposed to be PacketPlayOutOpenWindow");
@@ -246,7 +246,7 @@ class LegacyNMSUtilsTest {
 
     @Test
     void testChatBaseComponent() {
-        Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+        Object baseComponent = NMSUtils.newIChatBaseComponent("Hello, world");
         assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
     }
 

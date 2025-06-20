@@ -40,7 +40,7 @@ public final class NMSUtils {
         } catch (IllegalArgumentException ex) {
             // Older versions did not have setTitle,
             // so we must send our own packet.
-            Object packet = constructUpdateInventoryTitlePacket(player, title);
+            Object packet = newUpdateInventoryTitlePacket(player, title);
             sendPacket(player, packet);
 
             // Update title on internal fields
@@ -69,7 +69,7 @@ public final class NMSUtils {
 
         if (internalContainer.getFieldObject("title") instanceof String)
             internalContainer.setFieldObject("title", title);
-        else internalContainer.setFieldObject("title", getIChatBaseComponent(title));
+        else internalContainer.setFieldObject("title", newIChatBaseComponent(title));
 
         try {
             // 1.14.4, 1.15.2, 1.16.5
@@ -84,67 +84,9 @@ public final class NMSUtils {
         }
     }
 
-    /**
-     * Creates a new packet (<i>PlayOutOpenWindow</i>) to update the current
-     * {@link Player#getOpenInventory()} title.
-     *
-     * @param player the player
-     * @param title  the title
-     * @return the packet
+    /*
+     * GETTERS
      */
-    public static @NotNull Object constructUpdateInventoryTitlePacket(final @NotNull Player player,
-                                                                      final @NotNull String title) {
-        final Inventory openInventory = player.getOpenInventory().getTopInventory();
-
-        Refl<?> container = new Refl<>(getPlayerOpenContainer(player));
-
-        int id;
-        try {
-            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
-            id = container.getFieldObject("windowId");
-        } catch (IllegalArgumentException e) {
-            // 1.17.1, 1.18.2
-            // Second int of Container class
-            @NotNull List<Field> ids = container.getFields(f ->
-                    f.getType().equals(int.class) &&
-                            f.getDeclaringClass().getSimpleName().equals("Container")
-            );
-            id = container.getFieldObject(ids.get(1));
-        }
-
-        return newOpenWindowPacket(container.getObject(), id, title, openInventory);
-    }
-
-    /**
-     * Creates a new open window packet.
-     *
-     * @param container the container to open
-     * @param id        the id to assign the container
-     * @param title     the title of the inventory
-     * @param inventory the corresponding {@link Bukkit} inventory. Only required in legacy versions
-     * @return the object
-     */
-    public static @NotNull Object newOpenWindowPacket(final @NotNull Object container,
-                                                      final int id,
-                                                      final @NotNull String title,
-                                                      final Inventory inventory) {
-        final Class<?> packetPlayOutOpenWindowClass = getPacketPlayOutOpenWindowClass();
-
-        Object chatComponentTitle = getIChatBaseComponent(title);
-
-        Refl<?> packet;
-        try {
-            // 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2
-            Object containerType = getContainerType(container);
-            packet = new Refl<>(packetPlayOutOpenWindowClass, id, containerType, chatComponentTitle);
-        } catch (IllegalArgumentException e) {
-            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2
-            String inventoryType = getInventoryTypeStringFromBukkitType(inventory.getType());
-            packet = new Refl<>(packetPlayOutOpenWindowClass, id, inventoryType, chatComponentTitle, inventory.getSize());
-        }
-
-        return packet.getObject();
-    }
 
     /**
      * Gets the container type from the given container.
@@ -194,6 +136,95 @@ public final class NMSUtils {
         return entityPlayer.getFieldObject(containerField);
     }
 
+    /*
+     * INITIALIZERS
+     */
+
+    /**
+     * Creates a new packet (<i>PlayOutOpenWindow</i>) to update the current
+     * {@link Player#getOpenInventory()} title.
+     *
+     * @param player the player
+     * @param title  the title
+     * @return the packet
+     */
+    public static @NotNull Object newUpdateInventoryTitlePacket(final @NotNull Player player,
+                                                                final @NotNull String title) {
+        final Inventory openInventory = player.getOpenInventory().getTopInventory();
+
+        Refl<?> container = new Refl<>(getPlayerOpenContainer(player));
+
+        int id;
+        try {
+            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
+            id = container.getFieldObject("windowId");
+        } catch (IllegalArgumentException e) {
+            // 1.17.1, 1.18.2
+            // Second int of Container class
+            @NotNull List<Field> ids = container.getFields(f ->
+                    f.getType().equals(int.class) &&
+                            f.getDeclaringClass().getSimpleName().equals("Container")
+            );
+            id = container.getFieldObject(ids.get(1));
+        }
+
+        return newOpenWindowPacket(container.getObject(), id, title, openInventory);
+    }
+
+    /**
+     * Creates a new open window packet.
+     *
+     * @param container the container to open
+     * @param id        the id to assign the container
+     * @param title     the title of the inventory
+     * @param inventory the corresponding {@link Bukkit} inventory. Only required in legacy versions
+     * @return the object
+     */
+    public static @NotNull Object newOpenWindowPacket(final @NotNull Object container,
+                                                      final int id,
+                                                      final @NotNull String title,
+                                                      final Inventory inventory) {
+        final Class<?> packetPlayOutOpenWindowClass = getPacketPlayOutOpenWindowClass();
+
+        Object chatComponentTitle = newIChatBaseComponent(title);
+
+        Refl<?> packet;
+        try {
+            // 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2
+            Object containerType = getContainerType(container);
+            packet = new Refl<>(packetPlayOutOpenWindowClass, id, containerType, chatComponentTitle);
+        } catch (IllegalArgumentException e) {
+            // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2
+            String inventoryType = inventoryTypeToNotchInventoryTypeString(inventory.getType());
+            packet = new Refl<>(packetPlayOutOpenWindowClass, id, inventoryType, chatComponentTitle, inventory.getSize());
+        }
+
+        return packet.getObject();
+    }
+
+    /**
+     * Gets an NMS chat component from the given string.
+     *
+     * @param message the message
+     * @return the chat base component
+     */
+    public static @NotNull Object newIChatBaseComponent(final @NotNull String message) {
+        String iChatBaseComponentClassName;
+        try {
+            iChatBaseComponentClassName = String.format("org.bukkit.craftbukkit.%s.util.CraftChatMessage", getNMSVersion());
+        } catch (IllegalStateException e) {
+            // 1.20+
+            iChatBaseComponentClassName = "org.bukkit.craftbukkit.util.CraftChatMessage";
+        }
+        Class<?> iChatBaseComponent = ReflectionUtils.getClass(iChatBaseComponentClassName);
+        Object[] components = new Refl<>(iChatBaseComponent).invokeMethod("fromString", message);
+        return components[0];
+    }
+
+    /*
+     * CONVERTERS
+     */
+
     /**
      * Converts the given {@link ItemStack} to its corresponding NMS type.
      *
@@ -213,32 +244,13 @@ public final class NMSUtils {
     }
 
     /**
-     * Gets an NMS chat component from the given string.
-     *
-     * @param message the message
-     * @return the chat base component
-     */
-    public static @NotNull Object getIChatBaseComponent(final @NotNull String message) {
-        String iChatBaseComponentClassName;
-        try {
-            iChatBaseComponentClassName = String.format("org.bukkit.craftbukkit.%s.util.CraftChatMessage", getNMSVersion());
-        } catch (IllegalStateException e) {
-            // 1.20+
-            iChatBaseComponentClassName = "org.bukkit.craftbukkit.util.CraftChatMessage";
-        }
-        Class<?> iChatBaseComponent = ReflectionUtils.getClass(iChatBaseComponentClassName);
-        Object[] components = new Refl<>(iChatBaseComponent).invokeMethod("fromString", message);
-        return components[0];
-    }
-
-    /**
      * Gets the associated Minecraft inventory type from the {@link InventoryType}.
      * Used in obsolete Minecraft versions like 1.8.
      *
      * @param inventoryType the inventory type
      * @return the minecraft inventory type
      */
-    static @NotNull String getInventoryTypeStringFromBukkitType(final @NotNull InventoryType inventoryType) {
+    static @NotNull String inventoryTypeToNotchInventoryTypeString(final @NotNull InventoryType inventoryType) {
         switch (inventoryType) {
             case CHEST:
             case ENDER_CHEST:
@@ -268,40 +280,9 @@ public final class NMSUtils {
         throw new IllegalArgumentException("Could not find associated legacy inventory type from Bukkit type: " + inventoryType);
     }
 
-    /**
-     * Returns the current server version in a double format.
-     * If the server version is "1.X.Y", the number returned is "X.Y".
-     *
-     * @return the version
+    /*
+     * ENTITY PLAYER
      */
-    public static double getServerVersion() {
-        Pattern pattern = Pattern.compile("[0-9]+\\.([0-9]+)(?:\\.([0-9]+))?-R[0-9]+\\.[0-9]+-SNAPSHOT");
-        String version = Bukkit.getBukkitVersion();
-        Matcher matcher = pattern.matcher(version);
-        if (matcher.matches()) {
-            String first = matcher.group(1);
-            String second = matcher.group(2);
-            if (second == null) second = "0";
-            return Double.parseDouble(first + "." + second);
-        } else throw new IllegalStateException("Could not find numeric version from server version: " + version);
-    }
-
-    /**
-     * Gets the NMS version of the current version.
-     * <br>
-     * <b>WARNING</b>: not supported in versions higher than 1.20.
-     *
-     * @return the version
-     */
-    public static @NotNull String getNMSVersion() {
-        Class<? extends Server> serverClass = Bukkit.getServer().getClass();
-        String version = serverClass.getPackage().getName();
-        version = version.substring(version.lastIndexOf('.') + 1);
-        if (version.equals("craftbukkit"))
-            throw new IllegalStateException("Could not find the NMS version from the current server class: " + serverClass.getSimpleName() + ". " +
-                    "Are you on a version higher than 1.20?");
-        return version;
-    }
 
     /**
      * Sends the given packet to the specified player.
@@ -370,7 +351,7 @@ public final class NMSUtils {
         }
     }
 
-    /**
+    /*
      * CLASSES
      */
 
@@ -396,6 +377,45 @@ public final class NMSUtils {
             final String packetPlayOutOpenWindowName = String.format("net.minecraft.server.%s.PacketPlayOutOpenWindow", getNMSVersion());
             return ReflectionUtils.getClass(packetPlayOutOpenWindowName);
         }
+    }
+
+    /*
+     * VERSIONS
+     */
+
+    /**
+     * Returns the current server version in a double format.
+     * If the server version is "1.X.Y", the number returned is "X.Y".
+     *
+     * @return the version
+     */
+    public static double getServerVersion() {
+        Pattern pattern = Pattern.compile("[0-9]+\\.([0-9]+)(?:\\.([0-9]+))?-R[0-9]+\\.[0-9]+-SNAPSHOT");
+        String version = Bukkit.getBukkitVersion();
+        Matcher matcher = pattern.matcher(version);
+        if (matcher.matches()) {
+            String first = matcher.group(1);
+            String second = matcher.group(2);
+            if (second == null) second = "0";
+            return Double.parseDouble(first + "." + second);
+        } else throw new IllegalStateException("Could not find numeric version from server version: " + version);
+    }
+
+    /**
+     * Gets the NMS version of the current version.
+     * <br>
+     * <b>WARNING</b>: not supported in versions higher than 1.20.
+     *
+     * @return the version
+     */
+    public static @NotNull String getNMSVersion() {
+        Class<? extends Server> serverClass = Bukkit.getServer().getClass();
+        String version = serverClass.getPackage().getName();
+        version = version.substring(version.lastIndexOf('.') + 1);
+        if (version.equals("craftbukkit"))
+            throw new IllegalStateException("Could not find the NMS version from the current server class: " + serverClass.getSimpleName() + ". " +
+                    "Are you on a version higher than 1.20?");
+        return version;
     }
 
 }

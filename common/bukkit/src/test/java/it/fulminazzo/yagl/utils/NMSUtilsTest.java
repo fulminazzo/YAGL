@@ -61,7 +61,7 @@ class NMSUtilsTest {
      * 1.17-1.19
      */
     @Test
-    void testConstructUpdateInventoryTitlePacket() {
+    void testNewUpdateInventoryTitlePacket() {
         CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
@@ -79,7 +79,7 @@ class NMSUtilsTest {
         EntityPlayerContainer handle = player.getHandle();
         handle.setContainer(container);
 
-        Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket((Player) player, "Hello, world!");
+        Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket((Player) player, "Hello, world!");
 
         assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
                 "Packet was supposed to be PacketPlayOutOpenWindow");
@@ -116,7 +116,7 @@ class NMSUtilsTest {
 
     @Test
     void testChatBaseComponent() {
-        Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+        Object baseComponent = NMSUtils.newIChatBaseComponent("Hello, world");
         assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
     }
 
@@ -176,14 +176,14 @@ class NMSUtilsTest {
 
     @ParameterizedTest
     @MethodSource("inventoryTypeStrings")
-    void testGetInventoryTypeStringFromBukkitType(InventoryType inventoryType, @Nullable String expected) {
+    void testInventoryTypeToNotchInventoryTypeString(InventoryType inventoryType, @Nullable String expected) {
         if (expected == null)
             assertThrowsExactly(IllegalArgumentException.class, () ->
-                    NMSUtils.getInventoryTypeStringFromBukkitType(inventoryType)
+                    NMSUtils.inventoryTypeToNotchInventoryTypeString(inventoryType)
             );
         else {
             expected = "minecraft:" + expected;
-            assertEquals(expected, NMSUtils.getInventoryTypeStringFromBukkitType(inventoryType));
+            assertEquals(expected, NMSUtils.inventoryTypeToNotchInventoryTypeString(inventoryType));
         }
     }
 
