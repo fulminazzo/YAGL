@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.utils.current;
+package net.minecraft.world.inventory;
 
 public class AbstractContainerMenu {
 

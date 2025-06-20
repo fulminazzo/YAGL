@@ -5,7 +5,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.testing.CraftPlayer;
-import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.server.level.ServerPlayer;
 import it.fulminazzo.yagl.utils.current.EntityPlayerContainer;
 import it.fulminazzo.yagl.utils.current.containers.Container;

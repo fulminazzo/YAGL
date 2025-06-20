@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import java.util.ArrayList;
 import java.util.List;
