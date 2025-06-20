@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
@@ -16,6 +17,7 @@ import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +38,12 @@ class AnvilInventoryWrapperTest {
         BukkitUtils.setupServer();
 
         this.inventory = new MockInventory(3);
-        this.inventory.setItem(0, new ItemStack(Material.STONE, 64));
+        ItemStack itemStack = new ItemStack(Material.STONE, 64);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(SearchGUI.EMPTY_RENAME_TEXT);
+        itemStack.setItemMeta(itemMeta);
+        this.inventory.setItem(0, itemStack);
+        this.inventory.setItem(1, new ItemStack(Material.AIR, 64));
 
         CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class, withSettings().extraInterfaces(Player.class));
 
