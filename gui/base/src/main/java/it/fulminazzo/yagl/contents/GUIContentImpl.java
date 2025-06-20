@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.contents;
 
 import it.fulminazzo.yagl.actions.GUIItemAction;
-import it.fulminazzo.yagl.actions.GUIItemCommand;
+import it.fulminazzo.yagl.actions.commands.GUIItemCommand;
 import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
 import it.fulminazzo.yagl.contents.requirements.RequirementChecker;
 import it.fulminazzo.yagl.items.Item;
