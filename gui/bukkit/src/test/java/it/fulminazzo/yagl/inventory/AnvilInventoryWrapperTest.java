@@ -3,13 +3,14 @@ package it.fulminazzo.yagl.inventory;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.testing.CraftPlayer;
+import it.fulminazzo.yagl.utils.BukkitTestUtils;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class AnvilInventoryWrapperTest {
@@ -33,8 +34,12 @@ class AnvilInventoryWrapperTest {
 
     @Test
     void testOpen12_13() {
-        AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12_13(this.inventory);
-        wrapper.open(this.player);
+        BukkitTestUtils.mockNMSUtils(() -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+
+            AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12_13(this.inventory);
+            wrapper.open(this.player);
+        });
     }
 
 }
