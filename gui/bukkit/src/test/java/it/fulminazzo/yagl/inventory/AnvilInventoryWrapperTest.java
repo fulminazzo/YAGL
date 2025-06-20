@@ -7,10 +7,7 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
-import net.minecraft.server.v1_14_R1.Container;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
-import net.minecraft.server.v1_14_R1.Packet;
-import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftContainer;
@@ -102,9 +99,20 @@ class AnvilInventoryWrapperTest {
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
-            List<CraftItemStack> items = ((CraftContainer) activeContainer).getDelegate().getItems();
+            Container delegate = ((CraftContainer) activeContainer).getDelegate();
+            List<CraftItemStack> items = delegate.getItems();
             CraftItemStack craftItemStack = items.get(0);
             assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
+
+            ContainerAccess access = delegate.getContainerAccess();
+            ContainerAccess expected = ContainerAccess.at(entityPlayer.getWorld(),
+                    new BlockPosition(
+                            this.player.getLocation().getBlockX(),
+                            this.player.getLocation().getBlockY(),
+                            this.player.getLocation().getBlockZ()
+                    )
+            );
+            assertEquals(expected, access);
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
