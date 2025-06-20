@@ -9,16 +9,16 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An implementation of {@link AnvilInventoryWrapper} with support from Minecraft 1.12 to 1.13.
+ * An implementation of {@link AnvilInventoryWrapper} with support for Minecraft 1.12.
  */
-class AnvilInventoryWrapper12_13 extends AnvilInventoryWrapper {
+class AnvilInventoryWrapper12 extends AnvilInventoryWrapper {
 
     /**
      * Instantiates a new Anvil inventory wrapper.
      *
      * @param actualInventory the actual inventory
      */
-    public AnvilInventoryWrapper12_13(final @NotNull Inventory actualInventory) {
+    public AnvilInventoryWrapper12(final @NotNull Inventory actualInventory) {
         super(actualInventory);
     }
 
