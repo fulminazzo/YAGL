@@ -16,7 +16,6 @@ import static org.mockito.Mockito.*;
 class AnvilInventoryWrapperTest {
     private Inventory inventory;
 
-    private EntityPlayer entityPlayer;
     private Player player;
 
     @BeforeEach
@@ -25,11 +24,11 @@ class AnvilInventoryWrapperTest {
 
         this.inventory = new MockInventory(3);
 
-        this.entityPlayer = new EntityPlayer(null);
         CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class, withSettings().extraInterfaces(Player.class));
-        when(craftPlayer.getHandle()).thenReturn(this.entityPlayer);
-
         this.player = (Player) craftPlayer;
+
+        EntityPlayer entityPlayer = new EntityPlayer(null, this.player);
+        when(craftPlayer.getHandle()).thenReturn(entityPlayer);
     }
 
     @Test
