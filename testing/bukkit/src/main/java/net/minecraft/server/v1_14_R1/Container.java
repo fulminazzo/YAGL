@@ -25,7 +25,7 @@ public class Container {
 
     private final List<CraftItemStack> items;
 
-    private final List<EntityPlayer> slotListener;
+    private final List<EntityPlayer> slotListeners;
 
     private InventoryView bukkitView;
 
@@ -51,7 +51,7 @@ public class Container {
         this.windowId = windowId;
         this.items = new ArrayList<>();
         for (int i = 0; i < type.getSize(); i++) this.items.add(null);
-        this.slotListener = new ArrayList<>();
+        this.slotListeners = new ArrayList<>();
     }
 
     public void setBukkitView(InventoryView bukkitView) {
@@ -67,7 +67,7 @@ public class Container {
     }
 
     public void addSlotListener(EntityPlayer entityPlayer) {
-        this.slotListener.add(entityPlayer);
+        this.slotListeners.add(entityPlayer);
     }
 
 }
