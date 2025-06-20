@@ -1,6 +1,10 @@
 package net.minecraft.server.v1_14_R1;
 
-public class ContainerAccess {
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.Getter;
+
+@Getter
+public class ContainerAccess extends FieldEquable {
     private final World world;
     private final BlockPosition blockPosition;
 

@@ -1,6 +1,10 @@
 package net.minecraft.server.v1_14_R1;
 
-public class World {
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.Getter;
+
+@Getter
+public class World extends FieldEquable {
     private final String name;
 
     public World(String name) {

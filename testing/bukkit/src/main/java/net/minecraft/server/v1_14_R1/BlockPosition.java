@@ -1,6 +1,10 @@
 package net.minecraft.server.v1_14_R1;
 
-public class BlockPosition {
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.Getter;
+
+@Getter
+public class BlockPosition extends FieldEquable {
     private final int x;
     private final int y;
     private final int z;
