@@ -2,7 +2,9 @@ package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.yagl.exceptions.NotImplemented;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +16,9 @@ import org.jetbrains.annotations.NotNull;
  * previous versions would result in an empty inventory.
  */
 abstract class AnvilInventoryWrapper implements InventoryWrapper {
+    /**
+     * The Actual inventory.
+     */
     @Getter
     protected final @NotNull Inventory actualInventory;
 
@@ -33,8 +38,7 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
      * @return the inventory wrapper
      */
     public static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Player owner) {
-        //TODO:
-        throw new NotImplemented();
+        return newWrapper(Bukkit.createInventory(owner, InventoryType.ANVIL));
     }
 
     /**
@@ -46,6 +50,16 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
      */
     public static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Player owner,
                                                             final @NotNull String title) {
+        return newWrapper(Bukkit.createInventory(owner, InventoryType.ANVIL, title));
+    }
+
+    /**
+     * Creates a new AnvilInventoryWrapper.
+     *
+     * @param inventory the inventory
+     * @return the inventory wrapper
+     */
+    static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Inventory inventory) {
         //TODO:
         throw new NotImplemented();
     }
