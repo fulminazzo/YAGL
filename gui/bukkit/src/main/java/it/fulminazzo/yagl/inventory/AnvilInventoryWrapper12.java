@@ -36,7 +36,7 @@ class AnvilInventoryWrapper12 extends AnvilInventoryWrapper {
         for (int i = 0; i < this.actualInventory.getSize(); i++) {
             ItemStack item = this.actualInventory.getItem(i);
             if (item != null)
-                containerAnvil.invokeMethod("setItem", i, NMSUtils.itemStackToNMS(item));
+                containerAnvil.invokeMethod("setItem", i, itemStackToNMSItem(item));
         }
 
         InventoryView view = containerRefl.invokeMethod("getBukkitView");
@@ -51,6 +51,16 @@ class AnvilInventoryWrapper12 extends AnvilInventoryWrapper {
         // Set fields
         entityPlayer.setFieldObject("activeContainer", containerRefl.getObject());
         containerRefl.invokeMethod("addSlotListener", entityPlayer.getObject());
+    }
+
+    /**
+     * Converts the given item stack to an NMS item.
+     *
+     * @param item the item
+     * @return the nms item
+     */
+    @NotNull Object itemStackToNMSItem(ItemStack item) {
+        return NMSUtils.itemStackToNMS(item);
     }
 
     /**
