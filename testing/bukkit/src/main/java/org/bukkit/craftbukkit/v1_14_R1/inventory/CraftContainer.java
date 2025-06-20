@@ -14,7 +14,7 @@ public class CraftContainer {
     private final Inventory inventory;
     private final EntityPlayer owner;
     private final int windowId;
-
+    private final InventoryView bukkitView;
     private final Container delegate;
     private final Containers type;
 
@@ -22,12 +22,9 @@ public class CraftContainer {
         this.inventory = inventory;
         this.owner = owner;
         this.windowId = windowId;
+        this.bukkitView = new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!");
         this.delegate = new ContainerAnvil(windowId);
         this.type = this.delegate.getType();
-    }
-
-    public InventoryView getBukkitView() {
-        return new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!");
     }
 
 }
