@@ -590,13 +590,16 @@ class GUIAdapterTest {
 
     @Test
     void testOpenInAsync() {
+        AtomicBoolean isPrimaryThread = new AtomicBoolean(false);
+
         Server server = Bukkit.getServer();
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
         when(scheduler.runTask(any(), any(Runnable.class))).then(a -> {
+            isPrimaryThread.set(true);
             ((Runnable) a.getArguments()[1]).run();
             return null;
         });
-        when(server.isPrimaryThread()).thenReturn(false);
+        when(server.isPrimaryThread()).thenAnswer(a -> isPrimaryThread.get());
         when(server.getScheduler()).thenReturn(scheduler);
 
         BukkitTestUtils.mockPlugin(p -> {

@@ -58,7 +58,8 @@ class InventoryWrapperTest {
                 .flatMap(Collection::stream)
                 .map(o -> new Object[]{o[0], o[1], InventoryWrapperContainer.class})
                 .peek(o -> {
-                    if (o[0] == InventoryType.ANVIL && (int) o[1] < 17)
+                    int version = (int) o[1];
+                    if (o[0] == InventoryType.ANVIL && (version >= 12 && version < 17))
                         o[2] = AnvilInventoryWrapper.class;
                 })
                 .toArray(Object[][]::new);
