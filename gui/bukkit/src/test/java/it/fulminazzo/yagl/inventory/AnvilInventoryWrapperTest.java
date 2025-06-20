@@ -48,9 +48,49 @@ class AnvilInventoryWrapperTest {
     }
 
     @Test
-    void testOpen12_13() {
+    void testOpen12() {
         preventNewerNMSClassesLoading(() -> {
-            AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12_13(this.inventory);
+            AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12(this.inventory);
+            wrapper.open(this.player);
+
+            EntityPlayer entityPlayer = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+
+            Container activeContainer = entityPlayer.getActiveContainer();
+            assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
+            assertInstanceOf(CraftContainer.class, activeContainer);
+
+            List<CraftItemStack> items = ((CraftContainer) activeContainer).getDelegate().getItems();
+            CraftItemStack craftItemStack = items.get(0);
+            assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
+
+            List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
+            assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
+
+            EntityPlayer first = slotListeners.get(0);
+            assertEquals(first, entityPlayer);
+
+            EntityPlayer.PlayerConnection connection = entityPlayer.getPlayerConnection();
+
+            List<Packet> packets = connection.getSentPackets();
+            assertFalse(packets.isEmpty(), "packets should not be empty");
+
+            Packet packet = packets.get(0);
+            assertInstanceOf(PacketPlayOutOpenWindow.class, packet);
+
+            PacketPlayOutOpenWindow openWindowPacket = (PacketPlayOutOpenWindow) packet;
+            assertEquals(activeContainer.getWindowId(), openWindowPacket.getId(),
+                    "openWindowPacket did not match container id");
+            assertEquals(activeContainer.getType(), openWindowPacket.getContainerType(),
+                    "openWindowPacket did not match container type");
+            assertEquals(CraftChatMessage.fromString("Hello, world!")[0], openWindowPacket.getTitle(),
+                    "openWindowPacket did not match expected title");
+        });
+    }
+
+    @Test
+    void testOpen13() {
+        preventNewerNMSClassesLoading(() -> {
+            AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper13(this.inventory);
             wrapper.open(this.player);
 
             EntityPlayer entityPlayer = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
