@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.inventory;
 
+import it.fulminazzo.yagl.exceptions.NotImplemented;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,8 +17,37 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
     @Getter
     protected final @NotNull Inventory actualInventory;
 
+    /**
+     * Instantiates a new Anvil inventory wrapper.
+     *
+     * @param actualInventory the actual inventory
+     */
     public AnvilInventoryWrapper(final @NotNull Inventory actualInventory) {
         this.actualInventory = actualInventory;
+    }
+
+    /**
+     * Creates a new AnvilInventoryWrapper.
+     *
+     * @param owner the owner
+     * @return the inventory wrapper
+     */
+    public static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Player owner) {
+        //TODO:
+        throw new NotImplemented();
+    }
+
+    /**
+     * Creates a new AnvilInventoryWrapper.
+     *
+     * @param owner the owner
+     * @param title the title
+     * @return the inventory wrapper
+     */
+    public static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Player owner,
+                                                            final @NotNull String title) {
+        //TODO:
+        throw new NotImplemented();
     }
 
 }
