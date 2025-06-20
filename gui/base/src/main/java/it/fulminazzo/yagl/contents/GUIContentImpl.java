@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.contents;
 
 import it.fulminazzo.yagl.actions.GUIItemAction;
+import it.fulminazzo.yagl.actions.GUIItemCommand;
+import it.fulminazzo.yagl.contents.requirements.PermissionRequirement;
 import it.fulminazzo.yagl.contents.requirements.RequirementChecker;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.viewers.Viewer;
@@ -36,6 +38,31 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
      * @return the item
      */
     protected abstract @NotNull Item internalRender();
+
+    @Override
+    public @NotNull GUIContent copy() {
+        GUIContentImpl copy = internalCopy();
+        copy.setPriority(this.priority);
+        copy.requirements = this.requirements instanceof PermissionRequirement ?
+                new PermissionRequirement(this.requirements.serialize()) :
+                this.requirements;
+        copy.clickAction = this.clickAction instanceof GUIItemCommand ?
+                new GUIItemCommand(this.clickAction.serialize()) :
+                this.clickAction;
+        copy.clickSound = new Sound(
+                this.clickSound.getName(), this.clickSound.getVolume(),
+                this.clickSound.getPitch(), this.clickSound.getCategory()
+        );
+        copy.variables.putAll(this.variables);
+        return copy;
+    }
+
+    /**
+     * Initializes a new {@link GUIContent} of the current type.
+     *
+     * @return the gui content
+     */
+    protected abstract @NotNull GUIContentImpl internalCopy();
 
     @Override
     public @NotNull GUIContent setPriority(int priority) {
