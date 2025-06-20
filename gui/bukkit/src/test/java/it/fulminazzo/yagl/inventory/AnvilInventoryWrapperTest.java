@@ -7,12 +7,20 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
+import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_14_R1.Packet;
+import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftContainer;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class AnvilInventoryWrapperTest {
@@ -39,6 +47,34 @@ class AnvilInventoryWrapperTest {
         preventNewerNMSClassesLoading(() -> {
             AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12_13(this.inventory);
             wrapper.open(this.player);
+
+            EntityPlayer entityPlayer = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+
+            Container activeContainer = entityPlayer.getActiveContainer();
+            assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
+            assertInstanceOf(CraftContainer.class, activeContainer);
+
+            List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
+            assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
+
+            EntityPlayer first = slotListeners.get(0);
+            assertEquals(first, entityPlayer);
+
+            EntityPlayer.PlayerConnection connection = entityPlayer.getPlayerConnection();
+
+            List<Packet> packets = connection.getSentPackets();
+            assertFalse(packets.isEmpty(), "packets should not be empty");
+
+            Packet packet = packets.get(0);
+            assertInstanceOf(PacketPlayOutOpenWindow.class, packet);
+
+            PacketPlayOutOpenWindow openWindowPacket = (PacketPlayOutOpenWindow) packet;
+            assertEquals(activeContainer.getWindowId(), openWindowPacket.getId(),
+                    "openWindowPacket did not match container id");
+            assertEquals(activeContainer.getType(), openWindowPacket.getContainerType(),
+                    "openWindowPacket did not match container type");
+            assertEquals(CraftChatMessage.fromString("Hello, world!")[0], openWindowPacket.getTitle(),
+                    "openWindowPacket did not match expected title");
         });
     }
 
