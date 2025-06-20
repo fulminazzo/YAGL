@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.utils.current.containers;
+package net.minecraft.world.inventory;
 
 import net.minecraft.server.v1_14_R1.containers.Containers;
 import net.minecraft.server.v1_14_R1.containers.DefaultContainers;

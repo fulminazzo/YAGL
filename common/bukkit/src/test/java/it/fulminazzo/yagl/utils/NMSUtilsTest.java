@@ -7,8 +7,8 @@ import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.server.level.ServerPlayer;
-import it.fulminazzo.yagl.utils.current.EntityPlayerContainer;
-import it.fulminazzo.yagl.utils.current.containers.Container;
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.world.inventory.Container;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
@@ -63,10 +63,10 @@ class NMSUtilsTest {
      */
     @Test
     void testNewUpdateInventoryTitlePacket() {
-        CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
+        CraftPlayer<EntityPlayer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(player.getHandle()).thenReturn(new EntityPlayerContainer());
+        when(player.getHandle()).thenReturn(new EntityPlayer());
 
         MockInventoryView inventoryView = new MockInventoryView(
                 new MockInventory(27),
@@ -77,7 +77,7 @@ class NMSUtilsTest {
         Container container = Container.newContainer();
         container.setOpenInventory(inventoryView);
 
-        EntityPlayerContainer handle = player.getHandle();
+        EntityPlayer handle = player.getHandle();
         handle.setContainer(container);
 
         Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket((Player) player, "Hello, world!");
