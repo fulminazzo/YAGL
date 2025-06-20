@@ -205,14 +205,7 @@ public final class NMSUtils {
      * @return the chat base component
      */
     public static @NotNull Object newIChatBaseComponent(final @NotNull String message) {
-        String iChatBaseComponentClassName;
-        try {
-            iChatBaseComponentClassName = String.format("org.bukkit.craftbukkit.%s.util.CraftChatMessage", getNMSVersion());
-        } catch (IllegalStateException e) {
-            // 1.20+
-            iChatBaseComponentClassName = "org.bukkit.craftbukkit.util.CraftChatMessage";
-        }
-        Class<?> iChatBaseComponent = ReflectionUtils.getClass(iChatBaseComponentClassName);
+        Class<?> iChatBaseComponent = getCraftBukkitClass("util.CraftChatMessage");
         Object[] components = new Refl<>(iChatBaseComponent).invokeMethod("fromString", message);
         return components[0];
     }
@@ -228,14 +221,7 @@ public final class NMSUtils {
      * @return the NMS item stack
      */
     public static @NotNull Object itemStackToNMS(final @NotNull ItemStack itemStack) {
-        String craftItemStackClassName;
-        try {
-            craftItemStackClassName = String.format("org.bukkit.craftbukkit.%s.inventory.CraftItemStack", getNMSVersion());
-        } catch (IllegalStateException e) {
-            // 1.20+
-            craftItemStackClassName = "org.bukkit.craftbukkit.inventory.CraftItemStack";
-        }
-        Class<?> craftItemStack = ReflectionUtils.getClass(craftItemStackClassName);
+        Class<?> craftItemStack = getCraftBukkitClass("inventory.CraftItemStack");
         return new Refl<>(craftItemStack).invokeMethod("asNMSCopy", itemStack);
     }
 

@@ -26,8 +26,7 @@ class AnvilInventoryWrapper12_13 extends AnvilInventoryWrapper {
     public void open(@NotNull Player player) {
         final @NotNull Refl<?> entityPlayer = NMSUtils.getHandle(player);
 
-        Refl<?> containerRefl = new Refl<>(String.format("org.bukkit.craftbukkit.%s.inventory.CraftContainer",
-                NMSUtils.getNMSVersion()),
+        Refl<?> containerRefl = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftContainer"),
                 this.actualInventory,
                 entityPlayer.getObject(),
                 entityPlayer.invokeMethod("nextContainerCounter")
