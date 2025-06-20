@@ -20,6 +20,11 @@ jobs:
       contents: read
 
     steps:
+      - name: Debug info
+        run: |
+          echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Message: ${{ github.event.workflow_run.head_commit.message }}"
+
       - uses: actions/checkout@v4
 
       - name: Set up JDK
