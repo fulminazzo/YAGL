@@ -14,11 +14,16 @@ public class EntityPlayer {
     private final Container defaultContainer;
 
     private Container activeContainer;
+    private int nextContainerCounter;
 
     public EntityPlayer(Channel channel) {
         this.playerConnection = new PlayerConnection(channel);
         this.defaultContainer = new Container();
         this.activeContainer = new Container();
+    }
+
+    public int nextContainerCounter() {
+        return nextContainerCounter++;
     }
 
     @Getter
