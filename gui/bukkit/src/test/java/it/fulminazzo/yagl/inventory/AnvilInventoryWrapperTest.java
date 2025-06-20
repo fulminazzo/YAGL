@@ -11,10 +11,13 @@ import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import net.minecraft.server.v1_14_R1.Packet;
 import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftContainer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +37,7 @@ class AnvilInventoryWrapperTest {
         BukkitUtils.setupServer();
 
         this.inventory = new MockInventory(3);
+        this.inventory.setItem(0, new ItemStack(Material.STONE, 64));
 
         CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class, withSettings().extraInterfaces(Player.class));
         this.player = (Player) craftPlayer;
@@ -53,6 +57,12 @@ class AnvilInventoryWrapperTest {
             Container activeContainer = entityPlayer.getActiveContainer();
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
+
+            List<CraftItemStack> items = activeContainer.getItems();
+            assertFalse(items.isEmpty(), "items should not be empty");
+
+            CraftItemStack craftItemStack = items.get(0);
+            assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
