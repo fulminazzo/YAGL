@@ -49,10 +49,11 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
         copy.clickAction = this.clickAction instanceof GUIItemCommand ?
                 new GUIItemCommand(this.clickAction.serialize()) :
                 this.clickAction;
-        copy.clickSound = new Sound(
-                this.clickSound.getName(), this.clickSound.getVolume(),
-                this.clickSound.getPitch(), this.clickSound.getCategory()
-        );
+        if (this.clickSound != null)
+            copy.clickSound = new Sound(
+                    this.clickSound.getName(), this.clickSound.getVolume(),
+                    this.clickSound.getPitch(), this.clickSound.getCategory()
+            );
         copy.variables.putAll(this.variables);
         return copy;
     }
