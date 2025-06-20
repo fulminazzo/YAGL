@@ -32,6 +32,7 @@ jobs:
           echo "Message: ${{ github.event.workflow_run.head_commit.message }}"
           exit 1
 
+
 #      - name: Automatic Release
 #        uses: Fulminazzo/java-automatic-release@v3
 #        with:
