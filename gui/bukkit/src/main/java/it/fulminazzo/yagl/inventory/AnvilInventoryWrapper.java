@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.inventory;
 
-import org.bukkit.entity.Player;
+import lombok.Getter;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,16 +11,12 @@ import org.jetbrains.annotations.NotNull;
  * This wrapping is necessary, as trying to set a content to an anvil inventory in
  * previous versions would result in an empty inventory.
  */
-final class AnvilInventoryWrapper implements InventoryWrapper {
+abstract class AnvilInventoryWrapper implements InventoryWrapper {
+    @Getter
+    protected final @NotNull Inventory actualInventory;
 
-    @Override
-    public void open(@NotNull Player player) {
-
-    }
-
-    @Override
-    public @NotNull Inventory getActualInventory() {
-        return null;
+    public AnvilInventoryWrapper(final @NotNull Inventory actualInventory) {
+        this.actualInventory = actualInventory;
     }
 
 }
