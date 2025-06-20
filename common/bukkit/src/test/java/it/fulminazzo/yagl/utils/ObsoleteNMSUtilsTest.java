@@ -7,7 +7,7 @@ import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
-import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
+import net.minecraft.server.v1_14_R1.EntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import it.fulminazzo.yagl.utils.legacy.containers.Container;
 import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
@@ -33,10 +33,10 @@ class ObsoleteNMSUtilsTest {
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
-        CraftPlayer<LegacyEntityPlayer> craftPlayer = mock(CraftPlayer.class,
+        CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
+        when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
         this.player = (Player) craftPlayer;
     }
 
@@ -58,7 +58,7 @@ class ObsoleteNMSUtilsTest {
             Container container = new Container(DefaultContainers.GENERIC_9x3);
             container.setOpenInventory(inventoryView);
 
-            LegacyEntityPlayer handle = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
+            EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             handle.setOpenContainer(container);
 
             Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
@@ -88,7 +88,7 @@ class ObsoleteNMSUtilsTest {
                 new ObsoleteContainer("previousTitle")
         );
 
-        new Refl<>(((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle())
+        new Refl<>(((CraftPlayer<EntityPlayer>) this.player).getHandle())
                 .setFieldObject("playerContainer", new Container());
 
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(

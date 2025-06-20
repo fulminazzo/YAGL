@@ -9,7 +9,7 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
-import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
+import net.minecraft.server.v1_14_R1.EntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import it.fulminazzo.yagl.utils.legacy.containers.*;
 import org.bukkit.Bukkit;
@@ -41,10 +41,10 @@ class LegacyNMSUtilsTest {
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
-        CraftPlayer<LegacyEntityPlayer> craftPlayer = mock(CraftPlayer.class,
+        CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
+        when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
         this.player = (Player) craftPlayer;
     }
 
@@ -79,13 +79,13 @@ class LegacyNMSUtilsTest {
                     container
             );
             container.setOpenInventory(view);
-            ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(container);
+            ((CraftPlayer<EntityPlayer>) this.player).getHandle().setOpenContainer(container);
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
 
             assertEquals(CraftChatMessage.fromString("Title")[0], internalContainer.getTitle());
 
-            CraftPlayer<LegacyEntityPlayer> craftPlayer = (CraftPlayer<LegacyEntityPlayer>) this.player;
+            CraftPlayer<EntityPlayer> craftPlayer = (CraftPlayer<EntityPlayer>) this.player;
             List<net.minecraft.server.v1_14_R1.Packet> packets = craftPlayer.getHandle().getPlayerConnection().getSentPackets();
             assertEquals(1, packets.size(), "Expected at least one packet to be sent");
         });
@@ -109,7 +109,7 @@ class LegacyNMSUtilsTest {
             Container container = new Container(DefaultContainers.GENERIC_9x3);
             container.setOpenInventory(inventoryView);
 
-            LegacyEntityPlayer handle = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
+            EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             handle.setOpenContainer(container);
 
             Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
@@ -138,7 +138,7 @@ class LegacyNMSUtilsTest {
         );
 
         DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
-        ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+        ((CraftPlayer<EntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
 
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                 null, this.player,
@@ -174,7 +174,7 @@ class LegacyNMSUtilsTest {
 
         DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
         new Refl<>(delegateContainer).setFieldObject("delegate", null);
-        ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+        ((CraftPlayer<EntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
 
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                 null, this.player,
@@ -238,7 +238,7 @@ class LegacyNMSUtilsTest {
 
             NMSUtils.sendPacket(this.player, packet);
 
-            LegacyEntityPlayer player = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
+            EntityPlayer player = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             List<net.minecraft.server.v1_14_R1.Packet> sentPackets = player.getPlayerConnection().getSentPackets();
             assertTrue(sentPackets.contains(packet),
                     String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
@@ -254,10 +254,10 @@ class LegacyNMSUtilsTest {
     @Test
     void testGetPlayerChannel() {
         Channel expected = mock(Channel.class);
-        CraftPlayer<LegacyEntityPlayer> player = mock(CraftPlayer.class,
+        CraftPlayer<EntityPlayer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(player.getHandle()).thenReturn(new LegacyEntityPlayer(expected));
+        when(player.getHandle()).thenReturn(new EntityPlayer(expected));
 
         Channel actual = NMSUtils.getPlayerChannel((Player) player);
         assertEquals(expected, actual);
