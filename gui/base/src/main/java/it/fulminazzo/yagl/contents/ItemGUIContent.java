@@ -219,6 +219,11 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
 
     @Override
     public @NotNull ItemGUIContent copy() {
+        return (ItemGUIContent) super.copy();
+    }
+
+    @Override
+    public @NotNull ItemGUIContent internalCopy() {
         ItemGUIContent copy = ItemGUIContent.newInstance(this.item.copy()).copyFrom(this, true);
         copy.requirements = this.requirements instanceof PermissionRequirement ?
                 new PermissionRequirement(this.requirements.serialize()) :
