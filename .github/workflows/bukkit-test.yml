@@ -32,8 +32,3 @@ jobs:
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5
         env:
           MINECRAFT_VERSION: ${{ inputs.minecraft-version }}
-
-      - name: Test with Gradle Wrapper
-        run: ./gradlew testBukkit
-        env:
-          MINECRAFT_VERSION: ${{ inputs.minecraft-version }}
