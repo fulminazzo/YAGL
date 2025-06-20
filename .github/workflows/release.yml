@@ -30,7 +30,6 @@ jobs:
         run: |
           echo "Branch: ${{ github.event.workflow_run.head_branch }}"
           echo "Message: ${{ github.event.workflow_run.head_commit.message }}"
-          exit 1
 
 #      - name: Automatic Release
 #        uses: Fulminazzo/java-automatic-release@v3
