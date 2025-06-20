@@ -1,11 +1,12 @@
 package org.bukkit.craftbukkit.v1_14_R1.inventory;
 
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 @Getter
-public class CraftItemStack {
+public class CraftItemStack extends FieldEquable {
     private final Material material;
     private final int amount;
 
