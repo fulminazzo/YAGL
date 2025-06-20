@@ -3,6 +3,7 @@ package net.minecraft.server.v1_14_R1;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +13,18 @@ import java.util.List;
 public class EntityPlayer {
     private final PlayerConnection playerConnection;
     private final Container defaultContainer;
+    private final Player player;
 
     private Container activeContainer;
     private int nextContainerCounter;
 
     public EntityPlayer(Channel channel) {
+        this(channel, null);
+    }
+
+    public EntityPlayer(Channel channel, Player player) {
         this.playerConnection = new PlayerConnection(channel);
+        this.player = player;
         this.defaultContainer = new Container();
         this.activeContainer = new Container();
     }
