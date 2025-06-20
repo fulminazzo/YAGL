@@ -338,6 +338,19 @@ public final class NMSUtils {
      */
 
     /**
+     * Gets the corresponding NMS class from the given path.
+     * <br>
+     * Works only until <b>Minecraft 1.16.5</b>.
+     *
+     * @param path the class path (without the NMS leading path)
+     * @return the class
+     */
+    public static @NotNull Class<?> getLegacyNMSClass(final @NotNull String path) {
+        final String className = "net.minecraft.server." + getNMSVersion() + "." + path;
+        return ReflectionUtils.getClass(className);
+    }
+
+    /**
      * Gets the corresponding CraftBukkit class from the given path.
      * <br>
      * The class is looked up using the following logic:
@@ -371,8 +384,7 @@ public final class NMSUtils {
             return ReflectionUtils.getClass(packetName);
         } catch (IllegalArgumentException e) {
             // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
-            final String packetName = String.format("net.minecraft.server.%s.Packet", getNMSVersion());
-            return ReflectionUtils.getClass(packetName);
+            return getLegacyNMSClass("Packet");
         }
     }
 
@@ -383,8 +395,7 @@ public final class NMSUtils {
             return ReflectionUtils.getClass(packetPlayOutOpenWindowName);
         } catch (IllegalArgumentException e) {
             // 1.8.8, 1.9.2, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
-            final String packetPlayOutOpenWindowName = String.format("net.minecraft.server.%s.PacketPlayOutOpenWindow", getNMSVersion());
-            return ReflectionUtils.getClass(packetPlayOutOpenWindowName);
+            return getLegacyNMSClass("PacketPlayOutOpenWindow");
         }
     }
 
