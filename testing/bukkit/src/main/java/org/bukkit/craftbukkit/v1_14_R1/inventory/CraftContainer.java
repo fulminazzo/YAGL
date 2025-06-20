@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.ContainerAnvil;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_14_R1.containers.Containers;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
@@ -15,12 +16,14 @@ public class CraftContainer {
     private final int windowId;
 
     private final Container delegate;
+    private final Containers type;
 
     public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId) {
         this.inventory = inventory;
         this.owner = owner;
         this.windowId = windowId;
         this.delegate = new ContainerAnvil(windowId);
+        this.type = this.delegate.getType();
     }
 
     public InventoryView getBukkitView() {
