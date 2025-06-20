@@ -27,6 +27,8 @@ public class Container {
 
     private final List<EntityPlayer> slotListeners;
 
+    private ContainerAccess containerAccess;
+
     private InventoryView bukkitView;
 
     public Container() {
