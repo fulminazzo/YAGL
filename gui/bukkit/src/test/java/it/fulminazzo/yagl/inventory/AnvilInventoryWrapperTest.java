@@ -1,7 +1,9 @@
 package it.fulminazzo.yagl.inventory;
 
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
 class AnvilInventoryWrapperTest {
+    public static final String NMS_VERSION = "v1_14_R1";
     private Inventory inventory;
 
     private Player player;
@@ -33,11 +36,24 @@ class AnvilInventoryWrapperTest {
 
     @Test
     void testOpen12_13() {
-        BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
-
+        preventNewerNMSClassesLoading(() -> {
             AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12_13(this.inventory);
             wrapper.open(this.player);
+        });
+    }
+
+    private void preventNewerNMSClassesLoading(Runnable runnable) {
+        BukkitTestUtils.mockNMSUtils(() -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+            TestUtils.mockReflectionUtils(r -> {
+                r.when(() -> ReflectionUtils.getClass(any())).thenAnswer(a -> {
+                    String className = a.getArgument(0);
+                    if (className.contains("net.minecraft") && !className.contains(NMS_VERSION))
+                        throw new IllegalArgumentException("Class " + className + " not available because of nms");
+                    else return a.callRealMethod();
+                });
+                runnable.run();
+            });
         });
     }
 
