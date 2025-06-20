@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl.utils.current;
+package net.minecraft.server.level;
 
 import io.netty.channel.Channel;
 import lombok.Getter;
@@ -10,13 +10,13 @@ import java.util.List;
 
 @Getter
 @Setter
-public class EntityPlayer {
+public class ServerPlayer {
     private final ServerGamePacketListenerImpl connection;
     private final AbstractContainerMenu.PlayerContainerMenu playerContainer;
 
     private AbstractContainerMenu openContainer;
 
-    public EntityPlayer(Channel channel) {
+    public ServerPlayer(Channel channel) {
         this.connection = new ServerGamePacketListenerImpl(channel);
         this.playerContainer = new AbstractContainerMenu.PlayerContainerMenu();
         this.openContainer = new AbstractContainerMenu();

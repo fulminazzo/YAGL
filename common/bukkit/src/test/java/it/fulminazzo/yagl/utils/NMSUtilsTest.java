@@ -6,7 +6,7 @@ import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
-import it.fulminazzo.yagl.utils.current.EntityPlayer;
+import net.minecraft.server.level.ServerPlayer;
 import it.fulminazzo.yagl.utils.current.EntityPlayerContainer;
 import it.fulminazzo.yagl.utils.current.containers.Container;
 import net.minecraft.network.protocol.Packet;
@@ -40,10 +40,10 @@ class NMSUtilsTest {
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
-        CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class,
+        CraftPlayer<ServerPlayer> craftPlayer = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
+        when(craftPlayer.getHandle()).thenReturn(new ServerPlayer(null));
         this.player = (Player) craftPlayer;
     }
 
@@ -109,7 +109,7 @@ class NMSUtilsTest {
 
         NMSUtils.sendPacket(this.player, packet);
 
-        EntityPlayer player = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+        ServerPlayer player = ((CraftPlayer<ServerPlayer>) this.player).getHandle();
         List<Packet> sentPackets = player.getConnection().getSentPackets();
         assertTrue(sentPackets.contains(packet),
                 String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
@@ -191,10 +191,10 @@ class NMSUtilsTest {
     @Test
     void testGetPlayerChannel() {
         Channel expected = mock(Channel.class);
-        CraftPlayer<EntityPlayer> player = mock(CraftPlayer.class,
+        CraftPlayer<ServerPlayer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(player.getHandle()).thenReturn(new EntityPlayer(expected));
+        when(player.getHandle()).thenReturn(new ServerPlayer(expected));
 
         Channel actual = NMSUtils.getPlayerChannel((Player) player);
         assertEquals(expected, actual);
