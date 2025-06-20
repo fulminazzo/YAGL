@@ -1,7 +1,6 @@
-package it.fulminazzo.yagl.utils.legacy.containers;
+package net.minecraft.server.v1_14_R1.containers;
 
 import lombok.Getter;
-import net.minecraft.server.v1_14_R1.containers.Containers;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
 

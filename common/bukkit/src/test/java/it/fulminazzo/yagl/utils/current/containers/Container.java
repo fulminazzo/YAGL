@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.utils.current.containers;
 
 import net.minecraft.server.v1_14_R1.containers.Containers;
-import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
+import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.InventoryView;

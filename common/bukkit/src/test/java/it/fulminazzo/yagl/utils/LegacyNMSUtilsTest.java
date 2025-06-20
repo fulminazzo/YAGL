@@ -9,9 +9,10 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
-import it.fulminazzo.yagl.utils.legacy.containers.*;
+import net.minecraft.server.v1_14_R1.containers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
@@ -79,7 +80,7 @@ class LegacyNMSUtilsTest {
                     container
             );
             container.setOpenInventory(view);
-            ((CraftPlayer<EntityPlayer>) this.player).getHandle().setOpenContainer(container);
+            ((CraftPlayer<EntityPlayer>) this.player).getHandle().setActiveContainer(container);
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
 
@@ -110,7 +111,7 @@ class LegacyNMSUtilsTest {
             container.setOpenInventory(inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
-            handle.setOpenContainer(container);
+            handle.setActiveContainer(container);
 
             Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
 
@@ -138,7 +139,7 @@ class LegacyNMSUtilsTest {
         );
 
         DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
-        ((CraftPlayer<EntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+        ((CraftPlayer<EntityPlayer>) this.player).getHandle().setActiveContainer(delegateContainer);
 
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                 null, this.player,
@@ -174,7 +175,7 @@ class LegacyNMSUtilsTest {
 
         DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
         new Refl<>(delegateContainer).setFieldObject("delegate", null);
-        ((CraftPlayer<EntityPlayer>) this.player).getHandle().setOpenContainer(delegateContainer);
+        ((CraftPlayer<EntityPlayer>) this.player).getHandle().setActiveContainer(delegateContainer);
 
         LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
                 null, this.player,

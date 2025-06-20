@@ -1,7 +1,6 @@
 package net.minecraft.server.v1_14_R1;
 
 import io.netty.channel.Channel;
-import it.fulminazzo.yagl.utils.legacy.containers.Container;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,14 +11,14 @@ import java.util.List;
 @Setter
 public class EntityPlayer {
     private final PlayerConnection playerConnection;
-    private final Container playerContainer;
+    private final Container defaultContainer;
 
-    private Container openContainer;
+    private Container activeContainer;
 
     public EntityPlayer(Channel channel) {
         this.playerConnection = new PlayerConnection(channel);
-        this.playerContainer = new Container();
-        this.openContainer = new Container();
+        this.defaultContainer = new Container();
+        this.activeContainer = new Container();
     }
 
     @Getter

@@ -9,9 +9,9 @@ import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
-import it.fulminazzo.yagl.utils.legacy.containers.Container;
-import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
-import it.fulminazzo.yagl.utils.legacy.containers.ObsoleteContainer;
+import net.minecraft.server.v1_14_R1.Container;
+import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
+import net.minecraft.server.v1_14_R1.containers.ObsoleteContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
@@ -59,7 +59,7 @@ class ObsoleteNMSUtilsTest {
             container.setOpenInventory(inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
-            handle.setOpenContainer(container);
+            handle.setActiveContainer(container);
 
             Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
 
