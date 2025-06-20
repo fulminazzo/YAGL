@@ -5,26 +5,25 @@ import lombok.Getter;
 import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.ContainerAnvil;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
-import net.minecraft.server.v1_14_R1.containers.Containers;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 
 @Getter
-public class CraftContainer {
+public class CraftContainer extends Container {
     private final Inventory inventory;
     private final EntityPlayer owner;
-    private final int windowId;
-    private final InventoryView bukkitView;
     private final Container delegate;
-    private final Containers type;
 
     public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId) {
+        this(inventory, owner, windowId, new ContainerAnvil(windowId));
+    }
+
+    public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId, Container delegate) {
+        super(delegate.getType(), windowId);
         this.inventory = inventory;
         this.owner = owner;
-        this.windowId = windowId;
-        this.bukkitView = new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!");
-        this.delegate = new ContainerAnvil(windowId);
-        this.type = this.delegate.getType();
+        this.delegate = delegate;
+
+        setOpenInventory(new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!"));
     }
 
 }
