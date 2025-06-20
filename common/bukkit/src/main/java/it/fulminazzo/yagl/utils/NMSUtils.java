@@ -194,20 +194,6 @@ public final class NMSUtils {
     }
 
     /**
-     * Sends the given packet to the specified player.
-     *
-     * @param player the player
-     * @param packet the packet
-     */
-    public static void sendPacket(final @NotNull Player player,
-                                  final @NotNull Object packet) {
-        Refl<?> playerConnection = getPlayerConnection(getHandle(player));
-        playerConnection.invokeMethod(Void.TYPE,
-                new Class[]{getPacketClass()},
-                packet);
-    }
-
-    /**
      * Gets an NMS chat component from the given string.
      *
      * @param message the message
@@ -296,6 +282,20 @@ public final class NMSUtils {
             throw new IllegalStateException("Could not find the NMS version from the current server class: " + serverClass.getSimpleName() + ". " +
                     "Are you on a version higher than 1.20?");
         return version;
+    }
+
+    /**
+     * Sends the given packet to the specified player.
+     *
+     * @param player the player
+     * @param packet the packet
+     */
+    public static void sendPacket(final @NotNull Player player,
+                                  final @NotNull Object packet) {
+        Refl<?> playerConnection = getPlayerConnection(getHandle(player));
+        playerConnection.invokeMethod(Void.TYPE,
+                new Class[]{getPacketClass()},
+                packet);
     }
 
     /**
