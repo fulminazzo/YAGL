@@ -319,7 +319,7 @@ public final class GUIAdapter {
      * @param owner the owner of the inventory
      * @return the inventory
      */
-    public static Inventory guiToInventory(final @NotNull Player owner,
+    public static @NotNull Inventory guiToInventory(final @NotNull Player owner,
                                            final @NotNull GUI gui) {
         String title = MessageUtils.color(gui.getTitle());
         final Inventory inventory;
@@ -343,7 +343,7 @@ public final class GUIAdapter {
      * @param guiType the gui type
      * @return the inventory type
      */
-    public static InventoryType guiToInventoryType(final @NotNull GUIType guiType) {
+    public static @NotNull InventoryType guiToInventoryType(final @NotNull GUIType guiType) {
         return InventoryType.valueOf(guiType.name());
     }
 
