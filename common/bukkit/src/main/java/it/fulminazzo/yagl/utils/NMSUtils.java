@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -191,6 +192,24 @@ public final class NMSUtils {
         // First container is for player inventory in older versions
         Field containerField = containers.get(Math.min(2, containers.size()) - 1);
         return entityPlayer.getFieldObject(containerField);
+    }
+
+    /**
+     * Converts the given {@link ItemStack} to its corresponding NMS type.
+     *
+     * @param itemStack the item stack
+     * @return the NMS item stack
+     */
+    public static @NotNull Object itemStackToNMS(final @NotNull ItemStack itemStack) {
+        String craftItemStackClassName;
+        try {
+            craftItemStackClassName = String.format("org.bukkit.craftbukkit.%s.inventory.CraftItemStack", getNMSVersion());
+        } catch (IllegalStateException e) {
+            // 1.20+
+            craftItemStackClassName = "org.bukkit.craftbukkit.inventory.CraftItemStack";
+        }
+        Class<?> craftItemStack = ReflectionUtils.getClass(craftItemStackClassName);
+        return new Refl<>(craftItemStack).invokeMethod("asNMSCopy", itemStack);
     }
 
     /**
