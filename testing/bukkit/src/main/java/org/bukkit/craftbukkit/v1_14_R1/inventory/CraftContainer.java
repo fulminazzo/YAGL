@@ -12,12 +12,14 @@ import org.bukkit.inventory.InventoryView;
 public class CraftContainer {
     private final Inventory inventory;
     private final EntityPlayer owner;
+    private final int windowId;
 
     private final Container delegate;
 
     public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId) {
         this.inventory = inventory;
         this.owner = owner;
+        this.windowId = windowId;
         this.delegate = new ContainerAnvil(windowId);
     }
 
