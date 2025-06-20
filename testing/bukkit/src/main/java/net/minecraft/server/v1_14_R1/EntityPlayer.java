@@ -11,9 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 public class EntityPlayer {
+    private final Player player;
+    private final World world;
+
     private final PlayerConnection playerConnection;
     private final Container defaultContainer;
-    private final Player player;
 
     private Container activeContainer;
     private int nextContainerCounter;
@@ -25,6 +27,7 @@ public class EntityPlayer {
     public EntityPlayer(Channel channel, Player player) {
         this.playerConnection = new PlayerConnection(channel);
         this.player = player;
+        this.world = new World("default");
         this.defaultContainer = new Container();
         this.activeContainer = new Container();
     }
