@@ -11,6 +11,7 @@ import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import net.minecraft.server.v1_14_R1.Packet;
 import net.minecraft.server.v1_14_R1.PacketPlayOutOpenWindow;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftContainer;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
@@ -41,7 +42,9 @@ class AnvilInventoryWrapperTest {
         this.inventory.setItem(0, new ItemStack(Material.STONE, 64));
 
         CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class, withSettings().extraInterfaces(Player.class));
+
         this.player = (Player) craftPlayer;
+        when(this.player.getLocation()).thenReturn(new Location(null, 0, 0, 0));
 
         EntityPlayer entityPlayer = new EntityPlayer(null, this.player);
         when(craftPlayer.getHandle()).thenReturn(entityPlayer);
