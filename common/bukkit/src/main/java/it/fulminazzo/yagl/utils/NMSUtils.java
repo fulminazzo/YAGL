@@ -84,10 +84,6 @@ public final class NMSUtils {
         }
     }
 
-    /*
-     * GETTERS
-     */
-
     /**
      * Gets the container type from the given container.
      * Solves a problem found in Minecraft 1.14, where getting the direct container
@@ -349,6 +345,33 @@ public final class NMSUtils {
             // 1.20+
             return playerConnection.getFieldRefl(f -> f.getType().getSimpleName().equals("Connection"));
         }
+    }
+
+    /*
+     * UTILITIES
+     */
+
+    /**
+     * Gets the corresponding CraftBukkit class from the given path.
+     * <br>
+     * The class is looked up using the following logic:
+     * <ul>
+     *     <li>if the server is on 1.20, the class <code>org.bukkit.craftbukkit.&lt;path&gt;</code> is searched;</li>
+     *     <li>otherwise, the class <code>org.bukkit.craftbukkit.{@link #getNMSVersion()}.&lt;path&gt;</code> is used.</li>
+     * </ul>
+     *
+     * @param path the class path (without the CraftBukkit leading path)
+     * @return the class
+     */
+    public static @NotNull Class<?> getCraftBukkitClass(final @NotNull String path) {
+        String className;
+        try {
+            className = "org.bukkit.craftbukkit." + getNMSVersion() + "." + path;
+        } catch (IllegalStateException e) {
+            // 1.20+
+            className = "org.bukkit.craftbukkit." + path;
+        }
+        return ReflectionUtils.getClass(className);
     }
 
     /*
