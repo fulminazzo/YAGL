@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.inventory;
 
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
      * @param owner the owner
      * @return the inventory wrapper
      */
-    public static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Player owner) {
+    public static @NotNull InventoryWrapper newWrapper(final @NotNull Player owner) {
         return newWrapper(Bukkit.createInventory(owner, InventoryType.ANVIL));
     }
 
@@ -48,8 +48,8 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
      * @param title the title
      * @return the inventory wrapper
      */
-    public static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Player owner,
-                                                            final @NotNull String title) {
+    public static @NotNull InventoryWrapper newWrapper(final @NotNull Player owner,
+                                                       final @NotNull String title) {
         return newWrapper(Bukkit.createInventory(owner, InventoryType.ANVIL, title));
     }
 
@@ -59,9 +59,11 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
      * @param inventory the inventory
      * @return the inventory wrapper
      */
-    static @NotNull AnvilInventoryWrapper newWrapper(final @NotNull Inventory inventory) {
-        //TODO:
-        throw new NotImplemented();
+    static @NotNull InventoryWrapper newWrapper(final @NotNull Inventory inventory) {
+        double version = NMSUtils.getServerVersion();
+        if (version >= 12 && version < 14)
+            return new AnvilInventoryWrapper12_13(inventory);
+        else return new InventoryWrapperContainer(inventory);
     }
 
 }
