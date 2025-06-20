@@ -346,4 +346,14 @@ public final class GUIAdapter {
     public static InventoryType guiToInventoryType(final @NotNull GUIType guiType) {
         return InventoryType.valueOf(guiType.name());
     }
+
+    /**
+     * Gets the plugin associated with the YAGL library.
+     *
+     * @return the plugin
+     */
+    public static @NotNull JavaPlugin getProvidingPlugin() {
+        return JavaPlugin.getProvidingPlugin(GUIAdapter.class);
+    }
+
 }
