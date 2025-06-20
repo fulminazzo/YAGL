@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An implementation of {@link AnvilInventoryWrapper} with support for Minecraft 1.12 and 1.13.
+ * An implementation of {@link AnvilInventoryWrapper} with support from Minecraft 1.12 to 1.13.
  */
 class AnvilInventoryWrapper12_13 extends AnvilInventoryWrapper {
 
@@ -32,7 +32,7 @@ class AnvilInventoryWrapper12_13 extends AnvilInventoryWrapper {
                 entityPlayer.invokeMethod("nextContainerCounter")
         );
 
-        Refl<?> containerAnvil = containerRefl.getFieldRefl("delegate");
+        Refl<?> containerAnvil = getDelegateContainer(player, containerRefl);
         for (int i = 0; i < this.actualInventory.getSize(); i++) {
             ItemStack item = this.actualInventory.getItem(i);
             if (item != null)
@@ -51,6 +51,18 @@ class AnvilInventoryWrapper12_13 extends AnvilInventoryWrapper {
         // Set fields
         entityPlayer.setFieldObject("activeContainer", containerRefl.getObject());
         containerRefl.invokeMethod("addSlotListener", entityPlayer.getObject());
+    }
+
+    /**
+     * Gets the delegated container from the main associated container.
+     *
+     * @param player    the player
+     * @param container the container
+     * @return delegate container
+     */
+    @NotNull Refl<?> getDelegateContainer(final @NotNull Player player,
+                                          final @NotNull Refl<?> container) {
+        return container.getFieldRefl("delegate");
     }
 
 }
