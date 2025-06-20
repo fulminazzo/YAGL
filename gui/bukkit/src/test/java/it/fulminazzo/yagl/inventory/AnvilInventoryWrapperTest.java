@@ -26,6 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings("unchecked")
 class AnvilInventoryWrapperTest {
     public static final String NMS_VERSION = "v1_14_R1";
     private Inventory inventory;
@@ -58,9 +59,7 @@ class AnvilInventoryWrapperTest {
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
-            List<CraftItemStack> items = activeContainer.getItems();
-            assertFalse(items.isEmpty(), "items should not be empty");
-
+            List<CraftItemStack> items = ((CraftContainer) activeContainer).getDelegate().getItems();
             CraftItemStack craftItemStack = items.get(0);
             assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
 
