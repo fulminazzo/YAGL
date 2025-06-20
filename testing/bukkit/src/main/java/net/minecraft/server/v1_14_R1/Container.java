@@ -27,7 +27,7 @@ public class Container {
 
     private final List<EntityPlayer> slotListener;
 
-    private InventoryView openInventory;
+    private InventoryView bukkitView;
 
     public Container() {
         this(DefaultContainers.GENERIC_9x3);
@@ -54,12 +54,12 @@ public class Container {
         this.slotListener = new ArrayList<>();
     }
 
-    public void setOpenInventory(InventoryView openInventory) {
-        this.openInventory = openInventory;
+    public void setBukkitView(InventoryView bukkitView) {
+        this.bukkitView = bukkitView;
     }
 
-    public void setOpenInventory(final @NotNull Inventory inventory) {
-        this.openInventory = new MockInventoryView(inventory, mock(Player.class), "");
+    public void setBukkitView(final @NotNull Inventory inventory) {
+        this.bukkitView = new MockInventoryView(inventory, mock(Player.class), "");
     }
 
     public void setItem(final int slot, CraftItemStack itemStack) {

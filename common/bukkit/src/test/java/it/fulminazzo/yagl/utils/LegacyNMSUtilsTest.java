@@ -79,7 +79,7 @@ class LegacyNMSUtilsTest {
                     "Previous title",
                     container
             );
-            container.setOpenInventory(view);
+            container.setBukkitView(view);
             ((CraftPlayer<EntityPlayer>) this.player).getHandle().setActiveContainer(container);
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
@@ -108,7 +108,7 @@ class LegacyNMSUtilsTest {
             );
 
             Container container = new Container(DefaultContainers.GENERIC_9x3);
-            container.setOpenInventory(inventoryView);
+            container.setBukkitView(inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             handle.setActiveContainer(container);
@@ -202,7 +202,7 @@ class LegacyNMSUtilsTest {
 
         Inventory inventory = new MockInventory(type.getSize());
         new Refl<>(inventory).setFieldObject("type", type.getInventoryType());
-        container.setOpenInventory(inventory);
+        container.setBukkitView(inventory);
 
         Object actual = NMSUtils.getContainerType(container);
 
@@ -216,7 +216,7 @@ class LegacyNMSUtilsTest {
 
         Inventory inventory = new MockInventory(type.getSize());
         new Refl<>(inventory).setFieldObject("type", type.getInventoryType());
-        container.setOpenInventory(inventory);
+        container.setBukkitView(inventory);
 
         Object actual = NMSUtils.getContainerType(container);
 

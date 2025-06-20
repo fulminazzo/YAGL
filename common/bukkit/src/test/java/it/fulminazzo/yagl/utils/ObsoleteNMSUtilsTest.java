@@ -56,7 +56,7 @@ class ObsoleteNMSUtilsTest {
             );
 
             Container container = new Container(DefaultContainers.GENERIC_9x3);
-            container.setOpenInventory(inventoryView);
+            container.setBukkitView(inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             handle.setActiveContainer(container);

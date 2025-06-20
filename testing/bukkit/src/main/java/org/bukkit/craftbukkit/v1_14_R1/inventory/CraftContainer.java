@@ -23,7 +23,7 @@ public class CraftContainer extends Container {
         this.owner = owner;
         this.delegate = delegate;
 
-        setOpenInventory(new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!"));
+        setBukkitView(new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!"));
     }
 
 }
