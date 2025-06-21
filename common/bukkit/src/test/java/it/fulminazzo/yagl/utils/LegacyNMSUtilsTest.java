@@ -11,7 +11,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
-import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import net.minecraft.server.v1_14_R1.containers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
