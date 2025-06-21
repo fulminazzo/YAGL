@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.inventory;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.TestUtils;
@@ -13,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftContainer;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,6 +44,7 @@ class ObsoleteAnvilInventoryWrapperTest {
         itemStack.setItemMeta(itemMeta);
         this.inventory.setItem(0, itemStack);
         this.inventory.setItem(1, new ItemStack(Material.AIR, 64));
+        new Refl<>(this.inventory).setFieldObject("type", InventoryType.ANVIL);
 
         CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class, withSettings().extraInterfaces(Player.class));
 
@@ -70,8 +73,8 @@ class ObsoleteAnvilInventoryWrapperTest {
             assertEquals(new net.minecraft.server.v1_8_R3.ItemStack(Material.STONE, 64), craftItemStack);
 
             List<Slot> slots = activeContainer.getSlots();
-            assertEquals(activeContainer.getSize() + this.player.getInventory().getSize(), slots.size(),
-                    "Slots size should be player inventory plus container size");
+            assertEquals(activeContainer.getSize() + this.player.getInventory().getStorageContents().length, slots.size(),
+                    "Slots size should be player inventory contents size plus container size");
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
