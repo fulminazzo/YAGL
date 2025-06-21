@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * An implementation of {@link Scheduler} for Folia.
@@ -13,6 +14,9 @@ import java.util.Objects;
 final class FoliaScheduler implements Scheduler {
     private final @NotNull Refl<?> internal;
 
+    /**
+     * Instantiates a new Folia scheduler.
+     */
     FoliaScheduler() {
         this.internal = Objects.requireNonNull(
                 new Refl<>(Bukkit.getServer()).invokeMethodRefl("getGlobalRegionScheduler"),
@@ -23,7 +27,7 @@ final class FoliaScheduler implements Scheduler {
     @Override
     public @NotNull Task run(@NotNull Plugin owningPlugin, @NotNull Runnable task) {
         return new FoliaSchedulerTask(
-                this.internal.invokeMethod("run", owningPlugin, task)
+                this.internal.invokeMethod("run", owningPlugin, runnableToConsumer(task))
         );
     }
 
@@ -36,7 +40,7 @@ final class FoliaScheduler implements Scheduler {
     public @NotNull Task runLater(@NotNull Plugin owningPlugin, @NotNull Runnable task,
                                   long delayInTicks) {
         return new FoliaSchedulerTask(
-                this.internal.invokeMethod("runDelayed", owningPlugin, task, delayInTicks)
+                this.internal.invokeMethod("runDelayed", owningPlugin, runnableToConsumer(task), delayInTicks)
         );
     }
 
@@ -50,7 +54,7 @@ final class FoliaScheduler implements Scheduler {
     public @NotNull Task runRepeated(@NotNull Plugin owningPlugin, @NotNull Runnable task,
                                      long delayInTicks, long repeatDelayInTicks) {
         return new FoliaSchedulerTask(
-                this.internal.invokeMethod("runAtFixedRate", owningPlugin, task, repeatDelayInTicks, delayInTicks)
+                this.internal.invokeMethod("runAtFixedRate", owningPlugin, runnableToConsumer(task), repeatDelayInTicks, delayInTicks)
         );
     }
 
@@ -58,6 +62,16 @@ final class FoliaScheduler implements Scheduler {
     public @NotNull Task runRepeatedAsync(@NotNull Plugin owningPlugin, @NotNull Runnable task,
                                           long delayInTicks, long repeatDelayInTicks) {
         return runRepeated(owningPlugin, task, delayInTicks, repeatDelayInTicks);
+    }
+
+    /**
+     * Converts a Runnable to a consumer.
+     *
+     * @param task the runnable
+     * @return the consumer
+     */
+    @NotNull Consumer<?> runnableToConsumer(@NotNull Runnable task) {
+        return t -> task.run();
     }
 
     /**
