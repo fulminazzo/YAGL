@@ -52,7 +52,7 @@ class InventoryWrapperTest {
         return Arrays.stream(InventoryType.values())
                 .map(t -> {
                     List<Object[]> data = new ArrayList<>();
-                    for (int i = 8; i <= 21; i++) data.add(new Object[]{t, i});
+                    for (int i = 7; i <= 21; i++) data.add(new Object[]{t, i});
                     return data;
                 })
                 .flatMap(Collection::stream)
