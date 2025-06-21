@@ -1,4 +1,4 @@
-package it.fulminazzo.yagl;
+package it.fulminazzo.yagl.metadatable;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
