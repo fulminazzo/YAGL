@@ -4,3 +4,4 @@ version: "${version}"
 authors: ["${author}"]
 main: "${group}.${name_lower}.${name}"
 api-version: 1.13
+folia-supported: true
