@@ -38,12 +38,14 @@ class AnvilInventoryWrapper8 extends AnvilInventoryWrapper {
         );
 
         Object internalInventory = new Refl<>(this.actualInventory).invokeMethod("getInventory");
-        final @NotNull Class<?> slotClass = NMSUtils.getLegacyNMSClass("Slot");
 
+        final @NotNull Class<?> slotClass = NMSUtils.getLegacyNMSClass("Slot");
         List<Object> slots = containerRefl.getFieldObject(f -> checkFieldListOf(f, slotClass));
         slots.add(new Refl<>(slotClass, internalInventory, 0, 27, 47).getObject());
         slots.add(new Refl<>(slotClass, internalInventory, 1, 76, 47).getObject());
         slots.add(new Refl<>(slotClass, internalInventory, 2, 134, 47).getObject());
+
+        setPlayerInventorySlots(player, containerRefl.getObject());
 
         List<Object> itemStacks = containerRefl.getFieldObject(f ->
                 checkFieldListOf(f, NMSUtils.getLegacyNMSClass("ItemStack"))
@@ -53,6 +55,10 @@ class AnvilInventoryWrapper8 extends AnvilInventoryWrapper {
             if (item != null) itemStacks.add(NMSUtils.itemStackToNMS(item));
             else itemStacks.add(null);
         }
+
+        // Set player inventory items
+        for (int i = 0; i < player.getInventory().getSize(); i++)
+            itemStacks.add(null);
 
         InventoryView view = containerRefl.invokeMethod("getBukkitView");
         Object openWindowPacket = NMSUtils.newOpenWindowPacket(
@@ -67,6 +73,40 @@ class AnvilInventoryWrapper8 extends AnvilInventoryWrapper {
         // Set fields
         entityPlayer.setFieldObject("activeContainer", containerRefl.getObject());
         containerRefl.invokeMethod("addSlotListener", entityPlayer.getObject());
+    }
+
+    /**
+     * Sets the corresponding {@link Player#getInventory()} slots in the specified container.
+     *
+     * @param player    the player
+     * @param container the container
+     */
+    static void setPlayerInventorySlots(final @NotNull Player player,
+                                        final @NotNull Object container) {
+        final @NotNull Class<?> slotClass = NMSUtils.getLegacyNMSClass("Slot");
+        List<Object> slots = new Refl<>(container).getFieldObject(f -> checkFieldListOf(f, slotClass));
+
+        Object bottomInventory = new Refl<>(player.getInventory()).invokeMethod("getInventory");
+
+        // Set storage slots
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                Object slot = new Refl<>(slotClass,
+                        bottomInventory,
+                        col + row * 9 + 9, 8 + col * 18, 31 + row * 18
+                ).getObject();
+                slots.add(slot);
+            }
+        }
+
+        // Set hotbar contents
+        for (int col = 0; col < 9; col++) {
+            Object slot = new Refl<>(slotClass,
+                    bottomInventory,
+                    col, 8 + col * 18, 89
+            ).getObject();
+            slots.add(slot);
+        }
     }
 
     /**
