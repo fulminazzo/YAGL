@@ -2,7 +2,7 @@
 While being used through the whole **YAGL project**, by itself it has **minimum use**,
 therefore it is suggested to **not use it**.
 
-| Table of contents               |
+| **Table of Contents**           |
 |---------------------------------|
 | [How to import](#how-to-import) |
 | [Maven](#maven)                 |
@@ -19,6 +19,7 @@ It can be imported using both **Maven** and **Gradle** and specifying **one of i
 ### Maven
 
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
+
 ```xml
 <repository>
     <id>fulminazzo-repo</id>
@@ -27,6 +28,7 @@ First introduce the **Fulminazzo repository**, from where the artifacts will be 
 ```
 
 Then, add the **dependency**
+
 ```xml
 <dependency>
     <groupId>it.fulminazzo.yagl.common</groupId>
@@ -34,10 +36,12 @@ Then, add the **dependency**
     <version>{LATEST}</version>
 </dependency>
 ```
+
 substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
 and `{LATEST}` the **version of interest**.
 
 To import **all three submodules together**, use:
+
 ```xml
 <dependency>
     <groupId>it.fulminazzo.yagl</groupId>
@@ -49,6 +53,7 @@ To import **all three submodules together**, use:
 ### Gradle
 
 First introduce the **Fulminazzo repository**, from where the artifacts will be downloaded.
+
 ```groovy
 repositories {
     maven { url = "https://repo.fulminazzo.it/releases" }
@@ -56,15 +61,18 @@ repositories {
 ```
 
 Then, add the **dependency**
+
 ```groovy
 dependencies {
     implementation 'it.fulminazzo.yagl.common:common-{MODULE}:{LATEST}'
 }
 ```
+
 substitute `{MODULE}` with one among `base`, `serializer` or `bukkit`,
 and `{LATEST}` the **version of interest**.
 
 To import **all three submodules together**, use:
+
 ```groovy
 dependencies {
     implementation 'it.fulminazzo.yagl:common:{LATEST}'
