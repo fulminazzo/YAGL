@@ -50,7 +50,7 @@ class ObsoleteAnvilInventoryWrapperTest {
         this.player = (Player) craftPlayer;
         when(this.player.getLocation()).thenReturn(new Location(null, 0, 0, 0));
 
-        EntityPlayer entityPlayer = new EntityPlayer(null, this.player);
+        EntityPlayer entityPlayer = new EntityPlayer(this.player);
         when(craftPlayer.getHandle()).thenReturn(entityPlayer);
     }
 
@@ -62,7 +62,7 @@ class ObsoleteAnvilInventoryWrapperTest {
 
             EntityPlayer entityPlayer = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
 
-            Container activeContainer = entityPlayer.getActiveContainer();
+            Container activeContainer = entityPlayer.getPlayerContainer();
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
