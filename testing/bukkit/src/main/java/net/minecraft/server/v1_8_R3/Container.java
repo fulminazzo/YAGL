@@ -22,6 +22,8 @@ public class Container {
 
     private final List<EntityPlayer> slotListeners;
 
+    private String title;
+
     private InventoryView bukkitView;
 
     private Container container;
@@ -43,4 +45,8 @@ public class Container {
         this.slotListeners.add(entityPlayer);
     }
 
+    public Container setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 }
