@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl.metadatable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collections;
 
 /**
@@ -13,6 +15,17 @@ public final class PAPIParser extends MetadatableHelper {
      */
     PAPIParser() {
         super(Collections::emptyMap);
+    }
+
+    /**
+     * Parses the given object strings using PlaceholderAPI.
+     *
+     * @param <T>    the type of the object
+     * @param object the object
+     * @return the parsed object
+     */
+    public static <T> T parse(final @NotNull T object) {
+        return new PAPIParser().apply(object);
     }
 
 }
