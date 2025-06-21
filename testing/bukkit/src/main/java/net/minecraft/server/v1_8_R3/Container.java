@@ -37,4 +37,8 @@ public class Container {
         this.slotListeners = new ArrayList<>();
     }
 
+    public void addSlotListener(EntityPlayer entityPlayer) {
+        this.slotListeners.add(entityPlayer);
+    }
+
 }
