@@ -30,6 +30,7 @@ jobs:
         uses: Fulminazzo/java-automatic-release@v4
         with:
           java-version: 8
+          excluded-modules: 'testing common wrappers item gui'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_NAME: ${{ github.event.repository.name }}
