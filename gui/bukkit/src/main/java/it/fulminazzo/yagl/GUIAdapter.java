@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
 import it.fulminazzo.yagl.items.BukkitItem;
+import it.fulminazzo.yagl.scheduler.Scheduler;
 import it.fulminazzo.yagl.utils.MessageUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
@@ -105,7 +106,7 @@ public final class GUIAdapter {
         };
         // Check if context is Async and synchronize
         if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
-        else Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+        else Scheduler.getScheduler().run(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
     }
 
     /**
@@ -123,7 +124,7 @@ public final class GUIAdapter {
             reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
             player.closeInventory();
             g.closeGUIAction().ifPresent(a ->
-                    Bukkit.getScheduler().runTask(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> a.execute(v, g))
+                    Scheduler.getScheduler().run(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> a.execute(v, g))
             );
         });
     }
