@@ -67,7 +67,7 @@ public final class NMSUtils {
                 // Name depends on the Minecraft version
                 .getFieldRefl(f -> f.getName().equals("container") || f.getName().equals("inventory"));
 
-        if (internalContainer.getFieldObject("title") instanceof String)
+        if (internalContainer.getField("title").getType().equals(String.class))
             internalContainer.setFieldObject("title", title);
         else internalContainer.setFieldObject("title", newIChatBaseComponent(title));
 
