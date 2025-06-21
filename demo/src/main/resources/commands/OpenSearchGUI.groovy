@@ -1,3 +1,4 @@
+import it.fulminazzo.fulmicollection.objects.Refl
 import it.fulminazzo.yagl.GUIManager
 import it.fulminazzo.yagl.contents.ItemGUIContent
 import it.fulminazzo.yagl.guis.SearchGUI
@@ -23,10 +24,14 @@ def run = { CommandSender sender, String label, String[] args ->
                     .setCustomModelData(1337)
             corner.setDisplayName(' ')
 
-            def data = Arrays.stream(Material.values())
+            def material = new Refl(Material)
+            def materials = material.staticFields
+            materials.removeIf(f -> f.name.contains('LEGACY'))
+            materials.removeIf(f -> f.type != Material)
+            def data = materials.stream()
+                    .map(f -> (Material) material.getFieldObject(f))
                     .filter(m -> m.isBlock())
                     .collect(Collectors.toList())
-            data.removeIf(m -> m.name().contains("LEGACY"))
             SearchGUI gui = SearchGUI.newGUI(
                     m -> ItemGUIContent.newInstance(m.name()),
                     (m, s) -> m.name().contains(s.toUpperCase()),
