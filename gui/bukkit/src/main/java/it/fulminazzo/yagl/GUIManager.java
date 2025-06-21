@@ -85,10 +85,7 @@ public class GUIManager extends SingleInstance implements Listener {
         Player player = (Player) event.getPlayer();
         Viewer viewer = getViewer(player);
         GUIAdapter.closeGUI(viewer);
-        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
-            inventoryCache.restorePlayerContents(player);
-            inventoryCache.clearPlayerContents(player);
-        }
+        restorePlayerContents(player);
     }
 
     @EventHandler
@@ -144,6 +141,21 @@ public class GUIManager extends SingleInstance implements Listener {
         if (handler != null) {
             handler.remove();
             this.anvilRenameHandlers.remove(handler);
+        }
+    }
+
+    /**
+     * Restores the specified player contents if present.
+     *
+     * @param player the player
+     */
+    static void restorePlayerContents(final @NotNull Player player) {
+        GUIManager guiManager = getInstance();
+        @NotNull PlayersInventoryCache inventoryCache = guiManager.inventoryCache;
+        Viewer viewer = getViewer(player);
+        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
+            inventoryCache.restorePlayerContents(player);
+            inventoryCache.clearPlayerContents(player);
         }
     }
 
