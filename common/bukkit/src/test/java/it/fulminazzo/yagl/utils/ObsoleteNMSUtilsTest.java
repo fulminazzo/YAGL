@@ -5,12 +5,10 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
-import it.fulminazzo.yagl.utils.legacy.LegacyEntityPlayer;
-import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
-import it.fulminazzo.yagl.utils.legacy.containers.Container;
-import it.fulminazzo.yagl.utils.legacy.containers.DefaultContainers;
-import it.fulminazzo.yagl.utils.legacy.containers.ObsoleteContainer;
+import net.minecraft.server.v1_8_R3.Container;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
@@ -32,10 +30,10 @@ class ObsoleteNMSUtilsTest {
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
-        CraftPlayer<LegacyEntityPlayer> craftPlayer = mock(CraftPlayer.class,
+        CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(craftPlayer.getHandle()).thenReturn(new LegacyEntityPlayer(null));
+        when(craftPlayer.getHandle()).thenReturn(new EntityPlayer());
         this.player = (Player) craftPlayer;
     }
 
@@ -43,7 +41,7 @@ class ObsoleteNMSUtilsTest {
      * 1.8-1.14
      */
     @Test
-    void testObsoleteConstructUpdateInventoryTitlePacket() {
+    void testObsoleteNewUpdateInventoryTitlePacket() {
         TestUtils.mockReflectionUtils(() -> {
             when(ReflectionUtils.getClass(PacketPlayOutOpenWindow.class.getCanonicalName()))
                     .thenThrow(new IllegalArgumentException("Class not found"));
@@ -54,13 +52,13 @@ class ObsoleteNMSUtilsTest {
                     "Hello"
             );
 
-            Container container = new Container(DefaultContainers.GENERIC_9x3);
-            container.setOpenInventory(inventoryView);
+            Container container = new Container();
+            container.setBukkitView(inventoryView);
 
-            LegacyEntityPlayer handle = ((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle();
-            handle.setOpenContainer(container);
+            EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+            handle.setActiveContainer(container);
 
-            Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket(this.player, "Hello, world!");
+            Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
 
             assertInstanceOf(net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow.class, actualPacket,
                     "Packet was supposed to be PacketPlayOutOpenWindow");
@@ -82,15 +80,10 @@ class ObsoleteNMSUtilsTest {
 
     @Test
     void testObsoleteUpdatePlayerInternalContainersTitle() {
-        Container container = new Container(
-                DefaultContainers.GENERIC_9x3,
-                new ObsoleteContainer("previousTitle")
-        );
+        Container container = new Container();
+        container.setInventory(new Container().setTitle("previousTitle"));
 
-        new Refl<>(((CraftPlayer<LegacyEntityPlayer>) this.player).getHandle())
-                .setFieldObject("playerContainer", new Container());
-
-        LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
+        ObsoleteMockInventoryView inventoryView = new ObsoleteMockInventoryView(
                 null, this.player,
                 "previousTitle", container
         );
@@ -99,8 +92,8 @@ class ObsoleteNMSUtilsTest {
 
         NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
-        assertEquals("title", ((ObsoleteContainer) container
-                .getContainer())
+        assertEquals("title", container
+                .getInventory()
                 .getTitle()
         );
     }

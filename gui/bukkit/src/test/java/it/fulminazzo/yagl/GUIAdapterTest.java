@@ -15,6 +15,7 @@ import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.*;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.Getter;
@@ -35,6 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -93,16 +95,19 @@ class GUIAdapterTest {
         ).toArray(Object[]::new);
     }
 
-    @Test
-    void integrationTestSearchGUI() {
+    @ParameterizedTest
+    @ValueSource(strings = {"Title", "Update", ""})
+    void integrationTestSearchGUI(String title) {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
             new MockInventoryView(
                     mock(Inventory.class),
                     this.player,
-                    ""
+                    title
             );
 
             Viewer viewer = GUIManager.getViewer(this.player);
@@ -171,6 +176,8 @@ class GUIAdapterTest {
     @Test
     void integrationTestSearchGUIWithSameSearch() {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
@@ -300,7 +307,9 @@ class GUIAdapterTest {
     @ParameterizedTest
     @MethodSource("pageableFullSizeGUIParameters")
     void testOpenPageableFullSizeGUI(Object initializer) {
-        BukkitTestUtils.mockPlugin(p -> {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
 
@@ -371,7 +380,9 @@ class GUIAdapterTest {
     @ParameterizedTest
     @MethodSource("pageableFullSizeGUIParameters")
     void testOpenPageableResizedFullSizeGUI(Object initializer) {
-        BukkitTestUtils.mockPlugin(p -> {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             playerInventory.setItem(0, new ItemStack(Material.DIAMOND_SWORD));
             playerInventory.setItem(27, new ItemStack(Material.GOLDEN_APPLE));
@@ -592,13 +603,16 @@ class GUIAdapterTest {
 
     @Test
     void testOpenInAsync() {
+        AtomicBoolean isPrimaryThread = new AtomicBoolean(false);
+
         Server server = Bukkit.getServer();
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
         when(scheduler.runTask(any(), any(Runnable.class))).then(a -> {
+            isPrimaryThread.set(true);
             ((Runnable) a.getArguments()[1]).run();
             return null;
         });
-        when(server.isPrimaryThread()).thenReturn(false);
+        when(server.isPrimaryThread()).thenAnswer(a -> isPrimaryThread.get());
         when(server.getScheduler()).thenReturn(scheduler);
 
         BukkitTestUtils.mockPlugin(p -> {

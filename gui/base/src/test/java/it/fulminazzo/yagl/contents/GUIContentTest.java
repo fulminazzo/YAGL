@@ -83,7 +83,7 @@ class GUIContentTest {
         }
 
         @Override
-        public @NotNull GUIContent copy() {
+        protected @NotNull GUIContentImpl internalCopy() {
             return new MockGUIContent();
         }
 

@@ -1,26 +1,39 @@
-package it.fulminazzo.yagl.utils.legacy;
+package net.minecraft.server.v1_14_R1;
 
 import io.netty.channel.Channel;
-import it.fulminazzo.yagl.utils.legacy.containers.Container;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.server.v1_14_R1.Packet;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-public class LegacyEntityPlayer {
+public class EntityPlayer {
+    private final Player player;
+    private final World world;
+
     private final PlayerConnection playerConnection;
-    private final Container playerContainer;
+    private final Container defaultContainer;
 
-    private Container openContainer;
+    private Container activeContainer;
+    private int nextContainerCounter;
 
-    public LegacyEntityPlayer(Channel channel) {
+    public EntityPlayer(Channel channel) {
+        this(channel, null);
+    }
+
+    public EntityPlayer(Channel channel, Player player) {
         this.playerConnection = new PlayerConnection(channel);
-        this.playerContainer = new Container();
-        this.openContainer = new Container();
+        this.player = player;
+        this.world = new World("default");
+        this.defaultContainer = new Container();
+        this.activeContainer = new Container();
+    }
+
+    public int nextContainerCounter() {
+        return nextContainerCounter++;
     }
 
     @Getter
