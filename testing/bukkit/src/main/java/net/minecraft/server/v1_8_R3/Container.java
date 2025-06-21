@@ -16,6 +16,8 @@ public class Container {
 
     private final int windowId;
 
+    private final List<Slot> slots;
+
     private final List<CraftItemStack> items;
 
     private final List<EntityPlayer> slotListeners;
@@ -29,6 +31,7 @@ public class Container {
     public Container(String type, int size, int windowId) {
         this.type = type;
         this.windowId = windowId;
+        this.slots = new ArrayList<>();
         this.items = new ArrayList<>();
         for (int i = 0; i < size; i++) this.items.add(null);
         this.slotListeners = new ArrayList<>();
