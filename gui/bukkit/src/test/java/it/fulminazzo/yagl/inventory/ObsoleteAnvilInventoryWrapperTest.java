@@ -2,13 +2,15 @@ package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.Container;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftContainer;
@@ -37,7 +39,7 @@ class ObsoleteAnvilInventoryWrapperTest {
     void setUp() {
         BukkitUtils.setupServer();
 
-        this.inventory = new MockInventory(3);
+        this.inventory = new ObsoleteMockInventory(3);
         ItemStack itemStack = new ItemStack(Material.STONE, 64);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(SearchGUI.EMPTY_RENAME_TEXT);
@@ -66,7 +68,7 @@ class ObsoleteAnvilInventoryWrapperTest {
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
-            List<CraftItemStack> items = ((CraftContainer) activeContainer).getItems();
+            List<CraftItemStack> items = activeContainer.getItems();
             CraftItemStack craftItemStack = items.get(0);
             assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
 
