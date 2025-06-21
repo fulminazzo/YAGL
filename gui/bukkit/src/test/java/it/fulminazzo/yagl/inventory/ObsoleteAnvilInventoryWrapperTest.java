@@ -69,9 +69,9 @@ class ObsoleteAnvilInventoryWrapperTest {
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
-            List<CraftItemStack> items = activeContainer.getItems();
-            CraftItemStack craftItemStack = items.get(0);
-            assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
+            List<net.minecraft.server.v1_8_R3.ItemStack> items = activeContainer.getItems();
+            net.minecraft.server.v1_8_R3.ItemStack craftItemStack = items.get(0);
+            assertEquals(new net.minecraft.server.v1_8_R3.ItemStack(Material.STONE, 64), craftItemStack);
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");

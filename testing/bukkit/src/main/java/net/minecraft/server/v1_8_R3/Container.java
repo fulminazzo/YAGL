@@ -18,7 +18,7 @@ public class Container {
 
     private final List<Slot> slots;
 
-    private final List<CraftItemStack> items;
+    private final List<ItemStack> items;
 
     private final List<EntityPlayer> slotListeners;
 
