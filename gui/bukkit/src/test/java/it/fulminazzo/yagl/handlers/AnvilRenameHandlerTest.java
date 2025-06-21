@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.handlers;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,6 +81,10 @@ class AnvilRenameHandlerTest {
     @Test
     void testRemove() {
         BukkitTestUtils.mockNMSUtils(c -> {
+            BukkitTask task = mock(BukkitTask.class);
+            Refl<AnvilRenameHandler> handler = new Refl<>(this.handler);
+            handler.setFieldObject("handleTask", task);
+
             this.handler.remove();
 
             verify(c.pipeline()).remove(
@@ -86,6 +92,7 @@ class AnvilRenameHandlerTest {
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_")
             );
+            assertNull(handler.getFieldObject("handleTask"));
         });
     }
 
