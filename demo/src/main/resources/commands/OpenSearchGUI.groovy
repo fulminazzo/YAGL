@@ -30,7 +30,13 @@ def run = { CommandSender sender, String label, String[] args ->
             materials.removeIf(f -> f.type != Material)
             def data = materials.stream()
                     .map(f -> (Material) material.getFieldObject(f))
-                    .filter(m -> m.isBlock())
+                    .filter(m -> {
+                        try {
+                            return m.isItem()
+                        } catch (MissingMethodException e) {
+                            return m.isBlock()
+                        }
+                    })
                     .collect(Collectors.toList())
             SearchGUI gui = SearchGUI.newGUI(
                     m -> ItemGUIContent.newInstance(m.name()),
