@@ -81,6 +81,10 @@ allprojects {
             name = 'Fulminazzo repository'
             url = 'https://repo.fulminazzo.it/releases'
         }
+        maven {
+            name = 'PlaceholderAPI repository'
+            url = 'https://repo.extendedclip.com/releases/'
+        }
     }
 
     dependencies {
