@@ -18,7 +18,7 @@ public class CraftContainer extends Container {
     }
 
     public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId, Container delegate) {
-        super(delegate.getType(), windowId);
+        super(delegate.getType(), 0, windowId);
         this.inventory = inventory;
         this.owner = owner;
         this.delegate = delegate;
