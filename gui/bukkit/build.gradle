@@ -1,3 +1,5 @@
 dependencies {
     api project(':item:item-bukkit')
+
+    compileOnly libs.placeholderapi
 }
