@@ -1,12 +1,14 @@
 package it.fulminazzo.yagl.metadatable;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
 /**
  * A special implementation of {@link MetadatableHelper}
- * that allows to apply PlaceholderAPI variables to the specified object.
+ * that allows to apply {@link PlaceholderAPI}
+ * variables to the specified object.
  */
 public final class PAPIParser extends MetadatableHelper {
 
@@ -15,6 +17,11 @@ public final class PAPIParser extends MetadatableHelper {
      */
     PAPIParser() {
         super(Collections::emptyMap);
+    }
+
+    @Override
+    String apply(@NotNull String string) {
+        return PlaceholderAPI.setPlaceholders(null, string);
     }
 
     /**
