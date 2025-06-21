@@ -3,17 +3,21 @@ package it.fulminazzo.yagl.scheduler;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.FoliaTask;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * An implementation of {@link Scheduler} for Folia.
  */
 final class FoliaScheduler implements Scheduler {
-    private final @NotNull org.bukkit.scheduler.FoliaScheduler internal;
+    private final @NotNull Refl<?> internal;
 
     FoliaScheduler() {
-        this.internal = Bukkit.getServer().getScheduler();
+        this.internal = Objects.requireNonNull(
+                new Refl<>(Bukkit.getServer()).invokeMethodRefl("getGlobalRegionScheduler"),
+                "Server is not running on Folia"
+        );
     }
 
     @Override
