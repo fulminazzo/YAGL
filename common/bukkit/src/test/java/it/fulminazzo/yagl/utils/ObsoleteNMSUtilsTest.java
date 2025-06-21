@@ -59,7 +59,7 @@ class ObsoleteNMSUtilsTest {
             container.setBukkitView(inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
-            handle.setPlayerContainer(container);
+            handle.setActiveContainer(container);
 
             Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket(this.player, "Hello, world!");
 

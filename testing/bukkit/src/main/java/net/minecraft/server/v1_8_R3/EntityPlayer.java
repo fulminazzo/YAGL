@@ -15,7 +15,7 @@ public class EntityPlayer {
 
     private final PlayerConnection playerConnection;
 
-    private Container playerContainer;
+    private Container activeContainer;
 
     private int nextContainerCounter;
 
@@ -29,7 +29,7 @@ public class EntityPlayer {
         this.playerConnection = new PlayerConnection();
 
         this.defaultContainer = new Container();
-        this.playerContainer = new Container();
+        this.activeContainer = new Container();
     }
 
     public int nextContainerCounter() {

@@ -14,7 +14,6 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftContainer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -65,7 +64,7 @@ class ObsoleteAnvilInventoryWrapperTest {
 
             EntityPlayer entityPlayer = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
 
-            Container activeContainer = entityPlayer.getPlayerContainer();
+            Container activeContainer = entityPlayer.getActiveContainer();
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
