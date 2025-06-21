@@ -17,6 +17,8 @@ public class EntityPlayer {
 
     private Container playerContainer;
 
+    private int nextContainerCounter;
+
     public EntityPlayer() {
         this(null);
     }
@@ -28,6 +30,10 @@ public class EntityPlayer {
 
         this.defaultContainer = new Container();
         this.playerContainer = new Container();
+    }
+
+    public int nextContainerCounter() {
+        return nextContainerCounter++;
     }
     
     @Getter
