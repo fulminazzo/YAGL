@@ -7,10 +7,7 @@ import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
-import net.minecraft.server.v1_8_R3.Container;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftContainer;
@@ -71,6 +68,10 @@ class ObsoleteAnvilInventoryWrapperTest {
             List<net.minecraft.server.v1_8_R3.ItemStack> items = activeContainer.getItems();
             net.minecraft.server.v1_8_R3.ItemStack craftItemStack = items.get(0);
             assertEquals(new net.minecraft.server.v1_8_R3.ItemStack(Material.STONE, 64), craftItemStack);
+
+            List<Slot> slots = activeContainer.getSlots();
+            assertEquals(3 + this.player.getInventory().getSize(), slots.size(),
+                    "Slots size should be player inventory plus container size");
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
