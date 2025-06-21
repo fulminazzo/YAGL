@@ -70,7 +70,7 @@ class ObsoleteAnvilInventoryWrapperTest {
             assertEquals(new net.minecraft.server.v1_8_R3.ItemStack(Material.STONE, 64), craftItemStack);
 
             List<Slot> slots = activeContainer.getSlots();
-            assertEquals(3 + this.player.getInventory().getSize(), slots.size(),
+            assertEquals(activeContainer.getSize() + this.player.getInventory().getSize(), slots.size(),
                     "Slots size should be player inventory plus container size");
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
