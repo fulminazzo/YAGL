@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.scheduler;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.FoliaTask;
@@ -65,30 +66,30 @@ final class FoliaScheduler implements Scheduler {
      * An implementation of {@link Task} for Folia.
      */
     static class FoliaSchedulerTask implements Task {
-        private final @NotNull BukkitTask internal;
+        private final @NotNull Refl<?> internal;
 
         /**
          * Instantiates a new Folia scheduler task.
          *
          * @param internal the internal bukkit task
          */
-        public FoliaSchedulerTask(final @NotNull FoliaTask internal) {
-            this.internal = internal;
+        public FoliaSchedulerTask(final @NotNull Object internal) {
+            this.internal = new Refl<>(internal);
         }
 
         @Override
         public void cancel() {
-            this.internal.cancel();
+            this.internal.invokeMethod("cancel");
         }
 
         @Override
         public boolean isCancelled() {
-            return this.internal.isCancelled();
+            return this.internal.invokeMethod("isCancelled");
         }
 
         @Override
         public @NotNull Plugin getOwningPlugin() {
-            return this.internal.getOwner();
+            return this.internal.invokeMethod("getOwningPlugin");
         }
     }
 
