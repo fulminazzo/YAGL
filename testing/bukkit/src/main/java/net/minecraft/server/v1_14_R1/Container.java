@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.minecraft.server.v1_14_R1.containers.Containers;
 import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -30,6 +31,8 @@ public class Container {
     private ContainerAccess containerAccess;
 
     private InventoryView bukkitView;
+
+    private CraftChatMessage.IChatBaseComponent title;
 
     public Container() {
         this(DefaultContainers.GENERIC_9x3);
@@ -70,6 +73,11 @@ public class Container {
 
     public void addSlotListener(EntityPlayer entityPlayer) {
         this.slotListeners.add(entityPlayer);
+    }
+
+    public Container setTitle(String title) {
+        this.title = CraftChatMessage.fromString(title)[0];
+        return this;
     }
 
 }
