@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import static org.mockito.Mockito.*;
 
@@ -31,7 +32,8 @@ class FoliaSchedulerTest {
         when(server.getGlobalRegionScheduler()).thenReturn(this.actualScheduler);
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
-        this.scheduler = new FoliaScheduler();
+        this.scheduler = spy(FoliaScheduler.class);
+        when(this.scheduler.runnableToConsumer(any())).thenReturn(null);
 
         this.actualTask = mock(ScheduledTask.class);
         this.task = new FoliaScheduler.FoliaSchedulerTask(this.actualTask);
@@ -60,9 +62,17 @@ class FoliaSchedulerTest {
 
         refl.invokeMethod(methodName, method.getParameterTypes(), parameters);
 
+        Class<?>[] parameterTypes = Arrays.stream(method.getParameterTypes())
+                .map(c -> Runnable.class.isAssignableFrom(c) ? Consumer.class : c)
+                .toArray(Class[]::new);
+
+        Object[] expectedParameters = Arrays.stream(parameters)
+                .map(p -> p instanceof Runnable ? null : p)
+                .toArray();
+
         new Refl<>(verify(this.actualScheduler)).invokeMethod(actualMethodName,
-                method.getParameterTypes(),
-                parameters);
+                parameterTypes,
+                expectedParameters);
     }
 
     private static Object[][] foliaTaskMethods() {
