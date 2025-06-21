@@ -3,7 +3,6 @@ package org.bukkit.craftbukkit.v1_8_R3.inventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.Container;
-import net.minecraft.server.v1_8_R3.ContainerAnvil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -13,11 +12,11 @@ public class CraftContainer extends Container {
     private final Player owner;
 
     public CraftContainer(Inventory inventory, Player owner, int windowId) {
-        this(inventory, owner, windowId, new ContainerAnvil(windowId));
+        this(inventory, owner, windowId, "minecraft:anvil", 3);
     }
 
-    public CraftContainer(Inventory inventory, Player owner, int windowId, Container delegate) {
-        super(delegate.getType(), 0, windowId);
+    public CraftContainer(Inventory inventory, Player owner, int windowId, String type, int size) {
+        super(type, size, windowId);
         this.inventory = inventory;
         this.owner = owner;
 
