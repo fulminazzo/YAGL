@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
 import it.fulminazzo.yagl.items.BukkitItem;
+import it.fulminazzo.yagl.metadatable.PAPIParser;
 import it.fulminazzo.yagl.utils.MessageUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
@@ -82,6 +83,7 @@ public final class GUIAdapter {
                 gui.setVariable(variable.getName(), variable.getValue(player));
             // Open inventory
             gui.apply(gui);
+            if (isPlaceholderAPIEnabled()) PAPIParser.parse(player, gui);
             Inventory inventory = guiToInventory(gui);
             for (int i = 0; i < gui.size(); i++) {
                 GUIContent content = gui.getContent(v, i);
