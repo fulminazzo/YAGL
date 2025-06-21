@@ -1,11 +1,12 @@
 package it.fulminazzo.yagl.scheduler;
 
+import io.papermc.paper.FoliaServer;
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
-import org.bukkit.Folia;
-import org.bukkit.scheduler.FoliaTask;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,6 +26,10 @@ class FoliaSchedulerTest {
     @BeforeEach
     void setUp() {
         this.actualScheduler = mock(GlobalRegionScheduler.class);
+
+        FoliaServer server = mock(FoliaServer.class, withSettings().extraInterfaces(Server.class));
+        when(server.getGlobalRegionScheduler()).thenReturn(this.actualScheduler);
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
 
         this.scheduler = new FoliaScheduler();
 
@@ -84,5 +89,5 @@ class FoliaSchedulerTest {
                 method.getParameterTypes(),
                 parameters);
     }
-    
+
 }
