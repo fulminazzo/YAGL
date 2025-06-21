@@ -2,7 +2,6 @@ package net.minecraft.server.v1_8_R3;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.InventoryView;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.Random;
 @Setter
 public class Container {
     private final String type;
+    private final int size;
 
     private final int windowId;
 
@@ -30,10 +30,10 @@ public class Container {
 
     public Container(String type, int size, int windowId) {
         this.type = type;
+        this.size = size;
         this.windowId = windowId;
         this.slots = new ArrayList<>();
         this.items = new ArrayList<>();
-        for (int i = 0; i < size; i++) this.items.add(null);
         this.slotListeners = new ArrayList<>();
     }
 
