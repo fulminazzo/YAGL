@@ -34,6 +34,19 @@ import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingPro
 public final class TestUtils {
 
     /**
+     * Utility function to force the usage of Bukkit methods instead of Folia.
+     *
+     * @param runnable the function to execute
+     */
+    public static void disableFoliaRegionScheduler(final @NotNull Runnable runnable) {
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"))
+                    .thenThrow(new IllegalArgumentException("Folia not enabled!"));
+            runnable.run();
+        });
+    }
+
+    /**
      * Mocks {@link ReflectionUtils} and executes the given function.
      *
      * @param runnable the function
