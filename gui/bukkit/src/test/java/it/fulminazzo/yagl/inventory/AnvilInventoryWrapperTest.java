@@ -196,7 +196,7 @@ class AnvilInventoryWrapperTest {
 
     private void preventNewerNMSClassesLoading(Runnable runnable) {
         BukkitTestUtils.mockNMSUtils(() -> {
-            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_R1");
+            when(NMSUtils.getNMSVersion()).thenReturn(NMS_VERSION);
             TestUtils.mockReflectionUtils(r -> {
                 r.when(() -> ReflectionUtils.getClass(any())).thenAnswer(a -> {
                     String className = a.getArgument(0);
