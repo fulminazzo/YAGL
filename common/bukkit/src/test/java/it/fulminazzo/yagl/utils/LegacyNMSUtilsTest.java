@@ -67,7 +67,7 @@ class LegacyNMSUtilsTest {
                         else return a.callRealMethod();
                     });
 
-            LegacyContainer internalContainer = new LegacyContainer("Previous title");
+            Container internalContainer = new Container().setTitle("Previous title");
             Container container = new Container(
                     DefaultContainers.GENERIC_9x3,
                     internalContainer
@@ -134,7 +134,7 @@ class LegacyNMSUtilsTest {
         InventoryContainer container = new InventoryContainer(
                 DefaultContainers.GENERIC_9x3,
                 null,
-                new LegacyContainer("previousTitle")
+                new Container().setTitle("previousTitle")
         );
 
         DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
@@ -149,8 +149,8 @@ class LegacyNMSUtilsTest {
 
         NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
-        assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
-                        .getInventory())
+        assertEquals(CraftChatMessage.fromString("title")[0], container
+                        .getInventory()
                         .getTitle(),
                 "Actual container title was not changed"
         );
@@ -169,7 +169,7 @@ class LegacyNMSUtilsTest {
         InventoryContainer container = new InventoryContainer(
                 DefaultContainers.GENERIC_9x3,
                 null,
-                new LegacyContainer("previousTitle")
+                new Container().setTitle("previousTitle")
         );
 
         DelegateContainer delegateContainer = new DelegateContainer("previousTitle");
@@ -185,8 +185,8 @@ class LegacyNMSUtilsTest {
 
         NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
-        assertEquals(CraftChatMessage.fromString("title")[0], ((LegacyContainer) container
-                        .getInventory())
+        assertEquals(CraftChatMessage.fromString("title")[0], container
+                        .getInventory()
                         .getTitle(),
                 "Actual container title was not changed"
         );
