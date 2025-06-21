@@ -6,11 +6,8 @@ import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
-import it.fulminazzo.yagl.utils.legacy.LegacyMockInventoryView;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
-import net.minecraft.server.v1_14_R1.Container;
-import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
-import net.minecraft.server.v1_14_R1.containers.ObsoleteContainer;
+import net.minecraft.server.v1_8_R3.Container;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -55,7 +52,7 @@ class ObsoleteNMSUtilsTest {
                     "Hello"
             );
 
-            Container container = new Container(DefaultContainers.GENERIC_9x3);
+            Container container = new Container();
             container.setBukkitView(inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
@@ -83,15 +80,13 @@ class ObsoleteNMSUtilsTest {
 
     @Test
     void testObsoleteUpdatePlayerInternalContainersTitle() {
-        Container container = new Container(
-                DefaultContainers.GENERIC_9x3,
-                new ObsoleteContainer("previousTitle")
-        );
+        Container container = new Container();
+        container.setContainer(new Container().setTitle("previousTitle"));
 
         new Refl<>(((CraftPlayer<EntityPlayer>) this.player).getHandle())
                 .setFieldObject("playerContainer", new Container());
 
-        LegacyMockInventoryView inventoryView = new LegacyMockInventoryView(
+        ObsoleteMockInventoryView inventoryView = new ObsoleteMockInventoryView(
                 null, this.player,
                 "previousTitle", container
         );
@@ -100,8 +95,8 @@ class ObsoleteNMSUtilsTest {
 
         NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
-        assertEquals("title", ((ObsoleteContainer) container
-                .getContainer())
+        assertEquals("title", container
+                .getContainer()
                 .getTitle()
         );
     }
