@@ -81,7 +81,7 @@ class ObsoleteNMSUtilsTest {
     @Test
     void testObsoleteUpdatePlayerInternalContainersTitle() {
         Container container = new Container();
-        container.setContainer(new Container().setTitle("previousTitle"));
+        container.setInventory(new Container().setTitle("previousTitle"));
 
         ObsoleteMockInventoryView inventoryView = new ObsoleteMockInventoryView(
                 null, this.player,
@@ -93,7 +93,7 @@ class ObsoleteNMSUtilsTest {
         NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
         assertEquals("title", container
-                .getContainer()
+                .getInventory()
                 .getTitle()
         );
     }
