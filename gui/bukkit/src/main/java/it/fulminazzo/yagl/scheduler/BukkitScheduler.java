@@ -12,7 +12,7 @@ final class BukkitScheduler implements Scheduler {
     private final @NotNull org.bukkit.scheduler.BukkitScheduler internal;
 
     BukkitScheduler() {
-        this.internal = Bukkit.getScheduler();
+        this.internal = Bukkit.getServer().getScheduler();
     }
 
     @Override
