@@ -35,12 +35,17 @@ class AnvilRenameHandlerTest {
         BukkitUtils.setupServer();
         Server server = Bukkit.getServer();
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        when(server.getScheduler()).thenReturn(scheduler);
         when(scheduler.runTaskAsynchronously(any(), any(Runnable.class))).thenAnswer(a -> {
             Runnable runnable = a.getArgument(1);
             runnable.run();
             return null;
         });
-        when(server.getScheduler()).thenReturn(scheduler);
+        when(scheduler.runTaskLaterAsynchronously(any(), any(Runnable.class), any(long.class))).thenAnswer(a -> {
+            Runnable runnable = a.getArgument(1);
+            runnable.run();
+            return null;
+        });
     }
 
     @BeforeEach

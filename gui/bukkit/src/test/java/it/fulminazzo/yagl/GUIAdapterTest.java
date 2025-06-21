@@ -58,6 +58,19 @@ class GUIAdapterTest {
         when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
         when(server.isPrimaryThread()).thenReturn(true);
 
+        BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        when(server.getScheduler()).thenReturn(scheduler);
+        when(scheduler.runTaskAsynchronously(any(), any(Runnable.class))).thenAnswer(a -> {
+            Runnable runnable = a.getArgument(1);
+            runnable.run();
+            return null;
+        });
+        when(scheduler.runTaskLaterAsynchronously(any(), any(Runnable.class), any(long.class))).thenAnswer(a -> {
+            Runnable runnable = a.getArgument(1);
+            runnable.run();
+            return null;
+        });
+
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         when(this.player.isOnline()).thenReturn(true);
         when(this.player.openInventory(any(Inventory.class)))
