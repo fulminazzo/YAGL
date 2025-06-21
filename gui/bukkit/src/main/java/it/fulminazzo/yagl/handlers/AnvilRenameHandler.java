@@ -10,7 +10,9 @@ import it.fulminazzo.yagl.GUIAdapter;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -21,11 +23,15 @@ import java.util.logging.Logger;
  * reading anvil rename packets from the player.
  */
 public final class AnvilRenameHandler extends ChannelDuplexHandler {
+    private static final int DEBOUNCE_DELAY = 2;
+
     private final @NotNull Logger logger;
 
     private final @NotNull UUID playerId;
 
     private final @NotNull BiConsumer<Player, String> handler;
+
+    private @Nullable BukkitTask handleTask;
 
     /**
      * Instantiates a new Anvil rename handler.
@@ -79,7 +85,13 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                     return;
             }
 
-            this.handler.accept(player, name);
+            stopHandleTask();
+
+            this.handleTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
+                    GUIAdapter.getProvidingPlugin(),
+                    () -> this.handler.accept(player, name),
+                    DEBOUNCE_DELAY
+            );
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
@@ -90,6 +102,16 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
             e.printStackTrace();
         } finally {
             super.channelRead(context, packet);
+        }
+    }
+
+    /**
+     * Stops the {@link #handleTask} if present.
+     */
+    void stopHandleTask() {
+        if (this.handleTask != null) {
+            this.handleTask.cancel();
+            this.handleTask = null;
         }
     }
 
@@ -108,6 +130,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     public void remove() {
         Channel channel = NMSUtils.getPlayerChannel(getPlayer());
         channel.eventLoop().submit(() -> channel.pipeline().remove(getName()));
+        stopHandleTask();
     }
 
     /**
