@@ -45,10 +45,13 @@ class AnvilInventoryWrapper8 extends AnvilInventoryWrapper {
         slots.add(new Refl<>(slotClass, internalInventory, 1, 76, 47).getObject());
         slots.add(new Refl<>(slotClass, internalInventory, 2, 134, 47).getObject());
 
+        List<Object> itemStacks = containerRefl.getFieldObject(f ->
+                checkFieldListOf(f, NMSUtils.getLegacyNMSClass("ItemStack"))
+        );
         for (int i = 0; i < this.actualInventory.getSize(); i++) {
             ItemStack item = this.actualInventory.getItem(i);
-            if (item != null)
-                containerRefl.invokeMethod("setItem", i, NMSUtils.itemStackToNMS(item));
+            if (item != null) itemStacks.add(NMSUtils.itemStackToNMS(item));
+            else itemStacks.add(null);
         }
 
         InventoryView view = containerRefl.invokeMethod("getBukkitView");
