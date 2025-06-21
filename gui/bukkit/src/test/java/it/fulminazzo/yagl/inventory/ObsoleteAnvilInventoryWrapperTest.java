@@ -51,6 +51,7 @@ class ObsoleteAnvilInventoryWrapperTest {
 
         this.player = (Player) craftPlayer;
         when(this.player.getLocation()).thenReturn(new Location(null, 0, 0, 0));
+        when(this.player.getInventory()).thenReturn(new ObsoleteMockPlayerInventory(this.player));
 
         EntityPlayer entityPlayer = new EntityPlayer(this.player);
         when(craftPlayer.getHandle()).thenReturn(entityPlayer);
