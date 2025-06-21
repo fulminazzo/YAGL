@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 
 @Getter
 public class CraftContainer extends Container {
-    private final Inventory inventory;
+    private final Inventory bukkitInventory;
     private final Player owner;
 
     public CraftContainer(Inventory inventory, Player owner, int windowId) {
@@ -17,10 +17,10 @@ public class CraftContainer extends Container {
 
     public CraftContainer(Inventory inventory, Player owner, int windowId, String type, int size) {
         super(type, size, windowId);
-        this.inventory = inventory;
+        this.bukkitInventory = inventory;
         this.owner = owner;
 
-        setBukkitView(new MockInventoryView(this.inventory, this.owner, "Hello, world!"));
+        setBukkitView(new MockInventoryView(this.bukkitInventory, this.owner, "Hello, world!"));
     }
 
 }
