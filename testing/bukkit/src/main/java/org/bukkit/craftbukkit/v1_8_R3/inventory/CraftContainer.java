@@ -11,7 +11,6 @@ import org.bukkit.inventory.Inventory;
 public class CraftContainer extends Container {
     private final Inventory inventory;
     private final EntityPlayer owner;
-    private final Container delegate;
 
     public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId) {
         this(inventory, owner, windowId, new ContainerAnvil(windowId));
@@ -21,7 +20,6 @@ public class CraftContainer extends Container {
         super(delegate.getType(), 0, windowId);
         this.inventory = inventory;
         this.owner = owner;
-        this.delegate = delegate;
 
         setBukkitView(new MockInventoryView(this.inventory, this.owner.getPlayer(), "Hello, world!"));
     }

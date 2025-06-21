@@ -66,7 +66,7 @@ class ObsoleteAnvilInventoryWrapperTest {
             assertNotNull(activeContainer, "EntityPlayer activeContainer should not be null");
             assertInstanceOf(CraftContainer.class, activeContainer);
 
-            List<CraftItemStack> items = ((CraftContainer) activeContainer).getDelegate().getItems();
+            List<CraftItemStack> items = ((CraftContainer) activeContainer).getItems();
             CraftItemStack craftItemStack = items.get(0);
             assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
 
