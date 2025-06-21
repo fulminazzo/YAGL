@@ -145,7 +145,7 @@ public final class GUIAdapter {
                 lowerGUI.apply(lowerGUI);
 
                 InventoryView inventoryView = p.getOpenInventory();
-                String title = gui.getTitle();
+                String title = MessageUtils.color(gui.getTitle());
 
                 if (!inventoryView.getTitle().equals(title)) {
                     fillInventoryWithGUIContents(upperGUI, v,
