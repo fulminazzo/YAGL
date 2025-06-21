@@ -25,9 +25,7 @@ final class FoliaScheduler implements Scheduler {
 
     @Override
     public @NotNull Task runAsync(@NotNull Plugin owningPlugin, @NotNull Runnable task) {
-        return new FoliaSchedulerTask(
-                this.internal.runTaskAsynchronously(owningPlugin, task)
-        );
+        return run(owningPlugin, task);
     }
 
     @Override
@@ -41,9 +39,7 @@ final class FoliaScheduler implements Scheduler {
     @Override
     public @NotNull Task runLaterAsync(@NotNull Plugin owningPlugin, @NotNull Runnable task,
                                        long delayInTicks) {
-        return new FoliaSchedulerTask(
-                this.internal.runTaskLaterAsynchronously(owningPlugin, task, delayInTicks)
-        );
+        return runLater(owningPlugin, task, delayInTicks);
     }
 
     @Override
@@ -57,9 +53,7 @@ final class FoliaScheduler implements Scheduler {
     @Override
     public @NotNull Task runRepeatedAsync(@NotNull Plugin owningPlugin, @NotNull Runnable task,
                                           long delayInTicks, long repeatDelayInTicks) {
-        return new FoliaSchedulerTask(
-                this.internal.runTaskTimerAsynchronously(owningPlugin, task, repeatDelayInTicks, delayInTicks)
-        );
+        return runRepeated(owningPlugin, task, delayInTicks, repeatDelayInTicks);
     }
 
     /**
