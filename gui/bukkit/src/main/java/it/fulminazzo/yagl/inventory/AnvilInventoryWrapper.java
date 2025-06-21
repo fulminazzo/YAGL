@@ -61,6 +61,8 @@ abstract class AnvilInventoryWrapper implements InventoryWrapper {
      */
     static @NotNull InventoryWrapper newWrapper(final @NotNull Inventory inventory) {
         double version = NMSUtils.getServerVersion();
+        if (version >= 8 && version < 9)
+            return new AnvilInventoryWrapper8(inventory);
         if (version >= 12 && version < 13)
             return new AnvilInventoryWrapper12(inventory);
         if (version >= 13 && version < 14)
