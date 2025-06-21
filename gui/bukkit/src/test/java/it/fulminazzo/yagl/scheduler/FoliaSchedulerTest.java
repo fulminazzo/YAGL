@@ -8,13 +8,16 @@ import it.fulminazzo.yagl.TestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class FoliaSchedulerTest {
@@ -37,6 +40,16 @@ class FoliaSchedulerTest {
 
         this.actualTask = mock(ScheduledTask.class);
         this.task = new FoliaScheduler.FoliaSchedulerTask(this.actualTask);
+    }
+
+    @Test
+    void testRunnableToConsumer() {
+        FoliaScheduler scheduler = new FoliaScheduler();
+        AtomicBoolean called = new AtomicBoolean(false);
+
+        scheduler.runnableToConsumer(() -> called.set(true)).accept(null);
+
+        assertTrue(called.get(), "Runnable not called");
     }
 
     private static Object[][] foliaSchedulerMethods() {
