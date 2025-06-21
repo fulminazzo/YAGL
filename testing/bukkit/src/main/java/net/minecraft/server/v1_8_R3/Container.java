@@ -6,13 +6,16 @@ import java.util.Random;
 
 @Getter
 public class Container {
+    private final String type;
+
     private final int windowId;
 
     public Container() {
-        this(new Random().nextInt());
+        this("minecraft:chest", new Random().nextInt());
     }
 
-    public Container(int windowId) {
+    public Container(String type, int windowId) {
+        this.type = type;
         this.windowId = windowId;
     }
 
