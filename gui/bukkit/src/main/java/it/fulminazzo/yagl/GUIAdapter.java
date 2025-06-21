@@ -160,4 +160,14 @@ public final class GUIAdapter {
     public static InventoryType guiToInventoryType(final @NotNull GUIType guiType) {
         return InventoryType.valueOf(guiType.name());
     }
+
+    /**
+     * Checks if PlaceholderAPI is enabled.
+     *
+     * @return true if it is
+     */
+    public static boolean isPlaceholderAPIEnabled() {
+        return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+    }
+
 }
