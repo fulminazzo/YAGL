@@ -129,3 +129,7 @@ These are some of the pending features that are planned for the future:
 - [ ] a special `GUIContent` that allows animated items;
 - [ ] a special `GUIContent` that allows items which can be toggled based on user click;
 - [ ] online web editor to customize and visualize data in real time;
+
+## Media
+
+![Search GUI demo](./media/search-gui-demo-short.gif "Search GUI demo")
