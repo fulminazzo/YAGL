@@ -24,6 +24,8 @@ public class Container {
 
     private InventoryView bukkitView;
 
+    private Container container;
+
     public Container() {
         this("minecraft:chest", 27, new Random().nextInt());
     }
