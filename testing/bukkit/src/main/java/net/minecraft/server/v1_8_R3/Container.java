@@ -1,14 +1,19 @@
 package net.minecraft.server.v1_8_R3;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.inventory.InventoryView;
 
 import java.util.Random;
 
 @Getter
+@Setter
 public class Container {
     private final String type;
 
     private final int windowId;
+
+    private InventoryView bukkitView;
 
     public Container() {
         this("minecraft:chest", new Random().nextInt());
