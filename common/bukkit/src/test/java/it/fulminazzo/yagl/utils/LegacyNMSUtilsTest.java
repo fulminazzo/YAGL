@@ -9,6 +9,7 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_14_4_R1.DelegateContainer;
 import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import net.minecraft.server.v1_14_R1.containers.*;
@@ -126,6 +127,34 @@ class LegacyNMSUtilsTest {
                     "Packet type was supposed to be the same as container type");
 
             assertEquals(CraftChatMessage.fromString("Hello, world!")[0], packet.getTitle());
+        });
+    }
+
+    @Test
+    void testUpdateInternalContainers() {
+        BukkitTestUtils.mockNMSUtils(() -> {
+            when(NMSUtils.getNMSVersion()).thenReturn("v1_14_4_R1");
+
+            net.minecraft.server.v1_14_4_R1.Container innerContainer = new net.minecraft.server.v1_14_4_R1.Container();
+            DelegateContainer delegateContainer = new DelegateContainer(
+                    new net.minecraft.server.v1_14_4_R1.Container(innerContainer)
+            );
+
+            when(NMSUtils.getPlayerOpenContainer(this.player)).thenReturn(delegateContainer);
+
+            new Legacy14MockInventoryView(
+                    this.player.getInventory(),
+                    this.player,
+                    "",
+                    new net.minecraft.server.v1_14_4_R1.Container(delegateContainer)
+            );
+
+            NMSUtils.updatePlayerInternalContainersTitle(this.player, "Title");
+
+            assertEquals("Title", delegateContainer.getCachedTitle(),
+                    "Cached title did not match expected");
+            assertEquals("Title", innerContainer.getTitle(),
+                    "Container title did not match expected");
         });
     }
 
