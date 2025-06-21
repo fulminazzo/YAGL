@@ -108,7 +108,11 @@ class AnvilInventoryWrapperTest {
 
             List<CraftItemStack> items = ((CraftContainer) activeContainer).getDelegate().getItems();
             CraftItemStack craftItemStack = items.get(0);
-            assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
+            CraftItemStack expected = new CraftItemStack(Material.STONE, 64);
+            NBTTagCompound display = new NBTTagCompound();
+            display.set("Name", new NBTTagString("{\"text\":\"\"}"));
+            expected.getTag().set("display", display);
+            assertEquals(expected, craftItemStack);
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
@@ -147,19 +151,24 @@ class AnvilInventoryWrapperTest {
             assertInstanceOf(CraftContainer.class, activeContainer);
 
             Container delegate = ((CraftContainer) activeContainer).getDelegate();
+
             List<CraftItemStack> items = delegate.getItems();
             CraftItemStack craftItemStack = items.get(0);
-            assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
+            CraftItemStack expectedItem = new CraftItemStack(Material.STONE, 64);
+            NBTTagCompound display = new NBTTagCompound();
+            display.set("Name", new NBTTagString("{\"text\":\"\"}"));
+            expectedItem.getTag().set("display", display);
+            assertEquals(expectedItem, craftItemStack);
 
             ContainerAccess access = delegate.getContainerAccess();
-            ContainerAccess expected = ContainerAccess.at(entityPlayer.getWorld(),
+            ContainerAccess expectedAccess = ContainerAccess.at(entityPlayer.getWorld(),
                     new BlockPosition(
                             this.player.getLocation().getBlockX(),
                             this.player.getLocation().getBlockY(),
                             this.player.getLocation().getBlockZ()
                     )
             );
-            assertEquals(expected, access);
+            assertEquals(expectedAccess, access);
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
             assertFalse(slotListeners.isEmpty(), "slotListeners should not be empty");
