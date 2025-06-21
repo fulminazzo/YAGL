@@ -83,9 +83,6 @@ class ObsoleteNMSUtilsTest {
         Container container = new Container();
         container.setContainer(new Container().setTitle("previousTitle"));
 
-        new Refl<>(((CraftPlayer<EntityPlayer>) this.player).getHandle())
-                .setFieldObject("playerContainer", new Container());
-
         ObsoleteMockInventoryView inventoryView = new ObsoleteMockInventoryView(
                 null, this.player,
                 "previousTitle", container
