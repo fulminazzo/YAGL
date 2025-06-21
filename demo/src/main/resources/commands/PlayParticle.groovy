@@ -34,7 +34,7 @@ static getOption(CommandSender sender, ParticleType particleType, Class optionTy
         org.bukkit.Color color = org.bukkit.Color.RED
         // Qualified reference is necessary to permit retro-compatibility
         new PrimitiveParticleOption<>(new org.bukkit.Particle.Trail(start, color, Integer.valueOf(args[0])))
-    else if (particleType == ParticleType.VIBRATION) {
+    } else if (particleType == ParticleType.VIBRATION) {
         Location start = sender.location
         Location end = start.clone().add(0, 10, 0)
         // Qualified reference is necessary to permit retro-compatibility
