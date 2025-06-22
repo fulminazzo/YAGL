@@ -787,6 +787,21 @@ class GUIAdapterTest {
     }
 
     @Test
+    void testUpdatePlayerGUINoPlayer() {
+        BukkitTestUtils.mockPlugin(p -> {
+            Player player = mock(Player.class);
+            when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+            when(player.getName()).thenReturn("fulminazzo");
+
+            Viewer viewer = GUIManager.getViewer(player);
+
+            assertThrowsExactly(PlayerOfflineException.class, () ->
+                    GUIAdapter.updatePlayerGUI(GUI.newGUI(9), viewer)
+            );
+        });
+    }
+
+    @Test
     void testUpdatePlayerGUINonFullscreen() {
         BukkitTestUtils.mockPlugin(p -> {
             IllegalArgumentException exception = assertThrowsExactly(IllegalArgumentException.class, () ->
