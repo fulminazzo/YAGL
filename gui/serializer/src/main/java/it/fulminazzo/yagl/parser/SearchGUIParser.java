@@ -50,13 +50,15 @@ public class SearchGUIParser extends YAMLParser<SearchGUI<?>> {
             final Integer lowerGuiSize = section.getInteger("lower-gui-size");
             if (lowerGuiSize == null) throw new IllegalArgumentException("'lower-gui-size' cannot be null");
 
-            // Save previous fixed variables
-
-            // Set fixed variables
+            Map<String, Object> previous = new HashMap<>();
+            FIXED_VARIABLES.forEach((k, v) -> {
+                previous.put(k, section.getObject(k));
+                section.set(k, v);
+            });
 
             SearchGUI<?> gui = (SearchGUI<?>) this.internalParser.load(c, s);
 
-            // Restore fixed variables
+            previous.forEach(section::set);
 
             return gui;
         };
