@@ -18,4 +18,8 @@ public class CraftTask implements BukkitTask {
         this.period = -2;
     }
 
+    public boolean isCancelled() {
+        throw new NoSuchMethodError("Could not find isCancelled method");
+    }
+
 }
