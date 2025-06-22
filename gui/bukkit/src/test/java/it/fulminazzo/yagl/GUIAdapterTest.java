@@ -24,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -220,6 +221,74 @@ class GUIAdapterTest {
             }
 
             c.pipeline().fireChannelRead(new PacketPlayInItemName(""));
+
+            for (int i = 9; i < 9 + 9; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(materials.get(i - 9), itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+
+            for (int i = 18; i < 27; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(Material.GLASS, itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+        });
+    }
+
+    @Test
+    void integrationTestSearchGUICancelled() {
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+
+            PluginManager manager = Bukkit.getPluginManager();
+            doAnswer(a -> {
+                Cancellable cancellable = a.getArgument(0);
+                cancellable.setCancelled(true);
+                return null;
+            }).when(manager).callEvent(any());
+
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            Viewer viewer = GUIManager.getViewer(this.player);
+
+            List<Material> materials = Arrays.asList(
+                    Material.POTATO, Material.DIAMOND, Material.REDSTONE,
+                    Material.STONE, Material.COBBLESTONE, Material.EMERALD,
+                    Material.STICK, Material.GRASS, Material.DIRT
+            );
+
+            SearchGUI<Material> gui = SearchGUI.newGUI(18,
+                            m -> ItemGUIContent.newInstance(m.name()),
+                            (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
+                            materials
+                    )
+                    .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
+
+            gui.open(viewer);
+
+            for (int i = 9; i < 9 + 9; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(materials.get(i - 9), itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+
+            for (int i = 18; i < 27; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack,
+                        "ItemStack at player inventory slot " + i + " should be not null");
+                assertEquals(Material.GLASS, itemStack.getType(),
+                        "ItemStack at player inventory slot " + i + " does not match expected item");
+            }
+
+            c.pipeline().fireChannelRead(new PacketPlayInItemName("Hello, world!"));
 
             for (int i = 9; i < 9 + 9; i++) {
                 ItemStack itemStack = playerInventory.getItem(i);
