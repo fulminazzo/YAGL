@@ -5,7 +5,7 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -210,7 +210,7 @@ class SearchGUITest {
                 .map(o -> o instanceof Number ? 9 : o)
                 .toArray(Object[]::new);
         Object object = ReflectionUtils.setAccessibleOrThrow(constructor).newInstance(parameters);
-        assertThrowsExactly(NotImplemented.class, () -> new Refl<>(object)
+        assertThrowsExactly(NotImplementedException.class, () -> new Refl<>(object)
                 .getFieldRefl("searchFunction")
                 .invokeMethod("test", (Object) null, null));
     }

@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.items;
 
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import it.fulminazzo.yagl.items.recipes.Recipe;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,12 +62,12 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
 
     @Override
     public void registerRecipes() {
-        throw new NotImplemented();
+        throw new NotImplementedException();
     }
 
     @Override
     public void unregisterRecipes() {
-        throw new NotImplemented();
+        throw new NotImplementedException();
     }
 
     @Override

@@ -6,7 +6,7 @@ import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.metadatable.IgnoreApply;
 import it.fulminazzo.yagl.metadatable.Metadatable;
@@ -47,7 +47,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     private SearchGUI() {
         super();
         this.searchFunction = (t, s) -> {
-            throw new NotImplemented();
+            throw new NotImplementedException();
         };
         this.query = "";
     }
@@ -55,7 +55,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     private SearchGUI(@NotNull GUI templateGUI) {
         super(templateGUI);
         this.searchFunction = (t, s) -> {
-            throw new NotImplemented();
+            throw new NotImplementedException();
         };
         this.query = "";
     }

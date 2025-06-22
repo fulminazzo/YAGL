@@ -1,6 +1,6 @@
 package io.papermc.paper.threadedregions.scheduler;
 
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,11 +9,11 @@ import java.util.function.Consumer;
 public class GlobalRegionScheduler {
 
     public void cancelTasks(@NotNull Plugin plugin) {
-        throw new NotImplemented();
+        throw new NotImplementedException();
     }
 
     public void execute(@NotNull Plugin plugin, @NotNull Runnable run) {
-        throw new NotImplemented();
+        throw new NotImplementedException();
     }
 
     public @NotNull ScheduledTask run(@NotNull Plugin plugin, @NotNull Consumer<ScheduledTask> task) {

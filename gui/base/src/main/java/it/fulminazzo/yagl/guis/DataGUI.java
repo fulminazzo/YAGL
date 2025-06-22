@@ -6,7 +6,7 @@ import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.Getter;
@@ -37,7 +37,7 @@ public class DataGUI<T> extends PageableGUI {
     DataGUI() {
         this.data = new LinkedList<>();
         this.dataConverter = t -> {
-            throw new NotImplemented();
+            throw new NotImplementedException();
         };
     }
 
@@ -50,7 +50,7 @@ public class DataGUI<T> extends PageableGUI {
         super(templateGUI);
         this.data = new LinkedList<>();
         this.dataConverter = t -> {
-            throw new NotImplemented();
+            throw new NotImplementedException();
         };
     }
 

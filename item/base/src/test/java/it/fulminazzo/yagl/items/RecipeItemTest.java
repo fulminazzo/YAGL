@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.items;
 
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import it.fulminazzo.yagl.items.recipes.FurnaceRecipe;
 import it.fulminazzo.yagl.items.recipes.ShapedRecipe;
 import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
@@ -21,11 +21,11 @@ class RecipeItemTest {
 
     @Test
     void recipeItemRegisterShouldBeUnimplemented() {
-        assertThrowsExactly(NotImplemented.class, () -> Item.newRecipeItem().registerRecipes());
+        assertThrowsExactly(NotImplementedException.class, () -> Item.newRecipeItem().registerRecipes());
     }
 
     @Test
     void recipeItemUnregisterShouldBeUnimplemented() {
-        assertThrowsExactly(NotImplemented.class, () -> Item.newRecipeItem().unregisterRecipes());
+        assertThrowsExactly(NotImplementedException.class, () -> Item.newRecipeItem().unregisterRecipes());
     }
 }

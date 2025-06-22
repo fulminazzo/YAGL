@@ -6,7 +6,7 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
-import it.fulminazzo.yagl.exceptions.NotImplemented;
+import it.fulminazzo.yagl.exceptions.NotImplementedException;
 import it.fulminazzo.yagl.items.Item;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -164,7 +164,7 @@ class DataGUITest {
                 .map(o -> o instanceof Number ? 9 : o)
                 .toArray(Object[]::new);
         Object object = ReflectionUtils.setAccessibleOrThrow(constructor).newInstance(parameters);
-        assertThrowsExactly(NotImplemented.class, () -> new Refl<>(object)
+        assertThrowsExactly(NotImplementedException.class, () -> new Refl<>(object)
                 .getFieldRefl("dataConverter")
                 .invokeMethod("apply", (Object) null));
     }
