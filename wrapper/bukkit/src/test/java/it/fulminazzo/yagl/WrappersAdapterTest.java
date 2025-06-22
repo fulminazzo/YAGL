@@ -43,14 +43,14 @@ class WrappersAdapterTest extends BukkitUtils {
     static void setAllUp() {
         setupServer();
         setupEnchantments();
-        when(Bukkit.getServer().createBlockData(any(Material.class), any(String.class)))
-                .thenReturn(mock(org.bukkit.block.data.BlockData.class));
     }
 
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
+        when(Bukkit.getServer().createBlockData(any(Material.class), any(String.class)))
+                .thenReturn(mock(org.bukkit.block.data.BlockData.class));
     }
 
     private static Object[] getParticles() {
