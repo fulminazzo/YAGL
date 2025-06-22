@@ -120,7 +120,8 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
             section.set("gui-type", section.getString("type"));
             section.set("type", ParserUtils.classToType(GUI.class, p.getClass()));
             section.set("size", p.size());
-            section.set("pages", p.pages());
+            // Set pages only if PageableGUI
+            if (p.getClass().equals(PageableGUI.class)) section.set("pages", p.pages());
 
             Tuple<Integer, GUIContent> previousPage = refl.getFieldObject("previousPage");
             previousPage.ifPresent((i, g) -> {
