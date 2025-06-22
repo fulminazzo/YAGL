@@ -144,12 +144,14 @@ class GUIAdapterTest {
         when(server.isPrimaryThread()).thenReturn(false);
         when(server.getScheduler()).thenReturn(scheduler);
 
-        BukkitTestUtils.mockPlugin(p -> {
-            GUI gui = GUI.newGUI(GUIType.CHEST);
-            GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
+        TestUtils.disableFoliaRegionScheduler(() ->
+                BukkitTestUtils.mockPlugin(p -> {
+                    GUI gui = GUI.newGUI(GUIType.CHEST);
+                    GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
 
-            verify(server.getScheduler()).runTask(eq(p), any(Runnable.class));
-        });
+                    verify(server.getScheduler()).runTask(eq(p), any(Runnable.class));
+                })
+        );
     }
 
     @ParameterizedTest

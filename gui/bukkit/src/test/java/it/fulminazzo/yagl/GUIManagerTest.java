@@ -59,8 +59,9 @@ class GUIManagerTest {
         void setUp() {
             BukkitUtils.setupServer();
             try {
-               GUIManager.getInstance(GUIManager.class).terminate();
-            } catch (InstanceNotInitializedException ignored) {}
+                GUIManager.getInstance(GUIManager.class).terminate();
+            } catch (InstanceNotInitializedException ignored) {
+            }
             this.guiManager = new GUIManager();
 
             Server server = Bukkit.getServer();
@@ -215,16 +216,18 @@ class GUIManagerTest {
 
         @Test
         void testCloseEvent() {
-            BukkitTestUtils.mockPlugin(p -> {
-                AtomicBoolean expected = new AtomicBoolean(false);
-                this.expected.onCloseGUI((v, g) -> expected.set(true));
+            TestUtils.disableFoliaRegionScheduler(() ->
+                    BukkitTestUtils.mockPlugin(p -> {
+                        AtomicBoolean expected = new AtomicBoolean(false);
+                        this.expected.onCloseGUI((v, g) -> expected.set(true));
 
-                InventoryViewWrapper view = getView();
+                        InventoryViewWrapper view = getView();
 
-                this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
+                        this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
 
-                assertTrue(expected.get(), "CloseGUI action was not invoked");
-            });
+                        assertTrue(expected.get(), "CloseGUI action was not invoked");
+                    })
+            );
         }
 
         @Test

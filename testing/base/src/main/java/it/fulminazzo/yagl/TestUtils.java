@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
+import org.mockito.MockedStatic;
 import org.mockito.exceptions.misusing.NotAMockException;
 import org.mockito.internal.progress.MockingProgress;
 
@@ -31,6 +32,41 @@ import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingPro
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
+
+    /**
+     * Utility function to force the usage of Bukkit methods instead of Folia.
+     *
+     * @param runnable the function to execute
+     */
+    public static void disableFoliaRegionScheduler(final @NotNull Runnable runnable) {
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"))
+                    .thenThrow(new IllegalArgumentException("Folia not enabled!"));
+            runnable.run();
+        });
+    }
+
+    /**
+     * Mocks {@link ReflectionUtils} and executes the given function.
+     *
+     * @param runnable the function
+     */
+    public static void mockReflectionUtils(final @NotNull Runnable runnable) {
+        try (MockedStatic<ReflectionUtils> ignored = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            runnable.run();
+        }
+    }
+
+    /**
+     * Mocks {@link ReflectionUtils} and executes the given function.
+     *
+     * @param runnable the function
+     */
+    public static void mockReflectionUtils(final @NotNull Consumer<MockedStatic<ReflectionUtils>> runnable) {
+        try (MockedStatic<ReflectionUtils> reflectionUtils = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            runnable.accept(reflectionUtils);
+        }
+    }
 
     /**
      * Allows testing all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
@@ -79,8 +115,7 @@ public final class TestUtils {
      * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
      * @param target                  the target
      * @param invokedMethod           the invoked method
-     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>.
-     *                                These will also be the types of the returned captors
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>.                                These will also be the types of the returned captors
      * @return the argument captors of the invoked parameters
      */
     public static ArgumentCaptor<?> @NotNull [] testSingleMethod(final @NotNull Object executor, final @NotNull Method targetMethod,
@@ -130,10 +165,10 @@ public final class TestUtils {
      * to allow method chaining.
      * This function allows checking each one to verify that the return type is consistent with the original object.
      *
-     * @param <T>                the type parameter
-     * @param object             the object
-     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
+     * @param <T>    the type parameter
+     * @param object the object
+     * @param clazz  the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param filter if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
                                           final @Nullable Predicate<Method> filter) {
@@ -148,9 +183,7 @@ public final class TestUtils {
      * @param <T>                the type parameter
      * @param object             the object
      * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param expectedReturnType the expected return type of the methods.
-     *                           For example, if the object is a hidden implementation,
-     *                           the corresponding abstract class (or interface) should be passed.
+     * @param expectedReturnType the expected return type of the methods.                           For example, if the object is a hidden implementation,                           the corresponding abstract class (or interface) should be passed.
      * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
