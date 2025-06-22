@@ -81,6 +81,7 @@ class BukkitSchedulerTest extends BukkitUtils {
     @MethodSource("bukkitTaskMethods")
     @After1_(12)
     void testTaskMethods(String methodName, String actualMethodName) {
+        check();
         Refl<?> refl = new Refl<>(this.task);
 
         Method method = refl.getMethods(m -> m.getName().equals(methodName)).get(0);
