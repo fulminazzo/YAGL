@@ -6,10 +6,12 @@ import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
+import it.fulminazzo.yagl.inventory.InventoryWrapper;
 import it.fulminazzo.yagl.items.BukkitItem;
 import it.fulminazzo.yagl.metadatable.PAPIParser;
 import it.fulminazzo.yagl.scheduler.Scheduler;
 import it.fulminazzo.yagl.utils.MessageUtils;
+import it.fulminazzo.yagl.utils.NMSUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.AccessLevel;
@@ -18,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -80,7 +83,7 @@ public final class GUIAdapter {
                                                     final @Nullable Consumer<M> metaFunction) {
         openGUIHelper(gui, viewer, (p, v) -> {
             // Open inventory
-            final Inventory inventory;
+            final InventoryWrapper inventory;
             // Check if GUI is FullSize
             if (gui instanceof FullSizeGUI) {
                 FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
@@ -89,9 +92,9 @@ public final class GUIAdapter {
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
 
-                inventory = guiToInventory(upperGUI);
-                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
-                p.openInventory(inventory);
+                inventory = guiToInventory(p, upperGUI);
+                fillInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory.getActualInventory(), upperGUI.size());
+                inventory.open(p);
 
                 PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
                 if (v.getNextGUI() == null) {
@@ -102,9 +105,9 @@ public final class GUIAdapter {
                 int lowerGUISize = lowerGUI.size();
                 setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
             } else {
-                inventory = guiToInventory(gui);
-                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
-                p.openInventory(inventory);
+                inventory = guiToInventory(p, gui);
+                fillInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory.getActualInventory(), gui.size());
+                inventory.open(p);
             }
         });
     }
@@ -143,6 +146,17 @@ public final class GUIAdapter {
                 GUI lowerGUI = fullSizeGUI.getLowerGUI();
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
+
+                InventoryView inventoryView = p.getOpenInventory();
+                String title = MessageUtils.color(gui.getTitle());
+
+                if (!inventoryView.getTitle().equals(title)) {
+                    fillInventoryWithGUIContents(upperGUI, v,
+                            itemMetaClass, metaFunction,
+                            inventoryView.getTopInventory(), upperGUI.size());
+
+                    if (title != null) NMSUtils.updateInventoryTitle(p, title);
+                }
 
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
@@ -213,7 +227,7 @@ public final class GUIAdapter {
 
         // Since Minecraft handles player inventory in a "particular" way,
         // it is necessary to manually set each item.
-        List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
+        List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getContents()));
 
         // Hotbar contents
         for (int i = 27; i < contentsSize; i++) {
@@ -231,7 +245,7 @@ public final class GUIAdapter {
             else itemStacks.set(slot, convertContentToItemStack(gui, itemMetaClass, metaFunction, content));
         }
 
-        playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
+        playerInventory.setContents(itemStacks.toArray(new ItemStack[0]));
     }
 
     /**
@@ -305,22 +319,24 @@ public final class GUIAdapter {
     /**
      * Converts the given {@link GUI} to a {@link Inventory}.
      *
-     * @param gui the gui
+     * @param gui   the gui
+     * @param owner the owner of the inventory
      * @return the inventory
      */
-    public static Inventory guiToInventory(final @NotNull GUI gui) {
+    public static @NotNull InventoryWrapper guiToInventory(final @NotNull Player owner,
+                                           final @NotNull GUI gui) {
         String title = MessageUtils.color(gui.getTitle());
-        final Inventory inventory;
+        final InventoryWrapper inventory;
         if (title == null) {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
-                inventory = Bukkit.createInventory(null, type);
-            } else inventory = Bukkit.createInventory(null, gui.size());
+                inventory = InventoryWrapper.createInventory(owner, type);
+            } else inventory = InventoryWrapper.createInventory(owner, gui.size());
         } else {
             if (gui instanceof TypeGUI) {
                 InventoryType type = guiToInventoryType(((TypeGUI) gui).getInventoryType());
-                inventory = Bukkit.createInventory(null, type, title);
-            } else inventory = Bukkit.createInventory(null, gui.size(), title);
+                inventory = InventoryWrapper.createInventory(owner, type, title);
+            } else inventory = InventoryWrapper.createInventory(owner, gui.size(), title);
         }
         return inventory;
     }
@@ -331,7 +347,7 @@ public final class GUIAdapter {
      * @param guiType the gui type
      * @return the inventory type
      */
-    public static InventoryType guiToInventoryType(final @NotNull GUIType guiType) {
+    public static @NotNull InventoryType guiToInventoryType(final @NotNull GUIType guiType) {
         return InventoryType.valueOf(guiType.name());
     }
 
@@ -342,6 +358,16 @@ public final class GUIAdapter {
      */
     public static boolean isPlaceholderAPIEnabled() {
         return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+    }
+
+
+    /**
+     * Gets the plugin associated with the YAGL library.
+     *
+     * @return the plugin
+     */
+    public static @NotNull JavaPlugin getProvidingPlugin() {
+        return JavaPlugin.getProvidingPlugin(GUIAdapter.class);
     }
 
 }

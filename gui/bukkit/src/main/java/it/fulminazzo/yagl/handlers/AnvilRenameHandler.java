@@ -6,11 +6,13 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.GUIAdapter;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -21,11 +23,15 @@ import java.util.logging.Logger;
  * reading anvil rename packets from the player.
  */
 public final class AnvilRenameHandler extends ChannelDuplexHandler {
+    private static final int DEBOUNCE_DELAY = 2;
+
     private final @NotNull Logger logger;
 
     private final @NotNull UUID playerId;
 
     private final @NotNull BiConsumer<Player, String> handler;
+
+    private @Nullable BukkitTask handleTask;
 
     /**
      * Instantiates a new Anvil rename handler.
@@ -35,7 +41,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
      */
     public AnvilRenameHandler(final @NotNull UUID playerId,
                               final @NotNull BiConsumer<Player, String> handler) {
-        this.logger = getProvidingPlugin().getLogger();
+        this.logger = GUIAdapter.getProvidingPlugin().getLogger();
         this.playerId = playerId;
         this.handler = handler;
     }
@@ -79,7 +85,13 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
                     return;
             }
 
-            this.handler.accept(player, name);
+            stopHandleTask();
+
+            this.handleTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
+                    GUIAdapter.getProvidingPlugin(),
+                    () -> this.handler.accept(player, name),
+                    DEBOUNCE_DELAY
+            );
         } catch (Exception e) {
             // Usually catching Exception is bad,
             // but in this case is necessary
@@ -90,6 +102,16 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
             e.printStackTrace();
         } finally {
             super.channelRead(context, packet);
+        }
+    }
+
+    /**
+     * Stops the {@link #handleTask} if present.
+     */
+    void stopHandleTask() {
+        if (this.handleTask != null) {
+            this.handleTask.cancel();
+            this.handleTask = null;
         }
     }
 
@@ -108,6 +130,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
     public void remove() {
         Channel channel = NMSUtils.getPlayerChannel(getPlayer());
         channel.eventLoop().submit(() -> channel.pipeline().remove(getName()));
+        stopHandleTask();
     }
 
     /**
@@ -142,10 +165,6 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
         if (player == null)
             throw new IllegalStateException(String.format("Player '%s' is not online", this.playerId));
         return player;
-    }
-
-    private static @NotNull JavaPlugin getProvidingPlugin() {
-        return JavaPlugin.getProvidingPlugin(AnvilRenameHandler.class);
     }
 
 }

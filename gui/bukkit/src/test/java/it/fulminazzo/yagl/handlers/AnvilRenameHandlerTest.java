@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.handlers;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,12 +37,17 @@ class AnvilRenameHandlerTest {
         BukkitUtils.setupServer();
         Server server = Bukkit.getServer();
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        when(server.getScheduler()).thenReturn(scheduler);
         when(scheduler.runTaskAsynchronously(any(), any(Runnable.class))).thenAnswer(a -> {
             Runnable runnable = a.getArgument(1);
             runnable.run();
             return null;
         });
-        when(server.getScheduler()).thenReturn(scheduler);
+        when(scheduler.runTaskLaterAsynchronously(any(), any(Runnable.class), any(long.class))).thenAnswer(a -> {
+            Runnable runnable = a.getArgument(1);
+            runnable.run();
+            return null;
+        });
     }
 
     @BeforeEach
@@ -74,6 +81,10 @@ class AnvilRenameHandlerTest {
     @Test
     void testRemove() {
         BukkitTestUtils.mockNMSUtils(c -> {
+            BukkitTask task = mock(BukkitTask.class);
+            Refl<AnvilRenameHandler> handler = new Refl<>(this.handler);
+            handler.setFieldObject("handleTask", task);
+
             this.handler.remove();
 
             verify(c.pipeline()).remove(
@@ -81,6 +92,7 @@ class AnvilRenameHandlerTest {
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_")
             );
+            assertNull(handler.getFieldObject("handleTask"));
         });
     }
 

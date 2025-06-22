@@ -4,10 +4,11 @@ import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
-import it.fulminazzo.yagl.utils.current.AbstractContainerMenu;
-import it.fulminazzo.yagl.utils.current.EntityPlayer;
-import it.fulminazzo.yagl.utils.current.EntityPlayerContainer;
-import it.fulminazzo.yagl.utils.current.containers.Container;
+import it.fulminazzo.yagl.testing.CraftPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.world.inventory.Container;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,10 +40,10 @@ class NMSUtilsTest {
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
-        CraftPlayer<EntityPlayer> craftPlayer = mock(CraftPlayer.class,
+        CraftPlayer<ServerPlayer> craftPlayer = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(craftPlayer.getHandle()).thenReturn(new EntityPlayer(null));
+        when(craftPlayer.getHandle()).thenReturn(new ServerPlayer(null));
         this.player = (Player) craftPlayer;
     }
 
@@ -60,11 +62,11 @@ class NMSUtilsTest {
      * 1.17-1.19
      */
     @Test
-    void testConstructUpdateInventoryTitlePacket() {
-        CraftPlayer<EntityPlayerContainer> player = mock(CraftPlayer.class,
+    void testNewUpdateInventoryTitlePacket() {
+        CraftPlayer<EntityPlayer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(player.getHandle()).thenReturn(new EntityPlayerContainer());
+        when(player.getHandle()).thenReturn(new EntityPlayer());
 
         MockInventoryView inventoryView = new MockInventoryView(
                 new MockInventory(27),
@@ -75,10 +77,10 @@ class NMSUtilsTest {
         Container container = Container.newContainer();
         container.setOpenInventory(inventoryView);
 
-        EntityPlayerContainer handle = player.getHandle();
+        EntityPlayer handle = player.getHandle();
         handle.setContainer(container);
 
-        Object actualPacket = NMSUtils.constructUpdateInventoryTitlePacket((Player) player, "Hello, world!");
+        Object actualPacket = NMSUtils.newUpdateInventoryTitlePacket((Player) player, "Hello, world!");
 
         assertInstanceOf(PacketPlayOutOpenWindow.class, actualPacket,
                 "Packet was supposed to be PacketPlayOutOpenWindow");
@@ -107,7 +109,7 @@ class NMSUtilsTest {
 
         NMSUtils.sendPacket(this.player, packet);
 
-        EntityPlayer player = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
+        ServerPlayer player = ((CraftPlayer<ServerPlayer>) this.player).getHandle();
         List<Packet> sentPackets = player.getConnection().getSentPackets();
         assertTrue(sentPackets.contains(packet),
                 String.format("Sent packets (%s) should have contained packet %s", sentPackets, packet));
@@ -115,7 +117,7 @@ class NMSUtilsTest {
 
     @Test
     void testChatBaseComponent() {
-        Object baseComponent = NMSUtils.getIChatBaseComponent("Hello, world");
+        Object baseComponent = NMSUtils.newIChatBaseComponent("Hello, world");
         assertEquals("IChatBaseComponent{Hello, world}", baseComponent.toString());
     }
 
@@ -175,27 +177,52 @@ class NMSUtilsTest {
 
     @ParameterizedTest
     @MethodSource("inventoryTypeStrings")
-    void testGetInventoryTypeStringFromBukkitType(InventoryType inventoryType, @Nullable String expected) {
+    void testInventoryTypeToNotchInventoryTypeString(InventoryType inventoryType, @Nullable String expected) {
         if (expected == null)
             assertThrowsExactly(IllegalArgumentException.class, () ->
-                    NMSUtils.getInventoryTypeStringFromBukkitType(inventoryType)
+                    NMSUtils.inventoryTypeToNotchInventoryTypeString(inventoryType)
             );
         else {
             expected = "minecraft:" + expected;
-            assertEquals(expected, NMSUtils.getInventoryTypeStringFromBukkitType(inventoryType));
+            assertEquals(expected, NMSUtils.inventoryTypeToNotchInventoryTypeString(inventoryType));
         }
     }
 
     @Test
     void testGetPlayerChannel() {
         Channel expected = mock(Channel.class);
-        CraftPlayer<EntityPlayer> player = mock(CraftPlayer.class,
+        CraftPlayer<ServerPlayer> player = mock(CraftPlayer.class,
                 withSettings().extraInterfaces(Player.class)
         );
-        when(player.getHandle()).thenReturn(new EntityPlayer(expected));
+        when(player.getHandle()).thenReturn(new ServerPlayer(expected));
 
         Channel actual = NMSUtils.getPlayerChannel((Player) player);
         assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1.20.4-R0.1-SNAPSHOT:20.4",
+            "1.20-R0.1-SNAPSHOT:20.0",
+            "1.8.9-R0.1-SNAPSHOT:8.9",
+            "1.8-R0.1-SNAPSHOT:8.0",
+    })
+    void testGetServerVersion(String data) {
+        String[] tmp = data.split(":");
+        String version = tmp[0];
+        double expected = Double.parseDouble(tmp[1]);
+
+        when(Bukkit.getServer().getBukkitVersion()).thenReturn(version);
+
+        double actual = NMSUtils.getServerVersion();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetServerVersionOfInvalidVersion() {
+        when(Bukkit.getServer().getBukkitVersion()).thenReturn("INVALID_VERSION");
+        assertThrowsExactly(IllegalStateException.class, NMSUtils::getServerVersion);
     }
 
 }

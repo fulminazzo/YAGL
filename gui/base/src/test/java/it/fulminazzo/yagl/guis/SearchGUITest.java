@@ -170,6 +170,24 @@ class SearchGUITest {
                 });
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            ":",
+            "§r:",
+            "query:query",
+            "&colored:&colored"
+    })
+    void testQueryMethods(String string) {
+        String[] tmp = string.split(":");
+        String query = tmp.length < 1 ? "" : tmp[0];
+        String expected = tmp.length < 2 ? "" : tmp[1];
+
+        SearchGUI<?> gui = SearchGUI.newGUI(s -> null, (f, s) -> true)
+                .setQuery(query);
+
+        assertEquals(expected, gui.getQuery());
+    }
+
     private static Constructor<?>[] serializationConstructors() {
         return Arrays.stream(SearchGUI.class.getDeclaredConstructors())
                 .filter(c -> c.getParameterCount() <= 1)

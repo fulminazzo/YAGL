@@ -6,6 +6,8 @@ import it.fulminazzo.yagl.guis.GUIType
 import it.fulminazzo.yagl.items.Item
 import it.fulminazzo.yagl.items.fields.ItemFlag
 import it.fulminazzo.yagl.utils.EnumUtils
+import it.fulminazzo.yagl.utils.NMSUtils
+import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -13,7 +15,10 @@ def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
             def columns = 9
-            def border = Item.newItem('black_stained_glass_pane').setDisplayName(' ')
+            def corner = (NMSUtils.serverVersion >= 13 ?
+                    ItemGUIContent.newInstance(Material.BLACK_STAINED_GLASS_PANE.name()) :
+                    ItemGUIContent.newInstance(Material.valueOf('STAINED_GLASS_PANE').name()).setDurability(15))
+                    .setDisplayName(' ')
 
             GUI secretGUI = GUI.newGUI(9)
                     .setTitle('&cSecret GUI')
@@ -34,29 +39,28 @@ def run = { CommandSender sender, String label, String[] args ->
                 return
             }
             for (int i = 0; i < Math.min(gui.size(), columns); i += 1) {
-                gui.setContents(i, border)
-                gui.setContents(gui.size() - i - 1, border)
+                gui.setContents(i, corner)
+                gui.setContents(gui.size() - i - 1, corner)
             }
             for (int i = 0; i < gui.size(); i += columns) {
-                gui.setContents(i, border)
-                gui.setContents(gui.size() - i - 1, border)
+                gui.setContents(i, corner)
+                gui.setContents(gui.size() - i - 1, corner)
             }
             def middle = (int) (gui.size() / 2)
-            gui.setContents(middle, ItemGUIContent.newInstance('gold_block')
-                    .setDisplayName('This is a <name> GUI!')
-                    .addEnchantment('unbreaking', 1)
+            gui.setContents(middle, ItemGUIContent.newInstance('gold_block').setDisplayName('This is a <name> GUI!')
+                    .addEnchantment('lure', 1)
                     .addItemFlags(ItemFlag.HIDE_ENCHANTS)
                     .onClickItem((v, g, c) -> secretGUI.open(v))
             )
             if (middle - 1 >= 0)
                 gui.setContents(middle - 1, Item.newItem('diamond_sword')
                         .setDisplayName('Pick me!')
-                        .addEnchantment('sharpness', 2))
+                        .addEnchantment('fire_aspect', 2))
                         .setMovable(middle - 1, true)
             if (middle + 1 < gui.size())
                 gui.setContents(middle + 1, ItemGUIContent.newInstance('diamond_pickaxe')
                         .setDisplayName('Can\'t pick me...')
-                        .addEnchantment('efficiency', 10)
+                        .addEnchantment('lure', 10)
                         .onClickItem((v, g, c) -> v.sendMessage('You cannot pick this item!')))
             gui.setTitle('<name> GUI')
                     .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))

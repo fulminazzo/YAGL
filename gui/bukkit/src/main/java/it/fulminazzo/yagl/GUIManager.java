@@ -85,15 +85,12 @@ public class GUIManager extends SingleInstance implements Listener {
         Player player = (Player) event.getPlayer();
         Viewer viewer = getViewer(player);
         GUIAdapter.closeGUI(viewer);
-        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
-            inventoryCache.restorePlayerContents(player);
-            inventoryCache.clearPlayerContents(player);
-        }
+        restorePlayerContents(player);
     }
 
     @EventHandler
     void on(final @NotNull PluginDisableEvent event) {
-        JavaPlugin plugin = getProvidingPlugin();
+        JavaPlugin plugin = GUIAdapter.getProvidingPlugin();
         Plugin disablingPlugin = event.getPlugin();
         if (plugin.equals(disablingPlugin)) {
             this.viewers.stream()
@@ -144,6 +141,21 @@ public class GUIManager extends SingleInstance implements Listener {
         if (handler != null) {
             handler.remove();
             this.anvilRenameHandlers.remove(handler);
+        }
+    }
+
+    /**
+     * Restores the specified player contents if present.
+     *
+     * @param player the player
+     */
+    static void restorePlayerContents(final @NotNull Player player) {
+        GUIManager guiManager = getInstance();
+        @NotNull PlayersInventoryCache inventoryCache = guiManager.inventoryCache;
+        Viewer viewer = getViewer(player);
+        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
+            inventoryCache.restorePlayerContents(player);
+            inventoryCache.clearPlayerContents(player);
         }
     }
 
@@ -218,12 +230,9 @@ public class GUIManager extends SingleInstance implements Listener {
             return getInstance(GUIManager.class);
         } catch (InstanceNotInitializedException e) {
             GUIManager manager = new GUIManager();
-            Bukkit.getPluginManager().registerEvents(manager, getProvidingPlugin());
+            Bukkit.getPluginManager().registerEvents(manager, GUIAdapter.getProvidingPlugin());
             return manager;
         }
     }
 
-    private static @NotNull JavaPlugin getProvidingPlugin() {
-        return JavaPlugin.getProvidingPlugin(GUIManager.class);
-    }
 }
