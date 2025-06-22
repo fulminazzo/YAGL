@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -95,10 +96,12 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
             );
         } catch (Exception e) {
             // Usually catching Exception is bad, but in this case is necessary to avoid the player getting kicked
-            this.logger.severe(String.format("An error occurred while reading a packet from player '%s': %s",
-                    player.getName(),
-                    e.getMessage()));
-            e.printStackTrace();
+            this.logger.log(
+                    Level.WARNING,
+                    String.format("An error occurred while reading a packet from player '%s': %s",
+                            player.getName(), e.getMessage()),
+                    e
+            );
         } finally {
             super.channelRead(context, packet);
         }
