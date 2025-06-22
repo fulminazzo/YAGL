@@ -140,34 +140,40 @@ public final class GUIAdapter {
                                                             final @NotNull Viewer viewer,
                                                             final @Nullable Class<M> itemMetaClass,
                                                             final @Nullable Consumer<M> metaFunction) {
-        openGUIHelper(gui, viewer, (p, v) -> {
-            if (gui instanceof FullscreenGUI) {
-                FullscreenGUIUpdateEvent event = new FullscreenGUIUpdateEvent(p.getOpenInventory());
-                Bukkit.getPluginManager().callEvent(event);
-                if (event.isCancelled()) return;
+        final UUID uuid = viewer.getUniqueId();
+        final Player player = Bukkit.getPlayer(uuid);
+        if (player == null) throw new PlayerOfflineException(viewer.getName());
 
-                FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
-                GUI upperGUI = fullscreenGUI.getUpperGUI();
-                GUI lowerGUI = fullscreenGUI.getLowerGUI();
-                upperGUI.apply(upperGUI);
-                lowerGUI.apply(lowerGUI);
+        FullscreenGUIUpdateEvent event = new FullscreenGUIUpdateEvent(player.getOpenInventory());
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
 
-                InventoryView inventoryView = p.getOpenInventory();
-                String title = MessageUtils.color(gui.getTitle());
+        GUIManager.executeUnsafeEvent(event, player, () ->
+                openGUIHelper(gui, viewer, (p, v) -> {
+                    if (gui instanceof FullscreenGUI) {
+                        FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
+                        GUI upperGUI = fullscreenGUI.getUpperGUI();
+                        GUI lowerGUI = fullscreenGUI.getLowerGUI();
+                        upperGUI.apply(upperGUI);
+                        lowerGUI.apply(lowerGUI);
 
-                if (!inventoryView.getTitle().equals(title)) {
-                    fillInventoryWithGUIContents(upperGUI, v,
-                            itemMetaClass, metaFunction,
-                            inventoryView.getTopInventory(), upperGUI.size());
+                        InventoryView inventoryView = p.getOpenInventory();
+                        String title = MessageUtils.color(gui.getTitle());
 
-                    if (title != null) NMSUtils.updateInventoryTitle(p, title);
-                }
+                        if (!inventoryView.getTitle().equals(title)) {
+                            fillInventoryWithGUIContents(upperGUI, v,
+                                    itemMetaClass, metaFunction,
+                                    inventoryView.getTopInventory(), upperGUI.size());
 
-                int upperGUISize = upperGUI.size();
-                int lowerGUISize = lowerGUI.size();
-                setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
-            } else throw new IllegalArgumentException("updatePlayerGUI can only be used with FullscreenGUI");
-        });
+                            if (title != null) NMSUtils.updateInventoryTitle(p, title);
+                        }
+
+                        int upperGUISize = upperGUI.size();
+                        int lowerGUISize = lowerGUI.size();
+                        setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
+                    } else throw new IllegalArgumentException("updatePlayerGUI can only be used with FullscreenGUI");
+                })
+        );
     }
 
     /**
@@ -329,7 +335,7 @@ public final class GUIAdapter {
      * @return the inventory
      */
     public static @NotNull InventoryWrapper guiToInventory(final @NotNull Player owner,
-                                           final @NotNull GUI gui) {
+                                                           final @NotNull GUI gui) {
         String title = MessageUtils.color(gui.getTitle());
         final InventoryWrapper inventory;
         if (title == null) {
