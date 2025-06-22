@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.inventory;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.gui.FullscreenGUI;
 import it.fulminazzo.yagl.gui.SearchGUI;
@@ -29,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
-class ObsoleteAnvilInventoryWrapperTest {
+class ObsoleteAnvilInventoryWrapperTest extends BukkitUtils {
     public static final String NMS_VERSION = "v1_8_R3";
     private Inventory inventory;
 
@@ -41,7 +42,8 @@ class ObsoleteAnvilInventoryWrapperTest {
     }
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         this.inventory = new ObsoleteMockInventory(3);
         ItemStack itemStack = new ItemStack(Material.STONE, 64);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -61,8 +63,10 @@ class ObsoleteAnvilInventoryWrapperTest {
         when(craftPlayer.getHandle()).thenReturn(entityPlayer);
     }
 
+    @Before1_(21)
     @Test
     void testOpen8() {
+        check();
         preventNewerNMSClassesLoading(() -> {
             AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper8(this.inventory);
             wrapper.open(this.player);

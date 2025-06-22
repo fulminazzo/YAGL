@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
@@ -51,7 +52,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class GUIAdapterTest {
+class GUIAdapterTest extends BukkitUtils {
     private Player player;
     private Inventory inventory;
 
@@ -65,7 +66,8 @@ class GUIAdapterTest {
     }
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         Server server = Bukkit.getServer();
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
         when(server.getScheduler()).thenReturn(scheduler);
@@ -95,9 +97,11 @@ class GUIAdapterTest {
         BukkitUtils.removePlayer(this.player);
     }
 
+    @Before1_(21)
     @ParameterizedTest
     @ValueSource(strings = {"Title", "Update", ""})
     void integrationTestSearchGUI(String title) {
+        check();
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
             when(NMSUtils.getServerVersion()).thenReturn(17.0);
 
@@ -329,8 +333,10 @@ class GUIAdapterTest {
         });
     }
 
+    @Before1_(21)
     @Test
     void testUpdatePlayerGUI() {
+        check();
         BukkitTestUtils.mockPlugin(p -> {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);

@@ -2,6 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
@@ -166,13 +167,14 @@ class GUIManagerTest {
     }
 
     @Nested
-    class EventsTest {
+    class EventsTest extends BukkitUtils {
         private GUIManager guiManager;
         private Player player;
         private GUI expected;
 
         @BeforeEach
-        void setUp() {
+        protected void setUp() {
+            super.setUp();
             new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
             try {
                 GUIManager.getInstance(GUIManager.class).terminate();
@@ -324,8 +326,10 @@ class GUIManagerTest {
             assertFalse(expected.get(), "Click action should not be invoked");
         }
 
+        @Before1_(21)
         @Test
         void testNullClickActionSound() {
+            check();
             Sound sound = new Sound("pirate", 1f, 3f);
             Location location = new Location(null, 0, 1, 0);
             when(this.player.getLocation()).thenReturn(location);

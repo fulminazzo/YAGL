@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.TestUtils;
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
-class AnvilInventoryWrapperTest {
+class AnvilInventoryWrapperTest extends BukkitUtils {
     public static final String NMS_VERSION = "v1_14_R1";
     private Inventory inventory;
 
@@ -43,7 +44,8 @@ class AnvilInventoryWrapperTest {
     }
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         this.inventory = new MockInventory(3);
         ItemStack itemStack = new ItemStack(Material.STONE, 64);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -61,8 +63,10 @@ class AnvilInventoryWrapperTest {
         when(craftPlayer.getHandle()).thenReturn(entityPlayer);
     }
 
+    @Before1_(21)
     @Test
     void testOpen12() {
+        check();
         preventNewerNMSClassesLoading(() -> {
             AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper12(this.inventory);
             wrapper.open(this.player);
@@ -101,8 +105,10 @@ class AnvilInventoryWrapperTest {
         });
     }
 
+    @Before1_(21)
     @Test
     void testOpen13() {
+        check();
         preventNewerNMSClassesLoading(() -> {
             AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper13(this.inventory);
             wrapper.open(this.player);
@@ -198,8 +204,10 @@ class AnvilInventoryWrapperTest {
         });
     }
 
+    @Before1_(21)
     @Test
     void testOpen14_16() {
+        check();
         preventNewerNMSClassesLoading(() -> {
             AnvilInventoryWrapper wrapper = new AnvilInventoryWrapper14_16(this.inventory);
             wrapper.open(this.player);
