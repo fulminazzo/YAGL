@@ -67,28 +67,34 @@ public class GUIManager extends SingleInstance implements Listener {
 
     @EventHandler
     void on(final @NotNull InventoryClickEvent event) {
-        getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
-            int slot = event.getRawSlot();
-            if (slot < 0) g.clickOutsideAction().ifPresent(a -> a.execute(v, g));
-            else if (slot < g.size()) {
-                if (!g.isMovable(slot)) event.setCancelled(true);
-                @Nullable GUIContent content = g.getContent(v, slot);
-                if (content != null) content.clickItemAction().ifPresent(a -> a.execute(v, g, content));
-            }
-        });
+        executeUnsafeEvent(event, () ->
+                getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
+                    int slot = event.getRawSlot();
+                    if (slot < 0) g.clickOutsideAction().ifPresent(a -> a.execute(v, g));
+                    else if (slot < g.size()) {
+                        if (!g.isMovable(slot)) event.setCancelled(true);
+                        @Nullable GUIContent content = g.getContent(v, slot);
+                        if (content != null) content.clickItemAction().ifPresent(a -> a.execute(v, g, content));
+                    }
+                })
+        );
     }
 
     @EventHandler
     void on(final @NotNull InventoryDragEvent event) {
-        getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> event.setCancelled(true));
+        executeUnsafeEvent(event, () ->
+                getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> event.setCancelled(true))
+        );
     }
 
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        Viewer viewer = getViewer(player);
-        GUIAdapter.closeGUI(viewer);
-        restorePlayerContents(player);
+        executeUnsafeEvent(event, () -> {
+            Player player = (Player) event.getPlayer();
+            Viewer viewer = getViewer(player);
+            GUIAdapter.closeGUI(viewer);
+            restorePlayerContents(player);
+        });
     }
 
     @EventHandler
