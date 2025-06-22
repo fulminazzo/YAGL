@@ -1,5 +1,8 @@
 package it.fulminazzo.yagl.guis;
 
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
@@ -7,8 +10,6 @@ import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.viewers.Viewer;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,9 +78,17 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         while ((s = this.pages.size()) - pages > 0) this.pages.remove(s - 1);
         while (pages - this.pages.size() > 0) {
             final GUI newPage;
-            if (this.templateGUI instanceof TypeGUI)
-                newPage = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
-            else newPage = GUI.newGUI(this.templateGUI.size());
+            if (this.templateGUI instanceof FullSizeGUI) {
+                FullSizeGUI fullSizeGUI = (FullSizeGUI) this.templateGUI;
+                newPage = new Refl<>(GUI.newFullSizeGUI(9))
+                        .setFieldObject("upperGUI", fullSizeGUI.getUpperGUI().copy())
+                        .setFieldObject("lowerGUI", fullSizeGUI.getLowerGUI().copy())
+                        .getObject();
+            } else {
+                if (this.templateGUI instanceof TypeGUI)
+                    newPage = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
+                else newPage = GUI.newGUI(this.templateGUI.size());
+            }
 
             this.pages.add(newPage);
         }
@@ -95,7 +104,19 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the previous page
      */
     public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull Item previousPage) {
-        return setPreviousPage(slot, (GUIContent) ItemGUIContent.newInstance(previousPage));
+        return setPreviousPage(slot, ItemGUIContent.newInstance(previousPage));
+    }
+
+    /**
+     * Sets the previous page content.
+     * When clicking on it, the previous page will be opened.
+     *
+     * @param slot         the slot
+     * @param previousPage the previous page
+     * @return the previous page
+     */
+    public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull ItemGUIContent previousPage) {
+        return setPreviousPage(slot, (GUIContent) previousPage);
     }
 
     /**
@@ -130,7 +151,19 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @return the next page
      */
     public @NotNull PageableGUI setNextPage(final int slot, final @NotNull Item nextPage) {
-        return setNextPage(slot, (GUIContent) ItemGUIContent.newInstance(nextPage));
+        return setNextPage(slot, ItemGUIContent.newInstance(nextPage));
+    }
+
+    /**
+     * Sets the next page content.
+     * When clicking on it, the next page will be opened.
+     *
+     * @param slot     the slot
+     * @param nextPage the next page
+     * @return the next page
+     */
+    public @NotNull PageableGUI setNextPage(final int slot, final @NotNull ItemGUIContent nextPage) {
+        return setNextPage(slot, (GUIContent) nextPage);
     }
 
     /**
@@ -922,6 +955,48 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      */
     public static @NotNull PageableGUI newGUI(final @NotNull GUIType type) {
         return new PageableGUI(GUI.newGUI(type));
+    }
+
+    /**
+     * Creates a new {@link PageableGUI} with the given size and a full size {@link #templateGUI}.
+     *
+     * @param size the size
+     * @return the pageable gui
+     */
+    public static @NotNull PageableGUI newFullSizeGUI(final int size) {
+        return new PageableGUI(GUI.newFullSizeGUI(size));
+    }
+
+    /**
+     * Creates a new {@link PageableGUI} with the given size and a full size {@link #templateGUI}.
+     *
+     * @param size         the size
+     * @param lowerGUISize the size of the lower GUI
+     * @return the pageable gui
+     */
+    public static @NotNull PageableGUI newFullSizeGUI(final int size, final int lowerGUISize) {
+        return new PageableGUI(GUI.newFullSizeGUI(size, lowerGUISize));
+    }
+
+    /**
+     * Creates a new {@link PageableGUI} with the given type and a full size {@link #templateGUI}.
+     *
+     * @param type the type
+     * @return the pageable gui
+     */
+    public static @NotNull PageableGUI newFullSizeGUI(final @NotNull GUIType type) {
+        return new PageableGUI(GUI.newFullSizeGUI(type));
+    }
+
+    /**
+     * Creates a new {@link PageableGUI} with the given type and a full size {@link #templateGUI}.
+     *
+     * @param type         the type
+     * @param lowerGUISize the size of the lower GUI
+     * @return the pageable gui
+     */
+    public static @NotNull PageableGUI newFullSizeGUI(final @NotNull GUIType type, final int lowerGUISize) {
+        return new PageableGUI(GUI.newFullSizeGUI(type, lowerGUISize));
     }
 
     @Override

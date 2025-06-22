@@ -249,7 +249,7 @@ public final class TestUtils {
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         Object object = mock(clazz);
         if (clazz.getPackage().getName().endsWith("guis"))
-            when(new Refl<>(object).invokeMethod("size")).thenReturn(9);
+            when(new Refl<>(object).invokeMethod("size")).thenReturn(45);
         return object;
     }
 

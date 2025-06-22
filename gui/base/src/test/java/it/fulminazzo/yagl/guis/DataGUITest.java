@@ -223,7 +223,7 @@ class DataGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(DataGUI.newGUI(9, c -> null), PageableGUI.class, m -> {
+        TestUtils.testReturnType(DataGUI.newGUI(45, c -> null), PageableGUI.class, m -> {
             for (String s : Arrays.asList("copy", "setPages", "getPage"))
                 if (s.equals(m.getName())) return true;
             return false;
@@ -254,6 +254,37 @@ class DataGUITest {
         @NotNull DataGUI<Object> expected = typeProvided ?
                 new DataGUI<>(GUI.newGUI(GUIType.CHEST), null) :
                 new DataGUI<>(GUI.newGUI(27), null);
+        expected.setData("Hello", "World");
+        DataGUI<Object> actual = supplier.get();
+        if (!dataProvided) {
+            actual.setData("Hello", "World");
+        }
+        assertEquals(expected, actual);
+    }
+
+    private static Object[] fullSizeConstructorParameters() {
+        return new Object[]{
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null), false, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, FullSizeGUI.SECOND_INVENTORY_SIZE, null), false, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null, "Hello", "World"), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, FullSizeGUI.SECOND_INVENTORY_SIZE, null, "Hello", "World"), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, null, Arrays.asList("Hello", "World")), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(27, FullSizeGUI.SECOND_INVENTORY_SIZE, null, Arrays.asList("Hello", "World")), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null), true, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, FullSizeGUI.SECOND_INVENTORY_SIZE, null), true, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, FullSizeGUI.SECOND_INVENTORY_SIZE, null, "Hello", "World"), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullSizeGUI(GUIType.CHEST, FullSizeGUI.SECOND_INVENTORY_SIZE, null, Arrays.asList("Hello", "World")), true, true},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("fullSizeConstructorParameters")
+    void testFullSizeConstructors(Supplier<DataGUI<Object>> supplier, boolean typeProvided, boolean dataProvided) {
+        @NotNull DataGUI<Object> expected = typeProvided ?
+                new DataGUI<>(GUI.newFullSizeGUI(GUIType.CHEST), null) :
+                new DataGUI<>(GUI.newFullSizeGUI(27), null);
         expected.setData("Hello", "World");
         DataGUI<Object> actual = supplier.get();
         if (!dataProvided) {

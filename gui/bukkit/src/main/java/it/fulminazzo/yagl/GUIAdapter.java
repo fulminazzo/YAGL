@@ -2,6 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.contents.GUIContent;
+import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
 import it.fulminazzo.yagl.guis.TypeGUI;
@@ -18,11 +19,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -77,6 +82,7 @@ public final class GUIAdapter {
             // Save previous GUI, if present
             GUIManager.getOpenGUIViewer(uuid).ifPresent((vi, g) -> {
                 reflViewer.setFieldObject("previousGUI", g).setFieldObject("openGUI", null);
+                reflViewer.setFieldObject("nextGUI", gui);
                 g.changeGUIAction().ifPresent(a -> a.execute(vi, g, gui));
             });
             // Set global variables
@@ -85,30 +91,90 @@ public final class GUIAdapter {
             // Open inventory
             gui.apply(gui);
             if (isPlaceholderAPIEnabled()) PAPIParser.parse(player, gui);
-            Inventory inventory = guiToInventory(gui);
-            for (int i = 0; i < gui.size(); i++) {
-                GUIContent content = gui.getContent(v, i);
-                if (content != null) {
-                    content.copyFrom(gui, false);
-                    BukkitItem render = content
-                            .apply(content)
-                            .render()
-                            .copy(BukkitItem.class);
-                    final ItemStack o;
-                    if (itemMetaClass == null || metaFunction == null) o = render.create();
-                    else o = render.create(itemMetaClass, metaFunction);
-                    inventory.setItem(i, o);
+            final Inventory inventory;
+            // Check if GUI is FullSize
+            if (gui instanceof FullSizeGUI) {
+                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
+                GUI upperGUI = fullSizeGUI.getUpperGUI();
+                GUI lowerGUI = fullSizeGUI.getLowerGUI();
+
+                inventory = guiToInventory(upperGUI);
+                populateInventoryWithGUIContents(upperGUI, v, itemMetaClass, metaFunction, inventory, upperGUI.size());
+                player.openInventory(inventory);
+
+                PlayersInventoryCache inventoryCache = GUIManager.getInstance().getInventoryCache();
+                if (viewer.getNextGUI() == null) {
+                    inventoryCache.storePlayerContents(player);
+                    inventoryCache.clearPlayerStorage(player, lowerGUI.size());
                 }
+                PlayerInventory playerInventory = player.getInventory();
+
+                // Since Minecraft handles player inventory in a "particular" way,
+                // it is necessary to manually set each item.
+                List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(playerInventory.getStorageContents()));
+
+                // Hotbar contents
+                for (int i = 27; i < lowerGUI.size(); i++) {
+                    GUIContent content = gui.getContent(v, i + upperGUI.size());
+                    int slot = i - 27;
+                    if (content == null) itemStacks.set(slot, null);
+                    else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
+                }
+
+                // Storage contents
+                for (int i = 0; i < Math.min(lowerGUI.size(), 27); i++) {
+                    GUIContent content = gui.getContent(v, i + upperGUI.size());
+                    int slot = i + 9;
+                    if (content == null) itemStacks.set(slot, null);
+                    else itemStacks.set(slot, convertToItemStack(gui, itemMetaClass, metaFunction, content));
+                }
+
+                playerInventory.setStorageContents(itemStacks.toArray(new ItemStack[0]));
+            } else {
+                inventory = guiToInventory(gui);
+                populateInventoryWithGUIContents(gui, v, itemMetaClass, metaFunction, inventory, gui.size());
+                player.openInventory(inventory);
             }
-            player.openInventory(inventory);
             // Set new GUI
             reflViewer.setFieldObject("openGUI", gui);
+            reflViewer.setFieldObject("nextGUI", null);
             // Execute action if present
             gui.openGUIAction().ifPresent(a -> a.execute(reflViewer.getObject(), gui));
         };
         // Check if context is Async and synchronize
         if (Bukkit.isPrimaryThread()) runnable.accept(viewer);
-        else Scheduler.getScheduler().run(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+        else
+            Scheduler.getScheduler().run(JavaPlugin.getProvidingPlugin(GUIAdapter.class), () -> runnable.accept(viewer));
+    }
+
+    private static <M extends ItemMeta> void populateInventoryWithGUIContents(
+            final @NotNull GUI gui, final @NotNull Viewer v,
+            final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction,
+            final @NotNull Inventory inventory,
+            final int size
+    ) {
+        for (int i = 0; i < size; i++) {
+            GUIContent content = gui.getContent(v, i);
+            if (content != null) {
+                final ItemStack o = convertToItemStack(gui, itemMetaClass, metaFunction, content);
+                inventory.setItem(i, o);
+            }
+        }
+    }
+
+    private static <M extends ItemMeta> @NotNull ItemStack convertToItemStack(final @NotNull GUI gui,
+                                                                              final @Nullable Class<M> itemMetaClass,
+                                                                              final @Nullable Consumer<M> metaFunction,
+                                                                              final @NotNull GUIContent content) {
+        content.copyFrom(gui, false);
+        BukkitItem render = content
+                .apply(content)
+                .render()
+                .copy(BukkitItem.class);
+        final ItemStack itemStack;
+        if (itemMetaClass == null || metaFunction == null) itemStack = render.create();
+        else itemStack = render.create(itemMetaClass, metaFunction);
+        return itemStack;
     }
 
     /**

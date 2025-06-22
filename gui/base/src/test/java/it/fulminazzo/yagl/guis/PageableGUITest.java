@@ -172,7 +172,8 @@ class PageableGUITest {
                 if (method.getName().contains("copy")) continue;
                 Metadatable.class.getDeclaredMethod(method.getName(), method.getParameterTypes());
                 continue;
-            } catch (NoSuchMethodException ignored) {}
+            } catch (NoSuchMethodException ignored) {
+            }
             method = ReflectionUtils.setAccessibleOrThrow(method);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
@@ -206,7 +207,7 @@ class PageableGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(PageableGUI.newGUI(9), GUI.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(PageableGUI.newGUI(45), GUI.class, m -> m.getName().equals("copy"));
     }
 
     @Test
@@ -253,6 +254,94 @@ class PageableGUITest {
         GUI actual = expected.copy();
         assertInstanceOf(PageableGUI.class, actual);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCopyAllReplace() {
+        GUIContent previousPage1 = ItemGUIContent.newInstance("paper");
+        GUIContent nextPage1 = ItemGUIContent.newInstance("paper");
+
+        GUIContent previousPage2 = ItemGUIContent.newInstance("book");
+        GUIContent nextPage2 = ItemGUIContent.newInstance("book");
+
+        PageableGUI src = new PageableGUI(GUI.newGUI(9))
+                .setPages(2)
+                .setPreviousPage(0, previousPage1)
+                .setNextPage(8, nextPage1);
+
+        PageableGUI dst = new PageableGUI(GUI.newGUI(9))
+                .setPages(3)
+                .setPreviousPage(0, previousPage2)
+                .setNextPage(8, nextPage2);
+
+        src.copyAll(dst, true);
+
+        assertEquals(2, dst.pages());
+        assertEquals(previousPage1, dst.previousPage.getValue());
+        assertEquals(nextPage1, dst.nextPage.getValue());
+    }
+
+    @Test
+    void testCopyAllReplaceNoValues() {
+        GUIContent previousPage1 = ItemGUIContent.newInstance("paper");
+        GUIContent nextPage1 = ItemGUIContent.newInstance("paper");
+
+        PageableGUI src = new PageableGUI(GUI.newGUI(9))
+                .setPages(2)
+                .setPreviousPage(0, previousPage1)
+                .setNextPage(8, nextPage1);
+
+        PageableGUI dst = new PageableGUI(GUI.newGUI(9));
+
+        src.copyAll(dst, true);
+
+        assertEquals(2, dst.pages());
+        assertEquals(previousPage1, dst.previousPage.getValue());
+        assertEquals(nextPage1, dst.nextPage.getValue());
+    }
+
+    @Test
+    void testCopyAllNoReplace() {
+        GUIContent previousPage1 = ItemGUIContent.newInstance("paper");
+        GUIContent nextPage1 = ItemGUIContent.newInstance("paper");
+
+        GUIContent previousPage2 = ItemGUIContent.newInstance("book");
+        GUIContent nextPage2 = ItemGUIContent.newInstance("book");
+
+        PageableGUI src = new PageableGUI(GUI.newGUI(9))
+                .setPages(2)
+                .setPreviousPage(0, previousPage1)
+                .setNextPage(8, nextPage1);
+
+        PageableGUI dst = new PageableGUI(GUI.newGUI(9))
+                .setPages(3)
+                .setPreviousPage(0, previousPage2)
+                .setNextPage(8, nextPage2);
+
+        src.copyAll(dst, false);
+
+        assertEquals(3, dst.pages());
+        assertEquals(previousPage2, dst.previousPage.getValue());
+        assertEquals(nextPage2, dst.nextPage.getValue());
+    }
+
+    @Test
+    void testCopyAllNoReplaceNoValues() {
+        GUIContent previousPage1 = ItemGUIContent.newInstance("paper");
+        GUIContent nextPage1 = ItemGUIContent.newInstance("paper");
+
+        PageableGUI src = new PageableGUI(GUI.newGUI(9))
+                .setPages(2)
+                .setPreviousPage(0, previousPage1)
+                .setNextPage(8, nextPage1);
+
+        PageableGUI dst = new PageableGUI(GUI.newGUI(9));
+
+        src.copyAll(dst, false);
+
+        assertEquals(0, dst.pages());
+        assertEquals(previousPage1, dst.previousPage.getValue());
+        assertEquals(nextPage1, dst.nextPage.getValue());
     }
 
     private GUI setupGUI(GUI gui) {

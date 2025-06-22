@@ -1,7 +1,9 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.testing.InventoryViewWrapper;
@@ -16,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -212,6 +215,60 @@ class GUIManagerTest {
             assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
             this.guiManager.on(event);
             assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
+        }
+
+        @Test
+        void testContentsRestoredOnCloseEvent() {
+            BukkitTestUtils.mockPlugin(p -> {
+                ItemStack expected = new ItemStack(Material.STONE);
+
+                PlayerInventory inventory = new MockPlayerInventory(this.player);
+                inventory.setItem(0, expected);
+                when(this.player.getInventory()).thenReturn(inventory);
+
+                PlayersInventoryCache cache = this.guiManager.getInventoryCache();
+                cache.storePlayerContents(this.player);
+
+                inventory.clear();
+                ItemStack itemStack = inventory.getItem(0);
+                assertNull(itemStack);
+
+                this.guiManager.on(new InventoryCloseEvent(getView().getWrapped()));
+
+                assertFalse(cache.areContentsStored(this.player));
+
+                itemStack = inventory.getItem(0);
+                assertNotNull(itemStack);
+                assertEquals(expected, itemStack);
+            });
+        }
+
+        @Test
+        void testContentsNotRestoredOnCloseEventAndNextGUIPresent() {
+            BukkitTestUtils.mockPlugin(p -> {
+                Viewer viewer = GUIManager.getViewer(this.player);
+                new Refl<>(viewer).setFieldObject("nextGUI", GUI.newGUI(9));
+
+                ItemStack expected = new ItemStack(Material.STONE);
+
+                PlayerInventory inventory = new MockPlayerInventory(this.player);
+                inventory.setItem(0, expected);
+                when(this.player.getInventory()).thenReturn(inventory);
+
+                PlayersInventoryCache cache = this.guiManager.getInventoryCache();
+                cache.storePlayerContents(this.player);
+
+                inventory.clear();
+                ItemStack itemStack = inventory.getItem(0);
+                assertNull(itemStack);
+
+                this.guiManager.on(new InventoryCloseEvent(getView().getWrapped()));
+
+                assertTrue(cache.areContentsStored(this.player));
+
+                itemStack = inventory.getItem(0);
+                assertNull(itemStack);
+            });
         }
 
         @Test

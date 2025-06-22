@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.actions.commands.GUICommand;
 import it.fulminazzo.yagl.actions.commands.GUIConsoleCommand;
@@ -10,8 +11,10 @@ import it.fulminazzo.yagl.actions.commands.GUIItemCommand;
 import it.fulminazzo.yagl.actions.commands.GUIItemConsoleCommand;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.contents.ItemGUIContent;
+import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
+import it.fulminazzo.yagl.guis.PageableGUI;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.viewers.PlayerOfflineException;
@@ -23,6 +26,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -33,10 +37,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -61,6 +67,235 @@ class GUIAdapterTest {
                     return null;
                 });
         when(this.player.getServer()).thenReturn(server);
+    }
+
+    private static Object[] pageableFullSizeGUIParameters() {
+        return Stream.concat(
+                Stream.of(9, 18, 27, 36, 45, 54),
+                Arrays.stream(GUIType.values())
+        ).toArray(Object[]::new);
+    }
+
+    @ParameterizedTest
+    @MethodSource("pageableFullSizeGUIParameters")
+    void testOpenPageableFullSizeGUI(Object initializer) {
+        BukkitTestUtils.mockPlugin(p -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            final PageableGUI gui;
+            if (initializer instanceof Integer)
+                gui = PageableGUI.newFullSizeGUI((Integer) initializer);
+            else if (initializer instanceof GUIType)
+                gui = PageableGUI.newFullSizeGUI((GUIType) initializer);
+            else throw new IllegalArgumentException(initializer.toString());
+            gui.setPages(2);
+
+            int previousPageSlot = gui.south() - 2;
+            gui.setPreviousPage(previousPageSlot, ItemGUIContent.newInstance("book"));
+
+            int nextPageSlot = gui.south() + 2;
+            gui.setNextPage(nextPageSlot, ItemGUIContent.newInstance("book"));
+
+            gui.getPage(0)
+                    .setContents(0, ItemGUIContent.newInstance("diamond"))
+                    .setContents(gui.southWest(), ItemGUIContent.newInstance("diamond"));
+
+            gui.getPage(1)
+                    .setContents(0, ItemGUIContent.newInstance("emerald"))
+                    .setContents(gui.southWest(), ItemGUIContent.newInstance("emerald"));
+
+            gui.open(GUIManager.getViewer(this.player));
+
+            ItemStack firstStack = this.inventory.getItem(0);
+            assertNotNull(firstStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, firstStack.getType());
+
+            ItemStack firstPlayerStack = playerInventory.getItem(0);
+            assertNotNull(firstPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, firstPlayerStack.getType());
+
+            @NotNull Tuple<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(firstOpenGUI.isPresent(), "Player should have an open GUI");
+
+            GUIContent nextPageContent = firstOpenGUI.getValue().getContent(firstOpenGUI.getKey(), nextPageSlot);
+            assertNotNull(nextPageContent, "Next page item should not be null");
+            nextPageContent.clickItemAction().ifPresent(a -> a.execute(firstOpenGUI.getKey(), firstOpenGUI.getValue(), nextPageContent));
+
+            ItemStack secondStack = this.inventory.getItem(0);
+            assertNotNull(secondStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.EMERALD, secondStack.getType());
+
+            ItemStack secondPlayerStack = playerInventory.getItem(0);
+            assertNotNull(secondPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.EMERALD, secondPlayerStack.getType());
+
+            @NotNull Tuple<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(secondOpenGUI.isPresent(), "Player should have an open GUI");
+
+            GUIContent previousPageContent = secondOpenGUI.getValue().getContent(secondOpenGUI.getKey(), previousPageSlot);
+            assertNotNull(previousPageContent, "Previous page item should not be null");
+            previousPageContent.clickItemAction().ifPresent(a -> a.execute(secondOpenGUI.getKey(), secondOpenGUI.getValue(), previousPageContent));
+
+            ItemStack thirdStack = this.inventory.getItem(0);
+            assertNotNull(thirdStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, thirdStack.getType());
+
+            ItemStack thirdPlayerStack = playerInventory.getItem(0);
+            assertNotNull(thirdPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, thirdPlayerStack.getType());
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("pageableFullSizeGUIParameters")
+    void testOpenPageableResizedFullSizeGUI(Object initializer) {
+        BukkitTestUtils.mockPlugin(p -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            playerInventory.setItem(0, new ItemStack(Material.DIAMOND_SWORD));
+            playerInventory.setItem(27, new ItemStack(Material.GOLDEN_APPLE));
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            final PageableGUI gui;
+            if (initializer instanceof Integer)
+                gui = PageableGUI.newFullSizeGUI((Integer) initializer, 18);
+            else if (initializer instanceof GUIType)
+                gui = PageableGUI.newFullSizeGUI((GUIType) initializer, 18);
+            else throw new IllegalArgumentException(initializer.toString());
+            gui.setPages(2);
+
+            int previousPageSlot = gui.south() - 2;
+            gui.setPreviousPage(previousPageSlot, ItemGUIContent.newInstance("book"));
+
+            int nextPageSlot = gui.south() + 2;
+            gui.setNextPage(nextPageSlot, ItemGUIContent.newInstance("book"));
+
+            gui.getPage(0)
+                    .setContents(0, ItemGUIContent.newInstance("diamond"))
+                    .setContents(gui.southWest(), ItemGUIContent.newInstance("diamond"));
+
+            gui.getPage(1)
+                    .setContents(0, ItemGUIContent.newInstance("emerald"))
+                    .setContents(gui.southWest(), ItemGUIContent.newInstance("emerald"));
+
+            gui.open(GUIManager.getViewer(this.player));
+
+            ItemStack firstStack = this.inventory.getItem(0);
+            assertNotNull(firstStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, firstStack.getType());
+
+            ItemStack firstPlayerStack = playerInventory.getItem(18);
+            assertNotNull(firstPlayerStack, "ItemStack on 18th slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, firstPlayerStack.getType());
+
+            ItemStack firstHotbarStack = playerInventory.getItem(0);
+            assertNotNull(firstHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND_SWORD, firstHotbarStack.getType());
+
+            ItemStack firstStorageStack = playerInventory.getItem(27);
+            assertNotNull(firstStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
+            assertEquals(Material.GOLDEN_APPLE, firstStorageStack.getType());
+
+            @NotNull Tuple<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(firstOpenGUI.isPresent(), "Player should have an open GUI");
+
+            GUIContent nextPageContent = firstOpenGUI.getValue().getContent(firstOpenGUI.getKey(), nextPageSlot);
+            assertNotNull(nextPageContent, "Next page item should not be null");
+            nextPageContent.clickItemAction().ifPresent(a -> a.execute(firstOpenGUI.getKey(), firstOpenGUI.getValue(), nextPageContent));
+
+            ItemStack secondStack = this.inventory.getItem(0);
+            assertNotNull(secondStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.EMERALD, secondStack.getType());
+
+            ItemStack secondPlayerStack = playerInventory.getItem(18);
+            assertNotNull(secondPlayerStack, "ItemStack on 18th slot of player inventory was supposed to be not null");
+            assertEquals(Material.EMERALD, secondPlayerStack.getType());
+
+            ItemStack secondHotbarStack = playerInventory.getItem(0);
+            assertNotNull(secondHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND_SWORD, secondHotbarStack.getType());
+
+            ItemStack secondStorageStack = playerInventory.getItem(27);
+            assertNotNull(secondStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
+            assertEquals(Material.GOLDEN_APPLE, secondStorageStack.getType());
+
+            @NotNull Tuple<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            assertTrue(secondOpenGUI.isPresent(), "Player should have an open GUI");
+
+            GUIContent previousPageContent = secondOpenGUI.getValue().getContent(secondOpenGUI.getKey(), previousPageSlot);
+            assertNotNull(previousPageContent, "Previous page item should not be null");
+            previousPageContent.clickItemAction().ifPresent(a -> a.execute(secondOpenGUI.getKey(), secondOpenGUI.getValue(), previousPageContent));
+
+            ItemStack thirdStack = this.inventory.getItem(0);
+            assertNotNull(thirdStack, "ItemStack on first slot of inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, thirdStack.getType());
+
+            ItemStack thirdPlayerStack = playerInventory.getItem(18);
+            assertNotNull(thirdPlayerStack, "ItemStack on 18th slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND, thirdPlayerStack.getType());
+
+            ItemStack thirdHotbarStack = playerInventory.getItem(0);
+            assertNotNull(thirdHotbarStack, "ItemStack on first slot of player inventory was supposed to be not null");
+            assertEquals(Material.DIAMOND_SWORD, thirdHotbarStack.getType());
+
+            ItemStack thirdStorageStack = playerInventory.getItem(27);
+            assertNotNull(thirdStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
+            assertEquals(Material.GOLDEN_APPLE, thirdStorageStack.getType());
+        });
+    }
+
+    @Test
+    void testOpenFullSizeGUI() {
+        BukkitTestUtils.mockPlugin(p -> {
+            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+            when(this.player.getInventory()).thenReturn(playerInventory);
+
+            String[] materials = new String[]{
+                    "stone", "grass_block", "dirt", "cobblestone", "oak_planks",
+                    "bedrock", "sand", "gravel", "gold_ore", "iron_ore",
+                    "coal_ore", "oak_log", "oak_leaves", "glass", "lapis_ore",
+                    "lapis_block", "dispenser", "sandstone", "gold_block", "iron_block",
+                    "bricks", "tnt", "bookshelf", "mossy_cobblestone", "obsidian",
+                    "torch", "fire", "water", "lava", "diamond_ore",
+                    "diamond_block", "crafting_table", "furnace", "redstone_ore", "ice",
+                    "cactus", "jukebox", "netherrack", "soul_sand", "glowstone",
+                    "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
+            };
+
+            FullSizeGUI gui = GUI.newFullSizeGUI(9);
+            gui.addContent(Arrays.stream(materials)
+                    .map(ItemGUIContent::newInstance)
+                    .toArray(ItemGUIContent[]::new));
+            gui.open(GUIManager.getViewer(this.player));
+
+            assertNotNull(this.inventory);
+            assertEquals(9, this.inventory.getSize());
+
+            for (int i = 0; i < 9; i++) {
+                ItemStack itemStack = this.inventory.getItem(i);
+                assertNotNull(itemStack, "Item at slot " + i + " was null");
+
+                Material expected = Material.valueOf(materials[i].toUpperCase());
+                assertEquals(expected, itemStack.getType(), "Item at slot " + i + " did not match expected type");
+            }
+
+            for (int i = 0; i < 27; i++) {
+                int slot = i + 9;
+                ItemStack itemStack = playerInventory.getItem(slot);
+                assertNotNull(itemStack, "Item at slot " + slot + " was null");
+
+                Material expected = Material.valueOf(materials[slot].toUpperCase());
+                assertEquals(expected, itemStack.getType(), "Item at slot " + slot + " did not match expected type");
+            }
+
+            for (int i = 0; i < 9; i++) {
+                ItemStack itemStack = playerInventory.getItem(i);
+                assertNotNull(itemStack, "Item at slot " + i + " was null");
+
+                Material expected = Material.valueOf(materials[i + 36].toUpperCase());
+                assertEquals(expected, itemStack.getType(), "Item at slot " + i + " did not match expected type");
+            }
+        });
     }
 
     @ParameterizedTest
