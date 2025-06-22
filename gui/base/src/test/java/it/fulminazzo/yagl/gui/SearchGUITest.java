@@ -74,7 +74,7 @@ class SearchGUITest {
 
             GUIContent content = contents.get(0);
             assertEquals(content,
-                    ItemGUIContent.newInstance("glass_pane")
+                    ItemGUIContent.newInstance("barrier")
                             .setDisplayName(i == 0 ? "search" : " "),
                     "Content at slot " + i + " did not match expected"
             );
@@ -105,10 +105,10 @@ class SearchGUITest {
         gui = searchGUI.prepareOpenGUI(gui, 0);
 
         List<String> expected = Stream.concat(
-                        Stream.of("glass_pane", "glass_pane", "glass_pane"),
+                        Stream.of("barrier", "barrier", "barrier"),
                         Arrays.stream(materials)
                 )
-                .filter(c -> c.contains("_"))
+                .filter(m -> m.contains("_") || m.equals("barrier"))
                 .collect(Collectors.toList());
 
         assertEquals(expected.size(), gui.getContents().size(), "GUI should show only expected contents");

@@ -123,7 +123,7 @@ public class SearchGUI<T> extends DataGUI<T> {
         for (int i = 0; i < GUIType.ANVIL.getSize(); i++) {
             @NotNull List<GUIContent> contents = getContents(i);
             if (contents.isEmpty())
-                setContents(i, ItemGUIContent.newInstance("glass_pane").setDisplayName(" "));
+                setContents(i, ItemGUIContent.newInstance("barrier").setDisplayName(" "));
             if (i == 0) {
                 String query = getParsedQuery();
                 getContents(i).stream()
