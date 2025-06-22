@@ -22,7 +22,7 @@ import java.util.Set;
  * @param <W> the type parameter
  */
 @SuppressWarnings("unchecked")
-public final class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
+public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
 
     /**
      * Instantiates a new Wrapper parser.

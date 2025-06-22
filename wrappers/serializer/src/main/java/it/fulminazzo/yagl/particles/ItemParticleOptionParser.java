@@ -13,7 +13,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
  * It requires the <i>item:serializer</i> module to be added.
  */
 @SuppressWarnings({"deprecation", "unchecked"})
-public final class ItemParticleOptionParser extends YAMLParser<ItemParticleOption<?>> {
+public class ItemParticleOptionParser extends YAMLParser<ItemParticleOption<?>> {
 
     public ItemParticleOptionParser() {
         super((Class<ItemParticleOption<?>>) (Class<?>) ItemParticleOption.class);

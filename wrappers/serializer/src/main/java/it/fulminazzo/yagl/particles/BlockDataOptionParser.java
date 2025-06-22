@@ -9,7 +9,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
  * A parser to serialize {@link BlockDataOption}.
  * Should take priority over {@link ParticleOptionParser}.
  */
-public final class BlockDataOptionParser extends YAMLParser<BlockDataOption> {
+public class BlockDataOptionParser extends YAMLParser<BlockDataOption> {
 
     /**
      * Instantiates a new Block data option parser.

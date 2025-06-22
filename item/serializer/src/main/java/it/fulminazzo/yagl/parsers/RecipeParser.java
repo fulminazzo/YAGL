@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * A parser to serialize {@link Recipe} and derivatives.
  */
-public final class RecipeParser extends TypedParser<Recipe> {
+public class RecipeParser extends TypedParser<Recipe> {
 
     /**
      * Instantiates a new Recipe parser.

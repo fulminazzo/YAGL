@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * The type Action parsers.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ActionParsers {
+public class ActionParsers {
 
     /**
      * Adds all parsers required to serialize {@link SerializableFunction} implementations.

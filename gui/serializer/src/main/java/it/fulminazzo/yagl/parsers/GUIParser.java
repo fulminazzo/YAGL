@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * A parser to serialize {@link GUI}.
  */
-public final class GUIParser extends TypedParser<GUI> {
+public class GUIParser extends TypedParser<GUI> {
 
     /**
      * Instantiates a new Gui parser.

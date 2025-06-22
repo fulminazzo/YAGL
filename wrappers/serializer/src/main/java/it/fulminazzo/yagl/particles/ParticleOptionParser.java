@@ -22,7 +22,7 @@ import java.util.Set;
  * @param <P> the type parameter
  */
 @SuppressWarnings("unchecked")
-public final class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParser<P> {
+public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParser<P> {
 
     /**
      * Instantiates a new Particle option parser.

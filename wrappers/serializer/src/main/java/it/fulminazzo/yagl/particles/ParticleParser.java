@@ -11,7 +11,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
 /**
  * A parser to serialize {@link Particle}.
  */
-public final class ParticleParser extends YAMLParser<Particle> {
+public class ParticleParser extends YAMLParser<Particle> {
 
     /**
      * Instantiates a new Particle parser.

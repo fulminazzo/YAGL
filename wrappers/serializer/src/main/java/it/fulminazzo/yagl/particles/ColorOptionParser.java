@@ -10,7 +10,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
  * A parser to serialize {@link ColorParticleOption}.
  * Should take priority over {@link ParticleOptionParser}.
  */
-public final class ColorOptionParser extends YAMLParser<ColorParticleOption> {
+public class ColorOptionParser extends YAMLParser<ColorParticleOption> {
 
     /**
      * Instantiates a new Color option parser.
