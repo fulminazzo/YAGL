@@ -2,7 +2,7 @@ package it.fulminazzo.yagl.listeners;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ThreadUtils;
-import it.fulminazzo.yagl.InstanceNotInitializedException;
+import it.fulminazzo.yagl.exceptions.InstanceNotInitializedException;
 import it.fulminazzo.yagl.SingleInstance;
 import it.fulminazzo.yagl.items.DeathAction;
 import it.fulminazzo.yagl.items.Mobility;

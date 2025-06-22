@@ -1,5 +1,6 @@
-package it.fulminazzo.yagl;
+package it.fulminazzo.yagl.exceptions;
 
+import it.fulminazzo.yagl.SingleInstance;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
+import it.fulminazzo.yagl.exceptions.InstanceNotInitializedException;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
 import it.fulminazzo.yagl.items.Item;

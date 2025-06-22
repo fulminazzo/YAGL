@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
+import it.fulminazzo.yagl.exceptions.InstanceNotInitializedException;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.SearchGUI;
 import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
