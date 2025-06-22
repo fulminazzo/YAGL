@@ -68,7 +68,24 @@ class ActionParsersTest {
     }
 
     @Test
-    void testCloseGUI() throws IOException {
+    void testBackAction() throws IOException {
+        GUIItemAction expected = new GUIItemBack();
+        ActionParsers.addParsers();
+        File file = new File("build/resources/test/back-action.yml");
+        if (file.exists()) FileUtils.deleteFile(file);
+        FileUtils.createNewFile(file);
+        FileConfiguration configuration = new FileConfiguration(file);
+        configuration.set("tmp", expected);
+        configuration.save();
+        configuration = new FileConfiguration(file);
+        GUIItemAction actual = configuration.get("tmp", expected.getClass());
+        assertNotNull(actual);
+        assertEquals(expected.getClass(), actual.getClass());
+        assertNull(configuration.getString("tmp.content"), "Content should be empty");
+    }
+
+    @Test
+    void testCloseAction() throws IOException {
         GUIItemAction expected = new GUIItemClose();
         ActionParsers.addParsers();
         File file = new File("build/resources/test/close-action.yml");
