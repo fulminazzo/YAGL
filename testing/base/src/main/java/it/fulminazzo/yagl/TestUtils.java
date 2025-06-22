@@ -87,7 +87,8 @@ public final class TestUtils {
                                            final @NotNull Object target, final String invokedMethod,
                                            final Class<?> @NotNull ... invokedMethodParamTypes) {
         @NotNull List<Method> methods = new Refl<>(executor).getMethods(methodFinder);
-        if (methods.isEmpty()) throw new IllegalArgumentException("Could not find any method matching the given arguments.");
+        if (methods.isEmpty())
+            throw new IllegalArgumentException("Could not find any method matching the given arguments.");
 
         for (final Method method : methods) {
             ArgumentCaptor<?> @NotNull [] captors = testSingleMethod(executor, method, staticObjects, target, invokedMethod, invokedMethodParamTypes);
@@ -99,7 +100,8 @@ public final class TestUtils {
                 mockingProgress.reset();
                 mockingProgress.resetOngoingStubbing();
                 reset(target);
-            } catch (NotAMockException ignored) {}
+            } catch (NotAMockException ignored) {
+            }
         }
     }
 
@@ -112,10 +114,13 @@ public final class TestUtils {
      *
      * @param executor                the executor
      * @param targetMethod            the target method
-     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
+     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>.
+     *                                If the required class is present among these objects, then the one provided will be used.
+     *                                Otherwise, {@link #mockParameter(Class)} will be called.
      * @param target                  the target
      * @param invokedMethod           the invoked method
-     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>.                                These will also be the types of the returned captors
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>
+     *                                These will also be the types of the returned captors
      * @return the argument captors of the invoked parameters
      */
     public static ArgumentCaptor<?> @NotNull [] testSingleMethod(final @NotNull Object executor, final @NotNull Method targetMethod,
@@ -183,7 +188,8 @@ public final class TestUtils {
      * @param <T>                the type parameter
      * @param object             the object
      * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param expectedReturnType the expected return type of the methods.                           For example, if the object is a hidden implementation,                           the corresponding abstract class (or interface) should be passed.
+     * @param expectedReturnType the expected return type of the methods.
+     *                           For example, if the object is a hidden implementation,                           the corresponding abstract class (or interface) should be passed.
      * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
@@ -193,7 +199,8 @@ public final class TestUtils {
             try {
                 String name = expectedReturnType.getCanonicalName();
                 expectedReturnType = ReflectionUtils.getClass(name.substring(0, name.length() - "Impl".length()));
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) {
+            }
         for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
             final String methodString = methodToString(method);

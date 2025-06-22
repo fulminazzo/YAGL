@@ -91,4 +91,15 @@ public final class BukkitTestUtils {
         }
     }
 
+    /**
+     * Mocks {@link NMSUtils} and executes the given function.
+     *
+     * @param runnable the function
+     */
+    public static void mockNMSUtils(final @NotNull Runnable runnable) {
+        try (MockedStatic<NMSUtils> ignored = mockStatic(NMSUtils.class, CALLS_REAL_METHODS)) {
+            runnable.run();
+        }
+    }
+
 }
