@@ -7,10 +7,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.GUIAdapter;
+import it.fulminazzo.yagl.scheduler.Scheduler;
+import it.fulminazzo.yagl.scheduler.Task;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
 
     private final @NotNull BiConsumer<Player, String> handler;
 
-    private @Nullable BukkitTask handleTask;
+    private @Nullable Task handleTask;
 
     /**
      * Instantiates a new Anvil rename handler.
@@ -87,15 +88,13 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
 
             stopHandleTask();
 
-            this.handleTask = Bukkit.getScheduler().runTaskLaterAsynchronously(
+            this.handleTask = Scheduler.getScheduler().runLaterAsync(
                     GUIAdapter.getProvidingPlugin(),
                     () -> this.handler.accept(player, name),
                     DEBOUNCE_DELAY
             );
         } catch (Exception e) {
-            // Usually catching Exception is bad,
-            // but in this case is necessary
-            // to avoid the player getting kicked
+            // Usually catching Exception is bad, but in this case is necessary to avoid the player getting kicked
             this.logger.severe(String.format("An error occurred while reading a packet from player '%s': %s",
                     player.getName(),
                     e.getMessage()));

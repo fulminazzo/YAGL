@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.yagl.GUIAdapter;
+import it.fulminazzo.yagl.scheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ abstract class InventoryWrapperImpl implements InventoryWrapper {
     @Override
     public void open(final @NotNull Player player) {
         if (Bukkit.isPrimaryThread()) internalOpen(player);
-        else Bukkit.getScheduler().runTask(GUIAdapter.getProvidingPlugin(), () -> internalOpen(player));
+        else Scheduler.getScheduler().run(GUIAdapter.getProvidingPlugin(), () -> internalOpen(player));
     }
 
     /**
