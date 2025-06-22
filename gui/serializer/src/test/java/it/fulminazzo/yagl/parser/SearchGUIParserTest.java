@@ -9,6 +9,7 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,9 +22,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SearchGUIParserTest {
 
+    @BeforeAll
+    static void setAllUp() {
+        GUIYAGLParser.addAllParsers();
+    }
+
     @Test
     void testSaveAndLoadSearchGUI() throws IOException {
-        GUIYAGLParser.addAllParsers();
         Function<String, GUIContent> function = s -> null;
         BiPredicate<String, String> filter = (t, s) -> false;
         SearchGUI<String> expected = SearchGUI.newGUI(9, function, filter, "Hello", "world")

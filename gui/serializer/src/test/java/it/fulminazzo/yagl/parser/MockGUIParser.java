@@ -149,5 +149,7 @@ public class MockGUIParser extends YAMLParser<MockGUIParser.MockGUI> {
         public @NotNull Map<String, String> variables() {
             return Collections.emptyMap();
         }
+
     }
+
 }

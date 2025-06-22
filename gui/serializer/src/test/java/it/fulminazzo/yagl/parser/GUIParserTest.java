@@ -14,6 +14,7 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,9 +28,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GUIParserTest extends ParserTestHelper<GUI> {
 
+    @BeforeAll
+    static void setAllUp() {
+        GUIYAGLParser.addAllParsers();
+    }
+
     @Test
     void testSaveAndLoadOfSpecialActionsAndRequirements() throws IOException {
-        GUIYAGLParser.addAllParsers();
         GUIContent expectedContent1 = ItemGUIContent.newInstance()
                 .setMaterial("stone")
                 .onClickItem(new GUIItemCommand("command"))
@@ -77,8 +82,6 @@ class GUIParserTest extends ParserTestHelper<GUI> {
     @ParameterizedTest
     @MethodSource("getGUIs")
     void testSaveAndLoadGUI(GUI expected) throws IOException {
-        GUIYAGLParser.addAllParsers();
-
         setupContents(expected);
 
         File file = new File("build/resources/test/gui.yml");
@@ -155,4 +158,5 @@ class GUIParserTest extends ParserTestHelper<GUI> {
     protected Class<?> getParser() {
         return GUIParser.class;
     }
+
 }

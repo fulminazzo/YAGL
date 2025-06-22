@@ -89,4 +89,5 @@ class CommandActionTest {
         CommandAction c2 = new GUICommand("new-command");
         assertNotEquals(c1, c2);
     }
+
 }

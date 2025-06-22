@@ -27,10 +27,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +39,8 @@ import static org.mockito.Mockito.*;
 
 class GUIManagerTest {
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setAllUp() {
         BukkitUtils.setupServer();
         new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
     }
@@ -77,7 +74,6 @@ class GUIManagerTest {
 
     @Test
     void testGetOpenGUIViewerUUID() {
-        BukkitUtils.setupServer();
         BukkitTestUtils.mockPlugin(p ->
                 assertFalse(GUIManager.getOpenGUIViewer(UUID.randomUUID()).isPresent(), "Should not be present"));
     }
@@ -90,7 +86,6 @@ class GUIManagerTest {
 
         @BeforeEach
         void setUp() {
-            BukkitUtils.setupServer();
             new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
             try {
                 GUIManager.getInstance(GUIManager.class).terminate();

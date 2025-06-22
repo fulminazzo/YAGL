@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -15,9 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GUIContentParserTest {
 
+    @BeforeAll
+    static void setAllUp() {
+        GUIYAGLParser.addAllParsers();
+    }
+
     @Test
     void testSaveAndLoadItemGUIContent() throws IOException {
-        GUIYAGLParser.addAllParsers();
         GUIContent expected = ItemGUIContent.newInstance()
                 .setMaterial("stone_sword").setAmount(1)
                 .setDurability(1337).setDisplayName("&8Destroyer")
@@ -39,4 +44,5 @@ class GUIContentParserTest {
         assertNotNull(actual);
         assertEquals(expected.render(), actual.render());
     }
+
 }

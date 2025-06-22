@@ -1,15 +1,15 @@
 package it.fulminazzo.yagl.action;
 
+import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.GUIManager;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.util.BukkitTestUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
-import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,8 +23,8 @@ import static org.mockito.Mockito.when;
 public class BukkitCommandActionTest {
     private static final String COMMAND = "/helloworld";
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setAllUp() {
         BukkitUtils.setupServer();
     }
 

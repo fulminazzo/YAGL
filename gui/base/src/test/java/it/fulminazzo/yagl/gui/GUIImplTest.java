@@ -168,6 +168,7 @@ class GUIImplTest {
                     .copyFrom(this.expected, true);
             assertEquals(this.expected, actual);
         }
+
     }
 
     @Nested
@@ -256,6 +257,7 @@ class GUIImplTest {
         public int columns() {
             return 0;
         }
+
     }
 
     public static class MockContent implements GUIContent {
@@ -314,5 +316,7 @@ class GUIImplTest {
         public @NotNull Map<String, String> variables() {
             return Collections.emptyMap();
         }
+
     }
+
 }

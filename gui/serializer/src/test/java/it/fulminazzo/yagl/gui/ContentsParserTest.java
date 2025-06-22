@@ -22,4 +22,5 @@ class ContentsParserTest extends ParserTestHelper<GUIImpl.Contents> {
         when(configuration.getList(anyString(), any())).thenReturn(null);
         return configuration;
     }
+
 }

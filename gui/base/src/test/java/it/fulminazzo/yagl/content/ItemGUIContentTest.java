@@ -102,4 +102,5 @@ class ItemGUIContentTest {
     void testReturnTypesGUIContent() {
         TestUtils.testReturnType(ItemGUIContent.newInstance(), GUIContent.class, m -> m.getName().equals("copyContent"));
     }
+
 }

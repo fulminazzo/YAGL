@@ -60,4 +60,5 @@ class MessageActionTest {
         MessageAction c2 = new GUIMessage("new-message");
         assertNotEquals(c1, c2);
     }
+
 }

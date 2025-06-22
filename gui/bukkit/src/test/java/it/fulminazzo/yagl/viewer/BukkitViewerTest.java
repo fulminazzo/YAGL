@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import org.bukkit.entity.Player;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,9 +16,13 @@ class BukkitViewerTest {
     private Player player;
     private Viewer viewer;
 
+    @BeforeAll
+    static void setAllUp() {
+        BukkitUtils.setupServer();
+    }
+
     @BeforeEach
     void setUp() {
-        BukkitUtils.setupServer();
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         when(this.player.isOnline()).thenReturn(true);
         this.viewer = BukkitViewer.newViewer(this.player);

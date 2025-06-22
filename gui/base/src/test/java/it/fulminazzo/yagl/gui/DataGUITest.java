@@ -291,4 +291,5 @@ class DataGUITest {
         }
         assertEquals(expected, actual);
     }
+
 }

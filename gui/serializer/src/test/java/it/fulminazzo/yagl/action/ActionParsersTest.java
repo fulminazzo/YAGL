@@ -7,6 +7,7 @@ import it.fulminazzo.yagl.action.message.GUIMessage;
 import it.fulminazzo.yagl.action.message.MessageAction;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,6 +18,11 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActionParsersTest {
+
+    @BeforeAll
+    static void setAllUp() {
+        ActionParsers.addParsers();
+    }
 
     private static CommandAction[] getCommandActions() {
         return new CommandAction[]{
@@ -32,7 +38,6 @@ class ActionParsersTest {
     @ParameterizedTest
     @MethodSource("getCommandActions")
     void testCommandActions(CommandAction action) throws IOException {
-        ActionParsers.addParsers();
         File file = new File("build/resources/test/command-action.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -55,7 +60,6 @@ class ActionParsersTest {
     @ParameterizedTest
     @MethodSource("getMessageActions")
     void testMessageActions(MessageAction action) throws IOException {
-        ActionParsers.addParsers();
         File file = new File("build/resources/test/message-action.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -70,7 +74,6 @@ class ActionParsersTest {
     @Test
     void testBackAction() throws IOException {
         GUIItemAction expected = new GUIItemBack();
-        ActionParsers.addParsers();
         File file = new File("build/resources/test/back-action.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -87,7 +90,6 @@ class ActionParsersTest {
     @Test
     void testCloseAction() throws IOException {
         GUIItemAction expected = new GUIItemClose();
-        ActionParsers.addParsers();
         File file = new File("build/resources/test/close-action.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -100,4 +102,5 @@ class ActionParsersTest {
         assertEquals(expected.getClass(), actual.getClass());
         assertNull(configuration.getString("tmp.content"), "Content should be empty");
     }
+
 }

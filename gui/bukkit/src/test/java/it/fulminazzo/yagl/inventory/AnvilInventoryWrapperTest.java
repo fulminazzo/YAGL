@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,10 +37,13 @@ class AnvilInventoryWrapperTest {
 
     private Player player;
 
+    @BeforeAll
+    static void setAllUp() {
+        BukkitUtils.setupServer();
+    }
+
     @BeforeEach
     void setUp() {
-        BukkitUtils.setupServer();
-
         this.inventory = new MockInventory(3);
         ItemStack itemStack = new ItemStack(Material.STONE, 64);
         ItemMeta itemMeta = itemStack.getItemMeta();

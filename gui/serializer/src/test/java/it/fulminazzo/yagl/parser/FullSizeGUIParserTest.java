@@ -7,6 +7,7 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,10 +22,13 @@ import static org.mockito.Mockito.when;
 
 class FullSizeGUIParserTest {
 
+    @BeforeAll
+    static void setAllUp() {
+        GUIYAGLParser.addAllParsers();
+    }
+
     @Test
     void testSaveAndLoad() throws IOException {
-        GUIYAGLParser.addAllParsers();
-
         FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.BREWING, 9)
                 .setTitle("Full Size GUI");
         GUIParserTest.setupContents(expected);

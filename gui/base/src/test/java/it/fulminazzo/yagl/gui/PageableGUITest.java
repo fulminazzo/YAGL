@@ -394,6 +394,7 @@ class PageableGUITest {
         public void closeGUI() {
             //
         }
+
     }
 
     static class MockGUIAdapter {
@@ -401,5 +402,7 @@ class PageableGUITest {
         public static void openGUI(GUI gui, MockViewer viewer) {
             viewer.openedGUI = gui;
         }
+
     }
+
 }

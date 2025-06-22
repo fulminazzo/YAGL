@@ -1,14 +1,15 @@
 package it.fulminazzo.yagl.parser;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.gui.DataGUI;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -20,9 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DataGUIParserTest {
 
+    @BeforeAll
+    static void setAllUp() {
+        GUIYAGLParser.addAllParsers();
+    }
+
     @Test
     void testSaveAndLoadDataGUI() throws IOException {
-        GUIYAGLParser.addAllParsers();
         Function<String, GUIContent> function = s -> null;
         DataGUI<String> expected = DataGUI.newGUI(9, function, "Hello", "world")
                 .setPreviousPage(1, Item.newItem("paper")

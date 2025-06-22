@@ -10,6 +10,7 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,9 +28,13 @@ import static org.mockito.Mockito.*;
 
 class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
+    @BeforeAll
+    static void setAllUp() {
+        GUIYAGLParser.addAllParsers();
+    }
+
     @Test
     void testSaveAndLoadPageableGUI() throws IOException {
-        GUIYAGLParser.addAllParsers();
         PageableGUI expected = PageableGUI.newGUI(9)
                 .setPages(4)
                 .setPreviousPage(1, Item.newItem("paper")
@@ -62,7 +67,6 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
 
     @Test
     void testSaveAndLoadPageableGUIStripped() throws IOException {
-        GUIYAGLParser.addAllParsers();
         PageableGUI expected = PageableGUI.newGUI(9).setPages(0);
 
         File file = new File("build/resources/test/pageable-gui-stripped.yml");
@@ -138,7 +142,6 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     @ParameterizedTest
     @MethodSource("getVariableMaps")
     void testVariableMaps(Map<Object, Object> variables, Object expected) throws Exception {
-        GUIYAGLParser.addAllParsers();
         IConfiguration configuration = new FileConfiguration(new ByteArrayInputStream(new byte[0]));
         ConfigurationSection section = mock(ConfigurationSection.class, InvocationOnMock::callRealMethod);
         new Refl<>(section).setFieldObject("map", new HashMap<>())
@@ -174,4 +177,5 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
     protected Class<?> getParser() {
         return PageableGUIParser.class;
     }
+
 }

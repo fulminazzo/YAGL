@@ -13,5 +13,4 @@ public class ObsoleteMockInventory extends MockInventory {
         this.inventory = new IInventory();
     }
 
-
 }

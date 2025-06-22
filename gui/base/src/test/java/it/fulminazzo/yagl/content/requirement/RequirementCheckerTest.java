@@ -17,4 +17,5 @@ class RequirementCheckerTest {
 
         verify(viewer).hasPermission(checker.getPermission());
     }
+
 }

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,8 +20,8 @@ import static org.mockito.Mockito.*;
 
 class InventoryWrapperTest {
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setAllUp() {
         BukkitUtils.setupServer();
     }
 

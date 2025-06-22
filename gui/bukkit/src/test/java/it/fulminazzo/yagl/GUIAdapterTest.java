@@ -32,6 +32,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,8 +53,8 @@ class GUIAdapterTest {
     private Player player;
     private Inventory inventory;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setAllUp() {
         BukkitUtils.setupServer();
 
         Server server = Bukkit.getServer();
@@ -72,7 +73,10 @@ class GUIAdapterTest {
             runnable.run();
             return null;
         });
+    }
 
+    @BeforeEach
+    void setUp() {
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         when(this.player.isOnline()).thenReturn(true);
         when(this.player.openInventory(any(Inventory.class)))
@@ -80,12 +84,12 @@ class GUIAdapterTest {
                     this.inventory = a.getArgument(0);
                     return null;
                 });
-        when(this.player.getServer()).thenReturn(server);
     }
 
     @AfterEach
     void tearDown() {
         GUIManager.getInstance().terminate();
+        BukkitUtils.removePlayer(this.player);
     }
 
     private static Object[] pageableFullSizeGUIParameters() {
