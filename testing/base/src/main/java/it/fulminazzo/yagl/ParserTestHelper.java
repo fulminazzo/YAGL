@@ -97,4 +97,5 @@ public abstract class ParserTestHelper<T> {
         when(configuration.getString(any())).thenReturn(returnValue);
         return configuration;
     }
+
 }
