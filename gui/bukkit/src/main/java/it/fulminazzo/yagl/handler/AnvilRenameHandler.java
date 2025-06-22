@@ -166,4 +166,9 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
         return player;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s{playerId=%s}", getClass().getSimpleName(), this.playerId);
+    }
+
 }
