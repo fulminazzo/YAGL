@@ -5,7 +5,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.content.GUIContent;
-import it.fulminazzo.yagl.gui.FullSizeGUI;
+import it.fulminazzo.yagl.gui.FullscreenGUI;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.gui.ResizableGUI;
 import it.fulminazzo.yagl.gui.SearchGUI;
@@ -21,19 +21,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A parser to serialize {@link FullSizeGUI}
+ * A parser to serialize {@link FullscreenGUI}
  */
-public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
+public class FullscreenGUIParser extends YAMLParser<FullscreenGUI> {
 
     /**
      * Instantiates a new Full size gui parser.
      */
-    public FullSizeGUIParser() {
-        super(FullSizeGUI.class);
+    public FullscreenGUIParser() {
+        super(FullscreenGUI.class);
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, FullSizeGUI, Exception> getLoader() {
+    protected BiFunctionException<IConfiguration, String, FullscreenGUI, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -49,14 +49,14 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
             Set<Integer> upperGUIMovableSlots = upperGUIRefl.getFieldObject("movableSlots");
             upperGUIMovableSlots.removeIf(i -> i >= upperGUI.size());
 
-            final FullSizeGUI gui;
+            final FullscreenGUI gui;
 
             // Section for SearchGUI
-            final String searchFullSizeGUIName = SearchGUI.class.getCanonicalName() + ".SearchFullSizeGUI";
-            Class<? extends FullSizeGUI> searchFullSizeGUI = ReflectionUtils.getClass(searchFullSizeGUIName);
-            if (ParserUtils.classToType(GUI.class, searchFullSizeGUI).equals(previousType))
-                gui = new Refl<FullSizeGUI>(searchFullSizeGUIName).getObject();
-            else gui = new Refl<>(GUI.newFullSizeGUI(9))
+            final String searchFullscreenGUIName = SearchGUI.class.getCanonicalName() + ".SearchFullscreenGUI";
+            Class<? extends FullscreenGUI> searchFullscreenGUI = ReflectionUtils.getClass(searchFullscreenGUIName);
+            if (ParserUtils.classToType(GUI.class, searchFullscreenGUI).equals(previousType))
+                gui = new Refl<FullscreenGUI>(searchFullscreenGUIName).getObject();
+            else gui = new Refl<>(GUI.newFullscreenGUI(9))
                     .setFieldObject("upperGUI", upperGUI)
                     .getObject();
 
@@ -83,7 +83,7 @@ public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected TriConsumer<IConfiguration, String, FullSizeGUI> getDumper() {
+    protected TriConsumer<IConfiguration, String, FullscreenGUI> getDumper() {
         return (c, s, g) -> {
             c.set(s, null);
             if (g == null) return;

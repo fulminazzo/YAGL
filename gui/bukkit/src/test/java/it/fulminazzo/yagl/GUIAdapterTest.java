@@ -93,7 +93,7 @@ class GUIAdapterTest {
         BukkitUtils.removePlayer(this.player);
     }
 
-    private static Object[] pageableFullSizeGUIParameters() {
+    private static Object[] pageableFullscreenGUIParameters() {
         return Stream.concat(
                 Stream.of(9, 18, 27, 36, 45, 54),
                 Arrays.stream(GUIType.values())
@@ -280,7 +280,7 @@ class GUIAdapterTest {
 
             Viewer viewer = GUIManager.getViewer(this.player);
 
-            FullSizeGUI gui = GUI.newFullSizeGUI(9);
+            FullscreenGUI gui = GUI.newFullscreenGUI(9);
             gui.setContents(9, ItemGUIContent.newInstance("diamond"));
 
             gui.open(viewer);
@@ -310,8 +310,8 @@ class GUIAdapterTest {
     }
 
     @ParameterizedTest
-    @MethodSource("pageableFullSizeGUIParameters")
-    void testOpenPageableFullSizeGUI(Object initializer) {
+    @MethodSource("pageableFullscreenGUIParameters")
+    void testOpenPageableFullscreenGUI(Object initializer) {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
             when(NMSUtils.getServerVersion()).thenReturn(17.0);
 
@@ -320,9 +320,9 @@ class GUIAdapterTest {
 
             final PageableGUI gui;
             if (initializer instanceof Integer)
-                gui = PageableGUI.newFullSizeGUI((Integer) initializer);
+                gui = PageableGUI.newFullScreenGUI((Integer) initializer);
             else if (initializer instanceof GUIType)
-                gui = PageableGUI.newFullSizeGUI((GUIType) initializer);
+                gui = PageableGUI.newFullScreenGUI((GUIType) initializer);
             else throw new IllegalArgumentException(initializer.toString());
             gui.setPages(2);
 
@@ -383,8 +383,8 @@ class GUIAdapterTest {
     }
 
     @ParameterizedTest
-    @MethodSource("pageableFullSizeGUIParameters")
-    void testOpenPageableResizedFullSizeGUI(Object initializer) {
+    @MethodSource("pageableFullscreenGUIParameters")
+    void testOpenPageableResizedFullscreenGUI(Object initializer) {
         BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
             when(NMSUtils.getServerVersion()).thenReturn(17.0);
 
@@ -395,9 +395,9 @@ class GUIAdapterTest {
 
             final PageableGUI gui;
             if (initializer instanceof Integer)
-                gui = PageableGUI.newFullSizeGUI((Integer) initializer, 18);
+                gui = PageableGUI.newFullScreenGUI((Integer) initializer, 18);
             else if (initializer instanceof GUIType)
-                gui = PageableGUI.newFullSizeGUI((GUIType) initializer, 18);
+                gui = PageableGUI.newFullScreenGUI((GUIType) initializer, 18);
             else throw new IllegalArgumentException(initializer.toString());
             gui.setPages(2);
 
@@ -482,7 +482,7 @@ class GUIAdapterTest {
     }
 
     @Test
-    void testOpenFullSizeGUI() {
+    void testOpenFullscreenGUI() {
         BukkitTestUtils.mockPlugin(p -> {
             PlayerInventory playerInventory = new MockPlayerInventory(this.player);
             when(this.player.getInventory()).thenReturn(playerInventory);
@@ -499,7 +499,7 @@ class GUIAdapterTest {
                     "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
             };
 
-            FullSizeGUI gui = GUI.newFullSizeGUI(9);
+            FullscreenGUI gui = GUI.newFullscreenGUI(9);
             gui.addContent(Arrays.stream(materials)
                     .map(ItemGUIContent::newInstance)
                     .toArray(ItemGUIContent[]::new));
@@ -787,12 +787,12 @@ class GUIAdapterTest {
     }
 
     @Test
-    void testUpdatePlayerGUINonFullSize() {
+    void testUpdatePlayerGUINonFullscreen() {
         BukkitTestUtils.mockPlugin(p -> {
             IllegalArgumentException exception = assertThrowsExactly(IllegalArgumentException.class, () ->
                     GUIAdapter.updatePlayerGUI(GUI.newGUI(9), GUIManager.getViewer(this.player))
             );
-            assertEquals("updatePlayerGUI can only be used with FullSizeGUI", exception.getMessage());
+            assertEquals("updatePlayerGUI can only be used with FullscreenGUI", exception.getMessage());
         });
     }
 

@@ -96,11 +96,11 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      */
     protected @NotNull GUI copyTemplateGUI() {
         final GUI newTemplateGUI;
-        if (this.templateGUI instanceof FullSizeGUI) {
-            FullSizeGUI fullSizeGUI = (FullSizeGUI) this.templateGUI;
-            newTemplateGUI = new Refl<>(GUI.newFullSizeGUI(9))
-                    .setFieldObject("upperGUI", fullSizeGUI.getUpperGUI().copy())
-                    .setFieldObject("lowerGUI", fullSizeGUI.getLowerGUI().copy())
+        if (this.templateGUI instanceof FullscreenGUI) {
+            FullscreenGUI fullscreenGUI = (FullscreenGUI) this.templateGUI;
+            newTemplateGUI = new Refl<>(GUI.newFullscreenGUI(9))
+                    .setFieldObject("upperGUI", fullscreenGUI.getUpperGUI().copy())
+                    .setFieldObject("lowerGUI", fullscreenGUI.getLowerGUI().copy())
                     .getObject();
         } else {
             if (this.templateGUI instanceof TypeGUI)
@@ -983,8 +983,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param size the size
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullSizeGUI(final int size) {
-        return new PageableGUI(GUI.newFullSizeGUI(size));
+    public static @NotNull PageableGUI newFullScreenGUI(final int size) {
+        return new PageableGUI(GUI.newFullscreenGUI(size));
     }
 
     /**
@@ -994,8 +994,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param lowerGUISize the size of the lower GUI
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullSizeGUI(final int size, final int lowerGUISize) {
-        return new PageableGUI(GUI.newFullSizeGUI(size, lowerGUISize));
+    public static @NotNull PageableGUI newFullScreenGUI(final int size, final int lowerGUISize) {
+        return new PageableGUI(GUI.newFullscreenGUI(size, lowerGUISize));
     }
 
     /**
@@ -1004,8 +1004,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param type the type
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullSizeGUI(final @NotNull GUIType type) {
-        return new PageableGUI(GUI.newFullSizeGUI(type));
+    public static @NotNull PageableGUI newFullScreenGUI(final @NotNull GUIType type) {
+        return new PageableGUI(GUI.newFullscreenGUI(type));
     }
 
     /**
@@ -1015,8 +1015,8 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
      * @param lowerGUISize the size of the lower GUI
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullSizeGUI(final @NotNull GUIType type, final int lowerGUISize) {
-        return new PageableGUI(GUI.newFullSizeGUI(type, lowerGUISize));
+    public static @NotNull PageableGUI newFullScreenGUI(final @NotNull GUIType type, final int lowerGUISize) {
+        return new PageableGUI(GUI.newFullscreenGUI(type, lowerGUISize));
     }
 
     @Override

@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class FullSizeGUITest {
+class FullscreenGUITest {
 
     @ParameterizedTest
     @EnumSource(GUIType.class)
     void testNorthCoordinates(GUIType type) {
         GUI upperGUI = GUI.newGUI(type);
-        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+        FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
         assertEquals(upperGUI.northWest(), gui.northWest());
         assertEquals(upperGUI.north(), gui.north());
@@ -44,8 +44,8 @@ class FullSizeGUITest {
     @EnumSource(GUIType.class)
     void testLeftSlots(GUIType type) {
         GUI upperGUI = GUI.newGUI(type);
-        GUI lowerGUI = GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE);
-        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+        GUI lowerGUI = GUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE);
+        FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
         Set<Integer> expectedSlots = upperGUI.leftSlots();
         expectedSlots.addAll(lowerGUI.leftSlots().stream()
@@ -59,8 +59,8 @@ class FullSizeGUITest {
     @EnumSource(GUIType.class)
     void testRightSlots(GUIType type) {
         GUI upperGUI = GUI.newGUI(type);
-        GUI lowerGUI = GUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE);
-        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+        GUI lowerGUI = GUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE);
+        FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
         Set<Integer> expectedSlots = upperGUI.rightSlots();
         expectedSlots.addAll(lowerGUI.rightSlots().stream()
@@ -100,11 +100,11 @@ class FullSizeGUITest {
     @ParameterizedTest
     @MethodSource("middleLineGUIs")
     void testMiddleLine(Object initializer, int expected) {
-        FullSizeGUI gui;
+        FullscreenGUI gui;
         if (initializer instanceof Integer)
-            gui = GUI.newFullSizeGUI((Integer) initializer);
+            gui = GUI.newFullscreenGUI((Integer) initializer);
         else if (initializer instanceof GUIType)
-            gui = GUI.newFullSizeGUI((GUIType) initializer);
+            gui = GUI.newFullscreenGUI((GUIType) initializer);
         else throw new IllegalArgumentException(initializer.toString());
 
         assertEquals(expected, gui.middleLine());
@@ -113,9 +113,9 @@ class FullSizeGUITest {
     @ParameterizedTest
     @EnumSource(GUIType.class)
     void testSouthCoordinates(GUIType type) {
-        FullSizeGUI gui = GUI.newFullSizeGUI(type);
+        FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
-        int expectedSouthLine = FullSizeGUI.SECOND_INVENTORY_SIZE - 9 + type.getSize();
+        int expectedSouthLine = FullscreenGUI.SECOND_INVENTORY_SIZE - 9 + type.getSize();
 
         assertEquals(expectedSouthLine, gui.southLine());
         assertEquals(expectedSouthLine, gui.southWest());
@@ -130,14 +130,14 @@ class FullSizeGUITest {
 
     private static Object[][] guisInitializers() {
         return new Object[][]{
-                new Object[]{(Supplier<GUI>) () -> GUI.newFullSizeGUI(9), new FullSizeGUI(9)},
-                new Object[]{(Supplier<GUI>) () -> GUI.newFullSizeGUI(GUIType.ANVIL), new FullSizeGUI(GUIType.ANVIL)}
+                new Object[]{(Supplier<GUI>) () -> GUI.newFullscreenGUI(9), new FullscreenGUI(9)},
+                new Object[]{(Supplier<GUI>) () -> GUI.newFullscreenGUI(GUIType.ANVIL), new FullscreenGUI(GUIType.ANVIL)}
         };
     }
 
     @ParameterizedTest
     @MethodSource("guisInitializers")
-    void testGUIInitFunctions(Supplier<GUI> supplier, FullSizeGUI expected) {
+    void testGUIInitFunctions(Supplier<GUI> supplier, FullscreenGUI expected) {
         GUI actual = supplier.get();
         assertEquals(expected, actual);
     }
@@ -156,7 +156,7 @@ class FullSizeGUITest {
                 "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
         };
 
-        FullSizeGUI gui = new FullSizeGUI(9);
+        FullscreenGUI gui = new FullscreenGUI(9);
         gui.addContent(Arrays.stream(materials)
                 .map(ItemGUIContent::newInstance)
                 .toArray(ItemGUIContent[]::new));
@@ -190,7 +190,7 @@ class FullSizeGUITest {
 
     @Test
     void testThatAddContentThrowsIfOtherException() {
-        Refl<FullSizeGUI> refl = new Refl<>(new FullSizeGUI(9));
+        Refl<FullscreenGUI> refl = new Refl<>(new FullscreenGUI(9));
 
         GUI upperGUI = mock(GUI.class);
         when(upperGUI.addContent(any(GUIContent.class))).thenThrow(new IllegalArgumentException("Should not be captured"));
@@ -208,14 +208,14 @@ class FullSizeGUITest {
                 new Object[]{27, 0},
                 new Object[]{26, 26},
                 new Object[]{28, 1},
-                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, FullSizeGUI.SECOND_INVENTORY_SIZE - 1}
+                new Object[]{27 + FullscreenGUI.SECOND_INVENTORY_SIZE - 1, FullscreenGUI.SECOND_INVENTORY_SIZE - 1}
         };
     }
 
     @ParameterizedTest
     @MethodSource("slots")
     void testGetCorrespondingSlotReturnsCorrectSlot(int slot, int expected) {
-        FullSizeGUI gui = new FullSizeGUI(27);
+        FullscreenGUI gui = new FullscreenGUI(27);
         int actual = gui.getCorrespondingSlot(slot);
 
         assertEquals(expected, actual);
@@ -227,14 +227,14 @@ class FullSizeGUITest {
                 new Object[]{27, DefaultGUI.class},
                 new Object[]{26, TypeGUI.class},
                 new Object[]{28, DefaultGUI.class},
-                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, DefaultGUI.class}
+                new Object[]{27 + FullscreenGUI.SECOND_INVENTORY_SIZE - 1, DefaultGUI.class}
         };
     }
 
     @ParameterizedTest
     @MethodSource("slotsGUIsClasses")
     void testGetCorrespondingGUIReturnsCorrectGUI(int slot, Class<? extends GUI> expectedClass) {
-        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+        FullscreenGUI gui = new FullscreenGUI(GUIType.CHEST);
         GUI actual = gui.getCorrespondingGUI(slot);
 
         assertInstanceOf(expectedClass, actual);
@@ -243,17 +243,17 @@ class FullSizeGUITest {
     private static Object[][] slotsGUIs() {
         return new Object[][]{
                 new Object[]{0, 0, GUI.newGUI(GUIType.CHEST)},
-                new Object[]{27, 0, GUI.newResizableGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{27, 0, GUI.newResizableGUI(FullscreenGUI.SECOND_INVENTORY_SIZE)},
                 new Object[]{26, 26, GUI.newGUI(GUIType.CHEST)},
-                new Object[]{28, 1, GUI.newResizableGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)},
-                new Object[]{27 + FullSizeGUI.SECOND_INVENTORY_SIZE - 1, FullSizeGUI.SECOND_INVENTORY_SIZE - 1, GUI.newResizableGUI(FullSizeGUI.SECOND_INVENTORY_SIZE)}
+                new Object[]{28, 1, GUI.newResizableGUI(FullscreenGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{27 + FullscreenGUI.SECOND_INVENTORY_SIZE - 1, FullscreenGUI.SECOND_INVENTORY_SIZE - 1, GUI.newResizableGUI(FullscreenGUI.SECOND_INVENTORY_SIZE)}
         };
     }
 
     @ParameterizedTest
     @MethodSource("slotsGUIs")
     void testIsMovableReturnsCorrectValue(int slot, int actual, GUI internalGUI) {
-        FullSizeGUI gui = setupGUI(internalGUI);
+        FullscreenGUI gui = setupGUI(internalGUI);
 
         internalGUI.setMovable(actual, true);
 
@@ -263,7 +263,7 @@ class FullSizeGUITest {
     @ParameterizedTest
     @MethodSource("slotsGUIs")
     void testSetMovableSetsCorrectSlot(int slot, int actual, GUI internalGUI) {
-        FullSizeGUI gui = setupGUI(internalGUI);
+        FullscreenGUI gui = setupGUI(internalGUI);
 
         assertFalse(internalGUI.isMovable(actual));
 
@@ -275,7 +275,7 @@ class FullSizeGUITest {
     @ParameterizedTest
     @MethodSource("slotsGUIs")
     void testGetContentsReturnsCorrectValue(int slot, int actual, GUI internalGUI) {
-        FullSizeGUI gui = setupGUI(internalGUI);
+        FullscreenGUI gui = setupGUI(internalGUI);
         GUIContent content = ItemGUIContent.newInstance("stone");
 
         internalGUI.setContents(actual, content);
@@ -288,7 +288,7 @@ class FullSizeGUITest {
     @ParameterizedTest
     @MethodSource("slotsGUIs")
     void testSetContentsSetsCorrectValue(int slot, int actual, GUI internalGUI) {
-        FullSizeGUI gui = setupGUI(internalGUI);
+        FullscreenGUI gui = setupGUI(internalGUI);
         GUIContent content = ItemGUIContent.newInstance("stone");
 
         assertTrue(internalGUI.getContents(actual).isEmpty());
@@ -303,7 +303,7 @@ class FullSizeGUITest {
     @ParameterizedTest
     @MethodSource("slotsGUIs")
     void testUnsetContentRemovesContents(int slot, int actual, GUI internalGUI) {
-        FullSizeGUI gui = setupGUI(internalGUI);
+        FullscreenGUI gui = setupGUI(internalGUI);
         GUIContent content = ItemGUIContent.newInstance("stone");
 
         internalGUI.setContents(actual, content);
@@ -314,8 +314,8 @@ class FullSizeGUITest {
         assertTrue(contents.isEmpty());
     }
 
-    private static FullSizeGUI setupGUI(GUI internalGUI) {
-        Refl<FullSizeGUI> refl = new Refl<>(new FullSizeGUI(GUIType.CHEST));
+    private static FullscreenGUI setupGUI(GUI internalGUI) {
+        Refl<FullscreenGUI> refl = new Refl<>(new FullscreenGUI(GUIType.CHEST));
         if (internalGUI instanceof TypeGUI) refl.setFieldObject("upperGUI", internalGUI);
         else refl.setFieldObject("lowerGUI", internalGUI);
         return refl.getObject();
@@ -326,7 +326,7 @@ class FullSizeGUITest {
         GUIContent firstContent = ItemGUIContent.newInstance("stone");
         GUIContent secondContent = ItemGUIContent.newInstance("stone");
 
-        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+        FullscreenGUI gui = new FullscreenGUI(GUIType.CHEST);
         Refl<?> refl = new Refl<>(gui);
 
         GUI upperGUI = refl.getFieldObject("upperGUI");
@@ -342,14 +342,14 @@ class FullSizeGUITest {
 
     @Test
     void testRows() {
-        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+        FullscreenGUI gui = new FullscreenGUI(GUIType.CHEST);
 
         assertEquals(7, gui.rows());
     }
 
     @Test
     void testColumns() {
-        FullSizeGUI gui = new FullSizeGUI(GUIType.CHEST);
+        FullscreenGUI gui = new FullscreenGUI(GUIType.CHEST);
 
         assertEquals(9, gui.columns());
     }
@@ -359,7 +359,7 @@ class FullSizeGUITest {
         GUI upperGUI = mock(GUI.class);
         GUI lowerGUI = mock(ResizableGUI.class);
 
-        FullSizeGUI gui = new Refl<>(new FullSizeGUI(GUIType.CHEST))
+        FullscreenGUI gui = new Refl<>(new FullscreenGUI(GUIType.CHEST))
                 .setFieldObject("upperGUI", upperGUI)
                 .setFieldObject("lowerGUI", lowerGUI)
                 .getObject();
@@ -388,42 +388,42 @@ class FullSizeGUITest {
 
     @ParameterizedTest
     @MethodSource("methods")
-    void testFullSizeGUIDelegatesToUpperGUI(String methodName, Class<?>[] parameterTypes) {
-        Refl<?> fullSizeGUI = new Refl<>(new FullSizeGUI(9));
+    void testFullScreenGUIDelegatesToUpperGUI(String methodName, Class<?>[] parameterTypes) {
+        Refl<?> fullscreenGUI = new Refl<>(new FullscreenGUI(9));
 
         GUI upperGUI = mock(GUI.class);
-        fullSizeGUI.setFieldObject("upperGUI", upperGUI);
+        fullscreenGUI.setFieldObject("upperGUI", upperGUI);
 
-        Method method = fullSizeGUI.getMethod(methodName, parameterTypes);
+        Method method = fullscreenGUI.getMethod(methodName, parameterTypes);
 
         Object[] parameters = Arrays.stream(method.getParameterTypes())
                 .map(TestUtils::mockParameter)
                 .toArray(Object[]::new);
 
-        fullSizeGUI.invokeMethod(methodName, parameters);
+        fullscreenGUI.invokeMethod(methodName, parameters);
 
         new Refl<>(verify(upperGUI)).invokeMethod(methodName, parameters);
     }
 
     @Test
     void testOpenWithNoBukkitModule() {
-        assertThrowsExactly(IllegalStateException.class, () -> new FullSizeGUI(9).open(mock(Viewer.class)));
+        assertThrowsExactly(IllegalStateException.class, () -> new FullscreenGUI(9).open(mock(Viewer.class)));
     }
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(new FullSizeGUI(9), GUI.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(new FullscreenGUI(9), GUI.class, m -> m.getName().equals("copy"));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {8, 0, -1, FullSizeGUI.SECOND_INVENTORY_SIZE + 1})
+    @ValueSource(ints = {8, 0, -1, FullscreenGUI.SECOND_INVENTORY_SIZE + 1})
     void testLowerGUIResizeFails(int size) {
-        assertThrows(IllegalArgumentException.class, () -> new FullSizeGUI(9).getLowerGUI().resize(size));
+        assertThrows(IllegalArgumentException.class, () -> new FullscreenGUI(9).getLowerGUI().resize(size));
     }
 
     @Test
     void testUpdateThrowsIfNoModuleProvided() {
-        assertThrowsExactly(IllegalStateException.class, () -> new FullSizeGUI(9).update(null));
+        assertThrowsExactly(IllegalStateException.class, () -> new FullscreenGUI(9).update(null));
     }
 
 }

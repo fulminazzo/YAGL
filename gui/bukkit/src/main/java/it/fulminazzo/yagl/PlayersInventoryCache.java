@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.gui.FullSizeGUI;
+import it.fulminazzo.yagl.gui.FullscreenGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -49,7 +49,7 @@ public final class PlayersInventoryCache {
      */
     public void storePlayerContents(final @NotNull Player player) {
         List<ItemStack> playerContents = Arrays.asList(player.getInventory().getContents())
-                .subList(0, FullSizeGUI.SECOND_INVENTORY_SIZE);
+                .subList(0, FullscreenGUI.SECOND_INVENTORY_SIZE);
         ItemStack[] cache = new ItemStack[playerContents.size()];
         for (int i = 0; i < playerContents.size(); i++) cache[i] = playerContents.get(i);
         this.internalCache.put(player.getUniqueId(), cache);

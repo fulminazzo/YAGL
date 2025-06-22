@@ -1479,8 +1479,8 @@ public interface GUI extends Metadatable {
      * @param size the size
      * @return the full size gui
      */
-    static @NotNull FullSizeGUI newFullSizeGUI(final int size) {
-        return new FullSizeGUI(size);
+    static @NotNull FullscreenGUI newFullscreenGUI(final int size) {
+        return new FullscreenGUI(size);
     }
 
     /**
@@ -1490,8 +1490,8 @@ public interface GUI extends Metadatable {
      * @param lowerGUISize the size of the lower GUI
      * @return the full size gui
      */
-    static @NotNull FullSizeGUI newFullSizeGUI(final int size, final int lowerGUISize) {
-        FullSizeGUI gui = new FullSizeGUI(size);
+    static @NotNull FullscreenGUI newFullscreenGUI(final int size, final int lowerGUISize) {
+        FullscreenGUI gui = new FullscreenGUI(size);
         gui.getLowerGUI().resize(lowerGUISize);
         return gui;
     }
@@ -1512,8 +1512,8 @@ public interface GUI extends Metadatable {
      * @param type the type
      * @return the full size gui
      */
-    static @NotNull FullSizeGUI newFullSizeGUI(final @NotNull GUIType type) {
-        return new FullSizeGUI(type);
+    static @NotNull FullscreenGUI newFullscreenGUI(final @NotNull GUIType type) {
+        return new FullscreenGUI(type);
     }
 
     /**
@@ -1523,8 +1523,8 @@ public interface GUI extends Metadatable {
      * @param lowerGUISize the size of the lower GUI
      * @return the full size gui
      */
-    static @NotNull FullSizeGUI newFullSizeGUI(final @NotNull GUIType type, final int lowerGUISize) {
-        FullSizeGUI gui = new FullSizeGUI(type);
+    static @NotNull FullscreenGUI newFullscreenGUI(final @NotNull GUIType type, final int lowerGUISize) {
+        FullscreenGUI gui = new FullscreenGUI(type);
         gui.getLowerGUI().resize(lowerGUISize);
         return gui;
     }

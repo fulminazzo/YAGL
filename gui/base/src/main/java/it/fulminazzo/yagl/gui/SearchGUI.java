@@ -67,7 +67,7 @@ public class SearchGUI<T> extends DataGUI<T> {
      * @param dataConverter  the data converter
      * @param searchFunction the function to use to filter the data
      */
-    SearchGUI(@NotNull SearchFullSizeGUI templateGUI,
+    SearchGUI(@NotNull SearchGUI.SearchFullscreenGUI templateGUI,
               @NotNull Function<T, GUIContent> dataConverter,
               @NotNull BiPredicate<T, String> searchFunction) {
         super(templateGUI, dataConverter);
@@ -149,7 +149,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     @Override
     public SearchGUI<T> copy() {
         return new SearchGUI<>(
-                (SearchFullSizeGUI) this.templateGUI.copy(),
+                (SearchFullscreenGUI) this.templateGUI.copy(),
                 this.dataConverter,
                 this.searchFunction
         );
@@ -770,7 +770,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     public static <T> @NotNull SearchGUI<T> newGUI(
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction) {
-        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction);
+        return new SearchGUI<>(new SearchFullscreenGUI(), dataConverter, searchFunction);
     }
 
     /**
@@ -786,7 +786,7 @@ public class SearchGUI<T> extends DataGUI<T> {
             final int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction) {
-        SearchFullSizeGUI gui = new SearchFullSizeGUI();
+        SearchFullscreenGUI gui = new SearchFullscreenGUI();
         gui.getLowerGUI().resize(lowerGUISize);
         return new SearchGUI<>(gui, dataConverter, searchFunction);
     }
@@ -805,7 +805,7 @@ public class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
-        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+        return new SearchGUI<>(new SearchFullscreenGUI(), dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -824,7 +824,7 @@ public class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
-        SearchFullSizeGUI gui = new SearchFullSizeGUI();
+        SearchFullscreenGUI gui = new SearchFullscreenGUI();
         gui.getLowerGUI().resize(lowerGUISize);
         return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
@@ -842,7 +842,7 @@ public class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
-        return new SearchGUI<>(new SearchFullSizeGUI(), dataConverter, searchFunction).setData(data);
+        return new SearchGUI<>(new SearchFullscreenGUI(), dataConverter, searchFunction).setData(data);
     }
 
     /**
@@ -860,16 +860,16 @@ public class SearchGUI<T> extends DataGUI<T> {
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
-        SearchFullSizeGUI gui = new SearchFullSizeGUI();
+        SearchFullscreenGUI gui = new SearchFullscreenGUI();
         gui.getLowerGUI().resize(lowerGUISize);
         return new SearchGUI<>(gui, dataConverter, searchFunction).setData(data);
     }
 
     /**
-     * An implementation of {@link FullSizeGUI} that provides methods to interface with
+     * An implementation of {@link FullscreenGUI} that provides methods to interface with
      * the corresponding {@link SearchGUI}.
      */
-    static class SearchFullSizeGUI extends FullSizeGUI {
+    static class SearchFullscreenGUI extends FullscreenGUI {
         @Setter
         @IgnoreField
         @IgnoreApply
@@ -878,7 +878,7 @@ public class SearchGUI<T> extends DataGUI<T> {
         /**
          * Instantiates a new Search full size gui.
          */
-        SearchFullSizeGUI() {
+        SearchFullscreenGUI() {
             super(GUIType.ANVIL);
         }
 
@@ -894,8 +894,8 @@ public class SearchGUI<T> extends DataGUI<T> {
         }
 
         @Override
-        public FullSizeGUI copy() {
-            return new Refl<>(new SearchFullSizeGUI())
+        public FullscreenGUI copy() {
+            return new Refl<>(new SearchFullscreenGUI())
                     .setFieldObject("upperGUI", getUpperGUI().copy())
                     .setFieldObject("lowerGUI", getLowerGUI().copy())
                     .setFieldObject("searchGui", this.searchGui)

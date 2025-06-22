@@ -2,7 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.content.GUIContent;
-import it.fulminazzo.yagl.gui.FullSizeGUI;
+import it.fulminazzo.yagl.gui.FullscreenGUI;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.gui.GUIType;
 import it.fulminazzo.yagl.gui.TypeGUI;
@@ -84,11 +84,11 @@ public final class GUIAdapter {
         openGUIHelper(gui, viewer, (p, v) -> {
             // Open inventory
             final InventoryWrapper inventory;
-            // Check if GUI is FullSize
-            if (gui instanceof FullSizeGUI) {
-                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
-                GUI upperGUI = fullSizeGUI.getUpperGUI();
-                GUI lowerGUI = fullSizeGUI.getLowerGUI();
+            // Check if GUI is Fullscreen
+            if (gui instanceof FullscreenGUI) {
+                FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
+                GUI upperGUI = fullscreenGUI.getUpperGUI();
+                GUI lowerGUI = fullscreenGUI.getLowerGUI();
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
 
@@ -113,7 +113,7 @@ public final class GUIAdapter {
     }
 
     /**
-     * Updates the player's open {@link FullSizeGUI} by setting the updated contents in
+     * Updates the player's open {@link FullscreenGUI} by setting the updated contents in
      * the player's inventory.
      *
      * @param gui    the gui
@@ -125,7 +125,7 @@ public final class GUIAdapter {
     }
 
     /**
-     * Updates the player's open {@link FullSizeGUI} by setting the updated contents in
+     * Updates the player's open {@link FullscreenGUI} by setting the updated contents in
      * the player's inventory.
      * Uses the given {@link ItemMeta} class and function to {@link BukkitItem#create(Class, Consumer)} the contents.
      *
@@ -140,10 +140,10 @@ public final class GUIAdapter {
                                                             final @Nullable Class<M> itemMetaClass,
                                                             final @Nullable Consumer<M> metaFunction) {
         openGUIHelper(gui, viewer, (p, v) -> {
-            if (gui instanceof FullSizeGUI) {
-                FullSizeGUI fullSizeGUI = (FullSizeGUI) gui;
-                GUI upperGUI = fullSizeGUI.getUpperGUI();
-                GUI lowerGUI = fullSizeGUI.getLowerGUI();
+            if (gui instanceof FullscreenGUI) {
+                FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
+                GUI upperGUI = fullscreenGUI.getUpperGUI();
+                GUI lowerGUI = fullscreenGUI.getLowerGUI();
                 upperGUI.apply(upperGUI);
                 lowerGUI.apply(lowerGUI);
 
@@ -161,7 +161,7 @@ public final class GUIAdapter {
                 int upperGUISize = upperGUI.size();
                 int lowerGUISize = lowerGUI.size();
                 setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
-            } else throw new IllegalArgumentException("updatePlayerGUI can only be used with FullSizeGUI");
+            } else throw new IllegalArgumentException("updatePlayerGUI can only be used with FullscreenGUI");
         });
     }
 

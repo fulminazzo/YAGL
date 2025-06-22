@@ -53,11 +53,11 @@ def run = { CommandSender sender, String label, String[] args ->
                             '&7once you are done playing with it!')
             PageableGUI gui
             try {
-                gui = DataGUI.newFullSizeGUI(EnumUtils.valueOf(GUIType, args[0]), converter, data)
+                gui = DataGUI.newFullscreenGUI(EnumUtils.valueOf(GUIType, args[0]), converter, data)
             } catch (IllegalArgumentException ignored) {
-                gui = DataGUI.newFullSizeGUI(Integer.valueOf(args[0]), converter, data)
+                gui = DataGUI.newFullscreenGUI(Integer.valueOf(args[0]), converter, data)
             } catch (IndexOutOfBoundsException ignored) {
-                sender.sendMessage('Usage: /openfullsizedatagui <type|size>')
+                sender.sendMessage('Usage: /openfullscreendatagui <type|size>')
                 return
             }
             if (gui.size() > 1) {

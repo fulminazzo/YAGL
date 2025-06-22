@@ -128,7 +128,7 @@ These are some of the pending features that are planned for the future:
 - [x] add support for [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) in variable replacements;
 - [ ] a special `GUIContent` that allows animated items;
 - [ ] a special `GUIContent` that allows items which can be toggled based on user click;
-- [x] [fullscreen `GUI`](tree/main/gui/base/src/main/java/it/fulminazzo/yagl/gui/FullSizeGUI.java);
+- [x] [fullscreen `GUI`](tree/main/gui/base/src/main/java/it/fulminazzo/yagl/gui/FullscreenGUI.java);
 - [ ] online web editor to customize and visualize data in real time.
 
 ## Media

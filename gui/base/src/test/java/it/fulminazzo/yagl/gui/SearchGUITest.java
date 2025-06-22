@@ -218,18 +218,18 @@ class SearchGUITest {
     private static Object[] constructorParameters() {
         return new Object[]{
                 new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false), false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false), false},
                 new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, "Hello", "World"), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, new String[]{"Hello", "World"}), true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, new String[]{"Hello", "World"}), true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, Arrays.asList("Hello", "World")), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, Arrays.asList("Hello", "World")), true}
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, Arrays.asList("Hello", "World")), true}
         };
     }
 
     @ParameterizedTest
     @MethodSource("constructorParameters")
     void testConstructors(Supplier<DataGUI<Object>> supplier, boolean dataProvided) {
-        @NotNull DataGUI<Object> expected = SearchGUI.newGUI(FullSizeGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false);
+        @NotNull DataGUI<Object> expected = SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false);
         expected.setData("Hello", "World");
         DataGUI<Object> actual = supplier.get();
         if (!dataProvided) {
@@ -240,18 +240,18 @@ class SearchGUITest {
     }
 
     @Nested
-    class SearchFullSizeGUITest {
+    class SearchFullscreenGUITest {
 
         @Test
         void testGetSearchGUIThrowsIfInitialized() {
-            SearchGUI.SearchFullSizeGUI fullSizeGUI = new SearchGUI.SearchFullSizeGUI();
-            assertThrows(IllegalStateException.class, fullSizeGUI::getSearchGui);
+            SearchGUI.SearchFullscreenGUI fullscreenGUI = new SearchGUI.SearchFullscreenGUI();
+            assertThrows(IllegalStateException.class, fullscreenGUI::getSearchGui);
         }
 
         @Test
         void testCopyMethod() {
-            SearchGUI.SearchFullSizeGUI src = new SearchGUI.SearchFullSizeGUI();
-            SearchGUI.SearchFullSizeGUI dst = new SearchGUI.SearchFullSizeGUI();
+            SearchGUI.SearchFullscreenGUI src = new SearchGUI.SearchFullscreenGUI();
+            SearchGUI.SearchFullscreenGUI dst = new SearchGUI.SearchFullscreenGUI();
             assertEquals(dst, src);
         }
 
