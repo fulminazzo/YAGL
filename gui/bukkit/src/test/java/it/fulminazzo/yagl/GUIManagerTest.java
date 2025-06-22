@@ -108,6 +108,33 @@ class GUIManagerTest {
         });
     }
 
+    @Test
+    void testExecuteUnsafeEventSevere() {
+        BukkitTestUtils.mockPlugin(p -> {
+            Logger logger = mock(Logger.class);
+            when(p.getLogger()).thenReturn(logger);
+
+            Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
+
+            RuntimeException exception = new IllegalArgumentException("An error occurred");
+
+            assertDoesNotThrow(() ->
+                    GUIManager.executeUnsafeEvent(
+                            new InventoryEvent(null),
+                            player,
+                            () -> {
+                                throw exception;
+                            }
+                    )
+            );
+
+            verify(logger).log(eq(Level.SEVERE), any(), eq(exception));
+            verify(player).closeInventory();
+
+            BukkitUtils.removePlayer(player);
+        });
+    }
+
     @Nested
     class EventsTest {
         private GUIManager guiManager;
