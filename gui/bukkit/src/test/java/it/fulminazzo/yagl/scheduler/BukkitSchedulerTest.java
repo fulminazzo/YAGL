@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.scheduler;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.yagl.TestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -14,7 +16,7 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
-class BukkitSchedulerTest {
+class BukkitSchedulerTest extends BukkitUtils {
     private org.bukkit.scheduler.BukkitScheduler actualScheduler;
     private BukkitScheduler scheduler;
 
@@ -22,7 +24,8 @@ class BukkitSchedulerTest {
     private BukkitScheduler.BukkitSchedulerTask task;
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         this.actualScheduler = mock(org.bukkit.scheduler.BukkitScheduler.class);
 
         Server server = mock(Server.class);
@@ -73,6 +76,7 @@ class BukkitSchedulerTest {
 
     @ParameterizedTest
     @MethodSource("bukkitTaskMethods")
+    @After1_(12)
     void testTaskMethods(String methodName, String actualMethodName) {
         Refl<?> refl = new Refl<>(this.task);
 
