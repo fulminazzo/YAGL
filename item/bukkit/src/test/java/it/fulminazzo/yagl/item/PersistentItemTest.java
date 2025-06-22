@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -26,8 +26,8 @@ import static org.mockito.Mockito.*;
 
 class PersistentItemTest {
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setAllUp() {
         BukkitUtils.setupServer();
         BukkitUtils.setupEnchantments();
     }
@@ -139,4 +139,5 @@ class PersistentItemTest {
             for (PersistentItem i2 : items)
                 assertEquals(i1, i2);
     }
+
 }

@@ -64,4 +64,5 @@ class ShapeTest {
     void testShapeContain(int value) {
         assertFalse(new ShapedRecipe.Shape().contains(value), String.format("Shape should not contain value '%s'", value));
     }
+
 }

@@ -28,4 +28,5 @@ class RecipeItemTest {
     void recipeItemUnregisterShouldBeUnimplemented() {
         assertThrowsExactly(NotImplementedException.class, () -> Item.newRecipeItem().unregisterRecipes());
     }
+
 }

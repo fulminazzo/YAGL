@@ -13,4 +13,5 @@ class FurnaceRecipeTest {
         FurnaceRecipe recipe = new FurnaceRecipe("id").setCookingTime(cookingTime);
         assertEquals((long) (cookingTime * Constants.TICKS_IN_SECOND), recipe.getCookingTimeInTicks());
     }
+
 }

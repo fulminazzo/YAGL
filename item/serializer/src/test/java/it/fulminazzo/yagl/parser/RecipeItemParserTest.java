@@ -8,6 +8,7 @@ import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -18,6 +19,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecipeItemParserTest {
+
+    @BeforeAll
+    static void setAllUp() {
+        ItemYAGLParser.addAllParsers();
+    }
 
     private static Object[] testItems() {
         return new Object[]{
@@ -53,8 +59,6 @@ class RecipeItemParserTest {
     @ParameterizedTest
     @MethodSource("testItems")
     void testSaveAndLoad(Item item) throws IOException {
-        ItemYAGLParser.addAllParsers();
-
         File output = new File("build/resources/test/recipe-item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
         FileUtils.createNewFile(output);
@@ -72,4 +76,5 @@ class RecipeItemParserTest {
         else assertIterableEquals(recipes1, recipes2);
         assertEquals(item, item2);
     }
+
 }

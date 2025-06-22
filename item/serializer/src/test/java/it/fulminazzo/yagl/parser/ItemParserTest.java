@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class ItemParserTest {
+
+    @BeforeAll
+    static void setAllUp() {
+        ItemYAGLParser.addAllParsers();
+    }
 
     private static Object[] testItems() {
         return new Object[]{
@@ -32,8 +38,6 @@ class ItemParserTest {
     @ParameterizedTest
     @MethodSource("testItems")
     void testSaveAndLoad(Item item) throws IOException {
-        ItemYAGLParser.addAllParsers();
-
         File output = new File("build/resources/test/item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
         FileUtils.createNewFile(output);
@@ -60,8 +64,6 @@ class ItemParserTest {
 
     @Test
     void testVariablesShouldBeSavedInLowerCase() throws IOException {
-        ItemYAGLParser.addAllParsers();
-
         File output = new File("build/resources/test/item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
         FileUtils.createNewFile(output);
@@ -86,4 +88,5 @@ class ItemParserTest {
         assertIterableEquals(item.getEnchantments(), item2.getEnchantments());
         assertIterableEquals(item.getItemFlags(), item2.getItemFlags());
     }
+
 }

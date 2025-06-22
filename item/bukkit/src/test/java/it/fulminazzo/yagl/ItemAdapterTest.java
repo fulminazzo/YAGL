@@ -18,10 +18,7 @@ import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -31,12 +28,16 @@ import static org.mockito.Mockito.*;
 
 class ItemAdapterTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+        setupEnchantments();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        setupServer();
-        setupEnchantments();
     }
 
     @Test
@@ -84,11 +85,6 @@ class ItemAdapterTest extends BukkitUtils {
     @Nested
     @DisplayName("ItemStack to Item conversion")
     class ItemStackToItem {
-
-        @BeforeEach
-        void setUp() {
-            setupServer();
-        }
 
         @Test
         void testNullItemStackShouldReturnNull() {

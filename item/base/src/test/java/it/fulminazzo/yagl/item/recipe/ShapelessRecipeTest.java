@@ -27,4 +27,5 @@ class ShapelessRecipeTest {
                 .removeIngredients(items.toArray(new Item[0]));
         assertTrue(recipe.isEmpty(), "Recipe should have been empty after removing items");
     }
+
 }

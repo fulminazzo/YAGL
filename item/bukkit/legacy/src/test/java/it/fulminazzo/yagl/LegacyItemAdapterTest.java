@@ -13,6 +13,7 @@ import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,12 +25,16 @@ import static org.mockito.Mockito.mock;
 @Before1_(13.2)
 class LegacyItemAdapterTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+        setupEnchantments();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
     }
 
     @Test

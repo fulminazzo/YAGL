@@ -18,4 +18,5 @@ class ShapeParserTest extends ParserTestHelper<ShapedRecipe.Shape> {
     protected Class<?> getParser() {
         return ShapeParser.class;
     }
+
 }

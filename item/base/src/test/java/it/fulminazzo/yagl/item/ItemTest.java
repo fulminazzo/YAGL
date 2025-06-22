@@ -175,5 +175,7 @@ class ItemTest {
         public boolean isSimilar(Item item, ItemField @NotNull ... ignore) {
             return false;
         }
+
     }
+
 }

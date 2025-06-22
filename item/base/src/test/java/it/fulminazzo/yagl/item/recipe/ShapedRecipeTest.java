@@ -35,4 +35,5 @@ public class ShapedRecipeTest {
         Arrays.fill(items, Item.newItem());
         assertThrowsExactly(IllegalArgumentException.class, () -> shapedRecipe.setIngredients(items));
     }
+
 }

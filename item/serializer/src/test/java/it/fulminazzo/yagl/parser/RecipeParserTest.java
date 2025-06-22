@@ -10,6 +10,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,6 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RecipeParserTest extends ParserTestHelper<Recipe> {
+
+    @BeforeAll
+    static void setAllUp() {
+        ItemYAGLParser.addAllParsers();
+    }
 
     private static Recipe[] getRecipes() {
         Item mock = Item.newItem().setMaterial("stone");
@@ -55,7 +61,6 @@ class RecipeParserTest extends ParserTestHelper<Recipe> {
     @ParameterizedTest
     @MethodSource("getRecipes")
     void testRecipe(Recipe recipe) throws IOException {
-        ItemYAGLParser.addAllParsers();
         final String path = FileUtils.formatStringToYaml(recipe.getClass().getSimpleName());
 
         File output = new File("build/resources/test/recipe.yml");
@@ -77,7 +82,6 @@ class RecipeParserTest extends ParserTestHelper<Recipe> {
 
     @Test
     void testNullIngredientsList() throws IOException {
-        ItemYAGLParser.addAllParsers();
         final String path = "null-recipes";
 
         Recipe recipe = new ShapedRecipe("recipe");
@@ -101,4 +105,5 @@ class RecipeParserTest extends ParserTestHelper<Recipe> {
     protected Class<?> getParser() {
         return RecipeParser.class;
     }
+
 }

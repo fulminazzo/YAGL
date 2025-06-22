@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,11 +22,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @After1_(13)
 class BukkitRecipeItemImplTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        BukkitUtils.setupServer();
     }
 
     @Test
@@ -87,4 +92,5 @@ class BukkitRecipeItemImplTest extends BukkitUtils {
         for (count = 0; iterator.hasNext(); iterator.next(), count++);
         return count;
     }
+
 }
