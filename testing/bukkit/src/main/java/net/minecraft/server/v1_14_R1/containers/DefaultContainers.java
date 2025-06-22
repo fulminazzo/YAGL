@@ -1,5 +1,6 @@
 package net.minecraft.server.v1_14_R1.containers;
 
+import it.fulminazzo.jbukkit.BukkitUtils;
 import lombok.Getter;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
@@ -7,12 +8,12 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public enum DefaultContainers implements Containers {
 
-    GENERIC_9x1(9, InventoryType.CHEST),
-    GENERIC_9x2(18, InventoryType.CHEST),
+    GENERIC_9x1(9, "CHEST"),
+    GENERIC_9x2(18, "CHEST"),
     GENERIC_9x3("CHEST"),
-    GENERIC_9x4(36, InventoryType.CHEST),
-    GENERIC_9x5(45, InventoryType.CHEST),
-    GENERIC_9x6(54, InventoryType.CHEST),
+    GENERIC_9x4(36, "CHEST"),
+    GENERIC_9x5(45, "CHEST"),
+    GENERIC_9x6(54, "CHEST"),
     GENERIC_3x3("DROPPER"),
     ANVIL,
     BEACON,
@@ -35,6 +36,7 @@ public enum DefaultContainers implements Containers {
     private final @NotNull InventoryType inventoryType;
 
     DefaultContainers() {
+        BukkitUtils.setupServer();
         InventoryType inventoryType;
         try {
             inventoryType = InventoryType.valueOf(name());
@@ -47,6 +49,7 @@ public enum DefaultContainers implements Containers {
     }
 
     DefaultContainers(final @NotNull String rawInventoryType) {
+        BukkitUtils.setupServer();
         InventoryType inventoryType;
         try {
             inventoryType = InventoryType.valueOf(rawInventoryType);
@@ -58,9 +61,10 @@ public enum DefaultContainers implements Containers {
         this.inventoryType = inventoryType;
     }
 
-    DefaultContainers(final int size, final @NotNull InventoryType inventoryType) {
+    DefaultContainers(final int size, final @NotNull String inventoryType) {
+        BukkitUtils.setupServer();
         this.size = size;
-        this.inventoryType = inventoryType;
+        this.inventoryType = InventoryType.valueOf(inventoryType);
     }
 
 }
