@@ -1,12 +1,16 @@
 package it.fulminazzo.yagl.parser;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.ParserTestHelper;
 import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.gui.PageableGUI;
 import it.fulminazzo.yagl.gui.SearchGUI;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
+import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,8 +23,11 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-class SearchGUIParserTest {
+class SearchGUIParserTest extends ParserTestHelper<PageableGUI> {
 
     @BeforeAll
     static void setAllUp() {
@@ -69,6 +76,21 @@ class SearchGUIParserTest {
         reflGUI.setFieldObject("data", expected.getData());
         searchGUI.setQuery(expected.getQuery());
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testLowerGUISizeNotSpecified() {
+        IConfiguration configuration = mock(IConfiguration.class);
+        ConfigurationSection section = new ConfigurationSection(configuration, "gui");
+        when(configuration.getConfigurationSection(any())).thenReturn(section);
+
+        assertThrowsExactly(IllegalArgumentException.class, () ->
+                getLoader().apply(configuration, "gui"));
+    }
+
+    @Override
+    protected Class<?> getParser() {
+        return SearchGUIParser.class;
     }
 
 }
