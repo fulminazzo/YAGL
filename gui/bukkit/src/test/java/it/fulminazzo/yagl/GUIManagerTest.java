@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -76,6 +78,34 @@ class GUIManagerTest {
     void testGetOpenGUIViewerUUID() {
         BukkitTestUtils.mockPlugin(p ->
                 assertFalse(GUIManager.getOpenGUIViewer(UUID.randomUUID()).isPresent(), "Should not be present"));
+    }
+
+    @Test
+    void testExecuteUnsafeEventNormal() {
+        BukkitTestUtils.mockPlugin(p -> {
+            Logger logger = mock(Logger.class);
+            when(p.getLogger()).thenReturn(logger);
+
+            Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
+            Viewer viewer = GUIManager.getViewer(player);
+            new Refl<>(viewer).setFieldObject("openGUI", GUI.newGUI(9));
+
+            RuntimeException exception = new IllegalArgumentException("An error occurred");
+
+            assertDoesNotThrow(() ->
+                    GUIManager.executeUnsafeEvent(
+                            new InventoryEvent(null),
+                            player,
+                            () -> {
+                                throw exception;
+                            }
+                    )
+            );
+
+            verify(logger).log(eq(Level.WARNING), any(), eq(exception));
+
+            BukkitUtils.removePlayer(player);
+        });
     }
 
     @Nested
