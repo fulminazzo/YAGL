@@ -75,7 +75,6 @@ def run = { CommandSender sender, String label, String[] args ->
             // auto-generated code
         } catch (Exception e) {
             sender.sendMessage(e.message)
-            e.printStackTrace()
         }
     else sender.sendMessage('Console cannot execute this command!')
 }
