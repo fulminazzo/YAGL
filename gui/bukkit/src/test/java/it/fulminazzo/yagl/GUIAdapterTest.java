@@ -115,7 +115,7 @@ class GUIAdapterTest {
             List<Material> materials = Arrays.asList(
                     Material.POTATO, Material.DIAMOND, Material.REDSTONE,
                     Material.STONE, Material.COBBLESTONE, Material.EMERALD,
-                    Material.STICK, Material.GRASS, Material.DIRT
+                    Material.STICK, Material.FURNACE, Material.DIRT
             );
 
             SearchGUI<Material> gui = SearchGUI.newGUI(18,
@@ -186,7 +186,7 @@ class GUIAdapterTest {
             List<Material> materials = Arrays.asList(
                     Material.POTATO, Material.DIAMOND, Material.REDSTONE,
                     Material.STONE, Material.COBBLESTONE, Material.EMERALD,
-                    Material.STICK, Material.GRASS, Material.DIRT
+                    Material.STICK, Material.FURNACE, Material.DIRT
             );
 
             SearchGUI<Material> gui = SearchGUI.newGUI(18,
@@ -254,7 +254,7 @@ class GUIAdapterTest {
             List<Material> materials = Arrays.asList(
                     Material.POTATO, Material.DIAMOND, Material.REDSTONE,
                     Material.STONE, Material.COBBLESTONE, Material.EMERALD,
-                    Material.STICK, Material.GRASS, Material.DIRT
+                    Material.STICK, Material.FURNACE, Material.DIRT
             );
 
             SearchGUI<Material> gui = SearchGUI.newGUI(18,
