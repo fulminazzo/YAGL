@@ -566,15 +566,15 @@ class GUIAdapterTest {
             when(this.player.getInventory()).thenReturn(playerInventory);
 
             String[] materials = new String[]{
-                    "stone", "grass_block", "dirt", "cobblestone", "oak_planks",
+                    "stone", "quartz", "dirt", "cobblestone", "stick",
                     "bedrock", "sand", "gravel", "gold_ore", "iron_ore",
-                    "coal_ore", "oak_log", "oak_leaves", "glass", "lapis_ore",
+                    "coal_ore", "emerald_block", "string", "glass", "lapis_ore",
                     "lapis_block", "dispenser", "sandstone", "gold_block", "iron_block",
-                    "bricks", "tnt", "bookshelf", "mossy_cobblestone", "obsidian",
+                    "redstone", "tnt", "bookshelf", "mossy_cobblestone", "obsidian",
                     "torch", "fire", "water", "lava", "diamond_ore",
-                    "diamond_block", "crafting_table", "furnace", "redstone_ore", "ice",
+                    "diamond_block", "enchanted_book", "furnace", "redstone_ore", "ice",
                     "cactus", "jukebox", "netherrack", "soul_sand", "glowstone",
-                    "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
+                    "jack_o_lantern", "book", "melon", "netherrack", "ender_pearl"
             };
 
             FullscreenGUI gui = GUI.newFullscreenGUI(9);
