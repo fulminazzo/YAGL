@@ -1,10 +1,9 @@
 package net.minecraft.world.inventory;
 
-import net.minecraft.server.v1_14_R1.containers.Containers;
-import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.inventory.InventoryView;
+import net.minecraft.server.v1_14_R1.containers.Containers;
+import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
 
 import java.util.Random;
 
@@ -15,7 +14,7 @@ public abstract class Container {
     private final int ignored;
     private final int id;
 
-    private InventoryView openInventory;
+    private Object openInventory;
 
     public Container() {
         this.type = DefaultContainers.GENERIC_9x3;

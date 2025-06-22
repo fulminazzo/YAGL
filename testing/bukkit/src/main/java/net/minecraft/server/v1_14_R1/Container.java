@@ -8,7 +8,6 @@ import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class Container {
 
     private ContainerAccess containerAccess;
 
-    private InventoryView bukkitView;
+    private Object bukkitView;
 
     private CraftChatMessage.IChatBaseComponent title;
 
@@ -59,7 +58,7 @@ public class Container {
         this.slotListeners = new ArrayList<>();
     }
 
-    public void setBukkitView(InventoryView bukkitView) {
+    public void setBukkitView(Object bukkitView) {
         this.bukkitView = bukkitView;
     }
 
