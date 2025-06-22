@@ -28,6 +28,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +89,7 @@ class GUIManagerTest {
             when(p.getLogger()).thenReturn(logger);
 
             Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
+
             Viewer viewer = GUIManager.getViewer(player);
             new Refl<>(viewer).setFieldObject("openGUI", GUI.newGUI(9));
 
@@ -108,13 +111,38 @@ class GUIManagerTest {
         });
     }
 
-    @Test
-    void testExecuteUnsafeEventSevere() {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            // nextGUI size:stored
+            "0:false",
+            "0:true",
+            "9:false",
+            "9:true",
+    })
+    void testExecuteUnsafeEventSevere(String data) {
+        String[] tmp = data.split(":");
+        int size = Integer.parseInt(tmp[0]);
+        boolean stored = Boolean.parseBoolean(tmp[1]);
+
         BukkitTestUtils.mockPlugin(p -> {
             Logger logger = mock(Logger.class);
             when(p.getLogger()).thenReturn(logger);
 
             Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
+            PlayerInventory inventory = new MockPlayerInventory(player);
+            when(player.getInventory()).thenReturn(inventory);
+            inventory.setItem(0, new ItemStack(Material.STONE));
+
+            if (stored) {
+                PlayersInventoryCache inventoryCache = new Refl<>(GUIManager.getInstance())
+                        .getFieldObject("inventoryCache");
+                inventoryCache.storePlayerContents(player);
+                inventory.clear();
+            }
+
+            Viewer viewer = GUIManager.getViewer(player);
+            GUI nextGUI = size == 0 ? null : GUI.newGUI(size);
+            new Refl<>(viewer).setFieldObject("nextGUI", nextGUI);
 
             RuntimeException exception = new IllegalArgumentException("An error occurred");
 
@@ -130,6 +158,8 @@ class GUIManagerTest {
 
             verify(logger).log(eq(Level.SEVERE), any(), eq(exception));
             verify(player).closeInventory();
+
+            assertEquals(new ItemStack(Material.STONE), inventory.getItem(0));
 
             BukkitUtils.removePlayer(player);
         });
