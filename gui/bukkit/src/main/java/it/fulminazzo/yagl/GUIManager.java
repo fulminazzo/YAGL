@@ -132,9 +132,7 @@ public class GUIManager extends SingleInstance implements Listener {
                 player.getUniqueId(),
                 (p, n) -> getOpenGUIViewer(p).ifPresent((v, g) -> {
                     Class<?> clazz = g.getClass();
-                    String expectedClassName = SearchGUI.class.getCanonicalName() + ".SearchFullscreenGUI";
-                    Class<?> expectedClass = ReflectionUtils.getClass(expectedClassName);
-
+                    Class<?> expectedClass = SearchGUI.class.getDeclaredClasses()[0];
                     if (expectedClass.equals(clazz)) {
                         SearchGUI<?> searchGUI = new Refl<>(g).invokeMethod("getSearchGui");
                         if (n.equals(searchGUI.getQuery())) return;
