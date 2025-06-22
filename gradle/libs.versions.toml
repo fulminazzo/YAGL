@@ -23,7 +23,7 @@ junit = "5.11.4"
 mockito = "4.11.0"
 
 jbukkitartifact = "it.fulminazzo.jbukkit"
-jbukkit = "3.6"
+jbukkit = "3.7"
 
 io_netty = "4.1.112.Final"
 
