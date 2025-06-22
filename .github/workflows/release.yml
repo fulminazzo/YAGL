@@ -27,9 +27,10 @@ jobs:
       (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'master')
     steps:
       - name: Automatic Release
-        uses: Fulminazzo/java-automatic-release@v3
+        uses: Fulminazzo/java-automatic-release@v4
         with:
           java-version: 8
+          excluded-modules: 'testing common wrappers item gui'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_NAME: ${{ github.event.repository.name }}
