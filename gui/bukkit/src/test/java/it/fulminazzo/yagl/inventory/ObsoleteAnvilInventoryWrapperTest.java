@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.gui.FullscreenGUI;
 import it.fulminazzo.yagl.gui.SearchGUI;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.util.BukkitTestUtils;
@@ -77,7 +78,7 @@ class ObsoleteAnvilInventoryWrapperTest {
             assertEquals(new net.minecraft.server.v1_8_R3.ItemStack(Material.STONE, 64), craftItemStack);
 
             List<Slot> slots = activeContainer.getSlots();
-            assertEquals(activeContainer.getSize() + this.player.getInventory().getStorageContents().length, slots.size(),
+            assertEquals(activeContainer.getSize() + FullscreenGUI.SECOND_INVENTORY_SIZE, slots.size(),
                     "Slots size should be player inventory contents size plus container size");
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();
