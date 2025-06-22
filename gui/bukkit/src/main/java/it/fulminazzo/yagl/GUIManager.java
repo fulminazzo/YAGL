@@ -65,9 +65,14 @@ public class GUIManager extends SingleInstance implements Listener {
         removeAnvilRenameHandler(event.getPlayer());
     }
 
+    @SuppressWarnings("Convert2Lambda")
     @EventHandler
     void on(final @NotNull InventoryClickEvent event) {
-        executeUnsafeEvent(event, () ->
+        // Necessary explicit declaration for Groovy errors
+        executeUnsafeEvent(event, new Runnable() {
+
+            @Override
+            public void run() {
                 getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
                     int slot = event.getRawSlot();
                     if (slot < 0) g.clickOutsideAction().ifPresent(a -> a.execute(v, g));
@@ -76,8 +81,10 @@ public class GUIManager extends SingleInstance implements Listener {
                         @Nullable GUIContent content = g.getContent(v, slot);
                         if (content != null) content.clickItemAction().ifPresent(a -> a.execute(v, g, content));
                     }
-                })
-        );
+                });
+            }
+
+        });
     }
 
     @EventHandler
