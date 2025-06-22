@@ -357,18 +357,16 @@ class GUIManagerTest {
 
         @Test
         void testCloseEvent() {
-            TestUtils.disableFoliaRegionScheduler(() ->
-                    BukkitTestUtils.mockPlugin(p -> {
-                        AtomicBoolean expected = new AtomicBoolean(false);
-                        this.expected.onCloseGUI((v, g) -> expected.set(true));
+            BukkitTestUtils.mockPlugin(p -> {
+                AtomicBoolean expected = new AtomicBoolean(false);
+                this.expected.onCloseGUI((v, g) -> expected.set(true));
 
-                        InventoryViewWrapper view = getView();
+                InventoryViewWrapper view = getView();
 
-                        this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
+                this.guiManager.on(new InventoryCloseEvent(view.getWrapped()));
 
-                        assertTrue(expected.get(), "CloseGUI action was not invoked");
-                    })
-            );
+                assertTrue(expected.get(), "CloseGUI action was not invoked");
+            });
         }
 
         @Test
