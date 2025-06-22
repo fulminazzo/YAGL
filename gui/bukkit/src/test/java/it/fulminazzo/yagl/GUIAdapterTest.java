@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.action.GUIAction;
@@ -104,7 +105,7 @@ class GUIAdapterTest {
             when(this.player.getInventory()).thenReturn(playerInventory);
 
             new MockInventoryView(
-                    mock(Inventory.class),
+                    new MockInventory(9),
                     this.player,
                     title
             );
@@ -335,7 +336,7 @@ class GUIAdapterTest {
             when(this.player.getInventory()).thenReturn(playerInventory);
 
             new MockInventoryView(
-                    mock(Inventory.class),
+                    new MockInventory(9),
                     this.player,
                     ""
             );
