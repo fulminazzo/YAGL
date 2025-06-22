@@ -1,11 +1,10 @@
 package it.fulminazzo.yagl.metadatable;
 
 import it.fulminazzo.yagl.TestUtils;
-import it.fulminazzo.yagl.contents.ItemGUIContent;
-import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.guis.GUIType;
-import it.fulminazzo.yagl.guis.ResizableGUI;
-import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.content.ItemGUIContent;
+import it.fulminazzo.yagl.gui.GUI;
+import it.fulminazzo.yagl.gui.GUIType;
+import it.fulminazzo.yagl.gui.ResizableGUI;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

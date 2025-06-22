@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.particles.Particle;
-import it.fulminazzo.yagl.utils.EnumUtils;
+import it.fulminazzo.yagl.particle.Particle;
+import it.fulminazzo.yagl.util.EnumUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

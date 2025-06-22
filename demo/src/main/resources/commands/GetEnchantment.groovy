@@ -1,6 +1,6 @@
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple
 import it.fulminazzo.yagl.WrappersAdapter
-import it.fulminazzo.yagl.wrappers.Enchantment
+import it.fulminazzo.yagl.wrapper.Enchantment
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

@@ -3,7 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.JarUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.yagl.commands.ShellCommand;
+import it.fulminazzo.yagl.command.ShellCommand;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;

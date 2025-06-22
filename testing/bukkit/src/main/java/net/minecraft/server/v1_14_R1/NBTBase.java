@@ -1,7 +1,7 @@
 package net.minecraft.server.v1_14_R1;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.yagl.exceptions.NotImplementedException;
+import it.fulminazzo.yagl.exception.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class NBTBase extends FieldEquable {

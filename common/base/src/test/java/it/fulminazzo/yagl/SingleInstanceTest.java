@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.exceptions.InstanceAlreadyInitializedException;
-import it.fulminazzo.yagl.exceptions.InstanceNotInitializedException;
+import it.fulminazzo.yagl.exception.InstanceAlreadyInitializedException;
+import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

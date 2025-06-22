@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.yagl.utils.BukkitTestUtils;
-import it.fulminazzo.yagl.utils.NMSUtils;
+import it.fulminazzo.yagl.util.BukkitTestUtils;
+import it.fulminazzo.yagl.util.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;

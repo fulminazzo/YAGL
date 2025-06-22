@@ -1,9 +1,9 @@
 import it.fulminazzo.fulmicollection.objects.Refl
 import it.fulminazzo.yagl.GUIManager
-import it.fulminazzo.yagl.contents.ItemGUIContent
-import it.fulminazzo.yagl.guis.SearchGUI
-import it.fulminazzo.yagl.items.BukkitItem
-import it.fulminazzo.yagl.utils.NMSUtils
+import it.fulminazzo.yagl.content.ItemGUIContent
+import it.fulminazzo.yagl.gui.SearchGUI
+import it.fulminazzo.yagl.item.BukkitItem
+import it.fulminazzo.yagl.util.NMSUtils
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

@@ -39,8 +39,9 @@ First introduce the **Fulminazzo repository**, from where the artifacts will be 
 Then, add the **dependency**
 
 ```xml
+
 <dependency>
-    <groupId>it.fulminazzo.yagl.wrappers</groupId>
+    <groupId>it.fulminazzo.yagl.wrapperit.fulminazzo.yagl.wrapper</groupId>
     <artifactId>wrappers-{MODULE}</artifactId>
     <version>{LATEST}</version>
 </dependency>
@@ -73,7 +74,7 @@ Then, add the **dependency**
 
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.yagl.wrappers:wrappers-{MODULE}:{LATEST}'
+    implementation 'it.fulminazzo.yagl.wrapper:wrappers-{MODULE}:{LATEST}'
 }
 ```
 

@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.inventory;
 
-import it.fulminazzo.yagl.utils.NMSUtils;
+import it.fulminazzo.yagl.util.NMSUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

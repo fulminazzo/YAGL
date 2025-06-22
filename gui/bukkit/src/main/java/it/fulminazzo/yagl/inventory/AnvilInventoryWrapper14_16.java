@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.utils.NMSUtils;
+import it.fulminazzo.yagl.util.NMSUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;

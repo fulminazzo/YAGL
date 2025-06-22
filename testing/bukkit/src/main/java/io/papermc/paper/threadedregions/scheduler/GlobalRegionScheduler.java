@@ -1,6 +1,6 @@
 package io.papermc.paper.threadedregions.scheduler;
 
-import it.fulminazzo.yagl.exceptions.NotImplementedException;
+import it.fulminazzo.yagl.exception.NotImplementedException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 

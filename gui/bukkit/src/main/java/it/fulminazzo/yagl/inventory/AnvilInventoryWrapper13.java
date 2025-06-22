@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.guis.SearchGUI;
-import it.fulminazzo.yagl.utils.NMSUtils;
+import it.fulminazzo.yagl.gui.SearchGUI;
+import it.fulminazzo.yagl.util.NMSUtils;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.wrappers.Sound;
+import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.Before1_;
 import org.bukkit.Location;

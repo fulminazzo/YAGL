@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.items.AbstractItem;
+import it.fulminazzo.yagl.item.AbstractItem;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Material;

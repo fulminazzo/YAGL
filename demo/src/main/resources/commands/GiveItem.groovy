@@ -1,8 +1,8 @@
-import it.fulminazzo.yagl.items.BukkitItem
-import it.fulminazzo.yagl.items.Item
-import it.fulminazzo.yagl.items.fields.ItemFlag
-import it.fulminazzo.yagl.wrappers.Enchantment
-import it.fulminazzo.yagl.wrappers.WrapperParser
+import it.fulminazzo.yagl.item.BukkitItem
+import it.fulminazzo.yagl.item.Item
+import it.fulminazzo.yagl.item.field.ItemFlag
+import it.fulminazzo.yagl.wrapper.Enchantment
+import it.fulminazzo.yagl.wrapper.WrapperParser
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

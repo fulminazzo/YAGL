@@ -1,13 +1,13 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.items.AbstractItem;
-import it.fulminazzo.yagl.particles.BlockDataOption;
-import it.fulminazzo.yagl.particles.Particle;
-import it.fulminazzo.yagl.utils.EnumUtils;
-import it.fulminazzo.yagl.wrappers.Enchantment;
-import it.fulminazzo.yagl.wrappers.Potion;
-import it.fulminazzo.yagl.wrappers.PotionEffect;
-import it.fulminazzo.yagl.wrappers.Sound;
+import it.fulminazzo.yagl.item.AbstractItem;
+import it.fulminazzo.yagl.particle.BlockDataOption;
+import it.fulminazzo.yagl.particle.Particle;
+import it.fulminazzo.yagl.util.EnumUtils;
+import it.fulminazzo.yagl.wrapper.Enchantment;
+import it.fulminazzo.yagl.wrapper.Potion;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
+import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.CacheMap;
 import it.fulminazzo.fulmicollection.structures.tuples.Triple;

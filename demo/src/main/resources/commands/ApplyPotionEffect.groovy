@@ -1,5 +1,5 @@
 import it.fulminazzo.yagl.WrappersAdapter
-import it.fulminazzo.yagl.wrappers.PotionEffect
+import it.fulminazzo.yagl.wrapper.PotionEffect
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

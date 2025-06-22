@@ -1,8 +1,8 @@
-import it.fulminazzo.yagl.items.BukkitItem
-import it.fulminazzo.yagl.items.Item
-import it.fulminazzo.yagl.items.recipes.FurnaceRecipe
-import it.fulminazzo.yagl.items.recipes.ShapedRecipe
-import it.fulminazzo.yagl.items.recipes.ShapelessRecipe
+import it.fulminazzo.yagl.item.BukkitItem
+import it.fulminazzo.yagl.item.Item
+import it.fulminazzo.yagl.item.recipe.FurnaceRecipe
+import it.fulminazzo.yagl.item.recipe.ShapedRecipe
+import it.fulminazzo.yagl.item.recipe.ShapelessRecipe
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

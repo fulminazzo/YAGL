@@ -118,7 +118,7 @@ therefore it is **not necessary** to include it later.
 `bukkit` allows the direct **conversion** from a **YAGL `Item`** to a **Bukkit `ItemStack`**.
 It does so thanks to
 [ItemAdapter](bukkit/src/main/java/it/fulminazzo/yagl/ItemAdapter.java) and
-[BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/items/BukkitItem.java),
+[BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/item/BukkitItem.java),
 a special **extension of `Item`** with which it is possible to work **directly** with **Bukkit classes** such as
 `Material`, or `ItemMeta`.
 More specifically, thanks to the `BukkitItem#create(Class, Consumer)`, it is possible to **create an `ItemStack` from an `Item`**
