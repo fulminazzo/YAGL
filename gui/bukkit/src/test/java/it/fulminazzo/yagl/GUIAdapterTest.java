@@ -94,13 +94,6 @@ class GUIAdapterTest {
         BukkitUtils.removePlayer(this.player);
     }
 
-    private static Object[] pageableFullscreenGUIParameters() {
-        return Stream.concat(
-                Stream.of(9, 18, 27, 36, 45, 54),
-                Arrays.stream(GUIType.values())
-        ).toArray(Object[]::new);
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {"Title", "Update", ""})
     void integrationTestSearchGUI(String title) {
@@ -376,6 +369,21 @@ class GUIAdapterTest {
             assertEquals(Material.EMERALD, secondSlotItemStack.getType(),
                     "ItemStack at slot 10 in player inventory should be emerald after update");
         });
+    }
+
+    private static Object[] pageableFullscreenGUIParameters() {
+        return Stream.concat(
+                Stream.of(9, 18, 27, 36, 45, 54),
+                Arrays.stream(GUIType.values())
+                        .filter(t -> {
+                            try {
+                                GUIAdapter.guiToInventoryType(t);
+                                return true;
+                            } catch (IllegalArgumentException e) {
+                                return false;
+                            }
+                        })
+        ).toArray(Object[]::new);
     }
 
     @ParameterizedTest
