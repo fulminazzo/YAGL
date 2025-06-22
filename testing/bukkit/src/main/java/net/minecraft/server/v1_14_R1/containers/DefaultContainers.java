@@ -35,7 +35,13 @@ public enum DefaultContainers implements Containers {
     private final @NotNull InventoryType inventoryType;
 
     DefaultContainers() {
-        InventoryType inventoryType = InventoryType.valueOf(name());
+        InventoryType inventoryType;
+        try {
+            inventoryType = InventoryType.valueOf(name());
+        } catch (IllegalArgumentException e) {
+            // Older version, did not have the inventoryType
+            inventoryType = InventoryType.CREATIVE;
+        }
         this.size = inventoryType.getDefaultSize();
         this.inventoryType = inventoryType;
     }
