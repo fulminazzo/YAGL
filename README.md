@@ -125,10 +125,11 @@ These are some of the pending features that are planned for the future:
 
 - [x] possibility to serialize data to **different file formats** like **JSON**, **XML**, **properties**.
       Completed using the [Configurations library](https://github.com/fulminazzo/Configurations);
-- [ ] add support for [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) in variable replacements;
+- [x] add support for [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) in variable replacements;
 - [ ] a special `GUIContent` that allows animated items;
 - [ ] a special `GUIContent` that allows items which can be toggled based on user click;
-- [ ] online web editor to customize and visualize data in real time;
+- [x] [fullscreen `GUI`](tree/main/gui/base/src/main/java/it/fulminazzo/yagl/gui/FullSizeGUI.java);
+- [ ] online web editor to customize and visualize data in real time.
 
 ## Media
 
