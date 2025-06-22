@@ -138,6 +138,7 @@ class NMSUtilsTest extends BukkitUtils {
     }
 
     private static Object[][] inventoryTypeStrings() {
+        check();
         return Arrays.stream(InventoryType.values())
                 .map(t -> new Object[]{t, null})
                 .peek(t -> {
