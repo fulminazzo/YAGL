@@ -68,12 +68,13 @@ public class GUIManager extends SingleInstance implements Listener {
     @SuppressWarnings("Convert2Lambda")
     @EventHandler
     void on(final @NotNull InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
         // Necessary explicit declaration for Groovy errors
-        executeUnsafeEvent(event, new Runnable() {
+        executeUnsafeEvent(event, player, new Runnable() {
 
             @Override
             public void run() {
-                getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> {
+                getOpenGUIViewer(player).ifPresent((v, g) -> {
                     int slot = event.getRawSlot();
                     if (slot < 0) g.clickOutsideAction().ifPresent(a -> a.execute(v, g));
                     else if (slot < g.size()) {
@@ -89,15 +90,16 @@ public class GUIManager extends SingleInstance implements Listener {
 
     @EventHandler
     void on(final @NotNull InventoryDragEvent event) {
-        executeUnsafeEvent(event, () ->
-                getOpenGUIViewer(event.getWhoClicked()).ifPresent((v, g) -> event.setCancelled(true))
+        Player player = (Player) event.getWhoClicked();
+        executeUnsafeEvent(event, player, () ->
+                getOpenGUIViewer(player).ifPresent((v, g) -> event.setCancelled(true))
         );
     }
 
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
-        executeUnsafeEvent(event, () -> {
-            Player player = (Player) event.getPlayer();
+        Player player = (Player) event.getPlayer();
+        executeUnsafeEvent(event, player, () -> {
             Viewer viewer = getViewer(player);
             GUIAdapter.closeGUI(viewer);
             restorePlayerContents(player, false);
@@ -161,12 +163,23 @@ public class GUIManager extends SingleInstance implements Listener {
     }
 
     /**
-     * Executes the given {@link Runnable} in a safe system for exceptions.
+     * Tries to execute the specified function with the associated event.
+     * If an exception occurs,
+     * <ul>
+     *     <li>if {@link Viewer#getOpenGUI()} is not null, it means that the exception
+     *     was not that bad to break the GUI functioning. Therefore, only a log
+     *     message will be shown with the stacktrace;</li>
+     *     <li>if {@link Viewer#getOpenGUI()} is null, it means that the exception
+     *     broke the normal functioning and the player must be forced to close the inventory
+     *     to avoid any more problems.</li>
+     * </ul>
      *
      * @param event  the event
-     * @param action the action to execute
+     * @param target the target of the event
+     * @param action the function to execute
      */
     static void executeUnsafeEvent(final @NotNull InventoryEvent event,
+                                   final @NotNull Player target,
                                    final @NotNull Runnable action) {
         try {
             action.run();
@@ -174,15 +187,19 @@ public class GUIManager extends SingleInstance implements Listener {
             // Normally, catching Exception is bad.
             // However, in this case we want to avoid any possible glitch or
             // inconsistency with GUIs (for example non-responsive contents).
+            Viewer viewer = getViewer(target);
+            Level level = viewer.getOpenGUI() == null ? Level.SEVERE : Level.WARNING;
+
             GUIAdapter.getProvidingPlugin().getLogger().log(
-                    Level.WARNING,
+                    level,
                     "An error occurred while handling event " + event.getClass().getSimpleName(),
                     e
             );
-            new ArrayList<>(event.getViewers()).forEach(v -> {
-                v.closeInventory();
-                if (v instanceof Player) restorePlayerContents((Player) v, true);
-            });
+
+            if (level == Level.SEVERE) {
+                target.closeInventory();
+                restorePlayerContents(target, true);
+            }
         }
     }
 
