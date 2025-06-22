@@ -6,6 +6,7 @@ import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.yagl.item.AbstractItem;
 import it.fulminazzo.yagl.particle.Particle;
 import it.fulminazzo.yagl.particle.*;
@@ -281,7 +282,9 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(21)
     void testPlaySound() {
+        check();
         Sound sound = new Sound("BLOCK_GLASS_STEP",10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
 
@@ -305,7 +308,9 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(21)
     void testPlaySoundNoCategory() {
+        check();
         Sound sound = new Sound("BLOCK_GLASS_STEP",10, 2);
         Player player = mock(Player.class);
 
@@ -325,7 +330,9 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(21)
     void testPlaySoundInvalidCategory() {
+        check();
         Player player = mock(Player.class);
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 WrappersAdapter.playSound(player, new Sound("BLOCK_ANVIL_FALL",
@@ -333,7 +340,9 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(21)
     void testCustomPlaySound() {
+        check();
         Sound sound = new Sound(
                 "custom_sound",10, 2, SoundCategory.BLOCKS.name());
         Player player = mock(Player.class);
@@ -358,7 +367,9 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     @Test
+    @Before1_(21)
     void testCustomPlaySoundNoCategory() {
+        check();
         Sound sound = new Sound(
                 "custom_sound",10, 2);
         Player player = mock(Player.class);
