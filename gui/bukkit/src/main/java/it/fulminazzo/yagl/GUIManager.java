@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * A general manager class that controls most {@link GUI} features.
@@ -142,6 +144,28 @@ public class GUIManager extends SingleInstance implements Listener {
         if (handler != null) {
             handler.remove();
             this.anvilRenameHandlers.remove(handler);
+        }
+    }
+
+    /**
+     * Executes the given {@link Runnable} in a safe system for exceptions.
+     *
+     * @param event  the event
+     * @param action the action to execute
+     */
+    static void executeUnsafeEvent(final @NotNull InventoryEvent event,
+                                   final @NotNull Runnable action) {
+        try {
+            action.run();
+        } catch (Exception e) {
+            // Normally, catching Exception is bad.
+            // However, in this case we want to avoid any possible glitch or
+            // inconsistency with GUIs (for example non-responsive contents).
+            GUIAdapter.getProvidingPlugin().getLogger().log(
+                    Level.WARNING,
+                    "An error occurred while handling event " + event.getClass().getSimpleName(),
+                    e
+            );
         }
     }
 
