@@ -179,6 +179,10 @@ public class GUIManager extends SingleInstance implements Listener {
                     "An error occurred while handling event " + event.getClass().getSimpleName(),
                     e
             );
+            new ArrayList<>(event.getViewers()).forEach(v -> {
+                v.closeInventory();
+                if (v instanceof Player) restorePlayerContents((Player) v);
+            });
         }
     }
 
