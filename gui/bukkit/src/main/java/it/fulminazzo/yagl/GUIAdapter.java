@@ -148,30 +148,31 @@ public final class GUIAdapter {
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
+        if (!(gui instanceof FullscreenGUI))
+            throw new IllegalArgumentException("updatePlayerGUI can only be used with FullscreenGUI");
+
         GUIManager.executeUnsafeEvent(event, player, () ->
                 openGUIHelper(gui, viewer, (p, v) -> {
-                    if (gui instanceof FullscreenGUI) {
-                        FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
-                        GUI upperGUI = fullscreenGUI.getUpperGUI();
-                        GUI lowerGUI = fullscreenGUI.getLowerGUI();
-                        upperGUI.apply(upperGUI);
-                        lowerGUI.apply(lowerGUI);
+                    FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
+                    GUI upperGUI = fullscreenGUI.getUpperGUI();
+                    GUI lowerGUI = fullscreenGUI.getLowerGUI();
+                    upperGUI.apply(upperGUI);
+                    lowerGUI.apply(lowerGUI);
 
-                        InventoryView inventoryView = p.getOpenInventory();
-                        String title = MessageUtils.color(gui.getTitle());
+                    InventoryView inventoryView = p.getOpenInventory();
+                    String title = MessageUtils.color(gui.getTitle());
 
-                        if (!inventoryView.getTitle().equals(title)) {
-                            fillInventoryWithGUIContents(upperGUI, v,
-                                    itemMetaClass, metaFunction,
-                                    inventoryView.getTopInventory(), upperGUI.size());
+                    if (!inventoryView.getTitle().equals(title)) {
+                        fillInventoryWithGUIContents(upperGUI, v,
+                                itemMetaClass, metaFunction,
+                                inventoryView.getTopInventory(), upperGUI.size());
 
-                            if (title != null) NMSUtils.updateInventoryTitle(p, title);
-                        }
+                        if (title != null) NMSUtils.updateInventoryTitle(p, title);
+                    }
 
-                        int upperGUISize = upperGUI.size();
-                        int lowerGUISize = lowerGUI.size();
-                        setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
-                    } else throw new IllegalArgumentException("updatePlayerGUI can only be used with FullscreenGUI");
+                    int upperGUISize = upperGUI.size();
+                    int lowerGUISize = lowerGUI.size();
+                    setGUIContentsToPlayerInventory(gui, itemMetaClass, metaFunction, p, lowerGUISize, upperGUISize);
                 })
         );
     }
