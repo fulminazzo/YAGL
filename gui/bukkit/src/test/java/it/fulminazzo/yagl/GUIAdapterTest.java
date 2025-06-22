@@ -98,79 +98,81 @@ class GUIAdapterTest {
     @ParameterizedTest
     @ValueSource(strings = {"Title", "Update", ""})
     void integrationTestSearchGUI(String title) {
-        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
-            when(NMSUtils.getServerVersion()).thenReturn(17.0);
+        TestUtils.disableFoliaRegionScheduler(() ->
+                BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                    when(NMSUtils.getServerVersion()).thenReturn(17.0);
 
-            PlayerInventory playerInventory = new MockPlayerInventory(this.player);
-            when(this.player.getInventory()).thenReturn(playerInventory);
+                    PlayerInventory playerInventory = new MockPlayerInventory(this.player);
+                    when(this.player.getInventory()).thenReturn(playerInventory);
 
-            new MockInventoryView(
-                    mock(Inventory.class),
-                    this.player,
-                    title
-            );
+                    new MockInventoryView(
+                            mock(Inventory.class),
+                            this.player,
+                            title
+                    );
 
-            Viewer viewer = GUIManager.getViewer(this.player);
+                    Viewer viewer = GUIManager.getViewer(this.player);
 
-            List<Material> materials = Arrays.asList(
-                    Material.POTATO, Material.DIAMOND, Material.REDSTONE,
-                    Material.STONE, Material.COBBLESTONE, Material.EMERALD,
-                    Material.STICK, Material.GRASS, Material.DIRT
-            );
+                    List<Material> materials = Arrays.asList(
+                            Material.POTATO, Material.DIAMOND, Material.REDSTONE,
+                            Material.STONE, Material.COBBLESTONE, Material.EMERALD,
+                            Material.STICK, Material.GRASS, Material.DIRT
+                    );
 
-            SearchGUI<Material> gui = SearchGUI.newGUI(18,
-                            m -> ItemGUIContent.newInstance(m.name()),
-                            (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
-                            materials
-                    )
-                    .setTitle("Update")
-                    .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
+                    SearchGUI<Material> gui = SearchGUI.newGUI(18,
+                                    m -> ItemGUIContent.newInstance(m.name()),
+                                    (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
+                                    materials
+                            )
+                            .setTitle("Update")
+                            .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
 
-            gui.open(viewer);
+                    gui.open(viewer);
 
-            for (int i = 9; i < 9 + 9; i++) {
-                ItemStack itemStack = playerInventory.getItem(i);
-                assertNotNull(itemStack,
-                        "ItemStack at player inventory slot " + i + " should be not null");
-                assertEquals(materials.get(i - 9), itemStack.getType(),
-                        "ItemStack at player inventory slot " + i + " does not match expected item");
-            }
+                    for (int i = 9; i < 9 + 9; i++) {
+                        ItemStack itemStack = playerInventory.getItem(i);
+                        assertNotNull(itemStack,
+                                "ItemStack at player inventory slot " + i + " should be not null");
+                        assertEquals(materials.get(i - 9), itemStack.getType(),
+                                "ItemStack at player inventory slot " + i + " does not match expected item");
+                    }
 
-            for (int i = 18; i < 27; i++) {
-                ItemStack itemStack = playerInventory.getItem(i);
-                assertNotNull(itemStack,
-                        "ItemStack at player inventory slot " + i + " should be not null");
-                assertEquals(Material.GLASS, itemStack.getType(),
-                        "ItemStack at player inventory slot " + i + " does not match expected item");
-            }
+                    for (int i = 18; i < 27; i++) {
+                        ItemStack itemStack = playerInventory.getItem(i);
+                        assertNotNull(itemStack,
+                                "ItemStack at player inventory slot " + i + " should be not null");
+                        assertEquals(Material.GLASS, itemStack.getType(),
+                                "ItemStack at player inventory slot " + i + " does not match expected item");
+                    }
 
-            c.pipeline().fireChannelRead(new PacketPlayInItemName("stone"));
+                    c.pipeline().fireChannelRead(new PacketPlayInItemName("stone"));
 
-            List<Material> expected = Arrays.asList(
-                    Material.REDSTONE,
-                    Material.STONE, Material.COBBLESTONE
-            );
-            for (int i = 9; i < 12; i++) {
-                ItemStack itemStack = playerInventory.getItem(i);
-                assertNotNull(itemStack,
-                        "ItemStack at player inventory slot " + i + " should be not null");
-                assertEquals(expected.get(i - 9), itemStack.getType(),
-                        "ItemStack at player inventory slot " + i + " does not match expected item");
-            }
-            for (int i = 12; i < 9 + 9; i++) {
-                ItemStack itemStack = playerInventory.getItem(i);
-                assertNull(itemStack,
-                        "ItemStack at player inventory slot " + i + " should be null");
-            }
+                    List<Material> expected = Arrays.asList(
+                            Material.REDSTONE,
+                            Material.STONE, Material.COBBLESTONE
+                    );
+                    for (int i = 9; i < 12; i++) {
+                        ItemStack itemStack = playerInventory.getItem(i);
+                        assertNotNull(itemStack,
+                                "ItemStack at player inventory slot " + i + " should be not null");
+                        assertEquals(expected.get(i - 9), itemStack.getType(),
+                                "ItemStack at player inventory slot " + i + " does not match expected item");
+                    }
+                    for (int i = 12; i < 9 + 9; i++) {
+                        ItemStack itemStack = playerInventory.getItem(i);
+                        assertNull(itemStack,
+                                "ItemStack at player inventory slot " + i + " should be null");
+                    }
 
-            for (int i = 18; i < 27; i++) {
-                ItemStack itemStack = playerInventory.getItem(i);
-                assertNotNull(itemStack,
-                        "ItemStack at player inventory slot " + i + " should be not null");
-                assertEquals(Material.GLASS, itemStack.getType(),
-                        "ItemStack at player inventory slot " + i + " does not match expected item");
-            }
-        });
+                    for (int i = 18; i < 27; i++) {
+                        ItemStack itemStack = playerInventory.getItem(i);
+                        assertNotNull(itemStack,
+                                "ItemStack at player inventory slot " + i + " should be not null");
+                        assertEquals(Material.GLASS, itemStack.getType(),
+                                "ItemStack at player inventory slot " + i + " does not match expected item");
+                    }
+                })
+        );
     }
 
     @Test

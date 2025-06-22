@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -80,37 +81,41 @@ class AnvilRenameHandlerTest {
 
     @Test
     void testRemove() {
-        BukkitTestUtils.mockNMSUtils(c -> {
-            BukkitTask task = mock(BukkitTask.class);
-            Refl<AnvilRenameHandler> handler = new Refl<>(this.handler);
-            handler.setFieldObject("handleTask", task);
+        TestUtils.disableFoliaRegionScheduler(() ->
+                BukkitTestUtils.mockNMSUtils(c -> {
+                    BukkitTask task = mock(BukkitTask.class);
+                    Refl<AnvilRenameHandler> handler = new Refl<>(this.handler);
+                    handler.setFieldObject("handleTask", task);
 
-            this.handler.remove();
+                    this.handler.remove();
 
-            verify(c.pipeline()).remove(
-                    AnvilRenameHandler.class.getSimpleName() +
-                            "-" +
-                            this.player.getUniqueId().toString().replace("-", "_")
-            );
-            assertNull(handler.getFieldObject("handleTask"));
-        });
+                    verify(c.pipeline()).remove(
+                            AnvilRenameHandler.class.getSimpleName() +
+                                    "-" +
+                                    this.player.getUniqueId().toString().replace("-", "_")
+                    );
+                    assertNull(handler.getFieldObject("handleTask"));
+                })
+        );
     }
 
     @Test
     void testObsoleteRead() {
-        BukkitTestUtils.mockPlugin(p -> {
-            try {
-                String expected = "Hello, world!";
+        TestUtils.disableFoliaRegionScheduler(() ->
+                BukkitTestUtils.mockPlugin(p -> {
+                    try {
+                        String expected = "Hello, world!";
 
-                Object packet = new PacketPlayInCustomPayload("MC|ItemName", expected);
+                        Object packet = new PacketPlayInCustomPayload("MC|ItemName", expected);
 
-                this.handler.channelRead(this.context, packet);
+                        this.handler.channelRead(this.context, packet);
 
-                assertEquals(expected, this.lastRead);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+                        assertEquals(expected, this.lastRead);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+        );
     }
 
     @Test
@@ -124,36 +129,40 @@ class AnvilRenameHandlerTest {
 
     @Test
     void testLegacyRead() {
-        BukkitTestUtils.mockPlugin(p -> {
-            try {
-                String expected = "Hello, world!";
+        TestUtils.disableFoliaRegionScheduler(() ->
+                BukkitTestUtils.mockPlugin(p -> {
+                    try {
+                        String expected = "Hello, world!";
 
-                Object packet = new PacketPlayInItemName(expected);
+                        Object packet = new PacketPlayInItemName(expected);
 
-                this.handler.channelRead(this.context, packet);
+                        this.handler.channelRead(this.context, packet);
 
-                assertEquals(expected, this.lastRead);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+                        assertEquals(expected, this.lastRead);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+        );
     }
 
     @Test
     void testRead() {
-        BukkitTestUtils.mockPlugin(p -> {
-            try {
-                String expected = "Hello, world!";
+        TestUtils.disableFoliaRegionScheduler(() ->
+                BukkitTestUtils.mockPlugin(p -> {
+                    try {
+                        String expected = "Hello, world!";
 
-                Object packet = new ServerboundRenameItemPacket(expected);
+                        Object packet = new ServerboundRenameItemPacket(expected);
 
-                this.handler.channelRead(this.context, packet);
+                        this.handler.channelRead(this.context, packet);
 
-                assertEquals(expected, this.lastRead);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+                        assertEquals(expected, this.lastRead);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+        );
     }
 
     @Test
