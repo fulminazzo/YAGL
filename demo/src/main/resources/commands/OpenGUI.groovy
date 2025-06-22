@@ -22,7 +22,7 @@ def run = { CommandSender sender, String label, String[] args ->
 
             GUI secretGUI = GUI.newGUI(9)
                     .setTitle('&cSecret GUI')
-                    .fill(border)
+                    .fill(corner)
                     .setContents(4, Item.newItem('obsidian').setDisplayName('&4&lYOU SHOULD NOT BE HERE'))
                     .setContents(0, ItemGUIContent.newInstance('barrier')
                             .setDisplayName('&cGo back')
