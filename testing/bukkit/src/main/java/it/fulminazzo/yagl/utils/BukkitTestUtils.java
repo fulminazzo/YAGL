@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.utils;
 
 import io.netty.channel.*;
+import it.fulminazzo.yagl.TestUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,14 +33,16 @@ public final class BukkitTestUtils {
      * @param function the function
      */
     public static void mockPluginAndNMSUtils(final @NotNull BiConsumer<Plugin, Channel> function) {
-        try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
-            JavaPlugin plugin = mock(JavaPlugin.class);
-            when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
-            when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
-            when(plugin.getLogger()).thenReturn(Logger.getLogger(BukkitTestUtils.class.getName()));
+        TestUtils.disableFoliaRegionScheduler(() -> {
+            try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
+                JavaPlugin plugin = mock(JavaPlugin.class);
+                when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
+                when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
+                when(plugin.getLogger()).thenReturn(Logger.getLogger(BukkitTestUtils.class.getName()));
 
-            mockNMSUtils(c -> function.accept(plugin, c));
-        }
+                mockNMSUtils(c -> function.accept(plugin, c));
+            }
+        });
     }
 
     /**
