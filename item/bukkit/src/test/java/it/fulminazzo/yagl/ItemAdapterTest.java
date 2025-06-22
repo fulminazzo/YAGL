@@ -144,7 +144,9 @@ class ItemAdapterTest extends BukkitUtils {
         }
 
         @Test
+        @After1_(11)
         void testNotDamageableItemMeta() {
+            check();
             ItemFactory itemFactory = mock(ItemFactory.class);
             when(itemFactory.getItemMeta(any(Material.class))).thenReturn(mock(ItemMeta.class));
 
