@@ -6,8 +6,10 @@ import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.yagl.TestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.craftbukkit.v1_8_R3.scheduler.CraftTask;
 import org.bukkit.scheduler.BukkitTask;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -88,6 +90,28 @@ class BukkitSchedulerTest extends BukkitUtils {
         refl.invokeMethod(methodName, method.getParameterTypes(), parameters);
 
         new Refl<>(verify(this.actualTask)).invokeMethod(actualMethodName,
+                method.getParameterTypes(),
+                parameters);
+    }
+
+    @Test
+    void testLegacyIsCancelledMethod() {
+        BukkitTask actualTask = new CraftTask();
+        BukkitScheduler.BukkitSchedulerTask task = new BukkitScheduler.BukkitSchedulerTask(actualTask);
+
+        String methodName = "isCancelled";
+        String actualMethodName = "isCancelled";
+
+        Refl<?> refl = new Refl<>(task);
+
+        Method method = refl.getMethods(m -> m.getName().equals(methodName)).get(0);
+        Object[] parameters = Arrays.stream(method.getParameterTypes())
+                .map(TestUtils::mockParameter)
+                .toArray();
+
+        refl.invokeMethod(methodName, method.getParameterTypes(), parameters);
+
+        new Refl<>(verify(actualTask)).invokeMethod(actualMethodName,
                 method.getParameterTypes(),
                 parameters);
     }
