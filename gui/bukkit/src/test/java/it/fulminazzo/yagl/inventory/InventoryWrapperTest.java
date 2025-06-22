@@ -1,7 +1,6 @@
 package it.fulminazzo.yagl.inventory;
 
 import it.fulminazzo.jbukkit.BukkitUtils;
-import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
 import org.bukkit.Bukkit;
@@ -27,28 +26,26 @@ class InventoryWrapperTest {
 
     @Test
     void testOpenSchedulesIfNotOnPrimaryThread() {
-        TestUtils.disableFoliaRegionScheduler(() ->
-                BukkitTestUtils.mockPlugin(p -> {
-                    when(Bukkit.getServer().isPrimaryThread()).thenReturn(false);
+        BukkitTestUtils.mockPlugin(p -> {
+            when(Bukkit.getServer().isPrimaryThread()).thenReturn(false);
 
-                    BukkitScheduler scheduler = mock(BukkitScheduler.class);
-                    when(scheduler.runTask(any(), any(Runnable.class))).thenAnswer(a -> {
-                        Runnable runnable = a.getArgument(1);
-                        runnable.run();
-                        return null;
-                    });
-                    when(Bukkit.getServer().getScheduler()).thenReturn(scheduler);
+            BukkitScheduler scheduler = mock(BukkitScheduler.class);
+            when(scheduler.runTask(any(), any(Runnable.class))).thenAnswer(a -> {
+                Runnable runnable = a.getArgument(1);
+                runnable.run();
+                return null;
+            });
+            when(Bukkit.getServer().getScheduler()).thenReturn(scheduler);
 
-                    InventoryWrapperImpl inventory = mock(InventoryWrapperImpl.class);
-                    doCallRealMethod().when(inventory).open(any());
+            InventoryWrapperImpl inventory = mock(InventoryWrapperImpl.class);
+            doCallRealMethod().when(inventory).open(any());
 
-                    Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Fulminazzo");
+            Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Fulminazzo");
 
-                    inventory.open(player);
+            inventory.open(player);
 
-                    verify(inventory).internalOpen(player);
-                })
-        );
+            verify(inventory).internalOpen(player);
+        });
     }
 
     private static Object[][] inventoryData() {
