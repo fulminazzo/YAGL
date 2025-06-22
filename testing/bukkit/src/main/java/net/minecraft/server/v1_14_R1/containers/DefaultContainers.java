@@ -9,17 +9,17 @@ public enum DefaultContainers implements Containers {
 
     GENERIC_9x1(9, InventoryType.CHEST),
     GENERIC_9x2(18, InventoryType.CHEST),
-    GENERIC_9x3(InventoryType.CHEST),
+    GENERIC_9x3("CHEST"),
     GENERIC_9x4(36, InventoryType.CHEST),
     GENERIC_9x5(45, InventoryType.CHEST),
     GENERIC_9x6(54, InventoryType.CHEST),
-    GENERIC_3x3(InventoryType.DROPPER),
+    GENERIC_3x3("DROPPER"),
     ANVIL,
     BEACON,
     BLAST_FURNACE,
-    BREWING_STAND(InventoryType.BREWING),
+    BREWING_STAND("BREWING"),
     CRAFTING,
-    ENCHANTMENT(InventoryType.ENCHANTING),
+    ENCHANTMENT("ENCHANTING"),
     FURNACE,
     GRINDSTONE,
     HOPPER,
@@ -28,7 +28,7 @@ public enum DefaultContainers implements Containers {
     SHULKER_BOX,
     SMITHING,
     SMOKER,
-    CARTOGRAPHY_TABLE(InventoryType.CARTOGRAPHY),
+    CARTOGRAPHY_TABLE("CARTOGRAPHY"),
     STONECUTTER;
 
     private final int size;
@@ -46,8 +46,16 @@ public enum DefaultContainers implements Containers {
         this.inventoryType = inventoryType;
     }
 
-    DefaultContainers(final @NotNull InventoryType inventoryType) {
-        this(inventoryType.getDefaultSize(), inventoryType);
+    DefaultContainers(final @NotNull String rawInventoryType) {
+        InventoryType inventoryType;
+        try {
+            inventoryType = InventoryType.valueOf(rawInventoryType);
+        } catch (IllegalArgumentException e) {
+            // Older version, did not have the inventoryType
+            inventoryType = InventoryType.CREATIVE;
+        }
+        this.size = inventoryType.getDefaultSize();
+        this.inventoryType = inventoryType;
     }
 
     DefaultContainers(final int size, final @NotNull InventoryType inventoryType) {
