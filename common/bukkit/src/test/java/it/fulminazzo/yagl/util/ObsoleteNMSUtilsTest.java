@@ -2,6 +2,8 @@ package it.fulminazzo.yagl.util;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.TestUtils;
@@ -22,11 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
-class ObsoleteNMSUtilsTest {
+@Before1_(21)
+class ObsoleteNMSUtilsTest extends BukkitUtils {
     private Player player;
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 

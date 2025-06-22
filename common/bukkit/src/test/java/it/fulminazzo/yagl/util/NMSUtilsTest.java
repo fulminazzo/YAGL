@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
+import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.testing.CraftPlayer;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
+@Before1_(21)
 class NMSUtilsTest extends BukkitUtils {
     private Player player;
 
