@@ -2,6 +2,8 @@ package it.fulminazzo.yagl.util;
 
 import io.netty.channel.Channel;
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockInventoryView;
 import it.fulminazzo.yagl.testing.CraftPlayer;
@@ -32,11 +34,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
-class NMSUtilsTest {
+class NMSUtilsTest extends BukkitUtils {
     private Player player;
 
+    @Override
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
         new Refl<>(Bukkit.class).setFieldObject("server", server);
 
@@ -47,8 +51,10 @@ class NMSUtilsTest {
         this.player = (Player) craftPlayer;
     }
 
+    @After1_(19)
     @Test
     void testUpdateInventoryTitle() {
+        check();
         MockInventoryView view = new MockInventoryView(
                 new MockInventory(9),
                 this.player,
