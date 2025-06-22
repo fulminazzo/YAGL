@@ -9,14 +9,14 @@ import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_8_R3.scheduler.CraftTask;
 import org.bukkit.scheduler.BukkitTask;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class BukkitSchedulerTest extends BukkitUtils {
@@ -96,14 +96,15 @@ class BukkitSchedulerTest extends BukkitUtils {
                 parameters);
     }
 
-    @Test
-    void testLegacyIsCancelledMethod() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void testLegacyIsCancelledMethod(boolean cancel) {
         BukkitTask actualTask = new CraftTask();
         BukkitScheduler.BukkitSchedulerTask task = new BukkitScheduler.BukkitSchedulerTask(actualTask);
 
-        actualTask.cancel();
+        if (cancel) actualTask.cancel();
 
-        assertTrue(task.isCancelled());
+        assertEquals(cancel, task.isCancelled());
     }
     
 }
