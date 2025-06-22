@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.guis;
 
-import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.commands.BiGUICommand;
 import it.fulminazzo.yagl.actions.GUIAction;

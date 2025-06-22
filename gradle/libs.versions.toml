@@ -13,6 +13,8 @@ spigot_legacy = "1.12.2-R0.1-SNAPSHOT"
 # Newer versions tests are run from GitHub Actions
 spigot_latest = "1.19.4-R0.1-SNAPSHOT"
 
+placeholderapi = "2.11.6"
+
 lombok = "1.18.36"
 annotations = "26.0.1"
 
@@ -32,6 +34,8 @@ spigot = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
 spigot_obsolete = { module = "org.spigotmc:spigot-api", version.ref = "spigot_obsolete" }
 spigot_legacy = { module = "org.spigotmc:spigot-api", version.ref = "spigot_legacy" }
 spigot_latest = { module = "org.spigotmc:spigot-api", version.ref = "spigot_latest" }
+
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }

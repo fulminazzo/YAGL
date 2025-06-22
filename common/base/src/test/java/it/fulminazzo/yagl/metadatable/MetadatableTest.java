@@ -1,5 +1,6 @@
-package it.fulminazzo.yagl;
+package it.fulminazzo.yagl.metadatable;
 
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,6 +15,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MetadatableTest {
+
+    @Test
+    void testApplyStackOverflow() {
+        Metadatable metadatable = new MockMetadatable()
+                .setVariable("first", "hello")
+                .setVariable("second", "world");
+
+        First first = new First();
+
+        metadatable.apply(first);
+
+        assertEquals("hello", first.getFirstName());
+        assertEquals("world", first.getSecond().getSecondName());
+    }
 
     @Test
     void testEscapedApply() {
@@ -116,6 +131,29 @@ class MetadatableTest {
             put(null, "<variable>");
             put("<variable>", null);
         }};
+    }
+
+    @Getter
+    private static class First {
+        private final Second second;
+        private final String firstName;
+
+        public First() {
+            this.firstName = "<first>";
+            this.second = new Second(this);
+        }
+    }
+
+    @Getter
+    private static class Second {
+        private final First first;
+        private final String secondName;
+
+        private Second(First first) {
+            this.secondName = "<second>";
+            this.first = first;
+        }
+
     }
 
 }

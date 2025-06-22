@@ -31,6 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.UUID;
@@ -60,6 +61,32 @@ class GUIAdapterTest {
                     return null;
                 });
         when(this.player.getServer()).thenReturn(server);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "true:Alex",
+            "false:%player_name%"
+    })
+    void testPlaceholderAPICompatibility(String data) {
+        BukkitTestUtils.mockPlugin(p -> {
+            String[] tmp = data.split(":");
+            boolean enabled = Boolean.parseBoolean(tmp[0]);
+            String expected = tmp[1];
+
+            PluginManager mockManager = mock(PluginManager.class);
+            when(mockManager.isPluginEnabled(any(String.class))).thenReturn(enabled);
+            when(Bukkit.getServer().getPluginManager()).thenReturn(mockManager);
+
+            GUI gui = GUI.newGUI(9).setTitle("%player_name%");
+            Viewer viewer = GUIManager.getViewer(this.player);
+
+            GUIAdapter.openGUI(gui, viewer);
+
+            GUI openGUI = viewer.getOpenGUI();
+            assertNotNull(openGUI, "OpenGUI should have not been null");
+            assertEquals(expected, openGUI.getTitle());
+        });
     }
 
     @Test

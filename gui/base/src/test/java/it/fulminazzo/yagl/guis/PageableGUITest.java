@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.guis;
 
-import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.actions.GUIItemAction;
 import it.fulminazzo.yagl.contents.GUIContent;
