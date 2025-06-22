@@ -57,7 +57,7 @@ class ObsoleteNMSUtilsTest extends BukkitUtils {
             );
 
             Container container = new Container();
-            container.setBukkitView(inventoryView);
+            new Refl<>(container).invokeMethod("setBukkitView", inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             handle.setActiveContainer(container);

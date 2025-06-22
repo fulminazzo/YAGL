@@ -83,7 +83,7 @@ class NMSUtilsTest extends BukkitUtils {
         );
 
         Container container = Container.newContainer();
-        container.setOpenInventory(inventoryView);
+        new Refl<>(container).invokeMethod("setOpenInventory", inventoryView);
 
         EntityPlayer handle = player.getHandle();
         handle.setContainer(container);

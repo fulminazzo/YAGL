@@ -83,7 +83,7 @@ class LegacyNMSUtilsTest extends BukkitUtils {
                     "Previous title",
                     container
             );
-            container.setBukkitView(view);
+            new Refl<>(container).invokeMethod("setBukkitView", view);
             ((CraftPlayer<EntityPlayer>) this.player).getHandle().setActiveContainer(container);
 
             NMSUtils.updateInventoryTitle(this.player, "Title");
@@ -112,7 +112,7 @@ class LegacyNMSUtilsTest extends BukkitUtils {
             );
 
             Container container = new Container(DefaultContainers.GENERIC_9x3);
-            container.setBukkitView(inventoryView);
+            new Refl<>(container).invokeMethod("setBukkitView", inventoryView);
 
             EntityPlayer handle = ((CraftPlayer<EntityPlayer>) this.player).getHandle();
             handle.setActiveContainer(container);
