@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class BukkitSchedulerTest extends BukkitUtils {
@@ -99,21 +100,9 @@ class BukkitSchedulerTest extends BukkitUtils {
         BukkitTask actualTask = new CraftTask();
         BukkitScheduler.BukkitSchedulerTask task = new BukkitScheduler.BukkitSchedulerTask(actualTask);
 
-        String methodName = "isCancelled";
-        String actualMethodName = "isCancelled";
+        actualTask.cancel();
 
-        Refl<?> refl = new Refl<>(task);
-
-        Method method = refl.getMethods(m -> m.getName().equals(methodName)).get(0);
-        Object[] parameters = Arrays.stream(method.getParameterTypes())
-                .map(TestUtils::mockParameter)
-                .toArray();
-
-        refl.invokeMethod(methodName, method.getParameterTypes(), parameters);
-
-        new Refl<>(verify(actualTask)).invokeMethod(actualMethodName,
-                method.getParameterTypes(),
-                parameters);
+        assertTrue(task.isCancelled());
     }
     
 }
