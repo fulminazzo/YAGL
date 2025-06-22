@@ -51,5 +51,7 @@ class PredicateSetTest {
             if (o instanceof MockClass) return true;
             return super.equals(o);
         }
+
     }
+
 }

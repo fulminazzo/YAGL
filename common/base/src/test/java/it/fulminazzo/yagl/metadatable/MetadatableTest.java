@@ -118,6 +118,7 @@ class MetadatableTest {
         public @NotNull Map<String, String> variables() {
             return this.map;
         }
+
     }
 
     private static class MockObject {
@@ -131,6 +132,7 @@ class MetadatableTest {
             put(null, "<variable>");
             put("<variable>", null);
         }};
+
     }
 
     @Getter
@@ -142,6 +144,7 @@ class MetadatableTest {
             this.firstName = "<first>";
             this.second = new Second(this);
         }
+
     }
 
     @Getter

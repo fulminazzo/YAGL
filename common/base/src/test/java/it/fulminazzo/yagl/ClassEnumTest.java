@@ -52,6 +52,7 @@ class ClassEnumTest {
             super();
             LIST.add(this);
         }
+
     }
 
 
@@ -66,5 +67,7 @@ class ClassEnumTest {
             super();
             LIST.add(this);
         }
+
     }
+
 }

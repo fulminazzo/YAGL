@@ -39,9 +39,11 @@ class TypedParserTest {
         public MockClassParser() {
             super(MockClass.class);
         }
+
     }
 
     private static class MockClass {
 
     }
+
 }

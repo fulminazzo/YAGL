@@ -36,4 +36,5 @@ class SerializableFunctionParserTest extends ParserTestHelper<SerializableFuncti
     static class MockFunction implements SerializableFunction {
 
     }
+
 }

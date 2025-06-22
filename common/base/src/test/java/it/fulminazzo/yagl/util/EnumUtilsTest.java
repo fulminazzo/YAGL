@@ -76,6 +76,7 @@ class EnumUtilsTest {
         public static void invalid(String name) {
             //
         }
+
     }
 
     // Bad practice, a class should always start with an uppercase letter.
@@ -97,5 +98,7 @@ class EnumUtilsTest {
         public static mockClassEnum valueOfIllegalMessage(String name) {
             throw new IllegalArgumentException("Just a mock");
         }
+
     }
+
 }
