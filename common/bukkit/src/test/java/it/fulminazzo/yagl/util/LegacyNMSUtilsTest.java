@@ -73,7 +73,7 @@ class LegacyNMSUtilsTest {
                     DefaultContainers.GENERIC_9x3,
                     internalContainer
             );
-            InventoryView view = new LegacyMockInventoryView(
+            LegacyMockInventoryView view = new LegacyMockInventoryView(
                     new MockInventory(9),
                     this.player,
                     "Previous title",
