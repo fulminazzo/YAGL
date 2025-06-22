@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The type Message utils.
+ * A collection of utilities to work with Minecraft colors.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MessageUtils {
@@ -77,4 +77,5 @@ public final class MessageUtils {
         }
         return message;
     }
+
 }

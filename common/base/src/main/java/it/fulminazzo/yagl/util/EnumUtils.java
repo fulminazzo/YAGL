@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The type Enum utils.
+ * A collection of utilities to work with enums.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnumUtils {
@@ -65,4 +65,5 @@ public final class EnumUtils {
         if (typeName.startsWith(" ")) typeName = typeName.substring(1);
         return typeName.toLowerCase();
     }
+
 }

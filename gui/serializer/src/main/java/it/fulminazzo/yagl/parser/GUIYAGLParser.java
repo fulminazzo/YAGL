@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * The type GUI YAGL parser.
+ * The main access point of {@link it.fulminazzo.yagl.gui.GUI} and related classes parsers.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GUIYAGLParser {
@@ -22,4 +22,5 @@ public final class GUIYAGLParser {
         ActionParsers.addParsers();
         FileConfiguration.addParsers(ContentsParser.class.getPackage().getName());
     }
+
 }

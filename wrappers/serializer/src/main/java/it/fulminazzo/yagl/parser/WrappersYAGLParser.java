@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Wrappers YAGL parser.
+ * The main access point of {@link it.fulminazzo.yagl.wrapper.Wrapper} and related classes parsers.
  */
 @SuppressWarnings("deprecation")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,4 +23,5 @@ public final class WrappersYAGLParser {
         ParticleOptionParser.addAllParsers();
         WrapperParser.addAllParsers();
     }
+
 }

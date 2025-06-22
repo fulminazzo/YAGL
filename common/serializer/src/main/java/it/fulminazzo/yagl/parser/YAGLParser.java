@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * The type YAGL parser.
+ * The main access point of YAGL parsers.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class YAGLParser {
@@ -18,4 +18,5 @@ public final class YAGLParser {
     public static void addAllParsers() {
         FileConfiguration.addParsers(YAGLParser.class.getPackage().getName());
     }
+
 }

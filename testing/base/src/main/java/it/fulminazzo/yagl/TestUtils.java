@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingProgress;
 
 /**
- * The type Test utils.
+ * A collection of utilities for tests.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
@@ -264,4 +264,5 @@ public final class TestUtils {
         return String.format("%s(%s)", method.getName(), Arrays.stream(method.getParameterTypes())
                 .map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }
+
 }

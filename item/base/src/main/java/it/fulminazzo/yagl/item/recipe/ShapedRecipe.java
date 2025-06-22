@@ -96,7 +96,7 @@ public final class ShapedRecipe extends RecipeImpl {
     }
 
     /**
-     * The type Shape.
+     * Represents a shape in the recipe.
      */
     @Getter
     public static class Shape extends FieldEquable {
@@ -161,5 +161,7 @@ public final class ShapedRecipe extends RecipeImpl {
         public @NotNull String toString() {
             return String.format("Shape {rows: %s, columns: %s}", this.rows, this.columns);
         }
+
     }
+
 }

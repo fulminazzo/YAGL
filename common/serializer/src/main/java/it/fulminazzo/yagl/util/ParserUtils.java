@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 /**
- * The type Parser utils.
+ * A collection of utilities for {@link it.fulminazzo.yamlparser.parsers.YAMLParser} implementations.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParserUtils {

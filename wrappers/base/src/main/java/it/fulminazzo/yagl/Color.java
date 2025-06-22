@@ -6,7 +6,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 
 /**
- * The type Color.
+ * Represents a general HEX color.
+ * Used by special particle options.
  */
 @SuppressWarnings("unused")
 public final class Color extends ClassEnum {
@@ -214,4 +215,5 @@ public final class Color extends ClassEnum {
         if (name != null) return name;
         return super.toString();
     }
+
 }

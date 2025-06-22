@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Item YAGL parser.
+ * The main access point of {@link it.fulminazzo.yagl.item.Item} and related classes parsers.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemYAGLParser {
@@ -17,4 +17,5 @@ public final class ItemYAGLParser {
         YAGLParser.addAllParsers();
         WrappersYAGLParser.addAllParsers();
     }
+
 }

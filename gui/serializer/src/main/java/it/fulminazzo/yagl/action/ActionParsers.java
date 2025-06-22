@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Action parsers.
+ * The main access point of Action parsers.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActionParsers {
@@ -20,4 +20,5 @@ public class ActionParsers {
         FileConfiguration.addParsers(new SerializableFunctionParser<>(GUIItemAction.class));
         FileConfiguration.addParsers(new SerializableFunctionParser<>(BiGUIAction.class));
     }
+
 }
