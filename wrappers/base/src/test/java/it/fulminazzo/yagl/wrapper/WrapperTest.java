@@ -110,7 +110,7 @@ class WrapperTest {
         private int free;
         @Range(max = Integer.MIN_VALUE, min = Integer.MAX_VALUE)
         private int invalidRange;
-        @Range(min = Integer.MIN_VALUE, max = Integer.MAX_VALUE)
+        @Range()
         private long extremeRange;
 
         public void setValue(int value) {

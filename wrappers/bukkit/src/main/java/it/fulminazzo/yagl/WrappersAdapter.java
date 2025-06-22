@@ -441,7 +441,6 @@ public final class WrappersAdapter {
      * @param color the color
      * @return the color
      */
-    @SuppressWarnings("DataFlowIssue")
     public static @NotNull org.bukkit.Color wColorToColor(final @NotNull Color color) {
         org.bukkit.Color actualColor;
         try {
@@ -459,7 +458,6 @@ public final class WrappersAdapter {
      * @param color the color
      * @return the color
      */
-    @SuppressWarnings("DataFlowIssue")
     public static @NotNull Color colorToWColor(final @NotNull org.bukkit.Color color) {
         try {
             return new Color(new Refl<>(color).invokeMethod("getAlpha"), color.getRed(), color.getGreen(), color.getBlue());
@@ -627,7 +625,6 @@ public final class WrappersAdapter {
      * @param enchantment the enchantment
      * @return the tuple
      */
-    @SuppressWarnings("DataFlowIssue")
     public static @NotNull Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
         String raw = enchantment.getName();
         org.bukkit.enchantments.Enchantment actual = null;

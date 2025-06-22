@@ -159,7 +159,7 @@ class PersistentListenerTest {
                 new PlayerDropItemEvent(player, item),
                 new InventoryDragEvent(view.getWrapped(), itemStack, new ItemStack(Material.AIR), false, new HashMap<>()),
                 new InventoryDragEvent(view.getWrapped(), null, itemStack, false, new HashMap<>()),
-                new InventoryDragEvent(view.getWrapped(), null, new ItemStack(Material.AIR), false, new HashMap<Integer, ItemStack>(){{
+                new InventoryDragEvent(view.getWrapped(), null, new ItemStack(Material.AIR), false, new HashMap<Integer, ItemStack>() {{
                     put(18, itemStack);
                 }}),
         };
@@ -190,7 +190,7 @@ class PersistentListenerTest {
         for (int i = 0; i < size; i++) view.setItem(i, persistentItem);
         for (int i = 0; i < view.getBottomInventory().getSize(); i++) view.setItem(i + size, persistentItem);
 
-        InventoryDragEvent event = new InventoryDragEvent(view.getWrapped(), null, new ItemStack(Material.AIR), false, new HashMap<Integer, ItemStack>(){{
+        InventoryDragEvent event = new InventoryDragEvent(view.getWrapped(), null, new ItemStack(Material.AIR), false, new HashMap<Integer, ItemStack>() {{
             put(18, itemStack);
         }});
         listener.on(event);
@@ -209,13 +209,13 @@ class PersistentListenerTest {
         assertTrue(value.get());
 
         // Simulate rapid click
-        try (MockedConstruction<Date> ignored = mockConstruction(Date.class, (mock, context) -> {
-            when(mock.getTime()).thenAnswer(a -> {
-                Refl<PersistentListener> refl = new Refl<>(listener);
-                Map<UUID, Long> map = refl.getFieldObject("lastUsed");
-                return map.get(player.getUniqueId()) + (long) refl.getFieldObject("INTERACT_DELAY") - 1;
-            });
-        })) {
+        try (MockedConstruction<Date> ignored = mockConstruction(Date.class, (mock, context) ->
+                when(mock.getTime()).thenAnswer(a -> {
+                    Refl<PersistentListener> refl = new Refl<>(listener);
+                    Map<UUID, Long> map = refl.getFieldObject("lastUsed");
+                    return map.get(player.getUniqueId()) + (long) refl.getFieldObject("INTERACT_DELAY") - 1;
+                }))
+        ) {
             value.set(false);
             listener.on(event);
             assertFalse(value.get());
