@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.scheduler;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -83,7 +84,13 @@ final class BukkitScheduler implements Scheduler {
 
         @Override
         public boolean isCancelled() {
-            return this.internal.isCancelled();
+            try {
+                return this.internal.isCancelled();
+            } catch (NoSuchMethodError e) {
+                // Older versions did not have isCancelled method
+                long period = new Refl<>(this.internal).getFieldObject("period");
+                return period == -2;
+            }
         }
 
         @Override
