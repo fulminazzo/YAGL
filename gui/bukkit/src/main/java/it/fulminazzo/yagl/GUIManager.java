@@ -100,7 +100,7 @@ public class GUIManager extends SingleInstance implements Listener {
             Player player = (Player) event.getPlayer();
             Viewer viewer = getViewer(player);
             GUIAdapter.closeGUI(viewer);
-            restorePlayerContents(player);
+            restorePlayerContents(player, false);
         });
     }
 
@@ -181,7 +181,7 @@ public class GUIManager extends SingleInstance implements Listener {
             );
             new ArrayList<>(event.getViewers()).forEach(v -> {
                 v.closeInventory();
-                if (v instanceof Player) restorePlayerContents((Player) v);
+                if (v instanceof Player) restorePlayerContents((Player) v, true);
             });
         }
     }
@@ -190,12 +190,14 @@ public class GUIManager extends SingleInstance implements Listener {
      * Restores the specified player contents if present.
      *
      * @param player the player
+     * @param force  true to force the restore (if contents are present)
      */
-    static void restorePlayerContents(final @NotNull Player player) {
+    static void restorePlayerContents(final @NotNull Player player,
+                                      final boolean force) {
         GUIManager guiManager = getInstance();
         @NotNull PlayersInventoryCache inventoryCache = guiManager.inventoryCache;
         Viewer viewer = getViewer(player);
-        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
+        if (inventoryCache.areContentsStored(player) && (viewer.getNextGUI() == null || force)) {
             inventoryCache.restorePlayerContents(player);
             inventoryCache.clearPlayerContents(player);
         }
