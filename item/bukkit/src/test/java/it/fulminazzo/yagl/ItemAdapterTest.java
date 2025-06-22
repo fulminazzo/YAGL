@@ -104,6 +104,9 @@ class ItemAdapterTest extends BukkitUtils {
 
         @Test
         void testNullFieldsItem() {
+            // setupServer necessary here to avoid mocking issues
+            setupServer();
+
             BukkitItem expected = BukkitItem.newItem(Material.STONE);
             ItemStack itemStack = new ItemStack(Material.STONE);
             ItemMeta meta = new MockItemMeta();
