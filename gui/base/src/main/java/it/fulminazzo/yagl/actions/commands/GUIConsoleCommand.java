@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * An implementation of {@link GUIAction} that forces the execution of
  * the given command upon {@link #execute(Viewer, GUI)} from the console.
  */
-public class GUIConsoleCommand extends CommandAction implements GUIAction {
+public final class GUIConsoleCommand extends CommandAction implements GUIAction {
 
     /**
      * Instantiates a new GUIConsoleCommand.

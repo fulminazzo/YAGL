@@ -9,7 +9,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
 /**
  * A parser to serialize {@link Color}.
  */
-public class ColorParser extends YAMLParser<Color> {
+public final class ColorParser extends YAMLParser<Color> {
 
     /**
      * Instantiates a new Color parser.

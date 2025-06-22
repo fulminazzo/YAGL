@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * A cache to handle the storing of {@link Player}s inventory contents.
  */
-public class PlayersInventoryCache {
+public final class PlayersInventoryCache {
     private final @NotNull Map<UUID, ItemStack[]> internalCache;
 
     /**

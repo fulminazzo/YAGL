@@ -10,7 +10,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
  * A parser to serialize {@link PotionParticleOption}.
  * Should take priority over {@link ParticleOptionParser}.
  */
-public class PotionParticleOptionParser extends YAMLParser<PotionParticleOption> {
+public final class PotionParticleOptionParser extends YAMLParser<PotionParticleOption> {
 
     /**
      * Instantiates a new Potion option parser.

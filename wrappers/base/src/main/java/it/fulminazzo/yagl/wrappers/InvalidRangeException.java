@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 /**
  * An exception thrown when {@link Range} has invalid values.
  */
-class InvalidRangeException extends IllegalArgumentException {
+final class InvalidRangeException extends IllegalArgumentException {
 
     /**
      * Instantiates a new Invalid range exception.

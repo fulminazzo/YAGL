@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Enchantments are expressed as string, so they are <b>NOT</b> checked.
  */
 @Getter
-public class Enchantment extends Wrapper {
+public final class Enchantment extends Wrapper {
     private @NotNull String name;
     @Range(min = 1)
     private int level;

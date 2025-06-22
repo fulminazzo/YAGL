@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * Currently used only for {@link LegacyParticleType#POTION_BREAK}.
  */
 @Getter
-public class Potion extends Wrapper {
+public final class Potion extends Wrapper {
     private @NotNull String name;
     @Range(min = 1, max = 2)
     @Getter

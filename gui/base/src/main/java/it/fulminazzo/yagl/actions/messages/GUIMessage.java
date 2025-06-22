@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link GUIAction} that sends the given message to the viewer upon {@link #sendMessage(Viewer)}.
  */
-public class GUIMessage extends MessageAction implements GUIAction {
+public final class GUIMessage extends MessageAction implements GUIAction {
 
     /**
      * Instantiates a new GUIMessage.

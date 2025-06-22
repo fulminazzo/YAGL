@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An option used by {@link ParticleType#DUST_COLOR_TRANSITION}.
  */
-public class DustTransitionParticleOption extends ParticleOption<Triple<Color, Color, Float>> {
+public final class DustTransitionParticleOption extends ParticleOption<Triple<Color, Color, Float>> {
     private final Color from;
     private final Color to;
     private final float size;

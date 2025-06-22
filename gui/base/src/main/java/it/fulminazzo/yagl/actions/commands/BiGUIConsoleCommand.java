@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * An implementation of {@link BiGUIAction} that forces the execution of
  * the given command upon {@link #execute(Viewer, GUI, GUI)} from the console.
  */
-public class BiGUIConsoleCommand extends CommandAction implements BiGUIAction {
+public final class BiGUIConsoleCommand extends CommandAction implements BiGUIAction {
 
     /**
      * Instantiates a new BiGUIConsoleCommand.

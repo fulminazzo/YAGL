@@ -8,7 +8,7 @@ import it.fulminazzo.yagl.viewers.Viewer;
 /**
  * An implementation of {@link GUIAction} that executes the given command upon {@link #execute(Viewer, GUI)}.
  */
-public class GUICommand extends CommandAction implements GUIAction {
+public final class GUICommand extends CommandAction implements GUIAction {
 
     /**
      * Instantiates a new GUICommand.

@@ -10,7 +10,7 @@ import java.util.function.Function;
 /**
  * Represents a variable. Uses the Bukkit class {@link Player} to retrieve the correct value.
  */
-class BukkitVariable {
+final class BukkitVariable {
     public static final BukkitVariable[] DEFAULT_VARIABLES = new BukkitVariable[]{
             new BukkitVariable("player_name", HumanEntity::getName),
             new BukkitVariable("player_display_name", Player::getDisplayName),

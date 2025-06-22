@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * A parser to serialize {@link Item}.
  */
-public class ItemParser extends YAMLParser<Item> {
+public final class ItemParser extends YAMLParser<Item> {
 
     /**
      * Instantiates a new Item parser.

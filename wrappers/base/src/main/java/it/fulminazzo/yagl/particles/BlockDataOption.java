@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * An option used by {@link ParticleType#BLOCK_CRACK}, {@link ParticleType#BLOCK_DUST} and {@link ParticleType#FALLING_DUST}.
  */
-public class BlockDataOption extends ParticleOption<String> {
+public final class BlockDataOption extends ParticleOption<String> {
     private static final String INVALID_DATA = "Invalid data '%s'";
     private static final String INVALID_MATERIAL = "Invalid material '%s'";
     private static final String MINECRAFT_IDENTIFIER = "minecraft:";

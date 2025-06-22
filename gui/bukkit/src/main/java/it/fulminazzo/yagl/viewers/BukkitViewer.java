@@ -14,7 +14,7 @@ import java.util.UUID;
 /**
  * An implementation of {@link Viewer} for the Bukkit platform.
  */
-class BukkitViewer extends Viewer {
+final class BukkitViewer extends Viewer {
 
     /**
      * Instantiates a new Viewer.

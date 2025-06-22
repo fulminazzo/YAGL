@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("deprecation")
 @Getter
-public class PotionWrapper {
+public final class PotionWrapper {
     private final Potion internalPotion;
 
     /**

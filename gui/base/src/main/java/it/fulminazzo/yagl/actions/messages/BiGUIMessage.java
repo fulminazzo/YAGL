@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link BiGUIAction} that sends the given message to the viewer upon {@link #sendMessage(Viewer)}.
  */
-public class BiGUIMessage extends MessageAction implements BiGUIAction {
+public final class BiGUIMessage extends MessageAction implements BiGUIAction {
 
     /**
      * Instantiates a new BIGUIMessage.

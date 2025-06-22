@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link AnvilInventoryWrapper} with support from Minecraft 1.14 to 1.16.
  */
-final class AnvilInventoryWrapper14_16 extends AnvilInventoryWrapper13 {
+class AnvilInventoryWrapper14_16 extends AnvilInventoryWrapper13 {
 
     /**
      * Instantiates a new Anvil inventory wrapper.

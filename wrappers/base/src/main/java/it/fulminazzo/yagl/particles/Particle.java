@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a general particle with an associated {@link ParticleOption}.
  */
 @Getter
-public class Particle extends FieldEquable {
+public final class Particle extends FieldEquable {
     private final String type;
     private final ParticleOption<?> option;
 

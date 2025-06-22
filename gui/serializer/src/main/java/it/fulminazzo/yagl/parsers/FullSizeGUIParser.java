@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 /**
  * A parser to serialize {@link FullSizeGUI}
  */
-public class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
+public final class FullSizeGUIParser extends YAMLParser<FullSizeGUI> {
 
     /**
      * Instantiates a new Full size gui parser.

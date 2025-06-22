@@ -15,7 +15,7 @@ import java.util.List;
  * An implementation of {@link Recipe} to express any recipe in the furnace in Minecraft.
  */
 @Getter
-public class FurnaceRecipe extends RecipeImpl {
+public final class FurnaceRecipe extends RecipeImpl {
     @Getter(AccessLevel.NONE)
     private Item ingredient;
     @Range(min = 0)

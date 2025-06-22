@@ -5,7 +5,7 @@ package it.fulminazzo.yagl.particles;
  *
  * @param <T> the type parameter
  */
-public class PrimitiveParticleOption<T> extends ParticleOption<T> {
+public final class PrimitiveParticleOption<T> extends ParticleOption<T> {
     private final T value;
 
     @SuppressWarnings("unused")

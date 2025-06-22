@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link GUIItemAction} that sends the given message to the viewer upon {@link #sendMessage(Viewer)}.
  */
-public class GUIItemMessage extends MessageAction implements GUIItemAction {
+public final class GUIItemMessage extends MessageAction implements GUIItemAction {
 
     /**
      * Instantiates a new GUIItemMessage.

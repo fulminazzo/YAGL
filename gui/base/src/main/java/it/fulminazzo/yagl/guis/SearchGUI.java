@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  *
  * @param <T> the type of the data
  */
-public final class SearchGUI<T> extends DataGUI<T> {
+public class SearchGUI<T> extends DataGUI<T> {
     /**
      * Because of how Minecraft works,
      * it is necessary to add a default empty name

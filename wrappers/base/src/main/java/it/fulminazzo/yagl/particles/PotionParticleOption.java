@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An option used by {@link LegacyParticleType#POTION_BREAK}.
  */
-public class PotionParticleOption extends ParticleOption<Potion> {
+public final class PotionParticleOption extends ParticleOption<Potion> {
     private final @NotNull Potion potion;
 
     public PotionParticleOption(@NotNull Potion potion) {

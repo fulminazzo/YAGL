@@ -10,7 +10,7 @@ import it.fulminazzo.yamlparser.parsers.YAMLParser;
  * A parser to serialize {@link MaterialDataOption}.
  * Should take priority over {@link ParticleOptionParser}.
  */
-public class MaterialDataOptionParser extends YAMLParser<MaterialDataOption> {
+public final class MaterialDataOptionParser extends YAMLParser<MaterialDataOption> {
 
     /**
      * Instantiates a new Material data option parser.

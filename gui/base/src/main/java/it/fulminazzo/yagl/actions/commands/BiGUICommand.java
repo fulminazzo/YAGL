@@ -8,7 +8,7 @@ import it.fulminazzo.yagl.viewers.Viewer;
 /**
  * An implementation of {@link BiGUIAction} that executes the given command upon {@link #execute(Viewer, GUI, GUI)}.
  */
-public class BiGUICommand extends CommandAction implements BiGUIAction {
+public final class BiGUICommand extends CommandAction implements BiGUIAction {
 
     /**
      * Instantiates a new BIGUICommand.

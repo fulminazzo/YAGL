@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * Effects are expressed as string, so they are <b>NOT</b> checked.
  */
 @Getter
-public class PotionEffect extends Wrapper {
+public final class PotionEffect extends Wrapper {
     private @NotNull String name;
     @Range(min = 0)
     private double duration;

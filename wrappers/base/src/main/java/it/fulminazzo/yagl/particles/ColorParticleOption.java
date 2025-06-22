@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An option used by {@link LegacyParticleType#INSTANT_POTION_BREAK}.
  */
-public class ColorParticleOption extends ParticleOption<Color> {
+public final class ColorParticleOption extends ParticleOption<Color> {
     private final @NotNull Color color;
 
     /**

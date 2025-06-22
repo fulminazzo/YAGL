@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * A parser to serialize {@link ShapedRecipe.Shape}.
  */
-public class ShapeParser extends YAMLParser<ShapedRecipe.Shape> {
+public final class ShapeParser extends YAMLParser<ShapedRecipe.Shape> {
     static final String FORMAT = "(?<rows>\\d+)x(?<columns>\\d+)";
 
     /**

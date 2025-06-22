@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Sounds are expressed as string, so they are <b>NOT</b> checked.
  */
 @Getter
-public class Sound extends Wrapper {
+public final class Sound extends Wrapper {
     private @NotNull String name;
     @Range(min = 0)
     private float volume;

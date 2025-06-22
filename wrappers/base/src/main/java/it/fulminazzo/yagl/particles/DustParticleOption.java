@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An option used by {@link ParticleType#REDSTONE}.
  */
-public class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
+public final class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
     private final Color color;
     private final float size;
 

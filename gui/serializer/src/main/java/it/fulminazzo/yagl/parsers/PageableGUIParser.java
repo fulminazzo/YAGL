@@ -21,7 +21,7 @@ import java.util.Set;
  * A parser to serialize {@link PageableGUI}.
  */
 @SuppressWarnings("DataFlowIssue")
-public class PageableGUIParser extends TypedParser<PageableGUI> {
+public final class PageableGUIParser extends TypedParser<PageableGUI> {
     private static final String[] IGNORE_FIELDS = new String[]{"type", "size"};
 
     /**

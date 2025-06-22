@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * An option used by {@link ParticleType#ITEM_CRACK}.
  */
 @SuppressWarnings("deprecation")
-public class ItemParticleOption<I extends AbstractItem> extends ParticleOption<I> {
+public final class ItemParticleOption<I extends AbstractItem> extends ParticleOption<I> {
     private final I item;
 
     /**

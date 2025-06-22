@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link GUIItemAction} that opens the previous {@link GUI} of the {@link Viewer}, if available.
  */
-public class GUIItemBack implements GUIItemAction {
+public final class GUIItemBack implements GUIItemAction {
 
     @Override
     public void execute(@NotNull Viewer viewer, @NotNull GUI gui, @NotNull GUIContent content) {

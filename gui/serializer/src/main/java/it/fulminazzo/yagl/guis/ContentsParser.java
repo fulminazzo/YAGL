@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * A parser to serialize {@link GUIImpl.Contents}.
  */
-public class ContentsParser extends YAMLParser<GUIImpl.Contents> {
+public final class ContentsParser extends YAMLParser<GUIImpl.Contents> {
 
     /**
      * Instantiates a new Contents parser.
