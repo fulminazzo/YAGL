@@ -93,8 +93,10 @@ class GUIAdapterTest extends BukkitUtils {
 
     @AfterEach
     void tearDown() {
-        GUIManager.getInstance().terminate();
-        BukkitUtils.removePlayer(this.player);
+        BukkitTestUtils.mockPlugin(p -> {
+            GUIManager.getInstance().terminate();
+            BukkitUtils.removePlayer(this.player);
+        });
     }
 
     @Before1_(21)
