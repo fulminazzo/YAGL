@@ -83,12 +83,10 @@ class ObsoleteNMSUtilsTest {
         Container container = new Container();
         container.setInventory(new Container().setTitle("previousTitle"));
 
-        ObsoleteMockInventoryView inventoryView = new ObsoleteMockInventoryView(
+        new ObsoleteMockInventoryView(
                 null, this.player,
                 "previousTitle", container
         );
-
-        when(this.player.getOpenInventory()).thenReturn(inventoryView);
 
         NMSUtils.updatePlayerInternalContainersTitle(this.player, "title");
 
