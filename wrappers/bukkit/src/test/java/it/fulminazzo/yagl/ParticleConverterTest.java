@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.yagl.particle.Particle;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -16,11 +17,15 @@ import static org.mockito.Mockito.*;
 @After1_(13)
 class ParticleConverterTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        setupServer();
     }
 
     @ParameterizedTest

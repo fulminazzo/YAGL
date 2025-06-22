@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -38,14 +39,18 @@ import static org.mockito.Mockito.*;
 @After1_(13)
 class WrappersAdapterTest extends BukkitUtils {
 
-    @BeforeEach
-    @Override
-    protected void setUp() {
-        super.setUp();
+    @BeforeAll
+    static void setAllUp() {
         setupServer();
         setupEnchantments();
         when(Bukkit.getServer().createBlockData(any(Material.class), any(String.class)))
                 .thenReturn(mock(org.bukkit.block.data.BlockData.class));
+    }
+
+    @BeforeEach
+    @Override
+    protected void setUp() {
+        super.setUp();
     }
 
     private static Object[] getParticles() {
@@ -208,9 +213,6 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testSpawnItemCrack() throws NoSuchMethodException {
-        // Initialize Bukkit variables
-        BukkitUtils.setupServer();
-
         Particle particle = ParticleType.ITEM_CRACK.create(mock(AbstractItem.class));
         Player player = mock(Player.class);
 
@@ -377,7 +379,6 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.potion.PotionEffect[] getPotionEffects() {
-        setupServer();
         Refl<?> potionEffectsClass = new Refl<>(org.bukkit.potion.PotionEffectType.class);
         return potionEffectsClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
                         f.getType().isAssignableFrom(org.bukkit.potion.PotionEffectType.class)).stream()
@@ -418,7 +419,6 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static org.bukkit.enchantments.Enchantment[] getEnchantments() {
-        setupServer();
         Refl<?> enchantmentClass = new Refl<>(org.bukkit.enchantments.Enchantment.class);
         return enchantmentClass.getFields(f -> Modifier.isStatic(f.getModifiers()) &&
                 f.getType().isAssignableFrom(org.bukkit.enchantments.Enchantment.class)).stream()

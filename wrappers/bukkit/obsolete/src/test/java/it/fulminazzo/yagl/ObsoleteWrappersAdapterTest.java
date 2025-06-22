@@ -40,4 +40,5 @@ public class ObsoleteWrappersAdapterTest extends BukkitUtils {
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
     }
+
 }

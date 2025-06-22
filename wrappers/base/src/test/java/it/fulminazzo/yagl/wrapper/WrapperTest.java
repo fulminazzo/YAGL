@@ -60,13 +60,15 @@ class WrapperTest {
                 assertTrue(message.contains(String.valueOf(min)), "Error message should contain min value");
                 if (max == null) assertTrue(message.contains("lower"), "Error message should contain 'lower' keyword");
             } else
-                assertFalse(message.contains(String.valueOf(Integer.MIN_VALUE)), "Error message should have not contained min value");
+                assertFalse(message.contains(String.valueOf(Integer.MIN_VALUE)),
+                        "Error message should have not contained min value");
 
             if (max != null) {
                 assertTrue(message.contains(String.valueOf(max)), "Error message should contain max value");
                 if (min == null) assertTrue(message.contains("higher"), "Error message should contain 'higher' keyword");
             } else
-                assertFalse(message.contains(String.valueOf(Integer.MAX_VALUE)), "Error message should have not contained max value");
+                assertFalse(message.contains(String.valueOf(Integer.MAX_VALUE)),
+                        "Error message should have not contained max value");
         }
     }
 
@@ -140,5 +142,7 @@ class WrapperTest {
         public String getName() {
             return "aiden";
         }
+
     }
+
 }

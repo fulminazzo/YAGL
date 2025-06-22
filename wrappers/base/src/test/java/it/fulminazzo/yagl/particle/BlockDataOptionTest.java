@@ -42,4 +42,5 @@ class BlockDataOptionTest {
         assertEquals(expected, option.getOption());
         assertEquals("", option.getNBT());
     }
+
 }

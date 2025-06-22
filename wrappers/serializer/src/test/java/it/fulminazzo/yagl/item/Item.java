@@ -17,4 +17,5 @@ public class Item implements AbstractItem {
         if (o instanceof Item) return this.material.equals(((Item) o).material);
         return super.equals(o);
     }
+
 }

@@ -22,4 +22,5 @@ class LegacyParticleTypeTest {
     void testValueName(LegacyParticleType<?> obj) {
         assertEquals(obj, LegacyParticleType.valueOf(obj.name()));
     }
+
 }

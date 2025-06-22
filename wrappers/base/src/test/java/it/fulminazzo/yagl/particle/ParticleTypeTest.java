@@ -92,4 +92,5 @@ class ParticleTypeTest {
     void testValueName(ParticleType<?> obj) {
         assertEquals(obj, ParticleType.valueOf(obj.name()));
     }
+
 }

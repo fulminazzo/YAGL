@@ -114,7 +114,9 @@ class WrapperParserTest {
         return load(file, name, clazz);
     }
 
-    private static <T extends Wrapper> @Nullable List<T> load(@NotNull File file, @NotNull String name, @NotNull Class<T> clazz) throws IOException {
+    private static <T extends Wrapper> @Nullable List<T> load(@NotNull File file,
+                                                              @NotNull String name,
+                                                              @NotNull Class<T> clazz) throws IOException {
         if (!file.exists()) {
             FileUtils.createNewFile(file);
             FileConfiguration configuration = new FileConfiguration(file);
@@ -164,6 +166,7 @@ class WrapperParserTest {
         public String getName() {
             return this.name;
         }
+
     }
 
     private static class MockFieldWrapper extends Wrapper {
@@ -177,5 +180,7 @@ class WrapperParserTest {
         public String getName() {
             return "mock";
         }
+
     }
+
 }

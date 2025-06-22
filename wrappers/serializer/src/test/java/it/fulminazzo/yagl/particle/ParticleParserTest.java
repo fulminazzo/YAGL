@@ -1,13 +1,15 @@
 package it.fulminazzo.yagl.particle;
 
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.Color;
 import it.fulminazzo.yagl.ParserTestHelper;
 import it.fulminazzo.yagl.parser.WrappersYAGLParser;
 import it.fulminazzo.yagl.wrapper.Potion;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,15 +24,45 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ParticleParserTest extends ParserTestHelper<Particle> {
 
+    @BeforeAll
+    static void setAllUp() {
+        WrappersYAGLParser.addAllParsers();
+    }
+
     private static AParticleType<?>[] getTestOptions() {
         return Stream.concat(Arrays.stream(ParticleType.values()), Arrays.stream(LegacyParticleType.values()))
                 .toArray(AParticleType[]::new);
     }
 
-    @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource("getTestOptions")
     void testTypes(AParticleType<?> type) throws IOException {
+        Particle expected = getParticleFromType(type);
+
+        File file = new File("build/resources/test/particles.yml");
+        if (!file.exists()) FileUtils.createNewFile(file);
+
+        FileConfiguration configuration = new FileConfiguration(file);
+        configuration.set(expected.getType(), expected);
+        configuration.save();
+
+        configuration = new FileConfiguration(file);
+        Particle actual = configuration.get(expected.getType(), Particle.class);
+
+        Field[] fields = expected.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            Object obj1 = ReflectionUtils.getOrThrow(field, expected);
+            Object obj2 = ReflectionUtils.getOrThrow(field, actual);
+            if (obj1 == null) assertNull(obj2);
+            else {
+                assertEquals(obj1.getClass(), obj2.getClass());
+                assertEquals(obj1, obj2);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static @NotNull Particle getParticleFromType(AParticleType<?> type) {
         Particle expected = type.create();
         if (type.equals(ParticleType.BLOCK_CRACK) || type.equals(ParticleType.BLOCK_DUST) || type.equals(ParticleType.FALLING_DUST))
             expected = ((ParticleType<BlockDataOption>) type).create(new BlockDataOption("oak_log[axis=y]"));
@@ -63,35 +95,11 @@ class ParticleParserTest extends ParserTestHelper<Particle> {
             expected = LegacyParticleType.ELECTRIC_SPARK.create("X");
         if (type.equals(LegacyParticleType.INSTANT_POTION_BREAK))
             expected = LegacyParticleType.INSTANT_POTION_BREAK.create(Color.PURPLE);
-
-        if (FileConfiguration.getParser(Particle.class) == null)
-            WrappersYAGLParser.addAllParsers();
-
-        File file = new File("build/resources/test/particles.yml");
-        if (!file.exists()) FileUtils.createNewFile(file);
-
-        FileConfiguration configuration = new FileConfiguration(file);
-        configuration.set(expected.getType(), expected);
-        configuration.save();
-
-        configuration = new FileConfiguration(file);
-        Particle actual = configuration.get(expected.getType(), Particle.class);
-
-        Field[] fields = expected.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            Object obj1 = ReflectionUtils.getOrThrow(field, expected);
-            Object obj2 = ReflectionUtils.getOrThrow(field, actual);
-            if (obj1 == null) assertNull(obj2);
-            else {
-                assertEquals(obj1.getClass(), obj2.getClass());
-                assertEquals(obj1, obj2);
-            }
-        }
+        return expected;
     }
 
     @Test
     void testNullType() {
-        WrappersYAGLParser.addAllParsers();
         ConfigurationSection particleSection = new ConfigurationSection(null, "main");
         particleSection.set("particle.type", null);
 
@@ -103,4 +111,5 @@ class ParticleParserTest extends ParserTestHelper<Particle> {
     protected Class<?> getParser() {
         return ParticleParser.class;
     }
+
 }

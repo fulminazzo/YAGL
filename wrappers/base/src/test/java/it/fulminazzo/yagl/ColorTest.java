@@ -84,4 +84,5 @@ class ColorTest {
     void testInvalidARGB() {
         assertThrowsExactly(IllegalArgumentException.class, () -> Color.fromARGB("invalid"));
     }
+
 }

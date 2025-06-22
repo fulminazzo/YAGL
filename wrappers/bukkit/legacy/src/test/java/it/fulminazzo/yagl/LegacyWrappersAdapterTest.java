@@ -13,6 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,11 +31,15 @@ import static org.mockito.Mockito.mock;
 @After1_(9)
 public class LegacyWrappersAdapterTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        setupServer();
     }
 
     private static Particle[] getTestLegacyParticles() {

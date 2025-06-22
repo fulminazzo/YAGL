@@ -31,4 +31,5 @@ class EnchantmentTest {
     void testIsSimilar() {
         assertTrue(new Enchantment("unbreaking", 3).isSimilar(new Enchantment("unbreaking", 1)));
     }
+
 }

@@ -13,4 +13,5 @@ public final class ItemAdapter {
     public static ItemStack itemToItemStack(AbstractItem item) {
         return new ItemStack(Material.STONE, 7);
     }
+
 }

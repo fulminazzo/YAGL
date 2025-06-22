@@ -4,6 +4,8 @@ import it.fulminazzo.yagl.Color;
 import it.fulminazzo.yagl.ParserTestHelper;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -16,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ColorParserTest extends ParserTestHelper<Color> {
 
+    @BeforeAll
+    static void setAllUp() {
+        FileConfiguration.addParsers(new ColorParser());
+    }
+
     private static Color[] getTestColors() {
         return Stream.concat(Arrays.stream(Color.values()), Stream.of(Color.fromARGB("#ff00aa"))).toArray(Color[]::new);
     }
@@ -23,7 +30,6 @@ class ColorParserTest extends ParserTestHelper<Color> {
     @ParameterizedTest
     @MethodSource("getTestColors")
     void testSaveColors(Color color) throws IOException {
-        FileConfiguration.addParsers(new ColorParser());
         File file = new File("build/resources/test/colors.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -42,4 +48,5 @@ class ColorParserTest extends ParserTestHelper<Color> {
     protected Class<?> getParser() {
         return ColorParser.class;
     }
+
 }

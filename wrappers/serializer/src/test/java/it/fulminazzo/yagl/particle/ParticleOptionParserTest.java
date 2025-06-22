@@ -12,6 +12,7 @@ import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.CallableYAMLParser;
 import it.fulminazzo.yamlparser.parsers.annotations.PreventSaving;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,6 +25,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class ParticleOptionParserTest {
+
+    @BeforeAll
+    static void setAllUp() {
+        WrappersYAGLParser.addAllParsers();
+        FileConfiguration.addParsers(new CallableYAMLParser<>(Item.class, s -> new Item()));
+    }
 
     private static ParticleOption<?>[] getTestOptions() {
         return new ParticleOption[]{
@@ -43,9 +50,6 @@ class ParticleOptionParserTest {
     @ParameterizedTest
     @MethodSource("getTestOptions")
     void testOptions(ParticleOption<?> expected) throws IOException {
-        WrappersYAGLParser.addAllParsers();
-        FileConfiguration.addParsers(new CallableYAMLParser<>(Item.class, s -> new Item()));
-
         File file = new File("build/resources/test/options.yml");
         if (file.exists()) FileUtils.deleteFile(file);
         FileUtils.createNewFile(file);
@@ -152,5 +156,7 @@ class ParticleOptionParserTest {
         public String getOption() {
             return "Hello world";
         }
+
     }
+
 }
