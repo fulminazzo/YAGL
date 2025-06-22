@@ -2,6 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.event.FullscreenGUIUpdateEvent;
 import it.fulminazzo.yagl.gui.FullscreenGUI;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.gui.GUIType;
@@ -141,6 +142,10 @@ public final class GUIAdapter {
                                                             final @Nullable Consumer<M> metaFunction) {
         openGUIHelper(gui, viewer, (p, v) -> {
             if (gui instanceof FullscreenGUI) {
+                FullscreenGUIUpdateEvent event = new FullscreenGUIUpdateEvent(p.getOpenInventory());
+                Bukkit.getPluginManager().callEvent(event);
+                if (event.isCancelled()) return;
+
                 FullscreenGUI fullscreenGUI = (FullscreenGUI) gui;
                 GUI upperGUI = fullscreenGUI.getUpperGUI();
                 GUI lowerGUI = fullscreenGUI.getLowerGUI();
