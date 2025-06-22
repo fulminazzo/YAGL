@@ -1,4 +1,5 @@
 import it.fulminazzo.yagl.GUIManager
+import it.fulminazzo.yagl.actions.GUIItemBack
 import it.fulminazzo.yagl.contents.ItemGUIContent
 import it.fulminazzo.yagl.guis.GUI
 import it.fulminazzo.yagl.guis.GUIType
@@ -13,6 +14,16 @@ def run = { CommandSender sender, String label, String[] args ->
         try {
             def columns = 9
             def border = Item.newItem('black_stained_glass_pane').setDisplayName(' ')
+
+            GUI secretGUI = GUI.newGUI(9)
+                    .setTitle('&cSecret GUI')
+                    .fill(border)
+                    .setContents(4, Item.newItem('obsidian').setDisplayName('&4&lYOU SHOULD NOT BE HERE'))
+                    .setContents(0, ItemGUIContent.newInstance('barrier')
+                            .setDisplayName('&cGo back')
+                            .onClickItem(new GUIItemBack())
+                    )
+
             GUI gui
             try {
                 gui = GUI.newGUI(EnumUtils.valueOf(GUIType, args[0]))
@@ -31,9 +42,12 @@ def run = { CommandSender sender, String label, String[] args ->
                 gui.setContents(gui.size() - i - 1, border)
             }
             def middle = (int) (gui.size() / 2)
-            gui.setContents(middle, Item.newItem('gold_block').setDisplayName('This is a <name> GUI!')
-                            .addEnchantment('unbreaking', 1)
-                            .addItemFlags(ItemFlag.HIDE_ENCHANTS))
+            gui.setContents(middle, ItemGUIContent.newInstance('gold_block')
+                    .setDisplayName('This is a <name> GUI!')
+                    .addEnchantment('unbreaking', 1)
+                    .addItemFlags(ItemFlag.HIDE_ENCHANTS)
+                    .onClickItem((v, g, c) -> secretGUI.open(v))
+            )
             if (middle - 1 >= 0)
                 gui.setContents(middle - 1, Item.newItem('diamond_sword')
                         .setDisplayName('Pick me!')
