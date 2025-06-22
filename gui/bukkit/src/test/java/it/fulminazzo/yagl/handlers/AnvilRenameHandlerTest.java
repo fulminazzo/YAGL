@@ -6,13 +6,13 @@ import io.netty.channel.ChannelHandlerContext;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.scheduler.Task;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +83,7 @@ class AnvilRenameHandlerTest {
     void testRemove() {
         TestUtils.disableFoliaRegionScheduler(() ->
                 BukkitTestUtils.mockNMSUtils(c -> {
-                    BukkitTask task = mock(BukkitTask.class);
+                    Task task = mock(Task.class);
                     Refl<AnvilRenameHandler> handler = new Refl<>(this.handler);
                     handler.setFieldObject("handleTask", task);
 
