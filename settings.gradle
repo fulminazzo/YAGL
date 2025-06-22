@@ -18,17 +18,17 @@ project(':common:common-bukkit').projectDir = file('common/bukkit')
 include 'common:common-serializer'
 project(':common:common-serializer').projectDir = file('common/serializer')
 
-include 'wrappers'
-include 'wrappers:wrappers-base'
-project(':wrappers:wrappers-base').projectDir = file('wrappers/base')
-include 'wrappers:wrappers-bukkit'
-project(':wrappers:wrappers-bukkit').projectDir = file('wrappers/bukkit')
-include ':wrappers:wrappers-bukkit:wrappers-legacy'
-project(':wrappers:wrappers-bukkit:wrappers-legacy').projectDir = file('wrappers/bukkit/legacy')
-include ':wrappers:wrappers-bukkit:wrappers-obsolete'
-project(':wrappers:wrappers-bukkit:wrappers-obsolete').projectDir = file('wrappers/bukkit/obsolete')
-include 'wrappers:wrappers-serializer'
-project(':wrappers:wrappers-serializer').projectDir = file('wrappers/serializer')
+include 'wrapper'
+include 'wrapper:wrapper-base'
+project(':wrapper:wrapper-base').projectDir = file('wrapper/base')
+include 'wrapper:wrapper-bukkit'
+project(':wrapper:wrapper-bukkit').projectDir = file('wrapper/bukkit')
+include ':wrapper:wrapper-bukkit:wrapper-legacy'
+project(':wrapper:wrapper-bukkit:wrapper-legacy').projectDir = file('wrapper/bukkit/legacy')
+include ':wrapper:wrapper-bukkit:wrapper-obsolete'
+project(':wrapper:wrapper-bukkit:wrapper-obsolete').projectDir = file('wrapper/bukkit/obsolete')
+include 'wrapper:wrapper-serializer'
+project(':wrapper:wrapper-serializer').projectDir = file('wrapper/serializer')
 
 include 'item'
 include 'item:item-base'

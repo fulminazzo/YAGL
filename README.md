@@ -55,7 +55,7 @@ If you are a **server admin**, I suggest you [read the documentation](../../wiki
 
 If you are a **developer**, **YAGL** is composed of **three main modules**:
 
-- [wrappers](tree/main/wrappers), a module that contains common **Minecraft** objects like **enchantments**, **sounds**, **particles**. It offers the capability of **saving and loading** them in a **nice format** for the end user;
+- [wrapper](tree/main/wrapper), a module that contains common **Minecraft** objects like **enchantments**, **sounds**, **particles**. It offers the capability of **saving and loading** them in a **nice format** for the end user;
 - [item](tree/main/item), a module to **generate and customize items** and even **apply textures** to them;
 - [gui](tree/main/gui), the **core module**, that **displays the actual interfaces** to players.
 

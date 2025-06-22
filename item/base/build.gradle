@@ -1,3 +1,3 @@
 dependencies {
-    api project(':wrappers:wrappers-base')
+    api project(':wrapper:wrapper-base')
 }

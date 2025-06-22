@@ -16,7 +16,7 @@ Item.newItem("diamond_sword")
     .setCustomModelData(1337);
 ```
 
-As already seen in [Wrappers](../wrappers), also `item` supports **saving and loading** using the [serializer](#serializer) submodule,
+As already seen in [Wrappers](../wrapper), also `item` supports **saving and loading** using the [serializer](#serializer) submodule,
 without any extra work from the developer. It is possible to save the item in a **nice format for the administrator**,
 who will encounter no issue into **modifying and customizing it** to fit their needs.
 

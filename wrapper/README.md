@@ -1,4 +1,4 @@
-The `wrappers` module is the most **innovative** and **unique technology** in the library.
+The `wrapper` module is the most **innovative** and **unique technology** in the library.
 
 It **apparently** does nothing apart from introducing more overhead to a project.
 
@@ -42,7 +42,7 @@ Then, add the **dependency**
 
 <dependency>
     <groupId>it.fulminazzo.yagl.wrapperit.fulminazzo.yagl.wrapper</groupId>
-    <artifactId>wrappers-{MODULE}</artifactId>
+    <artifactId>wrapper-{MODULE}</artifactId>
     <version>{LATEST}</version>
 </dependency>
 ```
@@ -55,7 +55,7 @@ To import **all three submodules together**, use:
 ```xml
 <dependency>
     <groupId>it.fulminazzo.yagl</groupId>
-    <artifactId>wrappers</artifactId>
+    <artifactId>wrapper</artifactId>
     <version>{LATEST}</version>
 </dependency>
 ```
@@ -74,7 +74,7 @@ Then, add the **dependency**
 
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.yagl.wrapper:wrappers-{MODULE}:{LATEST}'
+    implementation 'it.fulminazzo.yagl.wrapper:wrapper-{MODULE}:{LATEST}'
 }
 ```
 
@@ -85,7 +85,7 @@ To import **all three submodules together**, use:
 
 ```groovy
 dependencies {
-    implementation 'it.fulminazzo.yagl:wrappers:{LATEST}'
+    implementation 'it.fulminazzo.yagl:wrapper:{LATEST}'
 }
 ```
 
@@ -102,7 +102,7 @@ It holds the most important classes as
 
 ### Serializer
 
-The `serializer` submodule is entitled to **saving and loading** all the **wrappers objects**.
+The `serializer` submodule is entitled to **saving and loading** all the **wrapper objects**.
 A developer **should not be concerned** with the **contents** of this module as it should **never be used explicitly**.
 However, for it to work properly, it is required to execute `WrappersYAGLParser#addAllParsers()` **before any serialization operation**.
 
