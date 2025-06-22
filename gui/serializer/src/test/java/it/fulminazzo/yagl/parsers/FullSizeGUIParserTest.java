@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.parsers;
 
-import it.fulminazzo.yagl.contents.ItemGUIContent;
 import it.fulminazzo.yagl.guis.FullSizeGUI;
 import it.fulminazzo.yagl.guis.GUI;
 import it.fulminazzo.yagl.guis.GUIType;
@@ -16,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,11 +25,9 @@ class FullSizeGUIParserTest {
     void testSaveAndLoad() throws IOException {
         GUIYAGLParser.addAllParsers();
 
-        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.ANVIL)
-                .setContents(0, ItemGUIContent.newInstance("stone"))
-                .setContents(1, ItemGUIContent.newInstance("cobblestone"))
-                .setContents(3, ItemGUIContent.newInstance("grass"))
-                .setContents(4, ItemGUIContent.newInstance("dirt"));
+        FullSizeGUI expected = GUI.newFullSizeGUI(GUIType.BREWING, 9)
+                .setTitle("Full Size GUI");
+        GUIParserTest.setupContents(expected);
 
         File file = new File("build/resources/test/fullsize-gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
@@ -50,7 +46,7 @@ class FullSizeGUIParserTest {
     void testLoadWithNullContents() throws Exception {
         IConfiguration configuration = mock(IConfiguration.class);
         ConfigurationSection section = new ConfigurationSection(configuration, "path");
-        section.set("gui-type", "DEFAULT");
+        section.set("upper-gui-type", "DEFAULT");
         when(configuration.getConfigurationSection(any())).thenReturn(section);
         when(configuration.get("path", GUI.class)).thenReturn(GUI.newGUI(9));
 
@@ -68,7 +64,7 @@ class FullSizeGUIParserTest {
         when(contentsSection.getList(any(), any())).thenReturn(null);
 
         ConfigurationSection section = new ConfigurationSection(configuration, "path");
-        section.set("gui-type", "DEFAULT");
+        section.set("upper-gui-type", "DEFAULT");
         section.set("contents", contentsSection);
 
         when(configuration.getConfigurationSection(any())).thenReturn(section);
@@ -88,7 +84,7 @@ class FullSizeGUIParserTest {
         IllegalArgumentException ex = assertThrowsExactly(IllegalArgumentException.class, () ->
                 new FullSizeGUIParser().load(configuration, "path")
         );
-        assertEquals("'gui-type' cannot be null", ex.getMessage());
+        assertEquals("'upper-gui-type' cannot be null", ex.getMessage());
     }
 
     @Test

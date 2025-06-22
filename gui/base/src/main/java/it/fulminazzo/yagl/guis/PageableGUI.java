@@ -19,11 +19,20 @@ import java.util.*;
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
 public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadatable, GUI {
+    /**
+     * The Template gui.
+     */
     protected final @NotNull GUI templateGUI;
     private final List<GUI> pages = new LinkedList<>();
     private final Map<String, String> variables = new HashMap<>();
 
+    /**
+     * The Previous page.
+     */
     protected final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
+    /**
+     * The Next page.
+     */
     protected final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
 
     /**
@@ -76,23 +85,29 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
         int s;
         while ((s = this.pages.size()) - pages > 0) this.pages.remove(s - 1);
-        while (pages - this.pages.size() > 0) {
-            final GUI newPage;
-            if (this.templateGUI instanceof FullSizeGUI) {
-                FullSizeGUI fullSizeGUI = (FullSizeGUI) this.templateGUI;
-                newPage = new Refl<>(GUI.newFullSizeGUI(9))
-                        .setFieldObject("upperGUI", fullSizeGUI.getUpperGUI().copy())
-                        .setFieldObject("lowerGUI", fullSizeGUI.getLowerGUI().copy())
-                        .getObject();
-            } else {
-                if (this.templateGUI instanceof TypeGUI)
-                    newPage = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
-                else newPage = GUI.newGUI(this.templateGUI.size());
-            }
-
-            this.pages.add(newPage);
-        }
+        while (pages - this.pages.size() > 0) this.pages.add(copyTemplateGUI());
         return this;
+    }
+
+    /**
+     * Copies the template gui.
+     *
+     * @return the gui
+     */
+    protected @NotNull GUI copyTemplateGUI() {
+        final GUI newTemplateGUI;
+        if (this.templateGUI instanceof FullSizeGUI) {
+            FullSizeGUI fullSizeGUI = (FullSizeGUI) this.templateGUI;
+            newTemplateGUI = new Refl<>(GUI.newFullSizeGUI(9))
+                    .setFieldObject("upperGUI", fullSizeGUI.getUpperGUI().copy())
+                    .setFieldObject("lowerGUI", fullSizeGUI.getLowerGUI().copy())
+                    .getObject();
+        } else {
+            if (this.templateGUI instanceof TypeGUI)
+                newTemplateGUI = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
+            else newTemplateGUI = GUI.newGUI(this.templateGUI.size());
+        }
+        return newTemplateGUI;
     }
 
     /**
@@ -908,7 +923,12 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
         GUI.super.copyAll(other, replace);
         if (other instanceof PageableGUI) {
             PageableGUI otherGUI = (PageableGUI) other;
-            if (replace) otherGUI.setPages(pages());
+            if (replace)
+                try {
+                    otherGUI.setPages(pages());
+                } catch (IllegalStateException ignored) {
+                    // DataGUI does not support pages
+                }
             if (!otherGUI.previousPage.isPresent() || replace)
                 previousPage.map((i, c) -> new Tuple<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
             if (!otherGUI.nextPage.isPresent() || replace)

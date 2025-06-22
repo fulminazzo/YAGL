@@ -60,6 +60,7 @@ class MetadatableHelper implements Metadatable {
             final Refl<T> refl = new Refl<>(object);
             for (Field field : refl.getNonStaticFields())
                 ReflectionUtils.setAccessible(field)
+                        .filter(f -> !f.isAnnotationPresent(IgnoreApply.class))
                         .map(f -> f.get(object))
                         .filter(o -> !o.toString().contains("Lambda"))
                         .ifPresent(o -> field.set(object, apply(o)));

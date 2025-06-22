@@ -24,21 +24,29 @@ import java.util.function.Predicate;
  */
 @SuppressWarnings("unchecked")
 public class DataGUI<T> extends PageableGUI {
-    private static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
+    static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
 
     @Getter
     private final @NotNull List<T> data;
     @IgnoreField
-    private final @NotNull Function<T, GUIContent> dataConverter;
+    protected final @NotNull Function<T, GUIContent> dataConverter;
 
-    private DataGUI() {
+    /**
+     * Instantiates a new Data gui.
+     */
+    DataGUI() {
         this.data = new LinkedList<>();
         this.dataConverter = t -> {
             throw new NotImplemented();
         };
     }
 
-    private DataGUI(final @NotNull GUI templateGUI) {
+    /**
+     * Instantiates a new Data gui.
+     *
+     * @param templateGUI the template gui
+     */
+    DataGUI(final @NotNull GUI templateGUI) {
         super(templateGUI);
         this.data = new LinkedList<>();
         this.dataConverter = t -> {
@@ -142,24 +150,39 @@ public class DataGUI<T> extends PageableGUI {
 
     @Override
     public void open(@NotNull Viewer viewer, int page) {
-        fillContents(prepareOpenGUI(this.templateGUI, page), page).open(viewer);
+        prepareOpenGUI(this.templateGUI, page).open(viewer);
+    }
+
+    @Override
+    protected @NotNull GUI prepareOpenGUI(@NotNull GUI gui, int page) {
+        return fillContents(super.prepareOpenGUI(gui, page), page);
     }
 
     private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
+        List<T> dataList = getDataList();
         int emptySlots = emptySlots().size();
         int min = emptySlots * page;
-        int dataSize = this.data.size();
+        int dataSize = dataList.size();
         if (dataSize == 0) return gui;
         if (min >= dataSize)
             throw new IllegalArgumentException(String.format("No such page '%s'", page));
         if (page > 0) min++;
         int size = Math.min(gui.emptySlots().size() + min, dataSize);
         for (int i = min; i < size; i++) {
-            T data = this.data.get(i);
+            T data = dataList.get(i);
             GUIContent content = this.dataConverter.apply(data);
             gui.addContent(content);
         }
         return gui;
+    }
+
+    /**
+     * Gets the data list.
+     *
+     * @return data list
+     */
+    protected @NotNull List<T> getDataList() {
+        return this.data;
     }
 
     /**
@@ -203,7 +226,7 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     public int pages() {
-        int dataSize = this.data.size();
+        int dataSize = getDataList().size();
         if (dataSize == 0) return 1;
         final int emptySlots = getPageEmptySlots();
         final int firstPageSlots = getFirstPageEmptySlots();

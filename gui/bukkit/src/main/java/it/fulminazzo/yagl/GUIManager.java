@@ -5,6 +5,8 @@ import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.contents.GUIContent;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.guis.SearchGUI;
+import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
 import it.fulminazzo.yagl.viewers.Viewer;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -15,6 +17,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +36,7 @@ import java.util.UUID;
  */
 public class GUIManager extends SingleInstance implements Listener {
     private final @NotNull List<Viewer> viewers;
+    private final @NotNull List<AnvilRenameHandler> anvilRenameHandlers;
     @Getter
     private final @NotNull PlayersInventoryCache inventoryCache;
 
@@ -41,7 +46,20 @@ public class GUIManager extends SingleInstance implements Listener {
     public GUIManager() {
         initialize();
         this.viewers = new ArrayList<>();
+        this.anvilRenameHandlers = new ArrayList<>();
         this.inventoryCache = new PlayersInventoryCache();
+
+        Bukkit.getOnlinePlayers().forEach(this::addNewAnvilRenameHandler);
+    }
+
+    @EventHandler
+    void on(final @NotNull PlayerJoinEvent event) {
+        addNewAnvilRenameHandler(event.getPlayer());
+    }
+
+    @EventHandler
+    void on(final @NotNull PlayerQuitEvent event) {
+        removeAnvilRenameHandler(event.getPlayer());
     }
 
     @EventHandler
@@ -84,7 +102,48 @@ public class GUIManager extends SingleInstance implements Listener {
                     .map(Bukkit::getPlayer)
                     .filter(Objects::nonNull)
                     .forEach(HumanEntity::closeInventory);
+            Bukkit.getOnlinePlayers().forEach(this::removeAnvilRenameHandler);
             terminate();
+        }
+    }
+
+    /**
+     * Adds a new {@link AnvilRenameHandler} for the given player.
+     *
+     * @param player the player
+     */
+    void addNewAnvilRenameHandler(final @NotNull Player player) {
+        AnvilRenameHandler handler = new AnvilRenameHandler(
+                player.getUniqueId(),
+                (p, n) -> getOpenGUIViewer(p).ifPresent((v, g) -> {
+                    Class<?> clazz = g.getClass();
+                    String expectedClassName = SearchGUI.class.getCanonicalName() + ".SearchFullSizeGUI";
+                    Class<?> expectedClass = ReflectionUtils.getClass(expectedClassName);
+
+                    if (expectedClass.equals(clazz)) {
+                        SearchGUI<?> searchGUI = new Refl<>(g).invokeMethod("getSearchGui");
+                        if (n.equals(searchGUI.getQuery())) return;
+                        searchGUI.setQuery(n);
+                        GUIAdapter.updatePlayerGUI(searchGUI.getFirstPage(), v);
+                    }
+                })
+        );
+        handler.inject();
+        this.anvilRenameHandlers.add(handler);
+    }
+
+    /**
+     * Removes the {@link AnvilRenameHandler} of the given player.
+     *
+     * @param player the player
+     */
+    void removeAnvilRenameHandler(final @NotNull Player player) {
+        AnvilRenameHandler handler = this.anvilRenameHandlers.stream()
+                .filter(h -> h.belongsTo(player))
+                .findFirst().orElse(null);
+        if (handler != null) {
+            handler.remove();
+            this.anvilRenameHandlers.remove(handler);
         }
     }
 

@@ -2,8 +2,7 @@ package it.fulminazzo.yagl.guis;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
-import it.fulminazzo.yagl.Metadatable;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.actions.BiGUIAction;
 import it.fulminazzo.yagl.actions.GUIAction;
 import it.fulminazzo.yagl.contents.GUIContent;
@@ -95,13 +94,16 @@ public class FullSizeGUI extends FieldEquable implements GUI {
 
     @Override
     public void open(@NotNull Viewer viewer) {
-        final Class<?> guiUtils;
-        try {
-            guiUtils = ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter");
-        } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
-        }
-        new Refl<>(guiUtils).invokeMethod("openGUI", this, viewer);
+        GUIUtils.executeGUIAdapterFunction("openGUI", this, viewer);
+    }
+
+    /**
+     * Updates the viewer open {@link FullSizeGUI} by updating the {@link #lowerGUI} contents.
+     *
+     * @param viewer the viewer
+     */
+    public void update(@NotNull Viewer viewer) {
+        GUIUtils.executeGUIAdapterFunction("updatePlayerGUI", this, viewer);
     }
 
     @Override

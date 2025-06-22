@@ -5,6 +5,7 @@ import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
 import it.fulminazzo.jbukkit.inventory.MockPlayerInventory;
 import it.fulminazzo.yagl.guis.GUI;
+import it.fulminazzo.yagl.handlers.AnvilRenameHandler;
 import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.testing.InventoryViewWrapper;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
@@ -16,6 +17,8 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -28,6 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,12 +41,37 @@ import static org.mockito.Mockito.*;
 
 class GUIManagerTest {
 
+    @BeforeEach
+    void setUp() {
+        BukkitUtils.setupServer();
+        new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
+    }
+
+    @Test
+    void testInitializationOfGUIManagerInjectsOnlinePlayers() {
+        Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "fulminazzo");
+        BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+            try {
+                GUIManager.getInstance(GUIManager.class).terminate();
+            } catch (InstanceNotInitializedException ignored) {
+            }
+            new GUIManager();
+
+            verify(c.pipeline()).addBefore(
+                    eq("packet_handler"),
+                    any(),
+                    any()
+            );
+        });
+        BukkitUtils.removePlayer(player);
+    }
+
     @Test
     void testGetOpenGUIViewerPlayer() {
-        BukkitUtils.setupServer();
         Player player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
         BukkitTestUtils.mockPlugin(p ->
                 assertFalse(GUIManager.getOpenGUIViewer(player).isPresent(), "Should not be present"));
+        BukkitUtils.removePlayer(player);
     }
 
     @Test
@@ -61,6 +90,7 @@ class GUIManagerTest {
         @BeforeEach
         void setUp() {
             BukkitUtils.setupServer();
+            new ArrayList<>(Bukkit.getOnlinePlayers()).forEach(BukkitUtils::removePlayer);
             try {
                 GUIManager.getInstance(GUIManager.class).terminate();
             } catch (InstanceNotInitializedException ignored) {
@@ -92,6 +122,60 @@ class GUIManagerTest {
         @AfterEach
         void tearDown() {
             this.guiManager.terminate();
+            BukkitUtils.removePlayer(this.player);
+        }
+
+        @Test
+        void testOnJoinPlayerIsInjectedAnvilRenameHandler() {
+            BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                PlayerJoinEvent event = new PlayerJoinEvent(
+                        this.player,
+                        null
+                );
+
+                this.guiManager.on(event);
+
+                verify(c.pipeline()).addBefore(
+                        eq("packet_handler"),
+                        any(),
+                        any()
+                );
+            });
+        }
+
+        @Test
+        void testOnQuitPlayerIsRemovedAnvilRenameHandler() {
+            BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                AnvilRenameHandler handler = new AnvilRenameHandler(
+                        this.player.getUniqueId(),
+                        null
+                );
+
+                new Refl<>(this.guiManager)
+                        .getFieldRefl("anvilRenameHandlers")
+                        .invokeMethod("add", handler);
+
+                PlayerQuitEvent event = new PlayerQuitEvent(
+                        this.player,
+                        null
+                );
+
+                this.guiManager.on(event);
+
+                verify(c.pipeline()).remove(any(String.class));
+            });
+        }
+
+        @Test
+        void testOnQuitPlayerDoesNotThrowIfNoAnvilHandlerIsPresent() {
+            assertDoesNotThrow(() -> {
+                PlayerQuitEvent event = new PlayerQuitEvent(
+                        this.player,
+                        null
+                );
+
+                this.guiManager.on(event);
+            });
         }
 
         @Test
@@ -289,10 +373,21 @@ class GUIManagerTest {
 
         @Test
         void testDisableThisPlugin() {
-            BukkitTestUtils.mockPlugin(p -> {
+            BukkitTestUtils.mockPluginAndNMSUtils((p, c) -> {
+                AnvilRenameHandler handler = new AnvilRenameHandler(
+                        this.player.getUniqueId(),
+                        null
+                );
+
+                new Refl<>(this.guiManager)
+                        .getFieldRefl("anvilRenameHandlers")
+                        .invokeMethod("add", handler);
+
                 PluginDisableEvent event = new PluginDisableEvent(p);
                 this.guiManager.on(event);
                 verify(this.player).closeInventory();
+
+                verify(c.pipeline()).remove(any(String.class));
             });
             this.guiManager.initialize();
         }

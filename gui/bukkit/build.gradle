@@ -1,4 +1,5 @@
 dependencies {
+    compileOnly libs.io.netty
     api project(':item:item-bukkit')
 
     compileOnly libs.placeholderapi
