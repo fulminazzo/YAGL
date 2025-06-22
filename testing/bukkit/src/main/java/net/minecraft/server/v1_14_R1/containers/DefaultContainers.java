@@ -1,9 +1,8 @@
 package net.minecraft.server.v1_14_R1.containers;
 
-import lombok.Getter;
+import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
 
-@Getter
 public enum DefaultContainers implements Containers {
 
     GENERIC_9x1(9, "CHEST"),
@@ -46,6 +45,20 @@ public enum DefaultContainers implements Containers {
     DefaultContainers(final int size, final @NotNull String rawInventoryType) {
         this.size = size;
         this.rawInventoryType = rawInventoryType;
+    }
+
+    public InventoryType getInventoryType() {
+        try {
+            return InventoryType.valueOf(this.rawInventoryType);
+        } catch (IllegalArgumentException e) {
+            // Older version
+            return InventoryType.CREATIVE;
+        }
+    }
+
+    @Override
+    public int getSize() {
+        return this.size == -1 ? getInventoryType().getDefaultSize() : this.size;
     }
 
 }
