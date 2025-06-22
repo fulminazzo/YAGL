@@ -178,6 +178,18 @@ class AnvilRenameHandlerTest {
         );
     }
 
+    @Test
+    void testToStringPrintsPlayerUUID() {
+        BukkitTestUtils.mockPlugin(p -> {
+            UUID uuid = UUID.randomUUID();
+            AnvilRenameHandler handler = new AnvilRenameHandler(uuid, null);
+            String output = handler.toString();
+
+            assertTrue(output.contains(uuid.toString()),
+                    String.format("handler#toString should have contained %s, but was %s", uuid, output));
+        });
+    }
+
     @Getter
     static class PacketPlayInCustomPayload {
         private final @NotNull String name;
