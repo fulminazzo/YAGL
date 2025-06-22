@@ -3,8 +3,10 @@ package it.fulminazzo.yagl.inventory;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
+import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.guis.SearchGUI;
+import it.fulminazzo.yagl.items.Item;
 import it.fulminazzo.yagl.testing.CraftPlayer;
 import it.fulminazzo.yagl.utils.BukkitTestUtils;
 import it.fulminazzo.yagl.utils.NMSUtils;
@@ -22,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -135,6 +138,59 @@ class AnvilInventoryWrapperTest {
                     "openWindowPacket did not match container type");
             assertEquals(CraftChatMessage.fromString("Hello, world!")[0], openWindowPacket.getTitle(),
                     "openWindowPacket did not match expected title");
+        });
+    }
+
+    @Test
+    void testNamedItemStackToItemIn13() {
+        preventNewerNMSClassesLoading(() -> {
+            AnvilInventoryWrapper13 wrapper = new AnvilInventoryWrapper13(this.inventory);
+
+            ItemStack itemStack = ItemAdapter.itemToItemStack(
+                    Item.newItem("stone").setDisplayName(SearchGUI.EMPTY_RENAME_TEXT)
+            );
+
+            CraftItemStack item = (CraftItemStack) wrapper.itemStackToNMSItem(itemStack);
+
+            assertEquals(Material.STONE, item.getMaterial());
+            assertEquals(1, item.getAmount());
+
+            NBTTagCompound tag = item.getTag();
+            Map<String, NBTBase> data = tag.getData();
+
+            NBTBase display = data.get("display");
+            assertNotNull(display, "display tag should not be null");
+            assertInstanceOf(NBTTagCompound.class, display);
+
+            NBTTagCompound displayCompound = (NBTTagCompound) display;
+            data = displayCompound.getData();
+
+            NBTBase name = data.get("Name");
+            assertNotNull(name, "name tag should not be null");
+            assertInstanceOf(NBTTagString.class, name);
+
+            NBTTagString nameString = (NBTTagString) name;
+            assertEquals("{\"text\":\"\"}", nameString.getData());
+        });
+    }
+
+    @Test
+    void testSimpleItemStackToItemIn13() {
+        preventNewerNMSClassesLoading(() -> {
+            AnvilInventoryWrapper13 wrapper = new AnvilInventoryWrapper13(this.inventory);
+
+            ItemStack itemStack = ItemAdapter.itemToItemStack(
+                    Item.newItem("stone").setDisplayName("Hello, world")
+            );
+
+            CraftItemStack item = (CraftItemStack) wrapper.itemStackToNMSItem(itemStack);
+
+            assertEquals(Material.STONE, item.getMaterial());
+            assertEquals(1, item.getAmount());
+
+            NBTTagCompound tag = item.getTag();
+            Map<String, NBTBase> data = tag.getData();
+            assertTrue(data.isEmpty(), "NBTTagCompound should be empty, but was: " + data);
         });
     }
 
