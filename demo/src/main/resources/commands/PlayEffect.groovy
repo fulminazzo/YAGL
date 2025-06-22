@@ -6,13 +6,13 @@
  */
 import it.fulminazzo.yagl.Color
 import it.fulminazzo.yagl.WrappersAdapter
-import it.fulminazzo.yagl.particles.ColorParticleOption
-import it.fulminazzo.yagl.particles.LegacyParticleType
-import it.fulminazzo.yagl.particles.MaterialDataOption
-import it.fulminazzo.yagl.particles.Particle
-import it.fulminazzo.yagl.particles.PotionParticleOption
-import it.fulminazzo.yagl.particles.PrimitiveParticleOption
-import it.fulminazzo.yagl.wrappers.Potion
+import it.fulminazzo.yagl.particle.ColorParticleOption
+import it.fulminazzo.yagl.particle.LegacyParticleType
+import it.fulminazzo.yagl.particle.MaterialDataOption
+import it.fulminazzo.yagl.particle.Particle
+import it.fulminazzo.yagl.particle.PotionParticleOption
+import it.fulminazzo.yagl.particle.PrimitiveParticleOption
+import it.fulminazzo.yagl.wrapper.Potion
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

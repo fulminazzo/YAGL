@@ -1,10 +1,10 @@
-import it.fulminazzo.yagl.items.BukkitItem
-import it.fulminazzo.yagl.items.DeathAction
-import it.fulminazzo.yagl.items.Mobility
-import it.fulminazzo.yagl.items.PersistentItem
-import it.fulminazzo.yagl.items.fields.ItemFlag
-import it.fulminazzo.yagl.wrappers.Enchantment
-import it.fulminazzo.yagl.wrappers.WrapperParser
+import it.fulminazzo.yagl.item.BukkitItem
+import it.fulminazzo.yagl.item.DeathAction
+import it.fulminazzo.yagl.item.Mobility
+import it.fulminazzo.yagl.item.PersistentItem
+import it.fulminazzo.yagl.item.field.ItemFlag
+import it.fulminazzo.yagl.wrapper.Enchantment
+import it.fulminazzo.yagl.wrapper.WrapperParser
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * This is required for Minecraft version 1.20.6+ tests since
  * InventoryView is not an abstract class anymore.
  */
-public class InventoryViewWrapper extends Wrapper<MockInventoryView> {
+public final class InventoryViewWrapper extends Wrapper<MockInventoryView> {
 
     /**
      * Instantiates a new Inventory view wrapper.

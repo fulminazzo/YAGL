@@ -1,3 +1,3 @@
 dependencies {
-    api project(':wrappers:wrappers-serializer')
+    api project(':wrapper:wrapper-serializer')
 }

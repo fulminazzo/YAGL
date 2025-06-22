@@ -3,13 +3,14 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.Before1_;
-import it.fulminazzo.yagl.items.BukkitItem;
-import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.yagl.items.fields.ItemFlag;
-import it.fulminazzo.yagl.items.recipes.ShapedRecipe;
-import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
+import it.fulminazzo.yagl.item.BukkitItem;
+import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
+import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +22,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Before1_(8.8)
 class ObsoleteItemAdapterTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+        setupEnchantments();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        BukkitUtils.setupServer();
-        BukkitUtils.setupEnchantments();
     }
 
     @Test

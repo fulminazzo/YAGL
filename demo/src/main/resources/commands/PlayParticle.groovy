@@ -7,13 +7,13 @@
 import it.fulminazzo.yagl.Color
 import it.fulminazzo.yagl.ItemAdapter
 import it.fulminazzo.yagl.WrappersAdapter
-import it.fulminazzo.yagl.particles.BlockDataOption
-import it.fulminazzo.yagl.particles.DustParticleOption
-import it.fulminazzo.yagl.particles.DustTransitionParticleOption
-import it.fulminazzo.yagl.particles.ItemParticleOption
-import it.fulminazzo.yagl.particles.Particle
-import it.fulminazzo.yagl.particles.ParticleType
-import it.fulminazzo.yagl.particles.PrimitiveParticleOption
+import it.fulminazzo.yagl.particle.BlockDataOption
+import it.fulminazzo.yagl.particle.DustParticleOption
+import it.fulminazzo.yagl.particle.DustTransitionParticleOption
+import it.fulminazzo.yagl.particle.ItemParticleOption
+import it.fulminazzo.yagl.particle.Particle
+import it.fulminazzo.yagl.particle.ParticleType
+import it.fulminazzo.yagl.particle.PrimitiveParticleOption
 import it.fulminazzo.fulmicollection.objects.Refl
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
@@ -32,14 +32,14 @@ static getOption(CommandSender sender, ParticleType particleType, Class optionTy
     else if (particleType == ParticleType.TRAIL) {
         Location start = sender.location
         org.bukkit.Color color = org.bukkit.Color.RED
-        // Qualified reference is necessary to permit retro-compatibility
-        new PrimitiveParticleOption<>(new org.bukkit.Particle.Trail(start, color, Integer.valueOf(args[0])))
+        def trail = new Refl('org.bukkit.Particle.Trail', start, color, Integer.valueOf(args[0]))
+        new PrimitiveParticleOption<>(trail.object)
     } else if (particleType == ParticleType.VIBRATION) {
         Location start = sender.location
         Location end = start.clone().add(0, 10, 0)
-        // Qualified reference is necessary to permit retro-compatibility
-        def dest = new org.bukkit.Vibration.Destination.BlockDestination(end)
-        new PrimitiveParticleOption<>(new org.bukkit.Vibration(start, dest, Integer.valueOf(args[0])))
+        def dest = new Refl('org.bukkit.Vibration.Destination.BlockDestination', end)
+        def vibration = new Refl('new org.bukkit.Vibration', start, dest.object, Integer.valueOf(args[0]))
+        new PrimitiveParticleOption<>(vibration.object)
     } else if (particleType == ParticleType.SCULK_CHARGE)
         new PrimitiveParticleOption<>(Float.valueOf(args[0]))
     else if (particleType == ParticleType.SHRIEK)

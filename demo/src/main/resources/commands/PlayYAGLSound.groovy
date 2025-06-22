@@ -1,5 +1,5 @@
 import it.fulminazzo.yagl.WrappersAdapter
-import it.fulminazzo.yagl.wrappers.Sound
+import it.fulminazzo.yagl.wrapper.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

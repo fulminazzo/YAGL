@@ -3,7 +3,7 @@ They represent **visual menus** with which the **user** can **interact, view dat
 **YAGL** introduces an **advanced system** to include **as many features as possible**
 while still **maintaining simplicity and ease of use**.
 
-Keep in mind that **`gui` relies heavily on the [Item](../item) and [Wrappers](../wrappers) modules**,
+Keep in mind that **`gui` relies heavily on the [Item](../item) and [Wrappers](../wrapper) modules**,
 therefore it is suggested to study and learn from their documentations before approaching `gui`.
 
 It is also **thanks to these modules** that `gui` is capable of **storing and loading data** 

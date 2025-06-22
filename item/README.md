@@ -16,7 +16,7 @@ Item.newItem("diamond_sword")
     .setCustomModelData(1337);
 ```
 
-As already seen in [Wrappers](../wrappers), also `item` supports **saving and loading** using the [serializer](#serializer) submodule,
+As already seen in [Wrappers](../wrapper), also `item` supports **saving and loading** using the [serializer](#serializer) submodule,
 without any extra work from the developer. It is possible to save the item in a **nice format for the administrator**,
 who will encounter no issue into **modifying and customizing it** to fit their needs.
 
@@ -118,7 +118,7 @@ therefore it is **not necessary** to include it later.
 `bukkit` allows the direct **conversion** from a **YAGL `Item`** to a **Bukkit `ItemStack`**.
 It does so thanks to
 [ItemAdapter](bukkit/src/main/java/it/fulminazzo/yagl/ItemAdapter.java) and
-[BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/items/BukkitItem.java),
+[BukkitItem](bukkit/src/main/java/it/fulminazzo/yagl/item/BukkitItem.java),
 a special **extension of `Item`** with which it is possible to work **directly** with **Bukkit classes** such as
 `Material`, or `ItemMeta`.
 More specifically, thanks to the `BukkitItem#create(Class, Consumer)`, it is possible to **create an `ItemStack` from an `Item`**

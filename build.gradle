@@ -81,6 +81,10 @@ allprojects {
             name = 'Fulminazzo repository'
             url = 'https://repo.fulminazzo.it/releases'
         }
+        maven {
+            name = 'PlaceholderAPI repository'
+            url = 'https://repo.extendedclip.com/releases/'
+        }
     }
 
     dependencies {
@@ -111,7 +115,7 @@ allprojects {
         }
 
         // Common modules dependencies
-        if (['common', 'wrappers', 'item', 'gui'].contains(projectName)) {
+        if (['common', 'wrapper', 'item', 'gui'].contains(projectName)) {
             for (def s : ['base', 'serializer', 'bukkit'])
                 api(project(":${projectName}:${projectName}-${s}"))
         }

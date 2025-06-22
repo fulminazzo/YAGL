@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
+import org.mockito.MockedStatic;
 import org.mockito.exceptions.misusing.NotAMockException;
 import org.mockito.internal.progress.MockingProgress;
 
@@ -27,10 +28,45 @@ import static org.mockito.Mockito.*;
 import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingProgress;
 
 /**
- * The type Test utils.
+ * A collection of utilities for tests.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
+
+    /**
+     * Utility function to force the usage of Bukkit methods instead of Folia.
+     *
+     * @param runnable the function to execute
+     */
+    public static void disableFoliaRegionScheduler(final @NotNull Runnable runnable) {
+        TestUtils.mockReflectionUtils(() -> {
+            when(ReflectionUtils.getClass("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"))
+                    .thenThrow(new IllegalArgumentException("Folia not enabled!"));
+            runnable.run();
+        });
+    }
+
+    /**
+     * Mocks {@link ReflectionUtils} and executes the given function.
+     *
+     * @param runnable the function
+     */
+    public static void mockReflectionUtils(final @NotNull Runnable runnable) {
+        try (MockedStatic<ReflectionUtils> ignored = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            runnable.run();
+        }
+    }
+
+    /**
+     * Mocks {@link ReflectionUtils} and executes the given function.
+     *
+     * @param runnable the function
+     */
+    public static void mockReflectionUtils(final @NotNull Consumer<MockedStatic<ReflectionUtils>> runnable) {
+        try (MockedStatic<ReflectionUtils> reflectionUtils = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+            runnable.accept(reflectionUtils);
+        }
+    }
 
     /**
      * Allows testing all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
@@ -51,7 +87,8 @@ public final class TestUtils {
                                            final @NotNull Object target, final String invokedMethod,
                                            final Class<?> @NotNull ... invokedMethodParamTypes) {
         @NotNull List<Method> methods = new Refl<>(executor).getMethods(methodFinder);
-        if (methods.isEmpty()) throw new IllegalArgumentException("Could not find any method matching the given arguments.");
+        if (methods.isEmpty())
+            throw new IllegalArgumentException("Could not find any method matching the given arguments.");
 
         for (final Method method : methods) {
             ArgumentCaptor<?> @NotNull [] captors = testSingleMethod(executor, method, staticObjects, target, invokedMethod, invokedMethodParamTypes);
@@ -63,7 +100,8 @@ public final class TestUtils {
                 mockingProgress.reset();
                 mockingProgress.resetOngoingStubbing();
                 reset(target);
-            } catch (NotAMockException ignored) {}
+            } catch (NotAMockException ignored) {
+            }
         }
     }
 
@@ -76,10 +114,12 @@ public final class TestUtils {
      *
      * @param executor                the executor
      * @param targetMethod            the target method
-     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
+     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>.
+     *                                If the required class is present among these objects, then the one provided will be used.
+     *                                Otherwise, {@link #mockParameter(Class)} will be called.
      * @param target                  the target
      * @param invokedMethod           the invoked method
-     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>.
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>
      *                                These will also be the types of the returned captors
      * @return the argument captors of the invoked parameters
      */
@@ -130,10 +170,10 @@ public final class TestUtils {
      * to allow method chaining.
      * This function allows checking each one to verify that the return type is consistent with the original object.
      *
-     * @param <T>                the type parameter
-     * @param object             the object
-     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
-     * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
+     * @param <T>    the type parameter
+     * @param object the object
+     * @param clazz  the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param filter if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
                                           final @Nullable Predicate<Method> filter) {
@@ -149,8 +189,7 @@ public final class TestUtils {
      * @param object             the object
      * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
      * @param expectedReturnType the expected return type of the methods.
-     *                           For example, if the object is a hidden implementation,
-     *                           the corresponding abstract class (or interface) should be passed.
+     *                           For example, if the object is a hidden implementation,                           the corresponding abstract class (or interface) should be passed.
      * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
@@ -160,7 +199,8 @@ public final class TestUtils {
             try {
                 String name = expectedReturnType.getCanonicalName();
                 expectedReturnType = ReflectionUtils.getClass(name.substring(0, name.length() - "Impl".length()));
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) {
+            }
         for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
             final String methodString = methodToString(method);
@@ -215,8 +255,8 @@ public final class TestUtils {
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         Object object = mock(clazz);
-        if (clazz.getPackage().getName().endsWith("guis"))
-            when(new Refl<>(object).invokeMethod("size")).thenReturn(9);
+        if (clazz.getPackage().getName().endsWith("gui"))
+            when(new Refl<>(object).invokeMethod("size")).thenReturn(45);
         return object;
     }
 
@@ -224,4 +264,5 @@ public final class TestUtils {
         return String.format("%s(%s)", method.getName(), Arrays.stream(method.getParameterTypes())
                 .map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }
+
 }

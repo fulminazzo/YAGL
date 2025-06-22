@@ -1,5 +1,7 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.exception.InstanceAlreadyInitializedException;
+import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;

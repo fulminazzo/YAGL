@@ -55,7 +55,7 @@ If you are a **server admin**, I suggest you [read the documentation](../../wiki
 
 If you are a **developer**, **YAGL** is composed of **three main modules**:
 
-- [wrappers](tree/main/wrappers), a module that contains common **Minecraft** objects like **enchantments**, **sounds**, **particles**. It offers the capability of **saving and loading** them in a **nice format** for the end user;
+- [wrapper](tree/main/wrapper), a module that contains common **Minecraft** objects like **enchantments**, **sounds**, **particles**. It offers the capability of **saving and loading** them in a **nice format** for the end user;
 - [item](tree/main/item), a module to **generate and customize items** and even **apply textures** to them;
 - [gui](tree/main/gui), the **core module**, that **displays the actual interfaces** to players.
 
@@ -125,7 +125,12 @@ These are some of the pending features that are planned for the future:
 
 - [x] possibility to serialize data to **different file formats** like **JSON**, **XML**, **properties**.
       Completed using the [Configurations library](https://github.com/fulminazzo/Configurations);
-- [ ] add support for [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) in variable replacements;
+- [x] add support for [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) in variable replacements;
 - [ ] a special `GUIContent` that allows animated items;
 - [ ] a special `GUIContent` that allows items which can be toggled based on user click;
-- [ ] online web editor to customize and visualize data in real time;
+- [x] [fullscreen `GUI`](tree/main/gui/base/src/main/java/it/fulminazzo/yagl/gui/FullscreenGUI.java);
+- [ ] online web editor to customize and visualize data in real time.
+
+## Media
+
+![Search GUI demo](./media/search-gui-demo-short.gif "Search GUI demo")

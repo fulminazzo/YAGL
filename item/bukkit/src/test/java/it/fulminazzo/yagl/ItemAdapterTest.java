@@ -5,23 +5,20 @@ import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
 import it.fulminazzo.jbukkit.inventory.meta.MockItemMeta;
-import it.fulminazzo.yagl.items.BukkitItem;
-import it.fulminazzo.yagl.items.Item;
-import it.fulminazzo.yagl.items.fields.ItemFlag;
-import it.fulminazzo.yagl.items.recipes.FurnaceRecipe;
-import it.fulminazzo.yagl.items.recipes.Recipe;
-import it.fulminazzo.yagl.items.recipes.ShapedRecipe;
-import it.fulminazzo.yagl.items.recipes.ShapelessRecipe;
+import it.fulminazzo.yagl.item.BukkitItem;
+import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
+import it.fulminazzo.yagl.item.recipe.Recipe;
+import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
+import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -31,12 +28,16 @@ import static org.mockito.Mockito.*;
 
 class ItemAdapterTest extends BukkitUtils {
 
+    @BeforeAll
+    static void setAllUp() {
+        setupServer();
+        setupEnchantments();
+    }
+
     @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
-        setupServer();
-        setupEnchantments();
     }
 
     @Test
@@ -85,11 +86,6 @@ class ItemAdapterTest extends BukkitUtils {
     @DisplayName("ItemStack to Item conversion")
     class ItemStackToItem {
 
-        @BeforeEach
-        void setUp() {
-            setupServer();
-        }
-
         @Test
         void testNullItemStackShouldReturnNull() {
             assertNull(ItemAdapter.itemStackToItem(null));
@@ -108,6 +104,9 @@ class ItemAdapterTest extends BukkitUtils {
 
         @Test
         void testNullFieldsItem() {
+            // setupServer necessary here to avoid mocking issues
+            setupServer();
+
             BukkitItem expected = BukkitItem.newItem(Material.STONE);
             ItemStack itemStack = new ItemStack(Material.STONE);
             ItemMeta meta = new MockItemMeta();

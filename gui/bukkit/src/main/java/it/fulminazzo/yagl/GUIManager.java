@@ -3,16 +3,23 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
-import it.fulminazzo.yagl.contents.GUIContent;
-import it.fulminazzo.yagl.guis.GUI;
-import it.fulminazzo.yagl.viewers.Viewer;
+import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
+import it.fulminazzo.yagl.gui.GUI;
+import it.fulminazzo.yagl.gui.SearchGUI;
+import it.fulminazzo.yagl.handler.AnvilRenameHandler;
+import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +36,10 @@ import java.util.UUID;
  * It is completely independent and not required from the end user to be loaded or registered.
  */
 public class GUIManager extends SingleInstance implements Listener {
-    private final List<Viewer> viewers;
+    private final @NotNull List<Viewer> viewers;
+    private final @NotNull List<AnvilRenameHandler> anvilRenameHandlers;
+    @Getter
+    private final @NotNull PlayersInventoryCache inventoryCache;
 
     /**
      * Instantiates a new GUI manager.
@@ -37,6 +47,20 @@ public class GUIManager extends SingleInstance implements Listener {
     public GUIManager() {
         initialize();
         this.viewers = new ArrayList<>();
+        this.anvilRenameHandlers = new ArrayList<>();
+        this.inventoryCache = new PlayersInventoryCache();
+
+        Bukkit.getOnlinePlayers().forEach(this::addNewAnvilRenameHandler);
+    }
+
+    @EventHandler
+    void on(final @NotNull PlayerJoinEvent event) {
+        addNewAnvilRenameHandler(event.getPlayer());
+    }
+
+    @EventHandler
+    void on(final @NotNull PlayerQuitEvent event) {
+        removeAnvilRenameHandler(event.getPlayer());
     }
 
     @EventHandler
@@ -59,12 +83,15 @@ public class GUIManager extends SingleInstance implements Listener {
 
     @EventHandler
     void on(final @NotNull InventoryCloseEvent event) {
-        GUIAdapter.closeGUI(getViewer(event.getPlayer()));
+        Player player = (Player) event.getPlayer();
+        Viewer viewer = getViewer(player);
+        GUIAdapter.closeGUI(viewer);
+        restorePlayerContents(player);
     }
 
     @EventHandler
     void on(final @NotNull PluginDisableEvent event) {
-        JavaPlugin plugin = getProvidingPlugin();
+        JavaPlugin plugin = GUIAdapter.getProvidingPlugin();
         Plugin disablingPlugin = event.getPlugin();
         if (plugin.equals(disablingPlugin)) {
             this.viewers.stream()
@@ -73,7 +100,63 @@ public class GUIManager extends SingleInstance implements Listener {
                     .map(Bukkit::getPlayer)
                     .filter(Objects::nonNull)
                     .forEach(HumanEntity::closeInventory);
+            Bukkit.getOnlinePlayers().forEach(this::removeAnvilRenameHandler);
             terminate();
+        }
+    }
+
+    /**
+     * Adds a new {@link AnvilRenameHandler} for the given player.
+     *
+     * @param player the player
+     */
+    void addNewAnvilRenameHandler(final @NotNull Player player) {
+        AnvilRenameHandler handler = new AnvilRenameHandler(
+                player.getUniqueId(),
+                (p, n) -> getOpenGUIViewer(p).ifPresent((v, g) -> {
+                    Class<?> clazz = g.getClass();
+                    String expectedClassName = SearchGUI.class.getCanonicalName() + ".SearchFullscreenGUI";
+                    Class<?> expectedClass = ReflectionUtils.getClass(expectedClassName);
+
+                    if (expectedClass.equals(clazz)) {
+                        SearchGUI<?> searchGUI = new Refl<>(g).invokeMethod("getSearchGui");
+                        if (n.equals(searchGUI.getQuery())) return;
+                        searchGUI.setQuery(n);
+                        GUIAdapter.updatePlayerGUI(searchGUI.getFirstPage(), v);
+                    }
+                })
+        );
+        handler.inject();
+        this.anvilRenameHandlers.add(handler);
+    }
+
+    /**
+     * Removes the {@link AnvilRenameHandler} of the given player.
+     *
+     * @param player the player
+     */
+    void removeAnvilRenameHandler(final @NotNull Player player) {
+        AnvilRenameHandler handler = this.anvilRenameHandlers.stream()
+                .filter(h -> h.belongsTo(player))
+                .findFirst().orElse(null);
+        if (handler != null) {
+            handler.remove();
+            this.anvilRenameHandlers.remove(handler);
+        }
+    }
+
+    /**
+     * Restores the specified player contents if present.
+     *
+     * @param player the player
+     */
+    static void restorePlayerContents(final @NotNull Player player) {
+        GUIManager guiManager = getInstance();
+        @NotNull PlayersInventoryCache inventoryCache = guiManager.inventoryCache;
+        Viewer viewer = getViewer(player);
+        if (inventoryCache.areContentsStored(player) && viewer.getNextGUI() == null) {
+            inventoryCache.restorePlayerContents(player);
+            inventoryCache.clearPlayerContents(player);
         }
     }
 
@@ -148,12 +231,9 @@ public class GUIManager extends SingleInstance implements Listener {
             return getInstance(GUIManager.class);
         } catch (InstanceNotInitializedException e) {
             GUIManager manager = new GUIManager();
-            Bukkit.getPluginManager().registerEvents(manager, getProvidingPlugin());
+            Bukkit.getPluginManager().registerEvents(manager, GUIAdapter.getProvidingPlugin());
             return manager;
         }
     }
 
-    private static @NotNull JavaPlugin getProvidingPlugin() {
-        return JavaPlugin.getProvidingPlugin(GUIManager.class);
-    }
 }
