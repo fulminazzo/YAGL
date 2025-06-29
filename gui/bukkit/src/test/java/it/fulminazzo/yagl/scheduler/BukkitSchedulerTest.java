@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -100,6 +101,8 @@ class BukkitSchedulerTest extends BukkitUtils {
     void testLegacyIsCancelledMethod() {
         BukkitTask actualTask = new CraftTask();
         BukkitScheduler.BukkitSchedulerTask task = new BukkitScheduler.BukkitSchedulerTask(actualTask);
+
+        assertFalse(task.isCancelled());
 
         actualTask.cancel();
 
