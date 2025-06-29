@@ -1,15 +1,11 @@
 package it.fulminazzo.yagl.content;
 
-import it.fulminazzo.yagl.metadatable.Metadatable;
-import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.action.command.GUIItemCommand;
 import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
-import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +17,7 @@ import java.util.Set;
  * A {@link GUIContent} that contains a single {@link Item}.
  * It also extends the interface to easily modify it without accessing it directly.
  */
-public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
+public class ItemGUIContent extends CustomGUIContent<ItemGUIContent> implements GUIContent, Item {
     private final Item item;
 
     private ItemGUIContent() {
@@ -232,66 +228,6 @@ public class ItemGUIContent extends GUIContentImpl implements GUIContent, Item {
                 new GUIItemCommand(this.clickAction.serialize()) :
                 this.clickAction;
         return copy;
-    }
-
-    @Override
-    public @NotNull ItemGUIContent setClickSound(Sound sound) {
-        return (ItemGUIContent) super.setClickSound(sound);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent setPriority(int priority) {
-        return (ItemGUIContent) super.setPriority(priority);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent setViewRequirements(@NotNull RequirementChecker requirements) {
-        return (ItemGUIContent) super.setViewRequirements(requirements);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent onClickItemClose() {
-        return (ItemGUIContent) super.onClickItemClose();
-    }
-
-    @Override
-    public @NotNull ItemGUIContent onClickItem(@NotNull GUIItemAction action) {
-        return (ItemGUIContent) super.onClickItem(action);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent setViewRequirements(@NotNull String permission) {
-        return (ItemGUIContent) super.setViewRequirements(permission);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent onClickItem(@NotNull String command) {
-        return (ItemGUIContent) super.onClickItem(command);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent onClickItemSend(@NotNull String message) {
-        return (ItemGUIContent) super.onClickItemSend(message);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent copyFrom(@NotNull Metadatable other, boolean replace) {
-        return (ItemGUIContent) super.copyFrom(other, replace);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent copyAll(@NotNull Metadatable other, boolean replace) {
-        return (ItemGUIContent) super.copyAll(other, replace);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent unsetVariable(@NotNull String name) {
-        return (ItemGUIContent) super.unsetVariable(name);
-    }
-
-    @Override
-    public @NotNull ItemGUIContent setVariable(@NotNull String name, @NotNull String value) {
-        return (ItemGUIContent) super.setVariable(name, value);
     }
 
     /**
