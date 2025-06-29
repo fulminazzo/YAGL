@@ -10,7 +10,6 @@ import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -94,14 +93,11 @@ class ItemGUIContentTest {
                 .setVariable("name", "value");
     }
 
-    //TODO: fix
-    @Disabled
     @Test
     void testReturnTypesItem() {
         TestUtils.testReturnType(ItemGUIContent.newInstance(), Item.class, m -> m.getName().equals("copy"));
     }
 
-    @Disabled
     @Test
     void testReturnTypesGUIContent() {
         TestUtils.testReturnType(ItemGUIContent.newInstance(), GUIContent.class, m -> m.getName().equals("copyContent"));
