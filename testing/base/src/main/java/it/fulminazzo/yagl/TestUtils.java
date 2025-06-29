@@ -12,9 +12,7 @@ import org.mockito.MockedStatic;
 import org.mockito.exceptions.misusing.NotAMockException;
 import org.mockito.internal.progress.MockingProgress;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -225,6 +223,16 @@ public final class TestUtils {
                     try {
                         ReflectionUtils.getMethod(objectClass, expectedReturnType, method.getName(), method.getParameterTypes());
                     } catch (IllegalArgumentException e) {
+                        try {
+                            Method m = objectClass.getMethod(method.getName(), method.getParameterTypes());
+                            Type actualReturnType = m.getGenericReturnType();
+                            if (actualReturnType instanceof TypeVariable) {
+                                TypeVariable<?> typeVariable = (TypeVariable<?>) actualReturnType;
+                                Class<?> declaration = (Class<?>) typeVariable.getGenericDeclaration();
+                                if (declaration.isAssignableFrom(expectedReturnType)) continue;
+                            }
+                        } catch (NoSuchMethodException ignored) {}
+
                         fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
                                 methodString, objectClassName, objectClassName));
                     }
