@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <C> the type of this content (for method chaining)
  */
 @SuppressWarnings("unchecked")
-public abstract class CustomGUIContent<C extends CustomGUIContent<C>>
-        extends GUIContentImpl
-        implements GUIContent {
+public abstract class CustomGUIContent<C extends CustomGUIContent<C>> extends GUIContentImpl {
 
     @Override
     public @NotNull C setPriority(int priority) {

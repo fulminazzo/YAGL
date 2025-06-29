@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * A {@link GUIContent} that contains a single {@link Item}.
  * It also extends the interface to easily modify it without accessing it directly.
  */
-public class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> implements GUIContent, Item {
+public class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
 
     private ItemGUIContent() {
         super();

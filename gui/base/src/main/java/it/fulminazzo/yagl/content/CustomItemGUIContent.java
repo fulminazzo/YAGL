@@ -19,8 +19,8 @@ import java.util.Set;
  */
 @SuppressWarnings("unchecked")
 public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
-        extends CustomGUIContent<C> 
-        implements GUIContent, Item {
+        extends CustomGUIContent<C>
+        implements Item {
     protected final @NotNull Item item;
 
     protected CustomItemGUIContent() {
