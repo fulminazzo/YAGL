@@ -12,6 +12,7 @@ import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
 import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFactory;
@@ -20,8 +21,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -74,6 +79,20 @@ class ItemAdapterTest extends BukkitUtils {
         when(itemStack.getItemMeta()).thenReturn(itemMeta);
 
         assertEquals(Item.newItem("STONE"), ItemAdapter.itemStackToItem(itemStack));
+    }
+
+    @Test
+    void testPotionItem() {
+        Item expected = Item.newItem("POTION")
+                .addPotionEffects(
+                        new PotionEffect("SPEED", 90, 2),
+                        new PotionEffect("INCREASE_DAMAGE", 30, 3),
+                        new PotionEffect("JUMP", 10, 2)
+                );
+
+        ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
+
+        assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
     }
 
     private ItemFactory mockNullItemFactory() {
