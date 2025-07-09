@@ -20,7 +20,7 @@ def run = { CommandSender sender, String label, String[] args ->
                         .setDisplayName(args[5])
                         .setLore(args[6].split(';'))
                         .addEnchantments(Arrays.stream(args[7].split(';'))
-                                .map(a -> WrapperParser.parseWrapperFromString(a, Enchantment))
+                                .map(a -> WrapperParser.deserializeWrapper(a, Enchantment))
                                 .toArray(Enchantment[]::new))
                         .addItemFlags(Arrays.stream(args[8].split(';'))
                                 .map(a -> ItemFlag.valueOf(a.toUpperCase()))

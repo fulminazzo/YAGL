@@ -38,21 +38,22 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         return (c, s) -> {
             String raw = c.getString(s);
             if (raw == null || raw.trim().isEmpty()) return null;
-            else return parseWrapperFromString(raw, getOClass());
+            else return deserializeWrapper(raw, getOClass());
         };
     }
 
     /**
      * Converts the given string to an instance of the given wrapper class by using the most appropriate constructor.
      *
-     * @param <W>   the type of the wrapper
-     * @param raw   the string to convert from
-     * @param clazz the class of the wrapper
+     * @param <W>        the type of the wrapper
+     * @param serialized the string to convert from
+     * @param clazz      the class of the wrapper
      * @return the wrapper
      * @throws NoSuchMethodException an exception thrown in case the constructor cannot be found
      */
-    public static <W extends Wrapper> @NotNull W parseWrapperFromString(final @NotNull String raw, final @NotNull Class<W> clazz) throws NoSuchMethodException {
-        String[] rawData = raw.split(":");
+    public static <W extends Wrapper> @NotNull W deserializeWrapper(final @NotNull String serialized,
+                                                                    final @NotNull Class<W> clazz) throws NoSuchMethodException {
+        String[] rawData = serialized.split(":");
         Constructor<W> constructor = findConstructorFromRaw(rawData, clazz);
         Object[] parameters = initializeParameters(rawData, constructor);
         return new Refl<>(clazz, parameters).getObject();
@@ -101,8 +102,8 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
     /**
      * Converts the given wrapper to a string format containing its fields.
      *
-     * @param <W> the type of the wrapper
-     * @param wrapper   the wrapper
+     * @param <W>     the type of the wrapper
+     * @param wrapper the wrapper
      * @return the string
      */
     public static <W extends Wrapper> String serializeWrapper(final @NotNull W wrapper) {
