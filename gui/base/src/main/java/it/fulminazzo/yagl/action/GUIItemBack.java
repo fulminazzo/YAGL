@@ -32,4 +32,9 @@ public final class GUIItemBack implements GUIItemAction {
         return o instanceof GUIItemBack;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
 }

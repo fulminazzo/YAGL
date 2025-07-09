@@ -31,4 +31,9 @@ public final class GUIItemClose implements GUIItemAction {
         return o instanceof GUIItemClose;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
 }
