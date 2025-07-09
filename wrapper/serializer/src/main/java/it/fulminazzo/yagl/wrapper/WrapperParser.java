@@ -94,16 +94,27 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         return (c, s, w) -> {
             c.set(s, null);
             if (w == null) return;
-            StringBuilder tmp = new StringBuilder();
-            Refl<?> wRefl = new Refl<>(w);
-            for (Field field : wRefl.getNonStaticFields()) {
-                Object o = wRefl.getFieldObject(field);
-                String result = o == null ? "" : o.toString();
-                if (o instanceof String) result = result.toLowerCase();
-                tmp.append(result).append(":");
-            }
-            c.set(s, tmp.substring(0, Math.max(0, tmp.length() - 1)));
+            c.set(s, serializeWrapper(w));
         };
+    }
+
+    /**
+     * Converts the given wrapper to a string format containing its fields.
+     *
+     * @param <W> the type of the wrapper
+     * @param wrapper   the wrapper
+     * @return the string
+     */
+    public static <W extends Wrapper> String serializeWrapper(final @NotNull W wrapper) {
+        StringBuilder tmp = new StringBuilder();
+        Refl<?> wRefl = new Refl<>(wrapper);
+        for (Field field : wRefl.getNonStaticFields()) {
+            Object o = wRefl.getFieldObject(field);
+            String result = o == null ? "" : o.toString();
+            if (o instanceof String) result = result.toLowerCase();
+            tmp.append(result).append(":");
+        }
+        return tmp.substring(0, Math.max(0, tmp.length() - 1));
     }
 
     /**
