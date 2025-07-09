@@ -43,4 +43,9 @@ class GUIItemBackTest {
         assertNotEquals(new GUIItemBack(), new GUIItemClose());
     }
 
+    @Test
+    void testToString() {
+        assertEquals(GUIItemBack.class.getSimpleName(), new GUIItemBack().toString());
+    }
+
 }

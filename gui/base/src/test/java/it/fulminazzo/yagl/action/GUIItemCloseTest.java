@@ -36,4 +36,9 @@ class GUIItemCloseTest {
         assertNotEquals(new GUIItemClose(), new GUIItemBack());
     }
 
+    @Test
+    void testToString() {
+        assertEquals(GUIItemClose.class.getSimpleName(), new GUIItemClose().toString());
+    }
+
 }
