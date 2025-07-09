@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.fulmicollection.objects.Printable;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -50,9 +51,10 @@ class ItemImplTest {
                 .setDurability(4)
                 .setDisplayName("Hello world")
                 .addLore("lore")
-                .setCustomModelData(2)
                 .addEnchantments("enchant1", "enchant2")
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                .addPotionEffects(new PotionEffect("strength", 20, 2))
+                .setCustomModelData(2)
                 .setUnbreakable(true);
         String output = item.toString();
         String expected = Printable.convertToJson(item);
