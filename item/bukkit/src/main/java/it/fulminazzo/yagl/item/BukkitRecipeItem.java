@@ -22,12 +22,10 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     }
 
     @Override
-    @NotNull
-    BukkitRecipeItem addRecipes(final Recipe @NotNull ... recipes);
+    @NotNull BukkitRecipeItem addRecipes(final Recipe @NotNull ... recipes);
 
     @Override
-    @NotNull
-    BukkitRecipeItem clearRecipes(final Predicate<Recipe> predicate);
+    @NotNull BukkitRecipeItem clearRecipes(final Predicate<Recipe> predicate);
 
     @Override
     default @NotNull BukkitRecipeItem clearRecipes() {
@@ -38,24 +36,19 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     @NotNull <M extends ItemMeta> BukkitRecipeItem setMetadata(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction);
 
     @Override
-    @NotNull
-    BukkitRecipeItem setMaterial(final @NotNull String material);
+    @NotNull BukkitRecipeItem setMaterial(final @NotNull String material);
 
     @Override
-    @NotNull
-    BukkitRecipeItem setAmount(final int amount);
+    @NotNull BukkitRecipeItem setAmount(final int amount);
 
     @Override
-    @NotNull
-    BukkitRecipeItem setDurability(final int durability);
+    @NotNull BukkitRecipeItem setDurability(final int durability);
 
     @Override
-    @NotNull
-    BukkitRecipeItem setDisplayName(final @NotNull String displayName);
+    @NotNull BukkitRecipeItem setDisplayName(final @NotNull String displayName);
 
     @Override
-    @NotNull
-    BukkitRecipeItem setCustomModelData(final int customModelData);
+    @NotNull BukkitRecipeItem setCustomModelData(final int customModelData);
 
     @Override
     default @NotNull BukkitRecipeItem addLore(final String @NotNull ... lore) {
@@ -148,8 +141,7 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     }
 
     @Override
-    @NotNull
-    BukkitRecipeItem setUnbreakable(final boolean unbreakable);
+    @NotNull BukkitRecipeItem setUnbreakable(final boolean unbreakable);
 
     @Override
     default @NotNull BukkitRecipeItem copy() {

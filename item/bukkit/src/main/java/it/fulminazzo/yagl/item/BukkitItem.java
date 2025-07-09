@@ -165,36 +165,28 @@ public interface BukkitItem extends Item {
     }
 
     @Override
-    @NotNull
-    BukkitItem setCustomModelData(final int customModelData);
+    @NotNull BukkitItem setCustomModelData(final int customModelData);
 
     @Override
-    @NotNull
-    BukkitItem setMaterial(@NotNull String material);
+    @NotNull BukkitItem setMaterial(@NotNull String material);
 
     @Override
-    @NotNull
-    BukkitItem setAmount(final int amount);
+    @NotNull BukkitItem setAmount(final int amount);
 
     @Override
-    @NotNull
-    BukkitItem setDurability(final int durability);
+    @NotNull BukkitItem setDurability(final int durability);
 
     @Override
-    @NotNull
-    BukkitItem setDisplayName(final @NotNull String displayName);
+    @NotNull BukkitItem setDisplayName(final @NotNull String displayName);
 
     @Override
-    @NotNull
-    BukkitItem setLore(final @NotNull Collection<String> lore);
+    @NotNull BukkitItem setLore(final @NotNull Collection<String> lore);
 
     @Override
-    @NotNull
-    BukkitItem setUnbreakable(final boolean unbreakable);
+    @NotNull BukkitItem setUnbreakable(final boolean unbreakable);
 
     @Override
-    @NotNull
-    BukkitItem copy();
+    @NotNull BukkitItem copy();
 
     /**
      * Creates a new item to be used.
