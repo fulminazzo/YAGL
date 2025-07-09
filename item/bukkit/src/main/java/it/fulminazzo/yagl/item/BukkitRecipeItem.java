@@ -17,18 +17,20 @@ import java.util.function.Predicate;
 public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
 
     @Override
-    default BukkitRecipeItem setRecipes(final Recipe @NotNull ... recipes) {
+    default @NotNull BukkitRecipeItem setRecipes(final Recipe @NotNull ... recipes) {
         return (BukkitRecipeItem) RecipeItem.super.setRecipes(recipes);
     }
 
     @Override
+    @NotNull
     BukkitRecipeItem addRecipes(final Recipe @NotNull ... recipes);
 
     @Override
+    @NotNull
     BukkitRecipeItem clearRecipes(final Predicate<Recipe> predicate);
 
     @Override
-    default BukkitRecipeItem clearRecipes() {
+    default @NotNull BukkitRecipeItem clearRecipes() {
         return (BukkitRecipeItem) RecipeItem.super.clearRecipes();
     }
 
@@ -36,115 +38,121 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     @NotNull <M extends ItemMeta> BukkitRecipeItem setMetadata(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction);
 
     @Override
+    @NotNull
     BukkitRecipeItem setMaterial(final @NotNull String material);
 
     @Override
+    @NotNull
     BukkitRecipeItem setAmount(final int amount);
 
     @Override
+    @NotNull
     BukkitRecipeItem setDurability(final int durability);
 
     @Override
+    @NotNull
     BukkitRecipeItem setDisplayName(final @NotNull String displayName);
 
     @Override
+    @NotNull
     BukkitRecipeItem setCustomModelData(final int customModelData);
 
     @Override
-    default BukkitRecipeItem addLore(final String @NotNull ... lore) {
+    default @NotNull BukkitRecipeItem addLore(final String @NotNull ... lore) {
         return (BukkitRecipeItem) RecipeItem.super.addLore(lore);
     }
 
     @Override
-    default BukkitRecipeItem addLore(final @NotNull Collection<String> lore) {
+    default @NotNull BukkitRecipeItem addLore(final @NotNull Collection<String> lore) {
         return (BukkitRecipeItem) RecipeItem.super.addLore(lore);
     }
 
     @Override
-    default BukkitRecipeItem removeLore(final String @NotNull ... lore) {
+    default @NotNull BukkitRecipeItem removeLore(final String @NotNull ... lore) {
         return (BukkitRecipeItem) RecipeItem.super.removeLore(lore);
     }
 
     @Override
-    default BukkitRecipeItem removeLore(final @NotNull Collection<String> lore) {
+    default @NotNull BukkitRecipeItem removeLore(final @NotNull Collection<String> lore) {
         return (BukkitRecipeItem) RecipeItem.super.removeLore(lore);
     }
 
     @Override
-    default BukkitRecipeItem setLore(final String @NotNull ... lore) {
+    default @NotNull BukkitRecipeItem setLore(final String @NotNull ... lore) {
         return (BukkitRecipeItem) RecipeItem.super.setLore(lore);
     }
 
     @Override
-    default BukkitRecipeItem setLore(final @NotNull Collection<String> lore) {
+    default @NotNull BukkitRecipeItem setLore(final @NotNull Collection<String> lore) {
         return (BukkitRecipeItem) RecipeItem.super.setLore(lore);
     }
 
     @Override
-    default BukkitRecipeItem addEnchantment(final @NotNull String enchantment, final int level) {
+    default @NotNull BukkitRecipeItem addEnchantment(final @NotNull String enchantment, final int level) {
         return (BukkitRecipeItem) RecipeItem.super.addEnchantment(enchantment, level);
     }
 
     @Override
-    default BukkitRecipeItem addEnchantments(final String @NotNull ... enchantments) {
+    default @NotNull BukkitRecipeItem addEnchantments(final String @NotNull ... enchantments) {
         return (BukkitRecipeItem) RecipeItem.super.addEnchantments(enchantments);
     }
 
     @Override
-    default BukkitRecipeItem addEnchantments(final Enchantment @NotNull ... enchantments) {
+    default @NotNull BukkitRecipeItem addEnchantments(final Enchantment @NotNull ... enchantments) {
         return (BukkitRecipeItem) RecipeItem.super.addEnchantments(enchantments);
     }
 
     @Override
-    default BukkitRecipeItem addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
+    default @NotNull BukkitRecipeItem addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (BukkitRecipeItem) RecipeItem.super.addEnchantments(enchantments);
     }
 
     @Override
-    default BukkitRecipeItem removeEnchantment(final @NotNull String enchantment, final int level) {
+    default @NotNull BukkitRecipeItem removeEnchantment(final @NotNull String enchantment, final int level) {
         return (BukkitRecipeItem) RecipeItem.super.removeEnchantment(enchantment, level);
     }
 
     @Override
-    default BukkitRecipeItem removeEnchantments(final String @NotNull ... enchantments) {
+    default @NotNull BukkitRecipeItem removeEnchantments(final String @NotNull ... enchantments) {
         return (BukkitRecipeItem) RecipeItem.super.removeEnchantments(enchantments);
     }
 
     @Override
-    default BukkitRecipeItem removeEnchantments(final Enchantment @NotNull ... enchantments) {
+    default @NotNull BukkitRecipeItem removeEnchantments(final Enchantment @NotNull ... enchantments) {
         return (BukkitRecipeItem) RecipeItem.super.removeEnchantments(enchantments);
     }
 
     @Override
-    default BukkitRecipeItem removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
+    default @NotNull BukkitRecipeItem removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (BukkitRecipeItem) RecipeItem.super.removeEnchantments(enchantments);
     }
 
     @Override
-    default BukkitRecipeItem addItemFlags(final ItemFlag @NotNull ... itemFlags) {
+    default @NotNull BukkitRecipeItem addItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.addItemFlags(itemFlags);
     }
 
     @Override
-    default BukkitRecipeItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitRecipeItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.addItemFlags(itemFlags);
     }
 
     @Override
-    default BukkitRecipeItem removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
+    default @NotNull BukkitRecipeItem removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.removeItemFlags(itemFlags);
     }
 
     @Override
-    default BukkitRecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitRecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.removeItemFlags(itemFlags);
     }
 
     @Override
+    @NotNull
     BukkitRecipeItem setUnbreakable(final boolean unbreakable);
 
     @Override
-    default BukkitRecipeItem copy() {
+    default @NotNull BukkitRecipeItem copy() {
         return RecipeItem.super.copy(BukkitRecipeItem.class);
     }
 }

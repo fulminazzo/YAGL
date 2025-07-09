@@ -48,43 +48,43 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
     }
 
     @Override
-    public BukkitItem setMaterial(@NotNull String material) {
+    public @NotNull BukkitItem setMaterial(@NotNull String material) {
         EnumUtils.valueOf(Material.class, material);
         return (BukkitItem) super.setMaterial(material);
     }
 
     @Override
-    public BukkitItem setAmount(final int amount) {
+    public @NotNull BukkitItem setAmount(final int amount) {
         return (BukkitItem) super.setAmount(amount);
     }
 
     @Override
-    public BukkitItem setDurability(final int durability) {
+    public @NotNull BukkitItem setDurability(final int durability) {
         return (BukkitItem) super.setDurability(durability);
     }
 
     @Override
-    public BukkitItem setDisplayName(final @NotNull String displayName) {
+    public @NotNull BukkitItem setDisplayName(final @NotNull String displayName) {
         return (BukkitItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public BukkitItem setLore(final @NotNull Collection<String> lore) {
+    public @NotNull BukkitItem setLore(final @NotNull Collection<String> lore) {
         return (BukkitItem) super.setLore(lore);
     }
 
     @Override
-    public BukkitItem setUnbreakable(final boolean unbreakable) {
+    public @NotNull BukkitItem setUnbreakable(final boolean unbreakable) {
         return (BukkitItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public BukkitItem setCustomModelData(int customModelData) {
+    public @NotNull BukkitItem setCustomModelData(int customModelData) {
         return (BukkitItem) super.setCustomModelData(customModelData);
     }
 
     @Override
-    public BukkitItem copy() {
+    public @NotNull BukkitItem copy() {
         return super.copy(BukkitItem.class);
     }
 }

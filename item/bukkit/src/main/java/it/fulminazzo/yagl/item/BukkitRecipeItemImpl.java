@@ -64,43 +64,43 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public BukkitRecipeItem setMaterial(@NotNull String material) {
+    public @NotNull BukkitRecipeItem setMaterial(@NotNull String material) {
         EnumUtils.valueOf(Material.class, material);
         return (BukkitRecipeItem) super.setMaterial(material);
     }
 
     @Override
-    public BukkitRecipeItem setAmount(final int amount) {
+    public @NotNull BukkitRecipeItem setAmount(final int amount) {
         return (BukkitRecipeItem) super.setAmount(amount);
     }
 
     @Override
-    public BukkitRecipeItem setDurability(final int durability) {
+    public @NotNull BukkitRecipeItem setDurability(final int durability) {
         return (BukkitRecipeItem) super.setDurability(durability);
     }
 
     @Override
-    public BukkitRecipeItem setDisplayName(final @NotNull String displayName) {
+    public @NotNull BukkitRecipeItem setDisplayName(final @NotNull String displayName) {
         return (BukkitRecipeItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public BukkitRecipeItem setUnbreakable(final boolean unbreakable) {
+    public @NotNull BukkitRecipeItem setUnbreakable(final boolean unbreakable) {
         return (BukkitRecipeItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public BukkitRecipeItem setCustomModelData(int customModelData) {
+    public @NotNull BukkitRecipeItem setCustomModelData(int customModelData) {
         return (BukkitRecipeItem) super.setCustomModelData(customModelData);
     }
 
     @Override
-    public BukkitRecipeItem addRecipes(Recipe @NotNull ... recipes) {
+    public @NotNull BukkitRecipeItem addRecipes(Recipe @NotNull ... recipes) {
         return (BukkitRecipeItem) super.addRecipes(recipes);
     }
 
     @Override
-    public BukkitRecipeItem clearRecipes(@NotNull Predicate<Recipe> predicate) {
+    public @NotNull BukkitRecipeItem clearRecipes(@NotNull Predicate<Recipe> predicate) {
         return (BukkitRecipeItem) super.clearRecipes(predicate);
     }
 

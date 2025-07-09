@@ -130,44 +130,44 @@ class ItemTest {
         }
 
         @Override
-        public Item setMaterial(@NotNull String material) {
+        public @NotNull Item setMaterial(@NotNull String material) {
             this.material = material;
             return this;
         }
 
         @Override
-        public Item setAmount(int amount) {
+        public @NotNull Item setAmount(int amount) {
             this.amount = amount;
             return this;
         }
 
         @Override
-        public Item setDurability(int durability) {
+        public @NotNull Item setDurability(int durability) {
             this.durability = durability;
             return this;
         }
 
         @Override
-        public Item setDisplayName(@NotNull String displayName) {
+        public @NotNull Item setDisplayName(@NotNull String displayName) {
             this.displayName = displayName;
             return this;
         }
 
         @Override
-        public Item setLore(@NotNull Collection<String> lore) {
+        public @NotNull Item setLore(@NotNull Collection<String> lore) {
             this.lore.clear();
             this.lore.addAll(lore);
             return this;
         }
 
         @Override
-        public Item setUnbreakable(boolean unbreakable) {
+        public @NotNull Item setUnbreakable(boolean unbreakable) {
             this.unbreakable = unbreakable;
             return this;
         }
 
         @Override
-        public Item setCustomModelData(int customModelData) {
+        public @NotNull Item setCustomModelData(int customModelData) {
             return null;
         }
 

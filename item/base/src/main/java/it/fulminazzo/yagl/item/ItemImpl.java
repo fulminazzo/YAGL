@@ -62,37 +62,37 @@ class ItemImpl extends FieldEquable implements Item {
     }
 
     @Override
-    public Item setMaterial(final @NotNull String material) {
+    public @NotNull Item setMaterial(final @NotNull String material) {
         this.material = material;
         return this;
     }
 
     @Override
-    public Item setAmount(final int amount) {
+    public @NotNull Item setAmount(final int amount) {
         this.amount = amount;
         return this;
     }
 
     @Override
-    public Item setDurability(final int durability) {
+    public @NotNull Item setDurability(final int durability) {
         this.durability = durability;
         return this;
     }
 
     @Override
-    public Item setDisplayName(final @NotNull String displayName) {
+    public @NotNull Item setDisplayName(final @NotNull String displayName) {
         this.displayName = MessageUtils.color(displayName);
         return this;
     }
 
     @Override
-    public Item setUnbreakable(final boolean unbreakable) {
+    public @NotNull Item setUnbreakable(final boolean unbreakable) {
         this.unbreakable = unbreakable;
         return this;
     }
 
     @Override
-    public Item setCustomModelData(int customModelData) {
+    public @NotNull Item setCustomModelData(int customModelData) {
         this.customModelData = customModelData;
         return this;
     }

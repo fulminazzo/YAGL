@@ -43,13 +43,13 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public RecipeItem addRecipes(final Recipe @NotNull ... recipes) {
+    public @NotNull RecipeItem addRecipes(final Recipe @NotNull ... recipes) {
         Collections.addAll(this.recipes, recipes);
         return this;
     }
 
     @Override
-    public RecipeItem clearRecipes(final @NotNull Predicate<Recipe> predicate) {
+    public @NotNull RecipeItem clearRecipes(final @NotNull Predicate<Recipe> predicate) {
         this.recipes.removeIf(predicate);
         return this;
     }
@@ -71,32 +71,32 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public RecipeItem setMaterial(@NotNull String material) {
+    public @NotNull RecipeItem setMaterial(@NotNull String material) {
         return (RecipeItem) super.setMaterial(material);
     }
 
     @Override
-    public RecipeItem setAmount(int amount) {
+    public @NotNull RecipeItem setAmount(int amount) {
         return (RecipeItem) super.setAmount(amount);
     }
 
     @Override
-    public RecipeItem setDurability(int durability) {
+    public @NotNull RecipeItem setDurability(int durability) {
         return (RecipeItem) super.setDurability(durability);
     }
 
     @Override
-    public RecipeItem setDisplayName(@NotNull String displayName) {
+    public @NotNull RecipeItem setDisplayName(@NotNull String displayName) {
         return (RecipeItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public RecipeItem setUnbreakable(boolean unbreakable) {
+    public @NotNull RecipeItem setUnbreakable(boolean unbreakable) {
         return (RecipeItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public RecipeItem setCustomModelData(int customModelData) {
+    public @NotNull RecipeItem setCustomModelData(int customModelData) {
         return (RecipeItem) super.setCustomModelData(customModelData);
     }
 }

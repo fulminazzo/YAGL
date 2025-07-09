@@ -85,12 +85,12 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public Set<Enchantment> getEnchantments() {
+    public @NotNull Set<Enchantment> getEnchantments() {
         return this.item.getEnchantments();
     }
 
     @Override
-    public Set<ItemFlag> getItemFlags() {
+    public @NotNull Set<ItemFlag> getItemFlags() {
         return this.item.getItemFlags();
     }
 

@@ -139,127 +139,127 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public PersistentItem addLore(String @NotNull ... lore) {
+    public @NotNull PersistentItem addLore(String @NotNull ... lore) {
         return (PersistentItem) super.addLore(lore);
     }
 
     @Override
-    public PersistentItem addLore(@NotNull Collection<String> lore) {
+    public @NotNull PersistentItem addLore(@NotNull Collection<String> lore) {
         return (PersistentItem) super.addLore(lore);
     }
 
     @Override
-    public PersistentItem removeLore(String @NotNull ... lore) {
+    public @NotNull PersistentItem removeLore(String @NotNull ... lore) {
         return (PersistentItem) super.removeLore(lore);
     }
 
     @Override
-    public PersistentItem removeLore(@NotNull Collection<String> lore) {
+    public @NotNull PersistentItem removeLore(@NotNull Collection<String> lore) {
         return (PersistentItem) super.removeLore(lore);
     }
 
     @Override
-    public PersistentItem setLore(String @NotNull ... lore) {
+    public @NotNull PersistentItem setLore(String @NotNull ... lore) {
         return (PersistentItem) super.setLore(lore);
     }
 
     @Override
-    public PersistentItem addEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull PersistentItem addEnchantment(@NotNull String enchantment, int level) {
         return (PersistentItem) super.addEnchantment(enchantment, level);
     }
 
     @Override
-    public PersistentItem addEnchantments(String @NotNull ... enchantments) {
+    public @NotNull PersistentItem addEnchantments(String @NotNull ... enchantments) {
         return (PersistentItem) super.addEnchantments(enchantments);
     }
 
     @Override
-    public PersistentItem addEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull PersistentItem addEnchantments(Enchantment @NotNull ... enchantments) {
         return (PersistentItem) super.addEnchantments(enchantments);
     }
 
     @Override
-    public PersistentItem addEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull PersistentItem addEnchantments(@NotNull Collection<Enchantment> enchantments) {
         return (PersistentItem) super.addEnchantments(enchantments);
     }
 
     @Override
-    public PersistentItem removeEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull PersistentItem removeEnchantment(@NotNull String enchantment, int level) {
         return (PersistentItem) super.removeEnchantment(enchantment, level);
     }
 
     @Override
-    public PersistentItem removeEnchantments(String @NotNull ... enchantments) {
+    public @NotNull PersistentItem removeEnchantments(String @NotNull ... enchantments) {
         return (PersistentItem) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public PersistentItem removeEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull PersistentItem removeEnchantments(Enchantment @NotNull ... enchantments) {
         return (PersistentItem) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public PersistentItem removeEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull PersistentItem removeEnchantments(@NotNull Collection<Enchantment> enchantments) {
         return (PersistentItem) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public PersistentItem addItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull PersistentItem addItemFlags(ItemFlag @NotNull ... itemFlags) {
         return (PersistentItem) super.addItemFlags(itemFlags);
     }
 
     @Override
-    public PersistentItem addItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem addItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
         return (PersistentItem) super.addItemFlags(itemFlags);
     }
 
     @Override
-    public PersistentItem removeItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull PersistentItem removeItemFlags(ItemFlag @NotNull ... itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public PersistentItem removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public PersistentItem setMaterial(@NotNull String material) {
+    public @NotNull PersistentItem setMaterial(@NotNull String material) {
         return (PersistentItem) super.setMaterial(material);
     }
 
     @Override
-    public PersistentItem setAmount(int amount) {
+    public @NotNull PersistentItem setAmount(int amount) {
         return (PersistentItem) super.setAmount(amount);
     }
 
     @Override
-    public PersistentItem setDurability(int durability) {
+    public @NotNull PersistentItem setDurability(int durability) {
         return (PersistentItem) super.setDurability(durability);
     }
 
     @Override
-    public PersistentItem setDisplayName(@NotNull String displayName) {
+    public @NotNull PersistentItem setDisplayName(@NotNull String displayName) {
         return (PersistentItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public PersistentItem setLore(@NotNull Collection<String> lore) {
+    public @NotNull PersistentItem setLore(@NotNull Collection<String> lore) {
         return (PersistentItem) super.setLore(lore);
     }
 
     @Override
-    public PersistentItem setUnbreakable(boolean unbreakable) {
+    public @NotNull PersistentItem setUnbreakable(boolean unbreakable) {
         return (PersistentItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public PersistentItem setCustomModelData(int customModelData) {
+    public @NotNull PersistentItem setCustomModelData(int customModelData) {
         return (PersistentItem) super.setCustomModelData(customModelData);
     }
 
     @Override
-    public PersistentItem copy() {
+    public @NotNull PersistentItem copy() {
         return super.copy(PersistentItem.class);
     }
 

@@ -26,7 +26,7 @@ public interface Item extends AbstractItem {
      * @param material the material
      * @return this item
      */
-    Item setMaterial(final @NotNull String material);
+    @NotNull Item setMaterial(final @NotNull String material);
 
     /**
      * Gets material.
@@ -41,7 +41,7 @@ public interface Item extends AbstractItem {
      * @param amount the amount
      * @return this item
      */
-    Item setAmount(final int amount);
+    @NotNull Item setAmount(final int amount);
 
     /**
      * Gets amount.
@@ -56,7 +56,7 @@ public interface Item extends AbstractItem {
      * @param durability the durability
      * @return this item
      */
-    Item setDurability(final int durability);
+    @NotNull Item setDurability(final int durability);
 
     /**
      * Gets durability.
@@ -71,7 +71,7 @@ public interface Item extends AbstractItem {
      * @param displayName the display name
      * @return this item
      */
-    Item setDisplayName(final @NotNull String displayName);
+    @NotNull Item setDisplayName(final @NotNull String displayName);
 
     /**
      * Gets display name.
@@ -86,7 +86,7 @@ public interface Item extends AbstractItem {
      * @param lore the lore
      * @return this item
      */
-    default Item addLore(final String @NotNull ... lore) {
+    default @NotNull Item addLore(final String @NotNull ... lore) {
         return addLore(Arrays.asList(lore));
     }
 
@@ -96,7 +96,7 @@ public interface Item extends AbstractItem {
      * @param lore the lore
      * @return this item
      */
-    default Item addLore(final @NotNull Collection<String> lore) {
+    default @NotNull Item addLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
         for (final String l : lore) prevLore.add(MessageUtils.color(l));
         return this;
@@ -108,7 +108,7 @@ public interface Item extends AbstractItem {
      * @param lore the lore
      * @return this item
      */
-    default Item removeLore(final String @NotNull ... lore) {
+    default @NotNull Item removeLore(final String @NotNull ... lore) {
         return removeLore(Arrays.asList(lore));
     }
 
@@ -118,7 +118,7 @@ public interface Item extends AbstractItem {
      * @param lore the lore
      * @return this item
      */
-    default Item removeLore(final @NotNull Collection<String> lore) {
+    default @NotNull Item removeLore(final @NotNull Collection<String> lore) {
         @NotNull List<String> prevLore = getLore();
         for (final String l : lore) prevLore.removeIf(l2 -> l2.equals(MessageUtils.color(l)));
         return this;
@@ -130,7 +130,7 @@ public interface Item extends AbstractItem {
      * @param lore the lore
      * @return this item
      */
-    default Item setLore(final String @NotNull ... lore) {
+    default @NotNull Item setLore(final String @NotNull ... lore) {
         return setLore(Arrays.asList(lore));
     }
 
@@ -140,7 +140,7 @@ public interface Item extends AbstractItem {
      * @param lore the lore
      * @return this item
      */
-    default Item setLore(final @NotNull Collection<String> lore) {
+    default @NotNull Item setLore(final @NotNull Collection<String> lore) {
         getLore().clear();
         return addLore(lore);
     }
@@ -199,7 +199,7 @@ public interface Item extends AbstractItem {
      * @param level       the level
      * @return this item
      */
-    default Item addEnchantment(final @NotNull String enchantment, final int level) {
+    default @NotNull Item addEnchantment(final @NotNull String enchantment, final int level) {
         return addEnchantments(new Enchantment(enchantment, level));
     }
 
@@ -209,7 +209,7 @@ public interface Item extends AbstractItem {
      * @param enchantments the enchantments
      * @return this item
      */
-    default Item addEnchantments(final String @NotNull ... enchantments) {
+    default @NotNull Item addEnchantments(final String @NotNull ... enchantments) {
         return addEnchantments(Arrays.stream(enchantments).distinct().map(Enchantment::new).collect(Collectors.toList()));
     }
 
@@ -219,7 +219,7 @@ public interface Item extends AbstractItem {
      * @param enchantments the enchantments
      * @return this item
      */
-    default Item addEnchantments(final Enchantment @NotNull ... enchantments) {
+    default @NotNull Item addEnchantments(final Enchantment @NotNull ... enchantments) {
         return addEnchantments(Arrays.asList(enchantments));
     }
 
@@ -229,7 +229,7 @@ public interface Item extends AbstractItem {
      * @param enchantments the enchantments
      * @return this item
      */
-    default Item addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
+    default @NotNull Item addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         final Set<Enchantment> enchants = getEnchantments();
         enchants.addAll(enchantments);
         return this;
@@ -242,7 +242,7 @@ public interface Item extends AbstractItem {
      * @param level       the level
      * @return this item
      */
-    default Item removeEnchantment(final @NotNull String enchantment, final int level) {
+    default @NotNull Item removeEnchantment(final @NotNull String enchantment, final int level) {
         return removeEnchantments(new Enchantment(enchantment, level));
     }
 
@@ -252,7 +252,7 @@ public interface Item extends AbstractItem {
      * @param enchantments the enchantments
      * @return this item
      */
-    default Item removeEnchantments(final String @NotNull ... enchantments) {
+    default @NotNull Item removeEnchantments(final String @NotNull ... enchantments) {
         final Set<Enchantment> enchants = getEnchantments();
         for (final String e : enchantments) enchants.removeIf(e2 -> e2.isSimilar(new Enchantment(e)));
         return this;
@@ -264,7 +264,7 @@ public interface Item extends AbstractItem {
      * @param enchantments the enchantments
      * @return this item
      */
-    default Item removeEnchantments(final Enchantment @NotNull ... enchantments) {
+    default @NotNull Item removeEnchantments(final Enchantment @NotNull ... enchantments) {
         return removeEnchantments(Arrays.asList(enchantments));
     }
 
@@ -274,7 +274,7 @@ public interface Item extends AbstractItem {
      * @param enchantments the enchantments
      * @return this item
      */
-    default Item removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
+    default @NotNull Item removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         final Set<Enchantment> enchants = getEnchantments();
         for (final Enchantment e : enchantments) enchants.removeIf(e2 -> e2.equals(e));
         return this;
@@ -285,7 +285,7 @@ public interface Item extends AbstractItem {
      *
      * @return the enchantments
      */
-    Set<Enchantment> getEnchantments();
+    @NotNull Set<Enchantment> getEnchantments();
 
     /**
      * Checks if the current item has the given enchantment.
@@ -303,7 +303,7 @@ public interface Item extends AbstractItem {
      * @param itemFlags the item flags
      * @return this item
      */
-    default Item addItemFlags(final ItemFlag @NotNull ... itemFlags) {
+    default @NotNull Item addItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return addItemFlags(Arrays.asList(itemFlags));
     }
 
@@ -313,7 +313,7 @@ public interface Item extends AbstractItem {
      * @param itemFlags the item flags
      * @return this item
      */
-    default Item addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull Item addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         Set<ItemFlag> flags = getItemFlags();
         flags.addAll(itemFlags);
         return this;
@@ -325,7 +325,7 @@ public interface Item extends AbstractItem {
      * @param itemFlags the item flags
      * @return this item
      */
-    default Item removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
+    default @NotNull Item removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return removeItemFlags(Arrays.asList(itemFlags));
     }
 
@@ -335,7 +335,7 @@ public interface Item extends AbstractItem {
      * @param itemFlags the item flags
      * @return this item
      */
-    default Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         Set<ItemFlag> flags = getItemFlags();
         for (final ItemFlag i : itemFlags) flags.remove(i);
         return this;
@@ -346,7 +346,7 @@ public interface Item extends AbstractItem {
      *
      * @return the item flags
      */
-    Set<ItemFlag> getItemFlags();
+    @NotNull Set<ItemFlag> getItemFlags();
 
     /**
      * Sets unbreakable.
@@ -354,7 +354,7 @@ public interface Item extends AbstractItem {
      * @param unbreakable the unbreakable
      * @return this item
      */
-    Item setUnbreakable(final boolean unbreakable);
+    @NotNull Item setUnbreakable(final boolean unbreakable);
 
     /**
      * Checks if the current item is unbreakable.
@@ -370,7 +370,7 @@ public interface Item extends AbstractItem {
      * @return the custom model data
      * @since Minecraft 1.14
      */
-    Item setCustomModelData(final int customModelData);
+    @NotNull Item setCustomModelData(final int customModelData);
 
     /**
      * Gets custom model data.
@@ -395,7 +395,7 @@ public interface Item extends AbstractItem {
      *
      * @return the item
      */
-    default Item copy() {
+    default @NotNull Item copy() {
         return ObjectUtils.copy(this);
     }
 
@@ -409,7 +409,7 @@ public interface Item extends AbstractItem {
      * @param clazz the class of the copied item
      * @return the item
      */
-    default <I extends Item> I copy(@NotNull Class<I> clazz) {
+    default <I extends Item> @NotNull I copy(@NotNull Class<I> clazz) {
         return ObjectUtils.copy(this, clazz);
     }
 
@@ -450,4 +450,5 @@ public interface Item extends AbstractItem {
     static @NotNull RecipeItem newRecipeItem(final @NotNull String material) {
         return newRecipeItem().setMaterial(material);
     }
+
 }
