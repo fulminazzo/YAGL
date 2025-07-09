@@ -218,6 +218,36 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
+    public @NotNull C addPotionEffects(PotionEffect @NotNull ... potionEffects) {
+        return (C) Item.super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull C addPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+        return (C) Item.super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull C removePotionEffects(PotionEffect @NotNull ... potionEffects) {
+        return (C) Item.super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull C removePotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+        return (C) Item.super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull C setPotionEffects(PotionEffect @NotNull ... potionEffects) {
+        return (C) Item.super.setPotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull C setPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+        return (C) Item.super.setPotionEffects(potionEffects);
+    }
+
+    @Override
     public @NotNull C copy() {
         return (C) super.copy();
     }
