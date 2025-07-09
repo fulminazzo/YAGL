@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +61,13 @@ public final class ItemAdapter {
             invokeNoSuchMethod(() -> {
                 if (meta.hasCustomModelData()) item.setCustomModelData(meta.getCustomModelData());
             }, null);
+
+            if (meta instanceof PotionMeta) {
+                PotionMeta potionMeta = (PotionMeta) meta;
+                potionMeta.getCustomEffects().stream()
+                        .map(WrappersAdapter::potionEffectToWPotionEffect)
+                        .forEach(item::addPotionEffects);
+            }
         }
         return item;
     }
@@ -98,6 +106,14 @@ public final class ItemAdapter {
                 int modelData = item.getCustomModelData();
                 if (modelData > 0) meta.setCustomModelData(modelData);
             }, null);
+
+            if (meta instanceof PotionMeta) {
+                PotionMeta potionMeta = (PotionMeta) meta;
+                item.getPotionEffects().stream()
+                        .map(WrappersAdapter::wPotionEffectToPotionEffect)
+                        .forEach(p -> potionMeta.addCustomEffect(p, true));
+            }
+
             itemStack.setItemMeta(meta);
         }
         return itemStack;
