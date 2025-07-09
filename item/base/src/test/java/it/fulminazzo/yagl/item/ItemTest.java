@@ -92,6 +92,20 @@ class ItemTest {
     }
 
     @Test
+    void testRemovePotionEffect() {
+        assertEquals(1, Item.newItem()
+                        .setPotionEffects(
+                                new PotionEffect("strength", 10),
+                                new PotionEffect("speed", 5)
+                        )
+                        .removePotionEffects(
+                                new PotionEffect("speed", 5)
+                        )
+                        .getPotionEffects().size(),
+                "After removal there should be only one potion effect");
+    }
+
+    @Test
     void testIsNotSimilar() {
         Item i1 = Item.newItem().setAmount(1).setMaterial("grass").setDisplayName("Hello world");
         Item i2 = Item.newItem().setAmount(1).setMaterial("glass").setDisplayName("Hello world");
