@@ -5,7 +5,7 @@ import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GUIItemBackTest {
@@ -25,6 +25,22 @@ class GUIItemBackTest {
     void testExecuteNoPreviousGUI() {
         Viewer viewer = mock(Viewer.class);
         assertDoesNotThrow(() -> new GUIItemBack().execute(viewer, mock(GUI.class), mock(GUIContent.class)));
+    }
+
+    @Test
+    void testHashCode() {
+        GUIItemBack instance = new GUIItemBack();
+        assertEquals(GUIItemBack.class.hashCode(), instance.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        assertEquals(new GUIItemBack(), new GUIItemBack());
+    }
+
+    @Test
+    void testNotEquals() {
+        assertNotEquals(new GUIItemBack(), new GUIItemClose());
     }
 
 }
