@@ -8,6 +8,7 @@ import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,7 @@ class ItemImpl extends FieldEquable implements Item {
     private final @NotNull List<String> lore;
     private final @NotNull Set<Enchantment> enchantments;
     private final @NotNull Set<ItemFlag> itemFlags;
+    private final @NotNull Set<PotionEffect> potionEffects;
     private boolean unbreakable;
     private int customModelData;
 
@@ -59,6 +61,7 @@ class ItemImpl extends FieldEquable implements Item {
         this.lore = new LinkedList<>();
         this.enchantments = new EnchantmentSet();
         this.itemFlags = new HashSet<>();
+        this.potionEffects = new HashSet<>();
     }
 
     @Override

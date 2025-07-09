@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -122,6 +123,7 @@ class ItemTest {
         private final List<String> lore = new LinkedList<>();
         private final Set<Enchantment> enchantments = new EnchantmentSet();
         private final Set<ItemFlag> itemFlags = new LinkedHashSet<>();
+        private final Set<PotionEffect> potionEffects = new LinkedHashSet<>();
         private boolean unbreakable;
         private int customModelData;
 
