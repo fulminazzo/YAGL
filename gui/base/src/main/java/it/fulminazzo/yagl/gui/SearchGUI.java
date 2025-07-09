@@ -147,7 +147,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public SearchGUI<T> copy() {
+    public @NotNull SearchGUI<T> copy() {
         return new SearchGUI<>(
                 (SearchFullscreenGUI) this.templateGUI.copy(),
                 this.dataConverter,

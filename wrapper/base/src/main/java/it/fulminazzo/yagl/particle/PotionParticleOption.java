@@ -14,7 +14,7 @@ public final class PotionParticleOption extends ParticleOption<Potion> {
     }
 
     @Override
-    public Potion getOption() {
+    public @NotNull Potion getOption() {
         return this.potion;
     }
 }

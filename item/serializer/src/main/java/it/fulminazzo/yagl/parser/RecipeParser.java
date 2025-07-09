@@ -7,6 +7,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class RecipeParser extends TypedParser<Recipe> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Recipe, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, Recipe, Exception> getLoader() {
         return (c, s) -> {
             Recipe r = super.getLoader().apply(c, s);
             if (r == null) return null;

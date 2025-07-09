@@ -48,7 +48,7 @@ enum ParticleConverter {
     ;
 
     @Getter(AccessLevel.PACKAGE)
-    private final String particleName;
+    private final @NotNull String particleName;
 
     ParticleConverter(final @NotNull String particleName) {
         this.particleName = particleName;
@@ -62,7 +62,7 @@ enum ParticleConverter {
      * @param particle the particle
      * @return the converted particle
      */
-    public static Object convertToBukkit(final @NotNull Particle particle) {
+    public static @NotNull Object convertToBukkit(final @NotNull Particle particle) {
         try {
             return EnumUtils.valueOf(org.bukkit.Particle.class, particle.getType());
         } catch (IllegalArgumentException e) {

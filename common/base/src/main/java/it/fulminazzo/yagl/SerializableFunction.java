@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.utils.SerializeUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
@@ -15,7 +16,7 @@ public interface SerializableFunction extends Serializable {
      *
      * @return this function serialized
      */
-    default String serialize() {
+    default @Nullable String serialize() {
         return SerializeUtils.serializeToBase64(this);
     }
 }

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * An implementation of {@link SerializableFunction} that executes the given {@link #command} upon {@link #execute(Viewer)}.
  */
 public abstract class CommandAction extends FieldEquable implements SerializableFunction {
-    protected final String command;
+    protected final @NotNull String command;
 
     /**
      * Instantiates a new Command action.
@@ -30,7 +30,7 @@ public abstract class CommandAction extends FieldEquable implements Serializable
     }
 
     @Override
-    public String serialize() {
+    public @NotNull String serialize() {
         return this.command;
     }
 }

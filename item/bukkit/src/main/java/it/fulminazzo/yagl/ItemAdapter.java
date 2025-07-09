@@ -103,7 +103,7 @@ public final class ItemAdapter {
         return itemStack;
     }
 
-    private static ItemMeta getItemMeta(final @NotNull ItemStack itemStack) {
+    private static @Nullable ItemMeta getItemMeta(final @NotNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         else return meta;

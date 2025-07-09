@@ -34,7 +34,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, P, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, P, Exception> getLoader() {
         return (c, s) -> {
             Refl<?> reflP = new Refl<>(getOClass(), new Object[0]);
 
@@ -61,7 +61,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, P> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, P> getDumper() {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;

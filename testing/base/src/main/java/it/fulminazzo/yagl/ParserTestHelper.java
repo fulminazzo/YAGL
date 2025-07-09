@@ -65,7 +65,7 @@ public abstract class ParserTestHelper<T> {
      * @return the parser
      */
     @SuppressWarnings("unchecked")
-    protected Refl<YAMLParser<T>> getYamlParser() {
+    protected @NotNull Refl<YAMLParser<T>> getYamlParser() {
         return (Refl<YAMLParser<T>>) new Refl<>(getParser(), new Object[0]);
     }
 

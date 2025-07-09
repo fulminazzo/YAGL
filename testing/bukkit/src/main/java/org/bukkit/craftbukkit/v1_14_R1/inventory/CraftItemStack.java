@@ -5,12 +5,13 @@ import lombok.Getter;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class CraftItemStack extends FieldEquable {
     private final Material material;
     private final int amount;
-    private final NBTTagCompound tag;
+    private final @NotNull NBTTagCompound tag;
 
     public CraftItemStack(Material material, int amount) {
         this.material = material;
@@ -18,11 +19,11 @@ public class CraftItemStack extends FieldEquable {
         this.tag = new NBTTagCompound();
     }
 
-    public static CraftItemStack asNMSCopy(ItemStack itemStack) {
+    public static @NotNull CraftItemStack asNMSCopy(@NotNull ItemStack itemStack) {
         return new CraftItemStack(itemStack.getType(), itemStack.getAmount());
     }
 
-    public NBTTagCompound getOrCreateTag() {
+    public @NotNull NBTTagCompound getOrCreateTag() {
         return this.tag;
     }
 

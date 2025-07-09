@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.metadatable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -42,7 +43,7 @@ class MetadatableHelper implements Metadatable {
      * @return the object parsed
      */
     @SuppressWarnings("unchecked")
-    public <T> T apply(final T object) {
+    public <T> @Nullable T apply(final @Nullable T object) {
         if (object == null) return null;
 
         if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass()) && this.alreadyApplied.contains(object)) return object;
@@ -74,7 +75,7 @@ class MetadatableHelper implements Metadatable {
      * @param string the string
      * @return the string parsed
      */
-    String apply(@NotNull String string) {
+    @NotNull String apply(@NotNull String string) {
         for (final String v : variables().keySet()) {
             final String s = getVariable(v);
             if (s == null) continue;
@@ -93,7 +94,7 @@ class MetadatableHelper implements Metadatable {
      * @return the collection parsed
      */
     @SuppressWarnings("unchecked")
-    @NotNull Collection<Object> apply(Collection<Object> collection) {
+    @NotNull Collection<Object> apply(@NotNull Collection<Object> collection) {
         Class<?> clazz = collection.getClass();
         // In the case of creation with Arrays.asList()
         if (clazz.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))

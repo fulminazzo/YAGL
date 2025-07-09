@@ -112,7 +112,7 @@ class ItemImpl extends FieldEquable implements Item {
     }
 
     @Override
-    protected Class<? extends FieldEquable> clazz() {
+    protected @NotNull Class<? extends FieldEquable> clazz() {
         return ItemImpl.class;
     }
 

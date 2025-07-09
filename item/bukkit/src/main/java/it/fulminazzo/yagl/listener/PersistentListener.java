@@ -78,7 +78,7 @@ public class PersistentListener extends SingleInstance implements Listener {
      * @param drops    the drops
      * @return the map
      */
-    protected @NotNull Map<Integer, PersistentItem> parseDroppedItems(final @NotNull ItemStack[] contents,
+    protected @NotNull Map<Integer, PersistentItem> parseDroppedItems(final @NotNull ItemStack @NotNull [] contents,
                                                                       final @Nullable List<ItemStack> drops) {
         Map<Integer, PersistentItem> toRestore = new HashMap<>();
         for (int i = 0; i < contents.length; i++) {
@@ -300,7 +300,7 @@ public class PersistentListener extends SingleInstance implements Listener {
      *
      * @return the instance
      */
-    public static PersistentListener getInstance() {
+    public static @NotNull PersistentListener getInstance() {
         try {
             return getInstance(PersistentListener.class);
         } catch (InstanceNotInitializedException e) {

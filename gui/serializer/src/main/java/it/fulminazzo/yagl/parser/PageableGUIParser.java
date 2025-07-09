@@ -32,7 +32,7 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, PageableGUI, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, PageableGUI, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -109,7 +109,7 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, PageableGUI> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, PageableGUI> getDumper() {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;

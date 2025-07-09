@@ -19,14 +19,14 @@ import static org.mockito.Mockito.mock;
 
 @Getter
 public class Container {
-    private final Containers type;
+    private final @NotNull Containers type;
     private final Container container;
 
     private final int windowId;
 
-    private final List<CraftItemStack> items;
+    private final @NotNull List<CraftItemStack> items;
 
-    private final List<EntityPlayer> slotListeners;
+    private final @NotNull List<EntityPlayer> slotListeners;
 
     private ContainerAccess containerAccess;
 
@@ -38,19 +38,19 @@ public class Container {
         this(DefaultContainers.GENERIC_9x3);
     }
 
-    public Container(Containers type) {
+    public Container(@NotNull Containers type) {
         this(type, null);
     }
 
-    public Container(Containers type, int windowId) {
+    public Container(@NotNull Containers type, int windowId) {
         this(type, null, windowId);
     }
 
-    public Container(Containers type, Container container) {
+    public Container(@NotNull Containers type, Container container) {
         this(type, container, new Random().nextInt());
     }
 
-    public Container(Containers type, Container container, int windowId) {
+    public Container(@NotNull Containers type, Container container, int windowId) {
         this.type = type;
         this.container = container;
         this.windowId = windowId;
@@ -75,7 +75,7 @@ public class Container {
         this.slotListeners.add(entityPlayer);
     }
 
-    public Container setTitle(String title) {
+    public @NotNull Container setTitle(String title) {
         this.title = CraftChatMessage.fromString(title)[0];
         return this;
     }

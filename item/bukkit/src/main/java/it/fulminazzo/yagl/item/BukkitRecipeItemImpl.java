@@ -100,7 +100,8 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public BukkitRecipeItem clearRecipes(Predicate<Recipe> predicate) {
+    public BukkitRecipeItem clearRecipes(@NotNull Predicate<Recipe> predicate) {
         return (BukkitRecipeItem) super.clearRecipes(predicate);
     }
+
 }

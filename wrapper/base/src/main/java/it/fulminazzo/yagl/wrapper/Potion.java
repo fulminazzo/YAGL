@@ -68,7 +68,7 @@ public final class Potion extends Wrapper {
      * @param name the type
      * @return the type
      */
-    public Potion setName(final @NotNull String name) {
+    public @NotNull Potion setName(final @NotNull String name) {
         this.name = name;
         return this;
     }
@@ -79,7 +79,7 @@ public final class Potion extends Wrapper {
      * @param level the level
      * @return this potion
      */
-    public Potion setLevel(final int level) {
+    public @NotNull Potion setLevel(final int level) {
         this.level = check(level);
         return this;
     }
@@ -89,7 +89,7 @@ public final class Potion extends Wrapper {
      *
      * @return this potion
      */
-    public Potion setSplash() {
+    public @NotNull Potion setSplash() {
         this.splash = true;
         return this;
     }
@@ -99,7 +99,7 @@ public final class Potion extends Wrapper {
      *
      * @return this potion
      */
-    public Potion unsetSplash() {
+    public @NotNull Potion unsetSplash() {
         this.splash = false;
         return this;
     }
@@ -109,7 +109,7 @@ public final class Potion extends Wrapper {
      *
      * @return this potion
      */
-    public Potion setExtended() {
+    public @NotNull Potion setExtended() {
         this.extended = true;
         return this;
     }
@@ -119,7 +119,7 @@ public final class Potion extends Wrapper {
      *
      * @return this potion
      */
-    public Potion unsetExtended() {
+    public @NotNull Potion unsetExtended() {
         this.extended = false;
         return this;
     }

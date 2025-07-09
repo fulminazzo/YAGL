@@ -179,7 +179,7 @@ public final class NMSUtils {
     public static @NotNull Object newOpenWindowPacket(final @NotNull Object container,
                                                       final int id,
                                                       final @NotNull String title,
-                                                      final Inventory inventory) {
+                                                      final @NotNull Inventory inventory) {
         final Class<?> packetPlayOutOpenWindowClass = getPacketPlayOutOpenWindowClass();
 
         Object chatComponentTitle = newIChatBaseComponent(title);

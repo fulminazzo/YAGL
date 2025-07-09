@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.metadatable;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 
@@ -25,6 +26,7 @@ public final class PAPIParser extends MetadatableHelper {
     }
 
     @Override
+    @NotNull
     String apply(@NotNull String string) {
         return PlaceholderAPI.setPlaceholders(this.player, string);
     }
@@ -37,8 +39,8 @@ public final class PAPIParser extends MetadatableHelper {
      * @param object the object
      * @return the parsed object
      */
-    public static <T> T parse(final @NotNull Player player,
-                              final @NotNull T object) {
+    public static <T> @Nullable T parse(final @NotNull Player player,
+                                        final @NotNull T object) {
         return new PAPIParser(player).apply(object);
     }
 

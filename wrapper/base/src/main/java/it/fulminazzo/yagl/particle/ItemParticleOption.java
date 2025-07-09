@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("deprecation")
 public final class ItemParticleOption<I extends AbstractItem> extends ParticleOption<I> {
-    private final I item;
+    private final @NotNull I item;
 
     /**
      * Instantiates a new Item particle option.
@@ -20,7 +20,7 @@ public final class ItemParticleOption<I extends AbstractItem> extends ParticleOp
     }
 
     @Override
-    public I getOption() {
+    public @NotNull I getOption() {
         return this.item;
     }
 }

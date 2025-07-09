@@ -82,7 +82,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param mobility the mobility
      * @return this persistent item
      */
-    public PersistentItem setMobility(Mobility mobility) {
+    public @NotNull PersistentItem setMobility(Mobility mobility) {
         this.mobility = mobility;
         return this;
     }
@@ -281,7 +281,7 @@ public class PersistentItem extends BukkitItemImpl {
      *
      * @return the persistent item
      */
-    public static PersistentItem newItem() {
+    public static @NotNull PersistentItem newItem() {
         return new PersistentItem();
     }
 
@@ -291,7 +291,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param material the material
      * @return the persistent item
      */
-    public static PersistentItem newItem(final @NotNull Material material) {
+    public static @NotNull PersistentItem newItem(final @NotNull Material material) {
         return new PersistentItem(material);
     }
 
@@ -301,7 +301,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param material the material
      * @return the persistent item
      */
-    public static PersistentItem newItem(final @Nullable String material) {
+    public static @NotNull PersistentItem newItem(final @Nullable String material) {
         return new PersistentItem(material);
     }
 
@@ -312,7 +312,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param amount   the amount
      * @return the persistent item
      */
-    public static PersistentItem newItem(final @NotNull Material material, final int amount) {
+    public static @NotNull PersistentItem newItem(final @NotNull Material material, final int amount) {
         return new PersistentItem(material, amount);
     }
 
@@ -323,7 +323,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param amount   the amount
      * @return the persistent item
      */
-    public static PersistentItem newItem(final @Nullable String material, final int amount) {
+    public static @NotNull PersistentItem newItem(final @Nullable String material, final int amount) {
         return new PersistentItem(material, amount);
     }
 

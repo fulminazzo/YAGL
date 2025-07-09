@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * An option used by {@link ParticleType#REDSTONE}.
  */
 public final class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
-    private final Color color;
+    private final @NotNull Color color;
     private final float size;
 
     @SuppressWarnings("unused")
@@ -28,7 +28,7 @@ public final class DustParticleOption extends ParticleOption<Tuple<Color, Float>
     }
 
     @Override
-    public Tuple<Color, Float> getOption() {
+    public @NotNull Tuple<Color, Float> getOption() {
         return new Tuple<>(this.color, this.size);
     }
 }

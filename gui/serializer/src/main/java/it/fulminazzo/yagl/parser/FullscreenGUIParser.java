@@ -13,6 +13,7 @@ import it.fulminazzo.yagl.util.ParserUtils;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class FullscreenGUIParser extends YAMLParser<FullscreenGUI> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, FullscreenGUI, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, FullscreenGUI, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -83,7 +84,7 @@ public class FullscreenGUIParser extends YAMLParser<FullscreenGUI> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected TriConsumer<IConfiguration, String, FullscreenGUI> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, FullscreenGUI> getDumper() {
         return (c, s, g) -> {
             c.set(s, null);
             if (g == null) return;

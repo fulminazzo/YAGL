@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A parser to serialize {@link ColorParticleOption}.
@@ -20,7 +21,7 @@ public class ColorOptionParser extends YAMLParser<ColorParticleOption> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, ColorParticleOption, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, ColorParticleOption, Exception> getLoader() {
         return (c, s) -> {
             Color color = c.get(s, Color.class);
             if (color == null) return null;
@@ -29,7 +30,8 @@ public class ColorOptionParser extends YAMLParser<ColorParticleOption> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, ColorParticleOption> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, ColorParticleOption> getDumper() {
         return (c, s, p) -> c.set(s, p == null ? null : p.getOption());
     }
+
 }

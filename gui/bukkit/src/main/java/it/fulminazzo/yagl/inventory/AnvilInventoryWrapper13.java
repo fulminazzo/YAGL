@@ -23,7 +23,7 @@ class AnvilInventoryWrapper13 extends AnvilInventoryWrapper12 {
     }
 
     @Override
-    @NotNull Object itemStackToNMSItem(ItemStack item) {
+    @NotNull Object itemStackToNMSItem(@NotNull ItemStack item) {
         Object nmsItem = super.itemStackToNMSItem(item);
         Refl<?> nmsStack = new Refl<>(nmsItem);
         ItemMeta meta = item.getItemMeta();

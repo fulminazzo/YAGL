@@ -42,7 +42,7 @@ public class SearchGUIParser extends YAMLParser<SearchGUI<?>> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, SearchGUI<?>, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, SearchGUI<?>, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -65,7 +65,7 @@ public class SearchGUIParser extends YAMLParser<SearchGUI<?>> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, SearchGUI<?>> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, SearchGUI<?>> getDumper() {
         return (c, s, g) -> {
             this.internalParser.dump(c, s, g);
             if (c.isConfigurationSection(s))

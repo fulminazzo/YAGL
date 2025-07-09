@@ -20,7 +20,7 @@ public abstract class Wrapper extends FieldEquable {
      * @param value the value
      * @return the value
      */
-    protected <N extends Number> N check(final @NotNull N value) {
+    protected <N extends Number> @NotNull N check(final @NotNull N value) {
         return check(this, value);
     }
 
@@ -35,7 +35,7 @@ public abstract class Wrapper extends FieldEquable {
      * @param value  the value
      * @return the passed value
      */
-    public static <N extends Number> N check(final Object object, final @NotNull N value) {
+    public static <N extends Number> @NotNull N check(final @NotNull Object object, final @NotNull N value) {
         StackTraceElement[] trace = Thread.currentThread().getStackTrace();
         // The first element should be the getStackTrace invocation, the second and third the 'check' methods.
         // So we are looking for the third.
@@ -46,7 +46,7 @@ public abstract class Wrapper extends FieldEquable {
         return value;
     }
 
-    private static <N extends Number> void checkField(@NotNull N value, Field field) {
+    private static <N extends Number> void checkField(@NotNull N value, @NotNull Field field) {
         if (field.isAnnotationPresent(Range.class)) {
             Range range = field.getAnnotation(Range.class);
             int min = range.min();

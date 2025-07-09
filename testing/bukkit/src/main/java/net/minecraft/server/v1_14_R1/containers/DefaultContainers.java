@@ -47,7 +47,7 @@ public enum DefaultContainers implements Containers {
         this.rawInventoryType = rawInventoryType;
     }
 
-    public InventoryType getInventoryType() {
+    public @NotNull InventoryType getInventoryType() {
         try {
             return InventoryType.valueOf(this.rawInventoryType);
         } catch (IllegalArgumentException e) {

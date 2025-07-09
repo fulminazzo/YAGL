@@ -161,7 +161,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
         super(optionType);
     }
 
-    public static ParticleType<?> valueOf(final int index) {
+    public static @NotNull ParticleType<?> valueOf(final int index) {
         return valueOf(index, ParticleType.class);
     }
 
@@ -169,7 +169,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
         return valueOf(name, ParticleType.class);
     }
 
-    public static ParticleType<?>[] values() {
+    public static ParticleType<?> @NotNull [] values() {
         return values(ParticleType.class);
     }
 

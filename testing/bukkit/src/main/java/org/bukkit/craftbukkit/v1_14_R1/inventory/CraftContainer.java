@@ -6,18 +6,19 @@ import net.minecraft.server.v1_14_R1.Container;
 import net.minecraft.server.v1_14_R1.ContainerAnvil;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class CraftContainer extends Container {
     private final Inventory inventory;
     private final EntityPlayer owner;
-    private final Container delegate;
+    private final @NotNull Container delegate;
 
     public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId) {
         this(inventory, owner, windowId, new ContainerAnvil(windowId));
     }
 
-    public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId, Container delegate) {
+    public CraftContainer(Inventory inventory, EntityPlayer owner, int windowId, @NotNull Container delegate) {
         super(delegate.getType(), windowId);
         this.inventory = inventory;
         this.owner = owner;

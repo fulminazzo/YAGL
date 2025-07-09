@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
  */
 @Getter
 public final class Particle extends FieldEquable {
-    private final String type;
-    private final ParticleOption<?> option;
+    private final @NotNull String type;
+    private final @Nullable ParticleOption<?> option;
 
     /**
      * Instantiates a new Particle.
@@ -31,7 +31,7 @@ public final class Particle extends FieldEquable {
      * @return the option
      */
     @SuppressWarnings("unchecked")
-    public <O> O getOption() {
+    public <O> @Nullable O getOption() {
         return this.option == null ? null : (O) this.option.getOption();
     }
 }

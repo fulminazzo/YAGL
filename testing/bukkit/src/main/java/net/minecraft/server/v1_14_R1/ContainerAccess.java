@@ -2,6 +2,7 @@ package net.minecraft.server.v1_14_R1;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class ContainerAccess extends FieldEquable {
@@ -13,7 +14,7 @@ public class ContainerAccess extends FieldEquable {
         this.blockPosition = blockPosition;
     }
 
-    public static ContainerAccess at(final World world, final BlockPosition blockPosition) {
+    public static @NotNull ContainerAccess at(final World world, final BlockPosition blockPosition) {
         return new ContainerAccess(world, blockPosition);
     }
 

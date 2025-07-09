@@ -11,6 +11,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ItemParser extends YAMLParser<Item> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Item, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, Item, Exception> getLoader() {
         return (c, s) -> {
             final ConfigurationSection itemSection = c.getConfigurationSection(s);
             if (itemSection == null) return null;
@@ -61,7 +62,7 @@ public class ItemParser extends YAMLParser<Item> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, Item> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, Item> getDumper() {
         return (c, s, i) -> {
             c.set(s, null);
             if (i != null) {

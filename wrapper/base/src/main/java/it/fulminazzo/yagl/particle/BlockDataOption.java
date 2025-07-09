@@ -46,7 +46,7 @@ public final class BlockDataOption extends ParticleOption<String> {
      *
      * @return the nbt
      */
-    public String getNBT() {
+    public @NotNull String getNBT() {
         return this.nbt;
     }
 
@@ -82,9 +82,10 @@ public final class BlockDataOption extends ParticleOption<String> {
     }
 
     @Override
-    public String getOption() {
+    public @NotNull String getOption() {
         String output = this.material;
         if (!this.nbt.isEmpty()) output += String.format("[%s]", this.nbt);
         return output;
     }
+
 }

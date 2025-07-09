@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * An exception thrown upon executing {@link SingleInstance#initialize()} more than one time.
  */
 public final class InstanceAlreadyInitializedException extends RuntimeException {
-    private final SingleInstance instance;
+    private final @NotNull SingleInstance instance;
 
     /**
      * Instantiates a new Instance already initialized exception.

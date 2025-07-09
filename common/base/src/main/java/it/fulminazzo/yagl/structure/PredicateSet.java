@@ -16,8 +16,8 @@ import java.util.function.BiPredicate;
  * @param <E> the type parameter
  */
 public class PredicateSet<E> extends AbstractSet<E> implements Serializable {
-    protected final Set<E> internal;
-    protected final BiPredicate<E, E> addTest;
+    protected final @NotNull Set<E> internal;
+    protected final @NotNull BiPredicate<E, E> addTest;
 
     /**
      * Instantiates a new Predicate set.

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * An implementation of {@link SerializableFunction} that sends the given {@link #message} to the viewer upon {@link #sendMessage(Viewer)}.
  */
 public abstract class MessageAction extends FieldEquable implements SerializableFunction {
-    protected final String message;
+    protected final @NotNull String message;
 
     /**
      * Instantiates a new Message action.
@@ -31,7 +31,7 @@ public abstract class MessageAction extends FieldEquable implements Serializable
     }
 
     @Override
-    public String serialize() {
+    public @NotNull String serialize() {
         return this.message;
     }
 }

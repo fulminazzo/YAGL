@@ -112,7 +112,7 @@ public final class Color extends ClassEnum {
      *
      * @return the string
      */
-    public String toRGB() {
+    public @NotNull String toRGB() {
         return "#" + toARGB().substring(3);
     }
 
@@ -121,7 +121,7 @@ public final class Color extends ClassEnum {
      *
      * @return the string
      */
-    public String toARGB() {
+    public @NotNull String toARGB() {
         return String.format("#%02X%02X%02X%02X", this.alpha, this.red, this.green, this.blue).toUpperCase();
     }
 
@@ -132,7 +132,7 @@ public final class Color extends ClassEnum {
      * @param argb the string
      * @return the color
      */
-    public static Color fromARGB(String argb) {
+    public static @NotNull Color fromARGB(@NotNull String argb) {
         if (argb.startsWith("#")) argb = argb.substring(1);
         if (argb.length() != 8 && argb.length() != 6)
             throw new IllegalArgumentException(String.format("Invalid ARGB string provided '%s'", argb));
@@ -167,7 +167,7 @@ public final class Color extends ClassEnum {
      * @param index the index
      * @return the color
      */
-    public static Color valueOf(final int index) {
+    public static @NotNull Color valueOf(final int index) {
         return valueOf(index, Color.class);
     }
 
@@ -186,7 +186,7 @@ public final class Color extends ClassEnum {
      *
      * @return the colors
      */
-    public static Color[] values() {
+    public static Color @NotNull [] values() {
         return values(Color.class);
     }
 

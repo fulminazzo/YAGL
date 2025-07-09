@@ -11,6 +11,7 @@ import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 
@@ -32,7 +33,7 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, F, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, F, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -59,7 +60,7 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, F> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, F> getDumper() {
         return (c, s, f) -> {
             c.set(s, null);
             if (f == null) return;
@@ -76,7 +77,7 @@ public class SerializableFunctionParser<F extends SerializableFunction> extends 
      * @param type      the type
      * @return the class
      */
-    protected static <C> Class<? extends C> typeToClass(final Class<C> mainClass, final @NotNull String type) {
+    protected static <C> @Nullable Class<? extends C> typeToClass(final @NotNull Class<C> mainClass, final @NotNull String type) {
         try {
             return ParserUtils.typeToClass(mainClass, type);
         } catch (RuntimeException e) {

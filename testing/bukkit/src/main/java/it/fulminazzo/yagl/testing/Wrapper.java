@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <O> the type parameter
  */
 public abstract class Wrapper<O> {
-    protected final Refl<O> internalObject;
+    protected final @NotNull Refl<O> internalObject;
 
     /**
      * Instantiates a new Wrapper.

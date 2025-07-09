@@ -45,7 +45,7 @@ public abstract class SingleInstance {
      * @return the instance
      */
     @SuppressWarnings("unchecked")
-    public static <T extends SingleInstance> @NotNull T getInstance(Class<T> clazz) {
+    public static <T extends SingleInstance> @NotNull T getInstance(@NotNull Class<T> clazz) {
         T instance = (T) INSTANCES_MAP.get(clazz);
         if (instance == null) throw new InstanceNotInitializedException(clazz);
         return instance;

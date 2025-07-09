@@ -59,7 +59,7 @@ class AnvilInventoryWrapper12 extends AnvilInventoryWrapper {
      * @param item the item
      * @return the nms item
      */
-    @NotNull Object itemStackToNMSItem(ItemStack item) {
+    @NotNull Object itemStackToNMSItem(@NotNull ItemStack item) {
         return NMSUtils.itemStackToNMS(item);
     }
 

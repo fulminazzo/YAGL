@@ -2,6 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Array;
@@ -30,7 +31,7 @@ public abstract class ClassEnum {
      *
      * @return the name
      */
-    public String name() {
+    public @Nullable String name() {
         return getCache().name(this);
     }
 
@@ -42,8 +43,8 @@ public abstract class ClassEnum {
      * @param clazz the clazz
      * @return the t
      */
-    protected static <T extends ClassEnum> T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index,
-                                                     final @NotNull Class<T> clazz) {
+    protected static <T extends ClassEnum> @NotNull T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index,
+                                                              final @NotNull Class<T> clazz) {
         return getCache(clazz).valueOf(index);
     }
 
@@ -66,21 +67,21 @@ public abstract class ClassEnum {
      * @param clazz the clazz
      * @return the fields
      */
-    protected static <T extends ClassEnum> T[] values(final @NotNull Class<T> clazz) {
+    protected static <T extends ClassEnum> T @NotNull [] values(final @NotNull Class<T> clazz) {
         return getCache(clazz).values();
     }
 
-    private <T extends ClassEnum> EnumCache<T> getCache() {
+    private <T extends ClassEnum> @NotNull EnumCache<T> getCache() {
         return getCache((Class<T>) getClass());
     }
 
-    private static <T extends ClassEnum> EnumCache<T> getCache(final @NotNull Class<T> clazz) {
+    private static <T extends ClassEnum> @NotNull EnumCache<T> getCache(final @NotNull Class<T> clazz) {
         return (EnumCache<T>) CACHE_MAP.computeIfAbsent(clazz, c -> new EnumCache<>((Class<T>) c));
     }
 
     private static class EnumCache<T extends ClassEnum> {
         private final Class<T> clazz;
-        private final Map<String, T> values;
+        private final @NotNull Map<String, T> values;
 
         private EnumCache(Class<T> clazz) {
             this.clazz = clazz;
@@ -104,7 +105,7 @@ public abstract class ClassEnum {
             throw new IllegalArgumentException(String.format("Could not find name of object '%s'", printObject(t)));
         }
 
-        public T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
+        public @NotNull T valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
             checkValues();
             for (T t : this.values.values()) if (t.ordinal() == index) return t;
             throw new IllegalArgumentException(String.format("Could not find %s with index '%s'", this.clazz.getSimpleName().toLowerCase(), index));
@@ -115,7 +116,7 @@ public abstract class ClassEnum {
             return this.values.get(name.toUpperCase());
         }
 
-        public T[] values() {
+        public T @NotNull [] values() {
             checkValues();
             return this.values.values().toArray((T[]) Array.newInstance(this.clazz, 0));
         }
@@ -133,4 +134,5 @@ public abstract class ClassEnum {
                             this.values.put(field.getName().toUpperCase(), (T) o));
         }
     }
+
 }

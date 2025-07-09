@@ -76,7 +76,7 @@ public final class LegacyParticleType<P extends ParticleOption<?>> extends APart
         super(optionType);
     }
 
-    public static LegacyParticleType<?> valueOf(final int index) {
+    public static @NotNull LegacyParticleType<?> valueOf(final int index) {
         return valueOf(index, LegacyParticleType.class);
     }
 
@@ -84,11 +84,11 @@ public final class LegacyParticleType<P extends ParticleOption<?>> extends APart
         return valueOf(name, LegacyParticleType.class);
     }
 
-    public static LegacyParticleType<?>[] legacyValues() {
+    public static LegacyParticleType<?> @NotNull [] legacyValues() {
         return Arrays.copyOf(values(), COMPOSTER_FILL_ATTEMPT.ord);
     }
 
-    public static LegacyParticleType<?>[] values() {
+    public static LegacyParticleType<?> @NotNull [] values() {
         return values(LegacyParticleType.class);
     }
 

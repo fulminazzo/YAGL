@@ -69,7 +69,7 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (o == null) return false;
         if (o instanceof Particle) return equals((Particle) o);
         AParticleType<?> particleType = (AParticleType<?>) o;
@@ -77,7 +77,8 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     }
 
     @Override
-    public String toString() {
+    public @Nullable String toString() {
         return name();
     }
+
 }

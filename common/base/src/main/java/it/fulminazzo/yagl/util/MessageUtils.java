@@ -2,6 +2,8 @@ package it.fulminazzo.yagl.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +23,7 @@ public final class MessageUtils {
      * @param message the message
      * @return the string
      */
-    public static String color(String message) {
+    public static String color(@Nullable String message) {
         if (message == null) return null;
         Matcher matcher = Pattern.compile("&(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
         while (matcher.find())
@@ -29,7 +31,7 @@ public final class MessageUtils {
         return parseHexColors(message);
     }
 
-    private static String parseHexColors(String message) {
+    private static @NotNull String parseHexColors(@NotNull String message) {
         Matcher matcher = Pattern.compile("#(" + COLOR_REGEX + "{6})").matcher(message);
         while (matcher.find()) {
             String match = matcher.group();
@@ -57,7 +59,7 @@ public final class MessageUtils {
      * @param character the character
      * @return the string
      */
-    public static String decolor(String message, String character) {
+    public static String decolor(@Nullable String message, String character) {
         if (message == null) return null;
         message = unparseHexColors(message);
         Matcher matcher = Pattern.compile(COLOR_CHAR + "(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
@@ -66,7 +68,7 @@ public final class MessageUtils {
         return message;
     }
 
-    private static String unparseHexColors(String message) {
+    private static @NotNull String unparseHexColors(@NotNull String message) {
         Matcher matcher = Pattern.compile(COLOR_CHAR + "x((?:" + COLOR_CHAR + COLOR_REGEX + "){6})").matcher(message);
         while (matcher.find()) {
             String match = matcher.group();

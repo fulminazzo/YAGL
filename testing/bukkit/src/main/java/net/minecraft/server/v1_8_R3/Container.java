@@ -3,6 +3,7 @@ package net.minecraft.server.v1_8_R3;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.InventoryView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,11 @@ public class Container {
 
     private final int windowId;
 
-    private final List<Slot> slots;
+    private final @NotNull List<Slot> slots;
 
-    private final List<ItemStack> items;
+    private final @NotNull List<ItemStack> items;
 
-    private final List<EntityPlayer> slotListeners;
+    private final @NotNull List<EntityPlayer> slotListeners;
 
     private String title;
 
@@ -45,7 +46,7 @@ public class Container {
         this.slotListeners.add(entityPlayer);
     }
 
-    public Container setTitle(String title) {
+    public @NotNull Container setTitle(String title) {
         this.title = title;
         return this;
     }

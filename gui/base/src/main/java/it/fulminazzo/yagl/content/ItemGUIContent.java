@@ -45,7 +45,7 @@ public class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
      *
      * @return the item gui content
      */
-    public static ItemGUIContent newInstance() {
+    public static @NotNull ItemGUIContent newInstance() {
         return new ItemGUIContent();
     }
 
@@ -55,7 +55,7 @@ public class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
      * @param material the material
      * @return the item gui content
      */
-    public static ItemGUIContent newInstance(final @NotNull String material) {
+    public static @NotNull ItemGUIContent newInstance(final @NotNull String material) {
         return new ItemGUIContent(material);
     }
 
@@ -65,7 +65,7 @@ public class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
      * @param item the item
      * @return the item gui content
      */
-    public static ItemGUIContent newInstance(final @NotNull Item item) {
+    public static @NotNull ItemGUIContent newInstance(final @NotNull Item item) {
         return new ItemGUIContent(item);
     }
 

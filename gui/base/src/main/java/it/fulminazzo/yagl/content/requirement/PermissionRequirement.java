@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public final class PermissionRequirement extends FieldEquable implements RequirementChecker {
-    private final String permission;
+    private final @NotNull String permission;
 
     /**
      * Instantiates a new Permission requirement.

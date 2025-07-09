@@ -74,7 +74,7 @@ public final class Sound extends Wrapper {
      * @param name the sound
      * @return this sound
      */
-    public Sound setName(final @NotNull String name) {
+    public @NotNull Sound setName(final @NotNull String name) {
         this.name = name;
         return this;
     }
@@ -87,7 +87,7 @@ public final class Sound extends Wrapper {
      * @param volume the volume
      * @return this sound
      */
-    public Sound setVolume(final float volume) {
+    public @NotNull Sound setVolume(final float volume) {
         this.volume = check(volume);
         return this;
     }
@@ -100,7 +100,7 @@ public final class Sound extends Wrapper {
      * @param pitch the pitch
      * @return this sound
      */
-    public Sound setPitch(final float pitch) {
+    public @NotNull Sound setPitch(final float pitch) {
         this.pitch = check(pitch);
         return this;
     }
@@ -111,7 +111,7 @@ public final class Sound extends Wrapper {
      * @param category the category
      * @return this sound
      */
-    public Sound setCategory(final @NotNull String category) {
+    public @NotNull Sound setCategory(final @NotNull String category) {
         this.category = category;
         return this;
     }

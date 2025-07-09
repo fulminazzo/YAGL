@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class PlaceholderAPI {
 
-    public static @NotNull String setPlaceholders(final Player player, @NotNull String text) {
+    public static @NotNull String setPlaceholders(final @NotNull Player player, @NotNull String text) {
         return text
                 .replace("%player_name%", player.getName());
     }

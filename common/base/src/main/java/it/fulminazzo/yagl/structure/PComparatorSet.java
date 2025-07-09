@@ -12,7 +12,7 @@ import java.util.function.BiPredicate;
  * @param <E> the type parameter
  */
 public class PComparatorSet<E> extends PredicateSet<E> {
-    protected final BiPredicate<E, E> comparator;
+    protected final @NotNull BiPredicate<E, E> comparator;
 
     /**
      * Instantiates a new PComparatorSet set.

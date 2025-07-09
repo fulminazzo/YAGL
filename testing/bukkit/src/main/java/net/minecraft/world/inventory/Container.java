@@ -5,13 +5,14 @@ import net.minecraft.server.v1_14_R1.containers.DefaultContainers;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.InventoryView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
 @Getter
 @Setter
 public abstract class Container {
-    private final Containers type;
+    private final @NotNull Containers type;
     private final int ignored;
     private final int id;
 
@@ -33,7 +34,7 @@ public abstract class Container {
         }
     }
 
-    public static Container newContainer() {
+    public static @NotNull Container newContainer() {
         return new ContainerImpl();
     }
 

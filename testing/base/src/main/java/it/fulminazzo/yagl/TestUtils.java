@@ -82,7 +82,7 @@ public final class TestUtils {
     public static void testMultipleMethods(final @NotNull Object executor, final @NotNull Predicate<Method> methodFinder,
                                            final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator,
                                            final Object @NotNull [] staticObjects,
-                                           final @NotNull Object target, final String invokedMethod,
+                                           final @NotNull Object target, final @NotNull String invokedMethod,
                                            final Class<?> @NotNull ... invokedMethodParamTypes) {
         @NotNull List<Method> methods = new Refl<>(executor).getMethods(methodFinder);
         if (methods.isEmpty())
@@ -123,7 +123,7 @@ public final class TestUtils {
      */
     public static ArgumentCaptor<?> @NotNull [] testSingleMethod(final @NotNull Object executor, final @NotNull Method targetMethod,
                                                                  final Object @NotNull [] staticObjects,
-                                                                 final @NotNull Object target, final String invokedMethod,
+                                                                 final @NotNull Object target, final @NotNull String invokedMethod,
                                                                  final Class<?> @NotNull ... invokedMethodParamTypes) {
         // Prepare argument captors
         final ArgumentCaptor<?>[] captors = initializeCaptors(invokedMethodParamTypes);
@@ -150,16 +150,16 @@ public final class TestUtils {
         }
     }
 
-    private static Object[] initializeParameters(final Class<?> @NotNull [] classes, final Object @NotNull ... staticObjects) {
+    private static Object @NotNull [] initializeParameters(final Class<?> @NotNull [] classes, final Object @NotNull ... staticObjects) {
         return Arrays.stream(classes).map(c -> initializeSingle(c, staticObjects)).toArray(Object[]::new);
     }
 
-    private static Object initializeSingle(final Class<?> clazz, final Object @NotNull ... staticObjects) {
+    private static Object initializeSingle(final @NotNull Class<?> clazz, final Object @NotNull ... staticObjects) {
         for (Object o : staticObjects) if (clazz.isAssignableFrom(o.getClass())) return o;
         return TestUtils.mockParameter(clazz);
     }
 
-    private static ArgumentCaptor<?>[] initializeCaptors(final Class<?> @NotNull [] classes) {
+    private static ArgumentCaptor<?> @NotNull [] initializeCaptors(final Class<?> @NotNull [] classes) {
         return Arrays.stream(classes).map(ArgumentCaptor::forClass).toArray(ArgumentCaptor[]::new);
     }
 
@@ -268,7 +268,7 @@ public final class TestUtils {
         return object;
     }
 
-    private static String methodToString(final @NotNull Method method) {
+    private static @NotNull String methodToString(final @NotNull Method method) {
         return String.format("%s(%s)", method.getName(), Arrays.stream(method.getParameterTypes())
                 .map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }

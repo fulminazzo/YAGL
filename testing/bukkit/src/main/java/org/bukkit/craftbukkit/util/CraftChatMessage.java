@@ -1,8 +1,10 @@
 package org.bukkit.craftbukkit.util;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CraftChatMessage {
 
-    public static IChatBaseComponent[] fromString(final String message) {
+    public static IChatBaseComponent @NotNull [] fromString(final String message) {
         return new IChatBaseComponent[]{
                 new IChatBaseComponent(message)
         };
@@ -21,7 +23,7 @@ public class CraftChatMessage {
         }
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "IChatBaseComponent{" + this.message + "}";
         }
 

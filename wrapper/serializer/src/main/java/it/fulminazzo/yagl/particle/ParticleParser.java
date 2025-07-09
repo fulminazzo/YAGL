@@ -7,6 +7,7 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A parser to serialize {@link Particle}.
@@ -21,7 +22,7 @@ public class ParticleParser extends YAMLParser<Particle> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, Particle, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, Particle, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection particleSection = c.getConfigurationSection(s);
             if (particleSection == null) return null;
@@ -46,7 +47,7 @@ public class ParticleParser extends YAMLParser<Particle> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, Particle> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, Particle> getDumper() {
         return (c, s, p) -> {
             c.set(s, null);
             if (p == null) return;

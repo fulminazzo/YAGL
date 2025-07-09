@@ -64,7 +64,7 @@ final class BukkitViewer extends Viewer {
      *
      * @return the player
      */
-    public Optional<Player> getPlayer() {
+    public @NotNull Optional<Player> getPlayer() {
         Player player = Bukkit.getPlayer(this.uniqueId);
         return Optional.ofNullable(player).filter(OfflinePlayer::isOnline);
     }
@@ -75,7 +75,8 @@ final class BukkitViewer extends Viewer {
      * @param player the player
      * @return the viewer
      */
-    public static Viewer newViewer(final @NotNull HumanEntity player) {
+    public static @NotNull Viewer newViewer(final @NotNull HumanEntity player) {
         return new BukkitViewer(player.getUniqueId(), player.getName());
     }
+
 }

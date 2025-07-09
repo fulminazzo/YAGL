@@ -284,7 +284,7 @@ public class GUIManager extends SingleInstance implements Listener {
      *
      * @return the instance
      */
-    public static GUIManager getInstance() {
+    public static @NotNull GUIManager getInstance() {
         try {
             return getInstance(GUIManager.class);
         } catch (InstanceNotInitializedException e) {

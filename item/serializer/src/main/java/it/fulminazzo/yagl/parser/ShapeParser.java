@@ -5,6 +5,7 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +24,7 @@ public class ShapeParser extends YAMLParser<ShapedRecipe.Shape> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, ShapedRecipe.Shape, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, ShapedRecipe.Shape, Exception> getLoader() {
         return (c, s) -> {
             String converted = c.getString(s);
             if (converted == null) return null;
@@ -38,7 +39,7 @@ public class ShapeParser extends YAMLParser<ShapedRecipe.Shape> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, ShapedRecipe.Shape> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, ShapedRecipe.Shape> getDumper() {
         return (c, s, sh) -> {
             c.set(s, null);
             if (sh == null) return;

@@ -27,7 +27,7 @@ public class GUIParser extends TypedParser<GUI> {
     }
 
     @Override
-    protected BiFunctionException<IConfiguration, String, GUI, Exception> getLoader() {
+    protected @NotNull BiFunctionException<IConfiguration, String, GUI, Exception> getLoader() {
         return (c, s) -> {
             ConfigurationSection section = c.getConfigurationSection(s);
             if (section == null) return null;
@@ -48,7 +48,7 @@ public class GUIParser extends TypedParser<GUI> {
     }
 
     @Override
-    protected TriConsumer<IConfiguration, String, GUI> getDumper() {
+    protected @NotNull TriConsumer<IConfiguration, String, GUI> getDumper() {
         return (c, s, g) -> {
             c.set(s, null);
             if (g == null) return;
@@ -64,7 +64,7 @@ public class GUIParser extends TypedParser<GUI> {
     }
 
     @SuppressWarnings("unchecked")
-    private YAMLParser<GUI> getSpecificGUIParser(final @NotNull GUI gui) {
+    private @NotNull YAMLParser<GUI> getSpecificGUIParser(final @NotNull GUI gui) {
         FileConfiguration.removeParsers(this);
         YAMLParser<? extends @NotNull GUI> parser = FileConfiguration.getParser(gui.getClass());
         FileConfiguration.addParsers(this);

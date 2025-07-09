@@ -49,7 +49,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public RecipeItem clearRecipes(final Predicate<Recipe> predicate) {
+    public RecipeItem clearRecipes(final @NotNull Predicate<Recipe> predicate) {
         this.recipes.removeIf(predicate);
         return this;
     }

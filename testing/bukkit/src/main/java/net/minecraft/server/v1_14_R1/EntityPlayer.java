@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,10 @@ import java.util.List;
 @Setter
 public class EntityPlayer {
     private final Player player;
-    private final World world;
+    private final @NotNull World world;
 
-    private final PlayerConnection playerConnection;
-    private final Container defaultContainer;
+    private final @NotNull PlayerConnection playerConnection;
+    private final @NotNull Container defaultContainer;
 
     private Container activeContainer;
     private int nextContainerCounter;
@@ -38,8 +39,8 @@ public class EntityPlayer {
 
     @Getter
     public static class PlayerConnection {
-        private final NetworkManager networkManager;
-        private final List<Packet> sentPackets;
+        private final @NotNull NetworkManager networkManager;
+        private final @NotNull List<Packet> sentPackets;
 
         public PlayerConnection(Channel channel) {
             this.networkManager = new NetworkManager(channel);

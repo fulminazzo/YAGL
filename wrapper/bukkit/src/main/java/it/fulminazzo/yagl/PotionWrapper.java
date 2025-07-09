@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("deprecation")
 @Getter
 public final class PotionWrapper {
-    private final Potion internalPotion;
+    private final @NotNull Potion internalPotion;
 
     /**
      * Instantiates a new Potion wrapper.
@@ -43,7 +43,7 @@ public final class PotionWrapper {
      *
      * @return The type of this potion
      */
-    public PotionType getType() {
+    public @NotNull PotionType getType() {
         return this.internalPotion.getType();
     }
 

@@ -3,6 +3,7 @@ package net.minecraft.server.v1_8_R3;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
 @Setter
 public class EntityPlayer {
     private final Player player;
-    private final Container defaultContainer;
+    private final @NotNull Container defaultContainer;
 
-    private final PlayerConnection playerConnection;
+    private final @NotNull PlayerConnection playerConnection;
 
     private Container activeContainer;
 
@@ -38,7 +39,7 @@ public class EntityPlayer {
     
     @Getter
     public static class PlayerConnection {
-        private final List<Packet> sentPackets;
+        private final @NotNull List<Packet> sentPackets;
 
         public PlayerConnection() {
             this.sentPackets = new ArrayList<>();

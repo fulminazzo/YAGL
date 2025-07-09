@@ -85,7 +85,7 @@ public final class PotionEffect extends Wrapper {
      * @param name the effect
      * @return this potion effect
      */
-    public PotionEffect setName(final @NotNull String name) {
+    public @NotNull PotionEffect setName(final @NotNull String name) {
         this.name = name;
         return this;
     }
@@ -105,7 +105,7 @@ public final class PotionEffect extends Wrapper {
      * @param duration the duration
      * @return this potion effect
      */
-    public PotionEffect setDuration(final double duration) {
+    public @NotNull PotionEffect setDuration(final double duration) {
         this.duration = check(duration);
         return this;
     }
@@ -116,7 +116,7 @@ public final class PotionEffect extends Wrapper {
      * @param amplifier the amplifier
      * @return this potion effect
      */
-    public PotionEffect setAmplifier(final int amplifier) {
+    public @NotNull PotionEffect setAmplifier(final int amplifier) {
         this.amplifier = check(amplifier);
         return this;
     }
@@ -135,7 +135,7 @@ public final class PotionEffect extends Wrapper {
      *
      * @return this potion effect
      */
-    public PotionEffect enableParticles() {
+    public @NotNull PotionEffect enableParticles() {
         this.showingParticles = true;
         return this;
     }
@@ -145,7 +145,7 @@ public final class PotionEffect extends Wrapper {
      *
      * @return this potion effect
      */
-    public PotionEffect disableParticles() {
+    public @NotNull PotionEffect disableParticles() {
         this.showingParticles = false;
         return this;
     }
@@ -155,7 +155,7 @@ public final class PotionEffect extends Wrapper {
      *
      * @return this potion effect
      */
-    public PotionEffect enableIcon() {
+    public @NotNull PotionEffect enableIcon() {
         this.showingIcon = true;
         return this;
     }
@@ -165,7 +165,7 @@ public final class PotionEffect extends Wrapper {
      *
      * @return this potion effect
      */
-    public PotionEffect disableIcon() {
+    public @NotNull PotionEffect disableIcon() {
         this.showingIcon = false;
         return this;
     }

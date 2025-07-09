@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 public class ServerPlayer {
-    private final ServerGamePacketListenerImpl connection;
-    private final AbstractContainerMenu.PlayerContainerMenu playerContainer;
+    private final @NotNull ServerGamePacketListenerImpl connection;
+    private final AbstractContainerMenu.@NotNull PlayerContainerMenu playerContainer;
 
     private AbstractContainerMenu openContainer;
 
@@ -25,8 +26,8 @@ public class ServerPlayer {
 
     @Getter
     public static class ServerGamePacketListenerImpl {
-        private final Connection networkManager;
-        private final List<Packet> sentPackets;
+        private final @NotNull Connection networkManager;
+        private final @NotNull List<Packet> sentPackets;
 
         ServerGamePacketListenerImpl(Channel channel) {
             this.networkManager = new Connection(channel);

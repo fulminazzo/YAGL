@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public final class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
     private static final String REGEX = "^([^\\[]+)(?:\\[(\\d+)])?$";
     private final @NotNull String material;
-    private final Integer data;
+    private final @NotNull Integer data;
 
     /**
      * Instantiates a new Material data option.
@@ -36,7 +36,7 @@ public final class MaterialDataOption extends ParticleOption<Tuple<String, Integ
     }
 
     @Override
-    public Tuple<String, Integer> getOption() {
+    public @NotNull Tuple<String, Integer> getOption() {
         return new Tuple<>(this.material, this.data);
     }
 }

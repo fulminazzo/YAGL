@@ -19,7 +19,7 @@ public final class ColorParticleOption extends ParticleOption<Color> {
     }
 
     @Override
-    public Color getOption() {
+    public @NotNull Color getOption() {
         return this.color;
     }
 }

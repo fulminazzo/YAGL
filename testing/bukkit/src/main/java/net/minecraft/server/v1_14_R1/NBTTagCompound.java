@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 public class NBTTagCompound extends NBTBase {
-    private final Map<String, NBTBase> data;
+    private final @NotNull Map<String, NBTBase> data;
 
     public NBTTagCompound() {
         this.data = new LinkedHashMap<>();
