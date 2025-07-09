@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -367,7 +368,7 @@ public interface Item extends AbstractItem {
      * Sets custom model data.
      *
      * @param customModelData the custom model data
-     * @return the custom model data
+     * @return this item
      * @since Minecraft 1.14
      */
     @NotNull Item setCustomModelData(final int customModelData);
@@ -379,6 +380,85 @@ public interface Item extends AbstractItem {
      * @since Minecraft 1.14
      */
     int getCustomModelData();
+
+    /**
+     * Add potion effects.
+     * Only works for compatible items.
+     *
+     * @param potionEffects the potion effects
+     * @return this item
+     */
+    default @NotNull Item addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return addPotionEffects(Arrays.asList(potionEffects));
+    }
+
+    /**
+     * Add potion effects.
+     * Only works for compatible items.
+     *
+     * @param potionEffects the potion effects
+     * @return this item
+     */
+    default @NotNull Item addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        @NotNull Set<PotionEffect> prevPotionEffect = getPotionEffects();
+        prevPotionEffect.addAll(potionEffects);
+        return this;
+    }
+
+    /**
+     * Remove potion effects.
+     * Only works for compatible items.
+     *
+     * @param potionEffects the potion effects
+     * @return this item
+     */
+    default @NotNull Item removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return removePotionEffects(Arrays.asList(potionEffects));
+    }
+
+    /**
+     * Remove potion effects.
+     * Only works for compatible items.
+     *
+     * @param potionEffects the potion effects
+     * @return this item
+     */
+    default @NotNull Item removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        @NotNull Set<PotionEffect> prevPotionEffect = getPotionEffects();
+        for (final PotionEffect e : potionEffects) prevPotionEffect.removeIf(e2 -> e2.equals(e));
+        return this;
+    }
+
+    /**
+     * Sets potion effects.
+     * Only works for compatible items.
+     *
+     * @param potionEffects the potion effects
+     * @return this item
+     */
+    default @NotNull Item setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return setPotionEffects(Arrays.asList(potionEffects));
+    }
+
+    /**
+     * Sets potion effects.
+     * Only works for compatible items.
+     *
+     * @param potionEffects the potion effects
+     * @return this item
+     */
+    default @NotNull Item setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        getPotionEffects().clear();
+        return addPotionEffects(potionEffects);
+    }
+
+    /**
+     * Gets potion effects.
+     * Only works for compatible items.
+     *
+     * @return this item
+     */
+    @NotNull Set<PotionEffect> getPotionEffects();
 
     /**
      * Compares this item with the given one.
