@@ -183,7 +183,6 @@ class GUIManagerTest {
             this.guiManager = new GUIManager();
 
             Server server = Bukkit.getServer();
-            when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
             when(server.isPrimaryThread()).thenReturn(true);
 
             BukkitScheduler scheduler = mock(BukkitScheduler.class);

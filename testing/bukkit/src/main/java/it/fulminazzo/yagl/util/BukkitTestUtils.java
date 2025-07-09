@@ -37,7 +37,6 @@ public final class BukkitTestUtils {
             try (MockedStatic<JavaPlugin> ignored = mockStatic(JavaPlugin.class)) {
                 JavaPlugin plugin = mock(JavaPlugin.class);
                 when(JavaPlugin.getProvidingPlugin(any())).thenAnswer(a -> plugin);
-                when(Bukkit.getPluginManager()).thenReturn(mock(PluginManager.class));
                 when(plugin.getLogger()).thenReturn(Logger.getLogger(BukkitTestUtils.class.getName()));
 
                 mockNMSUtils(c -> function.accept(plugin, c));

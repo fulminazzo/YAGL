@@ -61,7 +61,6 @@ class GUIAdapterTest extends BukkitUtils {
         BukkitUtils.setupServer();
 
         Server server = Bukkit.getServer();
-        when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
         when(server.isPrimaryThread()).thenReturn(true);
     }
 
@@ -632,9 +631,8 @@ class GUIAdapterTest extends BukkitUtils {
             boolean enabled = Boolean.parseBoolean(tmp[0]);
             String expected = tmp[1];
 
-            PluginManager mockManager = mock(PluginManager.class);
+            PluginManager mockManager = Bukkit.getPluginManager();
             when(mockManager.isPluginEnabled(any(String.class))).thenReturn(enabled);
-            when(Bukkit.getServer().getPluginManager()).thenReturn(mockManager);
 
             GUI gui = GUI.newGUI(9).setTitle("%player_name%");
             Viewer viewer = GUIManager.getViewer(this.player);
