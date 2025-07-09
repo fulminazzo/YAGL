@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,6 +93,11 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     @Override
     public @NotNull Set<ItemFlag> getItemFlags() {
         return this.item.getItemFlags();
+    }
+
+    @Override
+    public @NotNull Set<PotionEffect> getPotionEffects() {
+        return this.item.getPotionEffects();
     }
 
     @Override
