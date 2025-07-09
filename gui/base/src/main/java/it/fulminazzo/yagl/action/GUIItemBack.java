@@ -22,4 +22,14 @@ public final class GUIItemBack implements GUIItemAction {
         return null;
     }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof GUIItemBack;
+    }
+
 }
