@@ -86,8 +86,8 @@ class ItemAdapterTest extends BukkitUtils {
         Item expected = Item.newItem("POTION")
                 .addPotionEffects(
                         new PotionEffect("SPEED", 90, 2),
-                        new PotionEffect("INCREASE_DAMAGE", 30, 3),
-                        new PotionEffect("JUMP", 10, 2)
+                        new PotionEffect("HASTE", 30, 3),
+                        new PotionEffect("HUNGER", 10, 2)
                 );
 
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
