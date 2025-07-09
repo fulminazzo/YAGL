@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.action.InteractItemAction;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.listener.PersistentListener;
 import it.fulminazzo.yagl.wrapper.Enchantment;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -221,6 +222,36 @@ public class PersistentItem extends BukkitItemImpl {
     @Override
     public @NotNull PersistentItem removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull PersistentItem addPotionEffects(PotionEffect @NotNull ... potionEffects) {
+        return (PersistentItem) super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull PersistentItem addPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+        return (PersistentItem) super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull PersistentItem removePotionEffects(PotionEffect @NotNull ... potionEffects) {
+        return (PersistentItem) super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull PersistentItem removePotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+        return (PersistentItem) super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull PersistentItem setPotionEffects(PotionEffect @NotNull ... potionEffects) {
+        return (PersistentItem) super.setPotionEffects(potionEffects);
+    }
+
+    @Override
+    public @NotNull PersistentItem setPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+        return (PersistentItem) super.setPotionEffects(potionEffects);
     }
 
     @Override
