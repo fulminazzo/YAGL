@@ -8,6 +8,8 @@ import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
+import it.fulminazzo.yagl.wrapper.WrapperParser;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
@@ -15,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +52,7 @@ public class ItemParser extends YAMLParser<Item> {
                 itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
                 itemSection.getListOptional("enchantments", Enchantment.class).ifPresent(item::addEnchantments);
                 itemSection.getListOptional("item-flags", ItemFlag.class).ifPresent(item::addItemFlags);
+                itemSection.getListOptional("potion-effects", PotionEffect.class).ifPresent(item::addPotionEffects);
 
                 if (itemSection.contains("recipes")) {
                     List<Recipe> recipes = itemSection.getList("recipes", Recipe.class);
@@ -76,6 +80,9 @@ public class ItemParser extends YAMLParser<Item> {
                 itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
                 itemSection.setList("enchantments", i.getEnchantments());
                 itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()));
+                @NotNull Set<PotionEffect> potionEffects = i.getPotionEffects();
+                if (!potionEffects.isEmpty())
+                    itemSection.set("potion-effects", potionEffects.stream().map(WrapperParser::serializeWrapper).collect(Collectors.toList()));
                 itemSection.set("unbreakable", i.isUnbreakable());
                 itemSection.set("custom-model-data", i.getCustomModelData());
 
@@ -87,4 +94,5 @@ public class ItemParser extends YAMLParser<Item> {
             }
         };
     }
+
 }
