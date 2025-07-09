@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.wrapper.Enchantment;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -138,6 +139,36 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     @Override
     default @NotNull BukkitRecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return (BukkitRecipeItem) RecipeItem.super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        return (BukkitRecipeItem) RecipeItem.super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return (BukkitRecipeItem) RecipeItem.super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        return (BukkitRecipeItem) RecipeItem.super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return (BukkitRecipeItem) RecipeItem.super.setPotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        return (BukkitRecipeItem) RecipeItem.super.setPotionEffects(potionEffects);
     }
 
     @Override

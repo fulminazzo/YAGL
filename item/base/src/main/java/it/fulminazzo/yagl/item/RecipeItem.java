@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.wrapper.Enchantment;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -161,6 +162,36 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     @Override
     default @NotNull RecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (RecipeItem) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull RecipeItem addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return (RecipeItem) Item.super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull RecipeItem addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        return (RecipeItem) Item.super.addPotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull RecipeItem removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return (RecipeItem) Item.super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull RecipeItem removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        return (RecipeItem) Item.super.removePotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull RecipeItem setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
+        return (RecipeItem) Item.super.setPotionEffects(potionEffects);
+    }
+
+    @Override
+    default @NotNull RecipeItem setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
+        return (RecipeItem) Item.super.setPotionEffects(potionEffects);
     }
 
     @Override
