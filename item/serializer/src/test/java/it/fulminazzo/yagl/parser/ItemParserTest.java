@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.parser;
 
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.wrapper.PotionEffect;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
@@ -21,6 +22,7 @@ class ItemParserTest {
 
     @BeforeAll
     static void setAllUp() {
+        WrappersYAGLParser.addAllParsers();
         ItemYAGLParser.addAllParsers();
     }
 
@@ -50,6 +52,31 @@ class ItemParserTest {
         if (item != null && item.getMaterial() == null)
             assertThrowsExactly(IllegalArgumentException.class, itemSupplier::get);
         else assertEquals(item, itemSupplier.get());
+    }
+
+    @Test
+    void testSaveAndLoadWithPotionEffects() throws IOException {
+        Item item = Item.newItem("potion")
+                .setDisplayName("&6Cool potion")
+                .setLore("&eDrink this to feel like", "&ea super hero!")
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
+                .setUnbreakable(true)
+                .setCustomModelData(1337)
+                .setPotionEffects(
+                        new PotionEffect("strength", 10, 2),
+                        new PotionEffect("speed", 20, 1)
+                );
+
+        File output = new File("build/resources/test/potion-item.yml");
+        if (output.exists()) FileUtils.deleteFile(output);
+        FileUtils.createNewFile(output);
+        FileConfiguration configuration = new FileConfiguration(output);
+        configuration.set("item", item);
+        configuration.save();
+
+        FileConfiguration config = new FileConfiguration(output);
+        final Supplier<Item> itemSupplier = () -> config.get("item", Item.class);
+        assertEquals(item, itemSupplier.get());
     }
 
     @Test
