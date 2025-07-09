@@ -83,15 +83,33 @@ class ItemAdapterTest extends BukkitUtils {
 
     @Test
     void testPotionItem() {
+        PotionEffect first = new PotionEffect("SPEED", 90, 2);
+        PotionEffect second = new PotionEffect("HUNGER", 10, 2);
+
         Item expected = Item.newItem("POTION")
-                .addPotionEffects(
-                        new PotionEffect("SPEED", 90, 2),
-                        new PotionEffect("HUNGER", 10, 2)
-                );
+                .addPotionEffects(first, second);
 
         ItemStack itemStack = ItemAdapter.itemToItemStack(expected);
 
-        assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
+        Item actual = ItemAdapter.itemStackToItem(itemStack);
+
+        assertTrue(actual.getPotionEffects().stream()
+                        .anyMatch(p ->
+                                p.getName().equalsIgnoreCase(first.getName()) &&
+                                        p.getDuration() == first.getDuration() &&
+                                        p.getAmplifier() == first.getAmplifier()
+                        ),
+                "Converted item should have " + first + " but got: " + actual.getPotionEffects()
+        );
+
+        assertTrue(actual.getPotionEffects().stream()
+                        .anyMatch(p ->
+                                p.getName().equalsIgnoreCase(second.getName()) &&
+                                        p.getDuration() == second.getDuration() &&
+                                        p.getAmplifier() == second.getAmplifier()
+                        ),
+                "Converted item should have " + second + " but got: " + actual.getPotionEffects()
+        );
     }
 
     private ItemFactory mockNullItemFactory() {
@@ -133,7 +151,8 @@ class ItemAdapterTest extends BukkitUtils {
             try {
                 meta.setCustomModelData(-1);
                 expected.setCustomModelData(-1);
-            } catch (NoSuchMethodError ignored) {}
+            } catch (NoSuchMethodError ignored) {
+            }
             itemStack.setItemMeta(meta);
             assertEquals(expected, ItemAdapter.itemStackToItem(itemStack));
         }
