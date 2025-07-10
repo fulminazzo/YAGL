@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.gui;
 
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.command.BiGUICommand;
@@ -146,7 +147,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI addContent(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI addContent(final CustomItemGUIContent<?> @NotNull ... contents) {
         return addContent((GUIContent[]) contents);
     }
 
@@ -179,7 +180,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setContents(int slot, final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setContents(int slot, final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
     }
 
@@ -231,7 +232,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setAllSides(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setAllSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
@@ -283,7 +284,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setTopAndBottomSides(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setTopAndBottomSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setTopSide(contents).setBottomSide(contents);
     }
 
@@ -332,7 +333,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setLeftAndRightSides(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setLeftAndRightSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setLeftSide(contents).setRightSide(contents);
     }
 
@@ -383,9 +384,9 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setTopSide(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setTopSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         topSlots().forEach(s -> setContents(s, Arrays.stream(contents)
-                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+                .map(CustomItemGUIContent::copy).toArray(CustomItemGUIContent[]::new)));
         return this;
     }
 
@@ -452,9 +453,9 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setLeftSide(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setLeftSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         leftSlots().forEach(s -> setContents(s, Arrays.stream(contents)
-                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+                .map(CustomItemGUIContent::copy).toArray(CustomItemGUIContent[]::new)));
         return this;
     }
 
@@ -522,9 +523,9 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setBottomSide(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setBottomSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         bottomSlots().forEach(s -> setContents(s, Arrays.stream(contents)
-                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+                .map(CustomItemGUIContent::copy).toArray(CustomItemGUIContent[]::new)));
         return this;
     }
 
@@ -591,9 +592,9 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setRightSide(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setRightSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         rightSlots().forEach(s -> setContents(s, Arrays.stream(contents)
-                .map(ItemGUIContent::copy).toArray(ItemGUIContent[]::new)));
+                .map(CustomItemGUIContent::copy).toArray(CustomItemGUIContent[]::new)));
         return this;
     }
 
@@ -659,7 +660,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setNorthWest(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setNorthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(northWest(), contents);
     }
 
@@ -698,7 +699,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setNorth(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setNorth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(north(), contents);
     }
 
@@ -737,7 +738,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setNorthEast(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setNorthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(northEast(), contents);
     }
 
@@ -776,7 +777,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setMiddleWest(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setMiddleWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(middleWest(), contents);
     }
 
@@ -815,7 +816,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setMiddle(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setMiddle(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(middle(), contents);
     }
 
@@ -854,7 +855,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setMiddleEast(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setMiddleEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(middleEast(), contents);
     }
 
@@ -893,7 +894,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setSouthWest(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setSouthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(southWest(), contents);
     }
 
@@ -932,7 +933,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setSouth(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setSouth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(south(), contents);
     }
 
@@ -971,7 +972,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setSouthEast(final ItemGUIContent @NotNull ... contents) {
+    default @NotNull GUI setSouthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(southEast(), contents);
     }
 
@@ -1194,7 +1195,7 @@ public interface GUI extends Metadatable {
      * @param content the content
      * @return this gui
      */
-    default @NotNull GUI fill(final @NotNull ItemGUIContent content) {
+    default @NotNull GUI fill(final @NotNull CustomItemGUIContent<?> content) {
         for (int i = 0; i < size(); i++) setContents(i, content);
         return this;
     }
