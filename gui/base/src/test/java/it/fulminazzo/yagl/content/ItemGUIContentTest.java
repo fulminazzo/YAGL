@@ -4,12 +4,14 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.GUIItemAction;
+import it.fulminazzo.yagl.action.GUIItemBack;
 import it.fulminazzo.yagl.action.command.GUIItemCommand;
 import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.wrapper.Sound;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -93,16 +95,80 @@ class ItemGUIContentTest {
             }
     }
 
-    private static ItemGUIContent newInstance() {
-        return ItemGUIContent.newInstance()
-                .setMaterial("stone_sword").setAmount(1)
-                .setDurability(1337).setDisplayName("&8Destroyer")
-                .setLore("&eUse this sword to fight your enemies")
-                .addEnchantment("unbreaking", 3)
-                .addEnchantment("sharpness", 5)
-                .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
-                .setCustomModelData(1)
-                .setVariable("name", "value");
+    private static Object[][] copyFromData() {
+        return new Object[][]{
+                new Object[]{
+                        false,
+                        ItemGUIContent.newInstance(Item.newItem()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack())
+                },
+                new Object[]{
+                        true,
+                        ItemGUIContent.newInstance(Item.newItem()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack())
+                },
+                new Object[]{
+                        false,
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(3)
+                                .setClickSound(new Sound("cat"))
+                                .setViewRequirements("hello")
+                                .onClickItem(new GUIItemBack()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(3)
+                                .setClickSound(new Sound("cat"))
+                                .setViewRequirements("hello")
+                                .onClickItem(new GUIItemBack())
+                },
+                new Object[]{
+                        true,
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(3)
+                                .setClickSound(new Sound("cat"))
+                                .setViewRequirements("hello")
+                                .onClickItem(new GUIItemBack()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack()),
+                        ItemGUIContent.newInstance(Item.newItem())
+                                .setPriority(2)
+                                .setClickSound(new Sound("dog"))
+                                .setViewRequirements("world")
+                                .onClickItem(new GUIItemBack())
+                }
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyFromData")
+    void testCopyFromData(boolean replace, ItemGUIContent first, ItemGUIContent second, ItemGUIContent expected) {
+        ItemGUIContent actual = first.copyFrom(second, replace);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -113,6 +179,18 @@ class ItemGUIContentTest {
     @Test
     void testReturnTypesGUIContent() {
         TestUtils.testReturnType(ItemGUIContent.newInstance(), GUIContent.class, m -> m.getName().equals("copyContent"));
+    }
+
+    private static ItemGUIContent newInstance() {
+        return ItemGUIContent.newInstance()
+                .setMaterial("stone_sword").setAmount(1)
+                .setDurability(1337).setDisplayName("&8Destroyer")
+                .setLore("&eUse this sword to fight your enemies")
+                .addEnchantment("unbreaking", 3)
+                .addEnchantment("sharpness", 5)
+                .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
+                .setCustomModelData(1)
+                .setVariable("name", "value");
     }
 
 }
