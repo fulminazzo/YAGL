@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.gui;
 
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
@@ -234,7 +235,7 @@ class GUITest {
         assertEquals(ItemGUIContent.newInstance(item), gui.getContents(slot).get(0));
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("diamond");
-        guiRefl.invokeMethod("set" + methodName, new Class[]{ItemGUIContent[].class},
+        guiRefl.invokeMethod("set" + methodName, new Class[]{CustomItemGUIContent[].class},
                 (Object) new ItemGUIContent[]{itemGUIContent});
 
         assertEquals(itemGUIContent, gui.getContents(slot).get(0));
