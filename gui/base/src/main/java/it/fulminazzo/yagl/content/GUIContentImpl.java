@@ -1,13 +1,12 @@
 package it.fulminazzo.yagl.content;
 
+import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.yagl.action.GUIItemAction;
-import it.fulminazzo.yagl.action.command.GUIItemCommand;
 import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,9 +45,7 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
         copy.requirements = this.requirements instanceof PermissionRequirement ?
                 new PermissionRequirement(this.requirements.serialize()) :
                 this.requirements;
-        copy.clickAction = this.clickAction instanceof GUIItemCommand ?
-                new GUIItemCommand(this.clickAction.serialize()) :
-                this.clickAction;
+        copy.clickAction = this.clickAction;
         if (this.clickSound != null)
             copy.clickSound = new Sound(
                     this.clickSound.getName(), this.clickSound.getVolume(),
