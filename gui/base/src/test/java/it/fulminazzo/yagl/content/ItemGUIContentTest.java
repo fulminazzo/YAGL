@@ -25,6 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ItemGUIContentTest {
 
     @Test
+    void testNewInstanceFromItemGUIContentReturnsCorrectItem() {
+        Item firstItem = Item.newItem("stone");
+        ItemGUIContent first = ItemGUIContent.newInstance(firstItem);
+        ItemGUIContent second = ItemGUIContent.newInstance(first);
+
+        assertEquals(first, second);
+        Item secondItem = new Refl<>(second).getFieldObject("item");
+
+        assertEquals(firstItem, secondItem);
+    }
+
+    @Test
     void testMetadatableReplacement() {
         GUIContent guiContent = ItemGUIContent.newInstance("stone")
                 .setAmount(3).setDisplayName("Hello <var1>")
