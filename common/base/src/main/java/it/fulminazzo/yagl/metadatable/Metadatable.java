@@ -110,7 +110,7 @@ public interface Metadatable {
      * @param object the object
      * @return the object parsed
      */
-    default <T> @Nullable T apply(final T object) {
+    default <T> T apply(final T object) {
         return new MetadatableHelper(this).apply(object);
     }
 
