@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
 import lombok.Getter;
@@ -53,6 +54,18 @@ abstract class GUIContentImpl extends FieldEquable implements GUIContent {
             );
         copy.variables.putAll(this.variables);
         return copy;
+    }
+
+    @Override
+    public @NotNull GUIContent copyFrom(final @NotNull Metadatable other, final boolean replace) {
+        if (other instanceof GUIContentImpl) {
+            GUIContentImpl content = (GUIContentImpl) other;
+            if (priority == 0 || replace) priority = content.priority;
+            if (clickSound == null || replace) clickSound = content.clickSound;
+            if (requirements == null || replace) requirements = content.requirements;
+            if (clickAction == null || replace) clickAction = content.clickAction;
+        }
+        return GUIContent.super.copyFrom(other, replace);
     }
 
     /**
