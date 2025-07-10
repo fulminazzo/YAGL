@@ -304,6 +304,12 @@ class GUIAdapterTest extends BukkitUtils {
                 assertEquals(Material.GLASS, itemStack.getType(),
                         "ItemStack at player inventory slot " + i + " does not match expected item");
             }
+
+            doAnswer(a -> {
+                Cancellable cancellable = a.getArgument(0);
+                cancellable.setCancelled(false);
+                return null;
+            }).when(manager).callEvent(any());
         });
     }
 
