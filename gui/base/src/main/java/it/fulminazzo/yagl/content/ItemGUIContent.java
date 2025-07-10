@@ -66,7 +66,7 @@ public class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
      * @return the item gui content
      */
     public static @NotNull ItemGUIContent newInstance(final @NotNull Item item) {
-        if (item instanceof ItemGUIContent) return new ItemGUIContent(((ItemGUIContent) item).item);
+        if (item instanceof ItemGUIContent) return (ItemGUIContent) item;
         return new ItemGUIContent(item);
     }
 
