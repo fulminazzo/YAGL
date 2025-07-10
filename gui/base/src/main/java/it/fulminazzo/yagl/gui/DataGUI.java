@@ -1,13 +1,13 @@
 package it.fulminazzo.yagl.gui;
 
 import it.fulminazzo.fulmicollection.objects.IgnoreField;
-import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
-import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -372,7 +372,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> addContent(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> addContent(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.addContent(contents);
     }
 
@@ -382,7 +382,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setContents(int slot, ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setContents(slot, contents);
     }
 
@@ -392,7 +392,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setAllSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setAllSides(contents);
     }
 
@@ -417,7 +417,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopAndBottomSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setTopAndBottomSides(contents);
     }
 
@@ -442,7 +442,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftAndRightSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftAndRightSides(contents);
     }
 
@@ -467,7 +467,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setTopSide(contents);
     }
 
@@ -492,7 +492,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftSide(contents);
     }
 
@@ -517,7 +517,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setBottomSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setBottomSide(contents);
     }
 
@@ -542,7 +542,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setRightSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setRightSide(contents);
     }
 
@@ -567,7 +567,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthWest(contents);
     }
 
@@ -587,7 +587,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorth(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setNorth(contents);
     }
 
@@ -607,7 +607,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthEast(contents);
     }
 
@@ -627,7 +627,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleWest(contents);
     }
 
@@ -647,7 +647,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddle(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddle(contents);
     }
 
@@ -667,7 +667,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleEast(contents);
     }
 
@@ -687,7 +687,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthWest(contents);
     }
 
@@ -707,7 +707,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouth(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setSouth(contents);
     }
 
@@ -727,7 +727,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthEast(contents);
     }
 
@@ -747,7 +747,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> fill(@NotNull ItemGUIContent content) {
+    public @NotNull DataGUI<T> fill(@NotNull CustomItemGUIContent<?> content) {
         return (DataGUI<T>) super.fill(content);
     }
 

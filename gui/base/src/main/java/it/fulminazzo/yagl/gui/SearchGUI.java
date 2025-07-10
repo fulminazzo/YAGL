@@ -4,6 +4,7 @@ import it.fulminazzo.fulmicollection.objects.IgnoreField;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.exception.NotImplementedException;
@@ -128,7 +129,7 @@ public class SearchGUI<T> extends DataGUI<T> {
                 String query = getParsedQuery();
                 getContents(i).stream()
                         .filter(c -> c instanceof ItemGUIContent)
-                        .map(c -> (ItemGUIContent) c)
+                        .map(c -> (CustomItemGUIContent<?>) c)
                         .forEach(c -> c.setDisplayName(query));
             }
         }
@@ -300,7 +301,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> addContent(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> addContent(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.addContent(contents);
     }
 
@@ -310,7 +311,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setContents(int slot, ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setContents(slot, contents);
     }
 
@@ -320,7 +321,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setAllSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setAllSides(contents);
     }
 
@@ -345,7 +346,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopAndBottomSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopAndBottomSides(contents);
     }
 
@@ -370,7 +371,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftAndRightSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftAndRightSides(contents);
     }
 
@@ -395,7 +396,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopSide(contents);
     }
 
@@ -420,7 +421,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftSide(contents);
     }
 
@@ -445,7 +446,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setBottomSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setBottomSide(contents);
     }
 
@@ -470,7 +471,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setRightSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setRightSide(contents);
     }
 
@@ -495,7 +496,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setNorthWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setNorthWest(contents);
     }
 
@@ -515,7 +516,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setNorth(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setNorth(contents);
     }
 
@@ -535,7 +536,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setNorthEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setNorthEast(contents);
     }
 
@@ -555,7 +556,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setMiddleWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setMiddleWest(contents);
     }
 
@@ -575,7 +576,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setMiddle(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setMiddle(contents);
     }
 
@@ -595,7 +596,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setMiddleEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setMiddleEast(contents);
     }
 
@@ -615,7 +616,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setSouthWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setSouthWest(contents);
     }
 
@@ -635,7 +636,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setSouth(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setSouth(contents);
     }
 
@@ -655,7 +656,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setSouthEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setSouthEast(contents);
     }
 
@@ -675,7 +676,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> fill(@NotNull ItemGUIContent content) {
+    public @NotNull SearchGUI<T> fill(@NotNull CustomItemGUIContent<?> content) {
         return (SearchGUI<T>) super.fill(content);
     }
 

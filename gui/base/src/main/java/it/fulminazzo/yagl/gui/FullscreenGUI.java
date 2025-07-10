@@ -2,12 +2,12 @@ package it.fulminazzo.yagl.gui;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
-import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -313,7 +313,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI addContent(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI addContent(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.addContent(contents);
     }
 
@@ -323,7 +323,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setContents(int slot, ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setContents(slot, contents);
     }
 
@@ -338,7 +338,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setAllSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setAllSides(contents);
     }
 
@@ -363,7 +363,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopAndBottomSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
@@ -388,7 +388,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftAndRightSides(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
@@ -413,7 +413,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopSide(contents);
     }
 
@@ -438,7 +438,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftSide(contents);
     }
 
@@ -463,7 +463,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setBottomSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setBottomSide(contents);
     }
 
@@ -488,7 +488,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setRightSide(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setRightSide(contents);
     }
 
@@ -513,7 +513,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthWest(contents);
     }
 
@@ -533,7 +533,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorth(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorth(contents);
     }
 
@@ -553,7 +553,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthEast(contents);
     }
 
@@ -573,7 +573,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleWest(contents);
     }
 
@@ -593,7 +593,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddle(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddle(contents);
     }
 
@@ -613,7 +613,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleEast(contents);
     }
 
@@ -633,7 +633,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthWest(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthWest(contents);
     }
 
@@ -653,7 +653,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouth(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouth(contents);
     }
 
@@ -673,7 +673,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthEast(ItemGUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthEast(contents);
     }
 
@@ -693,7 +693,7 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI fill(@NotNull ItemGUIContent content) {
+    public @NotNull FullscreenGUI fill(@NotNull CustomItemGUIContent<?> content) {
         return (FullscreenGUI) GUI.super.fill(content);
     }
 
