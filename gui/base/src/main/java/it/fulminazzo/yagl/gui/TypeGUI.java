@@ -35,7 +35,7 @@ public class TypeGUI extends GUIImpl {
      *
      * @param inventoryType the inventory type
      */
-    TypeGUI(final @NotNull GUIType inventoryType) {
+    protected TypeGUI(final @NotNull GUIType inventoryType) {
         super(inventoryType.getSize());
         this.inventoryType = inventoryType;
     }

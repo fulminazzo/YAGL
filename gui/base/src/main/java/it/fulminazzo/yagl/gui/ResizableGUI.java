@@ -18,7 +18,7 @@ import java.util.Collection;
  * Represents a "chest" GUI that can be resized.
  * This GUI can start with any value in bounds and multiple of 9 and can grow if necessary.
  */
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResizableGUI extends DefaultGUI {
 
     /**
@@ -26,7 +26,7 @@ public class ResizableGUI extends DefaultGUI {
      *
      * @param size the size
      */
-    ResizableGUI(int size) {
+    protected ResizableGUI(int size) {
         super(size);
     }
 

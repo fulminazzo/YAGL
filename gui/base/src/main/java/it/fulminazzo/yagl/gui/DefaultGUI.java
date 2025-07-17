@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 /**
  * Represents a "chest" GUI that cannot be resized.
  */
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
-class DefaultGUI extends GUIImpl {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class DefaultGUI extends GUIImpl {
     static final int COLUMNS = 9;
 
     /**
@@ -16,7 +16,7 @@ class DefaultGUI extends GUIImpl {
      *
      * @param size the size
      */
-    DefaultGUI(int size) {
+    protected DefaultGUI(int size) {
         super(size);
         checkSize(size);
     }
