@@ -1,12 +1,15 @@
 package it.fulminazzo.yagl.viewer;
 
+import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.WrappersAdapter;
+import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.wrapper.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +27,16 @@ final class BukkitViewer extends Viewer {
      */
     BukkitViewer(final @NotNull UUID uniqueId, final @NotNull String name) {
         super(uniqueId, name);
+    }
+
+    @Override
+    public @Nullable Item getCursor() {
+        return getPlayer().map(HumanEntity::getItemOnCursor).map(ItemAdapter::itemStackToItem).orElse(null);
+    }
+
+    @Override
+    public void setCursor(@Nullable Item cursor) {
+        getPlayer().ifPresent(p -> p.setItemOnCursor(ItemAdapter.itemToItemStack(cursor)));
     }
 
     @Override

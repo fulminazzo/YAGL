@@ -11,6 +11,8 @@ import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -360,6 +362,9 @@ class PageableGUITest {
 
     static class MockViewer extends Viewer {
         GUI openedGUI;
+        @Getter
+        @Setter
+        Item cursor;
 
         protected MockViewer(UUID uniqueId, String name) {
             super(uniqueId, name);

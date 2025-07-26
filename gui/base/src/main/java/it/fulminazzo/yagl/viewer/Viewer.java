@@ -1,9 +1,11 @@
 package it.fulminazzo.yagl.viewer;
 
 import it.fulminazzo.yagl.gui.GUI;
+import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.wrapper.Sound;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -32,6 +34,20 @@ public abstract class Viewer {
         this.uniqueId = uniqueId;
         this.name = name;
     }
+
+    /**
+     * Gets cursor.
+     *
+     * @return the cursor
+     */
+    public abstract @Nullable Item getCursor();
+
+    /**
+     * Sets cursor.
+     *
+     * @param cursor the cursor
+     */
+    public abstract void setCursor(final @Nullable Item cursor);
 
     /**
      * Checks if the current viewer has a GUI opened.
@@ -82,4 +98,5 @@ public abstract class Viewer {
      * Closes the currently open GUI.
      */
     public abstract void closeGUI();
+
 }
