@@ -1,13 +1,11 @@
 package it.fulminazzo.yagl.action;
 
 import it.fulminazzo.yagl.SerializableFunction;
-import it.fulminazzo.yagl.content.GUIContent;
-import it.fulminazzo.yagl.gui.GUI;
+import it.fulminazzo.yagl.event.ClickItemEvent;
 import org.jetbrains.annotations.NotNull;
-import it.fulminazzo.yagl.viewer.Viewer;
 
 /**
- * A general functional interface accepting a {@link Viewer}, {@link GUI} and a {@link GUIContent}.
+ * A general functional interface accepting a {@link ClickItemEvent}.
  */
 @FunctionalInterface
 public interface GUIItemAction extends SerializableFunction {
@@ -15,9 +13,8 @@ public interface GUIItemAction extends SerializableFunction {
     /**
      * Execute.
      *
-     * @param viewer  the viewer
-     * @param gui     the gui
-     * @param content the content
+     * @param event the event
      */
-    void execute(final @NotNull Viewer viewer, final @NotNull GUI gui, final @NotNull GUIContent content);
+    void execute(final @NotNull ClickItemEvent event);
+
 }
