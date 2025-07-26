@@ -21,16 +21,16 @@ import java.util.*;
  */
 @Getter
 class ItemImpl extends FieldEquable implements Item {
-    private String material;
-    private int amount;
-    private int durability;
-    private String displayName;
-    private final @NotNull List<String> lore;
-    private final @NotNull Set<Enchantment> enchantments;
-    private final @NotNull Set<ItemFlag> itemFlags;
-    private final @NotNull Set<PotionEffect> potionEffects;
-    private boolean unbreakable;
-    private int customModelData;
+    protected String material;
+    protected int amount;
+    protected int durability;
+    protected String displayName;
+    protected final @NotNull List<String> lore;
+    protected final @NotNull Set<Enchantment> enchantments;
+    protected final @NotNull Set<ItemFlag> itemFlags;
+    protected final @NotNull Set<PotionEffect> potionEffects;
+    protected boolean unbreakable;
+    protected int customModelData;
 
     /**
      * Instantiates a new Item.
