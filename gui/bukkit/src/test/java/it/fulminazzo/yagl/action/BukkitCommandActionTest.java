@@ -4,6 +4,8 @@ import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.GUIManager;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
+import it.fulminazzo.yagl.event.ClickItemEvent;
+import it.fulminazzo.yagl.event.ClickType;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.util.BukkitTestUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
@@ -39,7 +41,13 @@ public class BukkitCommandActionTest {
                 new Object[]{(Consumer<GUI>) g -> g.onClickOutside(COMMAND),
                         (BiConsumer<Viewer, GUI>) (v, g) -> g.clickOutsideAction().ifPresent(a -> a.execute(v, g))},
                 new Object[]{(Consumer<GUI>) g -> g.addContent(new GUIContent[]{ItemGUIContent.newInstance().onClickItem(COMMAND)}),
-                        (BiConsumer<Viewer, GUI>) (v, g) -> g.getContents(0).forEach(c -> c.clickItemAction().ifPresent(a -> a.execute(v, g, c)))}
+                        (BiConsumer<Viewer, GUI>) (v, g) -> g.getContents(0).forEach(c -> c.clickItemAction()
+                                .ifPresent(a -> a.execute(ClickItemEvent.builder()
+                                        .gui(g)
+                                        .viewer(v)
+                                        .content(c)
+                                        .clickType(ClickType.LEFT)
+                                        .build())))}
         };
     }
 

@@ -57,7 +57,7 @@ class ItemGUIContentTest {
         return new Object[][]{
                 new Object[]{null, null},
                 new Object[]{
-                        (GUIItemAction) (v, g, c) -> System.out.println("Hello, world"),
+                        (GUIItemAction) e -> System.out.println("Hello, world"),
                         (RequirementChecker) (v) -> false
                 },
                 new Object[]{
