@@ -4,6 +4,8 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.event.ClickItemEvent;
+import it.fulminazzo.yagl.event.ClickType;
 import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.gui.SearchGUI;
@@ -80,7 +82,16 @@ public class GUIManager extends SingleInstance implements Listener {
                     else if (slot < g.size()) {
                         if (!g.isMovable(slot)) event.setCancelled(true);
                         @Nullable GUIContent content = g.getContent(v, slot);
-                        if (content != null) content.clickItemAction().ifPresent(a -> a.execute(v, g, content));
+                        if (content != null) {
+                            int hotbarKey = event.getHotbarButton();
+                            content.clickItemAction().ifPresent(a -> a.execute(ClickItemEvent.builder()
+                                    .viewer(v)
+                                    .gui(g)
+                                    .content(content)
+                                    .clickType(ClickType.valueOf(event.getClick().name()))
+                                    .hotbarKey(hotbarKey == -1 ? null : hotbarKey)
+                                    .build()));
+                        }
                     }
                 });
             }
