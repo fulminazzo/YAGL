@@ -24,7 +24,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
@@ -286,7 +285,7 @@ class GUIManagerTest {
         @Test
         void testClickAction() {
             AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
+            this.expected.getContents(0).forEach(c -> c.onClickItem(e -> expected.set(true)));
 
             InventoryViewWrapper view = getView();
             InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
@@ -300,7 +299,7 @@ class GUIManagerTest {
         @Test
         void testClickActionNull() {
             AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
+            this.expected.getContents(0).forEach(c -> c.onClickItem(e -> expected.set(true)));
 
             InventoryViewWrapper view = getView();
             InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
@@ -314,7 +313,7 @@ class GUIManagerTest {
         @Test
         void testClickActionOutside() {
             AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
+            this.expected.getContents(0).forEach(c -> c.onClickItem(e -> expected.set(true)));
 
             InventoryViewWrapper view = getView();
             InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
@@ -347,7 +346,7 @@ class GUIManagerTest {
         @Test
         void testClickActionMovable() {
             AtomicBoolean expected = new AtomicBoolean(false);
-            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> expected.set(true)));
+            this.expected.getContents(0).forEach(c -> c.onClickItem(e -> expected.set(true)));
             this.expected.setAllMovable();
 
             InventoryViewWrapper view = getView();
@@ -363,7 +362,7 @@ class GUIManagerTest {
         void testClickOutside() {
             AtomicBoolean expected = new AtomicBoolean(false);
             AtomicBoolean notExpected = new AtomicBoolean(false);
-            this.expected.getContents(0).forEach(e -> e.onClickItem((v, g, i) -> notExpected.set(true)));
+            this.expected.getContents(0).forEach(c -> c.onClickItem(e -> notExpected.set(true)));
             this.expected.onClickOutside((v, g) -> expected.set(true));
             this.expected.setAllMovable();
 
