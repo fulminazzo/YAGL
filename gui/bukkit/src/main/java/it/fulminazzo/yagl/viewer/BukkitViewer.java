@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.WrappersAdapter;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.wrapper.Sound;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -31,7 +32,11 @@ final class BukkitViewer extends Viewer {
 
     @Override
     public @Nullable Item getCursor() {
-        return getPlayer().map(HumanEntity::getItemOnCursor).map(ItemAdapter::itemStackToItem).orElse(null);
+        return getPlayer()
+                .map(HumanEntity::getItemOnCursor)
+                .map(ItemAdapter::itemStackToItem)
+                .filter(i -> !Material.AIR.name().equals(i.getMaterial()))
+                .orElse(null);
     }
 
     @Override
