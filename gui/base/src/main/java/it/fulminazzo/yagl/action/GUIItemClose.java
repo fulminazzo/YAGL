@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.action;
 
-import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.event.ClickItemEvent;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 public final class GUIItemClose implements GUIItemAction {
 
     @Override
-    public void execute(@NotNull Viewer viewer, @NotNull GUI gui, @NotNull GUIContent content) {
-        viewer.closeGUI();
+    public void execute(final @NotNull ClickItemEvent event) {
+        event.getViewer().closeGUI();
     }
 
     @Override
