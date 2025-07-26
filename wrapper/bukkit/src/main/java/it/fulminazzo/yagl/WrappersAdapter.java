@@ -1,5 +1,10 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.structures.CacheMap;
+import it.fulminazzo.fulmicollection.structures.tuples.Triple;
+import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.item.AbstractItem;
 import it.fulminazzo.yagl.particle.BlockDataOption;
 import it.fulminazzo.yagl.particle.Particle;
@@ -8,11 +13,6 @@ import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.Potion;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import it.fulminazzo.yagl.wrapper.Sound;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.CacheMap;
-import it.fulminazzo.fulmicollection.structures.tuples.Triple;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Effect;
@@ -251,9 +251,9 @@ public final class WrappersAdapter {
         final Object option = tuple.getValue();
 
         if (target instanceof Player) {
-          Player player = (Player) target;
-          if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
-          else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed, option);
+            Player player = (Player) target;
+            if (option == null) player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
+            else player.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed, option);
         } else if (target instanceof World) {
             World world = (World) target;
             if (option == null) world.spawnParticle(actual, location, count, offsetX, offsetY, offsetZ, speed);
@@ -308,7 +308,7 @@ public final class WrappersAdapter {
      * @param z        the z
      */
     public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
-                                     double x, double y, double z) {
+                                   double x, double y, double z) {
         spawnEffect(player, particle, new Location(player.getWorld(), x, y, z));
     }
 
@@ -343,7 +343,8 @@ public final class WrappersAdapter {
                                                                                final @NotNull Class<T> tClass,
                                                                                final @NotNull Function<T, Class<?>> dataTypeGetter) {
         T actual;
-        if (tClass.getCanonicalName().equals("org.bukkit.Particle")) actual = (T) ParticleConverter.convertToBukkit(particle);
+        if (tClass.getCanonicalName().equals("org.bukkit.Particle"))
+            actual = (T) ParticleConverter.convertToBukkit(particle);
         else actual = EnumUtils.valueOf(tClass, particle.getType());
         Object option = particle.getOption();
         Class<?> dataType = dataTypeGetter.apply(actual);
@@ -376,7 +377,7 @@ public final class WrappersAdapter {
         if (option instanceof AbstractItem) return itemToItemStack((AbstractItem) option);
         else if (option instanceof Potion) return wPotionToPotion((Potion) option);
         else if (option instanceof Color) return wColorToColor((Color) option);
-        // Check data types
+            // Check data types
         else if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
         else if (dataType.equals(MaterialData.class)) {
             if (!(option instanceof Tuple))
@@ -640,7 +641,8 @@ public final class WrappersAdapter {
                     actual = byName.get(key);
                     break;
                 }
-            if (actual == null) throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
+            if (actual == null)
+                throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         }
         return new Tuple<>(actual, enchantment.getLevel());
     }
@@ -696,6 +698,11 @@ public final class WrappersAdapter {
      * @return the enchantment
      */
     public static @NotNull Enchantment enchantToWEnchant(final @NotNull org.bukkit.enchantments.Enchantment enchantment, final int level) {
-        return new Enchantment(enchantment.getName(), level);
+        try {
+            return new Enchantment(enchantment.getKey().getKey(), level);
+        } catch (NoSuchMethodError e) {
+            return new Enchantment(enchantment.getName(), level);
+        }
     }
+
 }
