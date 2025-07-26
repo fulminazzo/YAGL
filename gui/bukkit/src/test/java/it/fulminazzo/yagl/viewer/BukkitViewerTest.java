@@ -1,8 +1,11 @@
 package it.fulminazzo.yagl.viewer;
 
-import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.jbukkit.BukkitUtils;
+import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.wrapper.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,7 @@ import static org.mockito.Mockito.*;
 class BukkitViewerTest {
     private Player player;
     private Viewer viewer;
+    private ItemStack cursor;
 
     @BeforeAll
     static void setAllUp() {
@@ -24,8 +28,26 @@ class BukkitViewerTest {
     @BeforeEach
     void setUp() {
         this.player = BukkitUtils.addPlayer(UUID.randomUUID(), "Alex");
+        when(this.player.getItemOnCursor()).thenAnswer(a -> cursor);
+        doAnswer(a -> {
+            cursor = a.getArgument(0);
+            return null;
+        }).when(this.player).setItemOnCursor(any());
         when(this.player.isOnline()).thenReturn(true);
         this.viewer = BukkitViewer.newViewer(this.player);
+    }
+
+    @Test
+    void testSetAndGetCursor() {
+        @Nullable Item cursor = this.viewer.getCursor();
+        assertNull(cursor);
+
+        Item newCursor = Item.newItem("STONE").setAmount(3);
+        this.viewer.setCursor(newCursor);
+        assertEquals(newCursor, this.viewer.getCursor());
+
+        this.viewer.setCursor(null);
+        assertNull(viewer.getCursor());
     }
 
     @Test
