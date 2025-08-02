@@ -47,7 +47,10 @@ class BukkitViewerTest {
         assertEquals(newCursor, this.viewer.getCursor());
 
         this.viewer.setCursor(null);
-        assertNull(viewer.getCursor());
+        assertNull(this.viewer.getCursor());
+
+        this.viewer.setCursor(Item.newItem("air"));
+        assertNull(this.viewer.getCursor());
     }
 
     @Test
