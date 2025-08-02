@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.action.message;
 
 import it.fulminazzo.fulmicollection.utils.ClassUtils;
 import it.fulminazzo.yagl.TestUtils;
+import it.fulminazzo.yagl.event.ClickItemEvent;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,13 +33,15 @@ class MessageActionTest {
     void testMessageActionImplementations(Class<? extends MessageAction> clazz) throws InvocationTargetException, IllegalAccessException {
         MessageAction action = mock(clazz);
         for (Method method : clazz.getDeclaredMethods()) {
-            if (method.getParameterCount() == 1) continue;
             if (!method.getName().equals("execute")) continue;
 
             Class<?>[] paramTypes = method.getParameterTypes();
             Object[] params = Arrays.stream(paramTypes).map(TestUtils::mockParameter).toArray(Object[]::new);
             Viewer viewer = mock(Viewer.class);
-            params[0] = viewer;
+            if (params[0] instanceof ClickItemEvent) {
+                ClickItemEvent event = (ClickItemEvent) params[0];
+                when(event.getViewer()).thenReturn(viewer);
+            } else params[0] = viewer;
 
             when(method.invoke(action, params)).thenCallRealMethod();
             doCallRealMethod().when(action).sendMessage(any());
