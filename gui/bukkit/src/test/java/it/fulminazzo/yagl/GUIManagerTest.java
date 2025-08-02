@@ -297,6 +297,20 @@ class GUIManagerTest {
         }
 
         @Test
+        void testClickActionHotbar() {
+            AtomicBoolean expected = new AtomicBoolean(false);
+            this.expected.getContents(0).forEach(c -> c.onClickItem(e -> expected.set(true)));
+
+            InventoryViewWrapper view = getView();
+            InventoryClickEvent event = new InventoryClickEvent(view.getWrapped(), InventoryType.SlotType.CONTAINER,
+                    0, ClickType.NUMBER_KEY, InventoryAction.CLONE_STACK, 3);
+            assertFalse(event.isCancelled(), "Event should not be cancelled when starting");
+            this.guiManager.on(event);
+            assertTrue(event.isCancelled(), "Event should be cancelled after being invoked");
+            assertTrue(expected.get(), "Click action was not invoked");
+        }
+
+        @Test
         void testClickActionNull() {
             AtomicBoolean expected = new AtomicBoolean(false);
             this.expected.getContents(0).forEach(c -> c.onClickItem(e -> expected.set(true)));
