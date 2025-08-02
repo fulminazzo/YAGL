@@ -142,7 +142,7 @@ public final class AnvilRenameHandler extends ChannelDuplexHandler {
      */
     public @NotNull String getName() {
         return String.format("%s-%s",
-                getClass().getSimpleName(),
+                getClass().getCanonicalName(),
                 this.playerId.toString().replace("-", "_")
         );
     }
