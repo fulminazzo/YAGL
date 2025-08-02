@@ -69,7 +69,7 @@ class AnvilRenameHandlerTest {
 
             verify(c.pipeline()).addBefore(
                     "packet_handler",
-                    AnvilRenameHandler.class.getSimpleName() +
+                    AnvilRenameHandler.class.getCanonicalName() +
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_"),
                     this.handler
@@ -87,7 +87,7 @@ class AnvilRenameHandlerTest {
             this.handler.remove();
 
             verify(c.pipeline()).remove(
-                    AnvilRenameHandler.class.getSimpleName() +
+                    AnvilRenameHandler.class.getCanonicalName() +
                             "-" +
                             this.player.getUniqueId().toString().replace("-", "_")
             );
