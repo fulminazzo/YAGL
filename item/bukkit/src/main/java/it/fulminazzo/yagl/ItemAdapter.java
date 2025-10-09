@@ -10,6 +10,7 @@ import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
 import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import it.fulminazzo.yagl.util.EnumUtils;
+import it.fulminazzo.yagl.util.NMSUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -83,29 +85,53 @@ public final class ItemAdapter {
         String material = item.getMaterial();
         if (material == null) throw new IllegalArgumentException("Material cannot be null!");
         ItemStack itemStack = new ItemStack(EnumUtils.valueOf(Material.class, item.getMaterial()), item.getAmount());
+        AtomicReference<ItemStack> itemReference = new AtomicReference<>(itemStack);
+        AtomicReference<ItemMeta> metaReference = new AtomicReference<>(itemStack.getItemMeta());
 
-        final ItemMeta meta = getItemMeta(itemStack);
+        ItemMeta meta = getItemMeta(itemStack);
         if (item.getDurability() != 0)
             invokeNoSuchMethod(() -> {
-                if (meta instanceof org.bukkit.inventory.meta.Damageable)
-                    ((org.bukkit.inventory.meta.Damageable) meta).setDamage(item.getDurability());
-            }, () -> itemStack.setDurability((short) item.getDurability()));
+                ItemMeta actualMeta = metaReference.get();
+                if (actualMeta instanceof org.bukkit.inventory.meta.Damageable)
+                    ((org.bukkit.inventory.meta.Damageable) actualMeta).setDamage(item.getDurability());
+            }, () -> itemReference.get().setDurability((short) item.getDurability()));
 
         if (meta != null) {
+            final ItemMeta actualMeta = metaReference.get();
+
             String displayName = item.getDisplayName();
             if (!displayName.isEmpty()) meta.setDisplayName(displayName);
             meta.setLore(item.getLore());
             item.getEnchantments().forEach(e -> {
                 @NotNull Tuple<Enchantment, Integer> tuple = WrappersAdapter.wEnchantToEnchant(e);
-                meta.addEnchant(tuple.getKey(), tuple.getValue(), true);
+                actualMeta.addEnchant(tuple.getKey(), tuple.getValue(), true);
             });
-            item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
-            invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->
-                    meta.spigot().setUnbreakable(item.isUnbreakable()));
+            item.getItemFlags().forEach(f -> actualMeta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
+            invokeNoSuchMethod(() -> actualMeta.setUnbreakable(item.isUnbreakable()), () ->
+                    actualMeta.spigot().setUnbreakable(item.isUnbreakable()));
             invokeNoSuchMethod(() -> {
                 int modelData = item.getCustomModelData();
-                if (modelData > 0) meta.setCustomModelData(modelData);
-            }, null);
+                if (modelData > 0) actualMeta.setCustomModelData(modelData);
+            }, () -> {
+                ItemStack actualItem = itemReference.get();
+                actualItem.setItemMeta(metaReference.get());
+
+                int modelData = item.getCustomModelData();
+                Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
+                Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", actualItem);
+
+                Class<?> nbtTagCompound = NMSUtils.getLegacyNMSClass("NBTTagCompound");
+                Refl<?> compound = new Refl<>(nbtTagCompound, new Object[0]);
+                compound.invokeMethod("setInt", new Class[]{String.class, int.class}, "CustomModelData", modelData);
+
+                nmsCopy.invokeMethod("setTag", compound.getObject());
+
+                actualItem = craftItemStack.invokeMethod("asBukkitCopy", nmsCopy.getObject());
+                itemReference.set(actualItem);
+                metaReference.set(actualItem.getItemMeta());
+            });
+            itemStack = itemReference.get();
+            meta = metaReference.get();
 
             if (meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta) meta;
