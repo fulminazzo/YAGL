@@ -1,6 +1,5 @@
 package org.bukkit.craftbukkit.v1_8_R3.inventory;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Material;
@@ -8,14 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class CraftItemStack extends FieldEquable {
-    private final Material material;
-    private final int amount;
+public class CraftItemStack extends net.minecraft.server.v1_8_R3.ItemStack {
     private final @NotNull NBTTagCompound tag;
 
     public CraftItemStack(Material material, int amount) {
-        this.material = material;
-        this.amount = amount;
+        super(material, amount);
         this.tag = new NBTTagCompound();
     }
 
