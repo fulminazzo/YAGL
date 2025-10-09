@@ -112,10 +112,6 @@ public final class ItemAdapter {
             item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
             invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->
                     meta.spigot().setUnbreakable(item.isUnbreakable()));
-            invokeNoSuchMethod(() -> {
-                int modelData = item.getCustomModelData();
-                if (modelData > 0) meta.setCustomModelData(modelData);
-            }, null);
 
             if (meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta) meta;
@@ -125,6 +121,23 @@ public final class ItemAdapter {
             }
 
             itemStack.setItemMeta(meta);
+
+            try {
+                int modelData = item.getCustomModelData();
+                if (modelData > 0) meta.setCustomModelData(modelData);
+            } catch (NoSuchMethodError | NoClassDefFoundError e) {
+                int modelData = item.getCustomModelData();
+                Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
+                Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
+
+                Class<?> nbtTagCompound = NMSUtils.getLegacyNMSClass("NBTTagCompound");
+                Refl<?> compound = new Refl<>(nbtTagCompound, new Object[0]);
+                compound.invokeMethod("setInt", new Class[]{String.class, int.class}, "CustomModelData", modelData);
+
+                nmsCopy.invokeMethod("setTag", compound.getObject());
+
+                return craftItemStack.invokeMethod("asBukkitCopy", nmsCopy.getObject());
+            }
         }
         return itemStack;
     }
