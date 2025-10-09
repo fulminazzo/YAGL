@@ -19,6 +19,10 @@ public class NBTTagCompound extends NBTBase {
         this.data.put(key, value);
     }
 
+    public void setInt(@NotNull String var1, int d) {
+        this.data.put(var1, new NBTTagInt(d));
+    }
+
     public NBTBase get(@NotNull String key) {
         return this.data.get(key);
     }
