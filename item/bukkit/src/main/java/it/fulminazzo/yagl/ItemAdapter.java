@@ -67,7 +67,9 @@ public final class ItemAdapter {
                 Refl<?> compound = nmsCopy.invokeMethodRefl("getTag");
                 if (compound == null) return;
                 Refl<?> customModelData = compound.invokeMethodRefl("get", "CustomModelData");
-                if (customModelData == null || !customModelData.getObjectClass().getSimpleName().equals("NBTTagInt")) return;
+                if (customModelData == null ||
+                        customModelData.getObject() == null ||
+                        !customModelData.getObjectClass().getSimpleName().equals("NBTTagInt")) return;
                 int actualData = customModelData.invokeMethod("d");
                 item.setCustomModelData(actualData);
             });
