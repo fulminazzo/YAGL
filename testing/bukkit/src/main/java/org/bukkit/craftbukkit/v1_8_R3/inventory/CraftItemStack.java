@@ -19,8 +19,8 @@ public class CraftItemStack extends FieldEquable {
         this.tag = new NBTTagCompound();
     }
 
-    public static @NotNull org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack asNMSCopy(@NotNull ItemStack itemStack) {
-        return new org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack(itemStack.getType(), itemStack.getAmount());
+    public static @NotNull CraftItemStack asNMSCopy(@NotNull ItemStack itemStack) {
+        return new CraftItemStack(itemStack.getType(), itemStack.getAmount());
     }
 
     public @NotNull NBTTagCompound getOrCreateTag() {
