@@ -1,13 +1,30 @@
 package org.bukkit.craftbukkit.v1_8_R3.inventory;
 
 import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import net.minecraft.server.v1_8_R3.ItemStack;
+import lombok.Getter;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+@Getter
 public class CraftItemStack extends FieldEquable {
+    private final Material material;
+    private final int amount;
+    private final @NotNull NBTTagCompound tag;
 
-    public static @NotNull ItemStack asNMSCopy(org.bukkit.inventory.@NotNull ItemStack itemStack) {
-        return new ItemStack(itemStack.getType(), itemStack.getAmount());
+    public CraftItemStack(Material material, int amount) {
+        this.material = material;
+        this.amount = amount;
+        this.tag = new NBTTagCompound();
+    }
+
+    public static @NotNull org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack asNMSCopy(@NotNull ItemStack itemStack) {
+        return new org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack(itemStack.getType(), itemStack.getAmount());
+    }
+
+    public @NotNull NBTTagCompound getOrCreateTag() {
+        return this.tag;
     }
 
 }
