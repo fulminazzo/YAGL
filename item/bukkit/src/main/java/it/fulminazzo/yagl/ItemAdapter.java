@@ -62,16 +62,21 @@ public final class ItemAdapter {
             invokeNoSuchMethod(() -> {
                 if (meta.hasCustomModelData()) item.setCustomModelData(meta.getCustomModelData());
             }, () -> {
-                Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
-                Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
-                Refl<?> compound = nmsCopy.invokeMethodRefl("getTag");
-                if (compound == null) return;
-                Refl<?> customModelData = compound.invokeMethodRefl("get", "CustomModelData");
-                if (customModelData == null ||
-                        customModelData.getObject() == null ||
-                        !customModelData.getObjectClass().getSimpleName().equals("NBTTagInt")) return;
-                int actualData = customModelData.invokeMethod("d");
-                item.setCustomModelData(actualData);
+                try {
+                    Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
+                    Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
+                    Refl<?> compound = nmsCopy.invokeMethodRefl("getTag");
+                    if (compound == null) return;
+                    Refl<?> customModelData = compound.invokeMethodRefl("get", "CustomModelData");
+                    if (customModelData == null ||
+                            customModelData.getObject() == null ||
+                            !customModelData.getObjectClass().getSimpleName().equals("NBTTagInt")) return;
+                    int actualData = customModelData.invokeMethod("d");
+                    item.setCustomModelData(actualData);
+                } catch (IllegalArgumentException e) {
+                    // Probably a "Could not find class" error, but print the stacktrace just to be sure
+                    e.printStackTrace();
+                }
             });
 
             if (meta instanceof PotionMeta) {
@@ -126,17 +131,22 @@ public final class ItemAdapter {
                 int modelData = item.getCustomModelData();
                 if (modelData > 0) meta.setCustomModelData(modelData);
             } catch (NoSuchMethodError | NoClassDefFoundError e) {
-                int modelData = item.getCustomModelData();
-                Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
-                Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
+                try {
+                    int modelData = item.getCustomModelData();
+                    Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
+                    Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
 
-                Class<?> nbtTagCompound = NMSUtils.getLegacyNMSClass("NBTTagCompound");
-                Refl<?> compound = new Refl<>(nbtTagCompound, new Object[0]);
-                compound.invokeMethod("setInt", new Class[]{String.class, int.class}, "CustomModelData", modelData);
+                    Class<?> nbtTagCompound = NMSUtils.getLegacyNMSClass("NBTTagCompound");
+                    Refl<?> compound = new Refl<>(nbtTagCompound, new Object[0]);
+                    compound.invokeMethod("setInt", new Class[]{String.class, int.class}, "CustomModelData", modelData);
 
-                nmsCopy.invokeMethod("setTag", compound.getObject());
+                    nmsCopy.invokeMethod("setTag", compound.getObject());
 
-                return craftItemStack.invokeMethod("asBukkitCopy", nmsCopy.getObject());
+                    return craftItemStack.invokeMethod("asBukkitCopy", nmsCopy.getObject());
+                } catch (IllegalArgumentException ex) {
+                    // Probably a "Could not find class" error, but print the stacktrace just to be sure
+                    e.printStackTrace();
+                }
             }
 
             itemStack.setItemMeta(meta);
