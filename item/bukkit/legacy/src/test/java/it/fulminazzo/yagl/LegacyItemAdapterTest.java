@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.Before1_;
+import it.fulminazzo.jbukkit.inventory.MockItemFactory;
 import it.fulminazzo.yagl.item.BukkitItem;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
@@ -10,7 +11,10 @@ import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
 import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @Before1_(13.2)
 class LegacyItemAdapterTest extends BukkitUtils {
@@ -35,6 +39,9 @@ class LegacyItemAdapterTest extends BukkitUtils {
     @Override
     protected void setUp() {
         super.setUp();
+        Server server = (Server) mock(CraftServer.class, withSettings().extraInterfaces(Server.class));
+        new Refl<>(Bukkit.class).setFieldObject("server", server);
+        when(server.getItemFactory()).thenReturn(new MockItemFactory());
     }
 
     @Test
