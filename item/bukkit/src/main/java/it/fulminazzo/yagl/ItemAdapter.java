@@ -120,8 +120,6 @@ public final class ItemAdapter {
                         .forEach(p -> potionMeta.addCustomEffect(p, true));
             }
 
-            itemStack.setItemMeta(meta);
-
             try {
                 int modelData = item.getCustomModelData();
                 if (modelData > 0) meta.setCustomModelData(modelData);
@@ -138,6 +136,8 @@ public final class ItemAdapter {
 
                 return craftItemStack.invokeMethod("asBukkitCopy", nmsCopy.getObject());
             }
+
+            itemStack.setItemMeta(meta);
         }
         return itemStack;
     }
