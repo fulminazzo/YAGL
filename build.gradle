@@ -10,7 +10,7 @@ final def DEMO_MODULE = 'demo'
 final def VERSION_VARIABLE = 'MINECRAFT_VERSION'
 
 group = 'it.fulminazzo'
-version = '5.1'
+version = '5.2'
 
 allprojects {
     apply plugin: 'java-library'
