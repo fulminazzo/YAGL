@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * An implementation of {@link RecipeItemImpl} that actually implements {@link #registerRecipes()} and {@link #unregisterRecipes()}.
@@ -44,9 +45,23 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     @Override
     public void unregisterRecipes() {
         Iterator<org.bukkit.inventory.Recipe> recipes = Bukkit.recipeIterator();
-        while (recipes.hasNext()) {
-            org.bukkit.inventory.Recipe r = recipes.next();
-            if (this.recipeCache.contains(r)) recipes.remove();
+        try {
+            Class<?> keyed = Class.forName("org.bukkit.NamespacedKey");
+            List<Object> keys = this.recipeCache.stream()
+                    .map(Refl::new)
+                    .map(r -> r.getFieldObject(keyed))
+                    .collect(Collectors.toList());
+            while (recipes.hasNext()) {
+                org.bukkit.inventory.Recipe r = recipes.next();
+                Object k = new Refl<>(r).getFieldObject(keyed);
+                if (keys.contains(k)) recipes.remove();
+            }
+        } catch (ClassNotFoundException e) {
+            // Older version, use legacy method
+            while (recipes.hasNext()) {
+                org.bukkit.inventory.Recipe r = recipes.next();
+                if (this.recipeCache.contains(r)) recipes.remove();
+            }
         }
         this.recipeCache.clear();
     }
