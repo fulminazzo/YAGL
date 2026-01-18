@@ -10,6 +10,7 @@ import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
 import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import it.fulminazzo.yagl.util.EnumUtils;
+import it.fulminazzo.yagl.util.NMSUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -60,7 +61,23 @@ public final class ItemAdapter {
                     item.setUnbreakable(meta.spigot().isUnbreakable()));
             invokeNoSuchMethod(() -> {
                 if (meta.hasCustomModelData()) item.setCustomModelData(meta.getCustomModelData());
-            }, null);
+            }, () -> {
+                try {
+                    Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
+                    Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
+                    Refl<?> compound = nmsCopy.invokeMethodRefl("getTag");
+                    if (compound == null) return;
+                    Refl<?> customModelData = compound.invokeMethodRefl("get", "CustomModelData");
+                    if (customModelData == null ||
+                            customModelData.getObject() == null ||
+                            !customModelData.getObjectClass().getSimpleName().equals("NBTTagInt")) return;
+                    int actualData = customModelData.invokeMethod("d");
+                    item.setCustomModelData(actualData);
+                } catch (IllegalArgumentException e) {
+                    // Probably a "Could not find class" error, but print the stacktrace just to be sure
+                    e.printStackTrace();
+                }
+            });
 
             if (meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta) meta;
@@ -102,16 +119,34 @@ public final class ItemAdapter {
             item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
             invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->
                     meta.spigot().setUnbreakable(item.isUnbreakable()));
-            invokeNoSuchMethod(() -> {
-                int modelData = item.getCustomModelData();
-                if (modelData > 0) meta.setCustomModelData(modelData);
-            }, null);
 
             if (meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta) meta;
                 item.getPotionEffects().stream()
                         .map(WrappersAdapter::wPotionEffectToPotionEffect)
                         .forEach(p -> potionMeta.addCustomEffect(p, true));
+            }
+
+            try {
+                int modelData = item.getCustomModelData();
+                if (modelData > 0) meta.setCustomModelData(modelData);
+            } catch (NoSuchMethodError | NoClassDefFoundError e) {
+                try {
+                    int modelData = item.getCustomModelData();
+                    Refl<?> craftItemStack = new Refl<>(NMSUtils.getCraftBukkitClass("inventory.CraftItemStack"));
+                    Refl<?> nmsCopy = craftItemStack.invokeMethodRefl("asNMSCopy", itemStack);
+
+                    Class<?> nbtTagCompound = NMSUtils.getLegacyNMSClass("NBTTagCompound");
+                    Refl<?> compound = new Refl<>(nbtTagCompound, new Object[0]);
+                    compound.invokeMethod("setInt", new Class[]{String.class, int.class}, "CustomModelData", modelData);
+
+                    nmsCopy.invokeMethod("setTag", compound.getObject());
+
+                    return craftItemStack.invokeMethod("asBukkitCopy", nmsCopy.getObject());
+                } catch (IllegalArgumentException ex) {
+                    // Probably a "Could not find class" error, but print the stacktrace just to be sure
+                    e.printStackTrace();
+                }
             }
 
             itemStack.setItemMeta(meta);

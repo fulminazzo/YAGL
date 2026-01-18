@@ -6,8 +6,8 @@ import org.bukkit.Material;
 
 @Getter
 public class ItemStack extends FieldEquable {
-    private final Material material;
-    private final int amount;
+    protected final Material material;
+    protected final int amount;
 
     public ItemStack(Material material, int amount) {
         this.material = material;

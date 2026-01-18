@@ -14,6 +14,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftContainer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -79,7 +80,7 @@ class ObsoleteAnvilInventoryWrapperTest extends BukkitUtils {
 
             List<net.minecraft.server.v1_8_R3.ItemStack> items = activeContainer.getItems();
             net.minecraft.server.v1_8_R3.ItemStack craftItemStack = items.get(0);
-            assertEquals(new net.minecraft.server.v1_8_R3.ItemStack(Material.STONE, 64), craftItemStack);
+            assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
 
             List<Slot> slots = activeContainer.getSlots();
             assertEquals(activeContainer.getSize() + FullscreenGUI.SECOND_INVENTORY_SIZE, slots.size(),

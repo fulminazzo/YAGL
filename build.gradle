@@ -1,8 +1,11 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
-    id 'jacoco-report-aggregation'
     id 'io.freefair.lombok' version libs.versions.delombok
+
+    id 'jacoco-report-aggregation'
+
+    id 'maven-publish'
+    id 'org.jreleaser' version '1.22.0'
 }
 
 final def TEST_MODULE = 'testing'
@@ -10,13 +13,15 @@ final def DEMO_MODULE = 'demo'
 final def VERSION_VARIABLE = 'MINECRAFT_VERSION'
 
 group = 'it.fulminazzo'
-version = '5.0'
+version = '5.2'
 
 allprojects {
     apply plugin: 'java-library'
-    apply plugin: 'maven-publish'
     apply plugin: 'jacoco-report-aggregation'
+
     apply plugin: 'io.freefair.lombok'
+
+    apply plugin: 'maven-publish'
 
     group = "${rootProject.group}"
     version = "${rootProject.version}"
@@ -235,7 +240,7 @@ allprojects {
 
     publishing {
         publications {
-            maven(MavenPublication) {
+            mavenJava(MavenPublication) {
                 groupId = getProjectGroupId().toString().toLowerCase()
                 artifactId = "${project.name.toLowerCase()}"
                 version = "${rootProject.version}"
@@ -243,6 +248,29 @@ allprojects {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
+
+                pom {
+                    name = project.name
+                    description = project.description
+                    url = 'https://github.com/fulminazzo/yagl'
+                    licenses {
+                        license {
+                            name = 'Apache License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'fulminazzo'
+                            name = 'Fulminazzo'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/fulminazzo/yagl.git'
+                        developerConnection = 'scm:git:ssh://github.com/fulminazzo/yagl.git'
+                        url = 'https://github.com/fulminazzo/yagl'
+                    }
+                }
             }
         }
 
@@ -257,8 +285,35 @@ allprojects {
                     basic(BasicAuthentication)
                 }
             }
+            // JReleaser
+            maven {
+                name = 'layout'
+                url = layout.buildDirectory.dir('staging-deploy')
+            }
         }
     }
+
+    jreleaser {
+        signing {
+            active = 'ALWAYS'
+            armored = true
+            passphrase = System.getenv('JRELEASER_GPG_PASSPHRASE')
+        }
+
+        deploy {
+            maven {
+                mavenCentral {
+                    sonatype {
+                        active = 'ALWAYS'
+                        url = 'https://central.sonatype.com/api/v1/publisher'
+
+                        stagingRepository('build/staging-deploy')
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 dependencies {
