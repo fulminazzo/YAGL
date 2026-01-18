@@ -69,6 +69,8 @@ They can all be imported separately or together, following one of the three comm
 - **Gradle** (preferred):
   ```groovy
   repositories {
+      // DEPRECATED!
+      // Starting from January 18th 2026, YAGL will be available from Maven Central!
       maven { url = 'https://repo.fulminazzo.it/releases' }
   }
 
@@ -79,6 +81,8 @@ They can all be imported separately or together, following one of the three comm
 - **Maven** (alternative):
   ```xml
   <repository>
+      <!-- DEPRECATED! -->
+      <!-- Starting from January 18th 2026, YAGL will be available from Maven Central! -->
       <id>fulminazzo</id>
       <url>https://repo.fulminazzo.it/releases</url>
   </repository>
