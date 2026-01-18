@@ -128,9 +128,13 @@ allprojects {
 
         // Bukkit dependencies
         if (projectName.contains('bukkit') || projectName.contains(DEMO_MODULE)) {
-            compileOnly libs.spigot
+            compileOnly(libs.spigot) {
+                exclude group: 'net.md-5', module: 'bungeecord-chat'
+            }
             testCompileOnly libs.spigot.latest
-            testRuntimeOnly "org.spigotmc:spigot-api:${latestVersion}"
+            testRuntimeOnly("org.spigotmc:spigot-api:${latestVersion}") {
+                exclude group: 'net.md-5', module: 'bungeecord-chat'
+            }
 
             // JBukkit library
             testImplementation getJBukkitModule(latestVersion)
@@ -138,24 +142,32 @@ allprojects {
 
         // Legacy dependencies
         if (projectName.contains('legacy')) {
-            testCompileOnly libs.spigot.legacy
-            testRuntimeOnly "org.spigotmc:spigot-api:${legacyVersion}"
+            testCompileOnly(libs.spigot.legacy) {
+                exclude group: 'net.md-5', module: 'bungeecord-chat'
+            }
+            testRuntimeOnly("org.spigotmc:spigot-api:${legacyVersion}") {
+                exclude group: 'net.md-5', module: 'bungeecord-chat'
+            }
 
             testImplementation getJBukkitModule(legacyVersion)
         }
 
         // Obsolete dependencies
         if (projectName.contains('obsolete')) {
-            testCompileOnly libs.spigot.obsolete
-            testRuntimeOnly "org.spigotmc:spigot-api:${obsoleteVersion}"
+            testCompileOnly(libs.spigot.obsolete) {
+                exclude group: 'net.md-5', module: 'bungeecord-chat'
+            }
+            testRuntimeOnly("org.spigotmc:spigot-api:${obsoleteVersion}") {
+                exclude group: 'net.md-5', module: 'bungeecord-chat'
+            }
 
             testImplementation getJBukkitModule(obsoleteVersion)
         }
 
         if (!projectName.contains(TEST_MODULE)) {
             def modulesMap = [
-                    'base':'base', 'serializer':'serializer', 'bukkit':'bukkit',
-                    'obsolete':'bukkit', 'legacy':'bukkit'
+                    'base'    : 'base', 'serializer': 'serializer', 'bukkit': 'bukkit',
+                    'obsolete': 'bukkit', 'legacy': 'bukkit'
             ]
             // If not test module, import corresponding test module
             for (m in modulesMap.keySet())
@@ -250,7 +262,7 @@ allprojects {
 }
 
 dependencies {
-    subprojects.findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE } .each { api project(it.path) }
+    subprojects.findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE }.each { api project(it.path) }
     compileOnly project(":${DEMO_MODULE}")
 }
 
