@@ -22,7 +22,6 @@ allprojects {
     apply plugin: 'io.freefair.lombok'
 
     apply plugin: 'maven-publish'
-    apply plugin: 'org.jreleaser'
 
     group = "${rootProject.group}"
     version = "${rootProject.version}"
@@ -293,6 +292,28 @@ allprojects {
             }
         }
     }
+
+    jreleaser {
+        signing {
+            active = 'ALWAYS'
+            armored = true
+            passphrase = System.getenv('JRELEASER_GPG_PASSPHRASE')
+        }
+
+        deploy {
+            maven {
+                mavenCentral {
+                    sonatype {
+                        active = 'ALWAYS'
+                        url = 'https://central.sonatype.com/api/v1/publisher'
+
+                        stagingRepository('build/staging-deploy')
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 dependencies {
