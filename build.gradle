@@ -289,7 +289,7 @@ allprojects {
             // JReleaser
             maven {
                 name = 'layout'
-                url = layout.buildDirectory.dir('staging-deploy')
+                url = rootProject.layout.buildDirectory.dir('staging-deploy')
             }
         }
     }
