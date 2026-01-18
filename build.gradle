@@ -262,7 +262,8 @@ allprojects {
                     developers {
                         developer {
                             id = 'fulminazzo'
-                            name = 'Fulminazzo'
+                            name = 'Alessandro Bevilacqua'
+                            email = 'fulminazzo21@gmail.com'
                         }
                     }
                     scm {
