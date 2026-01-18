@@ -294,27 +294,6 @@ allprojects {
         }
     }
 
-    jreleaser {
-        signing {
-            active = 'ALWAYS'
-            armored = true
-            passphrase = System.getenv('JRELEASER_GPG_PASSPHRASE')
-        }
-
-        deploy {
-            maven {
-                mavenCentral {
-                    sonatype {
-                        active = 'ALWAYS'
-                        url = 'https://central.sonatype.com/api/v1/publisher'
-
-                        stagingRepository('build/staging-deploy')
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 dependencies {
@@ -334,5 +313,26 @@ testCodeCoverageReport {
     reports {
         xml.required = true
         csv.required = true
+    }
+}
+
+jreleaser {
+    signing {
+        active = 'ALWAYS'
+        armored = true
+        passphrase = System.getenv('JRELEASER_GPG_PASSPHRASE')
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+
+                    stagingRepository('build/staging-deploy')
+                }
+            }
+        }
     }
 }
