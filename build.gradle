@@ -286,6 +286,11 @@ allprojects {
                     basic(BasicAuthentication)
                 }
             }
+            // JReleaser
+            maven {
+                name = 'layout'
+                url = layout.buildDirectory.dir('staging-deploy')
+            }
         }
     }
 }
