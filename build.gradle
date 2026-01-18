@@ -1,8 +1,11 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
-    id 'jacoco-report-aggregation'
     id 'io.freefair.lombok' version libs.versions.delombok
+
+    id 'jacoco-report-aggregation'
+
+    id 'maven-publish'
+    id 'org.jreleaser' version '1.22.0'
 }
 
 final def TEST_MODULE = 'testing'
@@ -14,9 +17,12 @@ version = '5.2'
 
 allprojects {
     apply plugin: 'java-library'
-    apply plugin: 'maven-publish'
     apply plugin: 'jacoco-report-aggregation'
+
     apply plugin: 'io.freefair.lombok'
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'org.jreleaser'
 
     group = "${rootProject.group}"
     version = "${rootProject.version}"
