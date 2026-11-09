@@ -16,4 +16,5 @@ public final class EnchantmentSet extends PComparatorSet<Enchantment> {
     public EnchantmentSet() {
         super(Enchantment::compareLevels, Enchantment::isSimilar);
     }
+
 }

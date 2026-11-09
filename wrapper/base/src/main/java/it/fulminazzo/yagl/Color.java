@@ -66,45 +66,45 @@ public final class Color extends ClassEnum {
     }
 
     /**
-     * Gets alpha.
+     * Gets the alpha value of the color.
      *
-     * @return the alpha
+     * @return the alpha value
      */
     public int getAlpha() {
         return this.alpha & MASK;
     }
 
     /**
-     * Gets red.
+     * Gets the red value of the color.
      *
-     * @return the red
+     * @return the red value
      */
     public int getRed() {
         return this.red & MASK;
     }
 
     /**
-     * Gets green.
+     * Gets the green value of the color.
      *
-     * @return the green
+     * @return the green value
      */
     public int getGreen() {
         return this.green & MASK;
     }
 
     /**
-     * Gets blue.
+     * Gets the blue value of the color.
      *
-     * @return the blue
+     * @return the blue value
      */
     public int getBlue() {
         return this.blue & MASK;
     }
 
-    private void checkRange(int n) {
-        if (n < 0 || n > MASK)
+    private void checkRange(final int value) {
+        if (value < 0 || value > MASK)
             throw new IllegalArgumentException(String.format("'%s' is not contained between 0 and %s",
-                    n, MASK));
+                    value, MASK));
     }
 
     /**
@@ -148,7 +148,7 @@ public final class Color extends ClassEnum {
 
     /**
      * Gets the name from the corresponding static color.
-     * If this is not a static color, it returns null.
+     * If this is not a static color, it returns {@code null}.
      *
      * @return the name
      */
@@ -162,7 +162,7 @@ public final class Color extends ClassEnum {
     }
 
     /**
-     * Gets the corresponding static color
+     * Gets the static color at the given index.
      *
      * @param index the index
      * @return the color
@@ -172,12 +172,12 @@ public final class Color extends ClassEnum {
     }
 
     /**
-     * Gets the corresponding static color
+     * Gets the static color with the given name.
      *
      * @param color the color name
      * @return the color
      */
-    public static Color valueOf(final @NotNull String color) {
+    public static @NotNull Color valueOf(final @NotNull String color) {
         return valueOf(color, Color.class);
     }
 
@@ -191,9 +191,9 @@ public final class Color extends ClassEnum {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof Color) {
-            Color color = (Color) o;
+    public boolean equals(final @Nullable Object other) {
+        if (other instanceof Color) {
+            Color color = (Color) other;
             return this.alpha == color.alpha && this.red == color.red &&
                     this.green == color.green && this.blue == color.blue;
         } else return false;

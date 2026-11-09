@@ -13,4 +13,5 @@ public final class Constants {
      * The number of ticks in one second.
      */
     public static final long TICKS_IN_SECOND = 20;
+
 }

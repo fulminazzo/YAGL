@@ -17,8 +17,10 @@ final class InvalidRangeException extends IllegalArgumentException {
      * @param max   the max
      */
     public InvalidRangeException(final @NotNull Field field,
-                                 final int min, final int max) {
+                                 final int min,
+                                 final int max) {
         super(String.format("Field '%s' of type '%s' has range: min=%s > max=%s", field.getName(),
                 field.getDeclaringClass().getCanonicalName(), min, max));
     }
+
 }
