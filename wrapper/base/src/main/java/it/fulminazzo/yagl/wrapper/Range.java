@@ -17,13 +17,13 @@ public @interface Range {
      *
      * @return the value
      */
-    int min() default Integer.MIN_VALUE;
+    long min() default Long.MIN_VALUE;
 
     /**
      * The maximum value allowed.
      *
      * @return the value
      */
-    int max() default Integer.MAX_VALUE;
+    long max() default Long.MAX_VALUE;
 
 }

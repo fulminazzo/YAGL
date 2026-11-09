@@ -47,22 +47,22 @@ public abstract class Wrapper {
     private static <N extends Number> void checkField(final @NotNull N value, final @NotNull Field field) {
         if (field.isAnnotationPresent(Range.class)) {
             Range range = field.getAnnotation(Range.class);
-            int min = range.min();
-            int max = range.max();
+            long min = range.min();
+            long max = range.max();
             if (min > max) throw new InvalidRangeException(field, min, max);
             else if (value.doubleValue() < (double) min || value.doubleValue() > (double) max)
-                throw new IllegalArgumentException(getExceptionMessage(field, max, min));
+                throw new IllegalArgumentException(getExceptionMessage(field, min, max));
         }
     }
 
-    private static @NotNull String getExceptionMessage(final @NotNull Field field, final int max, final int min) {
+    private static @NotNull String getExceptionMessage(final @NotNull Field field, final long min, final long max) {
         final String fieldName = field.getName();
 
         final String message;
-        if (max != Integer.MAX_VALUE && min != Integer.MIN_VALUE)
+        if (max != Long.MAX_VALUE && min != Long.MIN_VALUE)
             message = String.format("'%s' must be between %s and %s", fieldName, min, max);
-        else if (min != Integer.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
-        else if (max != Integer.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
+        else if (min != Long.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
+        else if (max != Long.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
         else message = String.format("Invalid value provided for '%s'", fieldName);
 
         return message;
