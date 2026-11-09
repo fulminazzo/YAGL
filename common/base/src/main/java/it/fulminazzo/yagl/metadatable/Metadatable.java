@@ -11,7 +11,7 @@ import java.util.function.Function;
  */
 public interface Metadatable {
     /**
-     * A function used to parse the variables names.
+     * A function used to parse the names of the variables.
      */
     Function<@NotNull String, @NotNull String> VARIABLE_PARSER = s -> {
         final String separator = "_";
@@ -33,7 +33,7 @@ public interface Metadatable {
     };
 
     /**
-     * Sets variable.
+     * Sets a variable with the given name.
      *
      * @param name  the name
      * @param value the value
@@ -45,7 +45,7 @@ public interface Metadatable {
     }
 
     /**
-     * Unset variable metadatable.
+     * Unset the variable with the given name.
      *
      * @param name the name
      * @return this metadatable
@@ -67,7 +67,7 @@ public interface Metadatable {
 
     /**
      * Gets variable.
-     * Returns <i>null</i> in case of missing.
+     * Returns {@code null} in case it is missing.
      *
      * @param name the name
      * @return the variable
@@ -103,8 +103,8 @@ public interface Metadatable {
     }
 
     /**
-     * Applies all the current variables to the given object fields,
-     * by replacing in every string all the variables in the format <code>&lt;variable&gt;</code>.
+     * Applies all the current variables to the given object fields
+     * by replacing in every string all the variables in the format {@code <variable>}.
      *
      * @param <T>    the type of the object
      * @param object the object
@@ -115,9 +115,10 @@ public interface Metadatable {
     }
 
     /**
-     * Gets the current variables in form of {@link Map}.
+     * Gets the current variables in the form of {@link Map}.
      *
      * @return the map
      */
     @NotNull Map<String, String> variables();
+
 }
