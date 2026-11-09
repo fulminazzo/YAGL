@@ -46,9 +46,11 @@ class MetadatableHelper implements Metadatable {
         if (objectClass.isEnum() || objectClass.isSynthetic())
             return object;
 
-        String packageName = objectClass.getPackage().getName();
-        if (packageName.startsWith("java.") || packageName.startsWith("javax.") || packageName.startsWith("jdk."))
-            return object;
+        Package classPackage = objectClass.getPackage();
+        if (classPackage != null) {
+            String packageName = classPackage.getName();
+            if (packageName.startsWith("javax.") || packageName.startsWith("jdk.")) return object;
+        }
 
         if (object instanceof String) return (T) applyString((String) object);
         else if (visited.contains(object)) return object;
