@@ -1,28 +1,31 @@
 package it.fulminazzo.yagl.metadatable;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * A support class for {@link Metadatable}.
  */
+@SuppressWarnings("unchecked")
 class MetadatableHelper implements Metadatable {
-    /**
-     * A function used to convert the variables in {@link #apply(Object)}.
-     */
-    private static final @NotNull Function<@NotNull String, @NotNull String> VARIABLE_FORMAT = s -> "<" + s + ">";
+    private static final @NotNull ClassValue<@NotNull Field[]> APPLICABLE_FIELDS_CACHE = new ClassValue<>() {
+
+        @Override
+        protected @NotNull Field[] computeValue(final @NotNull Class<?> type) {
+            return Reflect.on(type).getNonStaticFields().stream()
+                    .filter(f -> !f.isAnnotationPresent(IgnoreApply.class))
+                    .toArray(Field[]::new);
+        }
+
+    };
 
     private final @NotNull Metadatable internal;
-    private final @NotNull List<Object> alreadyApplied;
+    private final @NotNull Set<Object> visited;
 
     /**
      * Instantiates a new Metadatable helper.
@@ -31,96 +34,122 @@ class MetadatableHelper implements Metadatable {
      */
     public MetadatableHelper(final @NotNull Metadatable internal) {
         this.internal = internal;
-        this.alreadyApplied = new ArrayList<>();
+        this.visited = new HashSet<>();
     }
 
-    /**
-     * Applies all the current variables to the given object fields,
-     * by replacing in every string all the variables in the format {@link #VARIABLE_FORMAT}.
-     *
-     * @param <T>    the type parameter
-     * @param object the object
-     * @return the object parsed
-     */
-    @SuppressWarnings("unchecked")
+    @Override
     public <T> @Nullable T apply(final @Nullable T object) {
-        if (object == null) return null;
+        Reflect reflect = Reflect.on(object);
+        if (object == null || reflect.isPrimitive() || reflect.isWrapper()) return object;
 
-        if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass()) && this.alreadyApplied.contains(object)) return object;
-        this.alreadyApplied.add(object);
+        Class<?> objectClass = object.getClass();
+        if (objectClass.isEnum() || objectClass.isSynthetic()) return object;
 
-        if (object.getClass().isEnum()) return object;
-        else if (object.getClass().isArray()) {
-            Object[] array = (Object[]) object;
-            for (Object o : array) apply(o);
+        if (object instanceof String) return (T) applyString((String) object);
+        else if (visited.contains(object)) return object;
+        visited.add(object);
+
+        if (objectClass.isArray()) return (T) applyArray((Object[]) object);
+        else if (object instanceof Collection) return (T) applyCollection((Collection<?>) object);
+        else if (object instanceof Map) return (T) applyMap((Map<?, ?>) object);
+        else {
+            for (Field field : APPLICABLE_FIELDS_CACHE.get(objectClass))
+                reflect.set(field, apply(reflect.get(field).get()));
+            return object;
         }
-        else if (object instanceof String) return (T) apply((String) object);
-        else if (object instanceof Collection) return (T) apply((Collection<Object>) object);
-        else if (object instanceof Map) return (T) apply((Map<Object, Object>) object);
-        else if (!ReflectionUtils.isPrimitiveOrWrapper(object.getClass())) {
-            final Refl<T> refl = new Refl<>(object);
-            for (Field field : refl.getNonStaticFields())
-                ReflectionUtils.setAccessible(field)
-                        .filter(f -> !f.isAnnotationPresent(IgnoreApply.class))
-                        .map(f -> f.get(object))
-                        .filter(o -> !o.toString().contains("Lambda"))
-                        .ifPresent(o -> field.set(object, apply(o)));
-        }
-        return object;
     }
 
     /**
-     * Applies all the current variables to the given string.
-     *
-     * @param string the string
-     * @return the string parsed
-     */
-    @NotNull String apply(@NotNull String string) {
-        for (final String v : variables().keySet()) {
-            final String s = getVariable(v);
-            if (s == null) continue;
-            final Matcher matcher = Pattern.compile("([^\\\\]|^)" + VARIABLE_FORMAT.apply(v)).matcher(string);
-            while (matcher.find())
-                string = string.substring(0, matcher.start()) + matcher.group(1) + s +
-                        string.substring(matcher.end());
-        }
-        return string;
-    }
-
-    /**
-     * Applies all the current variables to the given collection.
-     *
-     * @param collection the collection
-     * @return the collection parsed
-     */
-    @SuppressWarnings("unchecked")
-    @NotNull Collection<Object> apply(@NotNull Collection<Object> collection) {
-        Class<?> clazz = collection.getClass();
-        // In the case of creation with Arrays.asList()
-        if (clazz.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
-            clazz = ArrayList.class;
-        Class<Collection<Object>> finalClass = (Class<Collection<Object>>) clazz;
-        return collection.stream().map(this::apply)
-                .collect(Collectors.toCollection(() -> new Refl<>(finalClass, new Object[0]).getObject()));
-    }
-
-    /**
-     * Applies all the current variables to the given map.
+     * Resolves variables for each of the key and value elements of a map.
      *
      * @param map the map
-     * @return the map parsed
+     * @param <K> the type of the keys
+     * @param <V> the type of the values
+     * @return the map (with updated elements)
      */
-    @NotNull Map<Object, Object> apply(final @NotNull Map<Object, Object> map) {
-        final List<Object> keys = new ArrayList<>(map.keySet());
-        for (Object key : keys) {
+    <K, V> @NotNull Map<K, V> applyMap(final @NotNull Map<K, V> map) {
+        final List<K> keys = new ArrayList<>(map.keySet());
+        for (K key : keys) {
             if (key == null) continue;
-            Object value = map.get(key);
+            V value = map.get(key);
             if (value != null) {
                 map.remove(key);
                 map.put(apply(key), apply(value));
             }
         }
         return map;
+    }
+
+    /**
+     * Resolves variables for each of the elements of a collection.
+     *
+     * @param collection the collection
+     * @return the collection (with updated elements)
+     */
+    @NotNull Collection<?> applyCollection(final @NotNull Collection<?> collection) {
+        Class<?> collectionType = collection.getClass();
+        // In the case of creation with Arrays.asList()
+        if (collectionType.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
+            collectionType = ArrayList.class;
+        Class<Collection<Object>> finalClass = (Class<Collection<Object>>) collectionType;
+        return collection.stream()
+                .map(this::apply)
+                .collect(Collectors.toCollection(() -> Reflect.on(finalClass).init().get()));
+    }
+
+    /**
+     * Resolves variables for each of the elements of an array.
+     *
+     * @param array the array
+     * @param <T>   the type of the elements
+     * @return the array (with updated elements)
+     */
+    <T> @Nullable T @NotNull [] applyArray(final @Nullable T @NotNull [] array) {
+        for (int i = 0; i < array.length; i++) array[i] = apply(array[i]);
+        return array;
+    }
+
+    /**
+     * Recursively resolves variables in a string.
+     * Variables must be enclosed in angle brackets, e.g. {@code <variable>}.
+     * If a variable is not found, or the brackets are escaped ({@code \<}), the variable is left unchanged.
+     *
+     * @param string the string to apply the metadatable to
+     * @return the string with variables resolved
+     */
+    @NotNull String applyString(final @NotNull String string) {
+        if (!string.contains("<")) return string;
+        final Map<String, String> variables = variables();
+        final StringBuilder builder = new StringBuilder();
+        final char[] chars = string.toCharArray();
+        boolean escaped = false;
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == '\\') escaped = true;
+            else if (c == '<' && !escaped) {
+                StringBuilder variableBuilder = new StringBuilder("<");
+                i++;
+                for (; i < chars.length; i++) {
+                    char d = chars[i];
+                    variableBuilder.append(d);
+                    if (d == '>') {
+                        // Recursively resolve variables.
+                        String variable = variableBuilder.toString();
+                        String variableName;
+                        while (variables.containsKey(variableName = variable.substring(1, variable.length() - 1))) {
+                            variable = variables.get(variableName);
+                        }
+                        variableBuilder.setLength(0);
+                        variableBuilder.append(variable);
+                        break;
+                    }
+                }
+                builder.append(variableBuilder);
+                continue;
+            } else if (escaped) escaped = false;
+            builder.append(c);
+        }
+        return builder.toString();
     }
 
     @Override
