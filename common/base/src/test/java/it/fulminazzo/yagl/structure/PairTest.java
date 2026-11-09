@@ -3,10 +3,23 @@ package it.fulminazzo.yagl.structure;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PairTest {
+
+    @Test
+    void testThatMapOnlyWorksIfAllValuesAreNotNull() {
+        Pair<Integer, Integer> empty = new Pair<>();
+        Pair<Integer, Integer> expected = new Pair<>(1, 2);
+        BiFunction<String, String, Pair<Integer, Integer>> function = (f, s) -> expected;
+
+        assertEquals(empty, new Pair<String, String>().map(function), "Should not execute if null and null");
+        assertEquals(empty, new Pair<String, String>("first", null).map(function), "Should not execute if first and null");
+        assertEquals(empty, new Pair<String, String>(null, "second").map(function), "Should not execute if null and second");
+        assertEquals(expected, new Pair<>("first", "second").map(function), "Should execute if first and second");
+    }
 
     @Test
     void testThatIfPresentOnlyExecutesIfAllValuesAreNotNull() {
