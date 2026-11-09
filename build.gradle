@@ -65,7 +65,8 @@ allprojects {
         String numVersion = latestVersion.substring(2, latestVersion.indexOf('.', 2))
         def index = numVersion.indexOf('-')
         if (index != -1) numVersion = numVersion.substring(0, index)
-        return numVersion as Integer >= 20 ? 17 : 8
+        //TODO: revert 11 -> 8
+        return numVersion as Integer >= 20 ? 17 : 11
     }
 
     setupMinecraftVersion()
