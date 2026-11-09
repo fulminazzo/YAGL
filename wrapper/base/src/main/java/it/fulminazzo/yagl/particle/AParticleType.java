@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.particle;
 
 import it.fulminazzo.yagl.ClassEnum;
-import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.reflect.Reflect;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +44,10 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
      */
     public @NotNull Particle create(Object @NotNull ... parameters) {
         if (parameters.length == 0) return create();
-        else return create(new Refl<>(getOptionType(), parameters).getObject());
+        else {
+            P option = Reflect.on(getOptionType()).init(parameters).get();
+            return create(option);
+        }
     }
 
     /**

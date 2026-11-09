@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,7 +65,7 @@ class ColorTest {
             Integer[] params = new Integer[max];
             Arrays.fill(params, 0);
             params[i] = -1;
-            assertThrowsExactly(IllegalArgumentException.class, () -> new Refl<>(Color.class, (Object[]) params));
+            assertThrowsExactly(IllegalArgumentException.class, () -> Reflect.on(Color.class).init((Object[]) params));
         }
     }
 
@@ -76,7 +76,7 @@ class ColorTest {
             Integer[] params = new Integer[max];
             Arrays.fill(params, 0);
             params[i] = 256;
-            assertThrowsExactly(IllegalArgumentException.class, () -> new Refl<>(Color.class, (Object[]) params));
+            assertThrowsExactly(IllegalArgumentException.class, () -> Reflect.on(Color.class).init((Object[]) params));
         }
     }
 

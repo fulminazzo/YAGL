@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.wrapper;
 
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +40,7 @@ public abstract class Wrapper {
         String method = trace[2].getMethodName().toLowerCase();
         if (method.equals("check")) method = trace[3].getMethodName().toLowerCase();
         if (method.startsWith("set") || method.startsWith("get")) method = method.substring(3);
-        checkField(value, ReflectionUtils.getField(object, method));
+        checkField(value, Reflect.on(object).getField(method));
         return value;
     }
 

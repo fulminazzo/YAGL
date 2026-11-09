@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.wrapper;
 
 import it.fulminazzo.yagl.TestUtils;
-import it.fulminazzo.fulmicollection.interfaces.functions.ConsumerException;
+import it.fulminazzo.yagl.function.ConsumerException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,8 @@ class WrapperTest {
 
             if (max != null) {
                 assertTrue(message.contains(String.valueOf(max)), "Error message should contain max value");
-                if (min == null) assertTrue(message.contains("higher"), "Error message should contain 'higher' keyword");
+                if (min == null)
+                    assertTrue(message.contains("higher"), "Error message should contain 'higher' keyword");
             } else
                 assertFalse(message.contains(String.valueOf(Integer.MAX_VALUE)),
                         "Error message should have not contained max value");
