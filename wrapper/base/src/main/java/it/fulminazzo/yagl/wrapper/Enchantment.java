@@ -26,10 +26,10 @@ public final class Enchantment extends Wrapper {
     /**
      * Instantiates a new Enchantment.
      *
-     * @param name the enchantment
-     * @param level       the level (1 is the lowest)
+     * @param name  the enchantment
+     * @param level the level (1 is the lowest)
      */
-    public Enchantment(final @NotNull String name, final int level) {
+    public Enchantment(final @NotNull String name, final @Range(min = 1) int level) {
         setName(name).setLevel(level);
     }
 
@@ -50,7 +50,7 @@ public final class Enchantment extends Wrapper {
      * @param level the level (1 is the lowest)
      * @return this enchantment
      */
-    public @NotNull Enchantment setLevel(final int level) {
+    public @NotNull Enchantment setLevel(final @Range(min = 1) int level) {
         this.level = check(level);
         return this;
     }
@@ -65,4 +65,5 @@ public final class Enchantment extends Wrapper {
         return enchantment != null && this.name.equalsIgnoreCase(enchantment.getName()) &&
                 this.level <= enchantment.getLevel();
     }
+
 }

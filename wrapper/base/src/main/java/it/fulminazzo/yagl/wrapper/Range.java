@@ -4,11 +4,13 @@ package it.fulminazzo.yagl.wrapper;
 import java.lang.annotation.*;
 
 /**
- * An annotation used by {@link Wrapper#check(Number)}.
+ * Annotations used to annotate fields and parameters that must be between a range.
+ *
+ * @see Wrapper#check(Number)
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.TYPE_USE})
 public @interface Range {
 
     /**
@@ -24,4 +26,5 @@ public @interface Range {
      * @return the value
      */
     int max() default Integer.MAX_VALUE;
+
 }

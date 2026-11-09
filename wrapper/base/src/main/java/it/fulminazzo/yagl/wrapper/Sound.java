@@ -38,7 +38,7 @@ public final class Sound extends Wrapper {
      * @param name   the sound
      * @param volume the volume
      */
-    public Sound(final @NotNull String name, final float volume) {
+    public Sound(final @NotNull String name, final @Range(min = 0) float volume) {
         this(name, volume, 1.0F);
     }
 
@@ -49,7 +49,7 @@ public final class Sound extends Wrapper {
      * @param volume the volume
      * @param pitch  the pitch
      */
-    public Sound(final @NotNull String name, final float volume, final float pitch) {
+    public Sound(final @NotNull String name, final @Range(min = 0) float volume, final @Range(min = 0) float pitch) {
         this(name, volume, pitch, null);
     }
 
@@ -61,7 +61,7 @@ public final class Sound extends Wrapper {
      * @param pitch    the pitch
      * @param category the category
      */
-    public Sound(final @NotNull String name, final float volume, final float pitch, final @Nullable String category) {
+    public Sound(final @NotNull String name, final @Range(min = 0) float volume, final @Range(min = 0) float pitch, final @Nullable String category) {
         this.name = name;
         setVolume(volume);
         setPitch(pitch);
@@ -82,12 +82,12 @@ public final class Sound extends Wrapper {
     /**
      * Sets volume.
      * It is limited from 0 and 1.0, where 1.0 is the loudest and 0.0 is the quietest.
-     * Setting this value to higher than its limit, will make sure that it can be heard at maximum volume even at longer distances.
+     * Setting this value to higher than its limit will make sure that it can be heard at maximum volume even at longer distances.
      *
      * @param volume the volume
      * @return this sound
      */
-    public @NotNull Sound setVolume(final float volume) {
+    public @NotNull Sound setVolume(final @Range(min = 0) float volume) {
         this.volume = check(volume);
         return this;
     }
@@ -100,7 +100,7 @@ public final class Sound extends Wrapper {
      * @param pitch the pitch
      * @return this sound
      */
-    public @NotNull Sound setPitch(final float pitch) {
+    public @NotNull Sound setPitch(final @Range(min = 0) float pitch) {
         this.pitch = check(pitch);
         return this;
     }
@@ -115,4 +115,5 @@ public final class Sound extends Wrapper {
         this.category = category;
         return this;
     }
+
 }

@@ -30,33 +30,37 @@ public final class PotionEffect extends Wrapper {
     /**
      * Instantiates a new Potion effect.
      *
-     * @param name   the effect
+     * @param name     the effect
      * @param duration the duration
      */
-    public PotionEffect(final @NotNull String name, final double duration) {
+    public PotionEffect(final @NotNull String name, final @Range(min = 0) double duration) {
         this(name, duration, 1);
     }
 
     /**
      * Instantiates a new Potion effect.
      *
-     * @param name    the effect
+     * @param name      the effect
      * @param duration  the duration
      * @param amplifier the amplifier
      */
-    public PotionEffect(final @NotNull String name, final double duration, final int amplifier) {
+    public PotionEffect(final @NotNull String name,
+                        final @Range(min = 0) double duration,
+                        final @Range(min = 1) int amplifier) {
         this(name, duration, amplifier, true, true);
     }
 
     /**
      * Instantiates a new Potion effect.
      *
-     * @param name          the effect
+     * @param name            the effect
      * @param duration        the duration
      * @param amplifier       the amplifier
-     * @param enableParticles the enable particles
+     * @param enableParticles if {@code true}, the effect will show the associated particles
      */
-    public PotionEffect(final @NotNull String name, final double duration, final int amplifier,
+    public PotionEffect(final @NotNull String name,
+                        final @Range(min = 0) double duration,
+                        final @Range(min = 1) int amplifier,
                         final boolean enableParticles) {
         this(name, duration, amplifier, enableParticles, true);
     }
@@ -64,14 +68,17 @@ public final class PotionEffect extends Wrapper {
     /**
      * Instantiates a new Potion effect.
      *
-     * @param name          the effect
+     * @param name            the effect
      * @param duration        the duration
      * @param amplifier       the amplifier
-     * @param enableParticles show particles
-     * @param enableIcon      show icon
+     * @param enableParticles if {@code true}, the effect will show the associated particles
+     * @param enableIcon      if {@code true}, the effect will show the associated icon in the player GUI
      */
-    public PotionEffect(final @NotNull String name, final double duration, final int amplifier,
-                        final boolean enableParticles, final boolean enableIcon) {
+    public PotionEffect(final @NotNull String name,
+                        final @Range(min = 0) double duration,
+                        final @Range(min = 1) int amplifier,
+                        final boolean enableParticles,
+                        final boolean enableIcon) {
         this.name = name;
         setDuration(duration);
         setAmplifier(amplifier);
@@ -95,7 +102,7 @@ public final class PotionEffect extends Wrapper {
      *
      * @return the duration in ticks
      */
-    public int getDurationInTicks() {
+    public @Range(min = 0) int getDurationInTicks() {
         return (int) (getDuration() * Constants.TICKS_IN_SECOND);
     }
 
@@ -105,7 +112,7 @@ public final class PotionEffect extends Wrapper {
      * @param duration the duration
      * @return this potion effect
      */
-    public @NotNull PotionEffect setDuration(final double duration) {
+    public @NotNull PotionEffect setDuration(final @Range(min = 0) double duration) {
         this.duration = check(duration);
         return this;
     }
@@ -116,7 +123,7 @@ public final class PotionEffect extends Wrapper {
      * @param amplifier the amplifier
      * @return this potion effect
      */
-    public @NotNull PotionEffect setAmplifier(final int amplifier) {
+    public @NotNull PotionEffect setAmplifier(final @Range(min = 1) int amplifier) {
         this.amplifier = check(amplifier);
         return this;
     }
@@ -169,4 +176,5 @@ public final class PotionEffect extends Wrapper {
         this.showingIcon = false;
         return this;
     }
+
 }
