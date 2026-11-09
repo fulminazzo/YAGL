@@ -34,11 +34,11 @@ public abstract class Wrapper {
      * @return the value itself
      */
     public static <N extends Number> @NotNull N check(final @NotNull Object object, final @NotNull N value) {
-        StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-        // The first element should be the getStackTrace invocation, the second and third the 'check' methods.
-        // So we are looking for the third.
-        String method = trace[2].getMethodName().toLowerCase();
-        if (method.equals("check")) method = trace[3].getMethodName().toLowerCase();
+        String method = StackWalker.getInstance()
+                .walk(s -> s.map(StackWalker.StackFrame::getMethodName)
+                        .filter(m -> !m.equals("check"))
+                        .findFirst()
+                ).orElseThrow();
         if (method.startsWith("set") || method.startsWith("get")) method = method.substring(3);
         String fieldName = method;
         checkField(value, Reflect.on(object).getField(f -> f.getName().equalsIgnoreCase(fieldName)));
