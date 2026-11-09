@@ -3,7 +3,9 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -12,12 +14,13 @@ import java.util.Map;
  * A special class that allows transforms a general class into a pseudo-enum implementation
  * by providing the common enum methods: {@link #name()} and {@link #ordinal()}.
  */
+@SuppressWarnings("unchecked")
 public abstract class ClassEnum {
-    private static final @NotNull ClassValue<EnumRegistry> CACHE_MAP = new ClassValue<>() {
+    private static final @NotNull ClassValue<EnumRegistry<? extends ClassEnum>> CACHE_MAP = new ClassValue<>() {
 
         @Override
-        protected EnumRegistry computeValue(final @NotNull Class<?> type) {
-            return new EnumRegistry(type);
+        protected EnumRegistry<?> computeValue(final @NotNull Class<?> type) {
+            return new EnumRegistry<>(type);
         }
 
     };
@@ -27,7 +30,7 @@ public abstract class ClassEnum {
      *
      * @return the index
      */
-    public int ordinal() {
+    public @Range(from = 0, to = Integer.MAX_VALUE) int ordinal() {
         return getCache().ordinal(this);
     }
 
@@ -40,20 +43,63 @@ public abstract class ClassEnum {
         return getCache().name(this);
     }
 
-    private @NotNull EnumRegistry getCache() {
-        return CACHE_MAP.get(getClass());
+    /**
+     * Support function for implementing the {@code valueOf(String)} static function for all {@code ClassEnum} subclasses.
+     *
+     * @param index the ordinal of the enum constant
+     * @param type  the type of the enum constant
+     * @param <E>   the type of the class enum
+     * @return the enum constant
+     */
+    protected static <E extends ClassEnum> @NotNull E valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index,
+                                                              final @NotNull Class<E> type) {
+        return getCache(type).valueOf(index);
     }
 
-    private static final class EnumRegistry {
-        private final @NotNull LinkedList<ClassEnum> values;
-        private final @NotNull Map<ClassEnum, String> nameMap;
+    /**
+     * Support function for implementing the {@code valueOf(String)} static function for all {@code ClassEnum} subclasses.
+     *
+     * @param name the name of the enum constant
+     * @param type the type of the enum constant
+     * @param <E>  the type of the class enum
+     * @return the enum constant
+     */
+    protected static <E extends ClassEnum> @NotNull E valueOf(final @NotNull String name, final @NotNull Class<E> type) {
+        return getCache(type).valueOf(name);
+    }
+
+    /**
+     *
+     * Support function for implementing the {@code values()} static function for all {@code ClassEnum} subclasses.
+     *
+     * @param type the type of the enum constants
+     * @param <E>  the type of the class enum
+     * @return the enum constants
+     */
+    protected static <E extends ClassEnum> E @NotNull [] values(final @NotNull Class<E> type) {
+        return getCache(type).values();
+    }
+
+    private <E extends ClassEnum> @NotNull EnumRegistry<E> getCache() {
+        return (EnumRegistry<E>) getCache(getClass());
+    }
+
+    private static <E extends ClassEnum> @NotNull EnumRegistry<E> getCache(final @NotNull Class<E> type) {
+        return (EnumRegistry<E>) CACHE_MAP.get(type);
+    }
+
+    private static final class EnumRegistry<E extends ClassEnum> {
+        private final @NotNull Class<E> type;
+        private final @NotNull LinkedList<E> values;
+        private final @NotNull Map<E, String> nameMap;
 
         /**
          * Instantiates a new Enum registry.
          *
          * @param type the type of the class
          */
-        public EnumRegistry(final @NotNull Class<?> type) {
+        public EnumRegistry(final Class<?> type) {
+            this.type = (Class<E>) type;
             this.values = new LinkedList<>();
             this.nameMap = new HashMap<>();
 
@@ -61,7 +107,7 @@ public abstract class ClassEnum {
             reflect.getStaticFields().stream()
                     .filter(f -> f.getType().isAssignableFrom(type))
                     .forEach(f -> {
-                        ClassEnum value = reflect.get(f).get();
+                        E value = reflect.get(f).get();
                         values.add(value);
                         nameMap.put(value, f.getName());
                     });
@@ -73,7 +119,7 @@ public abstract class ClassEnum {
          * @param value the value
          * @return the name
          */
-        public int ordinal(final @NotNull ClassEnum value) {
+        public @Range(from = 0, to = Integer.MAX_VALUE) int ordinal(final @NotNull E value) {
             return values.indexOf(value);
         }
 
@@ -83,8 +129,28 @@ public abstract class ClassEnum {
          * @param value the value
          * @return the name
          */
-        public @Nullable String name(final @NotNull ClassEnum value) {
+        public @Nullable String name(final @NotNull E value) {
             return nameMap.get(value);
+        }
+
+        public @NotNull E valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
+            try {
+                return values.get(index);
+            } catch (IndexOutOfBoundsException e) {
+                throw new IllegalArgumentException("No enum constant " + type.getName() + " has ordinal " + index);
+            }
+        }
+
+        public @NotNull E valueOf(final @NotNull String name) {
+            return nameMap.entrySet().stream()
+                    .filter(e -> e.getValue().equals(name))
+                    .findFirst()
+                    .map(Map.Entry::getKey)
+                    .orElseThrow(() -> new IllegalArgumentException("No enum constant " + type.getName() + "." + name));
+        }
+
+        public E @NotNull [] values() {
+            return values.toArray(s -> (E[]) Array.newInstance(type, s));
         }
 
     }

@@ -1,14 +1,15 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ClassEnumTest {
 
@@ -16,13 +17,13 @@ class ClassEnumTest {
     void testClassesOrdinal() {
         for (int i = 0; i < First.LIST.size(); i++) {
             First expected = First.LIST.get(i);
-            First actual = ClassEnumTest.values(First.class)[i];
+            First actual = First.values(First.class)[i];
             assertEquals(i, actual.ordinal());
             assertEquals(expected, actual);
         }
         for (int i = 0; i < Second.LIST.size(); i++) {
             Second expected = Second.LIST.get(i);
-            Second actual = ClassEnumTest.values(Second.class)[i];
+            Second actual = Second.values(Second.class)[i];
             assertEquals(i, actual.ordinal());
             assertEquals(expected, actual);
         }
@@ -38,13 +39,36 @@ class ClassEnumTest {
         assertEquals("THREE", Second.THREE.name());
     }
 
-    @SuppressWarnings("unchecked")
-    private static <E extends ClassEnum> E[] values(final @NotNull Class<E> type) {
-        Reflect reflect = Reflect.on(type);
-        return reflect.getStaticFields().stream()
-                .filter(f -> f.getType().isAssignableFrom(type))
-                .map(f -> (E) reflect.get(f).get())
-                .toArray(l -> (E[]) Array.newInstance(type, l));
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2})
+    void testThatValueOfOrdinalsReturnCorrectValues(final int ordinal) {
+        assertEquals(getFirstValues().get(ordinal), First.valueOf(ordinal));
+    }
+    
+    @Test
+    void testThatValueOfOrdinalsThrowsForInvalidOrdinal() {
+        assertThrows(IllegalArgumentException.class, () -> First.valueOf(3));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"ONE", "TWO", "THREE"})
+    void testThatValueOfNamesReturnCorrectValues(final String name) {
+        First value = name.equals("ONE") ? First.ONE : name.equals("TWO") ? First.TWO : First.THREE;
+        assertEquals(value, First.valueOf(name));
+    }
+    
+    @Test
+    void testThatValueOfNamesThrowsForInvalidNames() {
+        assertThrows(IllegalArgumentException.class, () -> First.valueOf("FOUR"));
+    }
+
+    @Test
+    void testThatValuesReturnCorrectValues() {
+        assertArrayEquals(getFirstValues().toArray(new First[3]), First.values());
+    }
+
+    private static List<First> getFirstValues() {
+        return Arrays.asList(First.ONE, First.TWO, First.THREE);
     }
 
     private static class First extends ClassEnum {
@@ -57,6 +81,18 @@ class ClassEnumTest {
         public First() {
             super();
             LIST.add(this);
+        }
+
+        public static @NotNull First valueOf(final int index) {
+            return valueOf(index, First.class);
+        }
+
+        public static First valueOf(final @NotNull String color) {
+            return valueOf(color, First.class);
+        }
+
+        public static First @NotNull [] values() {
+            return values(First.class);
         }
 
     }
