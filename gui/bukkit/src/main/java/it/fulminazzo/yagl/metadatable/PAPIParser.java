@@ -27,7 +27,7 @@ public final class PAPIParser extends MetadatableHelper {
 
     @Override
     @NotNull
-    String apply(@NotNull String string) {
+    String applyString(final @NotNull String string) {
         return PlaceholderAPI.setPlaceholders(this.player, string);
     }
 
