@@ -4,10 +4,8 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven {
-        name = "Fulminazzo repository"
-        url = "https://repo.fulminazzo.it/releases"
-    }
+    //TODO: Pending FulmiCollection library migration
+    mavenLocal()
 }
 
 dependencies {

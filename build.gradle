@@ -82,10 +82,8 @@ allprojects {
             name = 'JitPack'
             url = 'https://jitpack.io'
         }
-        maven {
-            name = 'Fulminazzo repository'
-            url = 'https://repo.fulminazzo.it/releases'
-        }
+        //TODO: Pending FulmiCollection library migration
+        mavenLocal()
         maven {
             name = 'PlaceholderAPI repository'
             url = 'https://repo.extendedclip.com/releases/'
