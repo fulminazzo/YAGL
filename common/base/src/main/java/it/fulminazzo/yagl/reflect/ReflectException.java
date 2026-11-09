@@ -1,0 +1,211 @@
+package it.fulminazzo.yagl.reflect;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+/**
+ * An exception thrown by {@link Reflect} on errors.
+ * <p>
+ * All the classes in this package have been imported from the blocksmith project
+ * <a href="https://github.com/fulminazzo/blocksmith">Click here</a> for more.
+ *
+ */
+public final class ReflectException extends RuntimeException {
+    private static final long serialVersionUID = 5743949200733944293L;
+
+    /**
+     * Instantiates a new Reflect exception.
+     *
+     * @param format the format of the message
+     * @param args   the arguments to format
+     */
+    public ReflectException(final @NotNull String format, final Object @NotNull ... args) {
+        super(formatMessage(format, args));
+    }
+
+    /**
+     * Instantiates a new Reflect exception.
+     *
+     * @param cause  the cause that generated the exception
+     * @param format the format of the message
+     * @param args   the arguments to format
+     */
+    public ReflectException(
+            final @NotNull Throwable cause,
+            final @NotNull String format,
+            final Object @NotNull ... args
+    ) {
+        super(formatMessage(format, args), cause);
+    }
+
+    /**
+     * Formats the given message accordingly.
+     * <br>
+     * <ul>
+     *     <li>If an argument is a {@link Type},
+     *     it will be converted with {@link ReflectUtils#toString(Type)};</li>
+     *     <li>If an argument is a {@link Method},
+     *     it will be formatted as {@code <method_name>(<method_parameters>)};</li>
+     *     <li>If an argument is a {@link Constructor},
+     *     it will be formatted as {@code <declaring_class>(<method_parameters>)}.</li>
+     * </ul>
+     *
+     * @param format the format of the message
+     * @param args   the arguments
+     * @return the message
+     */
+    public static @NotNull String formatMessage(
+            final @NotNull String format,
+            final Object @NotNull ... args
+    ) {
+        for (int i = 0; i < args.length; i++) {
+            Object object = args[i];
+            if (object instanceof Type) args[i] = ReflectUtils.toString((Type) object);
+            else if (object instanceof Method) {
+                Method method = (Method) object;
+                Type returnType = method.getGenericReturnType();
+                if (returnType == null) returnType = method.getReturnType();
+                args[i] = String.format("%s %s(%s)",
+                        ReflectUtils.toString(returnType),
+                        method.getName(),
+                        getParameterTypes(method)
+                );
+            } else if (object instanceof Constructor<?>) {
+                Constructor<?> constructor = (Constructor<?>) object;
+                args[i] = String.format("%s(%s)",
+                        constructor.getDeclaringClass().getCanonicalName(),
+                        getParameterTypes(constructor)
+                );
+            }
+        }
+        return String.format(format, args);
+    }
+
+    /**
+     * Class not found reflect exception.
+     *
+     * @param className the class name
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException classNotFound(final @NotNull String className) {
+        return new ReflectException("Could not find class '%s'", className);
+    }
+
+    /**
+     * Cannot cast reflect exception.
+     *
+     * @param object the object
+     * @param type   the type
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotCast(final Object object, final Type type) {
+        final String objectDeclaration;
+        if (object == null) objectDeclaration = "null";
+        else objectDeclaration = object + " (type: " + object.getClass().getCanonicalName() + ")";
+        return new ReflectException("Cannot cast object '%s' to type '%s'", objectDeclaration, type);
+    }
+
+    /**
+     * Cannot find constructor reflect exception.
+     *
+     * @param type the type
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotFindConstructor(final @NotNull Type type) {
+        return new ReflectException("Could not find constructor from the given predicate in type '%s'", type);
+    }
+
+    /**
+     * Cannot find constructor reflect exception.
+     *
+     * @param type           the type
+     * @param parameterTypes the parameter types
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotFindConstructor(
+            final @NotNull Type type,
+            final @Nullable Class<?> @NotNull ... parameterTypes
+    ) {
+        return new ReflectException("Could not find constructor with types (%s) in type '%s'",
+                Arrays.stream(parameterTypes)
+                        .map(p -> p == null ? "?" : ReflectUtils.toString(p))
+                        .collect(Collectors.joining(", ")),
+                type
+        );
+    }
+
+    /**
+     * Cannot find field reflect exception.
+     *
+     * @param type the type
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotFindField(final @NotNull Type type) {
+        return new ReflectException("Could not find field from the given predicate in type '%s'", type);
+    }
+
+    /**
+     * Cannot find field reflect exception.
+     *
+     * @param type      the type
+     * @param fieldName the field name
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotFindField(
+            final @NotNull Type type,
+            final @NotNull String fieldName
+    ) {
+        return new ReflectException("Could not find field '%s' in type '%s'", fieldName, type);
+    }
+
+    /**
+     * Cannot find method reflect exception.
+     *
+     * @param type the type
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotFindMethod(final @NotNull Type type) {
+        return new ReflectException("Could not find method from the given predicate in type '%s'", type);
+    }
+
+    /**
+     * Cannot find method reflect exception.
+     *
+     * @param type           the type
+     * @param returnType     the return type
+     * @param methodName     the method name
+     * @param parameterTypes the parameter types
+     * @return the reflect exception
+     */
+    static @NotNull ReflectException cannotFindMethod(
+            final @NotNull Type type,
+            final @Nullable Type returnType,
+            final @Nullable String methodName,
+            final @Nullable Class<?> @NotNull ... parameterTypes
+    ) {
+        return new ReflectException("Could not find method %s %s(%s) in type '%s'",
+                returnType == null ? "?" : ReflectUtils.toString(returnType),
+                methodName == null ? "?" : methodName,
+                Arrays.stream(parameterTypes)
+                        .map(p -> p == null ? "?" : ReflectUtils.toString(p))
+                        .collect(Collectors.joining(", ")),
+                type
+        );
+    }
+
+    private static @NotNull String getParameterTypes(final @NotNull Executable executable) {
+        Type[] parameterTypes = executable.getGenericParameterTypes();
+        if (parameterTypes == null) parameterTypes = executable.getParameterTypes();
+        return Arrays.stream(parameterTypes)
+                .map(ReflectUtils::toString)
+                .collect(Collectors.joining(", "));
+    }
+
+}
