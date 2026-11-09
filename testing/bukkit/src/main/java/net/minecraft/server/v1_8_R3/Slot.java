@@ -1,10 +1,13 @@
 package net.minecraft.server.v1_8_R3;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-public class Slot extends FieldEquable {
+@EqualsAndHashCode
+@ToString
+public class Slot {
     private final IInventory inventory;
     private final int index;
     private final int x;

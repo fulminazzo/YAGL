@@ -1,11 +1,14 @@
 package net.minecraft.server.v1_8_R3;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.Material;
 
 @Getter
-public class ItemStack extends FieldEquable {
+@EqualsAndHashCode
+@ToString
+public class ItemStack {
     protected final Material material;
     protected final int amount;
 

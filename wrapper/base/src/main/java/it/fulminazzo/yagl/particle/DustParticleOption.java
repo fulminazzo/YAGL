@@ -2,11 +2,15 @@ package it.fulminazzo.yagl.particle;
 
 import it.fulminazzo.yagl.Color;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * An option used by {@link ParticleType#REDSTONE}.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public final class DustParticleOption extends ParticleOption<Tuple<Color, Float>> {
     private final @NotNull Color color;
     private final float size;
@@ -31,4 +35,5 @@ public final class DustParticleOption extends ParticleOption<Tuple<Color, Float>
     public @NotNull Tuple<Color, Float> getOption() {
         return new Tuple<>(this.color, this.size);
     }
+
 }

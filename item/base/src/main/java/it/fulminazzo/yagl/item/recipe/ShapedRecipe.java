@@ -3,8 +3,9 @@ package it.fulminazzo.yagl.item.recipe;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.wrapper.Range;
 import it.fulminazzo.yagl.wrapper.Wrapper;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +16,8 @@ import java.util.List;
  * An implementation of {@link Recipe} to express the shaped recipes in Minecraft.
  * An example of shaped recipe is the TNT, which requires all the items in an exact position.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public final class ShapedRecipe extends RecipeImpl {
     private final @NotNull List<Item> ingredients;
     @Getter
@@ -99,7 +102,9 @@ public final class ShapedRecipe extends RecipeImpl {
      * Represents a shape in the recipe.
      */
     @Getter
-    public static class Shape extends FieldEquable {
+    @EqualsAndHashCode
+    @ToString
+    public static class Shape {
         static final int MIN_COLUMNS = 1;
         static final int MAX_COLUMNS = 3;
         static final int MIN_ROWS = 1;
@@ -155,11 +160,6 @@ public final class ShapedRecipe extends RecipeImpl {
          */
         public boolean contains(int num) {
             return num >= 0 && num < this.rows * this.columns;
-        }
-
-        @Override
-        public @NotNull String toString() {
-            return String.format("Shape {rows: %s, columns: %s}", this.rows, this.columns);
         }
 
     }

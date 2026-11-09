@@ -1,14 +1,13 @@
 package it.fulminazzo.yagl.item;
 
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.util.MessageUtils;
-import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +19,8 @@ import java.util.*;
  * An implementation of {@link Item}.
  */
 @Getter
-class ItemImpl extends FieldEquable implements Item {
+@EqualsAndHashCode
+class ItemImpl implements Item {
     protected String material;
     protected int amount;
     protected int durability;
@@ -103,7 +103,7 @@ class ItemImpl extends FieldEquable implements Item {
     @Override
     public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
         return item != null && Arrays.stream(ItemImpl.class.getDeclaredFields())
-                .filter(f ->! Modifier.isStatic(f.getModifiers()))
+                .filter(f -> !Modifier.isStatic(f.getModifiers()))
                 .filter(f -> Arrays.stream(ignore)
                         .noneMatch(f2 -> f.getName().equalsIgnoreCase(f2.name()
                                 .replace("_", ""))))
@@ -115,12 +115,16 @@ class ItemImpl extends FieldEquable implements Item {
     }
 
     @Override
-    protected @NotNull Class<? extends FieldEquable> clazz() {
-        return ItemImpl.class;
+    public @NotNull String toString() {
+        StringBuilder builder = new StringBuilder()
+                .append(getClass().getSimpleName().replace("Impl", ""))
+                .append("{")
+                .append(material)
+                .append(" x ")
+                .append(amount);
+        if (displayName != null && !displayName.isEmpty())
+            builder.append(", '").append(displayName).append("'");
+        return builder.append("}").toString();
     }
 
-    @Override
-    public @NotNull String toString() {
-        return ObjectUtils.printAsJSON(this);
-    }
 }

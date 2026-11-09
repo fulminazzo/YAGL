@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
@@ -9,6 +8,7 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +23,8 @@ import java.util.stream.Stream;
  * show contents.
  */
 @Getter
-public class FullscreenGUI extends FieldEquable implements GUI {
+@EqualsAndHashCode
+public class FullscreenGUI implements GUI {
     /**
      * The Second inventory size.
      */
@@ -178,10 +179,10 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     @Override
     public @NotNull Set<Integer> leftSlots() {
         return Stream.concat(
-                this.upperGUI.leftSlots().stream(),
-                this.lowerGUI.leftSlots().stream()
-                        .map(s -> s + this.upperGUI.size())
-        )
+                        this.upperGUI.leftSlots().stream(),
+                        this.lowerGUI.leftSlots().stream()
+                                .map(s -> s + this.upperGUI.size())
+                )
                 .sorted(Comparator.comparing(s -> s))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -189,10 +190,10 @@ public class FullscreenGUI extends FieldEquable implements GUI {
     @Override
     public @NotNull Set<Integer> rightSlots() {
         return Stream.concat(
-                this.upperGUI.rightSlots().stream(),
-                this.lowerGUI.rightSlots().stream()
-                        .map(s -> s + this.upperGUI.size())
-        )
+                        this.upperGUI.rightSlots().stream(),
+                        this.lowerGUI.rightSlots().stream()
+                                .map(s -> s + this.upperGUI.size())
+                )
                 .sorted(Comparator.comparing(s -> s))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -295,6 +296,11 @@ public class FullscreenGUI extends FieldEquable implements GUI {
                 .setFieldObject("upperGUI", this.upperGUI.copy())
                 .setFieldObject("lowerGUI", this.lowerGUI.copy())
                 .getObject();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s{upper=%s; lower=%s}", getClass().getSimpleName(), upperGUI, lowerGUI);
     }
 
     @Override

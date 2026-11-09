@@ -1,7 +1,5 @@
 package it.fulminazzo.yagl.wrapper;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
-import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +9,7 @@ import java.lang.reflect.Field;
 /**
  * A general class that represents a wrapper for another object.
  */
-public abstract class Wrapper extends FieldEquable {
+public abstract class Wrapper {
 
     /**
      * Uses {@link #check(Object, Number)} to check the given value.
@@ -61,7 +59,8 @@ public abstract class Wrapper extends FieldEquable {
         final String fieldName = field.getName();
 
         final String message;
-        if (max != Integer.MAX_VALUE && min != Integer.MIN_VALUE) message = String.format("'%s' must be between %s and %s", fieldName, min, max);
+        if (max != Integer.MAX_VALUE && min != Integer.MIN_VALUE)
+            message = String.format("'%s' must be between %s and %s", fieldName, min, max);
         else if (min != Integer.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
         else if (max != Integer.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
         else message = String.format("Invalid value provided for '%s'", fieldName);
@@ -84,11 +83,6 @@ public abstract class Wrapper extends FieldEquable {
      */
     public boolean isSimilar(final @Nullable Wrapper wrapper) {
         return wrapper != null && getClass().equals(wrapper.getClass()) && getName().equalsIgnoreCase(wrapper.getName());
-    }
-
-    @Override
-    public @NotNull String toString() {
-        return Printable.convertToJson(this);
     }
 
 }

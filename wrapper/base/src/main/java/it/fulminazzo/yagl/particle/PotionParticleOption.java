@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public final class PotionParticleOption extends ParticleOption<Potion> {
     private final @NotNull Potion potion;
 
-    public PotionParticleOption(@NotNull Potion potion) {
+    public PotionParticleOption(final @NotNull Potion potion) {
         this.potion = potion;
     }
 
@@ -17,4 +17,5 @@ public final class PotionParticleOption extends ParticleOption<Potion> {
     public @NotNull Potion getOption() {
         return this.potion;
     }
+
 }

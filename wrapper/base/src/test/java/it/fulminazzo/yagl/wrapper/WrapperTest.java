@@ -2,6 +2,8 @@ package it.fulminazzo.yagl.wrapper;
 
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.ConsumerException;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -100,6 +102,8 @@ class WrapperTest {
     }
 
     @SuppressWarnings("unused")
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
     private static class MockWrapper extends Wrapper {
         @Range(min = 1, max = 9)
         private int value;

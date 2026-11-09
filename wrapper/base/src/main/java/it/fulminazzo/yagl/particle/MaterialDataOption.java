@@ -1,11 +1,15 @@
 package it.fulminazzo.yagl.particle;
 
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * An option used by {@link LegacyParticleType#TILE_BREAK} and {@link LegacyParticleType#TILE_DUST}.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public final class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
     private static final String REGEX = "^([^\\[]+)(?:\\[(\\d+)])?$";
     private final @NotNull String material;
@@ -39,4 +43,5 @@ public final class MaterialDataOption extends ParticleOption<Tuple<String, Integ
     public @NotNull Tuple<String, Integer> getOption() {
         return new Tuple<>(this.material, this.data);
     }
+
 }

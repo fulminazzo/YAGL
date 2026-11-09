@@ -1,7 +1,10 @@
 package it.fulminazzo.yagl.wrapper;
 
 import it.fulminazzo.yagl.particle.LegacyParticleType;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -9,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
  * Currently used only for {@link LegacyParticleType#POTION_BREAK}.
  */
 @Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public final class Potion extends Wrapper {
     private @NotNull String name;
     @Range(min = 1, max = 2)

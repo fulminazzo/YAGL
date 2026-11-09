@@ -7,6 +7,8 @@ import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.exceptions.YAMLException;
 import it.fulminazzo.yamlparser.utils.FileUtils;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
@@ -169,6 +171,8 @@ class WrapperParserTest {
 
     }
 
+    @EqualsAndHashCode(callSuper = false)
+    @ToString
     private static class MockFieldWrapper extends Wrapper {
         private final Exception exception;
 

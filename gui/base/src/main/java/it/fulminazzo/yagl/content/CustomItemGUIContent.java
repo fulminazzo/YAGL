@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +20,7 @@ import java.util.Set;
  * @param <C> the type of this content (for method chaining)
  */
 @SuppressWarnings("unchecked")
+@EqualsAndHashCode(callSuper = true)
 public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
         extends CustomGUIContent<C>
         implements Item {
@@ -250,6 +252,11 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     @Override
     public @NotNull C copy() {
         return (C) super.copy();
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return item.toString();
     }
 
 }

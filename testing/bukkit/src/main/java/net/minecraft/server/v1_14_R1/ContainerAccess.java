@@ -1,11 +1,14 @@
 package net.minecraft.server.v1_14_R1;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class ContainerAccess extends FieldEquable {
+@EqualsAndHashCode
+@ToString
+public class ContainerAccess {
     private final World world;
     private final BlockPosition blockPosition;
 

@@ -1,14 +1,12 @@
 package it.fulminazzo.yagl.particle;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
-
 /**
  * Represents a general option for a particle.
  * This can either be an integer, float, or a full-fledged object.
  *
  * @param <O> the type parameter
  */
-abstract class ParticleOption<O> extends FieldEquable {
+abstract class ParticleOption<O> {
 
     /**
      * Gets option to send the particle.
@@ -16,4 +14,5 @@ abstract class ParticleOption<O> extends FieldEquable {
      * @return the option
      */
     public abstract O getOption();
+
 }

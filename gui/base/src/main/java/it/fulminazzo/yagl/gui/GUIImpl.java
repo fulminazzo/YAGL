@@ -1,10 +1,10 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,8 @@ import java.util.*;
 /**
  * A basic implementation of {@link GUI}.
  */
-abstract class GUIImpl extends FieldEquable implements GUI {
+@EqualsAndHashCode
+abstract class GUIImpl implements GUI {
     protected static final int MAX_SIZE = 54;
 
     @Getter
@@ -192,6 +193,16 @@ abstract class GUIImpl extends FieldEquable implements GUI {
         return this.variables;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder()
+                .append(getClass().getSimpleName().replace("Impl", ""))
+                .append("{");
+        if (title != null && !title.isEmpty())
+            builder.append("'").append(title).append("', ");
+        return builder.append("size=").append(size()).append("}").toString();
+    }
+
     /**
      * Create a new list of the given size.
      *
@@ -202,7 +213,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
     protected @NotNull List<Contents> createContents(int size, final @Nullable List<Contents> copyFrom) {
         List<Contents> contents = new LinkedList<>();
         for (int i = 0; i < size; i++) contents.add(null);
-        if (copyFrom != null) 
+        if (copyFrom != null)
             for (int i = 0; i < Math.min(copyFrom.size(), contents.size()); i++)
                 contents.set(i, copyFrom.get(i));
         return contents;
@@ -274,5 +285,7 @@ abstract class GUIImpl extends FieldEquable implements GUI {
         public @NotNull String toString() {
             return Arrays.toString(this.contents);
         }
+
     }
+
 }

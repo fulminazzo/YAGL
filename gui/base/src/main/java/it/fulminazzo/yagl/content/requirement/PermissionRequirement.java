@@ -1,15 +1,20 @@
 package it.fulminazzo.yagl.content.requirement;
 
 import it.fulminazzo.yagl.viewer.Viewer;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A type of requirement that checks if the {@link Viewer} has a certain permission.
  */
 @Getter
-public final class PermissionRequirement extends FieldEquable implements RequirementChecker {
+@EqualsAndHashCode
+@ToString
+public final class PermissionRequirement implements RequirementChecker {
+    private static final long serialVersionUID = -1180552017301576406L;
+
     private final @NotNull String permission;
 
     /**
@@ -30,4 +35,5 @@ public final class PermissionRequirement extends FieldEquable implements Require
     public String serialize() {
         return this.permission;
     }
+
 }

@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.particle;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -9,6 +11,8 @@ import java.util.regex.Pattern;
 /**
  * An option used by {@link ParticleType#BLOCK_CRACK}, {@link ParticleType#BLOCK_DUST} and {@link ParticleType#FALLING_DUST}.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public final class BlockDataOption extends ParticleOption<String> {
     private static final String INVALID_DATA = "Invalid data '%s'";
     private static final String INVALID_MATERIAL = "Invalid material '%s'";
@@ -67,7 +71,7 @@ public final class BlockDataOption extends ParticleOption<String> {
     }
 
     /**
-     * Parses the given raw material by removing any white-space or <i>minecraft:</i> prepending the actual material.
+     * Parses the given raw material by removing any white-space or {@code minecraft:} prepending the actual material.
      * Throws an {@link IllegalArgumentException} in case the material is invalid.
      *
      * @param material the material

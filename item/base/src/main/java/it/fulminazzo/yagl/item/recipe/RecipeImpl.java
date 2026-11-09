@@ -1,15 +1,18 @@
 package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A basic implementation of {@link Recipe}.
  */
 @Getter
-abstract class RecipeImpl extends FieldEquable implements Recipe {
+@EqualsAndHashCode
+@ToString
+abstract class RecipeImpl implements Recipe {
     protected final @NotNull String id;
     protected Item output;
 
@@ -21,4 +24,5 @@ abstract class RecipeImpl extends FieldEquable implements Recipe {
     RecipeImpl(@NotNull String id) {
         this.id = id;
     }
+
 }

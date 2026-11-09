@@ -1,8 +1,12 @@
 package net.minecraft.server.v1_8_R3;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class NBTTagInt extends NBTBase {
     private final int data;
 

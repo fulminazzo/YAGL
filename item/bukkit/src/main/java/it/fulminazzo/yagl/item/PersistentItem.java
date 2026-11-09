@@ -7,6 +7,7 @@ import it.fulminazzo.yagl.listener.PersistentListener;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ import java.util.logging.Logger;
  * An implementation of {@link BukkitItemImpl} created to be a constant item in a player's inventory.
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class PersistentItem extends BukkitItemImpl {
     private static final String WARNING_MESSAGE = "Creating a PersistentItem without registering a PersistentListener will cause the former to fail. Please register one listener.";
     private static final List<PersistentItem> PERSISTENT_ITEMS = new ArrayList<>();
@@ -294,6 +296,13 @@ public class PersistentItem extends BukkitItemImpl {
         return super.copy(PersistentItem.class);
     }
 
+    @Override
+    public @NotNull String toString() {
+        String base = super.toString();
+        return base.substring(0, base.length() - 1)
+                + String.format(", deathAction=%s, mobility=%s}", deathAction, mobility);
+    }
+
     /**
      * Tries to get the corresponding {@link PersistentItem} from the given {@link ItemStack}.
      *
@@ -364,4 +373,5 @@ public class PersistentItem extends BukkitItemImpl {
     public static void clearPersistentItems() {
         PERSISTENT_ITEMS.clear();
     }
+
 }

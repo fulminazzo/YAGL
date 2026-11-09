@@ -43,4 +43,10 @@ public class DefaultGUI extends GUIImpl {
     public int columns() {
         return COLUMNS;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().replace(getClass().getSimpleName(), GUI.class.getSimpleName());
+    }
+
 }

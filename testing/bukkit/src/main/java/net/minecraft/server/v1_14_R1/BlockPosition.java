@@ -1,10 +1,13 @@
 package net.minecraft.server.v1_14_R1;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-public class BlockPosition extends FieldEquable {
+@EqualsAndHashCode
+@ToString
+public class BlockPosition {
     private final int x;
     private final int y;
     private final int z;

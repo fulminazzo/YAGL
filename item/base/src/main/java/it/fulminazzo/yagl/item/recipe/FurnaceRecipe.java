@@ -5,7 +5,9 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.wrapper.Range;
 import it.fulminazzo.yagl.wrapper.Wrapper;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -15,6 +17,8 @@ import java.util.List;
  * An implementation of {@link Recipe} to express any recipe in the furnace in Minecraft.
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public final class FurnaceRecipe extends RecipeImpl {
     @Getter(AccessLevel.NONE)
     private Item ingredient;
@@ -88,4 +92,5 @@ public final class FurnaceRecipe extends RecipeImpl {
     public @NotNull List<Item> getIngredients() {
         return Collections.singletonList(this.ingredient);
     }
+
 }

@@ -1,10 +1,15 @@
 package it.fulminazzo.yagl.particle;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
  * A {@link ParticleOption} capable of holding a single object.
  *
  * @param <T> the type parameter
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public final class PrimitiveParticleOption<T> extends ParticleOption<T> {
     private final T value;
 
@@ -18,7 +23,7 @@ public final class PrimitiveParticleOption<T> extends ParticleOption<T> {
      *
      * @param value the value
      */
-    public PrimitiveParticleOption(T value) {
+    public PrimitiveParticleOption(final T value) {
         this.value = value;
     }
 
@@ -26,4 +31,5 @@ public final class PrimitiveParticleOption<T> extends ParticleOption<T> {
     public T getOption() {
         return this.value;
     }
+
 }

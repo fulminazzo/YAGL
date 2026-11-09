@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
  * An implementation of {@link Recipe} to express the shapeless recipes in Minecraft.
  * An example of shapeless recipe is the yellow dye, which can be obtained by placing the flower in any position.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public final class ShapelessRecipe extends RecipeImpl {
     static final int MAX_SIZE = 9;
     private final @NotNull List<Item> ingredients;
@@ -85,4 +89,5 @@ public final class ShapelessRecipe extends RecipeImpl {
     public @NotNull List<Item> getIngredients() {
         return new ArrayList<>(this.ingredients);
     }
+
 }

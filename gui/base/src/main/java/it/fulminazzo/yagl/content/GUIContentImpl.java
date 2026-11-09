@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.content;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
@@ -8,6 +7,7 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,8 @@ import java.util.Optional;
 /**
  * A basic implementation for {@link GUIContent}.
  */
-abstract class GUIContentImpl extends FieldEquable implements GUIContent {
+@EqualsAndHashCode
+abstract class GUIContentImpl implements GUIContent {
     @Getter
     protected int priority = 0;
     @Getter

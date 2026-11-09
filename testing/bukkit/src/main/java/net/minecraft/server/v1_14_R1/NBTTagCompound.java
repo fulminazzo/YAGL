@@ -1,12 +1,16 @@
 package net.minecraft.server.v1_14_R1;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class NBTTagCompound extends NBTBase {
     private final @NotNull Map<String, NBTBase> data;
 

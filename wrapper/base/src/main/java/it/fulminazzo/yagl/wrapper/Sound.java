@@ -1,6 +1,9 @@
 package it.fulminazzo.yagl.wrapper;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
  * Sounds are expressed as string, so they are <b>NOT</b> checked.
  */
 @Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public final class Sound extends Wrapper {
     private @NotNull String name;
     @Range(min = 0)

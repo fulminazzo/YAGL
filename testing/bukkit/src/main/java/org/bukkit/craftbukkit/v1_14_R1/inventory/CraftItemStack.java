@@ -1,14 +1,17 @@
 package org.bukkit.craftbukkit.v1_14_R1.inventory;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class CraftItemStack extends FieldEquable {
+@EqualsAndHashCode
+@ToString
+public class CraftItemStack {
     private final Material material;
     private final int amount;
     private final @NotNull NBTTagCompound tag;

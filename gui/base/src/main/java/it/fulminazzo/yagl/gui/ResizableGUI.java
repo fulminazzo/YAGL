@@ -583,4 +583,5 @@ public class ResizableGUI extends DefaultGUI {
     public ResizableGUI copy() {
         return (ResizableGUI) super.copy();
     }
+
 }

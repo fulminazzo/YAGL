@@ -1,7 +1,8 @@
 package it.fulminazzo.yagl.particle;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,7 +10,9 @@ import org.jetbrains.annotations.Nullable;
  * Represents a general particle with an associated {@link ParticleOption}.
  */
 @Getter
-public final class Particle extends FieldEquable {
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public final class Particle {
     private final @NotNull String type;
     private final @Nullable ParticleOption<?> option;
 
@@ -34,4 +37,5 @@ public final class Particle extends FieldEquable {
     public <O> @Nullable O getOption() {
         return this.option == null ? null : (O) this.option.getOption();
     }
+
 }

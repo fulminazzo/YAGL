@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.item;
 
 import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.recipe.Recipe;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.function.Predicate;
 /**
  * An implementation of {@link RecipeItem}.
  */
+@EqualsAndHashCode(callSuper = true)
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
     protected final List<Recipe> recipes = new ArrayList<>();
 
@@ -99,4 +101,11 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     public @NotNull RecipeItem setCustomModelData(int customModelData) {
         return (RecipeItem) super.setCustomModelData(customModelData);
     }
+
+    @Override
+    public @NotNull String toString() {
+        String base = super.toString();
+        return base.substring(0, base.length() - 1) + String.format(", recipes=%s}", this.recipes.size());
+    }
+
 }

@@ -1,16 +1,16 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
-import it.fulminazzo.yagl.content.CustomItemGUIContent;
-import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +19,8 @@ import java.util.*;
 /**
  * An implementation of {@link GUI} that allows multiple GUI pages to be added.
  */
-public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadatable, GUI {
+@EqualsAndHashCode
+public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     /**
      * The Template gui.
      */
@@ -467,6 +468,13 @@ public class PageableGUI extends FieldEquable implements Iterable<GUI>, Metadata
     @Override
     public @NotNull Optional<BiGUIAction> changeGUIAction() {
         return this.templateGUI.changeGUIAction();
+    }
+
+    @Override
+    public String toString() {
+        String base = templateGUI.toString();
+        base = base.substring(base.indexOf("{"), base.length() - 1);
+        return getClass().getSimpleName() + base + String.format(", pages=%s}", pages.size());
     }
 
     @Override

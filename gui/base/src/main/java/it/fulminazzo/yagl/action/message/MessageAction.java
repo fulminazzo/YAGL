@@ -1,15 +1,20 @@
 package it.fulminazzo.yagl.action.message;
 
-import it.fulminazzo.fulmicollection.objects.FieldEquable;
 import it.fulminazzo.yagl.SerializableFunction;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * An implementation of {@link SerializableFunction} that sends the given {@link #message} to the viewer upon {@link #sendMessage(Viewer)}.
  */
-public abstract class MessageAction extends FieldEquable implements SerializableFunction {
+@EqualsAndHashCode
+@ToString
+public abstract class MessageAction implements SerializableFunction {
+    private static final long serialVersionUID = -6021871694446968801L;
+
     protected final @NotNull String message;
 
     /**
@@ -34,4 +39,5 @@ public abstract class MessageAction extends FieldEquable implements Serializable
     public @NotNull String serialize() {
         return this.message;
     }
+
 }

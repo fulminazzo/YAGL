@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.gui;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -7,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * An implementation of {@link GUI} that allows a {@link GUIType}.
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class TypeGUI extends GUIImpl {
     private static final int DEFAULT_ROWS = 1;
 
@@ -104,4 +106,12 @@ public class TypeGUI extends GUIImpl {
         else if (this.inventoryType == GUIType.LOOM) return LOOM_COLUMNS;
         else return Math.min(size(), DefaultGUI.COLUMNS);
     }
+
+    @Override
+    public String toString() {
+        return super.toString()
+                .replace(getClass().getSimpleName(), GUI.class.getSimpleName())
+                .replace("size=" + size(), "type=" + inventoryType);
+    }
+
 }
