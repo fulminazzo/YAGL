@@ -1,16 +1,16 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.structure.Pair;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -217,7 +217,7 @@ class PageableGUITest {
         PageableGUI gui = PageableGUI.newGUI(9).setPreviousPage(1, Item.newItem()).unsetPreviousPage();
         Pair<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
         assertNotNull(nextPage);
-        assertTrue(nextPage.isEmpty(), String.format("Expected empty but got '%s'", nextPage));
+        assertFalse(nextPage.isPresent(), String.format("Expected empty but got '%s'", nextPage));
     }
 
     @Test
@@ -225,7 +225,7 @@ class PageableGUITest {
         PageableGUI gui = PageableGUI.newGUI(9).setNextPage(1, Item.newItem()).unsetNextPage();
         Pair<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
         assertNotNull(nextPage);
-        assertTrue(nextPage.isEmpty(), String.format("Expected empty but got '%s'", nextPage));
+        assertFalse(nextPage.isPresent(), String.format("Expected empty but got '%s'", nextPage));
     }
 
     @Test
