@@ -78,7 +78,10 @@ def run = { CommandSender sender, String label, String[] args ->
                     .onClickOutside((v, g) -> v.sendMessage('Please only click inside me!'))
                     .onOpenGUI((v, g) -> v.sendMessage(g.apply('Opening page <page>')))
                     .onCloseGUI((v, g) -> v.sendMessage('Goodbye!'))
-                    .open(GUIManager.getViewer(sender))
+            //TODO: remove timings benchmark
+            long start = System.currentTimeMillis()
+            gui.open(GUIManager.getViewer(sender))
+            sender.sendMessage("Time taken: " + (System.currentTimeMillis() - start) + "ms")
         } catch (NumberFormatException ignored) {
             // auto-generated code
         } catch (Exception e) {
