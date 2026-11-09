@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl;
 
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,6 +11,7 @@ import java.util.LinkedList;
  * Used by special particle options.
  */
 @SuppressWarnings("unused")
+@EqualsAndHashCode(callSuper = false)
 public final class Color extends ClassEnum {
     public static final Color WHITE = fromARGB("#FFFFFFFF");
     public static final Color SILVER = fromARGB("#FFC0C0C0");
@@ -191,29 +193,10 @@ public final class Color extends ClassEnum {
     }
 
     @Override
-    public boolean equals(final @Nullable Object other) {
-        if (other instanceof Color) {
-            Color color = (Color) other;
-            return this.alpha == color.alpha && this.red == color.red &&
-                    this.green == color.green && this.blue == color.blue;
-        } else return false;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = Color.class.hashCode();
-        hash = hash * 31 + this.alpha;
-        hash = hash * 31 + this.red;
-        hash = hash * 31 + this.green;
-        hash = hash * 31 + this.blue;
-        return hash;
-    }
-
-    @Override
     public String toString() {
         String name = name();
         if (name != null) return name;
-        return super.toString();
+        else return super.toString();
     }
 
 }

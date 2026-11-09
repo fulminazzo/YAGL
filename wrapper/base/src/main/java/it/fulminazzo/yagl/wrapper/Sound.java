@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.wrapper;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -66,7 +65,10 @@ public final class Sound extends Wrapper {
      * @param pitch    the pitch
      * @param category the category
      */
-    public Sound(final @NotNull String name, final @Range(min = 0) float volume, final @Range(min = 0) float pitch, final @Nullable String category) {
+    public Sound(final @NotNull String name,
+                 final @Range(min = 0) float volume,
+                 final @Range(min = 0) float pitch,
+                 final @Nullable String category) {
         this.name = name;
         setVolume(volume);
         setPitch(pitch);
@@ -87,7 +89,8 @@ public final class Sound extends Wrapper {
     /**
      * Sets volume.
      * It is limited from 0 and 1.0, where 1.0 is the loudest and 0.0 is the quietest.
-     * Setting this value to higher than its limit will make sure that it can be heard at maximum volume even at longer distances.
+     * Setting this value to higher than its limit will make sure that
+     * it can be heard at maximum volume even at longer distances.
      *
      * @param volume the volume
      * @return this sound
@@ -111,7 +114,7 @@ public final class Sound extends Wrapper {
     }
 
     /**
-     * Sets category.
+     * Sets the category of this sound.
      *
      * @param category the category
      * @return this sound

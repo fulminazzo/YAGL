@@ -14,9 +14,9 @@ public abstract class Wrapper {
     /**
      * Uses {@link #check(Object, Number)} to check the given value.
      *
-     * @param <N>   the type parameter
+     * @param <N>   the type of the value
      * @param value the value
-     * @return the value
+     * @return the value itself
      */
     protected <N extends Number> @NotNull N check(final @NotNull N value) {
         return check(this, value);
@@ -28,10 +28,10 @@ public abstract class Wrapper {
      * If the given value is lower than {@link Range#min()} or higher than {@link Range#max()},
      * an {@link IllegalArgumentException} is thrown.
      *
-     * @param <N>    the type parameter
+     * @param <N>    the type of the value
      * @param object the object to check
      * @param value  the value
-     * @return the passed value
+     * @return the value itself
      */
     public static <N extends Number> @NotNull N check(final @NotNull Object object, final @NotNull N value) {
         StackTraceElement[] trace = Thread.currentThread().getStackTrace();
@@ -44,7 +44,7 @@ public abstract class Wrapper {
         return value;
     }
 
-    private static <N extends Number> void checkField(@NotNull N value, @NotNull Field field) {
+    private static <N extends Number> void checkField(final @NotNull N value, final @NotNull Field field) {
         if (field.isAnnotationPresent(Range.class)) {
             Range range = field.getAnnotation(Range.class);
             int min = range.min();
@@ -69,14 +69,14 @@ public abstract class Wrapper {
     }
 
     /**
-     * Gets name.
+     * Gets the name of this object.
      *
      * @return the name
      */
     public abstract String getName();
 
     /**
-     * Compare this {@link Wrapper} with the given one
+     * Compares this {@link Wrapper} with the given one.
      *
      * @param wrapper the wrapper
      * @return true, if they have the same name

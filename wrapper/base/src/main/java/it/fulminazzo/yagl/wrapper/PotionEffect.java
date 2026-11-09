@@ -1,7 +1,6 @@
 package it.fulminazzo.yagl.wrapper;
 
 import it.fulminazzo.yagl.Constants;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -143,7 +142,7 @@ public final class PotionEffect extends Wrapper {
     }
 
     /**
-     * Enable particles.
+     * Shows the particles associated with this potion effect.
      *
      * @return this potion effect
      */
@@ -153,7 +152,7 @@ public final class PotionEffect extends Wrapper {
     }
 
     /**
-     * Disable particles.
+     * Hides the particles associated with this potion effect.
      *
      * @return this potion effect
      */
@@ -163,7 +162,7 @@ public final class PotionEffect extends Wrapper {
     }
 
     /**
-     * Enable icon.
+     * Shows the icon associated with this potion effect.
      *
      * @return this potion effect
      */
@@ -173,7 +172,7 @@ public final class PotionEffect extends Wrapper {
     }
 
     /**
-     * Disable icon.
+     * Hides the icon associated with this potion effect.
      *
      * @return this potion effect
      */

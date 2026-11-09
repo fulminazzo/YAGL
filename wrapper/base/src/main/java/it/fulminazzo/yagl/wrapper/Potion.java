@@ -1,7 +1,6 @@
 package it.fulminazzo.yagl.wrapper;
 
 import it.fulminazzo.yagl.particle.LegacyParticleType;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -46,7 +45,7 @@ public final class Potion extends Wrapper {
      *
      * @param name   the type
      * @param level  the level
-     * @param splash the splash
+     * @param splash if {@code true} the potion is throwable
      */
     public Potion(final @NotNull String name, final @Range(min = 1, max = 2) int level, final boolean splash) {
         this(name, level, splash, false);
@@ -57,10 +56,13 @@ public final class Potion extends Wrapper {
      *
      * @param name     the type
      * @param level    the level
-     * @param splash   the splash
-     * @param extended the extended
+     * @param splash   if {@code true} the potion is throwable
+     * @param extended if {@code true} the duration is extended
      */
-    public Potion(final @NotNull String name, final @Range(min = 1, max = 2) int level, final boolean splash, final boolean extended) {
+    public Potion(final @NotNull String name,
+                  final @Range(min = 1, max = 2) int level,
+                  final boolean splash,
+                  final boolean extended) {
         this.name = name;
         setLevel(level);
         this.splash = splash;
@@ -90,7 +92,7 @@ public final class Potion extends Wrapper {
     }
 
     /**
-     * Sets splash.
+     * Enables the potion to be throwable.
      *
      * @return this potion
      */
@@ -100,7 +102,7 @@ public final class Potion extends Wrapper {
     }
 
     /**
-     * Unset splash potion.
+     * Disables the potion from being throwable.
      *
      * @return this potion
      */
@@ -110,7 +112,7 @@ public final class Potion extends Wrapper {
     }
 
     /**
-     * Sets extended.
+     * Extends the duration of the potion.
      *
      * @return this potion
      */
@@ -120,7 +122,7 @@ public final class Potion extends Wrapper {
     }
 
     /**
-     * Unset extended potion.
+     * Shrinks the duration of the potion.
      *
      * @return this potion
      */
