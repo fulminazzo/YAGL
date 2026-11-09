@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.event.ClickItemEvent;
@@ -230,27 +230,27 @@ public class GUIManager extends SingleInstance implements Listener {
     }
 
     /**
-     * Gets a {@link Tuple} with the corresponding {@link Viewer} and open {@link GUI} if present.
+     * Gets a {@link Pair} with the corresponding {@link Viewer} and open {@link GUI} if present.
      *
      * @param player the player
-     * @return the Tuple
+     * @return the pair
      */
-    public static @NotNull Tuple<Viewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
+    public static @NotNull Pair<Viewer, GUI> getOpenGUIViewer(final @NotNull HumanEntity player) {
         Viewer viewer = getViewer(player);
-        if (viewer.hasOpenGUI()) return new Tuple<>(viewer, viewer.getOpenGUI());
-        else return new Tuple<>();
+        if (viewer.hasOpenGUI()) return new Pair<>(viewer, viewer.getOpenGUI());
+        else return new Pair<>();
     }
 
     /**
-     * Gets a {@link Tuple} with the corresponding {@link Viewer} and open {@link GUI} if present.
+     * Gets a {@link Pair} with the corresponding {@link Viewer} and open {@link GUI} if present.
      *
      * @param uuid the uuid
-     * @return the Tuple
+     * @return the pair
      */
-    public static @NotNull Tuple<Viewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
+    public static @NotNull Pair<Viewer, GUI> getOpenGUIViewer(final @NotNull UUID uuid) {
         Viewer viewer = getViewer(uuid);
-        if (viewer != null && viewer.hasOpenGUI()) return new Tuple<>(viewer, viewer.getOpenGUI());
-        else return new Tuple<>();
+        if (viewer != null && viewer.hasOpenGUI()) return new Pair<>(viewer, viewer.getOpenGUI());
+        else return new Pair<>();
     }
 
     /**

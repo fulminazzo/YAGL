@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.Before1_;
 import it.fulminazzo.jbukkit.inventory.MockInventory;
@@ -441,12 +441,12 @@ class GUIAdapterTest extends BukkitUtils {
             assertNotNull(firstPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
             assertEquals(Material.DIAMOND, firstPlayerStack.getType());
 
-            @NotNull Tuple<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            @NotNull Pair<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(firstOpenGUI.isPresent(), "Player should have an open GUI");
 
-            GUIContent nextPageContent = firstOpenGUI.getValue().getContent(firstOpenGUI.getKey(), nextPageSlot);
+            GUIContent nextPageContent = firstOpenGUI.getSecond().getContent(firstOpenGUI.getFirst(), nextPageSlot);
             assertNotNull(nextPageContent, "Next page item should not be null");
-            nextPageContent.clickItemAction().ifPresent(a -> a.execute(firstOpenGUI.getKey(), firstOpenGUI.getValue(), nextPageContent));
+            nextPageContent.clickItemAction().ifPresent(a -> a.execute(firstOpenGUI.getFirst(), firstOpenGUI.getSecond(), nextPageContent));
 
             ItemStack secondStack = this.inventory.getItem(0);
             assertNotNull(secondStack, "ItemStack on first slot of inventory was supposed to be not null");
@@ -456,12 +456,12 @@ class GUIAdapterTest extends BukkitUtils {
             assertNotNull(secondPlayerStack, "ItemStack on first slot of player inventory was supposed to be not null");
             assertEquals(Material.EMERALD, secondPlayerStack.getType());
 
-            @NotNull Tuple<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            @NotNull Pair<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(secondOpenGUI.isPresent(), "Player should have an open GUI");
 
-            GUIContent previousPageContent = secondOpenGUI.getValue().getContent(secondOpenGUI.getKey(), previousPageSlot);
+            GUIContent previousPageContent = secondOpenGUI.getSecond().getContent(secondOpenGUI.getFirst(), previousPageSlot);
             assertNotNull(previousPageContent, "Previous page item should not be null");
-            previousPageContent.clickItemAction().ifPresent(a -> a.execute(secondOpenGUI.getKey(), secondOpenGUI.getValue(), previousPageContent));
+            previousPageContent.clickItemAction().ifPresent(a -> a.execute(secondOpenGUI.getFirst(), secondOpenGUI.getSecond(), previousPageContent));
 
             ItemStack thirdStack = this.inventory.getItem(0);
             assertNotNull(thirdStack, "ItemStack on first slot of inventory was supposed to be not null");
@@ -524,12 +524,12 @@ class GUIAdapterTest extends BukkitUtils {
             assertNotNull(firstStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
             assertEquals(Material.GOLDEN_APPLE, firstStorageStack.getType());
 
-            @NotNull Tuple<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            @NotNull Pair<Viewer, GUI> firstOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(firstOpenGUI.isPresent(), "Player should have an open GUI");
 
-            GUIContent nextPageContent = firstOpenGUI.getValue().getContent(firstOpenGUI.getKey(), nextPageSlot);
+            GUIContent nextPageContent = firstOpenGUI.getSecond().getContent(firstOpenGUI.getFirst(), nextPageSlot);
             assertNotNull(nextPageContent, "Next page item should not be null");
-            nextPageContent.clickItemAction().ifPresent(a -> a.execute(firstOpenGUI.getKey(), firstOpenGUI.getValue(), nextPageContent));
+            nextPageContent.clickItemAction().ifPresent(a -> a.execute(firstOpenGUI.getFirst(), firstOpenGUI.getSecond(), nextPageContent));
 
             ItemStack secondStack = this.inventory.getItem(0);
             assertNotNull(secondStack, "ItemStack on first slot of inventory was supposed to be not null");
@@ -547,12 +547,12 @@ class GUIAdapterTest extends BukkitUtils {
             assertNotNull(secondStorageStack, "ItemStack on 27th slot of player inventory was supposed to be not null");
             assertEquals(Material.GOLDEN_APPLE, secondStorageStack.getType());
 
-            @NotNull Tuple<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
+            @NotNull Pair<Viewer, GUI> secondOpenGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(secondOpenGUI.isPresent(), "Player should have an open GUI");
 
-            GUIContent previousPageContent = secondOpenGUI.getValue().getContent(secondOpenGUI.getKey(), previousPageSlot);
+            GUIContent previousPageContent = secondOpenGUI.getSecond().getContent(secondOpenGUI.getFirst(), previousPageSlot);
             assertNotNull(previousPageContent, "Previous page item should not be null");
-            previousPageContent.clickItemAction().ifPresent(a -> a.execute(secondOpenGUI.getKey(), secondOpenGUI.getValue(), previousPageContent));
+            previousPageContent.clickItemAction().ifPresent(a -> a.execute(secondOpenGUI.getFirst(), secondOpenGUI.getSecond(), previousPageContent));
 
             ItemStack thirdStack = this.inventory.getItem(0);
             assertNotNull(thirdStack, "ItemStack on first slot of inventory was supposed to be not null");
@@ -662,14 +662,14 @@ class GUIAdapterTest extends BukkitUtils {
             GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
             verify(Bukkit.getServer()).dispatchCommand(this.player, "say Opening GUI for Alex");
 
-            @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
+            @NotNull Pair<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(openGUI.isPresent());
 
-            GUIContent content = openGUI.getValue().getContent(openGUI.getKey(), 0);
+            GUIContent content = openGUI.getSecond().getContent(openGUI.getFirst(), 0);
             assertNotNull(content);
 
             content.clickItemAction().ifPresent(a ->
-                    a.execute(openGUI.getKey(), openGUI.getValue(), content)
+                    a.execute(openGUI.getFirst(), openGUI.getSecond(), content)
             );
 
             verify(Bukkit.getServer()).dispatchCommand(this.player, "say Alex clicked the content");
@@ -691,14 +691,14 @@ class GUIAdapterTest extends BukkitUtils {
             GUIAdapter.openGUI(gui, GUIManager.getViewer(this.player));
             verify(server).dispatchCommand(console, "say Opening GUI for Alex");
 
-            @NotNull Tuple<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
+            @NotNull Pair<Viewer, GUI> openGUI = GUIManager.getOpenGUIViewer(this.player);
             assertTrue(openGUI.isPresent());
 
-            GUIContent content = openGUI.getValue().getContent(openGUI.getKey(), 0);
+            GUIContent content = openGUI.getSecond().getContent(openGUI.getFirst(), 0);
             assertNotNull(content);
 
             content.clickItemAction().ifPresent(a ->
-                    a.execute(openGUI.getKey(), openGUI.getValue(), content)
+                    a.execute(openGUI.getFirst(), openGUI.getSecond(), content)
             );
 
             verify(server).dispatchCommand(console, "say Alex clicked the content");

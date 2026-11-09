@@ -9,7 +9,7 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -215,7 +215,7 @@ class PageableGUITest {
     @Test
     void testRemovePreviousPage() {
         PageableGUI gui = PageableGUI.newGUI(9).setPreviousPage(1, Item.newItem()).unsetPreviousPage();
-        Tuple<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
+        Pair<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
         assertNotNull(nextPage);
         assertTrue(nextPage.isEmpty(), String.format("Expected empty but got '%s'", nextPage));
     }
@@ -223,7 +223,7 @@ class PageableGUITest {
     @Test
     void testRemoveNextPage() {
         PageableGUI gui = PageableGUI.newGUI(9).setNextPage(1, Item.newItem()).unsetNextPage();
-        Tuple<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
+        Pair<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
         assertNotNull(nextPage);
         assertTrue(nextPage.isEmpty(), String.format("Expected empty but got '%s'", nextPage));
     }
@@ -279,8 +279,8 @@ class PageableGUITest {
         src.copyAll(dst, true);
 
         assertEquals(2, dst.pages());
-        assertEquals(previousPage1, dst.previousPage.getValue());
-        assertEquals(nextPage1, dst.nextPage.getValue());
+        assertEquals(previousPage1, dst.previousPage.getSecond());
+        assertEquals(nextPage1, dst.nextPage.getSecond());
     }
 
     @Test
@@ -298,8 +298,8 @@ class PageableGUITest {
         src.copyAll(dst, true);
 
         assertEquals(2, dst.pages());
-        assertEquals(previousPage1, dst.previousPage.getValue());
-        assertEquals(nextPage1, dst.nextPage.getValue());
+        assertEquals(previousPage1, dst.previousPage.getSecond());
+        assertEquals(nextPage1, dst.nextPage.getSecond());
     }
 
     @Test
@@ -323,8 +323,8 @@ class PageableGUITest {
         src.copyAll(dst, false);
 
         assertEquals(3, dst.pages());
-        assertEquals(previousPage2, dst.previousPage.getValue());
-        assertEquals(nextPage2, dst.nextPage.getValue());
+        assertEquals(previousPage2, dst.previousPage.getSecond());
+        assertEquals(nextPage2, dst.nextPage.getSecond());
     }
 
     @Test
@@ -342,8 +342,8 @@ class PageableGUITest {
         src.copyAll(dst, false);
 
         assertEquals(0, dst.pages());
-        assertEquals(previousPage1, dst.previousPage.getValue());
-        assertEquals(nextPage1, dst.nextPage.getValue());
+        assertEquals(previousPage1, dst.previousPage.getSecond());
+        assertEquals(nextPage1, dst.nextPage.getSecond());
     }
 
     private GUI setupGUI(GUI gui) {

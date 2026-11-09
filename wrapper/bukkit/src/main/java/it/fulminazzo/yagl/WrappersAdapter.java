@@ -2,8 +2,8 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.structures.CacheMap;
-import it.fulminazzo.fulmicollection.structures.tuples.Triple;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Triple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.item.AbstractItem;
 import it.fulminazzo.yagl.particle.BlockDataOption;
@@ -37,7 +37,7 @@ import java.util.function.Function;
 @SuppressWarnings("deprecation")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WrappersAdapter {
-    private static final Map<Particle, Tuple<org.bukkit.Particle, ?>> PARTICLE_CACHE = new CacheMap<>();
+    private static final Map<Particle, Pair<org.bukkit.Particle, ?>> PARTICLE_CACHE = new CacheMap<>();
 
     /**
      * Spawn particle.
@@ -246,9 +246,9 @@ public final class WrappersAdapter {
     private static <T> void spawnParticleCommon(final @NotNull T target, final @NotNull Particle particle,
                                                 final @NotNull Location location, int count,
                                                 double offsetX, double offsetY, double offsetZ, double speed) {
-        Tuple<org.bukkit.Particle, ?> tuple = PARTICLE_CACHE.computeIfAbsent(particle, p -> wParticleToParticle(particle));
-        final org.bukkit.Particle actual = tuple.getKey();
-        final Object option = tuple.getValue();
+        Pair<org.bukkit.Particle, ?> pair = PARTICLE_CACHE.computeIfAbsent(particle, p -> wParticleToParticle(particle));
+        final org.bukkit.Particle actual = pair.getFirst();
+        final Object option = pair.getSecond();
 
         if (target instanceof Player) {
             Player player = (Player) target;
@@ -262,13 +262,13 @@ public final class WrappersAdapter {
     }
 
     /**
-     * Converts the given {@link Particle} to a tuple containing the corresponding {@link org.bukkit.Particle} and
+     * Converts the given {@link Particle} to a pair containing the corresponding {@link org.bukkit.Particle} and
      * the parsed particle option (if present).
      *
      * @param particle the particle
-     * @return the tuple
+     * @return the pair
      */
-    public static @NotNull Tuple<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
+    public static @NotNull Pair<org.bukkit.Particle, ?> wParticleToParticle(final @NotNull Particle particle) {
         return wParticleToGeneral(particle, org.bukkit.Particle.class, org.bukkit.Particle::getDataType);
     }
 
@@ -321,39 +321,39 @@ public final class WrappersAdapter {
      */
     public static void spawnEffect(final @NotNull Player player, final @NotNull Particle particle,
                                    final @NotNull Location location) {
-        Tuple<Effect, ?> tuple = wParticleToEffect(particle);
-        Effect actual = tuple.getKey();
-        Object option = tuple.getValue();
+        Pair<Effect, ?> pair = wParticleToEffect(particle);
+        Effect actual = pair.getFirst();
+        Object option = pair.getSecond();
         player.playEffect(location, actual, option);
     }
 
     /**
-     * Converts the given {@link Particle} to a tuple containing the corresponding {@link Effect} and
+     * Converts the given {@link Particle} to a pair containing the corresponding {@link Effect} and
      * the parsed particle option (if present).
      *
      * @param particle the particle
-     * @return the tuple
+     * @return the pair
      */
-    public static @NotNull Tuple<Effect, ?> wParticleToEffect(final @NotNull Particle particle) {
+    public static @NotNull Pair<Effect, ?> wParticleToEffect(final @NotNull Particle particle) {
         return wParticleToGeneral(particle, Effect.class, Effect::getData);
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Enum<?>> @NotNull Tuple<T, ?> wParticleToGeneral(final @NotNull Particle particle,
-                                                                               final @NotNull Class<T> tClass,
-                                                                               final @NotNull Function<T, Class<?>> dataTypeGetter) {
+    private static <T extends Enum<?>> @NotNull Pair<T, ?> wParticleToGeneral(final @NotNull Particle particle,
+                                                                              final @NotNull Class<T> tClass,
+                                                                              final @NotNull Function<T, Class<?>> dataTypeGetter) {
         T actual;
         if (tClass.getCanonicalName().equals("org.bukkit.Particle"))
             actual = (T) ParticleConverter.convertToBukkit(particle);
         else actual = EnumUtils.valueOf(tClass, particle.getType());
         Object option = particle.getOption();
         Class<?> dataType = dataTypeGetter.apply(actual);
-        if (option == null || dataType == null) return new Tuple<>(actual, null);
+        if (option == null || dataType == null) return new Pair<>(actual, null);
         else {
-            if (ReflectionUtils.isPrimitiveOrWrapper(dataType)) return new Tuple<>(actual, option);
+            if (ReflectionUtils.isPrimitiveOrWrapper(dataType)) return new Pair<>(actual, option);
             else try {
                 final Object finalOption = convertOption(dataType, option);
-                return new Tuple<>(actual, finalOption);
+                return new Pair<>(actual, finalOption);
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new IllegalArgumentException(String.format("Could not find constructor for data type '%s'",
                         dataType.getSimpleName()));
@@ -380,12 +380,12 @@ public final class WrappersAdapter {
             // Check data types
         else if (dataType.isEnum()) return EnumUtils.valueOf(dataType, option.toString());
         else if (dataType.equals(MaterialData.class)) {
-            if (!(option instanceof Tuple))
+            if (!(option instanceof Pair))
                 throw new IllegalArgumentException(String.format("Expected %s but got %s",
-                        Tuple.class.getSimpleName(), option.getClass().getSimpleName()));
-            Tuple<String, Integer> tuple = (Tuple<String, Integer>) option;
-            Material material = EnumUtils.valueOf(Material.class, tuple.getKey());
-            Integer data = tuple.getValue();
+                        Pair.class.getSimpleName(), option.getClass().getSimpleName()));
+            Pair<String, Integer> pair = (Pair<String, Integer>) option;
+            Material material = EnumUtils.valueOf(Material.class, pair.getFirst());
+            Integer data = pair.getSecond();
             return material.getNewData((byte) (data == null ? 0 : data));
         } else if (dataType.getCanonicalName().equals("org.bukkit.Vibration")) return option;
         else if (dataType.getCanonicalName().equals("org.bukkit.block.data.BlockData")) {
@@ -402,8 +402,8 @@ public final class WrappersAdapter {
             Constructor<?> constructor = dataType.getDeclaredConstructors()[0];
             int size = constructor.getParameterCount();
             if (size == 2) {
-                Tuple<?, ?> t = (Tuple<?, ?>) option;
-                finalOption = new Refl<>(dataType, prepareParameters(t.getKey(), t.getValue())).getObject();
+                Pair<?, ?> t = (Pair<?, ?>) option;
+                finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond())).getObject();
             } else if (size == 3) {
                 Triple<?, ?, ?> t = (Triple<?, ?, ?>) option;
                 finalOption = new Refl<>(dataType, prepareParameters(t.getFirst(), t.getSecond(), t.getThird())).getObject();
@@ -621,12 +621,12 @@ public final class WrappersAdapter {
     }
 
     /**
-     * Converts the given wrapper {@link Enchantment} to a {@link Tuple} containing its corresponding one and its level.
+     * Converts the given wrapper {@link Enchantment} to a {@link Pair} containing its corresponding one and its level.
      *
      * @param enchantment the enchantment
-     * @return the tuple
+     * @return the pair
      */
-    public static @NotNull Tuple<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
+    public static @NotNull Pair<org.bukkit.enchantments.Enchantment, Integer> wEnchantToEnchant(final @NotNull Enchantment enchantment) {
         String raw = enchantment.getName();
         org.bukkit.enchantments.Enchantment actual = null;
         try {
@@ -644,7 +644,7 @@ public final class WrappersAdapter {
             if (actual == null)
                 throw new IllegalArgumentException(String.format("Could not find enchantment '%s'", raw));
         }
-        return new Tuple<>(actual, enchantment.getLevel());
+        return new Pair<>(actual, enchantment.getLevel());
     }
 
     /**

@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.gui;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
@@ -31,11 +31,11 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     /**
      * The Previous page.
      */
-    protected final Tuple<Integer, GUIContent> previousPage = new Tuple<>();
+    protected final Pair<Integer, GUIContent> previousPage = new Pair<>();
     /**
      * The Next page.
      */
-    protected final Tuple<Integer, GUIContent> nextPage = new Tuple<>();
+    protected final Pair<Integer, GUIContent> nextPage = new Pair<>();
 
     /**
      * Instantiates a new Pageable gui.
@@ -939,9 +939,9 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
                     // DataGUI does not support pages
                 }
             if (!otherGUI.previousPage.isPresent() || replace)
-                previousPage.map((i, c) -> new Tuple<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
+                previousPage.map((i, c) -> new Pair<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
             if (!otherGUI.nextPage.isPresent() || replace)
-                nextPage.map((i, c) -> new Tuple<>(i, c.copy())).ifPresent(otherGUI::setNextPage);
+                nextPage.map((i, c) -> new Pair<>(i, c.copy())).ifPresent(otherGUI::setNextPage);
         }
         return this;
     }

@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.particle;
 
 import it.fulminazzo.yagl.Color;
-import it.fulminazzo.fulmicollection.structures.tuples.Triple;
+import it.fulminazzo.yagl.structure.Triple;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;

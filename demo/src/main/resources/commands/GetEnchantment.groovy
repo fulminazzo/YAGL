@@ -1,4 +1,4 @@
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple
+import it.fulminazzo.yagl.structure.Pair
 import it.fulminazzo.yagl.WrappersAdapter
 import it.fulminazzo.yagl.wrapper.Enchantment
 import org.bukkit.Material
@@ -13,8 +13,8 @@ def run = { CommandSender sender, String label, String[] args ->
             Enchantment enchantment = new Enchantment(args[0], Integer.valueOf(args[1]))
             ItemStack book = new ItemStack(Material.ENCHANTED_BOOK)
             ItemMeta meta = book.itemMeta
-            Tuple<org.bukkit.enchantments.Enchantment, Integer> tuple = WrappersAdapter.wEnchantToEnchant(enchantment)
-            meta.addStoredEnchant(tuple.key, tuple.value, true)
+            Pair<org.bukkit.enchantments.Enchantment, Integer> pair = WrappersAdapter.wEnchantToEnchant(enchantment)
+            meta.addStoredEnchant(pair.first, pair.second, true)
             book.setItemMeta(meta)
             sender.inventory.addItem(book)
         } catch (NumberFormatException ignored) {

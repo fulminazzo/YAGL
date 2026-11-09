@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.item.BukkitItem;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
@@ -113,8 +113,8 @@ public final class ItemAdapter {
             if (!displayName.isEmpty()) meta.setDisplayName(displayName);
             meta.setLore(item.getLore());
             item.getEnchantments().forEach(e -> {
-                @NotNull Tuple<Enchantment, Integer> tuple = WrappersAdapter.wEnchantToEnchant(e);
-                meta.addEnchant(tuple.getKey(), tuple.getValue(), true);
+                @NotNull Pair<Enchantment, Integer> pair = WrappersAdapter.wEnchantToEnchant(e);
+                meta.addEnchant(pair.getFirst(), pair.getSecond(), true);
             });
             item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
             invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->

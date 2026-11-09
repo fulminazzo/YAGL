@@ -2,7 +2,7 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.jbukkit.annotations.After1_;
@@ -66,8 +66,8 @@ class WrappersAdapterTest extends BukkitUtils {
         assumeFalse(name.contains("LEGACY"));
         for (ParticleType<?> type : ParticleType.values()) {
             try {
-                Tuple<org.bukkit.Particle, ?> converted = WrappersAdapter.wParticleToParticle(type.create());
-                if (converted.getKey().equals(particle)) return;
+                Pair<org.bukkit.Particle, ?> converted = WrappersAdapter.wParticleToParticle(type.create());
+                if (converted.getFirst().equals(particle)) return;
             } catch (IllegalArgumentException ignored) {
                 // Older version trying to use newer particles
             }
@@ -76,15 +76,15 @@ class WrappersAdapterTest extends BukkitUtils {
     }
 
     private static Particle[] getTestLegacyParticles() {
-        List<Tuple<LegacyParticleType<?>, Object>> particles = new ArrayList<>();
-        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(new Tuple<>(type, null));
-        particles.add(new Tuple<>(LegacyParticleType.COMPOSTER_FILL_ATTEMPT, new PrimitiveParticleOption<>(true)));
-        particles.add(new Tuple<>(LegacyParticleType.BONE_MEAL_USE, new PrimitiveParticleOption<>(1)));
-        particles.add(new Tuple<>(LegacyParticleType.INSTANT_POTION_BREAK, new ColorParticleOption(Color.AQUA)));
+        List<Pair<LegacyParticleType<?>, Object>> particles = new ArrayList<>();
+        for (LegacyParticleType<?> type : LegacyParticleType.values()) particles.add(new Pair<>(type, null));
+        particles.add(new Pair<>(LegacyParticleType.COMPOSTER_FILL_ATTEMPT, new PrimitiveParticleOption<>(true)));
+        particles.add(new Pair<>(LegacyParticleType.BONE_MEAL_USE, new PrimitiveParticleOption<>(1)));
+        particles.add(new Pair<>(LegacyParticleType.INSTANT_POTION_BREAK, new ColorParticleOption(Color.AQUA)));
         // Remove effects not belonging to current Minecraft version
         particles.removeIf(p -> {
             try {
-                Effect.valueOf(p.getKey().name());
+                Effect.valueOf(p.getFirst().name());
                 return false;
             } catch (IllegalArgumentException e) {
                 return true;
@@ -92,8 +92,8 @@ class WrappersAdapterTest extends BukkitUtils {
         });
         return particles.stream()
                 .map(t -> {
-                    LegacyParticleType<?> particle = t.getKey();
-                    Object option = t.getValue();
+                    LegacyParticleType<?> particle = t.getFirst();
+                    Object option = t.getSecond();
                     if (option == null) return particle.create();
                     else return new Refl<>(particle).invokeMethod("create",
                             new Class<?>[]{option.getClass().getSuperclass()},
@@ -133,26 +133,26 @@ class WrappersAdapterTest extends BukkitUtils {
 
     private static Particle[] getTestParticles() {
         check();
-        List<Tuple<ParticleType<?>, Object>> particles = new ArrayList<>();
-        for (ParticleType<?> type : ParticleType.values()) particles.add(new Tuple<>(type, null));
-        particles.add(new Tuple<>(ParticleType.SCULK_CHARGE, new PrimitiveParticleOption<>(10f)));
-        particles.add(new Tuple<>(ParticleType.SHRIEK, new PrimitiveParticleOption<>(11)));
-        particles.add(new Tuple<>(ParticleType.SHRIEK, null));
-        particles.add(new Tuple<>(ParticleType.REDSTONE, new DustParticleOption(Color.RED, 12f)));
-        particles.add(new Tuple<>(ParticleType.DUST_COLOR_TRANSITION, new DustTransitionParticleOption(
+        List<Pair<ParticleType<?>, Object>> particles = new ArrayList<>();
+        for (ParticleType<?> type : ParticleType.values()) particles.add(new Pair<>(type, null));
+        particles.add(new Pair<>(ParticleType.SCULK_CHARGE, new PrimitiveParticleOption<>(10f)));
+        particles.add(new Pair<>(ParticleType.SHRIEK, new PrimitiveParticleOption<>(11)));
+        particles.add(new Pair<>(ParticleType.SHRIEK, null));
+        particles.add(new Pair<>(ParticleType.REDSTONE, new DustParticleOption(Color.RED, 12f)));
+        particles.add(new Pair<>(ParticleType.DUST_COLOR_TRANSITION, new DustTransitionParticleOption(
                 Color.RED, Color.BLUE, 12f)));
         try {
-            particles.add(new Tuple<>(ParticleType.VIBRATION, new PrimitiveParticleOption<>(
+            particles.add(new Pair<>(ParticleType.VIBRATION, new PrimitiveParticleOption<>(
                     new org.bukkit.Vibration(mock(Location.class), mock(org.bukkit.Vibration.Destination.class), 10))));
         } catch (NoClassDefFoundError ignored) {}
-        particles.add(new Tuple<>(ParticleType.ITEM_CRACK, new ItemParticleOption<>(mock(AbstractItem.class))));
-        particles.add(new Tuple<>(ParticleType.BLOCK_CRACK, new BlockDataOption("oak_log", "axis=y")));
-        particles.add(new Tuple<>(ParticleType.BLOCK_DUST, new BlockDataOption("oak_log", "axis=y")));
-        particles.add(new Tuple<>(ParticleType.FALLING_DUST, new BlockDataOption("oak_log", "axis=y")));
+        particles.add(new Pair<>(ParticleType.ITEM_CRACK, new ItemParticleOption<>(mock(AbstractItem.class))));
+        particles.add(new Pair<>(ParticleType.BLOCK_CRACK, new BlockDataOption("oak_log", "axis=y")));
+        particles.add(new Pair<>(ParticleType.BLOCK_DUST, new BlockDataOption("oak_log", "axis=y")));
+        particles.add(new Pair<>(ParticleType.FALLING_DUST, new BlockDataOption("oak_log", "axis=y")));
         // Remove particles not belonging to current Minecraft version
         particles.removeIf(p -> {
             try {
-                org.bukkit.Particle.valueOf(p.getKey().name());
+                org.bukkit.Particle.valueOf(p.getFirst().name());
                 return false;
             } catch (IllegalArgumentException e) {
                 return true;
@@ -160,8 +160,8 @@ class WrappersAdapterTest extends BukkitUtils {
         });
         return particles.stream()
                 .map(t -> {
-                    ParticleType<?> particle = t.getKey();
-                    Object option = t.getValue();
+                    ParticleType<?> particle = t.getFirst();
+                    Object option = t.getSecond();
                     if (option == null) return particle.create();
                     else return new Refl<>(particle).invokeMethod("create",
                             new Class<?>[]{option.getClass().getSuperclass()},
@@ -265,20 +265,20 @@ class WrappersAdapterTest extends BukkitUtils {
 
     @Test
     void testInvalidParticleGeneralDataType() {
-        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
+        Pair<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
                 ParticleType.FLAME.create(), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
         assertNotNull(conversion);
-        assertNotNull(conversion.getKey());
-        assertNull(conversion.getValue());
+        assertNotNull(conversion.getFirst());
+        assertNull(conversion.getSecond());
     }
 
     @Test
     void testInvalidDataTypeButNotOption() {
-        Tuple<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
+        Pair<?, ?> conversion = new Refl<>(WrappersAdapter.class).invokeMethod("wParticleToGeneral",
                 ParticleType.REDSTONE.create(Color.RED, 3f), org.bukkit.Particle.class, (Function<?, Class<?>>) s -> null);
         assertNotNull(conversion);
-        assertNotNull(conversion.getKey());
-        assertNull(conversion.getValue());
+        assertNotNull(conversion.getFirst());
+        assertNull(conversion.getSecond());
     }
 
     @Test
@@ -442,14 +442,14 @@ class WrappersAdapterTest extends BukkitUtils {
     @MethodSource("getEnchantments")
     void testEnchantmentsConversion(org.bukkit.enchantments.Enchantment expected) {
         Enchantment enchantment = WrappersAdapter.enchantToWEnchant(expected);
-        assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getKey());
+        assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getFirst());
     }
 
     @Test
     void testEnchantmentConversionByName() {
         org.bukkit.enchantments.Enchantment expected = org.bukkit.enchantments.Enchantment.SILK_TOUCH;
         Enchantment enchantment = new Enchantment(expected.getName());
-        assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getKey());
+        assertEquals(expected, WrappersAdapter.wEnchantToEnchant(enchantment).getFirst());
     }
 
     @Test
@@ -471,7 +471,7 @@ class WrappersAdapterTest extends BukkitUtils {
     @Test
     void testNullDataForMaterialData() {
         Material material = Material.LEGACY_STONE;
-        Tuple<String, Integer> option = new Tuple<>(material.name(), null);
+        Pair<String, Integer> option = new Pair<>(material.name(), null);
         MaterialData expected = material.getNewData((byte) 0);
         assertEquals(expected, WrappersAdapter.convertOption(MaterialData.class, option));
     }

@@ -7,7 +7,7 @@ import it.fulminazzo.yagl.util.ParserUtils;
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yamlparser.configuration.ConfigurationSection;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -123,14 +123,14 @@ public class PageableGUIParser extends TypedParser<PageableGUI> {
             // Set pages only if PageableGUI
             if (p.getClass().equals(PageableGUI.class)) section.set("pages", p.pages());
 
-            Tuple<Integer, GUIContent> previousPage = refl.getFieldObject("previousPage");
+            Pair<Integer, GUIContent> previousPage = refl.getFieldObject("previousPage");
             previousPage.ifPresent((i, g) -> {
                 ConfigurationSection previousSection = section.createSection("previous_page");
                 previousSection.set("slot", i);
                 previousSection.set("content", g);
             });
 
-            Tuple<Integer, GUIContent> nextPage = refl.getFieldObject("nextPage");
+            Pair<Integer, GUIContent> nextPage = refl.getFieldObject("nextPage");
             nextPage.ifPresent((i, g) -> {
                 ConfigurationSection nextSection = section.createSection("next_page");
                 nextSection.set("slot", i);

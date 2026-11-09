@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.particle;
 
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public final class MaterialDataOption extends ParticleOption<Tuple<String, Integer>> {
+public final class MaterialDataOption extends ParticleOption<Pair<String, Integer>> {
     private static final String REGEX = "^([^\\[]+)(?:\\[(\\d+)])?$";
     private final @NotNull String material;
     private final @NotNull Integer data;
@@ -40,8 +40,8 @@ public final class MaterialDataOption extends ParticleOption<Tuple<String, Integ
     }
 
     @Override
-    public @NotNull Tuple<String, Integer> getOption() {
-        return new Tuple<>(this.material, this.data);
+    public @NotNull Pair<String, Integer> getOption() {
+        return new Pair<>(this.material, this.data);
     }
 
 }

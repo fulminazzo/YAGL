@@ -2,7 +2,7 @@ package it.fulminazzo.yagl.particle;
 
 import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
-import it.fulminazzo.fulmicollection.structures.tuples.Tuple;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.parsers.YAMLParser;
 import org.jetbrains.annotations.NotNull;
@@ -34,8 +34,8 @@ public class MaterialDataOptionParser extends YAMLParser<MaterialDataOption> {
         return (c, s, b) -> {
             c.set(s, null);
             if (b == null) return;
-            Tuple<String, Integer> o = b.getOption();
-            c.set(s, String.format("%s[%s]", o.getKey(), o.getValue()));
+            Pair<String, Integer> o = b.getOption();
+            c.set(s, String.format("%s[%s]", o.getFirst(), o.getSecond()));
         };
     }
 }
