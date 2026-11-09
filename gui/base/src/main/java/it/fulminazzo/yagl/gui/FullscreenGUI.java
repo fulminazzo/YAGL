@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Represents a {@link GUI} that supports a full size display.
+ * Represents a {@link GUI} that supports a full-size display.
  * When shown to the player, their inventory will be used as well to
  * show contents.
  */

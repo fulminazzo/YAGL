@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.IgnoreField;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
@@ -9,6 +8,7 @@ import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,12 +23,13 @@ import java.util.function.Predicate;
  * @param <T> the type of the data
  */
 @SuppressWarnings("unchecked")
+@EqualsAndHashCode(callSuper = true)
 public class DataGUI<T> extends PageableGUI {
     static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
 
     @Getter
     private final @NotNull List<T> data;
-    @IgnoreField
+    @EqualsAndHashCode.Exclude
     protected final @NotNull Function<T, GUIContent> dataConverter;
 
     /**

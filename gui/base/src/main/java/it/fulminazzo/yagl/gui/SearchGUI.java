@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.IgnoreField;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
@@ -12,6 +11,7 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.IgnoreApply;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.util.MessageUtils;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -134,8 +134,8 @@ public class SearchGUI<T> extends DataGUI<T> {
             }
         }
         return super.prepareOpenGUI(gui
-                .setVariable("query", getQuery())
-                .setVariable("search", getQuery()),
+                        .setVariable("query", getQuery())
+                        .setVariable("search", getQuery()),
                 page
         );
     }
@@ -870,9 +870,10 @@ public class SearchGUI<T> extends DataGUI<T> {
      * An implementation of {@link FullscreenGUI} that provides methods to interface with
      * the corresponding {@link SearchGUI}.
      */
+    @EqualsAndHashCode(callSuper = true)
     static class SearchFullscreenGUI extends FullscreenGUI {
         @Setter
-        @IgnoreField
+        @EqualsAndHashCode.Exclude
         @IgnoreApply
         private @Nullable SearchGUI<?> searchGui;
 
