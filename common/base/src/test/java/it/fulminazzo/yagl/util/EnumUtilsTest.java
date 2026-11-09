@@ -1,6 +1,6 @@
 package it.fulminazzo.yagl.util;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.reflect.ReflectException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class EnumUtilsTest {
 
         @Test
         void testGetTypeName() {
-            String actual = new Refl<>(EnumUtils.class).invokeMethod("getTypeName", mockClassEnum.class);
+            String actual = Reflect.on(EnumUtils.class).invoke("getTypeName", mockClassEnum.class).get();
             assertEquals("mock class enum", actual);
         }
 

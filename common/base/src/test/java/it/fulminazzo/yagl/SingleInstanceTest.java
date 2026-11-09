@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.exception.InstanceAlreadyInitializedException;
 import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,9 +13,7 @@ class SingleInstanceTest {
     @BeforeEach
     void setUp() {
         // Manually clear instances map to avoid conflicts
-        new Refl<>(SingleInstance.class)
-                .getFieldRefl("INSTANCES_MAP")
-                .invokeMethod("clear");
+        Reflect.on(SingleInstance.class).get("INSTANCES_MAP").invoke("clear");
     }
 
     @Test
