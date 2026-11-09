@@ -17,6 +17,33 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class MetadatableTest {
 
     @Test
+    void testBasicApply() {
+        String string = "<variable>";
+        Metadatable metadatable = new MockMetadatable()
+                .setVariable("variable", "Hello!");
+        assertEquals("Hello!", metadatable.apply(string));
+    }
+
+    @Test
+    void testMultipleApplies() {
+        Metadatable metadatable = new MockMetadatable()
+                .setVariable("variable", "Alexander");
+        String string = "<variable> <variable>";
+        string = metadatable.apply(string);
+        assertEquals("Alexander Alexander", string);
+    }
+
+    @Test
+    void testRecursiveApplies() {
+        Metadatable metadatable = new MockMetadatable()
+                .setVariable("variable1", "<variable2>")
+                .setVariable("variable2", "Alexander");
+        String string = "<variable1> <variable2>";
+        string = metadatable.apply(string);
+        assertEquals("Alexander Alexander", string);
+    }
+
+    @Test
     void testApplyStackOverflow() {
         Metadatable metadatable = new MockMetadatable()
                 .setVariable("first", "hello")
@@ -126,7 +153,7 @@ class MetadatableTest {
         String string2 = null;
         String string3 = "parse <variable>";
         List<String> list = Arrays.asList("parse", "<variable>");
-        Map<String, String> map = new HashMap<String, String>(){{
+        Map<String, String> map = new HashMap<>() {{
             put("parse", "<variable>");
             put("parsing", "<not-me>");
             put(null, "<variable>");
