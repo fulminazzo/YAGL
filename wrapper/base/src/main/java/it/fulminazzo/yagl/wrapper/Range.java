@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.wrapper;
 
-
 import java.lang.annotation.*;
 
 /**
@@ -10,7 +9,7 @@ import java.lang.annotation.*;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE_USE})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 public @interface Range {
 
     /**
