@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.yagl.reflect.Reflect;
+import it.fulminazzo.yagl.reflect.ReflectException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,7 +66,8 @@ class ColorTest {
             Integer[] params = new Integer[max];
             Arrays.fill(params, 0);
             params[i] = -1;
-            assertThrowsExactly(IllegalArgumentException.class, () -> Reflect.on(Color.class).init((Object[]) params));
+            ReflectException exception = assertThrowsExactly(ReflectException.class, () -> Reflect.on(Color.class).init((Object[]) params));
+            assertInstanceOf(IllegalArgumentException.class, exception.getCause());
         }
     }
 
@@ -76,7 +78,8 @@ class ColorTest {
             Integer[] params = new Integer[max];
             Arrays.fill(params, 0);
             params[i] = 256;
-            assertThrowsExactly(IllegalArgumentException.class, () -> Reflect.on(Color.class).init((Object[]) params));
+            ReflectException exception = assertThrowsExactly(ReflectException.class, () -> Reflect.on(Color.class).init((Object[]) params));
+            assertInstanceOf(IllegalArgumentException.class, exception.getCause());
         }
     }
 
