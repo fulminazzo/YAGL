@@ -1,14 +1,14 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.reflect.Reflect;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class ClassEnumTest {
 
@@ -16,29 +16,35 @@ class ClassEnumTest {
     void testClassesOrdinal() {
         for (int i = 0; i < First.LIST.size(); i++) {
             First expected = First.LIST.get(i);
-            First actual = First.values(First.class)[i];
+            First actual = ClassEnumTest.values(First.class)[i];
             assertEquals(i, actual.ordinal());
             assertEquals(expected, actual);
         }
         for (int i = 0; i < Second.LIST.size(); i++) {
             Second expected = Second.LIST.get(i);
-            Second actual = Second.values(Second.class)[i];
+            Second actual = ClassEnumTest.values(Second.class)[i];
             assertEquals(i, actual.ordinal());
             assertEquals(expected, actual);
         }
     }
 
     @Test
-    void testInvalidOrdinal() {
-        First INVALID = mock(First.class);
-        when(INVALID.name()).thenCallRealMethod();
-        when(INVALID.ordinal()).thenCallRealMethod();
-        assertThrowsExactly(IllegalArgumentException.class, INVALID::ordinal);
+    void testClassesNames() {
+        assertEquals("ONE", First.ONE.name());
+        assertEquals("TWO", First.TWO.name());
+        assertEquals("THREE", First.THREE.name());
+        assertEquals("ONE", Second.ONE.name());
+        assertEquals("TWO", Second.TWO.name());
+        assertEquals("THREE", Second.THREE.name());
     }
 
-    @Test
-    void testInvalidValueOfIndex() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> First.valueOf(4, First.class));
+    @SuppressWarnings("unchecked")
+    private static <E extends ClassEnum> E[] values(final @NotNull Class<E> type) {
+        Reflect reflect = Reflect.on(type);
+        return reflect.getStaticFields().stream()
+                .filter(f -> f.getType().isAssignableFrom(type))
+                .map(f -> (E) reflect.get(f).get())
+                .toArray(l -> (E[]) Array.newInstance(type, l));
     }
 
     private static class First extends ClassEnum {
