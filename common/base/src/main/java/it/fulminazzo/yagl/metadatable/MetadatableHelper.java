@@ -136,7 +136,7 @@ class MetadatableHelper implements Metadatable {
                         // Recursively resolve variables.
                         String variable = variableBuilder.toString();
                         String variableName;
-                        while (variables.containsKey(variableName = variable.substring(1, variable.length() - 1))) {
+                        while (variable.length() > 2 && variables.containsKey(variableName = variable.substring(1, variable.length() - 1))) {
                             variable = variables.get(variableName);
                         }
                         variableBuilder.setLength(0);
