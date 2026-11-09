@@ -40,7 +40,8 @@ public abstract class Wrapper {
         String method = trace[2].getMethodName().toLowerCase();
         if (method.equals("check")) method = trace[3].getMethodName().toLowerCase();
         if (method.startsWith("set") || method.startsWith("get")) method = method.substring(3);
-        checkField(value, Reflect.on(object).getField(method));
+        String fieldName = method;
+        checkField(value, Reflect.on(object).getField(f -> f.getName().equalsIgnoreCase(fieldName)));
         return value;
     }
 

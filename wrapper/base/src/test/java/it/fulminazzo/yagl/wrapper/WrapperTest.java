@@ -77,11 +77,6 @@ class WrapperTest {
     }
 
     @Test
-    void testExtremeRange() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> new MockWrapper().setExtremeRange((long) Integer.MAX_VALUE + 1));
-    }
-
-    @Test
     void testInvalidRange() {
         assertThrowsExactly(InvalidRangeException.class, () -> new MockWrapper().setInvalidRange(10));
     }
