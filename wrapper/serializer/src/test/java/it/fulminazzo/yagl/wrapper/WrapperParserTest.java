@@ -8,6 +8,7 @@ import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.exceptions.YAMLException;
 import it.fulminazzo.yamlparser.utils.FileUtils;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -161,13 +162,9 @@ class WrapperParserTest {
         return new File("build/resources/test/" + name + ".yml");
     }
 
+    @Getter
     private static class MockWrapper extends Wrapper {
-        private final String name = "mock";
-
-        @Override
-        public String getName() {
-            return this.name;
-        }
+        private final @NotNull String name = "mock";
 
     }
 
@@ -181,7 +178,7 @@ class WrapperParserTest {
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "mock";
         }
 

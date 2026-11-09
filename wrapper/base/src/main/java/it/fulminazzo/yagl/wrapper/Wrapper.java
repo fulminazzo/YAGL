@@ -73,7 +73,7 @@ public abstract class Wrapper {
      *
      * @return the name
      */
-    public abstract String getName();
+    public abstract @NotNull String getName();
 
     /**
      * Compares this {@link Wrapper} with the given one.
