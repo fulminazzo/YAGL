@@ -4,22 +4,22 @@ import it.fulminazzo.yagl.exception.InstanceAlreadyInitializedException;
 import it.fulminazzo.yagl.exception.InstanceNotInitializedException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A special abstract type that allows to define objects only one time.
+ * A special abstract type that allows defining objects only one time.
  * Upon initiating it for the first time, no more instances will be allowed (check {@link #initialize()} for more)
  * unless the {@link #terminate()} method is invoked.
  * <br>
  * It is possible to retrieve any instance using {@link #getInstance(Class)}.
  */
 public abstract class SingleInstance {
-    private static final Map<Class<? extends SingleInstance>, SingleInstance> INSTANCES_MAP = new LinkedHashMap<>();
+    private static final Map<Class<? extends SingleInstance>, SingleInstance> INSTANCES_MAP = new ConcurrentHashMap<>();
 
     /**
      * Checks if the current instance is already present in {@link #INSTANCES_MAP}.
-     * If it is, a {@link InstanceAlreadyInitializedException} is thrown with the instance itself as parameter.
+     * If it is, a {@link InstanceAlreadyInitializedException} is thrown with the instance itself as the parameter.
      */
     public void initialize() {
         if (INSTANCES_MAP.containsKey(getClass()))
