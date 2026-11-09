@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.util;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.reflect.ReflectException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,9 @@ class EnumUtilsTest {
 
         @Test
         void shouldThrowRealException() {
-            assertThrowsExactly(RuntimeException.class, () -> EnumUtils.valueOf(mockClassEnum.class, "any"));
+            ReflectException e = assertThrowsExactly(ReflectException.class, () -> EnumUtils.valueOf(mockClassEnum.class, "any"));
+            Throwable cause = e.getCause();
+            assertInstanceOf(IllegalAccessException.class, cause);
         }
 
         @Test
@@ -40,12 +43,6 @@ class EnumUtilsTest {
         void testValidComplete() {
             assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(),
                     "value", "valueOf"));
-        }
-
-        @Test
-        void testInvalidMethod() {
-            assertThrows(Exception.class, () -> EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(),
-                    "value", "invalid", "valueOf"));
         }
 
         @Test

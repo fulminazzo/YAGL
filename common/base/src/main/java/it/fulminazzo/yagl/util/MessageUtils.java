@@ -17,6 +17,11 @@ public final class MessageUtils {
     private static final String COLOR_REGEX = "[A-Fa-f0-9]";
     private static final String STYLE_REGEX = "[LlKkRrOoUu]";
 
+    private static final @NotNull Pattern HUMAN_COLOR_STYLE_REGEX = Pattern.compile("&(" + COLOR_REGEX + "|" + STYLE_REGEX + ")");
+    private static final @NotNull Pattern GAME_COLOR_STYLE_REGEX = Pattern.compile(COLOR_CHAR + "(" + COLOR_REGEX + "|" + STYLE_REGEX + ")");
+    private static final @NotNull Pattern HUMAN_HEX_REGEX = Pattern.compile("#(" + COLOR_REGEX + "{6})");
+    private static final @NotNull Pattern GAME_HEX_REGEX = Pattern.compile(COLOR_CHAR + "x((?:" + COLOR_CHAR + COLOR_REGEX + "){6})");
+
     /**
      * Recolors the given string using Minecraft default color codes.
      *
@@ -25,14 +30,14 @@ public final class MessageUtils {
      */
     public static String color(@Nullable String message) {
         if (message == null) return null;
-        Matcher matcher = Pattern.compile("&(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
+        Matcher matcher = HUMAN_COLOR_STYLE_REGEX.matcher(message);
         while (matcher.find())
             message = message.replace(matcher.group(), COLOR_CHAR + matcher.group(1));
         return parseHexColors(message);
     }
 
     private static @NotNull String parseHexColors(@NotNull String message) {
-        Matcher matcher = Pattern.compile("#(" + COLOR_REGEX + "{6})").matcher(message);
+        Matcher matcher = HUMAN_HEX_REGEX.matcher(message);
         while (matcher.find()) {
             String match = matcher.group();
             String replacement = COLOR_CHAR + "x";
@@ -62,14 +67,14 @@ public final class MessageUtils {
     public static String decolor(@Nullable String message, String character) {
         if (message == null) return null;
         message = unparseHexColors(message);
-        Matcher matcher = Pattern.compile(COLOR_CHAR + "(" + COLOR_REGEX + "|" + STYLE_REGEX + ")").matcher(message);
+        Matcher matcher = GAME_COLOR_STYLE_REGEX.matcher(message);
         while (matcher.find())
             message = message.replace(matcher.group(), character + matcher.group(1));
         return message;
     }
 
     private static @NotNull String unparseHexColors(@NotNull String message) {
-        Matcher matcher = Pattern.compile(COLOR_CHAR + "x((?:" + COLOR_CHAR + COLOR_REGEX + "){6})").matcher(message);
+        Matcher matcher = GAME_HEX_REGEX.matcher(message);
         while (matcher.find()) {
             String match = matcher.group();
             String replacement = "#";
