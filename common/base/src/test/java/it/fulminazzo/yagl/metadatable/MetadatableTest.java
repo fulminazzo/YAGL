@@ -6,14 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("serial")
 class MetadatableTest {
 
     @Test
@@ -128,14 +125,31 @@ class MetadatableTest {
         assertEquals("SHOULD <not> BE CHANGED", MockObject.string1);
         assertNull(object.string2);
         assertEquals("parse me", object.string3);
-        assertEquals(Arrays.asList("parse", "me"),
-                object.list);
-        assertEquals(new HashMap<String, String>(){{
+
+        // List
+        List<String> expectedList = Arrays.asList("parse", "me");
+        assertEquals(expectedList, object.list);
+        assertEquals(List.of("parse", "<variable>"), object.unmodifiableList);
+        assertEquals(expectedList, object.anonymousList);
+
+        // Set
+        Set<String> expectedSet = new HashSet<>(expectedList);
+        assertEquals(expectedSet, object.set);
+        assertEquals(Set.of("parse", "<variable>"), object.unmodifiableSet);
+        assertEquals(expectedSet, object.anonymousSet);
+
+        // Map
+        HashMap<String, String> expectedMap = new HashMap<>() {{
             put("parse", "me");
             put("parsing", "<not-me>");
             put(null, "<variable>");
             put("<variable>", null);
-        }}, object.map);
+        }};
+        assertEquals(expectedMap, object.map);
+        assertEquals(Map.of("parse", "<variable>", "parsing", "<not-me>"), object.unmodifiableMap);
+        assertEquals(expectedMap, object.anonymousMap);
+
+        assertEquals(Arrays.asList("parse", "<variable>"), object.arrayList);
     }
 
     private static class MockMetadatable implements Metadatable {
@@ -152,13 +166,41 @@ class MetadatableTest {
         static String string1 = "SHOULD <not> BE CHANGED";
         String string2 = null;
         String string3 = "parse <variable>";
-        List<String> list = Arrays.asList("parse", "<variable>");
-        Map<String, String> map = new HashMap<>() {{
+
+        List<String> list = new ArrayList<>(Arrays.asList("parse", "<variable>"));
+        List<String> unmodifiableList = List.of("parse", "<variable>");
+        List<String> anonymousList = new ArrayList<>() {{
+            add("parse");
+            add("<variable>");
+        }};
+
+        Set<String> set = new HashSet<>(Arrays.asList("parse", "<variable>"));
+        Set<String> unmodifiableSet = Set.of("parse", "<variable>");
+        Set<String> anonymousSet = new HashSet<>() {{
+            add("parse");
+            add("<variable>");
+        }};
+        
+        Map<String, String> map = new HashMap<>();
+        Map<String, String> unmodifiableMap = Map.of(
+                "parse", "<variable>", 
+                "parsing", "<not-me>"
+        );
+        Map<String, String> anonymousMap = new HashMap<>() {{
             put("parse", "<variable>");
             put("parsing", "<not-me>");
             put(null, "<variable>");
             put("<variable>", null);
         }};
+        
+        List<String> arrayList = Arrays.asList("parse", "<variable>");
+        
+        public MockObject() {
+            map.put("parse", "<variable>");
+            map.put("parsing", "<not-me>");
+            map.put(null, "<variable>");
+            map.put("<variable>", null);
+        }
 
     }
 

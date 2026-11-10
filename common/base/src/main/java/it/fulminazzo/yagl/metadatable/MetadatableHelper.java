@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * A support class for {@link Metadatable}.
@@ -47,12 +46,12 @@ class MetadatableHelper implements Metadatable {
             return object;
 
         if (object instanceof String) return (T) applyString((String) object);
-        else if (visited.contains(object)) return object;
-        visited.add(object);
-
-        if (objectClass.isArray()) return (T) applyArray((Object[]) object);
+        else if (objectClass.isArray()) return (T) applyArray((Object[]) object);
         else if (object instanceof Collection) return (T) applyCollection((Collection<?>) object);
         else if (object instanceof Map) return (T) applyMap((Map<?, ?>) object);
+
+        if (visited.contains(object)) return object;
+        visited.add(object);
 
         Package classPackage = objectClass.getPackage();
         if (classPackage != null) {
@@ -75,33 +74,50 @@ class MetadatableHelper implements Metadatable {
      * @return the map (with updated elements)
      */
     <K, V> @NotNull Map<K, V> applyMap(final @NotNull Map<K, V> map) {
-        final List<K> keys = new ArrayList<>(map.keySet());
-        for (K key : keys) {
-            if (key == null) continue;
-            V value = map.get(key);
-            if (value != null) {
-                map.remove(key);
-                map.put(apply(key), apply(value));
+        // First try to modify the map itself...
+        try {
+            final List<K> keys = new ArrayList<>(map.keySet());
+            for (K key : keys) {
+                if (key == null) continue;
+                V value = map.get(key);
+                if (value != null) {
+                    map.remove(key);
+                    map.put(apply(key), apply(value));
+                }
             }
+            return map;
+        } catch (UnsupportedOperationException e) {
+            // ... if not possible, leave it unchanged.
+            // This is both a limitation of the Metadatable interface and a feature:
+            // if the developer wants variables to be parsed, they should not be in
+            // an unmodifiable map!
+            return map;
         }
-        return map;
     }
 
     /**
      * Resolves variables for each of the elements of a collection.
      *
+     * @param <E>        the type of the elements
      * @param collection the collection
      * @return the collection (with updated elements)
      */
-    @NotNull Collection<?> applyCollection(final @NotNull Collection<?> collection) {
-        Class<?> collectionType = collection.getClass();
-        // In the case of creation with Arrays.asList()
-        if (collectionType.getCanonicalName().equals(Arrays.class.getCanonicalName() + ".ArrayList"))
-            collectionType = ArrayList.class;
-        Class<Collection<Object>> finalClass = (Class<Collection<Object>>) collectionType;
-        return collection.stream()
-                .map(this::apply)
-                .collect(Collectors.toCollection(() -> Reflect.on(finalClass).init().get()));
+    <E> @NotNull Collection<E> applyCollection(final @NotNull Collection<E> collection) {
+        // First try to modify the collection itself...
+        try {
+            final List<E> copy = new ArrayList<>(collection);
+            for (E element : copy) {
+                collection.remove(element);
+                collection.add(apply(element));
+            }
+            return collection;
+        } catch (UnsupportedOperationException e) {
+            // ... if not possible, leave it unchanged.
+            // This is both a limitation of the Metadatable interface and a feature:
+            // if the developer wants variables to be parsed, they should not be in
+            // an unmodifiable collection!
+            return collection;
+        }
     }
 
     /**
