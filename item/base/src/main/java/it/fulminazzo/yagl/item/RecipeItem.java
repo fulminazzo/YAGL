@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -63,10 +64,10 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     @NotNull RecipeItem setMaterial(final @NotNull String material);
 
     @Override
-    @NotNull RecipeItem setAmount(final int amount);
+    @NotNull RecipeItem setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount);
 
     @Override
-    @NotNull RecipeItem setDurability(final int durability);
+    @NotNull RecipeItem setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability);
 
     @Override
     @NotNull RecipeItem setDisplayName(final @NotNull String displayName);

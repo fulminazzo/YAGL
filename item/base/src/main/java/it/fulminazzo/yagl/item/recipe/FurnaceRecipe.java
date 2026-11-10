@@ -57,7 +57,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      * @param experience the experience
      * @return this recipe
      */
-    public @NotNull FurnaceRecipe setExperience(final float experience) {
+    public @NotNull FurnaceRecipe setExperience(final @Range(from = 0, to = Long.MAX_VALUE) float experience) {
         this.experience = Wrapper.check("experience", experience, 0);
         return this;
     }
@@ -67,7 +67,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      *
      * @return the cooking time
      */
-    public long getCookingTimeInTicks() {
+    public @Range(from = 0, to = Long.MAX_VALUE) long getCookingTimeInTicks() {
         return (long) (this.cookingTime * Constants.TICKS_IN_SECOND);
     }
 
@@ -77,7 +77,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      * @param cookingTime the cooking time
      * @return this recipe
      */
-    public @NotNull FurnaceRecipe setCookingTime(final double cookingTime) {
+    public @NotNull FurnaceRecipe setCookingTime(final @Range(from = 0, to = Long.MAX_VALUE) double cookingTime) {
         this.cookingTime = Wrapper.check("cookingTime", cookingTime, 0);
         return this;
     }

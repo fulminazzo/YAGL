@@ -8,6 +8,7 @@ import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,14 +43,14 @@ public interface Item extends AbstractItem {
      * @param amount the amount
      * @return this item
      */
-    @NotNull Item setAmount(final int amount);
+    @NotNull Item setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount);
 
     /**
      * Gets amount.
      *
      * @return the amount
      */
-    int getAmount();
+    @Range(from = 1, to = Integer.MAX_VALUE) int getAmount();
 
     /**
      * Sets durability.
@@ -57,14 +58,14 @@ public interface Item extends AbstractItem {
      * @param durability the durability
      * @return this item
      */
-    @NotNull Item setDurability(final int durability);
+    @NotNull Item setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability);
 
     /**
      * Gets durability.
      *
      * @return the durability
      */
-    int getDurability();
+    @Range(from = 0, to = Short.MAX_VALUE) int getDurability();
 
     /**
      * Sets display name.

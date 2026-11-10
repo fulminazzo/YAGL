@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.item.recipe.Recipe;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,12 +80,12 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public @NotNull RecipeItem setAmount(final int amount) {
+    public @NotNull RecipeItem setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         return (RecipeItem) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull RecipeItem setDurability(final int durability) {
+    public @NotNull RecipeItem setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability) {
         return (RecipeItem) super.setDurability(durability);
     }
 

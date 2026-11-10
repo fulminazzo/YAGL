@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -22,7 +23,9 @@ import java.util.*;
 @EqualsAndHashCode
 class ItemImpl implements Item {
     protected String material;
+    @Range(from = 1, to = Integer.MAX_VALUE)
     protected int amount;
+    @Range(from = 0, to = Short.MAX_VALUE)
     protected int durability;
     protected String displayName;
     protected final @NotNull List<String> lore;
@@ -71,13 +74,13 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public @NotNull Item setAmount(final int amount) {
+    public @NotNull Item setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
         this.amount = amount;
         return this;
     }
 
     @Override
-    public @NotNull Item setDurability(final int durability) {
+    public @NotNull Item setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability) {
         this.durability = durability;
         return this;
     }

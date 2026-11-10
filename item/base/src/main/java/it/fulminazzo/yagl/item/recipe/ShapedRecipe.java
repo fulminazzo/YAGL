@@ -52,7 +52,8 @@ public final class ShapedRecipe extends RecipeImpl {
      * @param columns the columns
      * @return this recipe
      */
-    public @NotNull ShapedRecipe setShape(final int rows, final int columns) {
+    public @NotNull ShapedRecipe setShape(final @Range(from = Shape.MIN_ROWS, to = Shape.MAX_ROWS) int rows,
+                                          final @Range(from = Shape.MIN_COLUMNS, to = Shape.MAX_COLUMNS) int columns) {
         this.shape.setRows(rows);
         this.shape.setColumns(columns);
 
@@ -84,7 +85,8 @@ public final class ShapedRecipe extends RecipeImpl {
      * @param item     the item
      * @return this recipe
      */
-    public @NotNull ShapedRecipe setIngredient(final int position, final @Nullable Item item) {
+    public @NotNull ShapedRecipe setIngredient(final @Range(from = 0, to = Shape.MAX_COLUMNS * Shape.MAX_ROWS) int position,
+                                               final @Nullable Item item) {
         if (!this.shape.contains(position))
             throw new IllegalArgumentException(String.format("Shape %sx%s does not allow position %s",
                     this.shape.getRows(), this.shape.getColumns(), position));
@@ -127,7 +129,8 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param rows    the rows
          * @param columns the columns
          */
-        public Shape(final int rows, final int columns) {
+        public Shape(final @Range(from = MIN_ROWS, to = MAX_ROWS) int rows,
+                     final @Range(from = MIN_COLUMNS, to = MAX_COLUMNS) int columns) {
             setRows(rows);
             setColumns(columns);
         }
@@ -138,7 +141,7 @@ public final class ShapedRecipe extends RecipeImpl {
          *
          * @param columns the columns
          */
-        public void setColumns(final int columns) {
+        public void setColumns(final @Range(from = MIN_COLUMNS, to = MAX_COLUMNS) int columns) {
             this.columns = Wrapper.check("columns", columns, MIN_COLUMNS, MAX_COLUMNS);
         }
 
@@ -148,7 +151,7 @@ public final class ShapedRecipe extends RecipeImpl {
          *
          * @param rows the rows
          */
-        public void setRows(final int rows) {
+        public void setRows(final @Range(from = MIN_ROWS, to = MAX_ROWS) int rows) {
             this.rows = Wrapper.check("rows", rows, MIN_ROWS, MAX_ROWS);
         }
 
@@ -158,7 +161,7 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param num the num
          * @return true if contains
          */
-        public boolean contains(int num) {
+        public boolean contains(final @Range(from = 0, to = Shape.MAX_COLUMNS * Shape.MAX_ROWS) int num) {
             return num >= 0 && num < this.rows * this.columns;
         }
 
