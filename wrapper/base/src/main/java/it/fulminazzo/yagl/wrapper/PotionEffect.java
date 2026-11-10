@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 /**
  * A wrapper to represent Minecraft potion effects.
@@ -15,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
 @ToString
 public final class PotionEffect extends Wrapper {
     private @NotNull String name;
-    @Range(min = 0)
+    @Range(from = 0, to = Long.MAX_VALUE)
     private double duration;
-    @Range(min = 1)
+    @Range(from = 1, to = Integer.MAX_VALUE)
     private int amplifier;
     private boolean showingParticles;
     private boolean showingIcon;
@@ -37,7 +38,7 @@ public final class PotionEffect extends Wrapper {
      * @param name     the effect
      * @param duration the duration
      */
-    public PotionEffect(final @NotNull String name, final @Range(min = 0) double duration) {
+    public PotionEffect(final @NotNull String name, final @Range(from = 0, to = Long.MAX_VALUE) double duration) {
         this(name, duration, 1);
     }
 
@@ -49,8 +50,8 @@ public final class PotionEffect extends Wrapper {
      * @param amplifier the amplifier
      */
     public PotionEffect(final @NotNull String name,
-                        final @Range(min = 0) double duration,
-                        final @Range(min = 1) int amplifier) {
+                        final @Range(from = 0, to = Long.MAX_VALUE) double duration,
+                        final @Range(from = 1, to = Integer.MAX_VALUE) int amplifier) {
         this(name, duration, amplifier, true, true);
     }
 
@@ -63,8 +64,8 @@ public final class PotionEffect extends Wrapper {
      * @param enableParticles if {@code true}, the effect will show the associated particles
      */
     public PotionEffect(final @NotNull String name,
-                        final @Range(min = 0) double duration,
-                        final @Range(min = 1) int amplifier,
+                        final @Range(from = 0, to = Long.MAX_VALUE) double duration,
+                        final @Range(from = 1, to = Integer.MAX_VALUE) int amplifier,
                         final boolean enableParticles) {
         this(name, duration, amplifier, enableParticles, true);
     }
@@ -79,8 +80,8 @@ public final class PotionEffect extends Wrapper {
      * @param enableIcon      if {@code true}, the effect will show the associated icon in the player GUI
      */
     public PotionEffect(final @NotNull String name,
-                        final @Range(min = 0) double duration,
-                        final @Range(min = 1) int amplifier,
+                        final @Range(from = 0, to = Long.MAX_VALUE) double duration,
+                        final @Range(from = 1, to = Integer.MAX_VALUE) int amplifier,
                         final boolean enableParticles,
                         final boolean enableIcon) {
         setName(name).setDuration(duration).setAmplifier(amplifier);
@@ -104,7 +105,7 @@ public final class PotionEffect extends Wrapper {
      *
      * @return the duration in ticks
      */
-    public @Range(min = 0) int getDurationInTicks() {
+    public @Range(from = 0, to = Integer.MAX_VALUE) int getDurationInTicks() {
         return (int) (getDuration() * Constants.TICKS_IN_SECOND);
     }
 
@@ -114,8 +115,8 @@ public final class PotionEffect extends Wrapper {
      * @param duration the duration
      * @return this potion effect
      */
-    public @NotNull PotionEffect setDuration(final @Range(min = 0) double duration) {
-        this.duration = check(duration);
+    public @NotNull PotionEffect setDuration(final @Range(from = 0, to = Long.MAX_VALUE) double duration) {
+        this.duration = check("duration", duration, 0);
         return this;
     }
 
@@ -125,8 +126,8 @@ public final class PotionEffect extends Wrapper {
      * @param amplifier the amplifier
      * @return this potion effect
      */
-    public @NotNull PotionEffect setAmplifier(final @Range(min = 1) int amplifier) {
-        this.amplifier = check(amplifier);
+    public @NotNull PotionEffect setAmplifier(final @Range(from = 1, to = Integer.MAX_VALUE) int amplifier) {
+        this.amplifier = check("amplifier", amplifier, 1);
         return this;
     }
 

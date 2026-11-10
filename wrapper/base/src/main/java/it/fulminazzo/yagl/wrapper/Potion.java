@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 /**
  * A {@link Wrapper} class used to represent potions in older versions of Minecraft.
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 @ToString
 public final class Potion extends Wrapper {
     private @NotNull String name;
-    @Range(min = 1, max = 2)
+    @Range(from = 1, to = 2)
     @Getter
     private int level;
     private boolean splash;
@@ -36,7 +37,7 @@ public final class Potion extends Wrapper {
      * @param name  the type
      * @param level the level
      */
-    public Potion(final @NotNull String name, final @Range(min = 1, max = 2) int level) {
+    public Potion(final @NotNull String name, final @Range(from = 1, to = 2) int level) {
         this(name, level, false, false);
     }
 
@@ -47,7 +48,7 @@ public final class Potion extends Wrapper {
      * @param level  the level
      * @param splash if {@code true} the potion is throwable
      */
-    public Potion(final @NotNull String name, final @Range(min = 1, max = 2) int level, final boolean splash) {
+    public Potion(final @NotNull String name, final @Range(from = 1, to = 2) int level, final boolean splash) {
         this(name, level, splash, false);
     }
 
@@ -60,7 +61,7 @@ public final class Potion extends Wrapper {
      * @param extended if {@code true} the duration is extended
      */
     public Potion(final @NotNull String name,
-                  final @Range(min = 1, max = 2) int level,
+                  final @Range(from = 1, to = 2) int level,
                   final boolean splash,
                   final boolean extended) {
         setName(name).setLevel(level);
@@ -85,8 +86,8 @@ public final class Potion extends Wrapper {
      * @param level the level
      * @return this potion
      */
-    public @NotNull Potion setLevel(final @Range(min = 1, max = 2) int level) {
-        this.level = check(level);
+    public @NotNull Potion setLevel(final @Range(from = 1, to = 2) int level) {
+        this.level = check("level", level, 1, 2);
         return this;
     }
 

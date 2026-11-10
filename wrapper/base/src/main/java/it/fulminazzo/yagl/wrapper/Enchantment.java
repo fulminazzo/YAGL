@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 /**
  * A wrapper to represent Minecraft enchantments.
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 @ToString
 public final class Enchantment extends Wrapper {
     private @NotNull String name;
-    @Range(min = 1)
+    @Range(from = 1, to = Integer.MAX_VALUE)
     private int level;
 
     /**
@@ -33,7 +34,7 @@ public final class Enchantment extends Wrapper {
      * @param name  the enchantment
      * @param level the level (1 is the lowest)
      */
-    public Enchantment(final @NotNull String name, final @Range(min = 1) int level) {
+    public Enchantment(final @NotNull String name, final @Range(from = 1, to = Integer.MAX_VALUE) int level) {
         setName(name).setLevel(level);
     }
 
@@ -54,8 +55,8 @@ public final class Enchantment extends Wrapper {
      * @param level the level (1 is the lowest)
      * @return this enchantment
      */
-    public @NotNull Enchantment setLevel(final @Range(min = 1) int level) {
-        this.level = check(level);
+    public @NotNull Enchantment setLevel(final @Range(from = 1, to = Integer.MAX_VALUE) int level) {
+        this.level = check("level", level, 1);
         return this;
     }
 

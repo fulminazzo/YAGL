@@ -1,10 +1,7 @@
 package it.fulminazzo.yagl.wrapper;
 
-import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Field;
 
 /**
  * A general class that represents a wrapper for another object.
@@ -12,59 +9,45 @@ import java.lang.reflect.Field;
 public abstract class Wrapper {
 
     /**
-     * Uses {@link #check(Object, Number)} to check the given value.
+     * Allows checking the given number against the specified range.
+     * If the given value is lower than {@code min}, an {@link IllegalArgumentException} is thrown.
      *
-     * @param <N>   the type of the value
-     * @param value the value
+     * @param <N>        the type of the value
+     * @param valueName  the name of the value (used in error messages)
+     * @param value      the value to check
+     * @param min        the minimum allowed value
      * @return the value itself
      */
-    protected <N extends Number> @NotNull N check(final @NotNull N value) {
-        return check(this, value);
+    public static <N extends Number> @NotNull N check(final @NotNull String valueName, final @NotNull N value, final long min) {
+        return check(valueName, value, min, Long.MAX_VALUE);
     }
 
     /**
-     * Allows checking the given number.
-     * It uses the {@link Range} annotation.
-     * If the given value is lower than {@link Range#min()} or higher than {@link Range#max()},
+     * Allows checking the given number against the specified range.
+     * If the given value is lower than {@code min} or higher than {@code max},
      * an {@link IllegalArgumentException} is thrown.
      *
-     * @param <N>    the type of the value
-     * @param object the object to check
-     * @param value  the value
+     * @param <N>        the type of the value
+     * @param valueName  the name of the value (used in error messages)
+     * @param value      the value to check
+     * @param min        the minimum allowed value
+     * @param max        the maximum allowed value
      * @return the value itself
      */
-    public static <N extends Number> @NotNull N check(final @NotNull Object object, final @NotNull N value) {
-        String method = StackWalker.getInstance()
-                .walk(s -> s.map(StackWalker.StackFrame::getMethodName)
-                        .filter(m -> !m.equals("check"))
-                        .findFirst()
-                ).orElseThrow();
-        if (method.startsWith("set") || method.startsWith("get")) method = method.substring(3);
-        String fieldName = method;
-        checkField(value, Reflect.on(object).getField(f -> f.getName().equalsIgnoreCase(fieldName)));
+    public static <N extends Number> @NotNull N check(final @NotNull String valueName, final @NotNull N value, final long min, final long max) {
+        if (min > max) throw new IllegalArgumentException(getExceptionMessage(valueName, min, max));
+        else if (value.doubleValue() < (double) min || value.doubleValue() > (double) max)
+            throw new IllegalArgumentException(getExceptionMessage(valueName, min, max));
         return value;
     }
 
-    private static <N extends Number> void checkField(final @NotNull N value, final @NotNull Field field) {
-        if (field.isAnnotationPresent(Range.class)) {
-            Range range = field.getAnnotation(Range.class);
-            long min = range.min();
-            long max = range.max();
-            if (min > max) throw new InvalidRangeException(field, min, max);
-            else if (value.doubleValue() < (double) min || value.doubleValue() > (double) max)
-                throw new IllegalArgumentException(getExceptionMessage(field, min, max));
-        }
-    }
-
-    private static @NotNull String getExceptionMessage(final @NotNull Field field, final long min, final long max) {
-        final String fieldName = field.getName();
-
+    private static @NotNull String getExceptionMessage(final @NotNull String valueName, final long min, final long max) {
         final String message;
         if (max != Long.MAX_VALUE && min != Long.MIN_VALUE)
-            message = String.format("'%s' must be between %s and %s", fieldName, min, max);
-        else if (min != Long.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", fieldName, min);
-        else if (max != Long.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", fieldName, max);
-        else message = String.format("Invalid value provided for '%s'", fieldName);
+            message = String.format("'%s' must be between %s and %s", valueName, min, max);
+        else if (min != Long.MIN_VALUE) message = String.format("'%s' cannot be lower than %s", valueName, min);
+        else if (max != Long.MAX_VALUE) message = String.format("'%s' cannot be higher than %s", valueName, max);
+        else message = String.format("Invalid value provided for '%s'", valueName);
 
         return message;
     }

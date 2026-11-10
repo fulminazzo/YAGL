@@ -2,13 +2,13 @@ package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.Constants;
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.wrapper.Range;
 import it.fulminazzo.yagl.wrapper.Wrapper;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,9 +22,9 @@ import java.util.List;
 public final class FurnaceRecipe extends RecipeImpl {
     @Getter(AccessLevel.NONE)
     private Item ingredient;
-    @Range(min = 0)
+    @Range(from = 0, to = Long.MAX_VALUE)
     private float experience;
-    @Range(min = 0)
+    @Range(from = 0, to = Long.MAX_VALUE)
     private double cookingTime;
 
     private FurnaceRecipe() {
@@ -58,7 +58,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      * @return this recipe
      */
     public @NotNull FurnaceRecipe setExperience(final float experience) {
-        this.experience = Wrapper.check(this, experience);
+        this.experience = Wrapper.check("experience", experience, 0);
         return this;
     }
 
@@ -78,7 +78,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      * @return this recipe
      */
     public @NotNull FurnaceRecipe setCookingTime(final double cookingTime) {
-        this.cookingTime = Wrapper.check(this, cookingTime);
+        this.cookingTime = Wrapper.check("cookingTime", cookingTime, 0);
         return this;
     }
 

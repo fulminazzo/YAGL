@@ -1,13 +1,13 @@
 package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.wrapper.Range;
 import it.fulminazzo.yagl.wrapper.Wrapper;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -109,9 +109,9 @@ public final class ShapedRecipe extends RecipeImpl {
         static final int MAX_COLUMNS = 3;
         static final int MIN_ROWS = 1;
         static final int MAX_ROWS = 3;
-        @Range(min = MIN_ROWS, max = MAX_ROWS)
+        @Range(from = MIN_ROWS, to = MAX_ROWS)
         private int rows;
-        @Range(min = MIN_COLUMNS, max = MAX_COLUMNS)
+        @Range(from = MIN_COLUMNS, to = MAX_COLUMNS)
         private int columns;
 
         /**
@@ -139,7 +139,7 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param columns the columns
          */
         public void setColumns(final int columns) {
-            this.columns = Wrapper.check(this, columns);
+            this.columns = Wrapper.check("columns", columns, MIN_COLUMNS, MAX_COLUMNS);
         }
 
         /**
@@ -149,7 +149,7 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param rows the rows
          */
         public void setRows(final int rows) {
-            this.rows = Wrapper.check(this, rows);
+            this.rows = Wrapper.check("rows", rows, MIN_ROWS, MAX_ROWS);
         }
 
         /**

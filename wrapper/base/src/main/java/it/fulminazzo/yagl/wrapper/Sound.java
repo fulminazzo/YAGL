@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 /**
  * A wrapper to represent Minecraft sounds.
@@ -15,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 @ToString
 public final class Sound extends Wrapper {
     private @NotNull String name;
-    @Range(min = 0)
+    @Range(from = 0, to = Long.MAX_VALUE)
     private float volume;
-    @Range(min = 0)
+    @Range(from = 0, to = Long.MAX_VALUE)
     private float pitch;
     /**
      * The category to play the sound for.
@@ -42,7 +43,7 @@ public final class Sound extends Wrapper {
      * @param name   the sound
      * @param volume the volume
      */
-    public Sound(final @NotNull String name, final @Range(min = 0) float volume) {
+    public Sound(final @NotNull String name, final @Range(from = 0, to = Long.MAX_VALUE) float volume) {
         this(name, volume, 1.0F);
     }
 
@@ -53,7 +54,9 @@ public final class Sound extends Wrapper {
      * @param volume the volume
      * @param pitch  the pitch
      */
-    public Sound(final @NotNull String name, final @Range(min = 0) float volume, final @Range(min = 0) float pitch) {
+    public Sound(final @NotNull String name,
+                 final @Range(from = 0, to = Long.MAX_VALUE) float volume,
+                 final @Range(from = 0, to = Long.MAX_VALUE) float pitch) {
         this(name, volume, pitch, null);
     }
 
@@ -66,8 +69,8 @@ public final class Sound extends Wrapper {
      * @param category the category
      */
     public Sound(final @NotNull String name,
-                 final @Range(min = 0) float volume,
-                 final @Range(min = 0) float pitch,
+                 final @Range(from = 0, to = Long.MAX_VALUE) float volume,
+                 final @Range(from = 0, to = Long.MAX_VALUE) float pitch,
                  final @Nullable String category) {
         setName(name).setVolume(volume).setPitch(pitch).setCategory(category);
     }
@@ -92,8 +95,8 @@ public final class Sound extends Wrapper {
      * @param volume the volume
      * @return this sound
      */
-    public @NotNull Sound setVolume(final @Range(min = 0) float volume) {
-        this.volume = check(volume);
+    public @NotNull Sound setVolume(final @Range(from = 0, to = Long.MAX_VALUE) float volume) {
+        this.volume = check("volume", volume, 0);
         return this;
     }
 
@@ -105,8 +108,8 @@ public final class Sound extends Wrapper {
      * @param pitch the pitch
      * @return this sound
      */
-    public @NotNull Sound setPitch(final @Range(min = 0) float pitch) {
-        this.pitch = check(pitch);
+    public @NotNull Sound setPitch(final @Range(from = 0, to = Long.MAX_VALUE) float pitch) {
+        this.pitch = check("pitch", pitch, 0);
         return this;
     }
 

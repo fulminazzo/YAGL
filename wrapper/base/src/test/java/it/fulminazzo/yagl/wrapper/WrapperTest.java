@@ -78,7 +78,7 @@ class WrapperTest {
 
     @Test
     void testInvalidRange() {
-        assertThrowsExactly(InvalidRangeException.class, () -> new MockWrapper().setInvalidRange(10));
+        assertThrowsExactly(IllegalArgumentException.class, () -> new MockWrapper().setInvalidRange(10));
     }
 
     @Test
@@ -102,41 +102,36 @@ class WrapperTest {
     @EqualsAndHashCode(callSuper = false)
     @ToString
     private static class MockWrapper extends Wrapper {
-        @Range(min = 1, max = 9)
         private int value;
-        @Range(min = 1)
         private int minOnly;
-        @Range(max = 9)
         private int maxOnly;
         private int free;
-        @Range(max = Integer.MIN_VALUE, min = Integer.MAX_VALUE)
         private int invalidRange;
-        @Range
         private long extremeRange;
 
         public void setValue(int value) {
-            this.value = check(value);
+            this.value = Wrapper.check("value", value, 1, 9);
         }
 
         public void minOnly(int minOnly) {
-            this.minOnly = check(minOnly);
+            this.minOnly = Wrapper.check("minOnly", minOnly, 1, Long.MAX_VALUE);
         }
 
         // For testing purposes. A very bad practice in the real world.
         public void getMaxOnly(int maxOnly) {
-            this.maxOnly = check(maxOnly);
+            this.maxOnly = Wrapper.check("maxOnly", maxOnly, Long.MIN_VALUE, 9);
         }
 
         public void setFree(int free) {
-            this.free = check(free);
+            this.free = Wrapper.check("free", free, Long.MIN_VALUE, Long.MAX_VALUE);
         }
 
         public void setInvalidRange(int invalidRange) {
-            this.invalidRange = check(invalidRange);
+            this.invalidRange = Wrapper.check("invalidRange", invalidRange, Integer.MAX_VALUE, Integer.MIN_VALUE);
         }
 
         public void setExtremeRange(long extremeRange) {
-            this.extremeRange = check(extremeRange);
+            this.extremeRange = Wrapper.check("extremeRange", extremeRange, Long.MIN_VALUE, Long.MAX_VALUE);
         }
 
         @Override
