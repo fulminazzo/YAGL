@@ -22,9 +22,8 @@ public abstract class SingleInstance {
      * If it is, a {@link InstanceAlreadyInitializedException} is thrown with the instance itself as the parameter.
      */
     public void initialize() {
-        if (INSTANCES_MAP.containsKey(getClass()))
+        if (INSTANCES_MAP.putIfAbsent(getClass(), this) != null)
             throw new InstanceAlreadyInitializedException(this);
-        else INSTANCES_MAP.put(getClass(), this);
     }
 
     /**
@@ -32,8 +31,8 @@ public abstract class SingleInstance {
      * If it is already removed, a {@link InstanceNotInitializedException} is thrown.
      */
     public void terminate() {
-        if (INSTANCES_MAP.containsKey(getClass())) INSTANCES_MAP.remove(getClass());
-        else throw new InstanceNotInitializedException(getClass());
+        if (INSTANCES_MAP.remove(getClass()) == null)
+            throw new InstanceNotInitializedException(getClass());
     }
 
     /**

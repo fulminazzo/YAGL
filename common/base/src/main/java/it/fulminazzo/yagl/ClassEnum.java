@@ -6,8 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -90,8 +91,9 @@ public abstract class ClassEnum {
 
     private static final class EnumRegistry<E extends ClassEnum> {
         private final @NotNull Class<E> type;
-        private final @NotNull LinkedList<E> values;
-        private final @NotNull Map<E, String> nameMap;
+        private final @NotNull List<E> values;
+        private final @NotNull Map<E, String> valueNameMap;
+        private final @NotNull Map<String, E> nameValueMap;
 
         /**
          * Instantiates a new Enum registry.
@@ -100,8 +102,9 @@ public abstract class ClassEnum {
          */
         public EnumRegistry(final Class<?> type) {
             this.type = (Class<E>) type;
-            this.values = new LinkedList<>();
-            this.nameMap = new HashMap<>();
+            this.values = new ArrayList<>();
+            this.valueNameMap = new HashMap<>();
+            this.nameValueMap = new HashMap<>();
 
             Reflect reflect = Reflect.on(type);
             reflect.getStaticFields().stream()
@@ -109,7 +112,8 @@ public abstract class ClassEnum {
                     .forEach(f -> {
                         E value = reflect.get(f).get();
                         values.add(value);
-                        nameMap.put(value, f.getName());
+                        valueNameMap.put(value, f.getName());
+                        nameValueMap.put(f.getName(), value);
                     });
         }
 
@@ -130,7 +134,7 @@ public abstract class ClassEnum {
          * @return the name
          */
         public @Nullable String name(final @NotNull E value) {
-            return nameMap.get(value);
+            return valueNameMap.get(value);
         }
 
         public @NotNull E valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
@@ -142,11 +146,9 @@ public abstract class ClassEnum {
         }
 
         public @NotNull E valueOf(final @NotNull String name) {
-            return nameMap.entrySet().stream()
-                    .filter(e -> e.getValue().equals(name))
-                    .findFirst()
-                    .map(Map.Entry::getKey)
-                    .orElseThrow(() -> new IllegalArgumentException("No enum constant " + type.getName() + "." + name));
+            if (nameValueMap.containsKey(name))
+                return nameValueMap.get(name);
+            else throw new IllegalArgumentException("No enum constant " + type.getName() + "." + name);
         }
 
         public E @NotNull [] values() {

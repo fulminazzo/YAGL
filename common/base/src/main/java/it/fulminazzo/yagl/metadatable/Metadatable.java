@@ -17,13 +17,13 @@ public interface Metadatable {
         final String separator = "_";
 
         StringBuilder builder = new StringBuilder();
-        for (String string : s.split("")) {
-            if (string.matches("[A-Z]")) builder.append(separator);
-            else if (string.matches("[\r\t\n -]")) {
+        for (char c :  s.toCharArray()) {
+            if (c >= 'A' && c <= 'Z') builder.append(separator);
+            else if (Character.isWhitespace(c) || c == '-') {
                 builder.append(separator);
                 continue;
             }
-            builder.append(string);
+            builder.append(c);
         }
 
         String output = builder.toString().toLowerCase();

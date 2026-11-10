@@ -7,15 +7,12 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A collection of utilities to work with enums.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnumUtils {
-    private static final @NotNull Pattern UPPERCASE_REGEX = Pattern.compile("[A-Z]");
 
     /**
      * Uses the given class method <code>valueOf</code> to obtain the corresponding value with the given name.
@@ -64,9 +61,7 @@ public final class EnumUtils {
     }
 
     private static @NotNull String getTypeName(final @NotNull Class<?> clazz) {
-        String typeName = clazz.getSimpleName();
-        Matcher matcher = UPPERCASE_REGEX.matcher(typeName);
-        while (matcher.find()) typeName = typeName.replaceAll(matcher.group(), " " + matcher.group());
+        String typeName = clazz.getSimpleName().replaceAll("[A-Z]", " $0");
         if (typeName.startsWith(" ")) typeName = typeName.substring(1);
         return typeName.toLowerCase();
     }

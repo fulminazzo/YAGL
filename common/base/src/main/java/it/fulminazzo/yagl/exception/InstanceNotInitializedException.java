@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * without having it initialized first.
  */
 public final class InstanceNotInitializedException extends RuntimeException {
+    private static final long serialVersionUID = -3244566145900279885L;
 
     /**
      * Instantiates a new Instance not initialized.

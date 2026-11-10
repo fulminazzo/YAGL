@@ -46,12 +46,6 @@ class MetadatableHelper implements Metadatable {
         if (objectClass.isEnum() || objectClass.isSynthetic())
             return object;
 
-        Package classPackage = objectClass.getPackage();
-        if (classPackage != null) {
-            String packageName = classPackage.getName();
-            if (packageName.startsWith("javax.") || packageName.startsWith("jdk.")) return object;
-        }
-
         if (object instanceof String) return (T) applyString((String) object);
         else if (visited.contains(object)) return object;
         visited.add(object);
@@ -59,11 +53,17 @@ class MetadatableHelper implements Metadatable {
         if (objectClass.isArray()) return (T) applyArray((Object[]) object);
         else if (object instanceof Collection) return (T) applyCollection((Collection<?>) object);
         else if (object instanceof Map) return (T) applyMap((Map<?, ?>) object);
-        else {
-            for (Field field : APPLICABLE_FIELDS_CACHE.get(objectClass))
-                reflect.set(field, apply(reflect.get(field).get()));
-            return object;
+
+        Package classPackage = objectClass.getPackage();
+        if (classPackage != null) {
+            String packageName = classPackage.getName();
+            if (packageName.startsWith("java.") || packageName.startsWith("javax.") || packageName.startsWith("jdk."))
+                return object;
         }
+
+        for (Field field : APPLICABLE_FIELDS_CACHE.get(objectClass))
+            reflect.set(field, apply(reflect.get(field).get()));
+        return object;
     }
 
     /**

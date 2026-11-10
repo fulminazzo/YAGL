@@ -20,11 +20,9 @@ public interface SerializableFunction extends Serializable {
      * @return this function serialized
      */
     default String serialize() {
-        try {
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ObjectOutputStream outputStream = new ObjectOutputStream(byteStream);
+        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+             ObjectOutputStream outputStream = new ObjectOutputStream(byteStream)) {
             outputStream.writeObject(this);
-            outputStream.close();
             return Base64.getEncoder().encodeToString(byteStream.toByteArray());
         } catch (IOException e) {
             throw new SerializationException(this, e);
@@ -35,6 +33,7 @@ public interface SerializableFunction extends Serializable {
      * An exception thrown by {@link SerializableFunction#serialize()} in case of failed serialization.
      */
     final class SerializationException extends RuntimeException {
+        private static final long serialVersionUID = 4295873290297237267L;
 
         /**
          * Instantiates a new Serialization exception.

@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
  * An exception thrown upon executing {@link SingleInstance#initialize()} more than one time.
  */
 public final class InstanceAlreadyInitializedException extends RuntimeException {
+    private static final long serialVersionUID = -6419269366426254347L;
+
     private final @NotNull SingleInstance instance;
 
     /**

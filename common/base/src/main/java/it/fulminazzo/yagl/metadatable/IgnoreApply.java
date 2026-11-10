@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An interface used by {@link Metadatable} to ignore
+ * An annotation used by {@link Metadatable} to ignore
  * fields that should not be passed through the apply method.
  */
 @Target(ElementType.FIELD)

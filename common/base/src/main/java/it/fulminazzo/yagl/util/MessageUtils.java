@@ -31,20 +31,23 @@ public final class MessageUtils {
     public static String color(@Nullable String message) {
         if (message == null) return null;
         Matcher matcher = HUMAN_COLOR_STYLE_REGEX.matcher(message);
+        StringBuilder builder = new StringBuilder();
         while (matcher.find())
-            message = message.replace(matcher.group(), COLOR_CHAR + matcher.group(1));
-        return parseHexColors(message);
+            matcher.appendReplacement(builder, COLOR_CHAR + matcher.group(1));
+        matcher.appendTail(builder);
+        return parseHexColors(builder.toString());
     }
 
     private static @NotNull String parseHexColors(@NotNull String message) {
         Matcher matcher = HUMAN_HEX_REGEX.matcher(message);
+        StringBuilder builder = new StringBuilder();
         while (matcher.find()) {
-            String match = matcher.group();
-            String replacement = COLOR_CHAR + "x";
-            replacement += COLOR_CHAR + String.join(COLOR_CHAR, matcher.group(1).split(""));
-            message = message.replace(match, replacement);
+            String hex = matcher.group(1);
+            String replacement = COLOR_CHAR + "x" + COLOR_CHAR + String.join(COLOR_CHAR, hex.split(""));
+            matcher.appendReplacement(builder, Matcher.quoteReplacement(replacement));
         }
-        return message;
+        matcher.appendTail(builder);
+        return builder.toString();
     }
 
     /**
@@ -68,21 +71,23 @@ public final class MessageUtils {
         if (message == null) return null;
         message = unparseHexColors(message);
         Matcher matcher = GAME_COLOR_STYLE_REGEX.matcher(message);
+        StringBuilder builder = new StringBuilder();
         while (matcher.find())
-            message = message.replace(matcher.group(), character + matcher.group(1));
-        return message;
+            matcher.appendReplacement(builder, character + matcher.group(1));
+        matcher.appendTail(builder);
+        return builder.toString();
     }
 
     private static @NotNull String unparseHexColors(@NotNull String message) {
         Matcher matcher = GAME_HEX_REGEX.matcher(message);
+        StringBuilder builder = new StringBuilder();
         while (matcher.find()) {
-            String match = matcher.group();
-            String replacement = "#";
             String repl = matcher.group(1).toUpperCase();
-            replacement += String.join("", repl.split(COLOR_CHAR));
-            message = message.replace(match, replacement);
+            String replacement = "#" + String.join("", repl.split(COLOR_CHAR));
+            matcher.appendReplacement(builder, replacement);
         }
-        return message;
+        matcher.appendTail(builder);
+        return builder.toString();
     }
 
 }
