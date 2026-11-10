@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 /**
  * A collection of data used to identify the event that happens
@@ -21,6 +22,6 @@ public final class ClickItemEvent {
     private final @NotNull GUI gui;
     private final @NotNull GUIContent content;
     private final @NotNull ClickType clickType;
-    private final @Nullable Integer hotbarKey;
+    private final @Nullable @Range(from = 0, to = 8) Integer hotbarKey;
 
 }

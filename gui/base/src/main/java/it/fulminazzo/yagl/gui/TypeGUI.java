@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.gui;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 /**
  * An implementation of {@link GUI} that allows a {@link GUIType}.
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class TypeGUI extends GUIImpl {
-    private static final int DEFAULT_ROWS = 1;
+    private static final int DEFAULT_ROWS = Constants.MIN_ROWS;
 
     private static final int DROPPER_ROWS = 3;
     private static final int DROPPER_COLUMNS = 3;
@@ -43,68 +44,68 @@ public class TypeGUI extends GUIImpl {
     }
 
     @Override
-    public int northEast() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int northEast() {
         if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS - 1;
         else if (this.inventoryType == GUIType.LOOM) return LOOM_ROWS - 1;
         else return super.northEast();
     }
 
     @Override
-    public int middleLine() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int middleLine() {
         if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS;
         else if (this.inventoryType == GUIType.LOOM) return LOOM_MIDDLE_LINE;
         else return super.middleLine();
     }
 
     @Override
-    public int middleEast() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int middleEast() {
         if (this.inventoryType == GUIType.LOOM) return LOOM_COLUMNS;
         else return super.middleEast();
     }
 
     @Override
-    public int southLine() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int southLine() {
         if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS;
         else return super.southLine();
     }
 
     @Override
-    public int southWest() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int southWest() {
         if (this.inventoryType == GUIType.LOOM) return LOOM_SOUTH;
         else return super.southWest();
     }
 
     @Override
-    public int south() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int south() {
         if (this.inventoryType == GUIType.LOOM) return LOOM_SOUTH;
         else return super.south();
     }
 
     @Override
-    public int southEast() {
+    public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int southEast() {
         if (this.inventoryType == GUIType.LOOM) return LOOM_SOUTH;
         else return super.southEast();
     }
 
     @Override
-    public int rows() {
+    public @Range(from = Constants.MIN_ROWS, to = Constants.MAX_ROWS) int rows() {
         if (this.inventoryType == GUIType.WORKBENCH ||
                 this.inventoryType == GUIType.DROPPER ||
                 this.inventoryType == GUIType.DISPENSER) return DROPPER_ROWS;
         else if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS;
         else if (this.inventoryType == GUIType.LOOM) return LOOM_ROWS;
-        else if (size() > DefaultGUI.COLUMNS) return size() / DefaultGUI.COLUMNS;
+        else if (size() > Constants.MIN_DEFAULT_SIZE) return size() / Constants.MIN_DEFAULT_SIZE;
         else return DEFAULT_ROWS;
     }
 
     @Override
-    public int columns() {
+    public @Range(from = Constants.MIN_COLUMNS, to = Constants.MAX_COLUMNS) int columns() {
         if (this.inventoryType == GUIType.WORKBENCH ||
                 this.inventoryType == GUIType.DROPPER ||
                 this.inventoryType == GUIType.DISPENSER) return DROPPER_COLUMNS;
         else if (this.inventoryType == GUIType.BREWING) return BREWING_COLUMNS;
         else if (this.inventoryType == GUIType.LOOM) return LOOM_COLUMNS;
-        else return Math.min(size(), DefaultGUI.COLUMNS);
+        else return Math.min(size(), Constants.MIN_DEFAULT_SIZE);
     }
 
     @Override

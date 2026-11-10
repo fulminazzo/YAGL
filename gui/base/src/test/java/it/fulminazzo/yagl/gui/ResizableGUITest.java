@@ -30,7 +30,7 @@ class ResizableGUITest {
     @Test
     void testValidAdd() {
         List<GUIContent> contents = new LinkedList<>();
-        for (int i = 0; i < GUIImpl.MAX_SIZE; i++)
+        for (int i = 0; i < Constants.MAX_SIZE; i++)
             contents.add(new GUIImplTest.MockContent());
         assertDoesNotThrow(() -> this.gui.addContent(contents.toArray(new GUIContent[0])));
     }
@@ -38,7 +38,7 @@ class ResizableGUITest {
     @Test
     void testInvalidAdd() {
         List<GUIContent> contents = new LinkedList<>();
-        for (int i = 0; i < GUIImpl.MAX_SIZE + 1; i++)
+        for (int i = 0; i < Constants.MAX_SIZE + 1; i++)
             contents.add(new GUIImplTest.MockContent());
         assertThrowsExactly(IllegalArgumentException.class, () ->
                 this.gui.addContent(contents.toArray(new GUIContent[0])));
@@ -63,7 +63,7 @@ class ResizableGUITest {
     @Test
     void testInvalidSet() {
         assertThrowsExactly(IndexOutOfBoundsException.class, () ->
-                this.gui.setContents(GUIImpl.MAX_SIZE, new GUIImplTest.MockContent()));
+                this.gui.setContents(Constants.MAX_SIZE, new GUIImplTest.MockContent()));
     }
 
 }

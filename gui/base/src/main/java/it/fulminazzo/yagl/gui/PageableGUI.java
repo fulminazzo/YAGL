@@ -13,6 +13,7 @@ import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.*;
 
@@ -58,7 +59,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      *
      * @return the pages
      */
-    public int pages() {
+    public @Range(from = 0, to = Integer.MAX_VALUE) int pages() {
         return this.pages.size();
     }
 
@@ -69,7 +70,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param page the page
      * @return the corresponding {@link GUI} page
      */
-    public @NotNull GUI getPage(final int page) {
+    public @NotNull GUI getPage(final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         try {
             return this.pages.get(page);
         } catch (IndexOutOfBoundsException e) {
@@ -83,7 +84,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param pages the pages
      * @return this gui
      */
-    public @NotNull PageableGUI setPages(final int pages) {
+    public @NotNull PageableGUI setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
         if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
         int s;
         while ((s = this.pages.size()) - pages > 0) this.pages.remove(s - 1);
@@ -120,7 +121,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param previousPage the previous page
      * @return the previous page
      */
-    public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull Item previousPage) {
+    public @NotNull PageableGUI setPreviousPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Item previousPage) {
         return setPreviousPage(slot, ItemGUIContent.newInstance(previousPage));
     }
 
@@ -132,7 +133,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param previousPage the previous page
      * @return the previous page
      */
-    public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull ItemGUIContent previousPage) {
+    public @NotNull PageableGUI setPreviousPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull ItemGUIContent previousPage) {
         return setPreviousPage(slot, (GUIContent) previousPage);
     }
 
@@ -144,7 +145,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param previousPage the previous page
      * @return the previous page
      */
-    public @NotNull PageableGUI setPreviousPage(final int slot, final @NotNull GUIContent previousPage) {
+    public @NotNull PageableGUI setPreviousPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull GUIContent previousPage) {
         this.previousPage.set(checkSlot(slot), previousPage);
         return this;
     }
@@ -167,7 +168,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param nextPage the next page
      * @return the next page
      */
-    public @NotNull PageableGUI setNextPage(final int slot, final @NotNull Item nextPage) {
+    public @NotNull PageableGUI setNextPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Item nextPage) {
         return setNextPage(slot, ItemGUIContent.newInstance(nextPage));
     }
 
@@ -179,7 +180,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param nextPage the next page
      * @return the next page
      */
-    public @NotNull PageableGUI setNextPage(final int slot, final @NotNull ItemGUIContent nextPage) {
+    public @NotNull PageableGUI setNextPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull ItemGUIContent nextPage) {
         return setNextPage(slot, (GUIContent) nextPage);
     }
 
@@ -191,7 +192,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param nextPage the next page
      * @return the next page
      */
-    public @NotNull PageableGUI setNextPage(final int slot, final @NotNull GUIContent nextPage) {
+    public @NotNull PageableGUI setNextPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull GUIContent nextPage) {
         this.nextPage.set(checkSlot(slot), nextPage);
         return this;
     }
@@ -236,7 +237,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param viewer the viewer
      * @param page   the page
      */
-    public void open(final @NotNull Viewer viewer, final int page) {
+    public void open(final @NotNull Viewer viewer, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         prepareOpenGUI(getPage(page), page).open(viewer);
     }
 
@@ -247,7 +248,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param page the page
      * @return the gui
      */
-    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final int page) {
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         GUI newGUI = gui.copy().copyFrom(this, false)
                 .setVariable("page", String.valueOf(page + 1))
                 .setVariable("previous_page", String.valueOf(page))
@@ -292,18 +293,18 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public boolean isMovable(int slot) {
+    public boolean isMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         return this.templateGUI.isMovable(slot);
     }
 
     @Override
-    public @NotNull PageableGUI setMovable(int slot, boolean movable) {
+    public @NotNull PageableGUI setMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final boolean movable) {
         this.templateGUI.setMovable(slot, movable);
         return this;
     }
 
     @Override
-    public @NotNull List<GUIContent> getContents(int slot) {
+    public @NotNull List<GUIContent> getContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         return this.templateGUI.getContents(slot);
     }
 
@@ -313,13 +314,13 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI addContent(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI addContent(final GUIContent @NotNull ... contents) {
         this.templateGUI.addContent(contents);
         return this;
     }
 
     @Override
-    public @NotNull PageableGUI setContents(int slot, GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
         this.templateGUI.setContents(slot, contents);
         return this;
     }
@@ -345,67 +346,67 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public int northWest() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int northWest() {
         return this.templateGUI.northWest();
     }
 
     @Override
-    public int north() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int north() {
         return this.templateGUI.north();
     }
 
     @Override
-    public int northEast() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int northEast() {
         return this.templateGUI.northEast();
     }
 
     @Override
-    public int middleLine() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int middleLine() {
         return this.templateGUI.middleLine();
     }
 
     @Override
-    public int middleWest() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int middleWest() {
         return this.templateGUI.middleWest();
     }
 
     @Override
-    public int middle() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int middle() {
         return this.templateGUI.middle();
     }
 
     @Override
-    public int middleEast() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int middleEast() {
         return this.templateGUI.middleEast();
     }
 
     @Override
-    public int southLine() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int southLine() {
         return this.templateGUI.southLine();
     }
 
     @Override
-    public int southWest() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int southWest() {
         return this.templateGUI.southWest();
     }
 
     @Override
-    public int south() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int south() {
         return this.templateGUI.south();
     }
 
     @Override
-    public int southEast() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int southEast() {
         return this.templateGUI.southEast();
     }
 
     @Override
-    public int rows() {
+    public @Range(from = Constants.MIN_ROWS, to = Constants.MAX_ROWS) int rows() {
         return this.templateGUI.rows();
     }
 
     @Override
-    public int columns() {
+    public @Range(from = Constants.MIN_COLUMNS, to = Constants.MAX_COLUMNS) int columns() {
         return this.templateGUI.columns();
     }
 
@@ -416,12 +417,12 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setContents(int slot, @NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull PageableGUI unsetContent(int slot) {
+    public @NotNull PageableGUI unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         this.templateGUI.unsetContent(slot);
         return this;
     }
@@ -488,42 +489,42 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI addContent(Item @NotNull ... contents) {
+    public @NotNull PageableGUI addContent(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.addContent(contents);
     }
 
     @Override
-    public @NotNull PageableGUI addContent(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI addContent(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.addContent(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setContents(int slot, Item @NotNull ... contents) {
+    public @NotNull PageableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull PageableGUI setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull PageableGUI setAllSides(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setAllSides(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setAllSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setAllSides(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setAllSides(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setAllSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setAllSides(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setAllSides(contents);
     }
 
@@ -533,22 +534,22 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setTopAndBottomSides(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setTopAndBottomSides(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setTopAndBottomSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setTopAndBottomSides(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setTopAndBottomSides(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
@@ -558,22 +559,22 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setLeftAndRightSides(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setLeftAndRightSides(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setLeftAndRightSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setLeftAndRightSides(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setLeftAndRightSides(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
@@ -583,22 +584,22 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setTopSide(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setTopSide(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setTopSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setTopSide(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setTopSide(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setTopSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setTopSide(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setTopSide(contents);
     }
 
@@ -608,22 +609,22 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setLeftSide(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setLeftSide(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setLeftSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setLeftSide(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setLeftSide(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setLeftSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setLeftSide(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setLeftSide(contents);
     }
 
@@ -633,22 +634,22 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setBottomSide(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setBottomSide(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setBottomSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setBottomSide(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setBottomSide(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setBottomSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setBottomSide(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setBottomSide(contents);
     }
 
@@ -658,22 +659,22 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setRightSide(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setRightSide(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setRightSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setRightSide(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setRightSide(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setRightSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull PageableGUI setRightSide(final @NotNull Collection<GUIContent> contents) {
         return (PageableGUI) GUI.super.setRightSide(contents);
     }
 
@@ -683,17 +684,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setNorthWest(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setNorthWest(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setNorthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setNorthWest(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setNorthWest(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthWest(contents);
     }
 
@@ -703,17 +704,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setNorth(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setNorth(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorth(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setNorth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorth(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setNorth(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setNorth(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorth(contents);
     }
 
@@ -723,17 +724,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setNorthEast(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setNorthEast(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setNorthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setNorthEast(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setNorthEast(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setNorthEast(contents);
     }
 
@@ -743,17 +744,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setMiddleWest(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddleWest(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddleWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setMiddleWest(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddleWest(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddleWest(contents);
     }
 
@@ -763,17 +764,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setMiddle(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddle(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddle(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setMiddle(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddle(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddle(contents);
     }
 
@@ -783,17 +784,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setMiddleEast(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddleEast(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddleEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setMiddleEast(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setMiddleEast(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setMiddleEast(contents);
     }
 
@@ -803,17 +804,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setSouthWest(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setSouthWest(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setSouthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setSouthWest(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setSouthWest(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthWest(contents);
     }
 
@@ -823,17 +824,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setSouth(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setSouth(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouth(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setSouth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouth(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setSouth(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setSouth(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouth(contents);
     }
 
@@ -843,17 +844,17 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setSouthEast(Item @NotNull ... contents) {
+    public @NotNull PageableGUI setSouthEast(final Item @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull PageableGUI setSouthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull PageableGUI setSouthEast(GUIContent @NotNull ... contents) {
+    public @NotNull PageableGUI setSouthEast(final GUIContent @NotNull ... contents) {
         return (PageableGUI) GUI.super.setSouthEast(contents);
     }
 
@@ -863,72 +864,72 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI fill(@NotNull Item content) {
+    public @NotNull PageableGUI fill(final @NotNull Item content) {
         return (PageableGUI) GUI.super.fill(content);
     }
 
     @Override
-    public @NotNull PageableGUI fill(@NotNull CustomItemGUIContent<?> content) {
+    public @NotNull PageableGUI fill(final @NotNull CustomItemGUIContent<?> content) {
         return (PageableGUI) GUI.super.fill(content);
     }
 
     @Override
-    public @NotNull PageableGUI fill(@NotNull GUIContent content) {
+    public @NotNull PageableGUI fill(final @NotNull GUIContent content) {
         return (PageableGUI) GUI.super.fill(content);
     }
 
     @Override
-    public @NotNull PageableGUI onClickOutside(@NotNull String command) {
+    public @NotNull PageableGUI onClickOutside(final @NotNull String command) {
         return (PageableGUI) GUI.super.onClickOutside(command);
     }
 
     @Override
-    public @NotNull PageableGUI onOpenGUI(@NotNull String command) {
+    public @NotNull PageableGUI onOpenGUI(final @NotNull String command) {
         return (PageableGUI) GUI.super.onOpenGUI(command);
     }
 
     @Override
-    public @NotNull PageableGUI onCloseGUI(@NotNull String command) {
+    public @NotNull PageableGUI onCloseGUI(final @NotNull String command) {
         return (PageableGUI) GUI.super.onCloseGUI(command);
     }
 
     @Override
-    public @NotNull PageableGUI onChangeGUI(@NotNull String command) {
+    public @NotNull PageableGUI onChangeGUI(final @NotNull String command) {
         return (PageableGUI) GUI.super.onChangeGUI(command);
     }
 
     @Override
-    public @NotNull PageableGUI onClickOutsideSend(@NotNull String message) {
+    public @NotNull PageableGUI onClickOutsideSend(final @NotNull String message) {
         return (PageableGUI) GUI.super.onClickOutsideSend(message);
     }
 
     @Override
-    public @NotNull PageableGUI onOpenGUISend(@NotNull String message) {
+    public @NotNull PageableGUI onOpenGUISend(final @NotNull String message) {
         return (PageableGUI) GUI.super.onOpenGUISend(message);
     }
 
     @Override
-    public @NotNull PageableGUI onCloseGUISend(@NotNull String message) {
+    public @NotNull PageableGUI onCloseGUISend(final @NotNull String message) {
         return (PageableGUI) GUI.super.onCloseGUISend(message);
     }
 
     @Override
-    public @NotNull PageableGUI onChangeGUISend(@NotNull String message) {
+    public @NotNull PageableGUI onChangeGUISend(final @NotNull String message) {
         return (PageableGUI) GUI.super.onChangeGUISend(message);
     }
 
     @Override
-    public @NotNull PageableGUI setVariable(@NotNull String name, @NotNull String value) {
+    public @NotNull PageableGUI setVariable(final @NotNull String name, final @NotNull String value) {
         return (PageableGUI) GUI.super.setVariable(name, value);
     }
 
     @Override
-    public @NotNull PageableGUI unsetVariable(@NotNull String name) {
+    public @NotNull PageableGUI unsetVariable(final @NotNull String name) {
         return (PageableGUI) GUI.super.unsetVariable(name);
     }
 
     @Override
-    public @NotNull PageableGUI copyAll(@NotNull GUI other, boolean replace) {
+    public @NotNull PageableGUI copyAll(final @NotNull GUI other, final boolean replace) {
         GUI.super.copyAll(other, replace);
         if (other instanceof PageableGUI) {
             PageableGUI otherGUI = (PageableGUI) other;
@@ -947,7 +948,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI copyFrom(@NotNull GUI other, boolean replace) {
+    public @NotNull PageableGUI copyFrom(final @NotNull GUI other, final boolean replace) {
         return (PageableGUI) GUI.super.copyFrom(other, replace);
     }
 
@@ -957,12 +958,12 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI copyAll(@NotNull Metadatable other, boolean replace) {
+    public @NotNull PageableGUI copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (PageableGUI) GUI.super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull PageableGUI copyFrom(@NotNull Metadatable other, boolean replace) {
+    public @NotNull PageableGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (PageableGUI) GUI.super.copyFrom(other, replace);
     }
 
@@ -972,7 +973,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param size the size
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newGUI(final int size) {
+    public static @NotNull PageableGUI newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new PageableGUI(GUI.newGUI(size));
     }
 
@@ -992,7 +993,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param size the size
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final int size) {
+    public static @NotNull PageableGUI newFullScreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new PageableGUI(GUI.newFullscreenGUI(size));
     }
 
@@ -1003,7 +1004,8 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param lowerGUISize the size of the lower GUI
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final int size, final int lowerGUISize) {
+    public static @NotNull PageableGUI newFullScreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+                                                        final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
         return new PageableGUI(GUI.newFullscreenGUI(size, lowerGUISize));
     }
 
@@ -1024,7 +1026,8 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param lowerGUISize the size of the lower GUI
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final @NotNull GUIType type, final int lowerGUISize) {
+    public static @NotNull PageableGUI newFullScreenGUI(final @NotNull GUIType type,
+                                                        final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
         return new PageableGUI(GUI.newFullscreenGUI(type, lowerGUISize));
     }
 

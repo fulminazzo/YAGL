@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,17 +26,13 @@ import java.util.stream.Stream;
 @Getter
 @EqualsAndHashCode
 public class FullscreenGUI implements GUI {
-    /**
-     * The Second inventory size.
-     */
-    public static final int SECOND_INVENTORY_SIZE = 36;
 
     private final @NotNull GUI upperGUI;
     private final @NotNull ResizableGUI lowerGUI;
 
     private FullscreenGUI() {
         this.upperGUI = new DefaultGUI();
-        this.lowerGUI = new FullscreenResizableGUI().resize(SECOND_INVENTORY_SIZE);
+        this.lowerGUI = new FullscreenResizableGUI().resize(Constants.SECONDARY_GUI_SIZE);
     }
 
     /**
@@ -43,9 +40,9 @@ public class FullscreenGUI implements GUI {
      *
      * @param size the size
      */
-    FullscreenGUI(final int size) {
+    FullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         this.upperGUI = GUI.newGUI(size);
-        this.lowerGUI = new FullscreenResizableGUI().resize(SECOND_INVENTORY_SIZE);
+        this.lowerGUI = new FullscreenResizableGUI().resize(Constants.SECONDARY_GUI_SIZE);
     }
 
     /**
@@ -55,7 +52,7 @@ public class FullscreenGUI implements GUI {
      */
     FullscreenGUI(final @NotNull GUIType type) {
         this.upperGUI = GUI.newGUI(type);
-        this.lowerGUI = new FullscreenResizableGUI().resize(SECOND_INVENTORY_SIZE);
+        this.lowerGUI = new FullscreenResizableGUI().resize(Constants.SECONDARY_GUI_SIZE);
     }
 
     /**
@@ -64,7 +61,7 @@ public class FullscreenGUI implements GUI {
      * @param slot the slot
      * @return the relative slot
      */
-    int getCorrespondingSlot(final int slot) {
+    int getCorrespondingSlot(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         GUIUtils.checkSlot(slot, size());
         if (slot >= upperGUI.size()) return slot - upperGUI.size();
         else return slot;
@@ -76,7 +73,7 @@ public class FullscreenGUI implements GUI {
      * @param slot the slot
      * @return the corresponding gui
      */
-    @NotNull GUI getCorrespondingGUI(final int slot) {
+    @NotNull GUI getCorrespondingGUI(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         GUIUtils.checkSlot(slot, size());
         if (slot >= upperGUI.size()) return lowerGUI;
         else return upperGUI;
@@ -94,7 +91,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public void open(@NotNull Viewer viewer) {
+    public void open(final @NotNull Viewer viewer) {
         GUIUtils.executeGUIAdapterFunction("openGUI", this, viewer);
     }
 
@@ -103,12 +100,12 @@ public class FullscreenGUI implements GUI {
      *
      * @param viewer the viewer
      */
-    public void update(@NotNull Viewer viewer) {
+    public void update(final @NotNull Viewer viewer) {
         GUIUtils.executeGUIAdapterFunction("updatePlayerGUI", this, viewer);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTitle(@Nullable String title) {
+    public @NotNull FullscreenGUI setTitle(final @Nullable String title) {
         this.upperGUI.setTitle(title);
         return this;
     }
@@ -124,18 +121,18 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public boolean isMovable(int slot) {
+    public boolean isMovable(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         return getCorrespondingGUI(slot).isMovable(getCorrespondingSlot(slot));
     }
 
     @Override
-    public @NotNull FullscreenGUI setMovable(int slot, boolean movable) {
+    public @NotNull FullscreenGUI setMovable(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot, final boolean movable) {
         getCorrespondingGUI(slot).setMovable(getCorrespondingSlot(slot), movable);
         return this;
     }
 
     @Override
-    public @NotNull List<GUIContent> getContents(int slot) {
+    public @NotNull List<GUIContent> getContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         return getCorrespondingGUI(slot).getContents(getCorrespondingSlot(slot));
     }
 
@@ -148,7 +145,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI addContent(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI addContent(final GUIContent @NotNull ... contents) {
         int i;
         for (i = 0; i < contents.length; i++)
             try {
@@ -165,13 +162,13 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setContents(int slot, GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
         getCorrespondingGUI(slot).setContents(getCorrespondingSlot(slot), contents);
         return this;
     }
 
     @Override
-    public @NotNull FullscreenGUI unsetContent(int slot) {
+    public @NotNull FullscreenGUI unsetContent(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         getCorrespondingGUI(slot).unsetContent(getCorrespondingSlot(slot));
         return this;
     }
@@ -199,38 +196,38 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public int northWest() {
+    public @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int northWest() {
         return this.upperGUI.northWest();
     }
 
     @Override
-    public int north() {
+    public @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int north() {
         return this.upperGUI.north();
     }
 
     @Override
-    public int northEast() {
+    public @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int northEast() {
         return this.upperGUI.northEast();
     }
 
     @Override
-    public int middleLine() {
+    public @Range(from = 0, to = Constants.MAX_SLOT) int middleLine() {
         if (this.upperGUI.columns() == this.lowerGUI.columns()) return GUI.super.middleLine();
         else return this.upperGUI.size() + this.lowerGUI.middleLine();
     }
 
     @Override
-    public int southLine() {
+    public @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int southLine() {
         return this.upperGUI.size() + this.lowerGUI.southLine();
     }
 
     @Override
-    public int rows() {
+    public @Range(from = Constants.MIN_ROWS, to = Constants.MAX_ROWS) int rows() {
         return this.upperGUI.rows() + this.lowerGUI.rows();
     }
 
     @Override
-    public int columns() {
+    public @Range(from = Constants.MIN_COLUMNS, to = Constants.MAX_COLUMNS) int columns() {
         return this.lowerGUI.columns();
     }
 
@@ -242,7 +239,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI onClickOutside(@NotNull GUIAction action) {
+    public @NotNull FullscreenGUI onClickOutside(final @NotNull GUIAction action) {
         this.upperGUI.onClickOutside(action);
         return this;
     }
@@ -253,7 +250,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI onOpenGUI(@NotNull GUIAction action) {
+    public @NotNull FullscreenGUI onOpenGUI(final @NotNull GUIAction action) {
         this.upperGUI.onOpenGUI(action);
         return this;
     }
@@ -264,7 +261,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI onCloseGUI(@NotNull GUIAction action) {
+    public @NotNull FullscreenGUI onCloseGUI(final @NotNull GUIAction action) {
         this.upperGUI.onCloseGUI(action);
         return this;
     }
@@ -275,7 +272,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI onChangeGUI(@NotNull BiGUIAction action) {
+    public @NotNull FullscreenGUI onChangeGUI(final @NotNull BiGUIAction action) {
         this.upperGUI.onChangeGUI(action);
         return this;
     }
@@ -314,47 +311,50 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI addContent(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI addContent(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.addContent(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI addContent(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI addContent(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.addContent(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setContents(int slot, Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                              final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                              final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setContents(int slot, @NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                              final @NotNull Collection<GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setAllSides(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setAllSides(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setAllSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setAllSides(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setAllSides(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setAllSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setAllSides(final @NotNull Collection<GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setAllSides(contents);
     }
 
@@ -779,15 +779,15 @@ public class FullscreenGUI implements GUI {
     }
 
     /**
-     * An implementation of {@link ResizableGUI} that supports a maximum size of {@link #SECOND_INVENTORY_SIZE}.
+     * An implementation of {@link ResizableGUI} that supports a maximum size of {@link Constants#SECONDARY_GUI_SIZE}.
      */
     static class FullscreenResizableGUI extends ResizableGUI {
 
         @Override
-        void checkSize(int size) {
-            if (size < COLUMNS || size > SECOND_INVENTORY_SIZE)
+        void checkSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int size) {
+            if (size < Constants.MIN_DEFAULT_SIZE || size > Constants.SECONDARY_GUI_SIZE)
                 throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and %s!",
-                        COLUMNS, SECOND_INVENTORY_SIZE
+                        Constants.MIN_DEFAULT_SIZE, Constants.SECONDARY_GUI_SIZE
                 ));
         }
 

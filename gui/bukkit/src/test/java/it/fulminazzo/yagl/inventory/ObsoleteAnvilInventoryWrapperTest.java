@@ -83,7 +83,7 @@ class ObsoleteAnvilInventoryWrapperTest extends BukkitUtils {
             assertEquals(new CraftItemStack(Material.STONE, 64), craftItemStack);
 
             List<Slot> slots = activeContainer.getSlots();
-            assertEquals(activeContainer.getSize() + FullscreenGUI.SECOND_INVENTORY_SIZE, slots.size(),
+            assertEquals(activeContainer.getSize() + FullscreenGUI.SECONDARY_GUI_SIZE, slots.size(),
                     "Slots size should be player inventory contents size plus container size");
 
             List<EntityPlayer> slotListeners = activeContainer.getSlotListeners();

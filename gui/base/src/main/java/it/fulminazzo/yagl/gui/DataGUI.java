@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.*;
 import java.util.function.Function;
@@ -150,16 +151,16 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public void open(@NotNull Viewer viewer, int page) {
+    public void open(final @NotNull Viewer viewer, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         prepareOpenGUI(this.templateGUI, page).open(viewer);
     }
 
     @Override
-    protected @NotNull GUI prepareOpenGUI(@NotNull GUI gui, int page) {
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         return fillContents(super.prepareOpenGUI(gui, page), page);
     }
 
-    private @NotNull GUI fillContents(final @NotNull GUI gui, final int page) {
+    private @NotNull GUI fillContents(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         List<T> dataList = getDataList();
         int emptySlots = emptySlots().size();
         int min = emptySlots * page;
@@ -191,7 +192,7 @@ public class DataGUI<T> extends PageableGUI {
      *
      * @return the slots
      */
-    protected int getFirstPageEmptySlots() {
+    protected @Range(from = 0, to = Constants.MAX_SLOT) int getFirstPageEmptySlots() {
         int slots = getPageEmptySlots();
         if (this.previousPage.isPresent()) slots++;
         return slots;
@@ -202,7 +203,7 @@ public class DataGUI<T> extends PageableGUI {
      *
      * @return the slots
      */
-    protected int getLastPageEmptySlots() {
+    protected @Range(from = 0, to = Constants.MAX_SLOT) int getLastPageEmptySlots() {
         int slots = getPageEmptySlots();
         if (this.nextPage.isPresent()) slots++;
         return slots;
@@ -213,7 +214,7 @@ public class DataGUI<T> extends PageableGUI {
      *
      * @return the slots
      */
-    protected int getPageEmptySlots() {
+    protected @Range(from = 0, to = Constants.MAX_SLOT) int getPageEmptySlots() {
         final Set<Integer> slots = emptySlots();
         this.previousPage.ifPresent((i, p) -> slots.remove(i));
         this.nextPage.ifPresent((i, p) -> slots.remove(i));
@@ -226,7 +227,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the pages
      */
     @Override
-    public int pages() {
+    public @Range(from = 0, to = Integer.MAX_VALUE) int pages() {
         int dataSize = getDataList().size();
         if (dataSize == 0) return 1;
         final int emptySlots = getPageEmptySlots();
@@ -260,7 +261,7 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     @Deprecated
-    public @NotNull GUI getPage(int page) {
+    public @NotNull GUI getPage(final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
 
@@ -273,17 +274,17 @@ public class DataGUI<T> extends PageableGUI {
      */
     @Override
     @Deprecated
-    public @NotNull DataGUI<T> setPages(int pages) {
+    public @NotNull DataGUI<T> setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
 
     @Override
-    public @NotNull DataGUI<T> setPreviousPage(int slot, @NotNull Item previousPage) {
+    public @NotNull DataGUI<T> setPreviousPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Item previousPage) {
         return (DataGUI<T>) super.setPreviousPage(slot, previousPage);
     }
 
     @Override
-    public @NotNull DataGUI<T> setPreviousPage(int slot, @NotNull GUIContent previousPage) {
+    public @NotNull DataGUI<T> setPreviousPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull GUIContent previousPage) {
         return (DataGUI<T>) super.setPreviousPage(slot, previousPage);
     }
 
@@ -293,12 +294,12 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNextPage(int slot, @NotNull Item nextPage) {
+    public @NotNull DataGUI<T> setNextPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Item nextPage) {
         return (DataGUI<T>) super.setNextPage(slot, nextPage);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNextPage(int slot, @NotNull GUIContent nextPage) {
+    public @NotNull DataGUI<T> setNextPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull GUIContent nextPage) {
         return (DataGUI<T>) super.setNextPage(slot, nextPage);
     }
 
@@ -308,52 +309,52 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setTitle(@Nullable String title) {
+    public @NotNull DataGUI<T> setTitle(final @Nullable String title) {
         return (DataGUI<T>) super.setTitle(title);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMovable(int slot, boolean movable) {
+    public @NotNull DataGUI<T> setMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final boolean movable) {
         return (DataGUI<T>) super.setMovable(slot, movable);
     }
 
     @Override
-    public @NotNull DataGUI<T> addContent(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> addContent(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.addContent(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setContents(int slot, GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setContents(int slot, @NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> unsetContent(int slot) {
+    public @NotNull DataGUI<T> unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         return (DataGUI<T>) super.unsetContent(slot);
     }
 
     @Override
-    public @NotNull DataGUI<T> onClickOutside(@NotNull GUIAction action) {
+    public @NotNull DataGUI<T> onClickOutside(final @NotNull GUIAction action) {
         return (DataGUI<T>) super.onClickOutside(action);
     }
 
     @Override
-    public @NotNull DataGUI<T> onOpenGUI(@NotNull GUIAction action) {
+    public @NotNull DataGUI<T> onOpenGUI(final @NotNull GUIAction action) {
         return (DataGUI<T>) super.onOpenGUI(action);
     }
 
     @Override
-    public @NotNull DataGUI<T> onCloseGUI(@NotNull GUIAction action) {
+    public @NotNull DataGUI<T> onCloseGUI(final @NotNull GUIAction action) {
         return (DataGUI<T>) super.onCloseGUI(action);
     }
 
     @Override
-    public @NotNull DataGUI<T> onChangeGUI(@NotNull BiGUIAction action) {
+    public @NotNull DataGUI<T> onChangeGUI(final @NotNull BiGUIAction action) {
         return (DataGUI<T>) super.onChangeGUI(action);
     }
 
@@ -368,42 +369,42 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> addContent(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> addContent(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.addContent(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> addContent(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> addContent(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.addContent(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setContents(int slot, Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setAllSides(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setAllSides(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setAllSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setAllSides(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setAllSides(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setAllSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setAllSides(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setAllSides(contents);
     }
 
@@ -413,22 +414,22 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopAndBottomSides(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopAndBottomSides(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopAndBottomSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopAndBottomSides(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopAndBottomSides(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setTopAndBottomSides(contents);
     }
 
@@ -438,22 +439,22 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftAndRightSides(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftAndRightSides(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftAndRightSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftAndRightSides(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftAndRightSides(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setLeftAndRightSides(contents);
     }
 
@@ -463,22 +464,22 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopSide(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopSide(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopSide(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setTopSide(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setTopSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setTopSide(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setTopSide(contents);
     }
 
@@ -488,22 +489,22 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftSide(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftSide(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftSide(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setLeftSide(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setLeftSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setLeftSide(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setLeftSide(contents);
     }
 
@@ -513,22 +514,22 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setBottomSide(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setBottomSide(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setBottomSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setBottomSide(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setBottomSide(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setBottomSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setBottomSide(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setBottomSide(contents);
     }
 
@@ -538,22 +539,22 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setRightSide(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setRightSide(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setRightSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setRightSide(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setRightSide(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setRightSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull DataGUI<T> setRightSide(final @NotNull Collection<GUIContent> contents) {
         return (DataGUI<T>) super.setRightSide(contents);
     }
 
@@ -563,17 +564,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthWest(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthWest(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthWest(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthWest(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthWest(contents);
     }
 
@@ -583,17 +584,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorth(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorth(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setNorth(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setNorth(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorth(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorth(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setNorth(contents);
     }
 
@@ -603,17 +604,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthEast(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthEast(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setNorthEast(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setNorthEast(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setNorthEast(contents);
     }
 
@@ -623,17 +624,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleWest(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleWest(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleWest(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleWest(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleWest(contents);
     }
 
@@ -643,17 +644,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddle(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddle(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddle(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddle(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddle(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddle(contents);
     }
 
@@ -663,17 +664,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleEast(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleEast(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setMiddleEast(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setMiddleEast(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setMiddleEast(contents);
     }
 
@@ -683,17 +684,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthWest(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthWest(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthWest(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthWest(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthWest(contents);
     }
 
@@ -703,17 +704,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouth(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouth(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setSouth(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setSouth(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouth(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouth(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setSouth(contents);
     }
 
@@ -723,17 +724,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthEast(Item @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthEast(final Item @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull DataGUI<T> setSouthEast(GUIContent @NotNull ... contents) {
+    public @NotNull DataGUI<T> setSouthEast(final GUIContent @NotNull ... contents) {
         return (DataGUI<T>) super.setSouthEast(contents);
     }
 
@@ -743,17 +744,17 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> fill(@NotNull Item content) {
+    public @NotNull DataGUI<T> fill(final @NotNull Item content) {
         return (DataGUI<T>) super.fill(content);
     }
 
     @Override
-    public @NotNull DataGUI<T> fill(@NotNull CustomItemGUIContent<?> content) {
+    public @NotNull DataGUI<T> fill(final @NotNull CustomItemGUIContent<?> content) {
         return (DataGUI<T>) super.fill(content);
     }
 
     @Override
-    public @NotNull DataGUI<T> fill(@NotNull GUIContent content) {
+    public @NotNull DataGUI<T> fill(final @NotNull GUIContent content) {
         return (DataGUI<T>) super.fill(content);
     }
 
@@ -763,62 +764,62 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> onClickOutside(@NotNull String command) {
+    public @NotNull DataGUI<T> onClickOutside(final @NotNull String command) {
         return (DataGUI<T>) super.onClickOutside(command);
     }
 
     @Override
-    public @NotNull DataGUI<T> onOpenGUI(@NotNull String command) {
+    public @NotNull DataGUI<T> onOpenGUI(final @NotNull String command) {
         return (DataGUI<T>) super.onOpenGUI(command);
     }
 
     @Override
-    public @NotNull DataGUI<T> onCloseGUI(@NotNull String command) {
+    public @NotNull DataGUI<T> onCloseGUI(final @NotNull String command) {
         return (DataGUI<T>) super.onCloseGUI(command);
     }
 
     @Override
-    public @NotNull DataGUI<T> onChangeGUI(@NotNull String command) {
+    public @NotNull DataGUI<T> onChangeGUI(final @NotNull String command) {
         return (DataGUI<T>) super.onChangeGUI(command);
     }
 
     @Override
-    public @NotNull DataGUI<T> onClickOutsideSend(@NotNull String message) {
+    public @NotNull DataGUI<T> onClickOutsideSend(final @NotNull String message) {
         return (DataGUI<T>) super.onClickOutsideSend(message);
     }
 
     @Override
-    public @NotNull DataGUI<T> onOpenGUISend(@NotNull String message) {
+    public @NotNull DataGUI<T> onOpenGUISend(final @NotNull String message) {
         return (DataGUI<T>) super.onOpenGUISend(message);
     }
 
     @Override
-    public @NotNull DataGUI<T> onCloseGUISend(@NotNull String message) {
+    public @NotNull DataGUI<T> onCloseGUISend(final @NotNull String message) {
         return (DataGUI<T>) super.onCloseGUISend(message);
     }
 
     @Override
-    public @NotNull DataGUI<T> onChangeGUISend(@NotNull String message) {
+    public @NotNull DataGUI<T> onChangeGUISend(final @NotNull String message) {
         return (DataGUI<T>) super.onChangeGUISend(message);
     }
 
     @Override
-    public @NotNull DataGUI<T> setVariable(@NotNull String name, @NotNull String value) {
+    public @NotNull DataGUI<T> setVariable(final @NotNull String name, final @NotNull String value) {
         return (DataGUI<T>) super.setVariable(name, value);
     }
 
     @Override
-    public @NotNull DataGUI<T> unsetVariable(@NotNull String name) {
+    public @NotNull DataGUI<T> unsetVariable(final @NotNull String name) {
         return (DataGUI<T>) super.unsetVariable(name);
     }
 
     @Override
-    public @NotNull DataGUI<T> copyAll(@NotNull GUI other, boolean replace) {
+    public @NotNull DataGUI<T> copyAll(final @NotNull GUI other, final boolean replace) {
         return (DataGUI<T>) super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull DataGUI<T> copyFrom(@NotNull GUI other, boolean replace) {
+    public @NotNull DataGUI<T> copyFrom(final @NotNull GUI other, final boolean replace) {
         return (DataGUI<T>) super.copyFrom(other, replace);
     }
 
@@ -828,12 +829,12 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> copyAll(@NotNull Metadatable other, boolean replace) {
+    public @NotNull DataGUI<T> copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (DataGUI<T>) super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull DataGUI<T> copyFrom(@NotNull Metadatable other, boolean replace) {
+    public @NotNull DataGUI<T> copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (DataGUI<T>) super.copyFrom(other, replace);
     }
 
@@ -845,7 +846,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param dataConverter the data converter
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newGUI(final int size,
+    public static <T> @NotNull DataGUI<T> newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                  final @NotNull Function<T, GUIContent> dataConverter) {
         return new DataGUI<>(GUI.newGUI(size), dataConverter);
     }
@@ -860,7 +861,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newGUI(final int size,
+    public static <T> @NotNull DataGUI<T> newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                  final @NotNull Function<T, GUIContent> dataConverter,
                                                  final T @NotNull ... data) {
         return new DataGUI<>(GUI.newGUI(size), dataConverter).setData(data);
@@ -875,7 +876,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data          the data
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newGUI(final int size,
+    public static <T> @NotNull DataGUI<T> newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                  final @NotNull Function<T, GUIContent> dataConverter,
                                                  final @NotNull Collection<T> data) {
         return new DataGUI<>(GUI.newGUI(size), dataConverter).setData(data);
@@ -933,7 +934,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param dataConverter the data converter
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final int size,
+    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                            final @NotNull Function<T, GUIContent> dataConverter) {
         return new DataGUI<>(GUI.newFullscreenGUI(size), dataConverter);
     }
@@ -947,8 +948,8 @@ public class DataGUI<T> extends PageableGUI {
      * @param dataConverter the data converter
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final int size,
-                                                           final int lowerGUISize,
+    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
                                                            final @NotNull Function<T, GUIContent> dataConverter) {
         return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize), dataConverter);
     }
@@ -963,7 +964,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final int size,
+    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                            final @NotNull Function<T, GUIContent> dataConverter,
                                                            final T @NotNull ... data) {
         return new DataGUI<>(GUI.newFullscreenGUI(size), dataConverter).setData(data);
@@ -980,8 +981,8 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final int size,
-                                                           final int lowerGUISize,
+    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
                                                            final @NotNull Function<T, GUIContent> dataConverter,
                                                            final T @NotNull ... data) {
         return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize), dataConverter).setData(data);
@@ -996,7 +997,7 @@ public class DataGUI<T> extends PageableGUI {
      * @param data          the data
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final int size,
+    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                            final @NotNull Function<T, GUIContent> dataConverter,
                                                            final @NotNull Collection<T> data) {
         return new DataGUI<>(GUI.newFullscreenGUI(size), dataConverter).setData(data);
@@ -1012,8 +1013,8 @@ public class DataGUI<T> extends PageableGUI {
      * @param data          the data
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final int size,
-                                                           final int lowerGUISize,
+    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
                                                            final @NotNull Function<T, GUIContent> dataConverter,
                                                            final @NotNull Collection<T> data) {
         return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize), dataConverter).setData(data);
@@ -1042,7 +1043,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final int lowerGUISize,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
                                                            final @NotNull Function<T, GUIContent> dataConverter) {
         return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize), dataConverter);
     }
@@ -1075,7 +1076,7 @@ public class DataGUI<T> extends PageableGUI {
      */
     @SafeVarargs
     public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final int lowerGUISize,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
                                                            final @NotNull Function<T, GUIContent> dataConverter,
                                                            final T @NotNull ... data) {
         return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize), dataConverter).setData(data);
@@ -1107,7 +1108,7 @@ public class DataGUI<T> extends PageableGUI {
      * @return the data gui
      */
     public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final int lowerGUISize,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
                                                            final @NotNull Function<T, GUIContent> dataConverter,
                                                            final @NotNull Collection<T> data) {
         return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize), dataConverter).setData(data);

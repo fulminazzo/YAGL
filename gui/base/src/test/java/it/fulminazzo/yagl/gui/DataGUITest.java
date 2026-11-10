@@ -264,17 +264,17 @@ class DataGUITest {
     private static Object[] fullscreenConstructorParameters() {
         return new Object[]{
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, null), false, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, FullscreenGUI.SECOND_INVENTORY_SIZE, null), false, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, Constants.SECONDARY_GUI_SIZE, null), false, false},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, null, "Hello", "World"), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, FullscreenGUI.SECOND_INVENTORY_SIZE, null, "Hello", "World"), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, Constants.SECONDARY_GUI_SIZE, null, "Hello", "World"), false, true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, null, Arrays.asList("Hello", "World")), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, FullscreenGUI.SECOND_INVENTORY_SIZE, null, Arrays.asList("Hello", "World")), false, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, Constants.SECONDARY_GUI_SIZE, null, Arrays.asList("Hello", "World")), false, true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, null), true, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, FullscreenGUI.SECOND_INVENTORY_SIZE, null), true, false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE, null), true, false},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, FullscreenGUI.SECOND_INVENTORY_SIZE, null, "Hello", "World"), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE, null, "Hello", "World"), true, true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, FullscreenGUI.SECOND_INVENTORY_SIZE, null, Arrays.asList("Hello", "World")), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE, null, Arrays.asList("Hello", "World")), true, true},
         };
     }
 

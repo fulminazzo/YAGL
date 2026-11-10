@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 import java.util.List;
@@ -120,7 +121,7 @@ public class SearchGUI<T> extends DataGUI<T> {
      * @return the parsed gui
      */
     @Override
-    protected @NotNull GUI prepareOpenGUI(@NotNull GUI gui, int page) {
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         for (int i = 0; i < GUIType.ANVIL.getSize(); i++) {
             @NotNull List<GUIContent> contents = getContents(i);
             if (contents.isEmpty())
@@ -158,7 +159,7 @@ public class SearchGUI<T> extends DataGUI<T> {
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull SearchGUI<T> setPages(int pages) {
+    public @NotNull SearchGUI<T> setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
 
@@ -169,7 +170,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> addData(@NotNull Collection<T> data) {
+    public @NotNull SearchGUI<T> addData(final @NotNull Collection<T> data) {
         return (SearchGUI<T>) super.addData(data);
     }
 
@@ -180,7 +181,7 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setData(@NotNull Collection<T> data) {
+    public @NotNull SearchGUI<T> setData(final @NotNull Collection<T> data) {
         return (SearchGUI<T>) super.setData(data);
     }
 
@@ -191,12 +192,12 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> removeData(@NotNull Collection<T> data) {
+    public @NotNull SearchGUI<T> removeData(final @NotNull Collection<T> data) {
         return (SearchGUI<T>) super.removeData(data);
     }
 
     @Override
-    public @NotNull SearchGUI<T> removeData(@NotNull Predicate<T> function) {
+    public @NotNull SearchGUI<T> removeData(final @NotNull Predicate<T> function) {
         return (SearchGUI<T>) super.removeData(function);
     }
 
@@ -206,12 +207,14 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setPreviousPage(int slot, @NotNull Item previousPage) {
+    public @NotNull SearchGUI<T> setPreviousPage(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                                 final @NotNull Item previousPage) {
         return (SearchGUI<T>) super.setPreviousPage(slot, previousPage);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setPreviousPage(int slot, @NotNull GUIContent previousPage) {
+    public @NotNull SearchGUI<T> setPreviousPage(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                                 final @NotNull GUIContent previousPage) {
         return (SearchGUI<T>) super.setPreviousPage(slot, previousPage);
     }
 
@@ -221,12 +224,14 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setNextPage(int slot, @NotNull Item nextPage) {
+    public @NotNull SearchGUI<T> setNextPage(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                             final @NotNull Item nextPage) {
         return (SearchGUI<T>) super.setNextPage(slot, nextPage);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setNextPage(int slot, @NotNull GUIContent nextPage) {
+    public @NotNull SearchGUI<T> setNextPage(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                             final @NotNull GUIContent nextPage) {
         return (SearchGUI<T>) super.setNextPage(slot, nextPage);
     }
 
@@ -236,52 +241,55 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTitle(@Nullable String title) {
+    public @NotNull SearchGUI<T> setTitle(final @Nullable String title) {
         return (SearchGUI<T>) super.setTitle(title);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setMovable(int slot, boolean movable) {
+    public @NotNull SearchGUI<T> setMovable(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                            final boolean movable) {
         return (SearchGUI<T>) super.setMovable(slot, movable);
     }
 
     @Override
-    public @NotNull SearchGUI<T> addContent(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> addContent(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.addContent(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setContents(int slot, GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                             final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setContents(int slot, @NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                             final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> unsetContent(int slot) {
+    public @NotNull SearchGUI<T> unsetContent(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         return (SearchGUI<T>) super.unsetContent(slot);
     }
 
     @Override
-    public @NotNull SearchGUI<T> onClickOutside(@NotNull GUIAction action) {
+    public @NotNull SearchGUI<T> onClickOutside(final @NotNull GUIAction action) {
         return (SearchGUI<T>) super.onClickOutside(action);
     }
 
     @Override
-    public @NotNull SearchGUI<T> onOpenGUI(@NotNull GUIAction action) {
+    public @NotNull SearchGUI<T> onOpenGUI(final @NotNull GUIAction action) {
         return (SearchGUI<T>) super.onOpenGUI(action);
     }
 
     @Override
-    public @NotNull SearchGUI<T> onCloseGUI(@NotNull GUIAction action) {
+    public @NotNull SearchGUI<T> onCloseGUI(final @NotNull GUIAction action) {
         return (SearchGUI<T>) super.onCloseGUI(action);
     }
 
     @Override
-    public @NotNull SearchGUI<T> onChangeGUI(@NotNull BiGUIAction action) {
+    public @NotNull SearchGUI<T> onChangeGUI(final @NotNull BiGUIAction action) {
         return (SearchGUI<T>) super.onChangeGUI(action);
     }
 
@@ -296,42 +304,44 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> addContent(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> addContent(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.addContent(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> addContent(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> addContent(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.addContent(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setContents(int slot, Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                             final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
+                                             final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setAllSides(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setAllSides(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setAllSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setAllSides(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setAllSides(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setAllSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setAllSides(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setAllSides(contents);
     }
 
@@ -341,22 +351,22 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopAndBottomSides(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopAndBottomSides(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopAndBottomSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopAndBottomSides(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopAndBottomSides(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setTopAndBottomSides(contents);
     }
 
@@ -366,22 +376,22 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftAndRightSides(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftAndRightSides(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftAndRightSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftAndRightSides(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftAndRightSides(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setLeftAndRightSides(contents);
     }
 
@@ -391,22 +401,22 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopSide(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopSide(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopSide(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setTopSide(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setTopSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setTopSide(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setTopSide(contents);
     }
 
@@ -416,22 +426,22 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftSide(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftSide(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftSide(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setLeftSide(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setLeftSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setLeftSide(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setLeftSide(contents);
     }
 
@@ -441,22 +451,22 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setBottomSide(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setBottomSide(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setBottomSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setBottomSide(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setBottomSide(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setBottomSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setBottomSide(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setBottomSide(contents);
     }
 
@@ -466,22 +476,22 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> setRightSide(Item @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setRightSide(final Item @NotNull ... contents) {
         return (SearchGUI<T>) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setRightSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (SearchGUI<T>) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setRightSide(GUIContent @NotNull ... contents) {
+    public @NotNull SearchGUI<T> setRightSide(final GUIContent @NotNull ... contents) {
         return (SearchGUI<T>) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull SearchGUI<T> setRightSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull SearchGUI<T> setRightSide(final @NotNull Collection<GUIContent> contents) {
         return (SearchGUI<T>) super.setRightSide(contents);
     }
 
@@ -784,7 +794,7 @@ public class SearchGUI<T> extends DataGUI<T> {
      * @return the search gui
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
-            final int lowerGUISize,
+            final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction) {
         SearchFullscreenGUI gui = new SearchFullscreenGUI();
@@ -821,7 +831,7 @@ public class SearchGUI<T> extends DataGUI<T> {
      */
     @SafeVarargs
     public static <T> @NotNull SearchGUI<T> newGUI(
-            final int lowerGUISize,
+            final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction,
             final T @NotNull ... data) {
@@ -857,7 +867,7 @@ public class SearchGUI<T> extends DataGUI<T> {
      * @return the search gui
      */
     public static <T> @NotNull SearchGUI<T> newGUI(
-            final int lowerGUISize,
+            final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
             final @NotNull Function<T, GUIContent> dataConverter,
             final @NotNull BiPredicate<T, String> searchFunction,
             final @NotNull Collection<T> data) {
@@ -903,6 +913,7 @@ public class SearchGUI<T> extends DataGUI<T> {
                     .setFieldObject("searchGui", this.searchGui)
                     .getObject();
         }
+
     }
 
 }

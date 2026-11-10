@@ -3,20 +3,20 @@ package it.fulminazzo.yagl.gui;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Range;
 
 /**
  * Represents a "chest" GUI that cannot be resized.
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DefaultGUI extends GUIImpl {
-    static final int COLUMNS = 9;
 
     /**
      * Instantiates a new Gui.
      *
      * @param size the size
      */
-    protected DefaultGUI(int size) {
+    protected DefaultGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         super(size);
         checkSize(size);
     }
@@ -24,24 +24,24 @@ public class DefaultGUI extends GUIImpl {
     /**
      * Checks if the given size is in bounds.
      *
-     * @param size  the size
+     * @param size the size
      */
-    void checkSize(int size) {
-        if (size < COLUMNS || size > MAX_SIZE)
-            throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and %s!", COLUMNS, MAX_SIZE));
-        if (size % COLUMNS != 0)
+    void checkSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+        if (size < Constants.MIN_DEFAULT_SIZE || size > Constants.MAX_SIZE)
+            throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and %s!", Constants.MIN_DEFAULT_SIZE, Constants.MAX_SIZE));
+        if (size % Constants.MIN_DEFAULT_SIZE != 0)
             throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of %s can be accepted",
-                    size, COLUMNS));
+                    size, Constants.MIN_DEFAULT_SIZE));
     }
 
     @Override
-    public int rows() {
-        return size() / COLUMNS;
+    public @Range(from = Constants.MIN_ROWS, to = Constants.MAX_ROWS) int rows() {
+        return size() / Constants.MIN_DEFAULT_SIZE;
     }
 
     @Override
-    public int columns() {
-        return COLUMNS;
+    public @Range(from = Constants.MIN_COLUMNS, to = Constants.MAX_COLUMNS) int columns() {
+        return Constants.MIN_DEFAULT_SIZE;
     }
 
     @Override

@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 
@@ -26,61 +27,62 @@ public class ResizableGUI extends DefaultGUI {
      *
      * @param size the size
      */
-    protected ResizableGUI(int size) {
+    protected ResizableGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         super(size);
     }
 
     @Override
-    public @NotNull ResizableGUI setContents(int slot, GUIContent @NotNull ... contents) {
-        if (slot >= size() && slot < MAX_SIZE) resize((slot / 9 + 1) * 9);
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
+        if (slot >= size() && slot < Constants.MAX_SIZE) resize((slot / 9 + 1) * 9);
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setContents(int slot, @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull ResizableGUI addContent(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI addContent(final GUIContent @NotNull ... contents) {
         int j = 0;
         for (int i = 0; i < contents.length; i++) {
             GUIContent content = contents[i];
             j = addSingle(content, j);
             if (j < size()) continue;
-            if (size() < MAX_SIZE) {
+            if (size() < Constants.MAX_SIZE) {
                 resize(size() + 9);
                 this.contents.set(j, new Contents(content));
-            } else throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
+            } else
+                throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
         }
         return this;
     }
 
     /**
      * Resizes the current GUI to the new size.
-     * Must be a multiple of 9 not higher than {@link #MAX_SIZE}.
+     * Must be a multiple of 9 not higher than {@link Constants#MAX_SIZE}.
      *
      * @param size the size
      * @return this gui
      */
-    public @NotNull ResizableGUI resize(int size) {
+    public @NotNull ResizableGUI resize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         checkSize(size);
         this.contents = createContents(size, this.contents);
         return this;
     }
 
     @Override
-    public @NotNull ResizableGUI setTitle(@Nullable String title) {
+    public @NotNull ResizableGUI setTitle(final @Nullable String title) {
         return (ResizableGUI) super.setTitle(title);
     }
 
     @Override
-    public @NotNull ResizableGUI setMovable(int slot, boolean movable) {
+    public @NotNull ResizableGUI setMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final boolean movable) {
         return (ResizableGUI) super.setMovable(slot, movable);
     }
 
     @Override
-    public @NotNull ResizableGUI unsetContent(int slot) {
+    public @NotNull ResizableGUI unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         return (ResizableGUI) super.unsetContent(slot);
     }
 
@@ -90,22 +92,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setAllSides(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setAllSides(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setAllSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setAllSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setAllSides(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setAllSides(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setAllSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setAllSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setAllSides(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setAllSides(contents);
     }
 
@@ -115,22 +117,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setTopAndBottomSides(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setTopAndBottomSides(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setTopAndBottomSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setTopAndBottomSides(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setTopAndBottomSides(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
     }
 
@@ -140,22 +142,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftAndRightSides(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setLeftAndRightSides(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setLeftAndRightSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftAndRightSides(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setLeftAndRightSides(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setLeftAndRightSides(contents);
     }
 
@@ -165,22 +167,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setTopSide(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setTopSide(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setTopSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setTopSide(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setTopSide(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setTopSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setTopSide(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
 
@@ -190,22 +192,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftSide(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setLeftSide(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setLeftSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftSide(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setLeftSide(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setLeftSide(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setLeftSide(contents);
     }
 
@@ -215,22 +217,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setBottomSide(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setBottomSide(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setBottomSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setBottomSide(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setBottomSide(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setBottomSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setBottomSide(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setBottomSide(contents);
     }
 
@@ -240,22 +242,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setRightSide(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setRightSide(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setRightSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setRightSide(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setRightSide(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setRightSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setRightSide(final @NotNull Collection<GUIContent> contents) {
         return (ResizableGUI) super.setRightSide(contents);
     }
 
@@ -265,17 +267,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setNorthWest(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorthWest(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setNorthWest(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorthWest(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setNorthWest(contents);
     }
 
@@ -285,17 +287,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setNorth(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorth(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setNorth(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setNorth(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setNorth(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorth(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setNorth(contents);
     }
 
@@ -305,17 +307,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setNorthEast(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorthEast(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setNorthEast(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setNorthEast(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setNorthEast(contents);
     }
 
@@ -325,17 +327,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddleWest(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddleWest(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddleWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddleWest(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddleWest(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setMiddleWest(contents);
     }
 
@@ -345,17 +347,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddle(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddle(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddle(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddle(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddle(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setMiddle(contents);
     }
 
@@ -365,17 +367,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddleEast(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddleEast(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddleEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setMiddleEast(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setMiddleEast(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setMiddleEast(contents);
     }
 
@@ -385,17 +387,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setSouthWest(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouthWest(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setSouthWest(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouthWest(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setSouthWest(contents);
     }
 
@@ -405,17 +407,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setSouth(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouth(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setSouth(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setSouth(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setSouth(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouth(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setSouth(contents);
     }
 
@@ -425,17 +427,17 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setSouthEast(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouthEast(final Item @NotNull ... contents) {
         return (ResizableGUI) super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setSouthEast(GUIContent @NotNull ... contents) {
+    public @NotNull ResizableGUI setSouthEast(final GUIContent @NotNull ... contents) {
         return (ResizableGUI) super.setSouthEast(contents);
     }
 
@@ -445,22 +447,22 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI onClickOutside(@NotNull GUIAction action) {
+    public @NotNull ResizableGUI onClickOutside(final @NotNull GUIAction action) {
         return (ResizableGUI) super.onClickOutside(action);
     }
 
     @Override
-    public @NotNull ResizableGUI onOpenGUI(@NotNull GUIAction action) {
+    public @NotNull ResizableGUI onOpenGUI(final @NotNull GUIAction action) {
         return (ResizableGUI) super.onOpenGUI(action);
     }
 
     @Override
-    public @NotNull ResizableGUI onCloseGUI(@NotNull GUIAction action) {
+    public @NotNull ResizableGUI onCloseGUI(final @NotNull GUIAction action) {
         return (ResizableGUI) super.onCloseGUI(action);
     }
 
     @Override
-    public @NotNull ResizableGUI onChangeGUI(@NotNull BiGUIAction action) {
+    public @NotNull ResizableGUI onChangeGUI(final @NotNull BiGUIAction action) {
         return (ResizableGUI) super.onChangeGUI(action);
     }
 
@@ -475,107 +477,107 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI addContent(Item @NotNull ... contents) {
+    public @NotNull ResizableGUI addContent(final Item @NotNull ... contents) {
         return (ResizableGUI) super.addContent(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI addContent(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI addContent(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.addContent(contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setContents(int slot, Item @NotNull ... contents) {
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final Item @NotNull ... contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull ResizableGUI setContents(int slot, CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final CustomItemGUIContent<?> @NotNull ... contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
     @Override
-    public @NotNull ResizableGUI fill(@NotNull Item content) {
+    public @NotNull ResizableGUI fill(final @NotNull Item content) {
         return (ResizableGUI) super.fill(content);
     }
 
     @Override
-    public @NotNull ResizableGUI fill(@NotNull CustomItemGUIContent<?> content) {
+    public @NotNull ResizableGUI fill(final @NotNull CustomItemGUIContent<?> content) {
         return (ResizableGUI) super.fill(content);
     }
 
     @Override
-    public @NotNull ResizableGUI fill(@NotNull GUIContent content) {
+    public @NotNull ResizableGUI fill(final @NotNull GUIContent content) {
         return (ResizableGUI) super.fill(content);
     }
 
     @Override
-    public @NotNull ResizableGUI onClickOutside(@NotNull String command) {
+    public @NotNull ResizableGUI onClickOutside(final @NotNull String command) {
         return (ResizableGUI) super.onClickOutside(command);
     }
 
     @Override
-    public @NotNull ResizableGUI onOpenGUI(@NotNull String command) {
+    public @NotNull ResizableGUI onOpenGUI(final @NotNull String command) {
         return (ResizableGUI) super.onOpenGUI(command);
     }
 
     @Override
-    public @NotNull ResizableGUI onCloseGUI(@NotNull String command) {
+    public @NotNull ResizableGUI onCloseGUI(final @NotNull String command) {
         return (ResizableGUI) super.onCloseGUI(command);
     }
 
     @Override
-    public @NotNull ResizableGUI onChangeGUI(@NotNull String command) {
+    public @NotNull ResizableGUI onChangeGUI(final @NotNull String command) {
         return (ResizableGUI) super.onChangeGUI(command);
     }
 
     @Override
-    public @NotNull ResizableGUI onClickOutsideSend(@NotNull String message) {
+    public @NotNull ResizableGUI onClickOutsideSend(final @NotNull String message) {
         return (ResizableGUI) super.onClickOutsideSend(message);
     }
 
     @Override
-    public @NotNull ResizableGUI onOpenGUISend(@NotNull String message) {
+    public @NotNull ResizableGUI onOpenGUISend(final @NotNull String message) {
         return (ResizableGUI) super.onOpenGUISend(message);
     }
 
     @Override
-    public @NotNull ResizableGUI onCloseGUISend(@NotNull String message) {
+    public @NotNull ResizableGUI onCloseGUISend(final @NotNull String message) {
         return (ResizableGUI) super.onCloseGUISend(message);
     }
 
     @Override
-    public @NotNull ResizableGUI onChangeGUISend(@NotNull String message) {
+    public @NotNull ResizableGUI onChangeGUISend(final @NotNull String message) {
         return (ResizableGUI) super.onChangeGUISend(message);
     }
 
     @Override
-    public @NotNull ResizableGUI setVariable(@NotNull String name, @NotNull String value) {
+    public @NotNull ResizableGUI setVariable(final @NotNull String name, final @NotNull String value) {
         return (ResizableGUI) super.setVariable(name, value);
     }
 
     @Override
-    public @NotNull ResizableGUI unsetVariable(@NotNull String name) {
+    public @NotNull ResizableGUI unsetVariable(final @NotNull String name) {
         return (ResizableGUI) super.unsetVariable(name);
     }
 
     @Override
-    public @NotNull ResizableGUI copyAll(@NotNull Metadatable other, boolean replace) {
+    public @NotNull ResizableGUI copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (ResizableGUI) super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull ResizableGUI copyFrom(@NotNull Metadatable other, boolean replace) {
+    public @NotNull ResizableGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (ResizableGUI) super.copyFrom(other, replace);
     }
 
     @Override
-    public @NotNull ResizableGUI copyAll(@NotNull GUI other, boolean replace) {
+    public @NotNull ResizableGUI copyAll(final @NotNull GUI other, final boolean replace) {
         return (ResizableGUI) super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull ResizableGUI copyFrom(@NotNull GUI other, boolean replace) {
+    public @NotNull ResizableGUI copyFrom(final @NotNull GUI other, final boolean replace) {
         return (ResizableGUI) super.copyFrom(other, replace);
     }
 

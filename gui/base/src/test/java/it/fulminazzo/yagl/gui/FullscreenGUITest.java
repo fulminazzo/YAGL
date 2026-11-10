@@ -44,7 +44,7 @@ class FullscreenGUITest {
     @EnumSource(GUIType.class)
     void testLeftSlots(GUIType type) {
         GUI upperGUI = GUI.newGUI(type);
-        GUI lowerGUI = GUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE);
+        GUI lowerGUI = GUI.newGUI(Constants.SECONDARY_GUI_SIZE);
         FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
         Set<Integer> expectedSlots = upperGUI.leftSlots();
@@ -59,7 +59,7 @@ class FullscreenGUITest {
     @EnumSource(GUIType.class)
     void testRightSlots(GUIType type) {
         GUI upperGUI = GUI.newGUI(type);
-        GUI lowerGUI = GUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE);
+        GUI lowerGUI = GUI.newGUI(Constants.SECONDARY_GUI_SIZE);
         FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
         Set<Integer> expectedSlots = upperGUI.rightSlots();
@@ -115,7 +115,7 @@ class FullscreenGUITest {
     void testSouthCoordinates(GUIType type) {
         FullscreenGUI gui = GUI.newFullscreenGUI(type);
 
-        int expectedSouthLine = FullscreenGUI.SECOND_INVENTORY_SIZE - 9 + type.getSize();
+        int expectedSouthLine = Constants.SECONDARY_GUI_SIZE - 9 + type.getSize();
 
         assertEquals(expectedSouthLine, gui.southLine());
         assertEquals(expectedSouthLine, gui.southWest());
@@ -208,7 +208,7 @@ class FullscreenGUITest {
                 new Object[]{27, 0},
                 new Object[]{26, 26},
                 new Object[]{28, 1},
-                new Object[]{27 + FullscreenGUI.SECOND_INVENTORY_SIZE - 1, FullscreenGUI.SECOND_INVENTORY_SIZE - 1}
+                new Object[]{27 + Constants.SECONDARY_GUI_SIZE - 1, Constants.SECONDARY_GUI_SIZE - 1}
         };
     }
 
@@ -227,7 +227,7 @@ class FullscreenGUITest {
                 new Object[]{27, DefaultGUI.class},
                 new Object[]{26, TypeGUI.class},
                 new Object[]{28, DefaultGUI.class},
-                new Object[]{27 + FullscreenGUI.SECOND_INVENTORY_SIZE - 1, DefaultGUI.class}
+                new Object[]{27 + Constants.SECONDARY_GUI_SIZE - 1, DefaultGUI.class}
         };
     }
 
@@ -243,10 +243,10 @@ class FullscreenGUITest {
     private static Object[][] slotsGUIs() {
         return new Object[][]{
                 new Object[]{0, 0, GUI.newGUI(GUIType.CHEST)},
-                new Object[]{27, 0, GUI.newResizableGUI(FullscreenGUI.SECOND_INVENTORY_SIZE)},
+                new Object[]{27, 0, GUI.newResizableGUI(Constants.SECONDARY_GUI_SIZE)},
                 new Object[]{26, 26, GUI.newGUI(GUIType.CHEST)},
-                new Object[]{28, 1, GUI.newResizableGUI(FullscreenGUI.SECOND_INVENTORY_SIZE)},
-                new Object[]{27 + FullscreenGUI.SECOND_INVENTORY_SIZE - 1, FullscreenGUI.SECOND_INVENTORY_SIZE - 1, GUI.newResizableGUI(FullscreenGUI.SECOND_INVENTORY_SIZE)}
+                new Object[]{28, 1, GUI.newResizableGUI(Constants.SECONDARY_GUI_SIZE)},
+                new Object[]{27 + Constants.SECONDARY_GUI_SIZE - 1, Constants.SECONDARY_GUI_SIZE - 1, GUI.newResizableGUI(Constants.SECONDARY_GUI_SIZE)}
         };
     }
 
@@ -416,7 +416,7 @@ class FullscreenGUITest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {8, 0, -1, FullscreenGUI.SECOND_INVENTORY_SIZE + 1})
+    @ValueSource(ints = {8, 0, -1, Constants.SECONDARY_GUI_SIZE + 1})
     void testLowerGUIResizeFails(int size) {
         assertThrows(IllegalArgumentException.class, () -> new FullscreenGUI(9).getLowerGUI().resize(size));
     }

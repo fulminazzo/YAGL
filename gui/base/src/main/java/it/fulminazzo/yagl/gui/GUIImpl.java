@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ import java.util.*;
  */
 @EqualsAndHashCode
 abstract class GUIImpl implements GUI {
-    protected static final int MAX_SIZE = 54;
+    // Constants are defined in Constants.java
 
     @Getter
     protected @Nullable String title;
@@ -42,19 +43,19 @@ abstract class GUIImpl implements GUI {
      *
      * @param size the size
      */
-    public GUIImpl(int size) {
-        if (size < 0 || size > MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 0 and 54");
+    public GUIImpl(final @Range(from = Constants.MIN_TYPE_SIZE, to = Constants.MAX_SIZE) int size) {
+        if (size < 0 || size > Constants.MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 1 and 54");
         this.contents = createContents(size, null);
         this.movableSlots = new HashSet<>();
     }
 
     @Override
-    public void open(@NotNull Viewer viewer) {
+    public void open(final @NotNull Viewer viewer) {
         GUIUtils.executeGUIAdapterFunction("openGUI", this, viewer);
     }
 
     @Override
-    public @NotNull GUI setTitle(@Nullable String title) {
+    public @NotNull GUI setTitle(final @Nullable String title) {
         this.title = title;
         return this;
     }
@@ -71,7 +72,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI setMovable(int slot, boolean movable) {
+    public @NotNull GUI setMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final boolean movable) {
         GUIUtils.checkSlot(slot, size());
         if (movable) this.movableSlots.add(slot);
         else this.movableSlots.remove(slot);
@@ -79,13 +80,13 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public boolean isMovable(int slot) {
+    public boolean isMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         GUIUtils.checkSlot(slot, size());
         return this.movableSlots.contains(slot);
     }
 
     @Override
-    public @NotNull List<GUIContent> getContents(int slot) {
+    public @NotNull List<GUIContent> getContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         GUIUtils.checkSlot(slot, size());
         Contents contents = this.contents.get(slot);
         if (contents == null) return new LinkedList<>();
@@ -93,7 +94,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI addContent(GUIContent @NotNull ... contents) {
+    public @NotNull GUI addContent(final GUIContent @NotNull ... contents) {
         int j = 0;
         for (int i = 0; i < contents.length; i++) {
             j = addSingle(contents[i], j);
@@ -122,14 +123,14 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI setContents(int slot, GUIContent @NotNull ... contents) {
+    public @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
         GUIUtils.checkSlot(slot, size());
         this.contents.set(slot, new Contents(contents));
         return this;
     }
 
     @Override
-    public @NotNull GUI unsetContent(int slot) {
+    public @NotNull GUI unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         GUIUtils.checkSlot(slot, size());
         this.contents.set(slot, null);
         return this;
@@ -145,7 +146,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI onClickOutside(@NotNull GUIAction action) {
+    public @NotNull GUI onClickOutside(final @NotNull GUIAction action) {
         this.clickOutsideAction = action;
         return this;
     }
@@ -156,7 +157,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI onOpenGUI(@NotNull GUIAction action) {
+    public @NotNull GUI onOpenGUI(final @NotNull GUIAction action) {
         this.openGUIAction = action;
         return this;
     }
@@ -167,7 +168,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI onCloseGUI(@NotNull GUIAction action) {
+    public @NotNull GUI onCloseGUI(final @NotNull GUIAction action) {
         this.closeGUIAction = action;
         return this;
     }
@@ -178,7 +179,7 @@ abstract class GUIImpl implements GUI {
     }
 
     @Override
-    public @NotNull GUI onChangeGUI(@NotNull BiGUIAction action) {
+    public @NotNull GUI onChangeGUI(final @NotNull BiGUIAction action) {
         this.changeGUIAction = action;
         return this;
     }
@@ -210,7 +211,8 @@ abstract class GUIImpl implements GUI {
      * @param copyFrom if not null, copy the contents of this list in the resulting one
      * @return the list
      */
-    protected @NotNull List<Contents> createContents(int size, final @Nullable List<Contents> copyFrom) {
+    protected @NotNull List<Contents> createContents(final @Range(from = 0, to = Constants.MAX_SIZE) int size,
+                                                     final @Nullable List<Contents> copyFrom) {
         List<Contents> contents = new LinkedList<>();
         for (int i = 0; i < size; i++) contents.add(null);
         if (copyFrom != null)

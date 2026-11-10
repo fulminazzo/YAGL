@@ -218,18 +218,18 @@ class SearchGUITest {
     private static Object[] constructorParameters() {
         return new Object[]{
                 new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false), false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false), false},
                 new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, "Hello", "World"), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, new String[]{"Hello", "World"}), true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false, new String[]{"Hello", "World"}), true},
                 new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, Arrays.asList("Hello", "World")), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false, Arrays.asList("Hello", "World")), true}
+                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false, Arrays.asList("Hello", "World")), true}
         };
     }
 
     @ParameterizedTest
     @MethodSource("constructorParameters")
     void testConstructors(Supplier<DataGUI<Object>> supplier, boolean dataProvided) {
-        @NotNull DataGUI<Object> expected = SearchGUI.newGUI(FullscreenGUI.SECOND_INVENTORY_SIZE, null, (t, s) -> false);
+        @NotNull DataGUI<Object> expected = SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false);
         expected.setData("Hello", "World");
         DataGUI<Object> actual = supplier.get();
         if (!dataProvided) {

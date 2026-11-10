@@ -15,6 +15,7 @@ import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.*;
 
@@ -50,6 +51,7 @@ public interface GUI extends Metadatable {
      *
      * @return the size
      */
+    @Range(from = Constants.MIN_TYPE_SIZE, to = Constants.MAX_SIZE)
     int size();
 
     /**
@@ -67,7 +69,7 @@ public interface GUI extends Metadatable {
      * @param slot the slot
      * @return true if it is
      */
-    boolean isMovable(int slot);
+    boolean isMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot);
 
     /**
      * Sets all movable.
@@ -96,7 +98,7 @@ public interface GUI extends Metadatable {
      * @param movable true if it should be movable
      * @return this gui
      */
-    @NotNull GUI setMovable(int slot, boolean movable);
+    @NotNull GUI setMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final boolean movable);
 
     /**
      * Gets the most matching content at the given slot.
@@ -107,7 +109,7 @@ public interface GUI extends Metadatable {
      * @param slot   the slot
      * @return the content
      */
-    default @Nullable GUIContent getContent(final @NotNull Viewer viewer, int slot) {
+    default @Nullable GUIContent getContent(final @NotNull Viewer viewer, final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         return getContents(slot).stream()
                 .filter(c -> c.hasViewRequirements(viewer))
                 .min(Comparator.comparing(c -> -c.getPriority()))
@@ -120,7 +122,7 @@ public interface GUI extends Metadatable {
      * @param slot the slot
      * @return this gui
      */
-    @NotNull List<GUIContent> getContents(int slot);
+    @NotNull List<GUIContent> getContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot);
 
     /**
      * Gets a copy of all the contents.
@@ -168,7 +170,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setContents(int slot, final Item @NotNull ... contents) {
+    default @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final Item @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).map(ItemGUIContent::newInstance).toArray(GUIContent[]::new));
     }
 
@@ -180,7 +182,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setContents(int slot, final CustomItemGUIContent<?> @NotNull ... contents) {
+    default @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final CustomItemGUIContent<?> @NotNull ... contents) {
         return setContents(slot, Arrays.stream(contents).toArray(GUIContent[]::new));
     }
 
@@ -192,7 +194,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setContents(int slot, final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<GUIContent> contents) {
         return setContents(slot, contents.toArray(new GUIContent[0]));
     }
 
@@ -204,7 +206,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    @NotNull GUI setContents(int slot, final GUIContent @NotNull ... contents);
+    @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents);
 
     /**
      * Removes the content from the given index.
@@ -212,7 +214,7 @@ public interface GUI extends Metadatable {
      * @param slot the slot
      * @return this gui
      */
-    @NotNull GUI unsetContent(int slot);
+    @NotNull GUI unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot);
 
     /**
      * Sets the given contents at the {@link #topSlots()}, the {@link #leftSlots()},
@@ -1006,7 +1008,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int northWest() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int northWest() {
         return 0;
     }
 
@@ -1021,7 +1023,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int north() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int north() {
         return columns() / 2;
     }
 
@@ -1036,7 +1038,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int northEast() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int northEast() {
         return Math.max(0, columns() - 1);
     }
 
@@ -1046,7 +1048,7 @@ public interface GUI extends Metadatable {
      *
      * @return the start of the line
      */
-    default int middleLine() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int middleLine() {
         int rows = (rows() - 1) / 2;
         double line = rows * columns();
         return (int) line;
@@ -1063,7 +1065,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int middleWest() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int middleWest() {
         return middleLine();
     }
 
@@ -1078,7 +1080,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int middle() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int middle() {
         return columns() / 2 + middleLine();
     }
 
@@ -1093,7 +1095,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int middleEast() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int middleEast() {
         return Math.max(0, columns() - 1) + middleLine();
     }
 
@@ -1103,7 +1105,7 @@ public interface GUI extends Metadatable {
      *
      * @return the start of the line
      */
-    default int southLine() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int southLine() {
         return Math.max(0, rows() - 1) * columns();
     }
 
@@ -1118,7 +1120,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int southWest() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int southWest() {
         return southLine();
     }
 
@@ -1133,7 +1135,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int south() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int south() {
         return columns() / 2 + southLine();
     }
 
@@ -1148,7 +1150,7 @@ public interface GUI extends Metadatable {
      *
      * @return the slots
      */
-    default int southEast() {
+    default @Range(from = 0, to = Constants.MAX_SLOT) int southEast() {
         return Math.max(0, columns() - 1) + southLine();
     }
 
@@ -1157,6 +1159,7 @@ public interface GUI extends Metadatable {
      *
      * @return the rows
      */
+    @Range(from = Constants.MIN_ROWS, to = Constants.MAX_ROWS)
     int rows();
 
     /**
@@ -1164,6 +1167,7 @@ public interface GUI extends Metadatable {
      *
      * @return the columns
      */
+    @Range(from = Constants.MIN_COLUMNS, to = Constants.MAX_COLUMNS)
     int columns();
 
     /**
@@ -1457,7 +1461,7 @@ public interface GUI extends Metadatable {
      * @param size the size
      * @return the gui
      */
-    static @NotNull GUI newGUI(final int size) {
+    static @NotNull GUI newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new DefaultGUI(size);
     }
 
@@ -1470,7 +1474,7 @@ public interface GUI extends Metadatable {
      * @param size the size
      * @return the resizable gui
      */
-    static @NotNull ResizableGUI newResizableGUI(final int size) {
+    static @NotNull ResizableGUI newResizableGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new ResizableGUI(size);
     }
 
@@ -1480,7 +1484,7 @@ public interface GUI extends Metadatable {
      * @param size the size
      * @return the full size gui
      */
-    static @NotNull FullscreenGUI newFullscreenGUI(final int size) {
+    static @NotNull FullscreenGUI newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new FullscreenGUI(size);
     }
 
@@ -1491,7 +1495,8 @@ public interface GUI extends Metadatable {
      * @param lowerGUISize the size of the lower GUI
      * @return the full size gui
      */
-    static @NotNull FullscreenGUI newFullscreenGUI(final int size, final int lowerGUISize) {
+    static @NotNull FullscreenGUI newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+                                                   final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
         FullscreenGUI gui = new FullscreenGUI(size);
         gui.getLowerGUI().resize(lowerGUISize);
         return gui;
@@ -1524,9 +1529,11 @@ public interface GUI extends Metadatable {
      * @param lowerGUISize the size of the lower GUI
      * @return the full size gui
      */
-    static @NotNull FullscreenGUI newFullscreenGUI(final @NotNull GUIType type, final int lowerGUISize) {
+    static @NotNull FullscreenGUI newFullscreenGUI(final @NotNull GUIType type,
+                                                   final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
         FullscreenGUI gui = new FullscreenGUI(type);
         gui.getLowerGUI().resize(lowerGUISize);
         return gui;
     }
+
 }
