@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +31,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
      *
      * @param material the material
      */
-    public RecipeItemImpl(String material) {
+    public RecipeItemImpl(final @Nullable String material) {
         this(material, 1);
     }
 
@@ -40,7 +41,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
      * @param material the material
      * @param amount   the amount
      */
-    public RecipeItemImpl(String material, int amount) {
+    public RecipeItemImpl(final @Nullable String material, final int amount) {
         super(material, amount);
     }
 
@@ -73,32 +74,32 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public @NotNull RecipeItem setMaterial(@NotNull String material) {
+    public @NotNull RecipeItem setMaterial(final @NotNull String material) {
         return (RecipeItem) super.setMaterial(material);
     }
 
     @Override
-    public @NotNull RecipeItem setAmount(int amount) {
+    public @NotNull RecipeItem setAmount(final int amount) {
         return (RecipeItem) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull RecipeItem setDurability(int durability) {
+    public @NotNull RecipeItem setDurability(final int durability) {
         return (RecipeItem) super.setDurability(durability);
     }
 
     @Override
-    public @NotNull RecipeItem setDisplayName(@NotNull String displayName) {
+    public @NotNull RecipeItem setDisplayName(final @NotNull String displayName) {
         return (RecipeItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public @NotNull RecipeItem setUnbreakable(boolean unbreakable) {
+    public @NotNull RecipeItem setUnbreakable(final boolean unbreakable) {
         return (RecipeItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public @NotNull RecipeItem setCustomModelData(int customModelData) {
+    public @NotNull RecipeItem setCustomModelData(final int customModelData) {
         return (RecipeItem) super.setCustomModelData(customModelData);
     }
 

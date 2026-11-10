@@ -12,21 +12,21 @@ import java.util.List;
 public interface Recipe extends Iterable<Item> {
 
     /**
-     * Gets id.
+     * Gets the id of the recipe.
      *
      * @return the id
      */
     @NotNull String getId();
 
     /**
-     * Gets ingredients.
+     * Gets the ingredients of the recipe.
      *
      * @return the ingredients
      */
     @NotNull List<Item> getIngredients();
 
     /**
-     * Sets output.
+     * Sets the output for the recipe.
      *
      * @param item the item
      * @return this recipe
@@ -34,7 +34,7 @@ public interface Recipe extends Iterable<Item> {
     @NotNull Recipe setOutput(final @NotNull Item item);
 
     /**
-     * Gets output.
+     * Gets the output of the recipe.
      *
      * @return the output
      */

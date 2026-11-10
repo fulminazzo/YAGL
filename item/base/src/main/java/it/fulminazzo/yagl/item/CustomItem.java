@@ -28,7 +28,7 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
      *
      * @param material the material
      */
-    public CustomItem(final String material) {
+    public CustomItem(final @Nullable String material) {
         super(material);
     }
 
@@ -43,152 +43,152 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
-    public @NotNull I setMaterial(@NotNull String material) {
+    public @NotNull I setMaterial(final @NotNull String material) {
         return (I) super.setMaterial(material);
     }
 
     @Override
-    public @NotNull I setAmount(int amount) {
+    public @NotNull I setAmount(final int amount) {
         return (I) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull I setDurability(int durability) {
+    public @NotNull I setDurability(final int durability) {
         return (I) super.setDurability(durability);
     }
 
     @Override
-    public @NotNull I setDisplayName(@NotNull String displayName) {
+    public @NotNull I setDisplayName(final @NotNull String displayName) {
         return (I) super.setDisplayName(displayName);
     }
 
     @Override
-    public @NotNull I setUnbreakable(boolean unbreakable) {
+    public @NotNull I setUnbreakable(final boolean unbreakable) {
         return (I) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public @NotNull I setCustomModelData(int customModelData) {
+    public @NotNull I setCustomModelData(final int customModelData) {
         return (I) super.setCustomModelData(customModelData);
     }
 
     @Override
-    public @NotNull I addLore(String @NotNull ... lore) {
+    public @NotNull I addLore(final String @NotNull ... lore) {
         return (I) super.addLore(lore);
     }
 
     @Override
-    public @NotNull I addLore(@NotNull Collection<String> lore) {
+    public @NotNull I addLore(final @NotNull Collection<String> lore) {
         return (I) super.addLore(lore);
     }
 
     @Override
-    public @NotNull I removeLore(String @NotNull ... lore) {
+    public @NotNull I removeLore(final String @NotNull ... lore) {
         return (I) super.removeLore(lore);
     }
 
     @Override
-    public @NotNull I removeLore(@NotNull Collection<String> lore) {
+    public @NotNull I removeLore(final @NotNull Collection<String> lore) {
         return (I) super.removeLore(lore);
     }
 
     @Override
-    public @NotNull I setLore(String @NotNull ... lore) {
+    public @NotNull I setLore(final String @NotNull ... lore) {
         return (I) super.setLore(lore);
     }
 
     @Override
-    public @NotNull I setLore(@NotNull Collection<String> lore) {
+    public @NotNull I setLore(final @NotNull Collection<String> lore) {
         return (I) super.setLore(lore);
     }
 
     @Override
-    public @NotNull I addEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull I addEnchantment(final @NotNull String enchantment, final int level) {
         return (I) super.addEnchantment(enchantment, level);
     }
 
     @Override
-    public @NotNull I addEnchantments(String @NotNull ... enchantments) {
+    public @NotNull I addEnchantments(final String @NotNull ... enchantments) {
         return (I) super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull I addEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull I addEnchantments(final Enchantment @NotNull ... enchantments) {
         return (I) super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull I addEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull I addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (I) super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull I removeEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull I removeEnchantment(final @NotNull String enchantment, int level) {
         return (I) super.removeEnchantment(enchantment, level);
     }
 
     @Override
-    public @NotNull I removeEnchantments(String @NotNull ... enchantments) {
+    public @NotNull I removeEnchantments(final String @NotNull ... enchantments) {
         return (I) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull I removeEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull I removeEnchantments(final Enchantment @NotNull ... enchantments) {
         return (I) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull I removeEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull I removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (I) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull I addItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull I addItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (I) super.addItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull I addItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull I addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (I) super.addItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull I removeItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull I removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (I) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull I removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull I removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (I) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull I addPotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull I addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (I) super.addPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull I addPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull I addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (I) super.addPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull I removePotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull I removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (I) super.removePotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull I removePotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull I removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (I) super.removePotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull I setPotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull I setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (I) super.setPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull I setPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull I setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (I) super.setPotionEffects(potionEffects);
     }
 

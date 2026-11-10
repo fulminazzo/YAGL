@@ -190,7 +190,10 @@ public interface Item extends AbstractItem {
      * @return the enchantment level
      */
     default int getEnchantmentLevel(final @NotNull String enchantment) {
-        return getEnchantments().stream().filter(e -> e.getName().equalsIgnoreCase(enchantment)).map(Enchantment::getLevel).findFirst().orElse(-1);
+        return getEnchantments().stream()
+                .filter(e -> e.getName().equalsIgnoreCase(enchantment))
+                .map(Enchantment::getLevel)
+                .findFirst().orElse(-1);
     }
 
     /**

@@ -7,7 +7,6 @@ import it.fulminazzo.yagl.item.Item;
  * Use these in {@link Item#isSimilar(Item, ItemField...)}.
  */
 public enum ItemField {
-    MATERIAL, AMOUNT, DURABILITY,
-    DISPLAY_NAME, LORE, ENCHANTMENTS,
-    ITEM_FLAGS, UNBREAKABLE
+    MATERIAL, AMOUNT, DURABILITY, DISPLAY_NAME, LORE, ENCHANTMENTS, ITEM_FLAGS, UNBREAKABLE
+
 }

@@ -21,7 +21,7 @@ abstract class RecipeImpl implements Recipe {
      *
      * @param id the id
      */
-    RecipeImpl(@NotNull String id) {
+    RecipeImpl(final @NotNull String id) {
         this.id = id;
     }
 

@@ -44,7 +44,7 @@ class ItemImpl implements Item {
      *
      * @param material the material
      */
-    public ItemImpl(final String material) {
+    public ItemImpl(final @Nullable String material) {
         this(material, 1);
     }
 
@@ -95,7 +95,7 @@ class ItemImpl implements Item {
     }
 
     @Override
-    public @NotNull Item setCustomModelData(int customModelData) {
+    public @NotNull Item setCustomModelData(final int customModelData) {
         this.customModelData = customModelData;
         return this;
     }
