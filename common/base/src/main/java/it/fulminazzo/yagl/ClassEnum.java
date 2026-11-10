@@ -37,10 +37,11 @@ public abstract class ClassEnum {
 
     /**
      * Gets the name of the current object.
+     * Can be {@code null} if the value is not declared in the same class as a static field.
      *
      * @return the name
      */
-    public @Nullable String name() {
+    public String name() {
         return getCache().name(this);
     }
 
