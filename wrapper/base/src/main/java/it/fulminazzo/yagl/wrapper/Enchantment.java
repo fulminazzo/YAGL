@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Enchantment extends Wrapper {
-    private @NotNull String name = "";
+    private @NotNull String name;
     @Range(min = 1)
     private int level;
 

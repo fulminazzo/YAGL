@@ -7,10 +7,12 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * A general class used as a backend for {@link ParticleType} and {@link LegacyParticleType}.
  *
- * @param <P> the type parameter
+ * @param <P> the type of the supported option
  */
 abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     @Getter(AccessLevel.PACKAGE)
@@ -21,7 +23,7 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
      *
      * @param optionType the {@link ParticleOption} type
      */
-    AParticleType(Class<P> optionType) {
+    AParticleType(final @NotNull Class<P> optionType) {
         this.optionType = optionType;
     }
 
@@ -42,7 +44,7 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
      * @param parameters the parameters
      * @return the particle
      */
-    public @NotNull Particle create(Object @NotNull ... parameters) {
+    public @NotNull Particle create(final Object @NotNull ... parameters) {
         if (parameters.length == 0) return create();
         else {
             P option = Reflect.on(getOptionType()).init(parameters).get();
@@ -61,22 +63,11 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
         return new Particle(name(), particleOption);
     }
 
-    /**
-     * Compares a {@link Particle} with a {@link ParticleType} using {@link Particle#getType()}.
-     *
-     * @param particle the particle
-     * @return true if they are of the same type
-     */
-    public boolean equals(final @NotNull Particle particle) {
-        return name().equalsIgnoreCase(particle.getType());
-    }
-
     @Override
-    public boolean equals(@Nullable Object o) {
-        if (o == null) return false;
-        if (o instanceof Particle) return equals((Particle) o);
-        AParticleType<?> particleType = (AParticleType<?>) o;
-        return getClass().equals(particleType.getClass()) && name().equals(particleType.name());
+    public boolean equals(final @Nullable Object other) {
+        if (other == null || !other.getClass().equals(getClass())) return false;
+        AParticleType<?> otherType = (AParticleType<?>) other;
+        return otherType.name().equals(name()) && Objects.equals(otherType.getOptionType(), getOptionType());
     }
 
     @Override

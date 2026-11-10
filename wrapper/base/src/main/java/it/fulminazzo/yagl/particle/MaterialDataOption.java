@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class MaterialDataOption extends ParticleOption<Pair<String, Integer>> {
-    private static final String REGEX = "^([^\\[]+)(?:\\[(\\d+)])?$";
     private final @NotNull String material;
     private final @NotNull Integer data;
 
@@ -21,7 +20,7 @@ public final class MaterialDataOption extends ParticleOption<Pair<String, Intege
      * @param materialData the material data
      */
     public MaterialDataOption(final @NotNull String materialData) {
-        String[] parsed = BlockDataOption.parseRaw(materialData, REGEX);
+        String[] parsed = BlockDataOption.parseRaw(materialData);
         this.material = parsed[0];
         String rawData = parsed[1];
         if (rawData.trim().isEmpty()) this.data = 0;

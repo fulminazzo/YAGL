@@ -1,10 +1,17 @@
 package it.fulminazzo.yagl.particle;
 
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+/**
+ * A pseudo-enum class containing all the {@code org.bukkit.Effect} particles.
+ *
+ * @param <P> the type of the supported option
+ */
 @SuppressWarnings({"unused", "unchecked"})
+@EqualsAndHashCode(callSuper = true)
 public final class LegacyParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final LegacyParticleType<PrimitiveParticleOption<Integer>> BONE_MEAL_USE = new LegacyParticleType<>((Class<PrimitiveParticleOption<Integer>>) (Class<?>) PrimitiveParticleOption.class);
     public static final LegacyParticleType<?> CLOUD = new LegacyParticleType<>();
@@ -65,14 +72,11 @@ public final class LegacyParticleType<P extends ParticleOption<?>> extends APart
     public static final LegacyParticleType<?> WATERDRIP = new LegacyParticleType<>();
     public static final LegacyParticleType<?> WITCH_MAGIC = new LegacyParticleType<>();
 
-    private static int COUNTER = 0;
-    private final int ord = COUNTER++;
-
     private LegacyParticleType() {
         this(null);
     }
 
-    private LegacyParticleType(Class<P> optionType) {
+    private LegacyParticleType(final Class<P> optionType) {
         super(optionType);
     }
 
@@ -85,7 +89,7 @@ public final class LegacyParticleType<P extends ParticleOption<?>> extends APart
     }
 
     public static LegacyParticleType<?> @NotNull [] legacyValues() {
-        return Arrays.copyOf(values(), COMPOSTER_FILL_ATTEMPT.ord);
+        return Arrays.copyOf(values(), COMPOSTER_FILL_ATTEMPT.ordinal());
     }
 
     public static LegacyParticleType<?> @NotNull [] values() {

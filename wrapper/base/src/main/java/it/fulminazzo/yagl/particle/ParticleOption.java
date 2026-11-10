@@ -1,15 +1,15 @@
 package it.fulminazzo.yagl.particle;
 
 /**
- * Represents a general option for a particle.
- * This can either be an integer, float, or a full-fledged object.
+ * A general option usually bound to a particle.
+ * This can either be an {@code int}, a {@code float} or even a fully-fledged object.
  *
- * @param <O> the type parameter
+ * @param <O> the type of the option
  */
 abstract class ParticleOption<O> {
 
     /**
-     * Gets option to send the particle.
+     * Gets the option needed from the particle.
      *
      * @return the option
      */

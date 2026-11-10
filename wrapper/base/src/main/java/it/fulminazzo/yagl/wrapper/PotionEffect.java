@@ -83,9 +83,7 @@ public final class PotionEffect extends Wrapper {
                         final @Range(min = 1) int amplifier,
                         final boolean enableParticles,
                         final boolean enableIcon) {
-        this.name = name;
-        setDuration(duration);
-        setAmplifier(amplifier);
+        setName(name).setDuration(duration).setAmplifier(amplifier);
         this.showingParticles = enableParticles;
         this.showingIcon = enableIcon;
     }
@@ -97,7 +95,7 @@ public final class PotionEffect extends Wrapper {
      * @return this potion effect
      */
     public @NotNull PotionEffect setName(final @NotNull String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
         return this;
     }
 

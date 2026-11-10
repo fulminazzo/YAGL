@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedList;
+import java.util.function.Function;
 
 /**
  * Represents a general HEX color.
@@ -124,7 +124,7 @@ public final class Color extends ClassEnum {
      * @return the string
      */
     public @NotNull String toARGB() {
-        return String.format("#%02X%02X%02X%02X", this.alpha, this.red, this.green, this.blue).toUpperCase();
+        return String.format("#%02X%02X%02X%02X", this.alpha, this.red, this.green, this.blue);
     }
 
     /**
@@ -138,14 +138,18 @@ public final class Color extends ClassEnum {
         if (argb.startsWith("#")) argb = argb.substring(1);
         if (argb.length() != 8 && argb.length() != 6)
             throw new IllegalArgumentException(String.format("Invalid ARGB string provided '%s'", argb));
-        LinkedList<Integer> nums = new LinkedList<>();
-        while (!argb.isEmpty()) {
-            int n = Integer.parseUnsignedInt(argb.substring(0, 2), 16);
-            argb = argb.substring(2);
-            nums.add(n);
-        }
-        if (nums.size() < 4) nums.addFirst(MASK);
-        return new Color(nums.get(0), nums.get(1), nums.get(2), nums.get(3));
+
+        final Function<String, Integer> convertHex = s -> Integer.parseUnsignedInt(s.substring(0, 2), 16);
+        int first = convertHex.apply(argb);
+        argb = argb.substring(2);
+        int second = convertHex.apply(argb);
+        argb = argb.substring(2);
+        int third = convertHex.apply(argb);
+        argb = argb.substring(2);
+        if (argb.isEmpty())
+            return new Color(MASK, first, second, third);
+        else
+            return new Color(first, second, third, convertHex.apply(argb));
     }
 
     /**

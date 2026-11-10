@@ -14,10 +14,12 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class BlockDataOption extends ParticleOption<String> {
+    static final Pattern NBT_REGEX = Pattern.compile("^([^\\[]+)(?:\\[(.*)])?$");
+    private static final Pattern INVALID_MATERIAL_REGEX = Pattern.compile("[\r\n\t :]");
+
     private static final String INVALID_DATA = "Invalid data '%s'";
     private static final String INVALID_MATERIAL = "Invalid material '%s'";
     private static final String MINECRAFT_IDENTIFIER = "minecraft:";
-    private static final String NBT_REGEX = "^([^\\[]+)(?:\\[(.*)])?$";
 
     @Getter
     private final @NotNull String material;
@@ -29,7 +31,7 @@ public final class BlockDataOption extends ParticleOption<String> {
      * @param blockData the raw block data
      */
     public BlockDataOption(final @NotNull String blockData) {
-        String[] parsed = parseRaw(blockData, NBT_REGEX);
+        String[] parsed = parseRaw(blockData);
         this.material = parsed[0];
         this.nbt = parsed[1];
     }
@@ -46,7 +48,7 @@ public final class BlockDataOption extends ParticleOption<String> {
     }
 
     /**
-     * Gets nbt.
+     * Gets the NBT tag associated with this option.
      *
      * @return the nbt
      */
@@ -55,14 +57,14 @@ public final class BlockDataOption extends ParticleOption<String> {
     }
 
     /**
-     * Converts the given data to a pair based on the given regex.
+     * Converts the given data to a pair based on the NBT format.
      * Throws an {@link IllegalArgumentException} in case of failure.
      *
      * @param data the data
      * @return the pair
      */
-    static String @NotNull [] parseRaw(final @NotNull String data, final @NotNull String nbtRegex) {
-        Matcher matcher = Pattern.compile(nbtRegex).matcher(data);
+    static String @NotNull [] parseRaw(final @NotNull String data) {
+        Matcher matcher = BlockDataOption.NBT_REGEX.matcher(data);
         if (matcher.matches()) {
             String nbt = matcher.group(2);
             if (nbt == null) nbt = "";
@@ -80,7 +82,7 @@ public final class BlockDataOption extends ParticleOption<String> {
     static @NotNull String parseMaterial(@NotNull String material) {
         material = material.toLowerCase();
         if (material.startsWith(MINECRAFT_IDENTIFIER)) material = material.substring(MINECRAFT_IDENTIFIER.length());
-        if (material.trim().isEmpty() || Pattern.compile("[\r\n\t :]").matcher(material).find())
+        if (material.trim().isEmpty() || INVALID_MATERIAL_REGEX.matcher(material).find())
             throw new IllegalArgumentException(String.format(INVALID_MATERIAL, material));
         return material;
     }
@@ -88,7 +90,7 @@ public final class BlockDataOption extends ParticleOption<String> {
     @Override
     public @NotNull String getOption() {
         String output = this.material;
-        if (!this.nbt.isEmpty()) output += String.format("[%s]", this.nbt);
+        if (!this.nbt.isEmpty()) output += '[' + this.nbt + ']';
         return output;
     }
 

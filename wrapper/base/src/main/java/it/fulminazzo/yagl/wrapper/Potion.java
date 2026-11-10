@@ -63,8 +63,7 @@ public final class Potion extends Wrapper {
                   final @Range(min = 1, max = 2) int level,
                   final boolean splash,
                   final boolean extended) {
-        this.name = name;
-        setLevel(level);
+        setName(name).setLevel(level);
         this.splash = splash;
         this.extended = extended;
     }
@@ -76,7 +75,7 @@ public final class Potion extends Wrapper {
      * @return the type
      */
     public @NotNull Potion setName(final @NotNull String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
         return this;
     }
 

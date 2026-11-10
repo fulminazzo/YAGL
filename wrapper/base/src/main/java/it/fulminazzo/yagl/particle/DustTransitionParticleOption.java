@@ -3,12 +3,14 @@ package it.fulminazzo.yagl.particle;
 import it.fulminazzo.yagl.Color;
 import it.fulminazzo.yagl.structure.Triple;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * An option used by {@link ParticleType#DUST_COLOR_TRANSITION}.
  */
+@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class DustTransitionParticleOption extends ParticleOption<Triple<Color, Color, Float>> {
@@ -19,19 +21,6 @@ public final class DustTransitionParticleOption extends ParticleOption<Triple<Co
     @SuppressWarnings("unused")
     private DustTransitionParticleOption() {
         this(Color.BLACK, Color.BLACK, -1);
-    }
-
-    /**
-     * Instantiates a new Dust transition particle option.
-     *
-     * @param from  the color to start from
-     * @param to the color to end with
-     * @param size  the size
-     */
-    public DustTransitionParticleOption(final @NotNull Color from, final @NotNull Color to, final float size) {
-        this.from = from;
-        this.to = to;
-        this.size = size;
     }
 
     @Override

@@ -1,8 +1,15 @@
 package it.fulminazzo.yagl.particle;
 
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A pseudo-enum class containing all the {@code org.bukkit.Particle} particles.
+ *
+ * @param <P> the type of the supported option
+ */
 @SuppressWarnings({"unused", "unchecked"})
+@EqualsAndHashCode(callSuper = true)
 public final class ParticleType<P extends ParticleOption<?>> extends AParticleType<P> {
     public static final ParticleType<?> ASH = new ParticleType<>();
     public static final ParticleType<?> BARRIER = new ParticleType<>();
@@ -157,7 +164,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
         this(null);
     }
 
-    private ParticleType(Class<P> optionType) {
+    private ParticleType(final Class<P> optionType) {
         super(optionType);
     }
 
