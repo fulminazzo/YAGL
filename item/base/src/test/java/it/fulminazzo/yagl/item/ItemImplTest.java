@@ -2,7 +2,6 @@ package it.fulminazzo.yagl.item;
 
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
-import it.fulminazzo.fulmicollection.objects.Printable;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +56,7 @@ class ItemImplTest {
                 .setCustomModelData(2)
                 .setUnbreakable(true);
         String output = item.toString();
-        String expected = Printable.convertToJson(item);
+        String expected = Item.class.getSimpleName() + "{material x 2, 'Hello world'}";
         assertEquals(expected, output);
     }
 
