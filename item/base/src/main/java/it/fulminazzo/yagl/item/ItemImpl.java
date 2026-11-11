@@ -1,8 +1,8 @@
 package it.fulminazzo.yagl.item;
 
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -105,16 +104,13 @@ class ItemImpl implements Item {
 
     @Override
     public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
-        return item != null && Arrays.stream(ItemImpl.class.getDeclaredFields())
-                .filter(f -> !Modifier.isStatic(f.getModifiers()))
+        Reflect curr = Reflect.on(this);
+        Reflect other = Reflect.on(item);
+        return item != null && curr.getStaticFields().stream()
                 .filter(f -> Arrays.stream(ignore)
                         .noneMatch(f2 -> f.getName().equalsIgnoreCase(f2.name()
                                 .replace("_", ""))))
-                .allMatch(f -> {
-                    Object obj1 = ReflectionUtils.getOrThrow(f, this);
-                    Object obj2 = ReflectionUtils.getOrThrow(f, item);
-                    return Objects.equals(obj1, obj2);
-                });
+                .allMatch(f -> Objects.equals(curr.get(f), other.get(f)));
     }
 
     @Override
