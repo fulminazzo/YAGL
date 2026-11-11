@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -97,7 +98,7 @@ public final class ShapedRecipe extends RecipeImpl {
 
     @Override
     public @NotNull List<Item> getIngredients() {
-        return new LinkedList<>(this.ingredients);
+        return Collections.unmodifiableList(this.ingredients);
     }
 
     /**

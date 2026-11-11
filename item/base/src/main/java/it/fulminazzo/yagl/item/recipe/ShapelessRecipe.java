@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -87,7 +88,7 @@ public final class ShapelessRecipe extends RecipeImpl {
 
     @Override
     public @NotNull List<Item> getIngredients() {
-        return new ArrayList<>(this.ingredients);
+        return Collections.unmodifiableList(this.ingredients);
     }
 
 }

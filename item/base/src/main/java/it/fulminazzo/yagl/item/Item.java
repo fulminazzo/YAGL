@@ -300,7 +300,7 @@ public interface Item extends AbstractItem {
      * @return true if it does
      */
     default boolean hasItemFlag(final @NotNull ItemFlag flag) {
-        return getItemFlags().stream().anyMatch(f -> f.equals(flag));
+        return getItemFlags().contains(flag);
     }
 
     /**
@@ -342,8 +342,7 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
-        Set<ItemFlag> flags = getItemFlags();
-        for (final ItemFlag i : itemFlags) flags.remove(i);
+        getItemFlags().removeAll(itemFlags);
         return this;
     }
 

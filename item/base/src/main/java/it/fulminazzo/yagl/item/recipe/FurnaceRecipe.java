@@ -90,7 +90,7 @@ public final class FurnaceRecipe extends RecipeImpl {
 
     @Override
     public @NotNull List<Item> getIngredients() {
-        return Collections.singletonList(this.ingredient);
+        return this.ingredient == null ? Collections.emptyList() : Collections.singletonList(this.ingredient);
     }
 
 }

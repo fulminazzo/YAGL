@@ -61,7 +61,7 @@ class ItemImpl extends Copiable<Item> implements Item {
         if (material != null) setMaterial(material);
         setAmount(amount).setDisplayName("");
         this.durability = 0;
-        this.lore = new LinkedList<>();
+        this.lore = new ArrayList<>();
         this.enchantments = new EnchantmentSet();
         this.itemFlags = new HashSet<>();
         this.potionEffects = new HashSet<>();
@@ -123,7 +123,7 @@ class ItemImpl extends Copiable<Item> implements Item {
     public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
         Reflect curr = Reflect.on(this);
         Reflect other = Reflect.on(item);
-        return item != null && curr.getStaticFields().stream()
+        return item != null && curr.getNonStaticFields().stream()
                 .filter(f -> Arrays.stream(ignore)
                         .noneMatch(f2 -> f.getName().equalsIgnoreCase(f2.name()
                                 .replace("_", ""))))
