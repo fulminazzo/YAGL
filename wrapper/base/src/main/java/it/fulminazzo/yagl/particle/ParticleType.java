@@ -108,7 +108,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> SOUL_FIRE_FLAME = new ParticleType<>();
     public static final ParticleType<?> SPELL = new ParticleType<>();
     public static final ParticleType<?> SPELL_INSTANT = new ParticleType<>();
-    public static final ParticleType<ColorParticleOption> SPELL_MOB = new ParticleType<>();
+    public static final ParticleType<ColorParticleOption> SPELL_MOB = new ParticleType<>(ColorParticleOption.class);
     public static final ParticleType<?> SPELL_MOB_AMBIENT = new ParticleType<>();
     public static final ParticleType<?> SPELL_WITCH = new ParticleType<>();
     public static final ParticleType<?> SPIT = new ParticleType<>();
@@ -117,7 +117,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
     public static final ParticleType<?> SUSPENDED = new ParticleType<>();
     public static final ParticleType<?> SUSPENDED_DEPTH = new ParticleType<>();
     public static final ParticleType<?> SWEEP_ATTACK = new ParticleType<>();
-    public static final ParticleType<ColorParticleOption> TINTED_LEAVES = new ParticleType<>();
+    public static final ParticleType<ColorParticleOption> TINTED_LEAVES = new ParticleType<>(ColorParticleOption.class);
     public static final ParticleType<?> TOTEM = new ParticleType<>();
     public static final ParticleType<?> TOWN_AURA = new ParticleType<>();
     /**
