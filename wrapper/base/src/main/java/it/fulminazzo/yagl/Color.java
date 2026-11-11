@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.function.Function;
 
@@ -44,7 +45,7 @@ public final class Color extends ClassEnum {
      * @param green the green
      * @param blue  the blue
      */
-    public Color(int red, int green, int blue) {
+    public Color(final int red, final int green, final int blue) {
         this(MASK, red, green, blue);
     }
 
@@ -56,7 +57,7 @@ public final class Color extends ClassEnum {
      * @param green the green
      * @param blue  the blue
      */
-    public Color(int alpha, int red, int green, int blue) {
+    public Color(final int alpha, final int red, final int green, final int blue) {
         checkRange(alpha);
         this.alpha = (byte) alpha;
         checkRange(red);
@@ -153,6 +154,17 @@ public final class Color extends ClassEnum {
     }
 
     /**
+     * Returns the index of the current color.
+     * If the color is custom, the index will be {@code -1}.
+     *
+     * @return the index
+     */
+    @Override
+    public @Range(from = -1, to = Integer.MAX_VALUE) int ordinal() {
+        return super.ordinal();
+    }
+
+    /**
      * Gets the name from the corresponding static color.
      * If this is not a static color, it returns {@code null}.
      *
@@ -160,11 +172,7 @@ public final class Color extends ClassEnum {
      */
     @Override
     public @Nullable String name() {
-        try {
-            return super.name();
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+        return super.name();
     }
 
     /**
@@ -200,7 +208,7 @@ public final class Color extends ClassEnum {
     public String toString() {
         String name = name();
         if (name != null) return name;
-        else return super.toString();
+        else return String.format("%s{%s}", getClass().getSimpleName(), toARGB());
     }
 
 }
