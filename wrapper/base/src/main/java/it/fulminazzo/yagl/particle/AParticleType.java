@@ -71,7 +71,12 @@ abstract class AParticleType<P extends ParticleOption<?>> extends ClassEnum {
     }
 
     @Override
-    public @Nullable String toString() {
+    public int hashCode() {
+        return Objects.hash(name(), getOptionType());
+    }
+
+    @Override
+    public @NotNull String toString() {
         return name();
     }
 
