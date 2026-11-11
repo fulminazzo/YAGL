@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
+import java.util.Locale;
+
 /**
  * A {@link Wrapper} class used to represent potions in older versions of Minecraft.
  * Currently used only for {@link LegacyParticleType#POTION_BREAK}.
@@ -76,7 +78,7 @@ public final class Potion extends Wrapper {
      * @return the type
      */
     public @NotNull Potion setName(final @NotNull String name) {
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.ROOT);
         return this;
     }
 

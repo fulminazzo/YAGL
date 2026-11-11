@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +83,7 @@ public final class MessageUtils {
         Matcher matcher = GAME_HEX_REGEX.matcher(message);
         StringBuilder builder = new StringBuilder();
         while (matcher.find()) {
-            String repl = matcher.group(1).toUpperCase();
+            String repl = matcher.group(1).toUpperCase(Locale.ROOT);
             String replacement = "#" + String.join("", repl.split(COLOR_CHAR));
             matcher.appendReplacement(builder, replacement);
         }

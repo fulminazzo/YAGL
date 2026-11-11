@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,7 +88,7 @@ class GUIParserTest extends ParserTestHelper<GUI> {
         File file = new File("build/resources/test/gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        final String path = expected.getClass().getSimpleName().toLowerCase();
+        final String path = expected.getClass().getSimpleName().toLowerCase(Locale.ROOT);
         configuration.set(path, expected);
         configuration.save();
 

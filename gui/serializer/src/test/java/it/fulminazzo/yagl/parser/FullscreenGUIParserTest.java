@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +37,7 @@ class FullscreenGUIParserTest {
         File file = new File("build/resources/test/fullscreen-gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        final String path = expected.getClass().getSimpleName().toLowerCase();
+        final String path = expected.getClass().getSimpleName().toLowerCase(Locale.ROOT);
         configuration.set(path, expected);
         configuration.save();
 

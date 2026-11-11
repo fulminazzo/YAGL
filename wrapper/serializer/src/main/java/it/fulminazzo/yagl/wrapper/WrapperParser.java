@@ -14,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -112,7 +113,7 @@ public class WrapperParser<W extends Wrapper> extends YAMLParser<W> {
         for (Field field : wRefl.getNonStaticFields()) {
             Object o = wRefl.getFieldObject(field);
             String result = o == null ? "" : o.toString();
-            if (o instanceof String) result = result.toLowerCase();
+            if (o instanceof String) result = result.toLowerCase(Locale.ROOT);
             tmp.append(result).append(":");
         }
         return tmp.substring(0, Math.max(0, tmp.length() - 1));

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -54,7 +55,7 @@ public final class ParserUtils {
         if (name.endsWith(mainClassName)) name = name.substring(0, name.length() - mainClassName.length());
         if (name.equals("Impl")) name = "default";
         name = FileUtils.formatStringToYaml(name);
-        return name.replace("-", "_").toUpperCase();
+        return name.replace("-", "_").toUpperCase(Locale.ROOT);
     }
 
 }

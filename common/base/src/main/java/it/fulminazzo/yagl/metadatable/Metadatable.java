@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.metadatable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -26,7 +27,7 @@ public interface Metadatable {
             builder.append(c);
         }
 
-        String output = builder.toString().toLowerCase();
+        String output = builder.toString().toLowerCase(Locale.ROOT);
         while (output.startsWith(separator))
             output = output.substring(separator.length());
         return output;

@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -55,7 +56,7 @@ class SearchGUIParserTest extends ParserTestHelper<PageableGUI> {
         File file = new File("build/resources/test/search-gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        final String path = expected.getClass().getSimpleName().toLowerCase();
+        final String path = expected.getClass().getSimpleName().toLowerCase(Locale.ROOT);
         configuration.set(path, expected);
         configuration.save();
 

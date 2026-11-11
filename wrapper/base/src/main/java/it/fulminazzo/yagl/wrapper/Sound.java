@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
+import java.util.Locale;
+
 /**
  * A wrapper to represent Minecraft sounds.
  * Sounds are expressed as string, so they are <b>NOT</b> checked.
@@ -82,7 +84,7 @@ public final class Sound extends Wrapper {
      * @return this sound
      */
     public @NotNull Sound setName(final @NotNull String name) {
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.ROOT);
         return this;
     }
 

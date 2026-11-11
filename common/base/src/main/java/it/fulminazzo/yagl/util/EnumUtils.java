@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 /**
  * A collection of utilities to work with enums.
@@ -48,7 +49,7 @@ public final class EnumUtils {
                 continue;
             }
             try {
-                E value = reflect.invoke(method, name.toUpperCase()).get();
+                E value = reflect.invoke(method, name.toUpperCase(Locale.ROOT)).get();
                 if (value != null) return value;
             } catch (ReflectException e) {
                 Throwable cause = e.getCause();
@@ -57,13 +58,13 @@ public final class EnumUtils {
             }
         }
         final @NotNull String typeName = getTypeName(enumClass);
-        throw new IllegalArgumentException(String.format("Could not find %s '%s'", typeName.toLowerCase(), name));
+        throw new IllegalArgumentException(String.format("Could not find %s '%s'", typeName.toLowerCase(Locale.ROOT), name));
     }
 
     private static @NotNull String getTypeName(final @NotNull Class<?> clazz) {
         String typeName = clazz.getSimpleName().replaceAll("[A-Z]", " $0");
         if (typeName.startsWith(" ")) typeName = typeName.substring(1);
-        return typeName.toLowerCase();
+        return typeName.toLowerCase(Locale.ROOT);
     }
 
 }

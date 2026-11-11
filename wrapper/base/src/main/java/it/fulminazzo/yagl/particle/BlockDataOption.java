@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,7 +81,7 @@ public final class BlockDataOption extends ParticleOption<String> {
      * @return the string
      */
     static @NotNull String parseMaterial(@NotNull String material) {
-        material = material.toLowerCase();
+        material = material.toLowerCase(Locale.ROOT);
         if (material.startsWith(MINECRAFT_IDENTIFIER)) material = material.substring(MINECRAFT_IDENTIFIER.length());
         if (material.trim().isEmpty() || INVALID_MATERIAL_REGEX.matcher(material).find())
             throw new IllegalArgumentException(String.format(INVALID_MATERIAL, material));

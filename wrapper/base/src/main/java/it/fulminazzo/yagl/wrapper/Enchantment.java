@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
+import java.util.Locale;
+
 /**
  * A wrapper to represent Minecraft enchantments.
  * Enchantments are expressed as string, so they are <b>NOT</b> checked.
@@ -45,7 +47,7 @@ public final class Enchantment extends Wrapper {
      * @return this enchantment
      */
     public @NotNull Enchantment setName(final @NotNull String name) {
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.ROOT);
         return this;
     }
 

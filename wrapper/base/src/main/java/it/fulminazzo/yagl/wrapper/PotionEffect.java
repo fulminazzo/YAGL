@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
+import java.util.Locale;
+
 /**
  * A wrapper to represent Minecraft potion effects.
  * Effects are expressed as string, so they are <b>NOT</b> checked.
@@ -96,7 +98,7 @@ public final class PotionEffect extends Wrapper {
      * @return this potion effect
      */
     public @NotNull PotionEffect setName(final @NotNull String name) {
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.ROOT);
         return this;
     }
 

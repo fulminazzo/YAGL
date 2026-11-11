@@ -11,8 +11,8 @@ import org.bukkit.entity.Player
 def run = { CommandSender sender, String label, String[] args ->
     if (sender instanceof Player)
         try {
-            DeathAction action = DeathAction.valueOf(args[0].toUpperCase())
-            Mobility mobility = Mobility.valueOf(args[1].toUpperCase())
+            DeathAction action = DeathAction.valueOf(args[0].toUpperCase(Locale.ROOT))
+            Mobility mobility = Mobility.valueOf(args[1].toUpperCase(Locale.ROOT))
             PersistentItem item = PersistentItem.newItem(args[2]).setDeathAction(action).setMobility(mobility)
             try {
                 item.setAmount(Integer.valueOf(args[3]))
@@ -23,7 +23,7 @@ def run = { CommandSender sender, String label, String[] args ->
                                 .map(a -> WrapperParser.deserializeWrapper(a, Enchantment))
                                 .toArray(Enchantment[]::new))
                         .addItemFlags(Arrays.stream(args[8].split(';'))
-                                .map(a -> ItemFlag.valueOf(a.toUpperCase()))
+                                .map(a -> ItemFlag.valueOf(a.toUpperCase(Locale.ROOT)))
                                 .toArray(ItemFlag[]::new))
                         .setUnbreakable(Boolean.valueOf(args[9]))
                         .setCustomModelData(Integer.valueOf(args[10]))

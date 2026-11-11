@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -54,7 +55,7 @@ public class ParticleOptionParser<P extends ParticleOption<?>> extends YAMLParse
         Object object = section.get(path, field.getType());
         if (object instanceof String) {
             String string = object.toString();
-            if (string.toLowerCase().matches("\\d+\\.\\d+f"))
+            if (string.toLowerCase(Locale.ROOT).matches("\\d+\\.\\d+f"))
                 object = Float.valueOf(string.substring(0, string.length() - 1));
         }
         reflP.setFieldObject(field.getName(), object);

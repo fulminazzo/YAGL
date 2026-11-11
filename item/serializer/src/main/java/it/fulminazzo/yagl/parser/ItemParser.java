@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -72,14 +73,14 @@ public class ItemParser extends YAMLParser<Item> {
             if (i != null) {
                 final ConfigurationSection itemSection = c.createSection(s);
                 String material = i.getMaterial();
-                if (material != null) itemSection.set("material", material.toLowerCase());
+                if (material != null) itemSection.set("material", material.toLowerCase(Locale.ROOT));
 
                 itemSection.set("amount", i.getAmount());
                 itemSection.set("durability", i.getDurability());
                 itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
                 itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
                 itemSection.setList("enchantments", i.getEnchantments());
-                itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()));
+                itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).map(flag -> flag.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
                 @NotNull Set<PotionEffect> potionEffects = i.getPotionEffects();
                 if (!potionEffects.isEmpty())
                     itemSection.set("potion-effects", potionEffects.stream().map(WrapperParser::serializeWrapper).collect(Collectors.toList()));

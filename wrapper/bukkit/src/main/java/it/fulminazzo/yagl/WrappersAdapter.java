@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -522,7 +523,7 @@ public final class WrappersAdapter {
         final Refl<Player> playerRefl = new Refl<>(player);
         Object actual = actualSound.apply(sound);
         try {
-            actual = org.bukkit.Sound.valueOf(actual.toString().toUpperCase());
+            actual = org.bukkit.Sound.valueOf(actual.toString().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ignored) {
         }
         try {
@@ -551,7 +552,7 @@ public final class WrappersAdapter {
             type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
         } catch (IllegalArgumentException e) {
             // For Minecraft 1.20.6 and above
-            effect = effect.replace(" ", "_").toLowerCase();
+            effect = effect.replace(" ", "_").toLowerCase(Locale.ROOT);
             if (effect.equalsIgnoreCase("bad_luck")) effect = "unluck";
             type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
         }

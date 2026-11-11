@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -111,7 +112,7 @@ class WrapperParserTest {
     private @Nullable <T extends Wrapper> List<T> saveAndLoad(final @Nullable T t) throws IOException {
         WrapperParser.addAllParsers();
         final Class<T> clazz = (Class<T>) (t == null ? Wrapper.class : t.getClass());
-        String name = t == null ? "wrapper" : clazz.getSimpleName().toLowerCase();
+        String name = t == null ? "wrapper" : clazz.getSimpleName().toLowerCase(Locale.ROOT);
 
         File file = save(t, name);
         return load(file, name, clazz);

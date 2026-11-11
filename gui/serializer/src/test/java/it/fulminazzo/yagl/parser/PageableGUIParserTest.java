@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -55,7 +56,7 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         File file = new File("build/resources/test/pageable-gui.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        final String path = expected.getClass().getSimpleName().toLowerCase();
+        final String path = expected.getClass().getSimpleName().toLowerCase(Locale.ROOT);
         configuration.set(path, expected);
         configuration.save();
 
@@ -72,7 +73,7 @@ class PageableGUIParserTest extends ParserTestHelper<PageableGUI> {
         File file = new File("build/resources/test/pageable-gui-stripped.yml");
         if (!file.exists()) FileUtils.createNewFile(file);
         FileConfiguration configuration = new FileConfiguration(file);
-        final String path = expected.getClass().getSimpleName().toLowerCase();
+        final String path = expected.getClass().getSimpleName().toLowerCase(Locale.ROOT);
         configuration.set(path, expected);
         configuration.save();
 

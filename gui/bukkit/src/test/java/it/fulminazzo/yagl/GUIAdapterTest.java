@@ -44,6 +44,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -125,7 +126,7 @@ class GUIAdapterTest extends BukkitUtils {
 
             SearchGUI<Material> gui = SearchGUI.newGUI(18,
                             m -> ItemGUIContent.newInstance(m.name()),
-                            (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
+                            (m, s) -> m.name().toLowerCase(Locale.ROOT).contains(s.toLowerCase(Locale.ROOT)),
                             materials
                     )
                     .setTitle("Update")
@@ -196,7 +197,7 @@ class GUIAdapterTest extends BukkitUtils {
 
             SearchGUI<Material> gui = SearchGUI.newGUI(18,
                             m -> ItemGUIContent.newInstance(m.name()),
-                            (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
+                            (m, s) -> m.name().toLowerCase(Locale.ROOT).contains(s.toLowerCase(Locale.ROOT)),
                             materials
                     )
                     .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
@@ -264,7 +265,7 @@ class GUIAdapterTest extends BukkitUtils {
 
             SearchGUI<Material> gui = SearchGUI.newGUI(18,
                             m -> ItemGUIContent.newInstance(m.name()),
-                            (m, s) -> m.name().toLowerCase().contains(s.toLowerCase()),
+                            (m, s) -> m.name().toLowerCase(Locale.ROOT).contains(s.toLowerCase(Locale.ROOT)),
                             materials
                     )
                     .setBottomSide(ItemGUIContent.newInstance(Material.GLASS.name()));
@@ -603,7 +604,7 @@ class GUIAdapterTest extends BukkitUtils {
                 ItemStack itemStack = this.inventory.getItem(i);
                 assertNotNull(itemStack, "Item at slot " + i + " was null");
 
-                Material expected = Material.valueOf(materials[i].toUpperCase());
+                Material expected = Material.valueOf(materials[i].toUpperCase(Locale.ROOT));
                 assertEquals(expected, itemStack.getType(), "Item at slot " + i + " did not match expected type");
             }
 
@@ -612,7 +613,7 @@ class GUIAdapterTest extends BukkitUtils {
                 ItemStack itemStack = playerInventory.getItem(slot);
                 assertNotNull(itemStack, "Item at slot " + slot + " was null");
 
-                Material expected = Material.valueOf(materials[slot].toUpperCase());
+                Material expected = Material.valueOf(materials[slot].toUpperCase(Locale.ROOT));
                 assertEquals(expected, itemStack.getType(), "Item at slot " + slot + " did not match expected type");
             }
 
@@ -620,7 +621,7 @@ class GUIAdapterTest extends BukkitUtils {
                 ItemStack itemStack = playerInventory.getItem(i);
                 assertNotNull(itemStack, "Item at slot " + i + " was null");
 
-                Material expected = Material.valueOf(materials[i + 36].toUpperCase());
+                Material expected = Material.valueOf(materials[i + 36].toUpperCase(Locale.ROOT));
                 assertEquals(expected, itemStack.getType(), "Item at slot " + i + " did not match expected type");
             }
         });

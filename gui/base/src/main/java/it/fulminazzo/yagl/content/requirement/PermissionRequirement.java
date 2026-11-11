@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 /**
  * A type of requirement that checks if the {@link Viewer} has a certain permission.
  */
@@ -23,7 +25,7 @@ public final class PermissionRequirement implements RequirementChecker {
      * @param permission the permission
      */
     public PermissionRequirement(final @NotNull String permission) {
-        this.permission = permission.toLowerCase();
+        this.permission = permission.toLowerCase(Locale.ROOT);
     }
 
     @Override

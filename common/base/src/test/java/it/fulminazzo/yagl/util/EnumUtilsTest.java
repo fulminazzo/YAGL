@@ -5,6 +5,8 @@ import it.fulminazzo.yagl.reflect.ReflectException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EnumUtilsTest {
@@ -21,7 +23,7 @@ class EnumUtilsTest {
 
         @Test
         void testValid() {
-            assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase()));
+            assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(Locale.ROOT)));
         }
 
         @Test
@@ -41,7 +43,7 @@ class EnumUtilsTest {
 
         @Test
         void testValidComplete() {
-            assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(),
+            assertEquals(MockEnum.VALUE1, EnumUtils.valueOf(MockEnum.class, MockEnum.VALUE1.name().toLowerCase(Locale.ROOT),
                     "value", "valueOf"));
         }
 
