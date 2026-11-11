@@ -268,7 +268,7 @@ class GUIImplTest {
         }
 
         @Override
-        public @NotNull GUIContent setPriority(int priority) {
+        public @NotNull GUIContent setPriority(final int priority) {
             return null;
         }
 
@@ -278,7 +278,7 @@ class GUIImplTest {
         }
 
         @Override
-        public @NotNull GUIContent setClickSound(Sound sound) {
+        public @NotNull GUIContent setClickSound(final Sound sound) {
             return null;
         }
 
@@ -288,17 +288,17 @@ class GUIImplTest {
         }
 
         @Override
-        public @NotNull GUIContent setViewRequirements(@NotNull RequirementChecker requirements) {
+        public @NotNull GUIContent setViewRequirements(final @NotNull RequirementChecker requirements) {
             return null;
         }
 
         @Override
-        public boolean hasViewRequirements(@NotNull Viewer viewer) {
+        public boolean hasViewRequirements(final @NotNull Viewer viewer) {
             return false;
         }
 
         @Override
-        public @NotNull GUIContent onClickItem(@NotNull GUIItemAction action) {
+        public @NotNull GUIContent onClickItem(final @NotNull GUIItemAction action) {
             return null;
         }
 

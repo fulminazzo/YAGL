@@ -88,14 +88,14 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public @NotNull <M extends ItemMeta> BukkitRecipeItem setMetadata(@Nullable Class<M> itemMetaClass, @Nullable Consumer<M> metaFunction) {
+    public @NotNull <M extends ItemMeta> BukkitRecipeItem setMetadata(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
         this.itemMetaClass = itemMetaClass;
         this.metaFunction = metaFunction;
         return this;
     }
 
     @Override
-    public @NotNull BukkitRecipeItem setMaterial(@NotNull String material) {
+    public @NotNull BukkitRecipeItem setMaterial(final @NotNull String material) {
         EnumUtils.valueOf(Material.class, material);
         return (BukkitRecipeItem) super.setMaterial(material);
     }
@@ -121,17 +121,17 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public @NotNull BukkitRecipeItem setCustomModelData(int customModelData) {
+    public @NotNull BukkitRecipeItem setCustomModelData(final int customModelData) {
         return (BukkitRecipeItem) super.setCustomModelData(customModelData);
     }
 
     @Override
-    public @NotNull BukkitRecipeItem addRecipes(Recipe @NotNull ... recipes) {
+    public @NotNull BukkitRecipeItem addRecipes(final Recipe @NotNull ... recipes) {
         return (BukkitRecipeItem) super.addRecipes(recipes);
     }
 
     @Override
-    public @NotNull BukkitRecipeItem clearRecipes(@NotNull Predicate<Recipe> predicate) {
+    public @NotNull BukkitRecipeItem clearRecipes(final @NotNull Predicate<Recipe> predicate) {
         return (BukkitRecipeItem) super.clearRecipes(predicate);
     }
 

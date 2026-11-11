@@ -31,7 +31,7 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
      * @param material the material
      * @param amount   the amount
      */
-    public BukkitItemImpl(String material, int amount) {
+    public BukkitItemImpl(final String material, final int amount) {
         super(material, amount);
     }
 
@@ -96,7 +96,7 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
     }
 
     @Override
-    public @NotNull BukkitItem setCustomModelData(int customModelData) {
+    public @NotNull BukkitItem setCustomModelData(final int customModelData) {
         return (BukkitItem) super.setCustomModelData(customModelData);
     }
 

@@ -45,7 +45,7 @@ public interface BukkitItem extends Item {
      * @return the item stack
      */
     @SuppressWarnings("DataFlowIssue")
-    default <M extends ItemMeta> @NotNull ItemStack create(@Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
+    default <M extends ItemMeta> @NotNull ItemStack create(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
         if (getMaterial() == null) throw new IllegalArgumentException("Cannot create item from null material. Item: " + this);
         ItemStack itemStack = ItemAdapter.itemToItemStack(this);
         if (itemMetaClass != null && metaFunction != null) {
@@ -169,7 +169,7 @@ public interface BukkitItem extends Item {
     @NotNull BukkitItem setCustomModelData(final int customModelData);
 
     @Override
-    @NotNull BukkitItem setMaterial(@NotNull String material);
+    @NotNull BukkitItem setMaterial(final @NotNull String material);
 
     @Override
     @NotNull BukkitItem setAmount(final int amount);

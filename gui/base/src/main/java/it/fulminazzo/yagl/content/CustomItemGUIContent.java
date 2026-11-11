@@ -46,7 +46,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setMaterial(@NotNull String material) {
+    public @NotNull C setMaterial(final @NotNull String material) {
         this.item.setMaterial(material);
         return (C) this;
     }
@@ -57,7 +57,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setAmount(int amount) {
+    public @NotNull C setAmount(final int amount) {
         this.item.setAmount(amount);
         return (C) this;
     }
@@ -68,7 +68,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setDurability(int durability) {
+    public @NotNull C setDurability(final int durability) {
         this.item.setDurability(durability);
         return (C) this;
     }
@@ -79,7 +79,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setDisplayName(@NotNull String displayName) {
+    public @NotNull C setDisplayName(final @NotNull String displayName) {
         this.item.setDisplayName(displayName);
         return (C) this;
     }
@@ -110,7 +110,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setUnbreakable(boolean unbreakable) {
+    public @NotNull C setUnbreakable(final boolean unbreakable) {
         this.item.setUnbreakable(unbreakable);
         return (C) this;
     }
@@ -121,7 +121,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setCustomModelData(int customModelData) {
+    public @NotNull C setCustomModelData(final int customModelData) {
         this.item.setCustomModelData(customModelData);
         return (C) this;
     }
@@ -132,127 +132,127 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public boolean isSimilar(@Nullable Item item, ItemField @NotNull ... ignore) {
+    public boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore) {
         return this.item.isSimilar(item, ignore);
     }
 
     @Override
-    public @NotNull C addLore(String @NotNull ... lore) {
+    public @NotNull C addLore(final String @NotNull ... lore) {
         return (C) Item.super.addLore(lore);
     }
 
     @Override
-    public @NotNull C addLore(@NotNull Collection<String> lore) {
+    public @NotNull C addLore(final @NotNull Collection<String> lore) {
         return (C) Item.super.addLore(lore);
     }
 
     @Override
-    public @NotNull C removeLore(String @NotNull ... lore) {
+    public @NotNull C removeLore(final String @NotNull ... lore) {
         return (C) Item.super.removeLore(lore);
     }
 
     @Override
-    public @NotNull C removeLore(@NotNull Collection<String> lore) {
+    public @NotNull C removeLore(final @NotNull Collection<String> lore) {
         return (C) Item.super.removeLore(lore);
     }
 
     @Override
-    public @NotNull C setLore(String @NotNull ... lore) {
+    public @NotNull C setLore(final String @NotNull ... lore) {
         return (C) Item.super.setLore(lore);
     }
 
     @Override
-    public @NotNull C setLore(@NotNull Collection<String> lore) {
+    public @NotNull C setLore(final @NotNull Collection<String> lore) {
         return (C) Item.super.setLore(lore);
     }
 
     @Override
-    public @NotNull C addEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull C addEnchantment(final @NotNull String enchantment, final int level) {
         return (C) Item.super.addEnchantment(enchantment, level);
     }
 
     @Override
-    public @NotNull C addEnchantments(String @NotNull ... enchantments) {
+    public @NotNull C addEnchantments(final String @NotNull ... enchantments) {
         return (C) Item.super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull C addEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull C addEnchantments(final Enchantment @NotNull ... enchantments) {
         return (C) Item.super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull C addEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull C addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (C) Item.super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull C removeEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull C removeEnchantment(final @NotNull String enchantment, final int level) {
         return (C) Item.super.removeEnchantment(enchantment, level);
     }
 
     @Override
-    public @NotNull C removeEnchantments(String @NotNull ... enchantments) {
+    public @NotNull C removeEnchantments(final String @NotNull ... enchantments) {
         return (C) Item.super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull C removeEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull C removeEnchantments(final Enchantment @NotNull ... enchantments) {
         return (C) Item.super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull C removeEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull C removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (C) Item.super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull C addItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull C addItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (C) Item.super.addItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull C addItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull C addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (C) Item.super.addItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull C removeItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull C removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (C) Item.super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull C removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull C removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (C) Item.super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull C addPotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull C addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (C) Item.super.addPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull C addPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull C addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (C) Item.super.addPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull C removePotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull C removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (C) Item.super.removePotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull C removePotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull C removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (C) Item.super.removePotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull C setPotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull C setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (C) Item.super.setPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull C setPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull C setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (C) Item.super.setPotionEffects(potionEffects);
     }
 

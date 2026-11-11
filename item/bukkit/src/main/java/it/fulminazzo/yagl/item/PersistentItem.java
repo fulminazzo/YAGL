@@ -79,7 +79,7 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull <M extends ItemMeta> ItemStack create(@Nullable Class<M> itemMetaClass, Consumer<M> metaFunction) {
+    public @NotNull <M extends ItemMeta> ItemStack create(final @Nullable Class<M> itemMetaClass, final Consumer<M> metaFunction) {
         if (!PersistentListener.isInitialized()) Logger.getGlobal().warning(WARNING_MESSAGE);
         return super.create(itemMetaClass, metaFunction);
     }
@@ -101,7 +101,7 @@ public class PersistentItem extends BukkitItemImpl {
      * @param mobility the mobility
      * @return this persistent item
      */
-    public @NotNull PersistentItem setMobility(Mobility mobility) {
+    public @NotNull PersistentItem setMobility(final Mobility mobility) {
         this.mobility = mobility;
         return this;
     }
@@ -153,157 +153,157 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public PersistentItem setMaterial(@NotNull Material material) {
+    public PersistentItem setMaterial(final @NotNull Material material) {
         return (PersistentItem) super.setMaterial(material);
     }
 
     @Override
-    public @NotNull PersistentItem addLore(String @NotNull ... lore) {
+    public @NotNull PersistentItem addLore(final String @NotNull ... lore) {
         return (PersistentItem) super.addLore(lore);
     }
 
     @Override
-    public @NotNull PersistentItem addLore(@NotNull Collection<String> lore) {
+    public @NotNull PersistentItem addLore(final @NotNull Collection<String> lore) {
         return (PersistentItem) super.addLore(lore);
     }
 
     @Override
-    public @NotNull PersistentItem removeLore(String @NotNull ... lore) {
+    public @NotNull PersistentItem removeLore(final String @NotNull ... lore) {
         return (PersistentItem) super.removeLore(lore);
     }
 
     @Override
-    public @NotNull PersistentItem removeLore(@NotNull Collection<String> lore) {
+    public @NotNull PersistentItem removeLore(final @NotNull Collection<String> lore) {
         return (PersistentItem) super.removeLore(lore);
     }
 
     @Override
-    public @NotNull PersistentItem setLore(String @NotNull ... lore) {
+    public @NotNull PersistentItem setLore(final String @NotNull ... lore) {
         return (PersistentItem) super.setLore(lore);
     }
 
     @Override
-    public @NotNull PersistentItem addEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull PersistentItem addEnchantment(final @NotNull String enchantment, final int level) {
         return (PersistentItem) super.addEnchantment(enchantment, level);
     }
 
     @Override
-    public @NotNull PersistentItem addEnchantments(String @NotNull ... enchantments) {
+    public @NotNull PersistentItem addEnchantments(final String @NotNull ... enchantments) {
         return (PersistentItem) super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull PersistentItem addEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull PersistentItem addEnchantments(final Enchantment @NotNull ... enchantments) {
         return (PersistentItem) super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull PersistentItem addEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull PersistentItem addEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (PersistentItem) super.addEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull PersistentItem removeEnchantment(@NotNull String enchantment, int level) {
+    public @NotNull PersistentItem removeEnchantment(final @NotNull String enchantment, final int level) {
         return (PersistentItem) super.removeEnchantment(enchantment, level);
     }
 
     @Override
-    public @NotNull PersistentItem removeEnchantments(String @NotNull ... enchantments) {
+    public @NotNull PersistentItem removeEnchantments(final String @NotNull ... enchantments) {
         return (PersistentItem) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull PersistentItem removeEnchantments(Enchantment @NotNull ... enchantments) {
+    public @NotNull PersistentItem removeEnchantments(final Enchantment @NotNull ... enchantments) {
         return (PersistentItem) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull PersistentItem removeEnchantments(@NotNull Collection<Enchantment> enchantments) {
+    public @NotNull PersistentItem removeEnchantments(final @NotNull Collection<Enchantment> enchantments) {
         return (PersistentItem) super.removeEnchantments(enchantments);
     }
 
     @Override
-    public @NotNull PersistentItem addItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull PersistentItem addItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (PersistentItem) super.addItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull PersistentItem addItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (PersistentItem) super.addItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull PersistentItem removeItemFlags(ItemFlag @NotNull ... itemFlags) {
+    public @NotNull PersistentItem removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull PersistentItem removeItemFlags(@NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull PersistentItem addPotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull PersistentItem addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (PersistentItem) super.addPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull PersistentItem addPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull PersistentItem addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (PersistentItem) super.addPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull PersistentItem removePotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull PersistentItem removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (PersistentItem) super.removePotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull PersistentItem removePotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull PersistentItem removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (PersistentItem) super.removePotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull PersistentItem setPotionEffects(PotionEffect @NotNull ... potionEffects) {
+    public @NotNull PersistentItem setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
         return (PersistentItem) super.setPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull PersistentItem setPotionEffects(@NotNull Collection<PotionEffect> potionEffects) {
+    public @NotNull PersistentItem setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
         return (PersistentItem) super.setPotionEffects(potionEffects);
     }
 
     @Override
-    public @NotNull PersistentItem setMaterial(@NotNull String material) {
+    public @NotNull PersistentItem setMaterial(final @NotNull String material) {
         return (PersistentItem) super.setMaterial(material);
     }
 
     @Override
-    public @NotNull PersistentItem setAmount(int amount) {
+    public @NotNull PersistentItem setAmount(final int amount) {
         return (PersistentItem) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull PersistentItem setDurability(int durability) {
+    public @NotNull PersistentItem setDurability(final int durability) {
         return (PersistentItem) super.setDurability(durability);
     }
 
     @Override
-    public @NotNull PersistentItem setDisplayName(@NotNull String displayName) {
+    public @NotNull PersistentItem setDisplayName(final @NotNull String displayName) {
         return (PersistentItem) super.setDisplayName(displayName);
     }
 
     @Override
-    public @NotNull PersistentItem setLore(@NotNull Collection<String> lore) {
+    public @NotNull PersistentItem setLore(final @NotNull Collection<String> lore) {
         return (PersistentItem) super.setLore(lore);
     }
 
     @Override
-    public @NotNull PersistentItem setUnbreakable(boolean unbreakable) {
+    public @NotNull PersistentItem setUnbreakable(final boolean unbreakable) {
         return (PersistentItem) super.setUnbreakable(unbreakable);
     }
 
     @Override
-    public @NotNull PersistentItem setCustomModelData(int customModelData) {
+    public @NotNull PersistentItem setCustomModelData(final int customModelData) {
         return (PersistentItem) super.setCustomModelData(customModelData);
     }
 

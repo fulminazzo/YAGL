@@ -123,7 +123,7 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
-    public @NotNull I removeEnchantment(final @NotNull String enchantment, int level) {
+    public @NotNull I removeEnchantment(final @NotNull String enchantment, final int level) {
         return (I) super.removeEnchantment(enchantment, level);
     }
 

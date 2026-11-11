@@ -16,32 +16,32 @@ import org.jetbrains.annotations.NotNull;
 public abstract class CustomGUIContent<C extends CustomGUIContent<C>> extends GUIContentImpl {
 
     @Override
-    public @NotNull C setPriority(int priority) {
+    public @NotNull C setPriority(final int priority) {
         return (C) super.setPriority(priority);
     }
 
     @Override
-    public @NotNull C setClickSound(Sound sound) {
+    public @NotNull C setClickSound(final Sound sound) {
         return (C) super.setClickSound(sound);
     }
 
     @Override
-    public @NotNull C setViewRequirements(@NotNull String permission) {
+    public @NotNull C setViewRequirements(final @NotNull String permission) {
         return (C) super.setViewRequirements(permission);
     }
 
     @Override
-    public @NotNull C setViewRequirements(@NotNull RequirementChecker requirements) {
+    public @NotNull C setViewRequirements(final @NotNull RequirementChecker requirements) {
         return (C) super.setViewRequirements(requirements);
     }
 
     @Override
-    public @NotNull C onClickItemSend(@NotNull String message) {
+    public @NotNull C onClickItemSend(final @NotNull String message) {
         return (C) super.onClickItemSend(message);
     }
 
     @Override
-    public @NotNull C onClickItem(@NotNull String command) {
+    public @NotNull C onClickItem(final @NotNull String command) {
         return (C) super.onClickItem(command);
     }
 
@@ -51,27 +51,27 @@ public abstract class CustomGUIContent<C extends CustomGUIContent<C>> extends GU
     }
 
     @Override
-    public @NotNull C onClickItem(@NotNull GUIItemAction action) {
+    public @NotNull C onClickItem(final @NotNull GUIItemAction action) {
         return (C) super.onClickItem(action);
     }
 
     @Override
-    public @NotNull C copyAll(@NotNull Metadatable other, boolean replace) {
+    public @NotNull C copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (C) super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull C copyFrom(@NotNull Metadatable other, boolean replace) {
+    public @NotNull C copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (C) super.copyFrom(other, replace);
     }
 
     @Override
-    public @NotNull C setVariable(@NotNull String name, @NotNull String value) {
+    public @NotNull C setVariable(final @NotNull String name, final @NotNull String value) {
         return (C) super.setVariable(name, value);
     }
 
     @Override
-    public @NotNull C unsetVariable(@NotNull String name) {
+    public @NotNull C unsetVariable(final @NotNull String name) {
         return (C) super.unsetVariable(name);
     }
 

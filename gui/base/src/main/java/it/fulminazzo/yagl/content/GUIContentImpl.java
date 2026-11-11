@@ -84,30 +84,30 @@ abstract class GUIContentImpl implements GUIContent {
     protected abstract @NotNull GUIContentImpl internalCopy();
 
     @Override
-    public @NotNull GUIContent setPriority(int priority) {
+    public @NotNull GUIContent setPriority(final int priority) {
         this.priority = priority;
         return this;
     }
 
     @Override
-    public @NotNull GUIContent setClickSound(Sound sound) {
+    public @NotNull GUIContent setClickSound(final Sound sound) {
         this.clickSound = sound;
         return this;
     }
 
     @Override
-    public @NotNull GUIContent setViewRequirements(@NotNull RequirementChecker requirements) {
+    public @NotNull GUIContent setViewRequirements(final @NotNull RequirementChecker requirements) {
         this.requirements = requirements;
         return this;
     }
 
     @Override
-    public boolean hasViewRequirements(@NotNull Viewer viewer) {
+    public boolean hasViewRequirements(final @NotNull Viewer viewer) {
         return this.requirements == null || this.requirements.test(viewer);
     }
 
     @Override
-    public @NotNull GUIContent onClickItem(@NotNull GUIItemAction action) {
+    public @NotNull GUIContent onClickItem(final @NotNull GUIItemAction action) {
         this.clickAction = action;
         return this;
     }
