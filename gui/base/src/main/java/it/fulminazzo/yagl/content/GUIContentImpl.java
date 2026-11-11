@@ -40,21 +40,28 @@ abstract class GUIContentImpl implements GUIContent {
      */
     protected abstract @NotNull Item internalRender();
 
+    /**
+     * Copies the current content data to the provided copy.
+     *
+     * @param copy the copy
+     * @return the copy updated
+     */
+    protected @NotNull GUIContent copyDataTo(final @NotNull GUIContent copy) {
+        copy
+                .setPriority(this.priority)
+                .setViewRequirements(this.requirements instanceof PermissionRequirement ?
+                        new PermissionRequirement(this.requirements.serialize()) :
+                        this.requirements)
+                .onClickItem(this.clickAction)
+                .setClickSound(this.clickSound);
+        copy.variables().putAll(this.variables);
+        return copy;
+    }
+
     @Override
     public @NotNull GUIContent copy() {
         GUIContentImpl copy = internalCopy();
-        copy.setPriority(this.priority);
-        copy.requirements = this.requirements instanceof PermissionRequirement ?
-                new PermissionRequirement(this.requirements.serialize()) :
-                this.requirements;
-        copy.clickAction = this.clickAction;
-        if (this.clickSound != null)
-            copy.clickSound = new Sound(
-                    this.clickSound.getName(), this.clickSound.getVolume(),
-                    this.clickSound.getPitch(), this.clickSound.getCategory()
-            );
-        copy.variables.putAll(this.variables);
-        return copy;
+        return copyDataTo(copy);
     }
 
     @Override

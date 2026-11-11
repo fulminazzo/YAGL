@@ -39,6 +39,13 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
+    public @NotNull <I extends Item> I copy(final @NotNull Class<I> type) {
+        I copy = item.copy(type);
+        if (copy instanceof GUIContent) copyDataTo((GUIContent) copy);
+        return copy;
+    }
+
+    @Override
     public @NotNull C setMaterial(@NotNull String material) {
         this.item.setMaterial(material);
         return (C) this;
