@@ -1,9 +1,7 @@
-import it.fulminazzo.yamlparser.utils.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,18 +9,18 @@ class JavaDocUtilsTest {
 
     @Test
     void testCopy() throws IOException {
-        File parent = new File("build/resources/test");
-        if (parent.exists()) FileUtils.deleteFolder(parent);
-        FileUtils.createFolder(parent);
+        File parent = new File("build/resources/test/copy_test");
+        if (parent.exists()) deleteDir(parent);
+        assertTrue(parent.mkdirs(), "Could not create directory " + parent.getAbsolutePath());
         // Setup
         File dir1 = new File(parent, "dir1");
-        dir1.mkdir();
+        assertTrue(dir1.mkdir(), "Could not create directory " + dir1.getAbsolutePath());
         File file1 = new File(dir1, "file1");
-        file1.createNewFile();
-        FileUtils.writeToFile(file1, "Hello");
+        assertTrue(file1.createNewFile(), "Could not create file " + file1.getAbsolutePath());
+        writeToFile(file1, "Hello");
         File file2 = new File(dir1, "file2");
-        file2.createNewFile();
-        FileUtils.writeToFile(file2, "World");
+        assertTrue(file2.createNewFile(), "Could not create file " + file2.getAbsolutePath());
+        writeToFile(file2, "World");
 
         // Copy
         File dir2 = new File(parent, "dir2");
@@ -33,11 +31,11 @@ class JavaDocUtilsTest {
 
         file1 = new File(dir2, "file1");
         assertTrue(file1.exists(), String.format("No file %s", file1.getAbsolutePath()));
-        assertEquals("Hello", FileUtils.readFileToString(file1));
+        assertEquals("Hello", readFileToString(file1));
 
         file2 = new File(dir2, "file2");
         assertTrue(file2.exists(), String.format("No file %s", file2.getAbsolutePath()));
-        assertEquals("World", FileUtils.readFileToString(file2));
+        assertEquals("World", readFileToString(file2));
     }
 
     @Test
@@ -62,6 +60,27 @@ class JavaDocUtilsTest {
     @Test
     void testInvalidResource() {
         assertThrowsExactly(IllegalArgumentException.class, () -> JavaDocUtils.getResource("invalid"));
+    }
+
+    private static void deleteDir(final @NotNull File directory) {
+        File[] files = directory.listFiles();
+        assertNotNull(files, "Could not list files in directory " + directory.getAbsolutePath());
+        for (File file : files)
+            if (file.isDirectory()) deleteDir(file);
+            else assertTrue(file.delete(), "Could not delete file " + file.getAbsolutePath());
+        assertTrue(directory.delete(), "Could not delete directory " + directory.getAbsolutePath());
+    }
+
+    private static @NotNull String readFileToString(final @NotNull File file) throws IOException {
+        try (FileInputStream input = new FileInputStream(file)) {
+            return new String(input.readAllBytes());
+        }
+    }
+
+    private static void writeToFile(final @NotNull File file, final @NotNull String content) throws IOException {
+        try (FileOutputStream output = new FileOutputStream(file)) {
+            output.write(content.getBytes());
+        }
     }
 
 }
