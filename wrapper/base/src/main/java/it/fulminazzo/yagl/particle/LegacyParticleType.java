@@ -84,7 +84,7 @@ public final class LegacyParticleType<P extends ParticleOption<?>> extends APart
         return valueOf(index, LegacyParticleType.class);
     }
 
-    public static LegacyParticleType<?> valueOf(final @NotNull String name) {
+    public static @NotNull LegacyParticleType<?> valueOf(final @NotNull String name) {
         return valueOf(name, LegacyParticleType.class);
     }
 

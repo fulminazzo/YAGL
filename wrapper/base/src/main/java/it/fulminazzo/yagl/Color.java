@@ -33,10 +33,10 @@ public final class Color extends ClassEnum {
     public static final Color ORANGE = fromARGB("#FFFFA500");
     private static final int MASK = 255;
 
-    private final byte alpha;
-    private final byte red;
-    private final byte green;
-    private final byte blue;
+    private final @Range(from = 0, to = 255) byte alpha;
+    private final @Range(from = 0, to = 255) byte red;
+    private final @Range(from = 0, to = 255) byte green;
+    private final @Range(from = 0, to = 255) byte blue;
 
     /**
      * Instantiates a new Color.
@@ -45,7 +45,7 @@ public final class Color extends ClassEnum {
      * @param green the green
      * @param blue  the blue
      */
-    public Color(final int red, final int green, final int blue) {
+    public Color(final @Range(from = 0, to = 255) int red, final @Range(from = 0, to = 255) int green, final @Range(from = 0, to = 255) int blue) {
         this(MASK, red, green, blue);
     }
 
@@ -57,7 +57,7 @@ public final class Color extends ClassEnum {
      * @param green the green
      * @param blue  the blue
      */
-    public Color(final int alpha, final int red, final int green, final int blue) {
+    public Color(final @Range(from = 0, to = 255) int alpha, final @Range(from = 0, to = 255) int red, final @Range(from = 0, to = 255) int green, final @Range(from = 0, to = 255) int blue) {
         checkRange(alpha);
         this.alpha = (byte) alpha;
         checkRange(red);
@@ -73,7 +73,7 @@ public final class Color extends ClassEnum {
      *
      * @return the alpha value
      */
-    public int getAlpha() {
+    public @Range(from = 0, to = 255) int getAlpha() {
         return this.alpha & MASK;
     }
 
@@ -82,7 +82,7 @@ public final class Color extends ClassEnum {
      *
      * @return the red value
      */
-    public int getRed() {
+    public @Range(from = 0, to = 255) int getRed() {
         return this.red & MASK;
     }
 
@@ -91,7 +91,7 @@ public final class Color extends ClassEnum {
      *
      * @return the green value
      */
-    public int getGreen() {
+    public @Range(from = 0, to = 255) int getGreen() {
         return this.green & MASK;
     }
 
@@ -100,7 +100,7 @@ public final class Color extends ClassEnum {
      *
      * @return the blue value
      */
-    public int getBlue() {
+    public @Range(from = 0, to = 255) int getBlue() {
         return this.blue & MASK;
     }
 

@@ -18,9 +18,9 @@ import java.util.Locale;
 @ToString
 public final class Sound extends Wrapper {
     private @NotNull String name;
-    @Range(from = 0, to = Long.MAX_VALUE)
+    @Range(from = 0, to = 1)
     private float volume;
-    @Range(from = 0, to = Long.MAX_VALUE)
+    @Range(from = 0, to = 2)
     private float pitch;
     /**
      * The category to play the sound for.
@@ -45,7 +45,7 @@ public final class Sound extends Wrapper {
      * @param name   the sound
      * @param volume the volume
      */
-    public Sound(final @NotNull String name, final @Range(from = 0, to = Long.MAX_VALUE) float volume) {
+    public Sound(final @NotNull String name, final @Range(from = 0, to = 1) float volume) {
         this(name, volume, 1.0F);
     }
 
@@ -57,8 +57,8 @@ public final class Sound extends Wrapper {
      * @param pitch  the pitch
      */
     public Sound(final @NotNull String name,
-                 final @Range(from = 0, to = Long.MAX_VALUE) float volume,
-                 final @Range(from = 0, to = Long.MAX_VALUE) float pitch) {
+                 final @Range(from = 0, to = 1) float volume,
+                 final @Range(from = 0, to = 2) float pitch) {
         this(name, volume, pitch, null);
     }
 
@@ -71,8 +71,8 @@ public final class Sound extends Wrapper {
      * @param category the category
      */
     public Sound(final @NotNull String name,
-                 final @Range(from = 0, to = Long.MAX_VALUE) float volume,
-                 final @Range(from = 0, to = Long.MAX_VALUE) float pitch,
+                 final @Range(from = 0, to = 1) float volume,
+                 final @Range(from = 0, to = 2) float pitch,
                  final @Nullable String category) {
         setName(name).setVolume(volume).setPitch(pitch).setCategory(category);
     }
@@ -97,7 +97,7 @@ public final class Sound extends Wrapper {
      * @param volume the volume
      * @return this sound
      */
-    public @NotNull Sound setVolume(final @Range(from = 0, to = Long.MAX_VALUE) float volume) {
+    public @NotNull Sound setVolume(final @Range(from = 0, to = 1) float volume) {
         this.volume = check("volume", volume, 0);
         return this;
     }
@@ -110,7 +110,7 @@ public final class Sound extends Wrapper {
      * @param pitch the pitch
      * @return this sound
      */
-    public @NotNull Sound setPitch(final @Range(from = 0, to = Long.MAX_VALUE) float pitch) {
+    public @NotNull Sound setPitch(final @Range(from = 0, to = 2) float pitch) {
         this.pitch = check("pitch", pitch, 0);
         return this;
     }

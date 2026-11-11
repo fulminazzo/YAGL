@@ -172,7 +172,7 @@ public final class ParticleType<P extends ParticleOption<?>> extends AParticleTy
         return valueOf(index, ParticleType.class);
     }
 
-    public static ParticleType<?> valueOf(final @NotNull String name) {
+    public static @NotNull ParticleType<?> valueOf(final @NotNull String name) {
         return valueOf(name, ParticleType.class);
     }
 
