@@ -556,11 +556,11 @@ public final class WrappersAdapter {
             type = EnumUtils.valueOf(PotionEffectType.class, effect, "getByName");
         }
         try {
-            return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
+            return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier() - 1,
                     potionEffect.isShowingParticles(), potionEffect.isShowingParticles(),
                     potionEffect.isShowingIcon());
         } catch (NoSuchMethodError e) {
-            return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier(),
+            return new org.bukkit.potion.PotionEffect(type, potionEffect.getDurationInTicks(), potionEffect.getAmplifier() - 1,
                     potionEffect.isShowingParticles(), potionEffect.isShowingParticles());
         }
     }

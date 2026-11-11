@@ -132,15 +132,6 @@ public final class PotionEffect extends Wrapper {
     }
 
     /**
-     * Gets amplifier.
-     *
-     * @return the amplifier
-     */
-    public int getAmplifier() {
-        return this.amplifier - 1;
-    }
-
-    /**
      * Shows the particles associated with this potion effect.
      *
      * @return this potion effect
