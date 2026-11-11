@@ -6,10 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A special class that allows transforms a general class into a pseudo-enum implementation
@@ -113,8 +110,9 @@ public abstract class ClassEnum {
                     .forEach(f -> {
                         E value = reflect.get(f).get();
                         values.add(value);
-                        valueNameMap.put(value, f.getName());
-                        nameValueMap.put(f.getName(), value);
+                        String fieldName = f.getName().toUpperCase(Locale.ROOT);
+                        valueNameMap.put(value, fieldName);
+                        nameValueMap.put(fieldName, value);
                     });
         }
 
@@ -147,8 +145,8 @@ public abstract class ClassEnum {
         }
 
         public @NotNull E valueOf(final @NotNull String name) {
-            if (nameValueMap.containsKey(name))
-                return nameValueMap.get(name);
+            String fieldName = name.toUpperCase(Locale.ROOT);
+            if (nameValueMap.containsKey(fieldName)) return nameValueMap.get(fieldName);
             else throw new IllegalArgumentException("No enum constant " + type.getName() + "." + name);
         }
 
