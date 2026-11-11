@@ -3,7 +3,6 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.util.MessageUtils;
-import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +49,8 @@ public interface Item extends AbstractItem {
      *
      * @return the amount
      */
-    @Range(from = 1, to = Integer.MAX_VALUE) int getAmount();
+    @Range(from = 1, to = Integer.MAX_VALUE)
+    int getAmount();
 
     /**
      * Sets durability.
@@ -65,7 +65,8 @@ public interface Item extends AbstractItem {
      *
      * @return the durability
      */
-    @Range(from = 0, to = Short.MAX_VALUE) int getDurability();
+    @Range(from = 0, to = Short.MAX_VALUE)
+    int getDurability();
 
     /**
      * Sets display name.
@@ -479,9 +480,7 @@ public interface Item extends AbstractItem {
      *
      * @return the item
      */
-    default @NotNull Item copy() {
-        return ObjectUtils.copy(this);
-    }
+    @NotNull Item copy();
 
     /**
      * Copies the current item to a new one using the provided class.
@@ -489,13 +488,11 @@ public interface Item extends AbstractItem {
      * it tries to convert it to {@link ItemImpl} by appending <i>Impl</i>.
      * If no such class is found, an {@link IllegalArgumentException} is thrown.
      *
-     * @param <I>   the type of the item
-     * @param clazz the class of the copied item
+     * @param <I>  the type of the item
+     * @param type the type of the copied item
      * @return the item
      */
-    default <I extends Item> @NotNull I copy(@NotNull Class<I> clazz) {
-        return ObjectUtils.copy(this, clazz);
-    }
+    <I extends Item> @NotNull I copy(final @NotNull Class<I> type);
 
     /**
      * Creates a new item to be used.

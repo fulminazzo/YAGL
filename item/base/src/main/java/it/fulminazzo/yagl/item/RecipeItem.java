@@ -199,8 +199,6 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     @NotNull RecipeItem setUnbreakable(final boolean unbreakable);
 
     @Override
-    default @NotNull RecipeItem copy() {
-        return Item.super.copy(RecipeItem.class);
-    }
+    @NotNull RecipeItem copy();
 
 }

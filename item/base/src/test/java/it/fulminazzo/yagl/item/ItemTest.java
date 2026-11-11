@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.item;
 
+import it.fulminazzo.yagl.Copiable;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
@@ -123,7 +124,7 @@ class ItemTest {
     }
 
     @Getter
-    public static class MockItem implements Item {
+    public static class MockItem extends Copiable<Item> implements Item {
         private String material;
         private int amount;
         private int durability;
@@ -134,6 +135,22 @@ class ItemTest {
         private final Set<PotionEffect> potionEffects = new LinkedHashSet<>();
         private boolean unbreakable;
         private int customModelData;
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
+            return (T) copy
+                    .setMaterial(material)
+                    .setAmount(amount)
+                    .setDurability(durability)
+                    .setDisplayName(displayName)
+                    .setLore(lore)
+                    .addEnchantments(enchantments)
+                    .addItemFlags(itemFlags)
+                    .setPotionEffects(potionEffects)
+                    .setUnbreakable(unbreakable)
+                    .setCustomModelData(customModelData);
+        }
 
         public MockItem(String material) {
             this.material = material;

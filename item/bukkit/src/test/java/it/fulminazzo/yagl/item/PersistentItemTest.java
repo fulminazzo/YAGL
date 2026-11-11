@@ -111,6 +111,26 @@ class PersistentItemTest {
     }
 
     @Test
+    void testCopy() {
+        PersistentItem p1 = PersistentItem.newItem(Material.DIAMOND_SWORD, 3)
+                .setDurability(5)
+                .setDisplayName("Test Sword")
+                .setLore("Lore line 1", "Lore line 2")
+                .addEnchantment("sharpness", 2)
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                .setUnbreakable(true)
+                .setCustomModelData(42)
+                .setDeathAction(DeathAction.DISAPPEAR)
+                .setMobility(Mobility.INTERNAL)
+                .onInteract((player, itemStack, action) -> {
+                })
+                .onClick((player, itemStack, clickType) -> {
+                });
+        PersistentItem p2 = p1.copy();
+        assertEquals(p1, p2);
+    }
+
+    @Test
     void testStaticInitializers() {
         List<PersistentItem> items = new Refl<>(PersistentItem.class).getStaticMethods().stream()
                 .filter(m -> m.getReturnType().equals(PersistentItem.class))

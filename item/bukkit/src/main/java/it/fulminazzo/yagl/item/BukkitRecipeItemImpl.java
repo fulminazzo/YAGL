@@ -33,6 +33,22 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
         super();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
+        if (copy instanceof BukkitItem) {
+            Class<ItemMeta> itemMetaClass = (Class<ItemMeta>) this.itemMetaClass;
+            Consumer<ItemMeta> metaFunction = (Consumer<ItemMeta>) this.metaFunction;
+            ((BukkitItem) copy).setMetadata(itemMetaClass, metaFunction);
+        }
+        return super.copyDataTo(copy);
+    }
+
+    @Override
+    public @NotNull BukkitRecipeItem copy() {
+        return (BukkitRecipeItem) super.copy();
+    }
+
     @Override
     public void registerRecipes() {
         for (Recipe recipe : this.recipes) {

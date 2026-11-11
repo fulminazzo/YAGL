@@ -63,6 +63,22 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
+    public @NotNull PersistentItem copy() {
+        return (PersistentItem) super.copy();
+    }
+
+    @Override
+    protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
+        if (copy instanceof PersistentItem)
+            ((PersistentItem) copy)
+                    .setDeathAction(deathAction)
+                    .setMobility(mobility)
+                    .onClick(clickAction)
+                    .onInteract(interactAction);
+        return super.copyDataTo(copy);
+    }
+
+    @Override
     public @NotNull <M extends ItemMeta> ItemStack create(@Nullable Class<M> itemMetaClass, Consumer<M> metaFunction) {
         if (!PersistentListener.isInitialized()) Logger.getGlobal().warning(WARNING_MESSAGE);
         return super.create(itemMetaClass, metaFunction);
@@ -289,11 +305,6 @@ public class PersistentItem extends BukkitItemImpl {
     @Override
     public @NotNull PersistentItem setCustomModelData(int customModelData) {
         return (PersistentItem) super.setCustomModelData(customModelData);
-    }
-
-    @Override
-    public @NotNull PersistentItem copy() {
-        return super.copy(PersistentItem.class);
     }
 
     @Override

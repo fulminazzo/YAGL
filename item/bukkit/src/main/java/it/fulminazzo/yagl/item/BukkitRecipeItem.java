@@ -175,7 +175,6 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     @NotNull BukkitRecipeItem setUnbreakable(final boolean unbreakable);
 
     @Override
-    default @NotNull BukkitRecipeItem copy() {
-        return RecipeItem.super.copy(BukkitRecipeItem.class);
-    }
+    @NotNull BukkitRecipeItem copy();
+
 }

@@ -47,6 +47,18 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
+    protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
+        if (copy instanceof RecipeItem)
+            ((RecipeItem) copy).addRecipes(recipes.toArray(new Recipe[0]));
+        return super.copyDataTo(copy);
+    }
+
+    @Override
+    public @NotNull RecipeItem copy() {
+        return (RecipeItem) super.copy();
+    }
+
+    @Override
     public @NotNull RecipeItem addRecipes(final Recipe @NotNull ... recipes) {
         Collections.addAll(this.recipes, recipes);
         return this;

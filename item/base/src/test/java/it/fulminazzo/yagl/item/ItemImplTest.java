@@ -13,7 +13,17 @@ class ItemImplTest {
 
     @Test
     void testCopy() {
-        Item i1 = new ItemImpl();
+        Item i1 = new ItemImpl()
+                .setMaterial("material")
+                .setAmount(2)
+                .setDurability(4)
+                .setDisplayName("Hello world")
+                .addLore("lore")
+                .addEnchantments("enchant1", "enchant2")
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                .addPotionEffects(new PotionEffect("strength", 20, 2))
+                .setCustomModelData(2)
+                .setUnbreakable(true);
         Item i2 = i1.copy();
         assertEquals(i1, i2);
     }

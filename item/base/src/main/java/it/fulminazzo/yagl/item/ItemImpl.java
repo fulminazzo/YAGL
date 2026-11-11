@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.item;
 
+import it.fulminazzo.yagl.Copiable;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.reflect.Reflect;
@@ -19,8 +20,8 @@ import java.util.*;
  * An implementation of {@link Item}.
  */
 @Getter
-@EqualsAndHashCode
-class ItemImpl implements Item {
+@EqualsAndHashCode(callSuper = false)
+class ItemImpl extends Copiable<Item> implements Item {
     protected String material;
     @Range(from = 1, to = Integer.MAX_VALUE)
     protected int amount;
@@ -64,6 +65,22 @@ class ItemImpl implements Item {
         this.enchantments = new EnchantmentSet();
         this.itemFlags = new HashSet<>();
         this.potionEffects = new HashSet<>();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
+        if (material != null) copy.setMaterial(material);
+        return (T) copy
+                .setAmount(amount)
+                .setDurability(durability)
+                .setDisplayName(displayName)
+                .setLore(lore)
+                .addEnchantments(enchantments)
+                .addItemFlags(itemFlags)
+                .setPotionEffects(potionEffects)
+                .setUnbreakable(unbreakable)
+                .setCustomModelData(customModelData);
     }
 
     @Override

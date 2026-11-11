@@ -35,20 +35,37 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
         super(material, amount);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
+        if (copy instanceof BukkitItem) {
+            Class<ItemMeta> itemMetaClass = (Class<ItemMeta>) this.itemMetaClass;
+            Consumer<ItemMeta> metaFunction = (Consumer<ItemMeta>) this.metaFunction;
+            ((BukkitItem) copy).setMetadata(itemMetaClass, metaFunction);
+        }
+        return super.copyDataTo(copy);
+    }
+
+    @Override
+    public @NotNull BukkitItem copy() {
+        return (BukkitItem) super.copy();
+    }
+
     @Override
     public @NotNull ItemStack create() {
         return new Refl<>(this).invokeMethod("create", this.itemMetaClass, this.metaFunction);
     }
 
     @Override
-    public @NotNull <M extends ItemMeta> BukkitItem setMetadata(@Nullable Class<M> itemMetaClass, @Nullable Consumer<M> metaFunction) {
+    public @NotNull <M extends ItemMeta> BukkitItem setMetadata(final @Nullable Class<M> itemMetaClass,
+                                                                final @Nullable Consumer<M> metaFunction) {
         this.itemMetaClass = itemMetaClass;
         this.metaFunction = metaFunction;
         return this;
     }
 
     @Override
-    public @NotNull BukkitItem setMaterial(@NotNull String material) {
+    public @NotNull BukkitItem setMaterial(final @NotNull String material) {
         EnumUtils.valueOf(Material.class, material);
         return (BukkitItem) super.setMaterial(material);
     }
@@ -83,8 +100,4 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
         return (BukkitItem) super.setCustomModelData(customModelData);
     }
 
-    @Override
-    public @NotNull BukkitItem copy() {
-        return super.copy(BukkitItem.class);
-    }
 }
