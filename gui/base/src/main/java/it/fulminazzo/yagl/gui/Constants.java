@@ -1,8 +1,12 @@
 package it.fulminazzo.yagl.gui;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Constants used across the GUI system.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constants {
 
     /**
