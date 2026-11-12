@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
@@ -10,6 +9,7 @@ import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.IgnoreApply;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.util.MessageUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,8 +38,8 @@ public class SearchGUI<T> extends DataGUI<T> {
      * for the content, to avoid displaying the item
      * default Minecraft name.
      */
-    public static final String EMPTY_RENAME_TEXT =
-            new Refl<>(MessageUtils.class).getFieldObject("COLOR_CHAR") + "r";
+    public static final String EMPTY_RENAME_TEXT = Reflect.on(MessageUtils.class).get("COLOR_CHAR").get()
+            + "r";
 
     private final @NotNull BiPredicate<T, String> searchFunction;
 
@@ -75,7 +75,7 @@ public class SearchGUI<T> extends DataGUI<T> {
         super(templateGUI, dataConverter);
         this.searchFunction = searchFunction;
         this.query = "";
-        templateGUI.setSearchGui(this);
+        templateGUI.setSearchGUI(this);
     }
 
     /**
@@ -129,7 +129,7 @@ public class SearchGUI<T> extends DataGUI<T> {
             if (i == 0) {
                 String query = getParsedQuery();
                 getContents(i).stream()
-                        .filter(c -> c instanceof ItemGUIContent)
+                        .filter(c -> c instanceof CustomItemGUIContent)
                         .map(c -> (CustomItemGUIContent<?>) c)
                         .forEach(c -> c.setDisplayName(query));
             }
@@ -162,6 +162,10 @@ public class SearchGUI<T> extends DataGUI<T> {
     public @NotNull SearchGUI<T> setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
+
+    /*
+     * RETURN TYPE OVERRIDES.
+     */
 
     @SafeVarargs
     @Override
@@ -770,6 +774,10 @@ public class SearchGUI<T> extends DataGUI<T> {
         return (SearchGUI<T>) super.copyFrom(other, replace);
     }
 
+    /*
+     * INITIALIZERS
+     */
+
     /**
      * Creates a new {@link SearchGUI} with the given type and a converter.
      *
@@ -885,7 +893,7 @@ public class SearchGUI<T> extends DataGUI<T> {
         @Setter
         @EqualsAndHashCode.Exclude
         @IgnoreApply
-        private @Nullable SearchGUI<?> searchGui;
+        private @Nullable SearchGUI<?> searchGUI;
 
         /**
          * Instantiates a new Search full size gui.
@@ -900,18 +908,19 @@ public class SearchGUI<T> extends DataGUI<T> {
          *
          * @return the search gui
          */
-        public @NotNull SearchGUI<?> getSearchGui() {
-            if (this.searchGui == null) throw new IllegalStateException("SearchGUI has not been set yet.");
-            return this.searchGui;
+        public @NotNull SearchGUI<?> getSearchGUI() {
+            if (this.searchGUI == null) throw new IllegalStateException("SearchGUI has not been set yet.");
+            return this.searchGUI;
         }
 
         @Override
         public FullscreenGUI copy() {
-            return new Refl<>(new SearchFullscreenGUI())
-                    .setFieldObject("upperGUI", getUpperGUI().copy())
-                    .setFieldObject("lowerGUI", getLowerGUI().copy())
-                    .setFieldObject("searchGui", this.searchGui)
-                    .getObject();
+            //TODO: rework with Copiable?
+            return Reflect.on(new SearchFullscreenGUI())
+                    .set("upperGUI", getUpperGUI().copy())
+                    .set("lowerGUI", getLowerGUI().copy())
+                    .set("searchGUI", this.searchGUI)
+                    .get();
         }
 
     }

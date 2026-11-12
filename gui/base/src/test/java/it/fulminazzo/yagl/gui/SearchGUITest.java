@@ -245,7 +245,7 @@ class SearchGUITest {
         @Test
         void testGetSearchGUIThrowsIfInitialized() {
             SearchGUI.SearchFullscreenGUI fullscreenGUI = new SearchGUI.SearchFullscreenGUI();
-            assertThrows(IllegalStateException.class, fullscreenGUI::getSearchGui);
+            assertThrows(IllegalStateException.class, fullscreenGUI::getSearchGUI);
         }
 
         @Test

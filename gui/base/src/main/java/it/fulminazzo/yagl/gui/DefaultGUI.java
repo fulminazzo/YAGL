@@ -19,7 +19,7 @@ public class DefaultGUI extends GUIImpl {
      */
     protected DefaultGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         super(size);
-        checkSize(size);
+        checkValidSize(size);
     }
 
     /**
@@ -27,7 +27,7 @@ public class DefaultGUI extends GUIImpl {
      *
      * @param size the size
      */
-    void checkSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+    void checkValidSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         ValidationUtils.checkRange("size", size, Constants.MIN_DEFAULT_SIZE, Constants.MAX_SIZE);
         if (size % Constants.MIN_DEFAULT_SIZE != 0)
             throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of %s can be accepted",

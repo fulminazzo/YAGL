@@ -1,7 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
@@ -9,6 +7,8 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.reflect.Reflect;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
@@ -41,18 +41,18 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
 
     /**
      * Instantiates a new Pageable gui.
+     */
+    PageableGUI() {
+        this(new DefaultGUI());
+    }
+
+    /**
+     * Instantiates a new Pageable gui.
      *
      * @param templateGUI the template gui
      */
     PageableGUI(final @NotNull GUI templateGUI) {
         this.templateGUI = templateGUI;
-    }
-
-    /**
-     * Instantiates a new Pageable gui.
-     */
-    PageableGUI() {
-        this(new DefaultGUI());
     }
 
     /**
@@ -102,10 +102,10 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         final GUI newTemplateGUI;
         if (this.templateGUI instanceof FullscreenGUI) {
             FullscreenGUI fullscreenGUI = (FullscreenGUI) this.templateGUI;
-            newTemplateGUI = new Refl<>(GUI.newFullscreenGUI(9))
-                    .setFieldObject("upperGUI", fullscreenGUI.getUpperGUI().copy())
-                    .setFieldObject("lowerGUI", fullscreenGUI.getLowerGUI().copy())
-                    .getObject();
+            newTemplateGUI = Reflect.on(GUI.newFullscreenGUI(9)) // Temporary size, will be overwritten
+                    .set("upperGUI", fullscreenGUI.getUpperGUI().copy())
+                    .set("lowerGUI", fullscreenGUI.getLowerGUI().copy())
+                    .get();
         } else {
             if (this.templateGUI instanceof TypeGUI)
                 newTemplateGUI = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
@@ -213,9 +213,8 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         return slot;
     }
 
-    @NotNull
     @Override
-    public Iterator<GUI> iterator() {
+    public @NotNull Iterator<GUI> iterator() {
         return this.pages.iterator();
     }
 
@@ -273,6 +272,36 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         this.nextPage.ifPresent((i, p) -> slots.remove(i));
         return slots;
     }
+
+    @Override
+    public @NotNull PageableGUI copyAll(final @NotNull GUI other, final boolean replace) {
+        GUI.super.copyAll(other, replace);
+        if (other instanceof PageableGUI) {
+            PageableGUI otherGUI = (PageableGUI) other;
+            if (replace)
+                try {
+                    otherGUI.setPages(pages());
+                } catch (IllegalStateException ignored) {
+                    // DataGUI does not support pages
+                }
+            if (!otherGUI.previousPage.isPresent() || replace)
+                previousPage.map((i, c) -> new Pair<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
+            if (!otherGUI.nextPage.isPresent() || replace)
+                nextPage.map((i, c) -> new Pair<>(i, c.copy())).ifPresent(otherGUI::setNextPage);
+        }
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        String base = templateGUI.toString();
+        base = base.substring(base.indexOf("{"), base.length() - 1);
+        return getClass().getSimpleName() + base + String.format(", pages=%s}", pages.size());
+    }
+
+    /*
+     * DELEGATION METHODS
+     */
 
     @Override
     public @NotNull PageableGUI setTitle(final @Nullable String title) {
@@ -415,11 +444,6 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<? extends GUIContent> contents) {
-        return (PageableGUI) GUI.super.setContents(slot, contents);
-    }
-
-    @Override
     public @NotNull PageableGUI unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         this.templateGUI.unsetContent(slot);
         return this;
@@ -469,11 +493,14 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         return this.templateGUI.changeGUIAction();
     }
 
+    /*
+     * RETURN TYPE OVERRIDES
+     */
+
     @Override
-    public String toString() {
-        String base = templateGUI.toString();
-        base = base.substring(base.indexOf("{"), base.length() - 1);
-        return getClass().getSimpleName() + base + String.format(", pages=%s}", pages.size());
+    public @NotNull PageableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot,
+                                            final @NotNull Collection<? extends GUIContent> contents) {
+        return (PageableGUI) GUI.super.setContents(slot, contents);
     }
 
     @Override
@@ -927,25 +954,6 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI copyAll(final @NotNull GUI other, final boolean replace) {
-        GUI.super.copyAll(other, replace);
-        if (other instanceof PageableGUI) {
-            PageableGUI otherGUI = (PageableGUI) other;
-            if (replace)
-                try {
-                    otherGUI.setPages(pages());
-                } catch (IllegalStateException ignored) {
-                    // DataGUI does not support pages
-                }
-            if (!otherGUI.previousPage.isPresent() || replace)
-                previousPage.map((i, c) -> new Pair<>(i, c.copy())).ifPresent(otherGUI::setPreviousPage);
-            if (!otherGUI.nextPage.isPresent() || replace)
-                nextPage.map((i, c) -> new Pair<>(i, c.copy())).ifPresent(otherGUI::setNextPage);
-        }
-        return this;
-    }
-
-    @Override
     public @NotNull PageableGUI copyFrom(final @NotNull GUI other, final boolean replace) {
         return (PageableGUI) GUI.super.copyFrom(other, replace);
     }
@@ -964,6 +972,10 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     public @NotNull PageableGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (PageableGUI) GUI.super.copyFrom(other, replace);
     }
+
+    /*
+     * INITIALIZERS
+     */
 
     /**
      * Creates a new {@link PageableGUI} with the given size.
@@ -1033,4 +1045,5 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     public @NotNull Map<String, String> variables() {
         return this.variables;
     }
+
 }

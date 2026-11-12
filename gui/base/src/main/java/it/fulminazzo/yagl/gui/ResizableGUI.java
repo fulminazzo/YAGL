@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
@@ -31,33 +30,6 @@ public class ResizableGUI extends DefaultGUI {
         super(size);
     }
 
-    @Override
-    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
-        if (slot >= size() && slot < Constants.MAX_SIZE) resize((slot / 9 + 1) * 9);
-        return (ResizableGUI) super.setContents(slot, contents);
-    }
-
-    @Override
-    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<? extends GUIContent> contents) {
-        return (ResizableGUI) super.setContents(slot, contents);
-    }
-
-    @Override
-    public @NotNull ResizableGUI addContent(final GUIContent @NotNull ... contents) {
-        int j = 0;
-        for (int i = 0; i < contents.length; i++) {
-            GUIContent content = contents[i];
-            j = addSingle(content, j);
-            if (j < size()) continue;
-            if (size() < Constants.MAX_SIZE) {
-                resize(size() + 9);
-                this.contents.set(j, new Contents(content));
-            } else
-                throw new IllegalArgumentException(String.format("Could not set content at index %s because contents are already full", i));
-        }
-        return this;
-    }
-
     /**
      * Resizes the current GUI to the new size.
      * Must be a multiple of 9 not higher than {@link Constants#MAX_SIZE}.
@@ -66,11 +38,46 @@ public class ResizableGUI extends DefaultGUI {
      * @return this gui
      */
     public @NotNull ResizableGUI resize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
-        checkSize(size);
+        checkValidSize(size);
         this.contents = createContents(size, this.contents);
         this.movableSlots.removeIf(s -> s >= size);
         return this;
     }
+
+    @Override
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<? extends GUIContent> contents) {
+        return (ResizableGUI) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final GUIContent @NotNull ... contents) {
+        // First resize if possible and needed.
+        if (slot >= size() && slot < Constants.MAX_SIZE) resize((slot / 9 + 1) * 9);
+        return (ResizableGUI) super.setContents(slot, contents);
+    }
+
+    @Override
+    public @NotNull ResizableGUI addContent(final GUIContent @NotNull ... contents) {
+        if (getContents().size() + contents.length > Constants.MAX_SIZE)
+            throw new IllegalArgumentException(
+                    String.format("Could not add %s contents because GUI size would exceed maximum capacity of %s",
+                            contents.length, Constants.MAX_SIZE)
+            );
+        int i = 0;
+        for (GUIContent content : contents) {
+            i = addSingle(content, i);
+            if (i < size()) continue;
+            if (size() < Constants.MAX_SIZE) {
+                resize(size() + 9);
+                this.contents.set(i, new Contents(content));
+            }
+        }
+        return this;
+    }
+
+    /*
+     * RETURN TYPE OVERRIDES
+     */
 
     @Override
     public @NotNull ResizableGUI setTitle(final @Nullable String title) {

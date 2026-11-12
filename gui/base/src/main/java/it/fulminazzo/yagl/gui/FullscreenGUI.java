@@ -1,12 +1,12 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 @Getter
 @EqualsAndHashCode
 public class FullscreenGUI implements GUI {
-
     private final @NotNull GUI upperGUI;
     private final @NotNull ResizableGUI lowerGUI;
 
@@ -57,6 +56,26 @@ public class FullscreenGUI implements GUI {
     }
 
     /**
+     * Gets all the {@link GUIContent}s per slot.
+     *
+     * @return the full contents
+     */
+    public @NotNull Map<Integer, List<GUIContent>> getFullContents() {
+        Map<Integer, List<GUIContent>> contents = new LinkedHashMap<>();
+        for (int i = 0; i < size(); i++) contents.put(i, getContents(i));
+        return contents;
+    }
+
+    /**
+     * Updates the viewer open {@link FullscreenGUI} by updating the {@link #lowerGUI} contents.
+     *
+     * @param viewer the viewer
+     */
+    public void update(final @NotNull Viewer viewer) {
+        GUIUtils.executeGUIAdapterFunction("updatePlayerGUI", this, viewer);
+    }
+
+    /**
      * Gets the relative slot from the given slot.
      *
      * @param slot the slot
@@ -80,29 +99,9 @@ public class FullscreenGUI implements GUI {
         else return upperGUI;
     }
 
-    /**
-     * Gets all the {@link GUIContent}s per slot.
-     *
-     * @return the full contents
-     */
-    public @NotNull Map<Integer, List<GUIContent>> getFullContents() {
-        Map<Integer, List<GUIContent>> contents = new LinkedHashMap<>();
-        for (int i = 0; i < size(); i++) contents.put(i, getContents(i));
-        return contents;
-    }
-
     @Override
     public void open(final @NotNull Viewer viewer) {
         GUIUtils.executeGUIAdapterFunction("openGUI", this, viewer);
-    }
-
-    /**
-     * Updates the viewer open {@link FullscreenGUI} by updating the {@link #lowerGUI} contents.
-     *
-     * @param viewer the viewer
-     */
-    public void update(final @NotNull Viewer viewer) {
-        GUIUtils.executeGUIAdapterFunction("updatePlayerGUI", this, viewer);
     }
 
     @Override
@@ -290,16 +289,20 @@ public class FullscreenGUI implements GUI {
 
     @Override
     public FullscreenGUI copy() {
-        return new Refl<>(new FullscreenGUI())
-                .setFieldObject("upperGUI", this.upperGUI.copy())
-                .setFieldObject("lowerGUI", this.lowerGUI.copy())
-                .getObject();
+        return Reflect.on(new FullscreenGUI())
+                .set("upperGUI", this.upperGUI.copy())
+                .set("lowerGUI", this.lowerGUI.copy())
+                .get();
     }
 
     @Override
     public String toString() {
         return String.format("%s{upper=%s; lower=%s}", getClass().getSimpleName(), upperGUI, lowerGUI);
     }
+
+    /*
+     * RETURN TYPE OVERRIDES
+     */
 
     @Override
     public @NotNull FullscreenGUI setAllMovable() {
@@ -785,7 +788,7 @@ public class FullscreenGUI implements GUI {
     static class FullscreenResizableGUI extends ResizableGUI {
 
         @Override
-        void checkSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int size) {
+        void checkValidSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int size) {
             ValidationUtils.checkRange("size", size, Constants.MIN_DEFAULT_SIZE, Constants.SECONDARY_GUI_SIZE);
         }
 

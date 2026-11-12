@@ -150,19 +150,9 @@ public class DataGUI<T> extends PageableGUI {
         return this;
     }
 
-    @Override
-    public void open(final @NotNull Viewer viewer, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
-        prepareOpenGUI(this.templateGUI, page).open(viewer);
-    }
-
-    @Override
-    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
-        return fillContents(super.prepareOpenGUI(gui, page), page);
-    }
-
     private @NotNull GUI fillContents(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         List<T> dataList = getDataList();
-        int emptySlots = emptySlots().size();
+        int emptySlots = getPageEmptySlots();
         int min = emptySlots * page;
         int dataSize = dataList.size();
         if (dataSize == 0) return gui;
@@ -215,10 +205,17 @@ public class DataGUI<T> extends PageableGUI {
      * @return the slots
      */
     protected @Range(from = 0, to = Constants.MAX_SLOT) int getPageEmptySlots() {
-        final Set<Integer> slots = emptySlots();
-        this.previousPage.ifPresent((i, p) -> slots.remove(i));
-        this.nextPage.ifPresent((i, p) -> slots.remove(i));
-        return slots.size();
+        return emptySlots().size();
+    }
+
+    @Override
+    public void open(final @NotNull Viewer viewer, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
+        prepareOpenGUI(this.templateGUI, page).open(viewer);
+    }
+
+    @Override
+    protected @NotNull GUI prepareOpenGUI(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
+        return fillContents(super.prepareOpenGUI(gui, page), page);
     }
 
     /**
@@ -277,6 +274,10 @@ public class DataGUI<T> extends PageableGUI {
     public @NotNull DataGUI<T> setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
         throw new IllegalStateException(ERROR_MESSAGE);
     }
+
+    /*
+     * RETURN TYPE OVERRIDES
+     */
 
     @Override
     public @NotNull DataGUI<T> setPreviousPage(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Item previousPage) {
@@ -837,6 +838,10 @@ public class DataGUI<T> extends PageableGUI {
     public @NotNull DataGUI<T> copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (DataGUI<T>) super.copyFrom(other, replace);
     }
+
+    /*
+     * INITIALIZERS
+     */
 
     /**
      * Creates a new {@link DataGUI} with the given size and converter.
