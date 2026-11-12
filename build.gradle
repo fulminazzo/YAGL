@@ -120,7 +120,9 @@ allprojects {
 
         // Common modules dependencies
         if (['common', 'wrapper', 'item', 'gui'].contains(projectName)) {
-            for (def s : ['base', 'serializer', 'bukkit'])
+            //TODO: re-enable
+//            for (def s : ['base', 'serializer', 'bukkit'])
+            for (def s : ['base', 'bukkit'])
                 api(project(":${projectName}:${projectName}-${s}"))
         }
 

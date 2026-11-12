@@ -15,8 +15,9 @@ include 'common:common-base'
 project(':common:common-base').projectDir = file('common/base')
 include 'common:common-bukkit'
 project(':common:common-bukkit').projectDir = file('common/bukkit')
-include 'common:common-serializer'
-project(':common:common-serializer').projectDir = file('common/serializer')
+//TODO: re-enable
+//include 'common:common-serializer'
+//project(':common:common-serializer').projectDir = file('common/serializer')
 
 include 'wrapper'
 include 'wrapper:wrapper-base'
@@ -27,8 +28,9 @@ include ':wrapper:wrapper-bukkit:wrapper-legacy'
 project(':wrapper:wrapper-bukkit:wrapper-legacy').projectDir = file('wrapper/bukkit/legacy')
 include ':wrapper:wrapper-bukkit:wrapper-obsolete'
 project(':wrapper:wrapper-bukkit:wrapper-obsolete').projectDir = file('wrapper/bukkit/obsolete')
-include 'wrapper:wrapper-serializer'
-project(':wrapper:wrapper-serializer').projectDir = file('wrapper/serializer')
+//TODO: re-enable
+//include 'wrapper:wrapper-serializer'
+//project(':wrapper:wrapper-serializer').projectDir = file('wrapper/serializer')
 
 include 'item'
 include 'item:item-base'
@@ -39,24 +41,27 @@ include ':item:item-bukkit:item-legacy'
 project(':item:item-bukkit:item-legacy').projectDir = file('item/bukkit/legacy')
 include ':item:item-bukkit:item-obsolete'
 project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsolete')
-include 'item:item-serializer'
-project(':item:item-serializer').projectDir = file('item/serializer')
+//TODO: re-enable
+//include 'item:item-serializer'
+//project(':item:item-serializer').projectDir = file('item/serializer')
 
 include 'gui'
 include 'gui:gui-base'
 project(':gui:gui-base').projectDir = file('gui/base')
 include 'gui:gui-bukkit'
 project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
-include 'gui:gui-serializer'
-project(':gui:gui-serializer').projectDir = file('gui/serializer')
+//TODO: re-enable
+//include 'gui:gui-serializer'
+//project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
 include 'testing'
 include 'testing:testing-base'
 project(':testing:testing-base').projectDir = file('testing/base')
 include 'testing:testing-bukkit'
 project(':testing:testing-bukkit').projectDir = file('testing/bukkit')
-include 'testing:testing-serializer'
-project(':testing:testing-serializer').projectDir = file('testing/serializer')
+//TODO: re-enable
+//include 'testing:testing-serializer'
+//project(':testing:testing-serializer').projectDir = file('testing/serializer')
 
 include 'demo'
 
