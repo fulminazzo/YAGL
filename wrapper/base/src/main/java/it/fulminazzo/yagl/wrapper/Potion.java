@@ -89,7 +89,7 @@ public final class Potion extends Wrapper {
      * @return this potion
      */
     public @NotNull Potion setLevel(final @Range(from = 1, to = 2) int level) {
-        this.level = check("level", level, 1, 2);
+        this.level = level;
         return this;
     }
 

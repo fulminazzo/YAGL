@@ -58,7 +58,7 @@ public final class Enchantment extends Wrapper {
      * @return this enchantment
      */
     public @NotNull Enchantment setLevel(final @Range(from = 1, to = Integer.MAX_VALUE) int level) {
-        this.level = check("level", level, 1);
+        this.level = level;
         return this;
     }
 

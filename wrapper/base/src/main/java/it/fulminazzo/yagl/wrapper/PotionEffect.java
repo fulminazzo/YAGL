@@ -118,7 +118,7 @@ public final class PotionEffect extends Wrapper {
      * @return this potion effect
      */
     public @NotNull PotionEffect setDuration(final @Range(from = 0, to = Long.MAX_VALUE) double duration) {
-        this.duration = check("duration", duration, 0);
+        this.duration = duration;
         return this;
     }
 
@@ -129,7 +129,7 @@ public final class PotionEffect extends Wrapper {
      * @return this potion effect
      */
     public @NotNull PotionEffect setAmplifier(final @Range(from = 1, to = Integer.MAX_VALUE) int amplifier) {
-        this.amplifier = check("amplifier", amplifier, 1);
+        this.amplifier = amplifier;
         return this;
     }
 

@@ -98,7 +98,7 @@ public final class Sound extends Wrapper {
      * @return this sound
      */
     public @NotNull Sound setVolume(final @Range(from = 0, to = 1) float volume) {
-        this.volume = check("volume", volume, 0);
+        this.volume = volume;
         return this;
     }
 
@@ -111,7 +111,7 @@ public final class Sound extends Wrapper {
      * @return this sound
      */
     public @NotNull Sound setPitch(final @Range(from = 0, to = 2) float pitch) {
-        this.pitch = check("pitch", pitch, 0);
+        this.pitch = pitch;
         return this;
     }
 

@@ -2,7 +2,6 @@ package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.Constants;
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.wrapper.Wrapper;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -58,7 +57,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      * @return this recipe
      */
     public @NotNull FurnaceRecipe setExperience(final @Range(from = 0, to = Long.MAX_VALUE) float experience) {
-        this.experience = Wrapper.check("experience", experience, 0);
+        this.experience = experience;
         return this;
     }
 
@@ -78,7 +77,7 @@ public final class FurnaceRecipe extends RecipeImpl {
      * @return this recipe
      */
     public @NotNull FurnaceRecipe setCookingTime(final @Range(from = 0, to = Long.MAX_VALUE) double cookingTime) {
-        this.cookingTime = Wrapper.check("cookingTime", cookingTime, 0);
+        this.cookingTime = cookingTime;
         return this;
     }
 

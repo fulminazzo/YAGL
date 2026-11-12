@@ -1,7 +1,6 @@
 package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.wrapper.Wrapper;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -143,7 +142,7 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param columns the columns
          */
         public void setColumns(final @Range(from = MIN_COLUMNS, to = MAX_COLUMNS) int columns) {
-            this.columns = Wrapper.check("columns", columns, MIN_COLUMNS, MAX_COLUMNS);
+            this.columns = columns;
         }
 
         /**
@@ -153,7 +152,7 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param rows the rows
          */
         public void setRows(final @Range(from = MIN_ROWS, to = MAX_ROWS) int rows) {
-            this.rows = Wrapper.check("rows", rows, MIN_ROWS, MAX_ROWS);
+            this.rows = rows;
         }
 
         /**
