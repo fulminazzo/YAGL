@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public final class MessageUtils {
     private static final String COLOR_CHAR = "§";
     private static final String COLOR_REGEX = "[A-Fa-f0-9]";
-    private static final String STYLE_REGEX = "[LlKkRrOoUu]";
+    private static final String STYLE_REGEX = "[LlKkRrMmNnOo]";
 
     private static final @NotNull Pattern HUMAN_COLOR_STYLE_REGEX = Pattern.compile("&(" + COLOR_REGEX + "|" + STYLE_REGEX + ")");
     private static final @NotNull Pattern GAME_COLOR_STYLE_REGEX = Pattern.compile(COLOR_CHAR + "(" + COLOR_REGEX + "|" + STYLE_REGEX + ")");
