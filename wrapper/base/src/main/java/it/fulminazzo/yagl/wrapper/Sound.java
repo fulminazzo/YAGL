@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.wrapper;
 
+import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,10 +18,17 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Sound extends Wrapper {
+    private static final int MIN_VOLUME = 0;
+    private static final int DEFAULT_VOLUME = 1;
+
+    private static final int MIN_PITCH = 0;
+    private static final int MAX_PITCH = 2;
+    private static final int DEFAULT_PITCH = 1;
+
     private @NotNull String name;
-    @Range(from = 0, to = 1)
+    @Range(from = MIN_VOLUME, to = Long.MAX_VALUE)
     private float volume;
-    @Range(from = 0, to = 2)
+    @Range(from = MIN_PITCH, to = MAX_PITCH)
     private float pitch;
     /**
      * The category to play the sound for.
@@ -36,7 +44,7 @@ public final class Sound extends Wrapper {
      * @param name the sound
      */
     public Sound(final @NotNull String name) {
-        this(name, 1.0F);
+        this(name, DEFAULT_VOLUME);
     }
 
     /**
@@ -45,8 +53,8 @@ public final class Sound extends Wrapper {
      * @param name   the sound
      * @param volume the volume
      */
-    public Sound(final @NotNull String name, final @Range(from = 0, to = 1) float volume) {
-        this(name, volume, 1.0F);
+    public Sound(final @NotNull String name, final @Range(from = MIN_VOLUME, to = Long.MAX_VALUE) float volume) {
+        this(name, volume, DEFAULT_PITCH);
     }
 
     /**
@@ -57,8 +65,8 @@ public final class Sound extends Wrapper {
      * @param pitch  the pitch
      */
     public Sound(final @NotNull String name,
-                 final @Range(from = 0, to = 1) float volume,
-                 final @Range(from = 0, to = 2) float pitch) {
+                 final @Range(from = MIN_VOLUME, to = Long.MAX_VALUE) float volume,
+                 final @Range(from = MIN_PITCH, to = MAX_PITCH) float pitch) {
         this(name, volume, pitch, null);
     }
 
@@ -71,8 +79,8 @@ public final class Sound extends Wrapper {
      * @param category the category
      */
     public Sound(final @NotNull String name,
-                 final @Range(from = 0, to = 1) float volume,
-                 final @Range(from = 0, to = 2) float pitch,
+                 final @Range(from = MIN_VOLUME, to = Long.MAX_VALUE) float volume,
+                 final @Range(from = MIN_PITCH, to = MAX_PITCH) float pitch,
                  final @Nullable String category) {
         setName(name).setVolume(volume).setPitch(pitch).setCategory(category);
     }
@@ -97,7 +105,8 @@ public final class Sound extends Wrapper {
      * @param volume the volume
      * @return this sound
      */
-    public @NotNull Sound setVolume(final @Range(from = 0, to = 1) float volume) {
+    public @NotNull Sound setVolume(final @Range(from = MIN_VOLUME, to = Long.MAX_VALUE) float volume) {
+        ValidationUtils.checkMin("volume", volume, MIN_VOLUME);
         this.volume = volume;
         return this;
     }
@@ -110,7 +119,8 @@ public final class Sound extends Wrapper {
      * @param pitch the pitch
      * @return this sound
      */
-    public @NotNull Sound setPitch(final @Range(from = 0, to = 2) float pitch) {
+    public @NotNull Sound setPitch(final @Range(from = MIN_PITCH, to = MAX_PITCH) float pitch) {
+        ValidationUtils.checkRange("pitch", pitch, MIN_PITCH, MAX_PITCH);
         this.pitch = pitch;
         return this;
     }

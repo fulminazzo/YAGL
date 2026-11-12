@@ -7,6 +7,7 @@ import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -785,10 +786,7 @@ public class FullscreenGUI implements GUI {
 
         @Override
         void checkSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int size) {
-            if (size < Constants.MIN_DEFAULT_SIZE || size > Constants.SECONDARY_GUI_SIZE)
-                throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and %s!",
-                        Constants.MIN_DEFAULT_SIZE, Constants.SECONDARY_GUI_SIZE
-                ));
+            ValidationUtils.checkRange("size", size, Constants.MIN_DEFAULT_SIZE, Constants.SECONDARY_GUI_SIZE);
         }
 
     }

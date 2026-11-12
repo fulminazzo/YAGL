@@ -9,6 +9,7 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +60,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      *
      * @return the pages
      */
-    public @Range(from = 0, to = Integer.MAX_VALUE) int pages() {
+    public @Range(from = Constants.MIN_PAGES, to = Integer.MAX_VALUE) int pages() {
         return this.pages.size();
     }
 
@@ -84,8 +85,8 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param pages the pages
      * @return this gui
      */
-    public @NotNull PageableGUI setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
-        if (pages < 0) throw new IllegalArgumentException(String.format("Invalid pages '%s'", pages));
+    public @NotNull PageableGUI setPages(final @Range(from = Constants.MIN_PAGES, to = Integer.MAX_VALUE) int pages) {
+        ValidationUtils.checkMin("pages", pages, Constants.MIN_PAGES);
         int s;
         while ((s = this.pages.size()) - pages > 0) this.pages.remove(s - 1);
         while (pages - this.pages.size() > 0) this.pages.add(copyTemplateGUI());
@@ -208,10 +209,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     private int checkSlot(final int slot) {
-        if (slot < 0 || slot > size()) {
-            final String message = String.format("'slot' must be between %s and %s", 0, size());
-            throw new IllegalArgumentException(message);
-        }
+        ValidationUtils.checkRange("slot", slot, 0, size());
         return slot;
     }
 

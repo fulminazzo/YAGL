@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -71,13 +72,23 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
     }
 
     @Override
-    public @NotNull BukkitItem setAmount(final int amount) {
+    public @NotNull BukkitItem setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount) {
         return (BukkitItem) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull BukkitItem setDurability(final int durability) {
+    public @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int getAmount() {
+        return super.getAmount();
+    }
+
+    @Override
+    public @NotNull BukkitItem setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability) {
         return (BukkitItem) super.setDurability(durability);
+    }
+
+    @Override
+    public @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int getDurability() {
+        return super.getDurability();
     }
 
     @Override

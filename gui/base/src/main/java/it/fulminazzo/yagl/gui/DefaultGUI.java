@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.gui;
 
 
+import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.Range;
@@ -27,8 +28,7 @@ public class DefaultGUI extends GUIImpl {
      * @param size the size
      */
     void checkSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
-        if (size < Constants.MIN_DEFAULT_SIZE || size > Constants.MAX_SIZE)
-            throw new IllegalArgumentException(String.format("GUIs size must be bound between %s and %s!", Constants.MIN_DEFAULT_SIZE, Constants.MAX_SIZE));
+        ValidationUtils.checkRange("size", size, Constants.MIN_DEFAULT_SIZE, Constants.MAX_SIZE);
         if (size % Constants.MIN_DEFAULT_SIZE != 0)
             throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of %s can be accepted",
                     size, Constants.MIN_DEFAULT_SIZE));

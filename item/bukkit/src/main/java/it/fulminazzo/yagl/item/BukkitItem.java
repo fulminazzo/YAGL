@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -46,7 +47,8 @@ public interface BukkitItem extends Item {
      */
     @SuppressWarnings("DataFlowIssue")
     default <M extends ItemMeta> @NotNull ItemStack create(final @Nullable Class<M> itemMetaClass, final @Nullable Consumer<M> metaFunction) {
-        if (getMaterial() == null) throw new IllegalArgumentException("Cannot create item from null material. Item: " + this);
+        if (getMaterial() == null)
+            throw new IllegalArgumentException("Cannot create item from null material. Item: " + this);
         ItemStack itemStack = ItemAdapter.itemToItemStack(this);
         if (itemMetaClass != null && metaFunction != null) {
             ItemMeta meta = itemStack.getItemMeta();
@@ -172,10 +174,18 @@ public interface BukkitItem extends Item {
     @NotNull BukkitItem setMaterial(final @NotNull String material);
 
     @Override
-    @NotNull BukkitItem setAmount(final int amount);
+    @NotNull BukkitItem setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount);
 
     @Override
-    @NotNull BukkitItem setDurability(final int durability);
+    @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE)
+    int getAmount();
+
+    @Override
+    @NotNull BukkitItem setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability);
+
+    @Override
+    @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE)
+    int getDurability();
 
     @Override
     @NotNull BukkitItem setDisplayName(final @NotNull String displayName);

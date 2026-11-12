@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -142,6 +143,7 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param columns the columns
          */
         public void setColumns(final @Range(from = MIN_COLUMNS, to = MAX_COLUMNS) int columns) {
+            ValidationUtils.checkRange("columns", columns, MIN_COLUMNS, MAX_COLUMNS);
             this.columns = columns;
         }
 
@@ -152,11 +154,12 @@ public final class ShapedRecipe extends RecipeImpl {
          * @param rows the rows
          */
         public void setRows(final @Range(from = MIN_ROWS, to = MAX_ROWS) int rows) {
+            ValidationUtils.checkRange("rows", rows, MIN_ROWS, MAX_ROWS);
             this.rows = rows;
         }
 
         /**
-         * Checks if the given number is in a valid range between 0 and {@link #rows} * {@link #columns}.
+         * Checks if the given number is in a valid range between 0 and {@link #rows} x {@link #columns}.
          *
          * @param num the num
          * @return true if contains

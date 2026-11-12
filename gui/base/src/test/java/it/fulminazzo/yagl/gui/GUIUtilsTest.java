@@ -12,7 +12,7 @@ class GUIUtilsTest {
             -1, -10, 9, 10, 21
     })
     void testCheckSlotThrows(int slot) {
-        assertThrowsExactly(IndexOutOfBoundsException.class, () -> GUIUtils.checkSlot(slot, 9));
+        assertThrowsExactly(IllegalArgumentException.class, () -> GUIUtils.checkSlot(slot, 9));
     }
 
 }

@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -101,13 +102,23 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
-    public @NotNull BukkitRecipeItem setAmount(final int amount) {
+    public @NotNull BukkitRecipeItem setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount) {
         return (BukkitRecipeItem) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull BukkitRecipeItem setDurability(final int durability) {
+    public @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int getAmount() {
+        return super.getAmount();
+    }
+
+    @Override
+    public @NotNull BukkitRecipeItem setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability) {
         return (BukkitRecipeItem) super.setDurability(durability);
+    }
+
+    @Override
+    public @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int getDurability() {
+        return super.getDurability();
     }
 
     @Override

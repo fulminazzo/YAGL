@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl.wrapper;
 
 import it.fulminazzo.yagl.particle.LegacyParticleType;
+import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,8 +18,11 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Potion extends Wrapper {
+    private static final int MIN_LEVEL = 1;
+    private static final int MAX_LEVEL = 2;
+
     private @NotNull String name;
-    @Range(from = 1, to = 2)
+    @Range(from = MIN_LEVEL, to = MAX_LEVEL)
     @Getter
     private int level;
     private boolean splash;
@@ -30,7 +34,7 @@ public final class Potion extends Wrapper {
      * @param name the type
      */
     public Potion(final @NotNull String name) {
-        this(name, 1);
+        this(name, MIN_LEVEL);
     }
 
     /**
@@ -39,7 +43,7 @@ public final class Potion extends Wrapper {
      * @param name  the type
      * @param level the level
      */
-    public Potion(final @NotNull String name, final @Range(from = 1, to = 2) int level) {
+    public Potion(final @NotNull String name, final @Range(from = MIN_LEVEL, to = MAX_LEVEL) int level) {
         this(name, level, false, false);
     }
 
@@ -50,7 +54,7 @@ public final class Potion extends Wrapper {
      * @param level  the level
      * @param splash if {@code true} the potion is throwable
      */
-    public Potion(final @NotNull String name, final @Range(from = 1, to = 2) int level, final boolean splash) {
+    public Potion(final @NotNull String name, final @Range(from = MIN_LEVEL, to = MAX_LEVEL) int level, final boolean splash) {
         this(name, level, splash, false);
     }
 
@@ -63,7 +67,7 @@ public final class Potion extends Wrapper {
      * @param extended if {@code true} the duration is extended
      */
     public Potion(final @NotNull String name,
-                  final @Range(from = 1, to = 2) int level,
+                  final @Range(from = MIN_LEVEL, to = MAX_LEVEL) int level,
                   final boolean splash,
                   final boolean extended) {
         setName(name).setLevel(level);
@@ -88,7 +92,8 @@ public final class Potion extends Wrapper {
      * @param level the level
      * @return this potion
      */
-    public @NotNull Potion setLevel(final @Range(from = 1, to = 2) int level) {
+    public @NotNull Potion setLevel(final @Range(from = MIN_LEVEL, to = MAX_LEVEL) int level) {
+        ValidationUtils.checkRange("level", level, MIN_LEVEL, MAX_LEVEL);
         this.level = level;
         return this;
     }

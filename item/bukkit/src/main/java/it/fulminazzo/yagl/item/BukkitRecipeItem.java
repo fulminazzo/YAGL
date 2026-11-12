@@ -7,6 +7,7 @@ import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -40,10 +41,18 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     @NotNull BukkitRecipeItem setMaterial(final @NotNull String material);
 
     @Override
-    @NotNull BukkitRecipeItem setAmount(final int amount);
+    @NotNull BukkitRecipeItem setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount);
 
     @Override
-    @NotNull BukkitRecipeItem setDurability(final int durability);
+    @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE)
+    int getAmount();
+
+    @Override
+    @NotNull BukkitRecipeItem setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability);
+
+    @Override
+    @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE)
+    int getDurability();
 
     @Override
     @NotNull BukkitRecipeItem setDisplayName(final @NotNull String displayName);

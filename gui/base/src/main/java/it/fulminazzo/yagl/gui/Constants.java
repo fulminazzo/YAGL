@@ -65,4 +65,9 @@ public final class Constants {
      */
     public static final int MAX_COLUMNS = MIN_DEFAULT_SIZE;
 
+    /**
+     * The minimum number of pages for a {@link PageableGUI}.
+     */
+    public static final int MIN_PAGES = 0;
+
 }

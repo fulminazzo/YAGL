@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.content;
 
+import it.fulminazzo.yagl.item.Constants;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
@@ -8,6 +9,7 @@ import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 import java.util.List;
@@ -57,24 +59,24 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C setAmount(final int amount) {
+    public @NotNull C setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount) {
         this.item.setAmount(amount);
         return (C) this;
     }
 
     @Override
-    public int getAmount() {
+    public @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int getAmount() {
         return this.item.getAmount();
     }
 
     @Override
-    public @NotNull C setDurability(final int durability) {
+    public @NotNull C setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability) {
         this.item.setDurability(durability);
         return (C) this;
     }
 
     @Override
-    public int getDurability() {
+    public @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int getDurability() {
         return this.item.getDurability();
     }
 

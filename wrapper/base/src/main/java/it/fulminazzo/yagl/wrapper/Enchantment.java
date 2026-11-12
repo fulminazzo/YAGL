@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl.wrapper;
 
+import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,8 +18,10 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Enchantment extends Wrapper {
+    private static final int MIN_LEVEL = 1;
+
     private @NotNull String name;
-    @Range(from = 1, to = Integer.MAX_VALUE)
+    @Range(from = MIN_LEVEL, to = Integer.MAX_VALUE)
     private int level;
 
     /**
@@ -27,7 +30,7 @@ public final class Enchantment extends Wrapper {
      * @param name the enchantment
      */
     public Enchantment(final @NotNull String name) {
-        this(name, 1);
+        this(name, MIN_LEVEL);
     }
 
     /**
@@ -36,7 +39,7 @@ public final class Enchantment extends Wrapper {
      * @param name  the enchantment
      * @param level the level (1 is the lowest)
      */
-    public Enchantment(final @NotNull String name, final @Range(from = 1, to = Integer.MAX_VALUE) int level) {
+    public Enchantment(final @NotNull String name, final @Range(from = MIN_LEVEL, to = Integer.MAX_VALUE) int level) {
         setName(name).setLevel(level);
     }
 
@@ -57,7 +60,8 @@ public final class Enchantment extends Wrapper {
      * @param level the level (1 is the lowest)
      * @return this enchantment
      */
-    public @NotNull Enchantment setLevel(final @Range(from = 1, to = Integer.MAX_VALUE) int level) {
+    public @NotNull Enchantment setLevel(final @Range(from = MIN_LEVEL, to = Integer.MAX_VALUE) int level) {
+        ValidationUtils.checkMin("level", level, MIN_LEVEL);
         this.level = level;
         return this;
     }

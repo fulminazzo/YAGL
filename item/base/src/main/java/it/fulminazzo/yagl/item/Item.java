@@ -42,14 +42,14 @@ public interface Item extends AbstractItem {
      * @param amount the amount
      * @return this item
      */
-    @NotNull Item setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount);
+    @NotNull Item setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount);
 
     /**
      * Gets amount.
      *
      * @return the amount
      */
-    @Range(from = 1, to = Integer.MAX_VALUE)
+    @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE)
     int getAmount();
 
     /**
@@ -58,14 +58,14 @@ public interface Item extends AbstractItem {
      * @param durability the durability
      * @return this item
      */
-    @NotNull Item setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability);
+    @NotNull Item setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability);
 
     /**
      * Gets durability.
      *
      * @return the durability
      */
-    @Range(from = 0, to = Short.MAX_VALUE)
+    @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE)
     int getDurability();
 
     /**

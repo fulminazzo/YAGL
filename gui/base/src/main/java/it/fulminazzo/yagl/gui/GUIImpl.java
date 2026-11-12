@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.gui;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,7 +45,7 @@ abstract class GUIImpl implements GUI {
      * @param size the size
      */
     public GUIImpl(final @Range(from = Constants.MIN_TYPE_SIZE, to = Constants.MAX_SIZE) int size) {
-        if (size < 0 || size > Constants.MAX_SIZE) throw new IllegalArgumentException("GUIs size must be bound between 1 and 54");
+        ValidationUtils.checkRange("size", size, Constants.MIN_TYPE_SIZE, Constants.MAX_SIZE);
         this.contents = createContents(size, null);
         this.movableSlots = new HashSet<>();
     }

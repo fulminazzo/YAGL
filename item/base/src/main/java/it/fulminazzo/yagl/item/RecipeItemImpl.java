@@ -33,7 +33,7 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
      * @param material the material
      */
     public RecipeItemImpl(final @Nullable String material) {
-        this(material, 1);
+        this(material, Constants.MIN_AMOUNT);
     }
 
     /**
@@ -92,12 +92,12 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
-    public @NotNull RecipeItem setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
+    public @NotNull RecipeItem setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount) {
         return (RecipeItem) super.setAmount(amount);
     }
 
     @Override
-    public @NotNull RecipeItem setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability) {
+    public @NotNull RecipeItem setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability) {
         return (RecipeItem) super.setDurability(durability);
     }
 

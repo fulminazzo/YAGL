@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,10 +34,10 @@ public final class Color extends ClassEnum {
     public static final Color ORANGE = fromARGB("#FFFFA500");
     private static final int MASK = 255;
 
-    private final @Range(from = 0, to = 255) byte alpha;
-    private final @Range(from = 0, to = 255) byte red;
-    private final @Range(from = 0, to = 255) byte green;
-    private final @Range(from = 0, to = 255) byte blue;
+    private final @Range(from = 0, to = MASK) byte alpha;
+    private final @Range(from = 0, to = MASK) byte red;
+    private final @Range(from = 0, to = MASK) byte green;
+    private final @Range(from = 0, to = MASK) byte blue;
 
     /**
      * Instantiates a new Color.
@@ -45,7 +46,9 @@ public final class Color extends ClassEnum {
      * @param green the green
      * @param blue  the blue
      */
-    public Color(final @Range(from = 0, to = 255) int red, final @Range(from = 0, to = 255) int green, final @Range(from = 0, to = 255) int blue) {
+    public Color(final @Range(from = 0, to = MASK) int red,
+                 final @Range(from = 0, to = MASK) int green,
+                 final @Range(from = 0, to = MASK) int blue) {
         this(MASK, red, green, blue);
     }
 
@@ -57,14 +60,17 @@ public final class Color extends ClassEnum {
      * @param green the green
      * @param blue  the blue
      */
-    public Color(final @Range(from = 0, to = 255) int alpha, final @Range(from = 0, to = 255) int red, final @Range(from = 0, to = 255) int green, final @Range(from = 0, to = 255) int blue) {
-        checkRange(alpha);
+    public Color(final @Range(from = 0, to = MASK) int alpha,
+                 final @Range(from = 0, to = MASK) int red,
+                 final @Range(from = 0, to = MASK) int green,
+                 final @Range(from = 0, to = MASK) int blue) {
+        ValidationUtils.checkRange("alpha", alpha, 0, MASK);
         this.alpha = (byte) alpha;
-        checkRange(red);
+        ValidationUtils.checkRange("red", red, 0, MASK);
         this.red = (byte) red;
-        checkRange(green);
+        ValidationUtils.checkRange("green", green, 0, MASK);
         this.green = (byte) green;
-        checkRange(blue);
+        ValidationUtils.checkRange("blue", blue, 0, MASK);
         this.blue = (byte) blue;
     }
 
@@ -73,7 +79,7 @@ public final class Color extends ClassEnum {
      *
      * @return the alpha value
      */
-    public @Range(from = 0, to = 255) int getAlpha() {
+    public @Range(from = 0, to = MASK) int getAlpha() {
         return this.alpha & MASK;
     }
 
@@ -82,7 +88,7 @@ public final class Color extends ClassEnum {
      *
      * @return the red value
      */
-    public @Range(from = 0, to = 255) int getRed() {
+    public @Range(from = 0, to = MASK) int getRed() {
         return this.red & MASK;
     }
 
@@ -91,7 +97,7 @@ public final class Color extends ClassEnum {
      *
      * @return the green value
      */
-    public @Range(from = 0, to = 255) int getGreen() {
+    public @Range(from = 0, to = MASK) int getGreen() {
         return this.green & MASK;
     }
 
@@ -100,14 +106,8 @@ public final class Color extends ClassEnum {
      *
      * @return the blue value
      */
-    public @Range(from = 0, to = 255) int getBlue() {
+    public @Range(from = 0, to = MASK) int getBlue() {
         return this.blue & MASK;
-    }
-
-    private void checkRange(final int value) {
-        if (value < 0 || value > MASK)
-            throw new IllegalArgumentException(String.format("'%s' is not contained between 0 and %s",
-                    value, MASK));
     }
 
     /**

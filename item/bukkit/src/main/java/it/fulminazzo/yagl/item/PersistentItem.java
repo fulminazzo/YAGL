@@ -44,11 +44,11 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     private PersistentItem(final @NotNull Material material) {
-        this(material.name(), 1);
+        this(material.name(), Constants.MIN_AMOUNT);
     }
 
     private PersistentItem(final @Nullable String material) {
-        this(material, 1);
+        this(material, Constants.MIN_AMOUNT);
     }
 
     private PersistentItem(final @NotNull Material material, final int amount) {

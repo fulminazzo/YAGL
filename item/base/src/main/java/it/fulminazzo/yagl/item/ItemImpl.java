@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.util.MessageUtils;
+import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.EqualsAndHashCode;
@@ -23,9 +24,9 @@ import java.util.*;
 @EqualsAndHashCode(callSuper = false)
 class ItemImpl extends Copiable<Item> implements Item {
     protected String material;
-    @Range(from = 1, to = Integer.MAX_VALUE)
+    @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE)
     protected int amount;
-    @Range(from = 0, to = Short.MAX_VALUE)
+    @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE)
     protected int durability;
     protected String displayName;
     protected final @NotNull List<String> lore;
@@ -48,7 +49,7 @@ class ItemImpl extends Copiable<Item> implements Item {
      * @param material the material
      */
     public ItemImpl(final @Nullable String material) {
-        this(material, 1);
+        this(material, Constants.MIN_AMOUNT);
     }
 
     /**
@@ -60,7 +61,7 @@ class ItemImpl extends Copiable<Item> implements Item {
     public ItemImpl(final @Nullable String material, final int amount) {
         if (material != null) setMaterial(material);
         setAmount(amount).setDisplayName("");
-        this.durability = 0;
+        this.durability = Constants.MIN_DURABILITY;
         this.lore = new ArrayList<>();
         this.enchantments = new EnchantmentSet();
         this.itemFlags = new HashSet<>();
@@ -90,13 +91,15 @@ class ItemImpl extends Copiable<Item> implements Item {
     }
 
     @Override
-    public @NotNull Item setAmount(final @Range(from = 1, to = Integer.MAX_VALUE) int amount) {
+    public @NotNull Item setAmount(final @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE) int amount) {
+        ValidationUtils.checkMin("amount", amount, Constants.MIN_AMOUNT);
         this.amount = amount;
         return this;
     }
 
     @Override
-    public @NotNull Item setDurability(final @Range(from = 0, to = Short.MAX_VALUE) int durability) {
+    public @NotNull Item setDurability(final @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE) int durability) {
+        ValidationUtils.checkMin("durability", durability, Constants.MIN_DURABILITY);
         this.durability = durability;
         return this;
     }
