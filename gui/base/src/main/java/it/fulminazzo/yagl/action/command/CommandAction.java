@@ -3,12 +3,14 @@ package it.fulminazzo.yagl.action.command;
 import it.fulminazzo.yagl.SerializableFunction;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * An implementation of {@link SerializableFunction} that executes the given {@link #command} upon {@link #execute(Viewer)}.
  */
+@RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
 public abstract class CommandAction implements SerializableFunction {
@@ -17,16 +19,7 @@ public abstract class CommandAction implements SerializableFunction {
     protected final @NotNull String command;
 
     /**
-     * Instantiates a new Command action.
-     *
-     * @param command the command
-     */
-    CommandAction(final @NotNull String command) {
-        this.command = command;
-    }
-
-    /**
-     * Execute.
+     * Executes the action for the given viewer.
      *
      * @param viewer the viewer
      */

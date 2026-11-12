@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * An implementation of {@link GUIItemAction} that opens the previous {@link GUI} of the {@link Viewer}, if available.
  */
 public final class GUIItemBack implements GUIItemAction {
+    private static final long serialVersionUID = 6595541020898723580L;
 
     @Override
     public void execute(final @NotNull ClickItemEvent event) {

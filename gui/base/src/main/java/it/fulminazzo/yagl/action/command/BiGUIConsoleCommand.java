@@ -10,18 +10,19 @@ import org.jetbrains.annotations.NotNull;
  * the given command upon {@link #execute(Viewer, GUI, GUI)} from the console.
  */
 public final class BiGUIConsoleCommand extends CommandAction implements BiGUIAction {
+    private static final long serialVersionUID = -1286603964635643982L;
 
     /**
      * Instantiates a new BiGUIConsoleCommand.
      *
      * @param command the command
      */
-    public BiGUIConsoleCommand(@NotNull String command) {
+    public BiGUIConsoleCommand(final @NotNull String command) {
         super(command);
     }
 
     @Override
-    public void execute(@NotNull Viewer viewer, @NotNull GUI gui1, @NotNull GUI gui2) {
+    public void execute(final @NotNull Viewer viewer, final @NotNull GUI gui1, final @NotNull GUI gui2) {
         viewer.consoleExecuteCommand(this.command);
     }
 }

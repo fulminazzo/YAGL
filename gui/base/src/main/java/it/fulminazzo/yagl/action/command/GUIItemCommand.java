@@ -11,13 +11,14 @@ import it.fulminazzo.yagl.viewer.Viewer;
  * An implementation of {@link GUIItemAction} that executes the given command upon {@link #execute(ClickItemEvent)}.
  */
 public final class GUIItemCommand extends CommandAction implements GUIItemAction {
+    private static final long serialVersionUID = 8198247757875424925L;
 
     /**
      * Instantiates a new GUIItemCommand.
      *
      * @param command the command
      */
-    public GUIItemCommand(@NotNull String command) {
+    public GUIItemCommand(final @NotNull String command) {
         super(command);
     }
 

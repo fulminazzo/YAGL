@@ -11,10 +11,11 @@ import org.jetbrains.annotations.NotNull;
 public interface RequirementChecker extends SerializableFunction {
 
     /**
-     * The verification function
+     * Executes the verification function against the given viewer.
      *
      * @param viewer the viewer
-     * @return true if they can access the content
+     * @return {@code true} if they can access the content
      */
     boolean test(final @NotNull Viewer viewer);
+
 }

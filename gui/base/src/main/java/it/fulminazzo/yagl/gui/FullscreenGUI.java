@@ -335,7 +335,7 @@ public class FullscreenGUI implements GUI {
 
     @Override
     public @NotNull FullscreenGUI setContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot,
-                                              final @NotNull Collection<GUIContent> contents) {
+                                              final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setContents(slot, contents);
     }
 
@@ -355,7 +355,7 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setAllSides(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setAllSides(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setAllSides(contents);
     }
 
@@ -365,22 +365,22 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopAndBottomSides(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopAndBottomSides(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopAndBottomSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopAndBottomSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopAndBottomSides(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopAndBottomSides(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopAndBottomSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setTopAndBottomSides(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setTopAndBottomSides(contents);
     }
 
@@ -390,22 +390,22 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftAndRightSides(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftAndRightSides(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftAndRightSides(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftAndRightSides(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftAndRightSides(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftAndRightSides(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftAndRightSides(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setLeftAndRightSides(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setLeftAndRightSides(contents);
     }
 
@@ -415,22 +415,22 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopSide(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopSide(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopSide(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setTopSide(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setTopSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setTopSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setTopSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setTopSide(contents);
     }
 
@@ -440,22 +440,22 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftSide(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftSide(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftSide(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setLeftSide(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setLeftSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setLeftSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setLeftSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setLeftSide(contents);
     }
 
@@ -465,22 +465,22 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setBottomSide(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setBottomSide(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setBottomSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setBottomSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setBottomSide(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setBottomSide(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setBottomSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setBottomSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setBottomSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setBottomSide(contents);
     }
 
@@ -490,22 +490,22 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setRightSide(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setRightSide(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setRightSide(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setRightSide(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setRightSide(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setRightSide(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setRightSide(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setRightSide(@NotNull Collection<GUIContent> contents) {
+    public @NotNull FullscreenGUI setRightSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (FullscreenGUI) GUI.super.setRightSide(contents);
     }
 
@@ -515,17 +515,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthWest(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthWest(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthWest(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthWest(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthWest(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthWest(contents);
     }
 
@@ -535,17 +535,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorth(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorth(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorth(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorth(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorth(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorth(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorth(contents);
     }
 
@@ -555,17 +555,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthEast(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthEast(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthEast(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setNorthEast(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setNorthEast(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setNorthEast(contents);
     }
 
@@ -575,17 +575,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleWest(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleWest(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleWest(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleWest(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleWest(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleWest(contents);
     }
 
@@ -595,17 +595,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddle(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddle(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddle(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddle(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddle(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddle(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddle(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddle(contents);
     }
 
@@ -615,17 +615,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleEast(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleEast(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleEast(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setMiddleEast(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setMiddleEast(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setMiddleEast(contents);
     }
 
@@ -635,17 +635,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthWest(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthWest(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthWest(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthWest(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthWest(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthWest(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthWest(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthWest(contents);
     }
 
@@ -655,17 +655,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouth(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouth(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouth(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouth(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouth(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouth(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouth(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouth(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouth(contents);
     }
 
@@ -675,17 +675,17 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthEast(Item @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthEast(final Item @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthEast(CustomItemGUIContent<?> @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthEast(final CustomItemGUIContent<?> @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthEast(contents);
     }
 
     @Override
-    public @NotNull FullscreenGUI setSouthEast(GUIContent @NotNull ... contents) {
+    public @NotNull FullscreenGUI setSouthEast(final GUIContent @NotNull ... contents) {
         return (FullscreenGUI) GUI.super.setSouthEast(contents);
     }
 
@@ -695,87 +695,87 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI fill(@NotNull Item content) {
+    public @NotNull FullscreenGUI fill(final @NotNull Item content) {
         return (FullscreenGUI) GUI.super.fill(content);
     }
 
     @Override
-    public @NotNull FullscreenGUI fill(@NotNull CustomItemGUIContent<?> content) {
+    public @NotNull FullscreenGUI fill(final @NotNull CustomItemGUIContent<?> content) {
         return (FullscreenGUI) GUI.super.fill(content);
     }
 
     @Override
-    public @NotNull FullscreenGUI fill(@NotNull GUIContent content) {
+    public @NotNull FullscreenGUI fill(final @NotNull GUIContent content) {
         return (FullscreenGUI) GUI.super.fill(content);
     }
 
     @Override
-    public @NotNull FullscreenGUI onClickOutsideSend(@NotNull String message) {
+    public @NotNull FullscreenGUI onClickOutsideSend(final @NotNull String message) {
         return (FullscreenGUI) GUI.super.onClickOutsideSend(message);
     }
 
     @Override
-    public @NotNull FullscreenGUI onClickOutside(@NotNull String command) {
+    public @NotNull FullscreenGUI onClickOutside(final @NotNull String command) {
         return (FullscreenGUI) GUI.super.onClickOutside(command);
     }
 
     @Override
-    public @NotNull FullscreenGUI onOpenGUISend(@NotNull String message) {
+    public @NotNull FullscreenGUI onOpenGUISend(final @NotNull String message) {
         return (FullscreenGUI) GUI.super.onOpenGUISend(message);
     }
 
     @Override
-    public @NotNull FullscreenGUI onOpenGUI(@NotNull String command) {
+    public @NotNull FullscreenGUI onOpenGUI(final @NotNull String command) {
         return (FullscreenGUI) GUI.super.onOpenGUI(command);
     }
 
     @Override
-    public @NotNull FullscreenGUI onCloseGUISend(@NotNull String message) {
+    public @NotNull FullscreenGUI onCloseGUISend(final @NotNull String message) {
         return (FullscreenGUI) GUI.super.onCloseGUISend(message);
     }
 
     @Override
-    public @NotNull FullscreenGUI onCloseGUI(@NotNull String command) {
+    public @NotNull FullscreenGUI onCloseGUI(final @NotNull String command) {
         return (FullscreenGUI) GUI.super.onCloseGUI(command);
     }
 
     @Override
-    public @NotNull FullscreenGUI onChangeGUISend(@NotNull String message) {
+    public @NotNull FullscreenGUI onChangeGUISend(final @NotNull String message) {
         return (FullscreenGUI) GUI.super.onChangeGUISend(message);
     }
 
     @Override
-    public @NotNull FullscreenGUI onChangeGUI(@NotNull String command) {
+    public @NotNull FullscreenGUI onChangeGUI(final @NotNull String command) {
         return (FullscreenGUI) GUI.super.onChangeGUI(command);
     }
 
     @Override
-    public @NotNull FullscreenGUI setVariable(@NotNull String name, @NotNull String value) {
+    public @NotNull FullscreenGUI setVariable(final @NotNull String name, final @NotNull String value) {
         return (FullscreenGUI) GUI.super.setVariable(name, value);
     }
 
     @Override
-    public @NotNull FullscreenGUI unsetVariable(@NotNull String name) {
+    public @NotNull FullscreenGUI unsetVariable(final @NotNull String name) {
         return (FullscreenGUI) GUI.super.unsetVariable(name);
     }
 
     @Override
-    public @NotNull FullscreenGUI copyAll(@NotNull GUI other, boolean replace) {
+    public @NotNull FullscreenGUI copyAll(final @NotNull GUI other, final boolean replace) {
         return (FullscreenGUI) GUI.super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull FullscreenGUI copyFrom(@NotNull GUI other, boolean replace) {
+    public @NotNull FullscreenGUI copyFrom(final @NotNull GUI other, final boolean replace) {
         return (FullscreenGUI) GUI.super.copyFrom(other, replace);
     }
 
     @Override
-    public @NotNull FullscreenGUI copyAll(@NotNull Metadatable other, boolean replace) {
+    public @NotNull FullscreenGUI copyAll(final @NotNull Metadatable other, final boolean replace) {
         return (FullscreenGUI) GUI.super.copyAll(other, replace);
     }
 
     @Override
-    public @NotNull FullscreenGUI copyFrom(@NotNull Metadatable other, boolean replace) {
+    public @NotNull FullscreenGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
         return (FullscreenGUI) GUI.super.copyFrom(other, replace);
     }
 

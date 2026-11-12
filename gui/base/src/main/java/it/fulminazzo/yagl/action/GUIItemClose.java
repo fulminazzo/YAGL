@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * An implementation of {@link GUIItemAction} that closes the open {@link GUI} for the {@link Viewer}.
  */
 public final class GUIItemClose implements GUIItemAction {
+    private static final long serialVersionUID = 1354944856286643090L;
 
     @Override
     public void execute(final @NotNull ClickItemEvent event) {

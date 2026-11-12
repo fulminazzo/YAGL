@@ -38,7 +38,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
 
@@ -68,6 +68,7 @@ public class ResizableGUI extends DefaultGUI {
     public @NotNull ResizableGUI resize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         checkSize(size);
         this.contents = createContents(size, this.contents);
+        this.movableSlots.removeIf(s -> s >= size);
         return this;
     }
 
@@ -107,7 +108,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setAllSides(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setAllSides(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setAllSides(contents);
     }
 
@@ -132,7 +133,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setTopAndBottomSides(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setTopAndBottomSides(contents);
     }
 
@@ -157,7 +158,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setLeftAndRightSides(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setLeftAndRightSides(contents);
     }
 
@@ -182,7 +183,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setTopSide(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setTopSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setTopSide(contents);
     }
 
@@ -207,7 +208,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setLeftSide(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setLeftSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setLeftSide(contents);
     }
 
@@ -232,7 +233,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setBottomSide(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setBottomSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setBottomSide(contents);
     }
 
@@ -257,7 +258,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI setRightSide(final @NotNull Collection<GUIContent> contents) {
+    public @NotNull ResizableGUI setRightSide(final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setRightSide(contents);
     }
 

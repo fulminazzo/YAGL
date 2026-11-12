@@ -1,17 +1,17 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.yagl.content.CustomItemGUIContent;
-import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.action.BiGUIAction;
-import it.fulminazzo.yagl.action.command.BiGUICommand;
 import it.fulminazzo.yagl.action.GUIAction;
+import it.fulminazzo.yagl.action.command.BiGUICommand;
 import it.fulminazzo.yagl.action.command.GUICommand;
 import it.fulminazzo.yagl.action.message.BiGUIMessage;
 import it.fulminazzo.yagl.action.message.GUIMessage;
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.fulmicollection.utils.ObjectUtils;
+import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -194,7 +194,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<? extends GUIContent> contents) {
         return setContents(slot, contents.toArray(new GUIContent[0]));
     }
 
@@ -256,7 +256,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setAllSides(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setAllSides(final @NotNull Collection<? extends GUIContent> contents) {
         return setTopAndBottomSides(contents).setLeftAndRightSides(contents);
     }
 
@@ -306,7 +306,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setTopAndBottomSides(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setTopAndBottomSides(final @NotNull Collection<? extends GUIContent> contents) {
         return setTopSide(contents).setBottomSide(contents);
     }
 
@@ -355,7 +355,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setLeftAndRightSides(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setLeftAndRightSides(final @NotNull Collection<? extends GUIContent> contents) {
         return setLeftSide(contents).setRightSide(contents);
     }
 
@@ -410,7 +410,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setTopSide(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setTopSide(final @NotNull Collection<? extends GUIContent> contents) {
         topSlots().forEach(s -> setContents(s, contents.stream()
                 .map(GUIContent::copy).toArray(GUIContent[]::new)));
         return this;
@@ -479,7 +479,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setLeftSide(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setLeftSide(final @NotNull Collection<? extends GUIContent> contents) {
         leftSlots().forEach(s -> setContents(s, contents.stream()
                 .map(GUIContent::copy).toArray(GUIContent[]::new)));
         return this;
@@ -549,7 +549,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setBottomSide(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setBottomSide(final @NotNull Collection<? extends GUIContent> contents) {
         bottomSlots().forEach(s -> setContents(s, contents.stream()
                 .map(GUIContent::copy).toArray(GUIContent[]::new)));
         return this;
@@ -618,7 +618,7 @@ public interface GUI extends Metadatable {
      * @param contents the contents
      * @return this gui
      */
-    default @NotNull GUI setRightSide(final @NotNull Collection<GUIContent> contents) {
+    default @NotNull GUI setRightSide(final @NotNull Collection<? extends GUIContent> contents) {
         rightSlots().forEach(s -> setContents(s, contents.stream()
                 .map(GUIContent::copy).toArray(GUIContent[]::new)));
         return this;
@@ -1405,19 +1405,19 @@ public interface GUI extends Metadatable {
 
             openGUIAction().ifPresent(a -> {
                 @NotNull Optional<GUIAction> open = other.openGUIAction();
-                if (!open.isPresent() || replace) other.onOpenGUI(a);
+                if (open.isEmpty() || replace) other.onOpenGUI(a);
             });
             closeGUIAction().ifPresent(a -> {
                 @NotNull Optional<GUIAction> close = other.closeGUIAction();
-                if (!close.isPresent() || replace) other.onCloseGUI(a);
+                if (close.isEmpty() || replace) other.onCloseGUI(a);
             });
             changeGUIAction().ifPresent(a -> {
                 @NotNull Optional<BiGUIAction> change = other.changeGUIAction();
-                if (!change.isPresent() || replace) other.onChangeGUI(a);
+                if (change.isEmpty() || replace) other.onChangeGUI(a);
             });
             clickOutsideAction().ifPresent(a -> {
                 @NotNull Optional<GUIAction> clickOutside = other.clickOutsideAction();
-                if (!clickOutside.isPresent() || replace) other.onClickOutside(a);
+                if (clickOutside.isEmpty() || replace) other.onClickOutside(a);
             });
 
             return this;

@@ -9,13 +9,14 @@ import org.jetbrains.annotations.NotNull;
  * the given command upon {@link #execute(ClickItemEvent)} from the console.
  */
 public final class GUIItemConsoleCommand extends CommandAction implements GUIItemAction {
+    private static final long serialVersionUID = -8651296695149463165L;
 
     /**
      * Instantiates a new GUIItemConsoleCommand.
      *
      * @param command the command
      */
-    public GUIItemConsoleCommand(@NotNull String command) {
+    public GUIItemConsoleCommand(final @NotNull String command) {
         super(command);
     }
 

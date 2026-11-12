@@ -15,14 +15,14 @@ import org.jetbrains.annotations.NotNull;
 public interface GUIItemAction extends SerializableFunction {
 
     /**
-     * Execute.
+     * Executes the action.
      *
      * @param event the event
      */
     void execute(final @NotNull ClickItemEvent event);
 
     /**
-     * Execute.
+     * Executes the action for the given viewer, gui and content.
      *
      * @param viewer  the viewer
      * @param gui     the gui

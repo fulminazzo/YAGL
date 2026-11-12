@@ -12,10 +12,11 @@ import it.fulminazzo.yagl.viewer.Viewer;
 public interface GUIAction extends SerializableFunction {
 
     /**
-     * Execute.
+     * Executes the action for the given viewer and gui.
      *
      * @param viewer the viewer
      * @param gui    the gui
      */
     void execute(final @NotNull Viewer viewer, final @NotNull GUI gui);
+
 }

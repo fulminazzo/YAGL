@@ -12,11 +12,12 @@ import it.fulminazzo.yagl.viewer.Viewer;
 public interface BiGUIAction extends SerializableFunction {
 
     /**
-     * Execute.
+     * Executes the action for the given viewer and two GUIs.
      *
      * @param viewer the viewer
      * @param gui1   the gui 1
      * @param gui2   the gui 2
      */
     void execute(final @NotNull Viewer viewer, final @NotNull GUI gui1, final @NotNull GUI gui2);
+
 }

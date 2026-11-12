@@ -18,8 +18,6 @@ import java.util.*;
  */
 @EqualsAndHashCode
 abstract class GUIImpl implements GUI {
-    // Constants are defined in Constants.java
-
     @Getter
     protected @Nullable String title;
     protected List<Contents> contents;
@@ -35,7 +33,7 @@ abstract class GUIImpl implements GUI {
      * Instantiates a new Gui.
      */
     GUIImpl() {
-        this.contents = new LinkedList<>();
+        this.contents = new ArrayList<>();
         this.movableSlots = new HashSet<>();
     }
 
@@ -133,7 +131,7 @@ abstract class GUIImpl implements GUI {
     @Override
     public @NotNull GUI unsetContent(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         GUIUtils.checkSlot(slot, size());
-        this.contents.set(slot, null);
+        this.contents.set(slot, new Contents());
         return this;
     }
 
@@ -142,7 +140,7 @@ abstract class GUIImpl implements GUI {
         List<GUIContent> list = new LinkedList<>();
         for (Contents content : this.contents)
             if (content != null)
-                list.addAll(Arrays.asList(content.contents));
+                Collections.addAll(list, content.contents);
         return list;
     }
 
@@ -261,27 +259,14 @@ abstract class GUIImpl implements GUI {
         public boolean equals(Object o) {
             if (o instanceof Contents) {
                 Contents c = (Contents) o;
-                if (this.contents.length != c.contents.length) return false;
-                for (int i = 0; i < this.contents.length; i++) {
-                    GUIContent c1 = this.contents[i];
-                    GUIContent c2 = c.contents[i];
-                    if (!Objects.equals(c1, c2)) return false;
-                }
-                return true;
+                return Arrays.equals(this.contents, c.contents);
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            int hash = Contents.class.hashCode();
-
-            for (GUIContent content : this.contents) {
-                hash *= 31;
-                hash += content == null ? 191 : content.hashCode();
-            }
-
-            return hash;
+            return Arrays.hashCode(this.contents);
         }
 
         @Override
