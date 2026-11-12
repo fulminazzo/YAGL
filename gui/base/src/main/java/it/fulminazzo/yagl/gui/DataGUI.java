@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -195,6 +196,16 @@ public class DataGUI<T> extends PageableGUI {
     @Override
     public void open(final @NotNull Viewer viewer, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         prepareOpenGUI(this.templateGUI, page).open(viewer);
+    }
+
+    @Override
+    public @NotNull DataGUI<T> copyTo(final @NotNull GUI other, final boolean replace) {
+        super.copyTo(other, replace);
+        if (other instanceof DataGUI && replace) {
+            ((DataGUI<T>) other).setData(getData());
+            Reflect.on(other).set("dataConverter", this.dataConverter);
+        }
+        return this;
     }
 
     @Override
@@ -796,11 +807,6 @@ public class DataGUI<T> extends PageableGUI {
     @Override
     public @NotNull DataGUI<T> unsetVariable(final @NotNull String name) {
         return (DataGUI<T>) super.unsetVariable(name);
-    }
-
-    @Override
-    public @NotNull DataGUI<T> copyTo(final @NotNull GUI other, final boolean replace) {
-        return (DataGUI<T>) super.copyTo(other, replace);
     }
 
     @Override

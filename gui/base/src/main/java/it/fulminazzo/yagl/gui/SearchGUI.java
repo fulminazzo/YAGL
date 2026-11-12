@@ -104,6 +104,16 @@ public class SearchGUI<T> extends DataGUI<T> {
         );
     }
 
+    @Override
+    public @NotNull SearchGUI<T> copyTo(@NotNull GUI other, boolean replace) {
+        super.copyTo(other, replace);
+        if (other instanceof SearchGUI && replace) {
+            Reflect.on(other).set("searchFunction", this.searchFunction);
+            ((SearchGUI<?>) other).setQuery(this.query);
+        }
+        return this;
+    }
+
     /**
      * Occupies the slots of the {@link GUIType#ANVIL} upperGUI,
      * if not already occupied.
@@ -735,11 +745,6 @@ public class SearchGUI<T> extends DataGUI<T> {
     @Override
     public @NotNull SearchGUI<T> unsetVariable(@NotNull String name) {
         return (SearchGUI<T>) super.unsetVariable(name);
-    }
-
-    @Override
-    public @NotNull SearchGUI<T> copyTo(@NotNull GUI other, boolean replace) {
-        return (SearchGUI<T>) super.copyTo(other, replace);
     }
 
     @Override
