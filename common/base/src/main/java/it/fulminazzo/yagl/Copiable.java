@@ -44,9 +44,9 @@ public abstract class Copiable<C> {
      * @return the copy
      */
     public <T extends C> @NotNull T copy(final @NotNull Class<T> type) {
-        String canonicalName = type.getCanonicalName();
-        if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) canonicalName += "Impl";
-        T copy = Reflect.on(canonicalName).init().get();
+        String className = type.getName();
+        if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) className += "Impl";
+        T copy = Reflect.on(className).init().get();
         return copyDataTo(copy);
     }
 
