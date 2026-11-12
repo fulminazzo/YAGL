@@ -1394,12 +1394,13 @@ public interface GUI extends Metadatable {
         else {
             if (other.getTitle() == null || replace) other.setTitle(getTitle());
 
-            copyVariablesTo((Metadatable) other, replace);
+            copyVariablesTo(other, replace);
 
-            for (int i = 0; i < size(); i++) {
-                final @NotNull List<GUIContent> contents = getContents(i);
-                if (!contents.isEmpty() && (other.getContents(i).isEmpty() || replace))
-                    other.setContents(i, contents.toArray(new GUIContent[0]));
+            for (int s = 0; s < size(); s++) {
+                final @NotNull List<GUIContent> contents = getContents(s);
+                if (!contents.isEmpty() && (other.getContents(s).isEmpty() || replace))
+                    other.setContents(s, contents.toArray(new GUIContent[0]));
+                if (isMovable(s) || replace) other.setMovable(s, isMovable(s));
             }
 
             openGUIAction().ifPresent(a -> {
