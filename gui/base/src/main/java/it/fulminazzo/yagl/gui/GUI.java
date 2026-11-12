@@ -1,6 +1,5 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.utils.ObjectUtils;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.action.command.BiGUICommand;
@@ -1451,9 +1450,7 @@ public interface GUI extends Metadatable {
      *
      * @return the gui
      */
-    default GUI copy() {
-        return ObjectUtils.copy(this);
-    }
+    @NotNull GUI copy();
 
     /**
      * Creates a new {@link GUI}.

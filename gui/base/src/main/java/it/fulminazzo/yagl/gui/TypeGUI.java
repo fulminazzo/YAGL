@@ -37,6 +37,11 @@ public class TypeGUI extends GUIImpl {
     }
 
     @Override
+    protected @NotNull GUI initializeNewInstance() {
+        return new TypeGUI(this.inventoryType);
+    }
+
+    @Override
     public @Range(from = 0, to = Constants.MAX_TYPE_SLOT) int northEast() {
         if (this.inventoryType == GUIType.BREWING) return BREWING_ROWS - 1;
         else if (this.inventoryType == GUIType.LOOM) return LOOM_ROWS - 1;

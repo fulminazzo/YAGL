@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.gui;
 
 
 import it.fulminazzo.yagl.util.ValidationUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
 /**
@@ -29,6 +30,11 @@ public class DefaultGUI extends GUIImpl {
         if (size % Constants.MIN_DEFAULT_SIZE != 0)
             throw new IllegalArgumentException(String.format("%s is not a valid size. Only multiple of %s can be accepted",
                     size, Constants.MIN_DEFAULT_SIZE));
+    }
+
+    @Override
+    protected @NotNull GUI initializeNewInstance() {
+        return new DefaultGUI(size());
     }
 
     @Override

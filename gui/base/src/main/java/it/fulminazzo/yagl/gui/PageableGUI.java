@@ -201,6 +201,15 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         return this;
     }
 
+    /**
+     * Initializes a new empty instance of the same initial parameters as this GUI.
+     *
+     * @return the gui
+     */
+    protected @NotNull PageableGUI initializeNewInstance() {
+        return new PageableGUI(this.templateGUI.copy());
+    }
+
     private int checkSlot(final int slot) {
         ValidationUtils.checkRange("slot", slot, 0, size());
         return slot;
@@ -209,16 +218,6 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     @Override
     public @NotNull Iterator<GUI> iterator() {
         return this.pages.iterator();
-    }
-
-    /**
-     * Opens the current GUI for the given viewer at the first page.
-     *
-     * @param viewer the viewer
-     */
-    @Override
-    public void open(final @NotNull Viewer viewer) {
-        open(viewer, 0);
     }
 
     /**
@@ -249,6 +248,21 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         if (page + 1 < pages()) this.nextPage.ifPresent((s, p) ->
                 newGUI.setContents(s, p.copy().onClickItem(e -> open(e.getViewer(), page + 1))));
         return newGUI;
+    }
+
+    /**
+     * Opens the current GUI for the given viewer at the first page.
+     *
+     * @param viewer the viewer
+     */
+    @Override
+    public void open(final @NotNull Viewer viewer) {
+        open(viewer, 0);
+    }
+
+    @Override
+    public @NotNull PageableGUI copy() {
+        return initializeNewInstance().copyFrom(this, true);
     }
 
     /**
@@ -949,11 +963,6 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     @Override
     public @NotNull PageableGUI copyFrom(final @NotNull GUI other, final boolean replace) {
         return (PageableGUI) GUI.super.copyFrom(other, replace);
-    }
-
-    @Override
-    public PageableGUI copy() {
-        return (PageableGUI) GUI.super.copy();
     }
 
     @Override

@@ -40,9 +40,21 @@ abstract class GUIImpl implements GUI {
         this.movableSlots = new HashSet<>();
     }
 
+    /**
+     * Initializes a new empty instance of the same initial parameters as this GUI.
+     *
+     * @return the gui
+     */
+    protected abstract @NotNull GUI initializeNewInstance();
+
     @Override
     public void open(final @NotNull Viewer viewer) {
         GUIUtils.executeGUIAdapterFunction("openGUI", this, viewer);
+    }
+
+    @Override
+    public @NotNull GUI copy() {
+        return initializeNewInstance().copyFrom(this, true);
     }
 
     @Override

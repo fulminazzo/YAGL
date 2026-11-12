@@ -185,6 +185,14 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
+    protected @NotNull DataGUI<T> initializeNewInstance() {
+        return new DataGUI<>(
+                this.templateGUI.copy(),
+                this.dataConverter
+        );
+    }
+
+    @Override
     public void open(final @NotNull Viewer viewer, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
         prepareOpenGUI(this.templateGUI, page).open(viewer);
     }
@@ -801,7 +809,7 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public DataGUI<T> copy() {
+    public @NotNull DataGUI<T> copy() {
         return (DataGUI<T>) super.copy();
     }
 

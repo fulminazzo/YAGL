@@ -42,6 +42,11 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
+    protected @NotNull GUI initializeNewInstance() {
+        return new ResizableGUI(size());
+    }
+
+    @Override
     public @NotNull ResizableGUI setContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final @NotNull Collection<? extends GUIContent> contents) {
         return (ResizableGUI) super.setContents(slot, contents);
     }
@@ -587,7 +592,7 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public ResizableGUI copy() {
+    public @NotNull ResizableGUI copy() {
         return (ResizableGUI) super.copy();
     }
 

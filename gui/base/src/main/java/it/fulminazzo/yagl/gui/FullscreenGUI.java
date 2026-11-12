@@ -283,12 +283,8 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public FullscreenGUI copy() {
-        return Reflect.on(
-                        this.upperGUI instanceof TypeGUI ?
-                                new FullscreenGUI(((TypeGUI) this.upperGUI).getInventoryType()) :
-                                new FullscreenGUI(this.upperGUI.size())
-                )
+    public @NotNull FullscreenGUI copy() {
+        return Reflect.on(new FullscreenGUI(Constants.MIN_DEFAULT_SIZE))
                 .set("upperGUI", this.upperGUI.copy())
                 .set("lowerGUI", this.lowerGUI.copy())
                 .get();

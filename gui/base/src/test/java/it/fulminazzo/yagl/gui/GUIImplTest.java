@@ -317,6 +317,11 @@ class GUIImplTest {
         }
 
         @Override
+        protected @NotNull GUI initializeNewInstance() {
+            return new MockGUI(size());
+        }
+
+        @Override
         public int rows() {
             return 0;
         }

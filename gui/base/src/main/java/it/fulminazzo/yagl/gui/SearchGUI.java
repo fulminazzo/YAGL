@@ -95,6 +95,15 @@ public class SearchGUI<T> extends DataGUI<T> {
         return prepareOpenGUI(this.templateGUI, 0);
     }
 
+    @Override
+    protected @NotNull SearchGUI<T> initializeNewInstance() {
+        return new SearchGUI<>(
+                (SearchFullscreenGUI) this.templateGUI.copy(),
+                this.dataConverter,
+                this.searchFunction
+        );
+    }
+
     /**
      * Occupies the slots of the {@link GUIType#ANVIL} upperGUI,
      * if not already occupied.
@@ -129,15 +138,6 @@ public class SearchGUI<T> extends DataGUI<T> {
         return super.getDataList().stream()
                 .filter(t -> this.searchFunction.test(t, this.query))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public @NotNull SearchGUI<T> copy() {
-        return new SearchGUI<>(
-                (SearchFullscreenGUI) this.templateGUI.copy(),
-                this.dataConverter,
-                this.searchFunction
-        );
     }
 
     @SuppressWarnings("deprecation")
@@ -757,6 +757,11 @@ public class SearchGUI<T> extends DataGUI<T> {
         return (SearchGUI<T>) super.copyVariablesFrom(other, replace);
     }
 
+    @Override
+    public @NotNull SearchGUI<T> copy() {
+        return (SearchGUI<T>) super.copy();
+    }
+
     /*
      * INITIALIZERS
      */
@@ -897,8 +902,7 @@ public class SearchGUI<T> extends DataGUI<T> {
         }
 
         @Override
-        public FullscreenGUI copy() {
-            //TODO: rework with Copiable?
+        public @NotNull FullscreenGUI copy() {
             return Reflect.on(new SearchFullscreenGUI())
                     .set("upperGUI", getUpperGUI().copy())
                     .set("lowerGUI", getLowerGUI().copy())
