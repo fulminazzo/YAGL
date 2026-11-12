@@ -25,7 +25,7 @@ import java.util.*;
 class ItemImpl extends Copiable<Item> implements Item {
     protected String material;
     @Range(from = Constants.MIN_AMOUNT, to = Integer.MAX_VALUE)
-    protected int amount;
+    protected int amount = Constants.MIN_AMOUNT;
     @Range(from = Constants.MIN_DURABILITY, to = Short.MAX_VALUE)
     protected int durability;
     protected String displayName;

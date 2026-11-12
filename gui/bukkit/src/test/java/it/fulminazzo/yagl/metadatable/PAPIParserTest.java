@@ -3,10 +3,7 @@ package it.fulminazzo.yagl.metadatable;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -40,8 +37,8 @@ class PAPIParserTest {
         static String string1 = "SHOULD %not% BE CHANGED";
         String string2 = null;
         String string3 = "parse %player_name%";
-        List<String> list = Arrays.asList("parse", "%player_name%");
-        Map<String, String> map = new HashMap<String, String>() {{
+        List<String> list = new ArrayList<>(Arrays.asList("parse", "%player_name%"));
+        Map<String, String> map = new HashMap<>() {{
             put("parse", "%player_name%");
             put("parsing", "%not-me%");
             put(null, "%player_name%");

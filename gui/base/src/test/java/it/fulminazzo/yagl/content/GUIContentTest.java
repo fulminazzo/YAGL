@@ -48,7 +48,7 @@ class GUIContentTest {
     }
 
     private static Sound[] sounds() {
-        return new Sound[]{null, new Sound("test", 1, 3)};
+        return new Sound[]{null, new Sound("test", 1, 2)};
     }
 
     @ParameterizedTest

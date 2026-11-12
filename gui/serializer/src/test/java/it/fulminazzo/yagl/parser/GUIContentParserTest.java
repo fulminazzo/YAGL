@@ -30,7 +30,7 @@ class GUIContentParserTest {
                 .addEnchantment("unbreaking", 3)
                 .addEnchantment("sharpness", 5)
                 .addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_PLACED_ON)
-                .setClickSound(new Sound("villager_happy", 10, 5))
+                .setClickSound(new Sound("villager_happy", 10, 2))
                 .setCustomModelData(1);
         File file = new File("build/resources/test/gui-content.yml");
         if (file.exists()) FileUtils.deleteFile(file);

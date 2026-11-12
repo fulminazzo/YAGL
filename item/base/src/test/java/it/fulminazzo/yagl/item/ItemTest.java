@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.Copiable;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.reflect.ReflectException;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import it.fulminazzo.yagl.wrapper.PotionEffect;
@@ -17,12 +18,6 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
-
-    @Test
-    void invalidConstructorItemClassShouldReturnItemImpl() {
-        Item item = new MockItem("STONE").copy();
-        assertInstanceOf(ItemImpl.class, item);
-    }
 
     @Test
     void testAddEnchantment() {
@@ -73,7 +68,7 @@ class ItemTest {
         final String className = clazz.getCanonicalName();
         final String implName = className + "Impl";
 
-        Throwable exception = assertThrowsExactly(IllegalArgumentException.class, () -> Item.newItem("stone").copy(clazz));
+        Throwable exception = assertThrowsExactly(ReflectException.class, () -> Item.newItem("stone").copy(clazz));
 
         String message = exception.getMessage();
         assertNotNull(message, "Exception message was null");
@@ -136,10 +131,9 @@ class ItemTest {
         private boolean unbreakable;
         private int customModelData;
 
-        @SuppressWarnings("unchecked")
         @Override
         protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
-            return (T) copy
+            copy
                     .setMaterial(material)
                     .setAmount(amount)
                     .setDurability(durability)
@@ -150,6 +144,7 @@ class ItemTest {
                     .setPotionEffects(potionEffects)
                     .setUnbreakable(unbreakable)
                     .setCustomModelData(customModelData);
+            return copy;
         }
 
         public MockItem(String material) {

@@ -299,7 +299,7 @@ class WrappersAdapterTest extends BukkitUtils {
         verify(player).playSound(any(Location.class), soundArg.capture(),
                 categoryArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getName(), new Refl<>(soundArg).invokeMethodRefl("getValue").invokeMethod("name"));
+        assertEquals(sound.getName().toUpperCase(Locale.ROOT), new Refl<>(soundArg).invokeMethodRefl("getValue").invokeMethod("name"));
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
@@ -323,7 +323,7 @@ class WrappersAdapterTest extends BukkitUtils {
         ArgumentCaptor<Float> pitchArg = ArgumentCaptor.forClass(Float.class);
         verify(player).playSound(any(Location.class), soundArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getName(), new Refl<>(soundArg).invokeMethodRefl("getValue").invokeMethod("name"));
+        assertEquals(sound.getName().toUpperCase(Locale.ROOT), new Refl<>(soundArg).invokeMethodRefl("getValue").invokeMethod("name"));
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());

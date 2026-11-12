@@ -62,8 +62,7 @@ class ResizableGUITest {
 
     @Test
     void testInvalidSet() {
-        assertThrowsExactly(IndexOutOfBoundsException.class, () ->
-                this.gui.setContents(Constants.MAX_SIZE, new GUIImplTest.MockContent()));
+        assertThrowsExactly(IllegalArgumentException.class, () -> this.gui.setContents(Constants.MAX_SIZE, new GUIImplTest.MockContent()));
     }
 
 }

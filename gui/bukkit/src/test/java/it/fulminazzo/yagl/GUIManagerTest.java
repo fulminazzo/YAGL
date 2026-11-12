@@ -342,7 +342,7 @@ class GUIManagerTest {
         @Test
         void testNullClickActionSound() {
             check();
-            Sound sound = new Sound("pirate", 1f, 3f);
+            Sound sound = new Sound("pirate", 1f, 2f);
             Location location = new Location(null, 0, 1, 0);
             when(this.player.getLocation()).thenReturn(location);
             this.expected.getContents(0).forEach(c -> c.setClickSound(sound));

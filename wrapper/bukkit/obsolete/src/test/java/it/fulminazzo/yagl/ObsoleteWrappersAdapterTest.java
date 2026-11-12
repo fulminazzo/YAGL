@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -35,7 +37,7 @@ public class ObsoleteWrappersAdapterTest extends BukkitUtils {
         ArgumentCaptor<Float> pitchArg = ArgumentCaptor.forClass(Float.class);
         verify(player).playSound(any(Location.class), soundArg.capture(), volumeArg.capture(), pitchArg.capture());
 
-        assertEquals(sound.getName(), soundArg.getValue().name());
+        assertEquals(sound.getName().toUpperCase(Locale.ROOT), soundArg.getValue().name());
 
         assertEquals(sound.getVolume(), volumeArg.getValue());
         assertEquals(sound.getPitch(), pitchArg.getValue());
