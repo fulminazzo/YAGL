@@ -250,7 +250,6 @@ public final class ItemAdapter {
         if (recipe == null) return null;
 
         final Object ingredient = getItemOrRecipeChoice(recipe.getIngredients().get(0));
-        System.out.println(ingredient);
         final ItemStack output = recipe.getOutput().copy(BukkitItem.class).create();
         final int cookingTime = (int) (recipe.getCookingTime() * Constants.TICKS_IN_SECOND);
         final float experience = recipe.getExperience();
