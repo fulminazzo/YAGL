@@ -224,7 +224,7 @@ class DataGUITest {
     @Test
     void testReturnTypes() {
         TestUtils.testReturnType(DataGUI.newGUI(45, c -> null), PageableGUI.class, m -> {
-            for (String s : Arrays.asList("copy", "setPages", "getPage"))
+            for (String s : Arrays.asList("copy", "setPages", "getPage", "initializeNewInstance"))
                 if (s.equals(m.getName())) return true;
             return false;
         });

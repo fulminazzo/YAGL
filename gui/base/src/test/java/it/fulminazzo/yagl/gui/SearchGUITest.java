@@ -182,7 +182,7 @@ class SearchGUITest {
                         (t, s) -> false),
                 DataGUI.class,
                 m -> {
-                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyAll"))
+                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyTo", "initializeNewInstance"))
                         if (s.equals(m.getName())) return true;
                     return false;
                 });
