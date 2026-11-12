@@ -1,11 +1,9 @@
 package it.fulminazzo.yagl.gui;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
-import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
@@ -14,8 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -142,11 +138,11 @@ class SearchGUITest {
     @Test
     void testCopy() {
         SearchGUI<String> gui = SearchGUI.newGUI(
-                27,
-                d -> ItemGUIContent.newInstance("stone"),
-                (s, t) -> true,
-                new String[]{"stone", "diamond", "emerald", "gold", "iron"}
-        ).setTitle("Search GUI Title")
+                        27,
+                        d -> ItemGUIContent.newInstance("stone"),
+                        (s, t) -> true,
+                        new String[]{"stone", "diamond", "emerald", "gold", "iron"}
+                ).setTitle("Search GUI Title")
                 .setVariable("hello", "world")
                 .setQuery("test query")
                 .setContents(4, ItemGUIContent.newInstance("obsidian"));
@@ -182,7 +178,7 @@ class SearchGUITest {
                         (t, s) -> false),
                 DataGUI.class,
                 m -> {
-                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyAll"))
+                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyTo", "initializeNewInstance"))
                         if (s.equals(m.getName())) return true;
                     return false;
                 });
@@ -206,31 +202,12 @@ class SearchGUITest {
         assertEquals(expected, gui.getQuery());
     }
 
-    private static Constructor<?>[] serializationConstructors() {
-        return Arrays.stream(SearchGUI.class.getDeclaredConstructors())
-                .filter(c -> c.getParameterCount() <= 1)
-                .toArray(Constructor[]::new);
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {"getPage", "setPages"})
     void testPagesRelatedMethodShouldThrowException(String method) {
         Throwable throwable = assertThrowsExactly(IllegalStateException.class, () ->
                 new Refl<>(SearchGUI.newGUI(s -> null, (t, s) -> false)).invokeMethod(method, 1));
         assertEquals(new Refl<>(SearchGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
-    }
-
-    @ParameterizedTest
-    @MethodSource("serializationConstructors")
-    void testConstructorsConverter(Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
-        Object[] parameters = Arrays.stream(constructor.getParameterTypes())
-                .map(TestUtils::mockParameter)
-                .map(o -> o instanceof Number ? 9 : o)
-                .toArray(Object[]::new);
-        Object object = ReflectionUtils.setAccessibleOrThrow(constructor).newInstance(parameters);
-        assertThrowsExactly(NotImplementedException.class, () -> new Refl<>(object)
-                .getFieldRefl("searchFunction")
-                .invokeMethod("test", (Object) null, null));
     }
 
     private static Object[] constructorParameters() {

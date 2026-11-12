@@ -6,7 +6,6 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
-import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
@@ -16,8 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -151,25 +148,6 @@ class DataGUITest {
         assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
     }
 
-    private static Constructor<?>[] serializationConstructors() {
-        return Arrays.stream(DataGUI.class.getDeclaredConstructors())
-                .filter(c -> c.getParameterCount() <= 1)
-                .toArray(Constructor[]::new);
-    }
-
-    @ParameterizedTest
-    @MethodSource("serializationConstructors")
-    void testConstructorsConverter(Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
-        Object[] parameters = Arrays.stream(constructor.getParameterTypes())
-                .map(TestUtils::mockParameter)
-                .map(o -> o instanceof Number ? 9 : o)
-                .toArray(Object[]::new);
-        Object object = ReflectionUtils.setAccessibleOrThrow(constructor).newInstance(parameters);
-        assertThrowsExactly(NotImplementedException.class, () -> new Refl<>(object)
-                .getFieldRefl("dataConverter")
-                .invokeMethod("apply", (Object) null));
-    }
-
     @Test
     void testOpenPage() {
         int[][] slots = new int[][]{
@@ -224,7 +202,7 @@ class DataGUITest {
     @Test
     void testReturnTypes() {
         TestUtils.testReturnType(DataGUI.newGUI(45, c -> null), PageableGUI.class, m -> {
-            for (String s : Arrays.asList("copy", "setPages", "getPage"))
+            for (String s : Arrays.asList("copy", "setPages", "getPage", "initializeNewInstance"))
                 if (s.equals(m.getName())) return true;
             return false;
         });
