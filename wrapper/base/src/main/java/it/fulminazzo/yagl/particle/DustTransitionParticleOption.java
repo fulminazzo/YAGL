@@ -18,11 +18,6 @@ public final class DustTransitionParticleOption extends ParticleOption<Triple<Co
     private final @NotNull Color to;
     private final float size;
 
-    @SuppressWarnings("unused")
-    private DustTransitionParticleOption() {
-        this(Color.BLACK, Color.BLACK, -1);
-    }
-
     @Override
     public @NotNull Triple<Color, Color, Float> getOption() {
         return new Triple<>(this.from, this.to, this.size);

@@ -27,13 +27,6 @@ public class TypeGUI extends GUIImpl {
     private final @NotNull GUIType inventoryType;
 
     /**
-     * Internal constructor, used for serializing purposes.
-     */
-    private TypeGUI() {
-        this.inventoryType = GUIType.CHEST;
-    }
-
-    /**
      * Instantiates a new Type gui.
      *
      * @param inventoryType the inventory type

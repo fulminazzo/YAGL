@@ -30,11 +30,6 @@ public class FullscreenGUI implements GUI {
     private final @NotNull GUI upperGUI;
     private final @NotNull ResizableGUI lowerGUI;
 
-    private FullscreenGUI() {
-        this.upperGUI = new DefaultGUI();
-        this.lowerGUI = new FullscreenResizableGUI().resize(Constants.SECONDARY_GUI_SIZE);
-    }
-
     /**
      * Instantiates a new Full size gui.
      *
@@ -42,7 +37,7 @@ public class FullscreenGUI implements GUI {
      */
     FullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         this.upperGUI = GUI.newGUI(size);
-        this.lowerGUI = new FullscreenResizableGUI().resize(Constants.SECONDARY_GUI_SIZE);
+        this.lowerGUI = new FullscreenResizableGUI(Constants.SECONDARY_GUI_SIZE);
     }
 
     /**
@@ -52,7 +47,7 @@ public class FullscreenGUI implements GUI {
      */
     FullscreenGUI(final @NotNull GUIType type) {
         this.upperGUI = GUI.newGUI(type);
-        this.lowerGUI = new FullscreenResizableGUI().resize(Constants.SECONDARY_GUI_SIZE);
+        this.lowerGUI = new FullscreenResizableGUI(Constants.SECONDARY_GUI_SIZE);
     }
 
     /**
@@ -289,7 +284,11 @@ public class FullscreenGUI implements GUI {
 
     @Override
     public FullscreenGUI copy() {
-        return Reflect.on(new FullscreenGUI())
+        return Reflect.on(
+                        this.upperGUI instanceof TypeGUI ?
+                                new FullscreenGUI(((TypeGUI) this.upperGUI).getInventoryType()) :
+                                new FullscreenGUI(this.upperGUI.size())
+                )
                 .set("upperGUI", this.upperGUI.copy())
                 .set("lowerGUI", this.lowerGUI.copy())
                 .get();
@@ -786,6 +785,15 @@ public class FullscreenGUI implements GUI {
      * An implementation of {@link ResizableGUI} that supports a maximum size of {@link Constants#SECONDARY_GUI_SIZE}.
      */
     static class FullscreenResizableGUI extends ResizableGUI {
+
+        /**
+         * Instantiates a new Gui.
+         *
+         * @param size the size
+         */
+        protected FullscreenResizableGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+            super(size);
+        }
 
         @Override
         void checkValidSize(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int size) {

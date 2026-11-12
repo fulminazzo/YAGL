@@ -15,11 +15,6 @@ import lombok.ToString;
 public final class PrimitiveParticleOption<T> extends ParticleOption<T> {
     private final T value;
 
-    @SuppressWarnings("unused")
-    private PrimitiveParticleOption() {
-        this(null);
-    }
-
     @Override
     public T getOption() {
         return this.value;

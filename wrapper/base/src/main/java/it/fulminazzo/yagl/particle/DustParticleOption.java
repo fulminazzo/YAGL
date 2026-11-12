@@ -17,11 +17,6 @@ public final class DustParticleOption extends ParticleOption<Pair<Color, Float>>
     private final @NotNull Color color;
     private final float size;
 
-    @SuppressWarnings("unused")
-    private DustParticleOption() {
-        this(Color.BLACK, -1);
-    }
-
     @Override
     public @NotNull Pair<Color, Float> getOption() {
         return new Pair<>(this.color, this.size);

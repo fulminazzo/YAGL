@@ -6,8 +6,6 @@ import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
@@ -18,7 +16,6 @@ import java.util.Collection;
  * Represents a "chest" GUI that can be resized.
  * This GUI can start with any value in bounds and multiple of 9 and can grow if necessary.
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResizableGUI extends DefaultGUI {
 
     /**

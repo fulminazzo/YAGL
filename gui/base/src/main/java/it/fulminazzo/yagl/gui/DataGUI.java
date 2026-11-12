@@ -4,7 +4,6 @@ import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
-import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
@@ -35,36 +34,13 @@ public class DataGUI<T> extends PageableGUI {
 
     /**
      * Instantiates a new Data gui.
-     */
-    DataGUI() {
-        this.data = new LinkedList<>();
-        this.dataConverter = t -> {
-            throw new NotImplementedException();
-        };
-    }
-
-    /**
-     * Instantiates a new Data gui.
-     *
-     * @param templateGUI the template gui
-     */
-    DataGUI(final @NotNull GUI templateGUI) {
-        super(templateGUI);
-        this.data = new LinkedList<>();
-        this.dataConverter = t -> {
-            throw new NotImplementedException();
-        };
-    }
-
-    /**
-     * Instantiates a new Data gui.
      *
      * @param templateGUI   the templateGUI
      * @param dataConverter the data converter
      */
     DataGUI(final @NotNull GUI templateGUI, final @NotNull Function<T, GUIContent> dataConverter) {
         super(templateGUI);
-        this.data = new LinkedList<>();
+        this.data = new ArrayList<>();
         this.dataConverter = dataConverter;
     }
 

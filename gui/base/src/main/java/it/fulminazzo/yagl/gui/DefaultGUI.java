@@ -2,14 +2,11 @@ package it.fulminazzo.yagl.gui;
 
 
 import it.fulminazzo.yagl.util.ValidationUtils;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.Range;
 
 /**
  * Represents a "chest" GUI that cannot be resized.
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DefaultGUI extends GUIImpl {
 
     /**

@@ -41,13 +41,6 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
 
     /**
      * Instantiates a new Pageable gui.
-     */
-    PageableGUI() {
-        this(new DefaultGUI());
-    }
-
-    /**
-     * Instantiates a new Pageable gui.
      *
      * @param templateGUI the template gui
      */

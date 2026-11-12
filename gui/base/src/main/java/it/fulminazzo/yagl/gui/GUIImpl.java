@@ -31,14 +31,6 @@ abstract class GUIImpl implements GUI {
 
     /**
      * Instantiates a new Gui.
-     */
-    GUIImpl() {
-        this.contents = new ArrayList<>();
-        this.movableSlots = new HashSet<>();
-    }
-
-    /**
-     * Instantiates a new Gui.
      *
      * @param size the size
      */

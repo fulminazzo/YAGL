@@ -5,7 +5,6 @@ import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
-import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.IgnoreApply;
 import it.fulminazzo.yagl.metadatable.Metadatable;
@@ -46,22 +45,6 @@ public class SearchGUI<T> extends DataGUI<T> {
     @Getter
     private @NotNull String query;
 
-    private SearchGUI() {
-        super();
-        this.searchFunction = (t, s) -> {
-            throw new NotImplementedException();
-        };
-        this.query = "";
-    }
-
-    private SearchGUI(@NotNull GUI templateGUI) {
-        super(templateGUI);
-        this.searchFunction = (t, s) -> {
-            throw new NotImplementedException();
-        };
-        this.query = "";
-    }
-
     /**
      * Instantiates a new Search gui.
      *
@@ -69,9 +52,9 @@ public class SearchGUI<T> extends DataGUI<T> {
      * @param dataConverter  the data converter
      * @param searchFunction the function to use to filter the data
      */
-    SearchGUI(@NotNull SearchGUI.SearchFullscreenGUI templateGUI,
-              @NotNull Function<T, GUIContent> dataConverter,
-              @NotNull BiPredicate<T, String> searchFunction) {
+    SearchGUI(final @NotNull SearchGUI.SearchFullscreenGUI templateGUI,
+              final @NotNull Function<T, GUIContent> dataConverter,
+              final @NotNull BiPredicate<T, String> searchFunction) {
         super(templateGUI, dataConverter);
         this.searchFunction = searchFunction;
         this.query = "";
