@@ -287,7 +287,10 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
             PageableGUI otherGUI = (PageableGUI) other;
             if (replace)
                 try {
-                    otherGUI.setPages(pages());
+                    int pages = pages();
+                    otherGUI.setPages(pages);
+                    for (int p = 0; p < pages; p++)
+                        otherGUI.getPage(p).copyFrom(getPage(p), true);
                 } catch (IllegalStateException ignored) {
                     // DataGUI does not support pages
                 }
