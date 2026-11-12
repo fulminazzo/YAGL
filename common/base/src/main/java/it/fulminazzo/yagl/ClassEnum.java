@@ -2,7 +2,6 @@ package it.fulminazzo.yagl;
 
 import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.lang.reflect.Array;
@@ -101,7 +100,7 @@ public abstract class ClassEnum {
         public EnumRegistry(final Class<?> type) {
             this.type = (Class<E>) type;
             this.values = new ArrayList<>();
-            this.valueNameMap = new HashMap<>();
+            this.valueNameMap = new IdentityHashMap<>();
             this.nameValueMap = new HashMap<>();
 
             Reflect reflect = Reflect.on(type);
@@ -132,8 +131,11 @@ public abstract class ClassEnum {
          * @param value the value
          * @return the name
          */
-        public @Nullable String name(final @NotNull E value) {
-            return valueNameMap.get(value);
+        public @NotNull String name(final @NotNull E value) {
+            String name = valueNameMap.get(value);
+            if (name == null)
+                throw new IllegalArgumentException("No enum name found for " + value);
+            return name;
         }
 
         public @NotNull E valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {

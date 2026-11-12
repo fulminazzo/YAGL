@@ -172,7 +172,11 @@ public final class Color extends ClassEnum {
      */
     @Override
     public @Nullable String name() {
-        return super.name();
+        try {
+            return super.name();
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**
@@ -205,10 +209,12 @@ public final class Color extends ClassEnum {
     }
 
     @Override
-    public String toString() {
-        String name = name();
-        if (name != null) return name;
-        else return String.format("%s{%s}", getClass().getSimpleName(), toARGB());
+    public @NotNull String toString() {
+        try {
+            return super.name();
+        } catch (IllegalArgumentException e) {
+            return String.format("%s{%s}", getClass().getSimpleName(), toARGB());
+        }
     }
 
 }
