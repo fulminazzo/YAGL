@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.gui;
 
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.content.GUIContent;
+import it.fulminazzo.yagl.content.ItemGUIContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,10 +22,38 @@ class ResizableGUITest {
     }
 
     @Test
-    void testCopyReturnType() {
-        GUI copy = this.gui.copy();
+    void testCopy() {
+        ResizableGUI gui = new ResizableGUI(18)
+                .setTitle("Resizable")
+                .setVariable("hello", "world")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .setContents(9, ItemGUIContent.newInstance("diamond"))
+                .setContents(17, ItemGUIContent.newInstance("emerald"))
+                .setMovable(0, true)
+                .setMovable(9, true)
+                .onOpenGUI("openCmd")
+                .onCloseGUI("closeCmd")
+                .onClickOutside("clickOutsideCmd")
+                .onChangeGUI("changeCmd");
+
+        GUI copy = gui.copy();
+
         assertInstanceOf(ResizableGUI.class, copy);
-        assertEquals(this.gui, copy);
+        assertEquals(gui.size(), copy.size());
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.variables(), copy.variables());
+        assertEquals(gui.getContents(0), copy.getContents(0));
+        assertEquals(gui.getContents(9), copy.getContents(9));
+        assertEquals(gui.getContents(17), copy.getContents(17));
+        assertEquals(gui.isMovable(0), copy.isMovable(0));
+        assertEquals(gui.isMovable(9), copy.isMovable(9));
+        assertEquals(gui.isMovable(1), copy.isMovable(1));
+        assertEquals(gui.openGUIAction().isPresent(), copy.openGUIAction().isPresent());
+        assertEquals(gui.closeGUIAction().isPresent(), copy.closeGUIAction().isPresent());
+        assertEquals(gui.clickOutsideAction().isPresent(), copy.clickOutsideAction().isPresent());
+        assertEquals(gui.changeGUIAction().isPresent(), copy.changeGUIAction().isPresent());
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
     }
 
     @Test

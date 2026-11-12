@@ -6,6 +6,7 @@ import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.exception.NotImplementedException;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -126,17 +127,6 @@ class SearchGUITest {
     }
 
     @Test
-    void testCopy() {
-        SearchGUI<String> src = SearchGUI.newGUI(s -> null, (f, s) -> true);
-        src.setContents(0, ItemGUIContent.newInstance("stone"));
-
-        SearchGUI<String> dst = src.copy();
-
-        new Refl<>(dst).setFieldObject("searchFunction", new Refl<>(src).getFieldObject("searchFunction"));
-        assertEquals(src, dst);
-    }
-
-    @Test
     void testCopyAll() {
         SearchGUI<String> src = SearchGUI.newGUI(s -> null, (f, s) -> true);
         src.setContents(0, ItemGUIContent.newInstance("stone"));
@@ -147,6 +137,34 @@ class SearchGUITest {
 
         new Refl<>(dst).setFieldObject("searchFunction", new Refl<>(src).getFieldObject("searchFunction"));
         assertEquals(src, dst);
+    }
+
+    @Test
+    void testCopy() {
+        SearchGUI<String> gui = SearchGUI.newGUI(
+                27,
+                d -> ItemGUIContent.newInstance("stone"),
+                (s, t) -> true,
+                new String[]{"stone", "diamond", "emerald", "gold", "iron"}
+        ).setTitle("Search GUI Title")
+                .setVariable("hello", "world")
+                .setQuery("test query")
+                .setContents(4, ItemGUIContent.newInstance("obsidian"));
+
+        SearchGUI<String> copy = gui.copy();
+
+        assertInstanceOf(SearchGUI.class, copy);
+        assertEquals(gui.templateGUI, copy.templateGUI);
+        assertEquals(gui.getData(), copy.getData());
+        assertEquals(gui.variables(), copy.variables());
+        assertEquals(Reflect.on(gui).get("searchFunction"), Reflect.on(copy).get("searchFunction"));
+        assertEquals(gui.previousPage, copy.previousPage);
+        assertEquals(gui.nextPage, copy.nextPage);
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.getQuery(), copy.getQuery());
+        assertEquals(gui.getContents(4), copy.getContents(4));
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
     }
 
     @Test

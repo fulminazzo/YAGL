@@ -251,11 +251,34 @@ class PageableGUITest {
     }
 
     @Test
-    void testCopyReturnType() {
-        GUI expected = PageableGUI.newGUI(9);
-        GUI actual = expected.copy();
-        assertInstanceOf(PageableGUI.class, actual);
-        assertEquals(expected, actual);
+    void testCopy() {
+        PageableGUI gui = PageableGUI.newGUI(27)
+                .setTitle("Pageable Title")
+                .setVariable("hello", "world")
+                .setPages(3)
+                .setPreviousPage(0, ItemGUIContent.newInstance("redstone_block"))
+                .setNextPage(8, ItemGUIContent.newInstance("emerald_block"));
+        gui.getPage(0).setContents(4, ItemGUIContent.newInstance("stone"));
+        gui.getPage(1).setContents(4, ItemGUIContent.newInstance("diamond"));
+        gui.getPage(2).setContents(4, ItemGUIContent.newInstance("emerald"));
+
+        PageableGUI copy = gui.copy();
+
+        assertInstanceOf(PageableGUI.class, copy);
+        assertNotSame(gui.templateGUI, copy.templateGUI);
+        assertEquals(gui.templateGUI, copy.templateGUI);
+        assertEquals(gui.pages(), copy.pages());
+        assertEquals(gui.variables(), copy.variables());
+        assertNotSame(gui.previousPage, copy.previousPage);
+        assertEquals(gui.previousPage, copy.previousPage);
+        assertNotSame(gui.nextPage, copy.nextPage);
+        assertEquals(gui.nextPage, copy.nextPage);
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.getPage(0).getContents(4), copy.getPage(0).getContents(4));
+        assertEquals(gui.getPage(1).getContents(4), copy.getPage(1).getContents(4));
+        assertEquals(gui.getPage(2).getContents(4), copy.getPage(2).getContents(4));
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
     }
 
     @Test

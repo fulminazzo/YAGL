@@ -411,6 +411,44 @@ class FullscreenGUITest {
     }
 
     @Test
+    void testCopy() {
+        FullscreenGUI gui = GUI.newFullscreenGUI(27)
+                .setTitle("Fullscreen Title")
+                .setVariable("fsKey", "fsValue")
+                .setContents(0, ItemGUIContent.newInstance("stone"))
+                .setContents(13, ItemGUIContent.newInstance("diamond"))
+                .setContents(27, ItemGUIContent.newInstance("emerald"))
+                .setContents(36, ItemGUIContent.newInstance("gold"))
+                .setMovable(0, true)
+                .setMovable(27, true)
+                .onOpenGUI("openCmd")
+                .onCloseGUI("closeCmd")
+                .onClickOutside("clickOutsideCmd")
+                .onChangeGUI("changeCmd");
+
+        FullscreenGUI copy = gui.copy();
+
+        assertInstanceOf(FullscreenGUI.class, copy);
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
+        assertEquals(gui.size(), copy.size());
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.variables(), copy.variables());
+        assertEquals(gui.getUpperGUI().size(), copy.getUpperGUI().size());
+        assertEquals(gui.getLowerGUI().size(), copy.getLowerGUI().size());
+        assertEquals(gui.getContents(0), copy.getContents(0));
+        assertEquals(gui.getContents(13), copy.getContents(13));
+        assertEquals(gui.getContents(27), copy.getContents(27));
+        assertEquals(gui.getContents(36), copy.getContents(36));
+        assertEquals(gui.isMovable(0), copy.isMovable(0));
+        assertEquals(gui.isMovable(27), copy.isMovable(27));
+        assertEquals(gui.openGUIAction().isPresent(), copy.openGUIAction().isPresent());
+        assertEquals(gui.closeGUIAction().isPresent(), copy.closeGUIAction().isPresent());
+        assertEquals(gui.clickOutsideAction().isPresent(), copy.clickOutsideAction().isPresent());
+        assertEquals(gui.changeGUIAction().isPresent(), copy.changeGUIAction().isPresent());
+    }
+
+    @Test
     void testReturnTypes() {
         TestUtils.testReturnType(new FullscreenGUI(9), GUI.class, m -> m.getName().equals("copy"));
     }

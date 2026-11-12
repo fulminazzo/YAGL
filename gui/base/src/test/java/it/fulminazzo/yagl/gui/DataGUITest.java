@@ -8,6 +8,7 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -231,9 +232,26 @@ class DataGUITest {
 
     @Test
     void testCopy() {
-        DataGUI<?> expected = DataGUI.newGUI(9, c -> null, "Hello", "world");
-        DataGUI<?> actual = expected.copy();
-        assertEquals(expected, actual);
+        DataGUI<Object> gui = DataGUI.newGUI(27, o -> ItemGUIContent.newInstance("stone"))
+                .setTitle("Data GUI Title")
+                .setVariable("hello", "world")
+                .setData("stone", "diamond", "emerald", "gold", "iron")
+                .setContents(4, ItemGUIContent.newInstance("obsidian"));
+
+        DataGUI<Object> copy = gui.copy();
+
+        assertInstanceOf(DataGUI.class, copy);
+        assertEquals(gui.templateGUI, copy.templateGUI);
+        assertEquals(gui.dataConverter, copy.dataConverter);
+        assertEquals(Reflect.on(gui).get("data"), Reflect.on(copy).get("data"));
+        assertEquals(gui.getData(), copy.getData());
+        assertEquals(gui.variables(), copy.variables());
+        assertEquals(gui.previousPage, copy.previousPage);
+        assertEquals(gui.nextPage, copy.nextPage);
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.getContents(4), copy.getContents(4));
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
     }
 
     private static Object[] constructorParameters() {

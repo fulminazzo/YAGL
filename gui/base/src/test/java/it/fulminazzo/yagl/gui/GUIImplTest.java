@@ -65,6 +65,74 @@ class GUIImplTest {
     }
 
     @Test
+    void testDefaultGUICopy() {
+        GUI gui = GUI.newGUI(27)
+                .setTitle("Test Title")
+                .setVariable("key1", "value1")
+                .setVariable("key2", "value2")
+                .setContents(0, Item.newItem("stone"))
+                .setContents(4, Item.newItem("diamond"))
+                .setContents(8, Item.newItem("emerald"))
+                .setMovable(0, true)
+                .setMovable(4, true)
+                .onOpenGUI("openCommand")
+                .onCloseGUI("closeCommand")
+                .onClickOutside("clickOutsideCommand")
+                .onChangeGUI("changeCommand");
+
+        GUI copy = gui.copy();
+
+        assertInstanceOf(DefaultGUI.class, copy);
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
+        assertEquals(gui.size(), copy.size());
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.variables(), copy.variables());
+        assertEquals(gui.getContents(0), copy.getContents(0));
+        assertEquals(gui.getContents(4), copy.getContents(4));
+        assertEquals(gui.getContents(8), copy.getContents(8));
+        assertEquals(gui.isMovable(0), copy.isMovable(0));
+        assertEquals(gui.isMovable(4), copy.isMovable(4));
+        assertEquals(gui.isMovable(1), copy.isMovable(1));
+        assertEquals(gui.openGUIAction().isPresent(), copy.openGUIAction().isPresent());
+        assertEquals(gui.closeGUIAction().isPresent(), copy.closeGUIAction().isPresent());
+        assertEquals(gui.clickOutsideAction().isPresent(), copy.clickOutsideAction().isPresent());
+        assertEquals(gui.changeGUIAction().isPresent(), copy.changeGUIAction().isPresent());
+    }
+
+    @Test
+    void testTypeGUICopy() {
+        GUI gui = GUI.newGUI(GUIType.CHEST)
+                .setTitle("Chest GUI")
+                .setVariable("type", "chest")
+                .setContents(0, Item.newItem("gold_ingot"))
+                .setContents(13, Item.newItem("iron_ingot"))
+                .setMovable(0, true)
+                .onOpenGUI("onOpen")
+                .onCloseGUI("onClose")
+                .onClickOutside("onClickOutside")
+                .onChangeGUI("onChange");
+
+        GUI copy = gui.copy();
+
+        assertInstanceOf(TypeGUI.class, copy);
+        assertEquals(((TypeGUI) gui).getInventoryType(), ((TypeGUI) copy).getInventoryType());
+        assertEquals(gui.size(), copy.size());
+        assertEquals(gui.getTitle(), copy.getTitle());
+        assertEquals(gui.variables(), copy.variables());
+        assertEquals(gui.getContents(0), copy.getContents(0));
+        assertEquals(gui.getContents(13), copy.getContents(13));
+        assertEquals(gui.isMovable(0), copy.isMovable(0));
+        assertEquals(gui.isMovable(13), copy.isMovable(13));
+        assertEquals(gui.openGUIAction().isPresent(), copy.openGUIAction().isPresent());
+        assertEquals(gui.closeGUIAction().isPresent(), copy.closeGUIAction().isPresent());
+        assertEquals(gui.clickOutsideAction().isPresent(), copy.clickOutsideAction().isPresent());
+        assertEquals(gui.changeGUIAction().isPresent(), copy.changeGUIAction().isPresent());
+        assertNotSame(gui, copy);
+        assertEquals(gui, copy);
+    }
+
+    @Test
     void testGetContentPriority() {
         GUIContent c1 = ItemGUIContent.newInstance("stone").setPriority(5);
         GUIContent c2 = ItemGUIContent.newInstance("diamond").setPriority(20);
