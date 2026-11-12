@@ -42,6 +42,15 @@ public abstract class ClassEnum {
     }
 
     /**
+     * Checks whether the current object is a valid known enum.
+     *
+     * @return {@code true} if the current object is a valid known enum, {@code false} otherwise
+     */
+    protected boolean isKnownEnum() {
+        return getCache().isKnownEnum(this);
+    }
+
+    /**
      * Support function for implementing the {@code valueOf(String)} static function for all {@code ClassEnum} subclasses.
      *
      * @param index the ordinal of the enum constant
@@ -136,6 +145,16 @@ public abstract class ClassEnum {
             if (name == null)
                 throw new IllegalArgumentException("No enum name found for " + value);
             return name;
+        }
+
+        /**
+         * Checks whether the given object is a valid known enum.
+         *
+         * @param classEnum the value
+         * @return {@code true} if the given object is a valid known enum, {@code false} otherwise
+         */
+        public boolean isKnownEnum(final @NotNull E classEnum) {
+            return valueNameMap.containsKey(classEnum);
         }
 
         public @NotNull E valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
