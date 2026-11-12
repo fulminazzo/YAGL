@@ -738,8 +738,8 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> copyAll(@NotNull GUI other, boolean replace) {
-        return (SearchGUI<T>) super.copyAll(other, replace);
+    public @NotNull SearchGUI<T> copyTo(@NotNull GUI other, boolean replace) {
+        return (SearchGUI<T>) super.copyTo(other, replace);
     }
 
     @Override

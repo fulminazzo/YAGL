@@ -799,8 +799,8 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> copyAll(final @NotNull GUI other, final boolean replace) {
-        return (DataGUI<T>) super.copyAll(other, replace);
+    public @NotNull DataGUI<T> copyTo(final @NotNull GUI other, final boolean replace) {
+        return (DataGUI<T>) super.copyTo(other, replace);
     }
 
     @Override

@@ -582,8 +582,8 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI copyAll(final @NotNull GUI other, final boolean replace) {
-        return (ResizableGUI) super.copyAll(other, replace);
+    public @NotNull ResizableGUI copyTo(final @NotNull GUI other, final boolean replace) {
+        return (ResizableGUI) super.copyTo(other, replace);
     }
 
     @Override

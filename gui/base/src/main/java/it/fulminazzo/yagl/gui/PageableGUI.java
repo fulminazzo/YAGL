@@ -281,8 +281,8 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI copyAll(final @NotNull GUI other, final boolean replace) {
-        GUI.super.copyAll(other, replace);
+    public @NotNull PageableGUI copyTo(final @NotNull GUI other, final boolean replace) {
+        GUI.super.copyTo(other, replace);
         if (other instanceof PageableGUI) {
             PageableGUI otherGUI = (PageableGUI) other;
             if (replace)

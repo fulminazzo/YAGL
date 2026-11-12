@@ -758,8 +758,8 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI copyAll(final @NotNull GUI other, final boolean replace) {
-        return (FullscreenGUI) GUI.super.copyAll(other, replace);
+    public @NotNull FullscreenGUI copyTo(final @NotNull GUI other, final boolean replace) {
+        return (FullscreenGUI) GUI.super.copyTo(other, replace);
     }
 
     @Override

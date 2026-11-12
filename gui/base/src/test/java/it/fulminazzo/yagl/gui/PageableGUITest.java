@@ -299,7 +299,7 @@ class PageableGUITest {
                 .setPreviousPage(0, previousPage2)
                 .setNextPage(8, nextPage2);
 
-        src.copyAll(dst, true);
+        src.copyTo(dst, true);
 
         assertEquals(2, dst.pages());
         assertEquals(previousPage1, dst.previousPage.getSecond());
@@ -318,7 +318,7 @@ class PageableGUITest {
 
         PageableGUI dst = new PageableGUI(GUI.newGUI(9));
 
-        src.copyAll(dst, true);
+        src.copyTo(dst, true);
 
         assertEquals(2, dst.pages());
         assertEquals(previousPage1, dst.previousPage.getSecond());
@@ -343,7 +343,7 @@ class PageableGUITest {
                 .setPreviousPage(0, previousPage2)
                 .setNextPage(8, nextPage2);
 
-        src.copyAll(dst, false);
+        src.copyTo(dst, false);
 
         assertEquals(3, dst.pages());
         assertEquals(previousPage2, dst.previousPage.getSecond());
@@ -362,7 +362,7 @@ class PageableGUITest {
 
         PageableGUI dst = new PageableGUI(GUI.newGUI(9));
 
-        src.copyAll(dst, false);
+        src.copyTo(dst, false);
 
         assertEquals(0, dst.pages());
         assertEquals(previousPage1, dst.previousPage.getSecond());

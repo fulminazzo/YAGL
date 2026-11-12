@@ -133,7 +133,7 @@ class SearchGUITest {
 
         SearchGUI<String> dst = SearchGUI.newGUI(s -> null, (f, s) -> true);
 
-        src.copyAll(dst, true);
+        src.copyTo(dst, true);
 
         new Refl<>(dst).setFieldObject("searchFunction", new Refl<>(src).getFieldObject("searchFunction"));
         assertEquals(src, dst);

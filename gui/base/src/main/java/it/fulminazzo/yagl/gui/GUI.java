@@ -1381,13 +1381,13 @@ public interface GUI extends Metadatable {
     }
 
     /**
-     * Copies all the contents, title and actions from this gui to the given one.
+     * Copies all the contents, title and actions from this GUI to the given one.
      *
      * @param other   the other gui
-     * @param replace if false, if the other already has the content or title, it will not be replaced
+     * @param replace if {@code false}, if the other already has the content or title, it will not be replaced
      * @return this gui
      */
-    default @NotNull GUI copyAll(final @NotNull GUI other, final boolean replace) {
+    default @NotNull GUI copyTo(final @NotNull GUI other, final boolean replace) {
         if (other.size() != size())
             throw new IllegalArgumentException(String.format("Cannot copy from GUI with different size %s != %s",
                     size(), other.size()));
@@ -1425,14 +1425,14 @@ public interface GUI extends Metadatable {
     }
 
     /**
-     * Uses {@link #copyAll(GUI, boolean)} to copy from the given {@link GUI} to this one.
+     * Copies all the contents, title and actions from the given GUI to this one.
      *
      * @param other   the other gui
-     * @param replace if false, if this already has the content or title, it will not be replaced
+     * @param replace if {@code false}, if this already has the content or title, it will not be replaced
      * @return this gui
      */
     default @NotNull GUI copyFrom(final @NotNull GUI other, final boolean replace) {
-        other.copyAll(this, replace);
+        other.copyTo(this, replace);
         return this;
     }
 
