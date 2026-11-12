@@ -1,11 +1,10 @@
 package it.fulminazzo.yagl
 
 import groovy.transform.CompileStatic
-import it.fulminazzo.yagl.command.ShellCommand
-import it.fulminazzo.yagl.listener.PersistentListener
 import it.fulminazzo.fulmicollection.objects.Refl
 import it.fulminazzo.fulmicollection.utils.JarUtils
-import it.fulminazzo.yamlparser.utils.FileUtils
+import it.fulminazzo.yagl.command.ShellCommand
+import it.fulminazzo.yagl.listener.PersistentListener
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandMap
@@ -27,8 +26,9 @@ final class YAGL extends JavaPlugin {
     static void writeResourceToFile(final @NotNull File directory, final @NotNull String fileName,
                                     final @NotNull String resourceDir, final @NotNull JavaPlugin plugin) {
         def file = new File(directory, fileName)
-        if (file.exists()) FileUtils.deleteFile(file)
-        FileUtils.createNewFile(file)
+        if (file.exists()) file.delete()
+        file.parentFile.mkdirs()
+        file.createNewFile()
         def resourceName = "${resourceDir}/${fileName}"
         def input = YAGL.getResourceAsStream(resourceName)
         if (input == null) input = plugin.getResource(resourceName)
@@ -80,11 +80,11 @@ final class YAGL extends JavaPlugin {
     /**
      * Saves all the default command scripts to the given directory
      *
-     * @param commandsDir   the output directory
+     * @param commandsDir the output directory
      */
     void saveDefaultCommands(final @NotNull File commandsDir) {
         final resourceDir = '/commands'
-        FileUtils.createFolder(commandsDir)
+        commandsDir.mkdirs()
         getClass().getResourceAsStream(resourceDir).withReader { reader ->
             String fileName
             while ((fileName = reader.readLine()) != null) writeResourceToFile(commandsDir, fileName, resourceDir, this)

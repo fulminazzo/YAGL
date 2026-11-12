@@ -4,7 +4,6 @@ import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.fulmicollection.utils.JarUtils;
 import it.fulminazzo.jbukkit.BukkitUtils;
 import it.fulminazzo.yagl.command.ShellCommand;
-import it.fulminazzo.yamlparser.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -13,14 +12,12 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.logging.*;
 
@@ -33,7 +30,7 @@ class YAGLTest {
     private ByteArrayOutputStream output;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() {
         BukkitUtils.setupServer();
 
         this.output = new ByteArrayOutputStream();
@@ -44,7 +41,7 @@ class YAGLTest {
 
         this.plugin = mock(YAGL.class);
         File dataDir = new File("build/resources/test/plugin");
-        if (dataDir.exists()) FileUtils.deleteFolder(dataDir);
+        if (dataDir.exists()) deleteDir(dataDir);
         when(this.plugin.getDataFolder()).thenReturn(dataDir);
         new Refl<>(this.plugin).setFieldObject("commands", new LinkedList<>());
         when(this.plugin.getName()).thenReturn("YAGL-Plugin");
@@ -86,8 +83,8 @@ class YAGLTest {
     }
 
     @Test
-    void testLoadCommandsFromAlreadyPresentDirectory() throws IOException {
-        FileUtils.createFolder(new File(this.plugin.getDataFolder(), "commands"));
+    void testLoadCommandsFromAlreadyPresentDirectory() {
+        new File(this.plugin.getDataFolder(), "commands").mkdirs();
         this.plugin.loadCommands();
         List<ShellCommand> commands = new Refl<>(this.plugin).getFieldObject("commands");
         assertNotNull(commands);
@@ -98,12 +95,12 @@ class YAGLTest {
     void testSaveDefaultCommands() throws IOException {
         final String fileName = "commands/mock.groovy";
         File expected = new File(this.plugin.getDataFolder(), fileName);
-        String expectedContent = FileUtils.readFileToString(new File("build/resources/test/" + fileName));
+        String expectedContent = readFileToString(new File("build/resources/test/" + fileName));
 
         this.plugin.saveDefaultCommands(expected.getParentFile());
 
         assertTrue(expected.exists(), String.format("Expected file '%s' to exist", expected.getAbsolutePath()));
-        String actualContent = FileUtils.readFileToString(expected);
+        String actualContent = readFileToString(expected);
 
         assertEquals(expectedContent, actualContent, "Content did not match expected");
     }
@@ -124,7 +121,7 @@ class YAGLTest {
         CommandMap commandMap = new Refl<>(Bukkit.getPluginManager()).getFieldObject("commandMap");
         assertNotNull(commandMap);
 
-        ShellCommand shellCommand = new ShellCommand(new File(this.plugin.getDataFolder(), "commands/mock.groovy"));
+        ShellCommand shellCommand = new ShellCommand(new File(this.plugin.getDataFolder().getParent(), "commands/mock.groovy"));
         Map<String, Command> knownCommands = new Refl<>(commandMap).getFieldObject("knownCommands");
         assertNotNull(knownCommands);
         knownCommands.put("mock", shellCommand);
@@ -141,9 +138,10 @@ class YAGLTest {
     @Test
     void testInvalidCommandsDirectory() throws IOException {
         File file = new File(this.plugin.getDataFolder(), "commands");
-        if (file.isFile()) FileUtils.deleteFile(file);
-        if (file.isDirectory()) FileUtils.deleteFolder(file);
-        FileUtils.createNewFile(file);
+        if (file.isFile()) file.delete();
+        if (file.isDirectory()) deleteDir(file);
+        file.getParentFile().mkdirs();
+        file.createNewFile();
         assertDoesNotThrow(() -> this.plugin.loadCommands());
         file.delete();
     }
@@ -202,4 +200,20 @@ class YAGLTest {
         this.handler.flush();
         return this.output.toString();
     }
+
+    private static void deleteDir(final @NotNull File directory) {
+        File[] files = directory.listFiles();
+        assertNotNull(files, "Could not list files in directory " + directory.getAbsolutePath());
+        for (File file : files)
+            if (file.isDirectory()) deleteDir(file);
+            else assertTrue(file.delete(), "Could not delete file " + file.getAbsolutePath());
+        assertTrue(directory.delete(), "Could not delete directory " + directory.getAbsolutePath());
+    }
+
+    private static @NotNull String readFileToString(final @NotNull File file) throws IOException {
+        try (FileInputStream input = new FileInputStream(file)) {
+            return new String(input.readAllBytes());
+        }
+    }
+
 }

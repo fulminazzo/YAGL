@@ -1,7 +1,6 @@
 package it.fulminazzo.yagl.command
 
 import groovy.transform.CompileStatic
-import it.fulminazzo.yamlparser.utils.FileUtils
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.jetbrains.annotations.NotNull
@@ -26,7 +25,7 @@ final class ShellCommand extends Command {
      */
     ShellCommand(final @NotNull File file) {
         super(file.name.substring(0, file.name.lastIndexOf('.')))
-        def code = FileUtils.readFileToString(file)
+        def code = file.readLines().join('\n')
         if (code == null) {
             this.shellCode = ''
             return
