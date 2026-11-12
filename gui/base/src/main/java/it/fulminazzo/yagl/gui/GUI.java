@@ -1395,7 +1395,7 @@ public interface GUI extends Metadatable {
         else {
             if (other.getTitle() == null || replace) other.setTitle(getTitle());
 
-            copyAll((Metadatable) other, replace);
+            copyVariablesTo((Metadatable) other, replace);
 
             for (int i = 0; i < size(); i++) {
                 final @NotNull List<GUIContent> contents = getContents(i);
@@ -1437,13 +1437,13 @@ public interface GUI extends Metadatable {
     }
 
     @Override
-    default @NotNull GUI copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (GUI) Metadatable.super.copyAll(other, replace);
+    default @NotNull GUI copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (GUI) Metadatable.super.copyVariablesTo(other, replace);
     }
 
     @Override
-    default @NotNull GUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (GUI) Metadatable.super.copyFrom(other, replace);
+    default @NotNull GUI copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (GUI) Metadatable.super.copyVariablesFrom(other, replace);
     }
 
     /**

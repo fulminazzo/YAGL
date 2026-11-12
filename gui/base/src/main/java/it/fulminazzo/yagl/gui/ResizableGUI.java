@@ -570,13 +570,13 @@ public class ResizableGUI extends DefaultGUI {
     }
 
     @Override
-    public @NotNull ResizableGUI copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (ResizableGUI) super.copyAll(other, replace);
+    public @NotNull ResizableGUI copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (ResizableGUI) super.copyVariablesTo(other, replace);
     }
 
     @Override
-    public @NotNull ResizableGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (ResizableGUI) super.copyFrom(other, replace);
+    public @NotNull ResizableGUI copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (ResizableGUI) super.copyVariablesFrom(other, replace);
     }
 
     @Override

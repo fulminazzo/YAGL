@@ -30,7 +30,7 @@ public final class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
 
     @Override
     public @NotNull ItemGUIContent internalCopy() {
-        ItemGUIContent copy = ItemGUIContent.newInstance(this.item.copy()).copyFrom(this, true);
+        ItemGUIContent copy = ItemGUIContent.newInstance(this.item.copy()).copyVariablesFrom(this, true);
         copy.requirements = this.requirements instanceof PermissionRequirement ?
                 new PermissionRequirement(this.requirements.serialize()) :
                 this.requirements;

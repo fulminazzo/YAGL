@@ -830,13 +830,13 @@ public class DataGUI<T> extends PageableGUI {
     }
 
     @Override
-    public @NotNull DataGUI<T> copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (DataGUI<T>) super.copyAll(other, replace);
+    public @NotNull DataGUI<T> copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (DataGUI<T>) super.copyVariablesTo(other, replace);
     }
 
     @Override
-    public @NotNull DataGUI<T> copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (DataGUI<T>) super.copyFrom(other, replace);
+    public @NotNull DataGUI<T> copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (DataGUI<T>) super.copyVariablesFrom(other, replace);
     }
 
     /*

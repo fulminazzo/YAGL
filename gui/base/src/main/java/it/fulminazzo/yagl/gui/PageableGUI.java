@@ -964,13 +964,13 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
-    public @NotNull PageableGUI copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (PageableGUI) GUI.super.copyAll(other, replace);
+    public @NotNull PageableGUI copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (PageableGUI) GUI.super.copyVariablesTo(other, replace);
     }
 
     @Override
-    public @NotNull PageableGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (PageableGUI) GUI.super.copyFrom(other, replace);
+    public @NotNull PageableGUI copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (PageableGUI) GUI.super.copyVariablesFrom(other, replace);
     }
 
     /*

@@ -90,7 +90,7 @@ class MetadatableTest {
         m1.setVariable("replace", "friend");
         m2.setVariable("replace", "family");
 
-        m2.copyFrom(m1, false);
+        m2.copyVariablesFrom(m1, false);
 
         assertEquals("world", m2.getVariable("hello"));
         assertEquals("family", m2.getVariable("replace"));
@@ -104,7 +104,7 @@ class MetadatableTest {
         m1.setVariable("replace", "friend");
         m2.setVariable("replace", "family");
 
-        m2.copyFrom(m1, true);
+        m2.copyVariablesFrom(m1, true);
 
         assertEquals("world", m2.getVariable("hello"));
         assertEquals("friend", m2.getVariable("replace"));

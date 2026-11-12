@@ -167,7 +167,7 @@ class ItemGUIContentTest {
     @ParameterizedTest
     @MethodSource("copyFromData")
     void testCopyFromData(boolean replace, ItemGUIContent first, ItemGUIContent second, ItemGUIContent expected) {
-        ItemGUIContent actual = first.copyFrom(second, replace);
+        ItemGUIContent actual = first.copyVariablesFrom(second, replace);
         assertEquals(expected, actual);
     }
 

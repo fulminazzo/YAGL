@@ -140,14 +140,14 @@ public interface GUIContent extends Metadatable {
 
     @Override
     @NotNull
-    default GUIContent copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (GUIContent) Metadatable.super.copyFrom(other, replace);
+    default GUIContent copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (GUIContent) Metadatable.super.copyVariablesFrom(other, replace);
     }
 
     @Override
     @NotNull
-    default GUIContent copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (GUIContent) Metadatable.super.copyAll(other, replace);
+    default GUIContent copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (GUIContent) Metadatable.super.copyVariablesTo(other, replace);
     }
 
     @Override

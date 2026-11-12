@@ -18,7 +18,7 @@ public interface Metadatable {
         final String separator = "_";
 
         StringBuilder builder = new StringBuilder();
-        for (char c :  s.toCharArray()) {
+        for (char c : s.toCharArray()) {
             if (c >= 'A' && c <= 'Z') builder.append(separator);
             else if (Character.isWhitespace(c) || c == '-') {
                 builder.append(separator);
@@ -81,10 +81,10 @@ public interface Metadatable {
      * Copies all the variables from this metadatable to the given one.
      *
      * @param other   the other metadatable
-     * @param replace if false, if the other already has the variable, it will not be replaced
+     * @param replace if {@code false}, if the other already has a variable, it will not be replaced
      * @return this metadatable
      */
-    default @NotNull Metadatable copyAll(final @NotNull Metadatable other, final boolean replace) {
+    default @NotNull Metadatable copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
         variables().forEach((k, v) -> {
             if (!other.hasVariable(k) || replace) other.setVariable(k, v);
         });
@@ -92,14 +92,14 @@ public interface Metadatable {
     }
 
     /**
-     * Uses {@link #copyAll(Metadatable, boolean)} to copy from the given {@link Metadatable} to this one.
+     * Copies all the variables from the given metadatable to this one.
      *
      * @param other   the other metadatable
-     * @param replace if false, if this already has the variable, it will not be replaced
+     * @param replace if {@code false}, if this metadatable already has a variable, it will not be replaced
      * @return this metadatable
      */
-    default @NotNull Metadatable copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        other.copyAll(this, replace);
+    default @NotNull Metadatable copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        other.copyVariablesTo(this, replace);
         return this;
     }
 

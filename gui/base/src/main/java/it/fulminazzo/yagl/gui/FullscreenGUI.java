@@ -773,13 +773,13 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
-    public @NotNull FullscreenGUI copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (FullscreenGUI) GUI.super.copyAll(other, replace);
+    public @NotNull FullscreenGUI copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (FullscreenGUI) GUI.super.copyVariablesTo(other, replace);
     }
 
     @Override
-    public @NotNull FullscreenGUI copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (FullscreenGUI) GUI.super.copyFrom(other, replace);
+    public @NotNull FullscreenGUI copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (FullscreenGUI) GUI.super.copyVariablesFrom(other, replace);
     }
 
     /**

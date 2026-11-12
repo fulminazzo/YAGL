@@ -65,7 +65,7 @@ abstract class GUIContentImpl implements GUIContent {
     }
 
     @Override
-    public @NotNull GUIContent copyFrom(final @NotNull Metadatable other, final boolean replace) {
+    public @NotNull GUIContent copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
         if (other instanceof GUIContentImpl) {
             GUIContentImpl content = (GUIContentImpl) other;
             if (priority == 0 || replace) priority = content.priority;
@@ -73,7 +73,7 @@ abstract class GUIContentImpl implements GUIContent {
             if (requirements == null || replace) requirements = content.requirements;
             if (clickAction == null || replace) clickAction = content.clickAction;
         }
-        return GUIContent.super.copyFrom(other, replace);
+        return GUIContent.super.copyVariablesFrom(other, replace);
     }
 
     /**

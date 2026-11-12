@@ -765,13 +765,13 @@ public class SearchGUI<T> extends DataGUI<T> {
     }
 
     @Override
-    public @NotNull SearchGUI<T> copyAll(@NotNull Metadatable other, boolean replace) {
-        return (SearchGUI<T>) super.copyAll(other, replace);
+    public @NotNull SearchGUI<T> copyVariablesTo(@NotNull Metadatable other, boolean replace) {
+        return (SearchGUI<T>) super.copyVariablesTo(other, replace);
     }
 
     @Override
-    public @NotNull SearchGUI<T> copyFrom(@NotNull Metadatable other, boolean replace) {
-        return (SearchGUI<T>) super.copyFrom(other, replace);
+    public @NotNull SearchGUI<T> copyVariablesFrom(@NotNull Metadatable other, boolean replace) {
+        return (SearchGUI<T>) super.copyVariablesFrom(other, replace);
     }
 
     /*

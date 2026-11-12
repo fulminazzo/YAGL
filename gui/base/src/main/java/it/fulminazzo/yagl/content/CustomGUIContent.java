@@ -56,13 +56,13 @@ public abstract class CustomGUIContent<C extends CustomGUIContent<C>> extends GU
     }
 
     @Override
-    public @NotNull C copyAll(final @NotNull Metadatable other, final boolean replace) {
-        return (C) super.copyAll(other, replace);
+    public @NotNull C copyVariablesTo(final @NotNull Metadatable other, final boolean replace) {
+        return (C) super.copyVariablesTo(other, replace);
     }
 
     @Override
-    public @NotNull C copyFrom(final @NotNull Metadatable other, final boolean replace) {
-        return (C) super.copyFrom(other, replace);
+    public @NotNull C copyVariablesFrom(final @NotNull Metadatable other, final boolean replace) {
+        return (C) super.copyVariablesFrom(other, replace);
     }
 
     @Override

@@ -300,7 +300,7 @@ public final class GUIAdapter {
                                                                              final @Nullable Class<M> itemMetaClass,
                                                                              final @Nullable Consumer<M> metaFunction,
                                                                              final @NotNull GUIContent content) {
-        content.copyFrom(gui, false);
+        content.copyVariablesFrom(gui, false);
         BukkitItem render = content.apply(content).render().copy(BukkitItem.class);
         final ItemStack itemStack;
         if (itemMetaClass == null || metaFunction == null) itemStack = render.create();
