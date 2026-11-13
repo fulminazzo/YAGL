@@ -83,8 +83,6 @@ allprojects {
             name = 'JitPack'
             url = 'https://jitpack.io'
         }
-        //TODO: Pending FulmiCollection library migration
-        mavenLocal()
         maven {
             name = 'PlaceholderAPI repository'
             url = 'https://repo.extendedclip.com/releases/'
@@ -97,8 +95,6 @@ allprojects {
         annotationProcessor libs.lombok
         compileOnly libs.annotations
         testCompileOnly libs.annotations
-
-        implementation libs.fulmicollection
 
         testCompileOnly libs.lombok
         testAnnotationProcessor libs.lombok
@@ -128,6 +124,7 @@ allprojects {
 
         // Serializer dependencies
         if (projectName.contains('serializer'))
+            //TODO: remove
             api(libs.yamlparser) {
                 exclude group: 'it.fulminazzo', module: 'FulmiCollection'
             }

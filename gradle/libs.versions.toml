@@ -3,8 +3,6 @@ delombok = "8.11"
 groovy = "4.0.24"
 
 # Latest versions
-fulmicollection = "1.8.2"
-yamlparser = "1.6.4"
 
 spigot = "1.14-R0.1-SNAPSHOT"
 spigot_obsolete = "1.8.8-R0.1-SNAPSHOT"
@@ -29,8 +27,6 @@ io_netty = "4.1.112.Final"
 
 [libraries]
 groovy = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
-fulmicollection = { module = "it.fulminazzo:FulmiCollection", version.ref = "fulmicollection" }
-yamlparser = { module = "it.fulminazzo:YAMLParser", version.ref = "yamlparser" }
 
 spigot = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
 spigot_obsolete = { module = "org.spigotmc:spigot-api", version.ref = "spigot_obsolete" }
