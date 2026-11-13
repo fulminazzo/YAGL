@@ -301,7 +301,8 @@ allprojects {
 
 dependencies {
     subprojects.findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE }.each { api project(it.path) }
-    compileOnly project(":${DEMO_MODULE}")
+    //TODO: re-enable
+//    compileOnly project(":${DEMO_MODULE}")
 }
 
 tasks.register("aggregateJavaDoc") {
