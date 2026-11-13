@@ -1,14 +1,15 @@
 package it.fulminazzo.yagl.action.command;
 
-import it.fulminazzo.fulmicollection.utils.ClassUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.event.ClickItemEvent;
+import it.fulminazzo.yagl.util.ResourceUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -19,9 +20,9 @@ import static org.mockito.Mockito.*;
 
 class CommandActionTest {
 
-    private static Object[] commandClasses() {
+    private static Object[] commandClasses() throws IOException {
         final Class<?> clazz = CommandAction.class;
-        return ClassUtils.findClassesInPackage(clazz.getPackage().getName()).stream()
+        return ResourceUtils.loadClasses(clazz.getPackage().getName()).stream()
                 .filter(clazz::isAssignableFrom)
                 .filter(c -> !c.equals(clazz))
                 .filter(c -> !c.getName().contains("Console"))
@@ -52,9 +53,9 @@ class CommandActionTest {
         }
     }
 
-    private static Object[] consoleCommandClasses() {
+    private static Object[] consoleCommandClasses() throws IOException {
         final Class<?> clazz = CommandAction.class;
-        return ClassUtils.findClassesInPackage(clazz.getPackage().getName()).stream()
+        return ResourceUtils.loadClasses(clazz.getPackage().getName()).stream()
                 .filter(clazz::isAssignableFrom)
                 .filter(c -> !c.equals(clazz))
                 .filter(c -> c.getName().contains("Console"))
