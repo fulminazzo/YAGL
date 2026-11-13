@@ -122,13 +122,6 @@ allprojects {
                 api(project(":${projectName}:${projectName}-${s}"))
         }
 
-        // Serializer dependencies
-        if (projectName.contains('serializer'))
-            //TODO: remove
-            api(libs.yamlparser) {
-                exclude group: 'it.fulminazzo', module: 'FulmiCollection'
-            }
-
         // Bukkit dependencies
         if (projectName.contains('bukkit') || projectName.contains(DEMO_MODULE)) {
             compileOnly(libs.spigot) {
