@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A helper class for testing {@link Serializer}s objects.
@@ -87,6 +88,17 @@ public abstract class SerializerTestHelper<T> {
         file.getParentFile().mkdirs();
         mapper.writeValue(file, object);
         return file;
+    }
+
+    /**
+     * Reads the raw data from the given file.
+     *
+     * @param file the file to read from
+     * @return the raw data
+     * @throws IOException if any error occurs
+     */
+    protected @NotNull Map<?, ?> readRaw(final @NotNull File file) throws IOException {
+        return mapper.readValue(file, Map.class);
     }
 
     private class SerializerBoundDeserializer extends StdDeserializer<T> {

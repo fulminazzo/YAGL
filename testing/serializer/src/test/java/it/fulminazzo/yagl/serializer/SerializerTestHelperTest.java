@@ -1,7 +1,5 @@
 package it.fulminazzo.yagl.serializer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
@@ -33,8 +31,7 @@ class SerializerTestHelperTest extends SerializerTestHelper<Person> {
         File file = dump(person, "person");
         assertTrue(file.exists(), "File does not exist: " + file.getAbsolutePath());
 
-        ObjectMapper mapper = Reflect.on(this).get("mapper").get();
-        Map<?, ?> raw = mapper.readValue(file, Map.class);
+        Map<?, ?> raw = readRaw(file);
         assertNotNull(raw, "Expected non-null data");
         assertTrue(raw.containsKey("name"), "Expected 'name' key in serialized data");
         assertEquals(person.getName(), raw.get("name"), "Expected 'name' value to match");
