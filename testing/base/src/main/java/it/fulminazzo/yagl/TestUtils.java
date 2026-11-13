@@ -1,22 +1,22 @@
 package it.fulminazzo.yagl;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ExceptionUtils;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.reflect.Reflect;
+import it.fulminazzo.yagl.reflect.ReflectException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mockito.ArgumentCaptor;
-import org.mockito.MockedStatic;
 import org.mockito.exceptions.misusing.NotAMockException;
 import org.mockito.internal.progress.MockingProgress;
 
 import java.lang.reflect.*;
+import java.security.PrivilegedActionException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -31,40 +31,41 @@ import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingPro
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
 
-    /**
-     * Utility function to force the usage of Bukkit methods instead of Folia.
-     *
-     * @param runnable the function to execute
-     */
-    public static void disableFoliaRegionScheduler(final @NotNull Runnable runnable) {
-        TestUtils.mockReflectionUtils(() -> {
-            when(ReflectionUtils.getClass("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"))
-                    .thenThrow(new IllegalArgumentException("Folia not enabled!"));
-            runnable.run();
-        });
-    }
-
-    /**
-     * Mocks {@link ReflectionUtils} and executes the given function.
-     *
-     * @param runnable the function
-     */
-    public static void mockReflectionUtils(final @NotNull Runnable runnable) {
-        try (MockedStatic<ReflectionUtils> ignored = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            runnable.run();
-        }
-    }
-
-    /**
-     * Mocks {@link ReflectionUtils} and executes the given function.
-     *
-     * @param runnable the function
-     */
-    public static void mockReflectionUtils(final @NotNull Consumer<MockedStatic<ReflectionUtils>> runnable) {
-        try (MockedStatic<ReflectionUtils> reflectionUtils = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            runnable.accept(reflectionUtils);
-        }
-    }
+    //TODO: re-work related tests
+//    /**
+//     * Utility function to force the usage of Bukkit methods instead of Folia.
+//     *
+//     * @param runnable the function to execute
+//     */
+//    public static void disableFoliaRegionScheduler(final @NotNull Runnable runnable) {
+//        TestUtils.mockReflectionUtils(() -> {
+//            when(ReflectionUtils.getClass("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"))
+//                    .thenThrow(new IllegalArgumentException("Folia not enabled!"));
+//            runnable.run();
+//        });
+//    }
+//
+//    /**
+//     * Mocks {@link ReflectionUtils} and executes the given function.
+//     *
+//     * @param runnable the function
+//     */
+//    public static void mockReflectionUtils(final @NotNull Runnable runnable) {
+//        try (MockedStatic<ReflectionUtils> ignored = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+//            runnable.run();
+//        }
+//    }
+//
+//    /**
+//     * Mocks {@link ReflectionUtils} and executes the given function.
+//     *
+//     * @param runnable the function
+//     */
+//    public static void mockReflectionUtils(final @NotNull Consumer<MockedStatic<ReflectionUtils>> runnable) {
+//        try (MockedStatic<ReflectionUtils> reflectionUtils = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
+//            runnable.accept(reflectionUtils);
+//        }
+//    }
 
     /**
      * Allows testing all the given <i>executor</i> methods that match the <i>methodFinder</i> predicate.
@@ -84,7 +85,7 @@ public final class TestUtils {
                                            final Object @NotNull [] staticObjects,
                                            final @NotNull Object target, final @NotNull String invokedMethod,
                                            final Class<?> @NotNull ... invokedMethodParamTypes) {
-        @NotNull List<Method> methods = new Refl<>(executor).getMethods(methodFinder);
+        @NotNull List<Method> methods = Reflect.on(executor).getMethods(methodFinder);
         if (methods.isEmpty())
             throw new IllegalArgumentException("Could not find any method matching the given arguments.");
 
@@ -130,22 +131,24 @@ public final class TestUtils {
         try {
             // Execute target method
             final Object[] parameters = initializeParameters(targetMethod.getParameterTypes(), staticObjects);
-            ReflectionUtils.setAccessibleOrThrow(targetMethod).invoke(executor, parameters);
+            targetMethod.setAccessible(true);
+            targetMethod.invoke(executor, parameters);
 
             // Verify execution with mock
             Method method = target.getClass().getDeclaredMethod(invokedMethod, invokedMethodParamTypes);
-            ReflectionUtils.setAccessibleOrThrow(method).invoke(verify(target),
-                    Arrays.stream(captors).map(ArgumentCaptor::capture).toArray(Object[]::new));
+            method.setAccessible(true);
+            method.invoke(verify(target), Arrays.stream(captors).map(ArgumentCaptor::capture).toArray(Object[]::new));
 
             return captors;
         } catch (Exception e) {
             System.err.printf("An exception occurred while testing method '%s'%n", methodToString(targetMethod));
             System.err.printf("target: '%s'%n", target.getClass().getCanonicalName());
-            System.err.printf("method: '%s'%n", ReflectionUtils.getMethod(target.getClass(), null, invokedMethod,
-                    invokedMethodParamTypes));
+            System.err.printf("method: '%s'%n", Reflect.on(target.getClass())
+                    .getMethod(null, invokedMethod, invokedMethodParamTypes)
+            );
             System.err.printf("Invoked method parameter types: '%s'%n", Arrays.toString(invokedMethodParamTypes));
             System.err.printf("Captors: '%s'%n", Arrays.toString(captors));
-            ExceptionUtils.throwException(e);
+            throwException(e);
             return null;
         }
     }
@@ -185,9 +188,11 @@ public final class TestUtils {
      *
      * @param <T>                the type parameter
      * @param object             the object
-     * @param clazz              the class of interest. If there are more implementations of the object, here there should be the most abstract one.
+     * @param clazz              the class of interest. If there are more implementations of the object,
+     *                           here there should be the most abstract one.
      * @param expectedReturnType the expected return type of the methods.
-     *                           For example, if the object is a hidden implementation,                           the corresponding abstract class (or interface) should be passed.
+     *                           For example, if the object is a hidden implementation,
+     *                           the corresponding abstract class (or interface) should be passed.
      * @param filter             if there are some methods that return a copy or a clone of the object, they should be filtered here.
      */
     public static <T> void testReturnType(final @NotNull T object, final @NotNull Class<? super T> clazz,
@@ -196,8 +201,8 @@ public final class TestUtils {
         if (expectedReturnType.getSimpleName().endsWith("Impl"))
             try {
                 String name = expectedReturnType.getCanonicalName();
-                expectedReturnType = ReflectionUtils.getClass(name.substring(0, name.length() - "Impl".length()));
-            } catch (IllegalArgumentException ignored) {
+                expectedReturnType = Class.forName(name.substring(0, name.length() - "Impl".length()));
+            } catch (ClassNotFoundException ignored) {
             }
         for (Method method : clazz.getDeclaredMethods()) {
             final Class<?>[] parameters = method.getParameterTypes();
@@ -214,15 +219,16 @@ public final class TestUtils {
                         methodString, objectClassName);
 
                 Object[] mockParameters = Arrays.stream(parameters).map(TestUtils::mockParameter).toArray(Object[]::new);
-                Object o = ReflectionUtils.setAccessibleOrThrow(method).invoke(object, mockParameters);
+                method.setAccessible(true);
+                Object o = method.invoke(object, mockParameters);
 
                 if (method.getName().equals("copy"))
                     assertInstanceOf(objectClass, o, String.format("Returned object from %s call should have been %s but was %s",
                             methodString, objectClass, o.getClass()));
                 else {
                     try {
-                        ReflectionUtils.getMethod(objectClass, expectedReturnType, method.getName(), method.getParameterTypes());
-                    } catch (IllegalArgumentException e) {
+                        Reflect.on(objectClass).getMethod(expectedReturnType, method.getName(), method.getParameterTypes());
+                    } catch (ReflectException e) {
                         try {
                             Method m = objectClass.getMethod(method.getName(), method.getParameterTypes());
                             Type actualReturnType = m.getGenericReturnType();
@@ -231,7 +237,8 @@ public final class TestUtils {
                                 Class<?> declaration = (Class<?>) typeVariable.getGenericDeclaration();
                                 if (declaration.isAssignableFrom(expectedReturnType)) continue;
                             }
-                        } catch (NoSuchMethodException ignored) {}
+                        } catch (NoSuchMethodException ignored) {
+                        }
 
                         fail(String.format("Method '%s' of class '%s' did not have return type of '%s'",
                                 methodString, objectClassName, objectClassName));
@@ -240,7 +247,7 @@ public final class TestUtils {
                 }
             } catch (Exception e) {
                 System.err.printf("An exception occurred while testing method '%s'%n", methodString);
-                ExceptionUtils.throwException(e);
+                throwException(e);
             }
         }
     }
@@ -252,25 +259,52 @@ public final class TestUtils {
      * @return the object
      */
     public static Object mockParameter(Class<?> clazz) {
-        clazz = ReflectionUtils.getWrapperClass(clazz);
+        clazz = Reflect.on(clazz).toWrapper().get();
         if (Number.class.isAssignableFrom(clazz)) return 1;
         if (String.class.isAssignableFrom(clazz)) return "STONE";
         if (Boolean.class.isAssignableFrom(clazz)) return false;
         if (clazz.isEnum()) {
-            Enum<?>[] enums = new Refl<>(clazz).invokeMethod("values");
+            Enum<?>[] enums = Reflect.on(clazz).invoke("values").get();
             return enums[0];
         }
         if (clazz.isArray()) return Array.newInstance(clazz.getComponentType(), 0);
         if (Collection.class.isAssignableFrom(clazz)) return new ArrayList<>();
         Object object = mock(clazz);
         if (clazz.getPackage().getName().endsWith("gui"))
-            when(new Refl<>(object).invokeMethod("size")).thenReturn(45);
+            when(Reflect.on(object).invoke("size").get()).thenReturn(45);
         return object;
     }
 
     private static @NotNull String methodToString(final @NotNull Method method) {
         return String.format("%s(%s)", method.getName(), Arrays.stream(method.getParameterTypes())
                 .map(Class::getSimpleName).collect(Collectors.joining(", ")));
+    }
+
+    /**
+     * Unwraps the exception before throwing it.
+     *
+     * @param throwable the exception
+     */
+    static void throwException(@NotNull Throwable throwable) {
+        throwable = unwrapRuntimeException(throwable);
+        if (throwable instanceof RuntimeException) throw (RuntimeException) throwable;
+        else throw new RuntimeException(throwable);
+    }
+
+    private static @NotNull Throwable unwrapRuntimeException(final @NotNull Throwable exception) {
+        if (exception instanceof PrivilegedActionException) {
+            PrivilegedActionException actionException = (PrivilegedActionException) exception;
+            Exception actualException = actionException.getException();
+            if (actualException != null) return unwrapRuntimeException(actualException);
+        }
+
+        Throwable cause = exception.getCause();
+        if (cause == null ||
+                !exception.getClass().equals(RuntimeException.class) &&
+                        !exception.getClass().equals(InvocationTargetException.class) &&
+                        !exception.getClass().equals(ExecutionException.class))
+            return exception;
+        else return unwrapRuntimeException(cause);
     }
 
 }
