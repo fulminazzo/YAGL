@@ -29,19 +29,21 @@ public final class DataNode extends Node {
      *
      * @param key the name of the key
      * @return the sub-node corresponding to the given key, or an empty optional if the key is not found
+     * @throws SerializationException if the value is not a valid data node or was {@code null}
+     */
+    public @NotNull DataNode getSubNodeOrThrow(final @NotNull String key) throws SerializationException {
+        return new Node(getActualData().get(key), getPath(), key).asDataNodeOrThrow();
+    }
+
+    /**
+     * Attempts to retrieve the sub-node corresponding to the given key from the internal data.
+     *
+     * @param key the name of the key
+     * @return the sub-node corresponding to the given key, or an empty optional if the key is not found
      * @throws SerializationException if the value is not of the expected type
      */
     public @NotNull Optional<DataNode> getSubNode(final @NotNull String key) throws SerializationException {
-        Object raw = getActualData().get(key);
-        if (raw == null) return Optional.empty();
-        try {
-            return Optional.of(new DataNode((Map<?, ?>) raw, getPath(), key));
-        } catch (ClassCastException e) {
-            throw new SerializationException(
-                    "Invalid type for key '%s' in path '%s': expected data node but got %s",
-                    key, getPath(), raw.getClass().getName()
-            );
-        }
+        return new Node(getActualData().get(key), getPath(), key).asDataNode();
     }
 
     /**
@@ -54,7 +56,7 @@ public final class DataNode extends Node {
      * @throws SerializationException if the value is not of the expected type or was not found
      */
     public <T> @NotNull T getOrThrow(final @NotNull String key, final @NotNull Class<T> type) throws SerializationException {
-        return getAsNode(key).getAsOrThrow(type);
+        return getNode(key).getAsOrThrow(type);
     }
 
     /**
@@ -67,7 +69,7 @@ public final class DataNode extends Node {
      * @throws SerializationException if the value is not of the expected type
      */
     public <T> @Nullable T getOrNull(final @NotNull String key, final @NotNull Class<T> type) throws SerializationException {
-        return getAsNode(key).getAsOrNull(type);
+        return getNode(key).getAsOrNull(type);
     }
 
     /**
@@ -80,7 +82,7 @@ public final class DataNode extends Node {
      * @throws SerializationException if the value is not of the expected type
      */
     public <T> @NotNull Optional<T> get(final @NotNull String key, final @NotNull Class<T> type) throws SerializationException {
-        return getAsNode(key).getAs(type);
+        return getNode(key).getAs(type);
     }
 
     /**
@@ -89,7 +91,7 @@ public final class DataNode extends Node {
      * @param key the name of the key
      * @return the node corresponding to the given key
      */
-    public @NotNull Node getAsNode(final @NotNull String key) {
+    public @NotNull Node getNode(final @NotNull String key) {
         return new Node(getActualData().get(key), getPath(), key);
     }
 

@@ -10,6 +10,35 @@ import static org.junit.jupiter.api.Assertions.*;
 class DataNodeTest {
 
     @Test
+    void testThatGetSubNodeOrThrowDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("subnode", new HashMap<>());
+        final DataNode node = new DataNode(data, "", "current");
+
+        final DataNode subnode = node.getSubNodeOrThrow("subnode");
+        assertEquals("current.subnode", subnode.getPath(), "Invalid subnode path");
+        assertEquals("subnode", subnode.getKey(), "Invalid subnode key");
+    }
+
+    @Test
+    void testThatGetSubNodeOrThrowThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("subnode", "not a map");
+        final DataNode node = new DataNode(data, "", "current");
+
+        assertThrows(SerializationException.class, () -> node.getSubNodeOrThrow("subnode"));
+    }
+
+    @Test
+    void testThatGetSubNodeOrThrowThrowsForMissingKey() {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("subnode", new HashMap<>());
+        final DataNode node = new DataNode(data, "", "current");
+
+        assertThrows(SerializationException.class, () -> node.getSubNodeOrThrow("missing"));
+    }
+
+    @Test
     void testThatGetSubNodeDoesNotThrowForExistingKey() throws SerializationException {
         HashMap<Object, Object> data = new HashMap<>();
         data.put("subnode", new HashMap<>());
