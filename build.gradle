@@ -202,8 +202,6 @@ allprojects {
         }
     }
 
-    if (project.name.contains(TEST_MODULE)) return
-
     test {
         def projectName = project.name
 
@@ -229,7 +227,7 @@ allprojects {
         }
     }
 
-    if (project.name == DEMO_MODULE) return
+    if (project.name.contains(TEST_MODULE) || project.name == DEMO_MODULE) return
 
     tasks.register('sourcesJar', Jar) {
         from sourceSets.main.delombokTask
