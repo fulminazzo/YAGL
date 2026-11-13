@@ -16,9 +16,8 @@ project(':common:common-base').projectDir = file('common/base')
 //TODO: re-enable
 //include 'common:common-bukkit'
 //project(':common:common-bukkit').projectDir = file('common/bukkit')
-//TODO: re-enable
-//include 'common:common-serializer'
-//project(':common:common-serializer').projectDir = file('common/serializer')
+include 'common:common-serializer'
+project(':common:common-serializer').projectDir = file('common/serializer')
 
 include 'wrapper'
 include 'wrapper:wrapper-base'
