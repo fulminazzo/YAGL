@@ -1,10 +1,9 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.fulmicollection.objects.Refl;
+import it.fulminazzo.yagl.reflect.Reflect;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,20 +52,20 @@ class GUITest {
                 new Object[]{GUIType.STONECUTTER, new PointMap(0, 1, 1, 0, 1, 1, 0, 1, 1), 1, 2},
         };
     }
-    
+
     @ParameterizedTest
     @MethodSource("expectedCorners")
     void testGUICorners(Object object, PointMap map, int rows, int columns) {
-        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+        GUI gui = Reflect.on(GUI.class).invoke("newGUI", object).get();
 
         assertEquals(map.northWest, gui.northWest(), "Invalid North West slot");
         assertEquals(map.north, gui.north(), "Invalid North slot");
         assertEquals(map.northEast, gui.northEast(), "Invalid North East slot");
-        
+
         assertEquals(map.middleWest, gui.middleWest(), "Invalid Middle West slot");
         assertEquals(map.middle, gui.middle(), "Invalid Middle slot");
         assertEquals(map.middleEast, gui.middleEast(), "Invalid Middle East slot");
-        
+
         assertEquals(map.southWest, gui.southWest(), "Invalid South West slot");
         assertEquals(map.south, gui.south(), "Invalid South slot");
         assertEquals(map.southEast, gui.southEast(), "Invalid South East slot");
@@ -80,7 +79,7 @@ class GUITest {
     void testSetTopSide(Object object, PointMap map, int rows, int columns) {
         final Map<Object, Integer> ignored = new HashMap<>();
 
-        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+        GUI gui = Reflect.on(GUI.class).invoke("newGUI", object).get();
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
         gui.setTopSide(itemGUIContent);
@@ -115,7 +114,7 @@ class GUITest {
         ignored.put(GUIType.PLAYER, 36);
         ignored.put(GUIType.LOOM, 3);
 
-        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+        GUI gui = Reflect.on(GUI.class).invoke("newGUI", object).get();
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
         gui.setLeftSide(itemGUIContent);
@@ -145,7 +144,7 @@ class GUITest {
         ignored.put(GUIType.PLAYER, 36);
         ignored.put(GUIType.LOOM, 3);
 
-        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+        GUI gui = Reflect.on(GUI.class).invoke("newGUI", object).get();
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
         gui.setBottomSide(itemGUIContent);
@@ -177,7 +176,7 @@ class GUITest {
         final Map<Object, Integer> ignored = new HashMap<>();
         ignored.put(GUIType.LOOM, 0);
 
-        GUI gui = new Refl<>(GUI.class).invokeMethod("newGUI", object);
+        GUI gui = Reflect.on(GUI.class).invoke("newGUI", object).get();
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("stone");
         gui.setRightSide(itemGUIContent);
@@ -201,7 +200,7 @@ class GUITest {
 
     private static void testSide(Object object, int north, int middle, int south, GUI gui,
                                  Map<Object, Integer> ignoredSlots, Object expected) {
-        testSide(object, north, middle, south,  i -> (i - north) % gui.columns() == 0 ||
+        testSide(object, north, middle, south, i -> (i - north) % gui.columns() == 0 ||
                 (i - middle) % gui.columns() == 0, gui, ignoredSlots, expected);
     }
 
@@ -225,24 +224,21 @@ class GUITest {
     })
     void testSetCornersMethods(String methodName) {
         GUI gui = GUI.newGUI(27);
-        Refl<GUI> guiRefl = new Refl<>(gui);
-        int slot = guiRefl.invokeMethod(methodName);
+        Reflect reflect = Reflect.on(gui);
+        int slot = reflect.invoke(methodName).get();
 
         Item item = Item.newItem("stone");
-        guiRefl.invokeMethod("set" + methodName, new Class[]{Item[].class},
-                (Object) new Item[]{item});
+        reflect.invoke("set" + methodName, item);
 
         assertEquals(ItemGUIContent.newInstance(item), gui.getContents(slot).get(0));
 
         ItemGUIContent itemGUIContent = ItemGUIContent.newInstance("diamond");
-        guiRefl.invokeMethod("set" + methodName, new Class[]{CustomItemGUIContent[].class},
-                (Object) new ItemGUIContent[]{itemGUIContent});
+        reflect.invoke("set" + methodName, itemGUIContent);
 
         assertEquals(itemGUIContent, gui.getContents(slot).get(0));
 
         GUIContent guiContent = mock(GUIContent.class);
-        guiRefl.invokeMethod("set" + methodName, new Class[]{GUIContent[].class},
-                (Object) new GUIContent[]{guiContent});
+        reflect.invoke("set" + methodName, guiContent);
 
         assertEquals(guiContent, gui.getContents(slot).get(0));
     }

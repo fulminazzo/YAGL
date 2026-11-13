@@ -1,13 +1,12 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
@@ -23,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,9 +43,9 @@ class PageableGUITest {
 
         PageableGUI pageableGUI = new PageableGUI(templateGUI);
 
-        new Refl<>(pageableGUI).invokeMethod(methodName);
+        Reflect.on(pageableGUI).invoke(methodName);
 
-        new Refl<>(verify(templateGUI)).invokeMethod(methodName);
+        Reflect.on(verify(templateGUI)).invoke(methodName);
     }
 
     @Test
@@ -71,8 +71,8 @@ class PageableGUITest {
         gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
-        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+        try (MockedStatic<GUIUtils> clazz = mockStatic(GUIUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(GUIUtils::getGUIAdapterClass).thenReturn(Optional.of(MockGUIAdapter.class));
 
             gui.open(viewer);
             GUI expected = gui.getPage(0)
@@ -100,9 +100,8 @@ class PageableGUITest {
         gui.getPage(2).setContents(1, Item.newItem("yellow_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
-        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter"))
-                    .thenReturn(MockGUIAdapter.class);
+        try (MockedStatic<GUIUtils> clazz = mockStatic(GUIUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(GUIUtils::getGUIAdapterClass).thenReturn(Optional.of(MockGUIAdapter.class));
 
             for (int i = 0; i < gui.pages(); i++) {
                 gui.open(viewer, i);
@@ -150,8 +149,8 @@ class PageableGUITest {
         gui.getPage(2).setContents(1, Item.newItem("yellow_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
-        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter")).thenReturn(MockGUIAdapter.class);
+        try (MockedStatic<GUIUtils> clazz = mockStatic(GUIUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(GUIUtils::getGUIAdapterClass).thenReturn(Optional.of(MockGUIAdapter.class));
 
             for (int i = 0; i < gui.pages(); i++) {
                 gui.open(viewer, i);
@@ -176,7 +175,7 @@ class PageableGUITest {
                 continue;
             } catch (NoSuchMethodException ignored) {
             }
-            method = ReflectionUtils.setAccessibleOrThrow(method);
+            method.setAccessible(true);
             Object[] params = Arrays.stream(method.getParameterTypes())
                     .map(TestUtils::mockParameter)
                     .map(o -> o instanceof Integer ? 9 : o)
@@ -187,7 +186,7 @@ class PageableGUITest {
                 assertArrayEquals((Object[]) obj1, (Object[]) obj2);
             else if (!(obj1 instanceof GUI)) assertEquals(obj1, obj2);
 
-            GUI template = new Refl<>(actual).getFieldObject("templateGUI");
+            GUI template = Reflect.on(actual).get("templateGUI").get();
             assertEquals(expected, template);
         }
     }
@@ -215,15 +214,15 @@ class PageableGUITest {
     @Test
     void testRemovePreviousPage() {
         PageableGUI gui = PageableGUI.newGUI(9).setPreviousPage(1, Item.newItem()).unsetPreviousPage();
-        Pair<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
-        assertNotNull(nextPage);
-        assertFalse(nextPage.isPresent(), String.format("Expected empty but got '%s'", nextPage));
+        Pair<?, ?> previousPage = Reflect.on(gui).get("previousPage").get();
+        assertNotNull(previousPage);
+        assertFalse(previousPage.isPresent(), String.format("Expected empty but got '%s'", previousPage));
     }
 
     @Test
     void testRemoveNextPage() {
         PageableGUI gui = PageableGUI.newGUI(9).setNextPage(1, Item.newItem()).unsetNextPage();
-        Pair<?, ?> nextPage = new Refl<>(gui).getFieldObject("nextPage");
+        Pair<?, ?> nextPage = Reflect.on(gui).get("nextPage").get();
         assertNotNull(nextPage);
         assertFalse(nextPage.isPresent(), String.format("Expected empty but got '%s'", nextPage));
     }

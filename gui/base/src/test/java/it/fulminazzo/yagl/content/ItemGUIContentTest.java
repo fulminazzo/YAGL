@@ -1,7 +1,5 @@
 package it.fulminazzo.yagl.content;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.action.GUIItemBack;
@@ -11,6 +9,7 @@ import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.wrapper.Sound;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class ItemGUIContentTest {
         ItemGUIContent second = ItemGUIContent.newInstance(first);
 
         assertEquals(first, second);
-        Item secondItem = new Refl<>(second).getFieldObject("item");
+        Item secondItem = Reflect.on(second).get("item").get();
 
         assertEquals(firstItem, secondItem);
     }
@@ -74,23 +73,25 @@ class ItemGUIContentTest {
         ItemGUIContent actual = expected.copy().onClickItem(action).setViewRequirements(requirement);
         assertEquals("value", actual.getVariable("name"));
         assertEquals(expected, actual);
-        assertEquals((Item) new Refl<>(expected).getFieldObject("item"), new Refl<>(actual).getFieldObject("item"));
+        assertEquals((Item) Reflect.on(expected).get("item").get(), Reflect.on(actual).get("item").get());
     }
 
     @Test
     @DisplayName("Item inherited methods should call actual methods of the inner item")
     void testItemMethods() throws InvocationTargetException, IllegalAccessException {
         ItemGUIContent actual = newInstance();
-        Item expected = new Refl<>(actual).getFieldObject("item");
+        Item expected = Reflect.on(actual).get("item").get();
 
         for (Method method : Item.class.getDeclaredMethods())
             if (!Modifier.isStatic(method.getModifiers()) && !Item.class.isAssignableFrom(method.getReturnType())) {
                 final Object[] params;
                 if (method.getName().equals("isSimilar")) params = new Object[]{expected, new ItemField[0]};
-                else params = Arrays.stream(method.getParameterTypes()).map(TestUtils::mockParameter).toArray(Object[]::new);
+                else
+                    params = Arrays.stream(method.getParameterTypes()).map(TestUtils::mockParameter).toArray(Object[]::new);
 
-                Object obj1 = ReflectionUtils.setAccessibleOrThrow(method).invoke(actual, params);
-                Object obj2 = ReflectionUtils.setAccessibleOrThrow(method).invoke(expected, params);
+                method.setAccessible(true);
+                Object obj1 = method.invoke(actual, params);
+                Object obj2 = method.invoke(expected, params);
                 assertEquals(obj2, obj1);
             }
     }

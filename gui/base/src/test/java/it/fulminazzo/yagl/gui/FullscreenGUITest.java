@@ -1,11 +1,11 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -161,9 +161,9 @@ class FullscreenGUITest {
                 .map(ItemGUIContent::newInstance)
                 .toArray(ItemGUIContent[]::new));
 
-        Refl<?> refl = new Refl<>(gui);
+        Reflect reflect = Reflect.on(gui);
 
-        GUI upperGUI = refl.getFieldObject("upperGUI");
+        GUI upperGUI = reflect.get("upperGUI").get();
         for (int i = 0; i < 9; i++) {
             @NotNull List<GUIContent> contents = upperGUI.getContents(i);
             assertFalse(contents.isEmpty());
@@ -175,7 +175,7 @@ class FullscreenGUITest {
             assertEquals(materials[i], item.getMaterial());
         }
 
-        GUI lowerGUI = refl.getFieldObject("lowerGUI");
+        GUI lowerGUI = reflect.get("lowerGUI").get();
         for (int i = 9; i < materials.length; i++) {
             @NotNull List<GUIContent> contents = lowerGUI.getContents(i - 9);
             assertFalse(contents.isEmpty());
@@ -190,15 +190,15 @@ class FullscreenGUITest {
 
     @Test
     void testThatAddContentThrowsIfOtherException() {
-        Refl<FullscreenGUI> refl = new Refl<>(new FullscreenGUI(9));
+        Reflect reflect = Reflect.on(new FullscreenGUI(9));
 
         GUI upperGUI = mock(GUI.class);
         when(upperGUI.addContent(any(GUIContent.class))).thenThrow(new IllegalArgumentException("Should not be captured"));
 
-        refl.setFieldObject("upperGUI", upperGUI);
+        reflect.set("upperGUI", upperGUI);
 
         assertThrows(IllegalArgumentException.class, () ->
-                refl.getObject().addContent(ItemGUIContent.newInstance("stone"))
+                ((FullscreenGUI) reflect.get()).addContent(ItemGUIContent.newInstance("stone"))
         );
     }
 
@@ -315,10 +315,10 @@ class FullscreenGUITest {
     }
 
     private static FullscreenGUI setupGUI(GUI internalGUI) {
-        Refl<FullscreenGUI> refl = new Refl<>(new FullscreenGUI(GUIType.CHEST));
-        if (internalGUI instanceof TypeGUI) refl.setFieldObject("upperGUI", internalGUI);
-        else refl.setFieldObject("lowerGUI", internalGUI);
-        return refl.getObject();
+        Reflect reflect = Reflect.on(new FullscreenGUI(GUIType.CHEST));
+        if (internalGUI instanceof TypeGUI) reflect.set("upperGUI", internalGUI);
+        else reflect.set("lowerGUI", internalGUI);
+        return reflect.get();
     }
 
     @Test
@@ -327,12 +327,12 @@ class FullscreenGUITest {
         GUIContent secondContent = ItemGUIContent.newInstance("stone");
 
         FullscreenGUI gui = new FullscreenGUI(GUIType.CHEST);
-        Refl<?> refl = new Refl<>(gui);
+        Reflect reflect = Reflect.on(gui);
 
-        GUI upperGUI = refl.getFieldObject("upperGUI");
+        GUI upperGUI = reflect.get("upperGUI").get();
         upperGUI.setContents(0, firstContent);
 
-        GUI lowerGUI = refl.getFieldObject("lowerGUI");
+        GUI lowerGUI = reflect.get("lowerGUI").get();
         lowerGUI.setContents(1, secondContent);
 
         @NotNull List<GUIContent> contents = gui.getContents();
@@ -359,10 +359,10 @@ class FullscreenGUITest {
         GUI upperGUI = mock(GUI.class);
         GUI lowerGUI = mock(ResizableGUI.class);
 
-        FullscreenGUI gui = new Refl<>(new FullscreenGUI(GUIType.CHEST))
-                .setFieldObject("upperGUI", upperGUI)
-                .setFieldObject("lowerGUI", lowerGUI)
-                .getObject();
+        FullscreenGUI gui = Reflect.on(new FullscreenGUI(GUIType.CHEST))
+                .set("upperGUI", upperGUI)
+                .set("lowerGUI", lowerGUI)
+                .get();
 
         gui.clear();
 
@@ -389,10 +389,10 @@ class FullscreenGUITest {
     @ParameterizedTest
     @MethodSource("methods")
     void testFullScreenGUIDelegatesToUpperGUI(String methodName, Class<?>[] parameterTypes) {
-        Refl<?> fullscreenGUI = new Refl<>(new FullscreenGUI(9));
+        Reflect fullscreenGUI = Reflect.on(new FullscreenGUI(9));
 
         GUI upperGUI = mock(GUI.class);
-        fullscreenGUI.setFieldObject("upperGUI", upperGUI);
+        fullscreenGUI.set("upperGUI", upperGUI);
 
         Method method = fullscreenGUI.getMethod(methodName, parameterTypes);
 
@@ -400,9 +400,9 @@ class FullscreenGUITest {
                 .map(TestUtils::mockParameter)
                 .toArray(Object[]::new);
 
-        fullscreenGUI.invokeMethod(methodName, parameters);
+        fullscreenGUI.invoke(methodName, parameters);
 
-        new Refl<>(verify(upperGUI)).invokeMethod(methodName, parameters);
+        Reflect.on(verify(upperGUI)).invoke(methodName, parameters);
     }
 
     @Test

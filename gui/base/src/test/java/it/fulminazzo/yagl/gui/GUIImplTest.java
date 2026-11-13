@@ -5,9 +5,9 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
-import it.fulminazzo.fulmicollection.objects.Refl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -303,8 +303,8 @@ class GUIImplTest {
             );
             GUIImpl.Contents c2 = c1.copy();
             assertEquals(c1.getContents(), c2.getContents());
-            Object cs1 = new Refl<>(c1).getFieldRefl("contents");
-            Object cs2 = new Refl<>(c2).getFieldRefl("contents");
+            Object cs1 = Reflect.on(c1).get("contents").get();
+            Object cs2 = Reflect.on(c2).get("contents").get();
             assertNotEquals(cs1.hashCode(), cs2.hashCode());
         }
 

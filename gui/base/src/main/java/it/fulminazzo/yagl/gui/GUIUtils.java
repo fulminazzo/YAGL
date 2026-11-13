@@ -1,13 +1,13 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
+import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * A collection of utilities for this package.
@@ -23,13 +23,11 @@ final class GUIUtils {
      * @param parameters   the parameters
      */
     public static void executeGUIAdapterFunction(final @NotNull String functionName, final Object @NotNull ... parameters) {
-        final Class<?> guiAdapter;
-        try {
-            guiAdapter = ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter");
-        } catch (IllegalArgumentException e) {
+        final Optional<Class<?>> guiAdapter = getGUIAdapterClass();
+        if (guiAdapter.isPresent())
+            Reflect.on(guiAdapter.get()).invoke(functionName, parameters);
+        else
             throw new IllegalStateException("Could not find GUIAdapter class. This function requires the 'gui:bukkit' module to be added");
-        }
-        new Refl<>(guiAdapter).invokeMethod(functionName, parameters);
     }
 
     /**
@@ -57,6 +55,19 @@ final class GUIUtils {
         StackTraceElement[] stackTrace = exception.getStackTrace();
         exception.setStackTrace(Arrays.copyOfRange(stackTrace, 1, stackTrace.length));
         return exception;
+    }
+
+    /**
+     * Gets the GUIAdapter class.
+     *
+     * @return the GUIAdapter class
+     */
+    static @NotNull Optional<Class<?>> getGUIAdapterClass() {
+        try {
+            return Optional.of(Class.forName("it.fulminazzo.yagl.GUIAdapter"));
+        } catch (ClassNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
 }

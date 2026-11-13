@@ -1,10 +1,10 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.reflect.Reflect;
+import it.fulminazzo.yagl.reflect.ReflectException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class SearchGUITest {
             searchGUI.setContents(i, ItemGUIContent.newInstance("barrier")
                     .setDisplayName("Barrier"));
 
-        GUI templateGUI = new Refl<>(searchGUI).getFieldObject("templateGUI");
+        GUI templateGUI = Reflect.on(searchGUI).get("templateGUI").get();
         GUI preparedGUI = searchGUI.prepareOpenGUI(templateGUI, 0);
 
         for (int i = 0; i < 3; i++) {
@@ -61,7 +61,7 @@ class SearchGUITest {
                 Arrays.asList("stone", "grass_block")
         ).setQuery("search");
 
-        GUI templateGUI = new Refl<>(searchGUI).getFieldObject("templateGUI");
+        GUI templateGUI = Reflect.on(searchGUI).get("templateGUI").get();
         GUI preparedGUI = searchGUI.prepareOpenGUI(templateGUI, 0);
 
         for (int i = 0; i < 3; i++) {
@@ -98,7 +98,7 @@ class SearchGUITest {
                 materials
         ).setQuery("_");
 
-        GUI gui = new Refl<>(searchGUI).getFieldObject("templateGUI");
+        GUI gui = Reflect.on(searchGUI).get("templateGUI").get();
         gui = searchGUI.prepareOpenGUI(gui, 0);
 
         List<String> expected = Stream.concat(
@@ -131,7 +131,7 @@ class SearchGUITest {
 
         src.copyTo(dst, true);
 
-        new Refl<>(dst).setFieldObject("searchFunction", new Refl<>(src).getFieldObject("searchFunction"));
+        Reflect.on(dst).set("searchFunction", Reflect.on(src).get("searchFunction").get());
         assertEquals(src, dst);
     }
 
@@ -168,7 +168,7 @@ class SearchGUITest {
         IllegalStateException e = assertThrows(IllegalStateException.class, () ->
                 SearchGUI.newGUI(s -> null, (f, s) -> true)
                         .setPages(2));
-        assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), e.getMessage());
+        assertEquals(Reflect.on(DataGUI.class).get("ERROR_MESSAGE").get(), e.getMessage());
     }
 
     @Test
@@ -205,9 +205,12 @@ class SearchGUITest {
     @ParameterizedTest
     @ValueSource(strings = {"getPage", "setPages"})
     void testPagesRelatedMethodShouldThrowException(String method) {
-        Throwable throwable = assertThrowsExactly(IllegalStateException.class, () ->
-                new Refl<>(SearchGUI.newGUI(s -> null, (t, s) -> false)).invokeMethod(method, 1));
-        assertEquals(new Refl<>(SearchGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
+        Exception e = assertThrowsExactly(ReflectException.class, () ->
+                Reflect.on(SearchGUI.newGUI(s -> null, (t, s) -> false)).invoke(method, 1)
+        );
+        Throwable cause = e.getCause();
+        assertNotNull(cause);
+        assertEquals(Reflect.on(DataGUI.class).get("ERROR_MESSAGE").get(), cause.getMessage());
     }
 
     private static Object[] constructorParameters() {
@@ -230,7 +233,7 @@ class SearchGUITest {
         if (!dataProvided) {
             actual.setData("Hello", "World");
         }
-        new Refl<>(actual).setFieldObject("searchFunction", new Refl<>(expected).getFieldObject("searchFunction"));
+        Reflect.on(actual).set("searchFunction", Reflect.on(expected).get("searchFunction").get());
         assertEquals(expected, actual);
     }
 

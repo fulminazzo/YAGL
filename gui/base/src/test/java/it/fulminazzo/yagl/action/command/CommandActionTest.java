@@ -1,7 +1,7 @@
 package it.fulminazzo.yagl.action.command;
 
-import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.fulmicollection.utils.ClassUtils;
+import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.event.ClickItemEvent;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.junit.jupiter.api.DisplayName;

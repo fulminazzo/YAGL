@@ -1,13 +1,12 @@
 package it.fulminazzo.yagl.gui;
 
-import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.fulmicollection.utils.ReflectionUtils;
 import it.fulminazzo.yagl.TestUtils;
 import it.fulminazzo.yagl.action.GUIItemAction;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.reflect.Reflect;
+import it.fulminazzo.yagl.reflect.ReflectException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +16,7 @@ import org.mockito.MockedStatic;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -54,12 +54,12 @@ class DataGUITest {
     void testFillContentsMethod(int contents, int data, int pages, boolean prev, boolean next) {
         GUIContent convertedContent = ItemGUIContent.newInstance("grass");
         DataGUI<Integer> dataGUI = setupGUI(contents, data, prev, next, convertedContent);
-        Refl<?> guiRefl = new Refl<>(dataGUI);
+        Reflect reflect = Reflect.on(dataGUI);
 
         for (int p = 0; p < pages; p++) {
-            GUI gui = guiRefl.getFieldObject("templateGUI");
+            GUI gui = reflect.get("templateGUI").get();
             assertNotNull(gui);
-            gui = guiRefl.invokeMethod("fillContents", gui.copy(), p);
+            gui = reflect.invoke("fillContents", gui.copy(), p).get();
             assertNotNull(gui);
 
             for (int c = 0; c < dataGUI.size(); c++) {
@@ -110,9 +110,8 @@ class DataGUITest {
 
     @Test
     void testNoData() {
-        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter"))
-                    .thenReturn(PageableGUITest.MockGUIAdapter.class);
+        try (MockedStatic<GUIUtils> clazz = mockStatic(GUIUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(GUIUtils::getGUIAdapterClass).thenReturn(Optional.of(PageableGUITest.MockGUIAdapter.class));
 
             DataGUI<?> gui = DataGUI.newGUI(9, s -> null);
             int page = 3;
@@ -122,7 +121,7 @@ class DataGUITest {
 
     @Test
     void testInvalidPage() {
-        DataGUI<?> gui = DataGUI.newGUI(9, s -> null).setData(new String[]{"Hello"});
+        DataGUI<?> gui = DataGUI.newGUI(9, s -> null).setData("Hello");
         int page = 3;
         Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
                 gui.open(null, page));
@@ -143,9 +142,12 @@ class DataGUITest {
     @ParameterizedTest
     @ValueSource(strings = {"getPage", "setPages"})
     void testPagesRelatedMethodShouldThrowException(String method) {
-        Throwable throwable = assertThrowsExactly(IllegalStateException.class, () ->
-                new Refl<>(DataGUI.newGUI(GUIType.ANVIL, s -> null)).invokeMethod(method, 1));
-        assertEquals(new Refl<>(DataGUI.class).getFieldObject("ERROR_MESSAGE"), throwable.getMessage());
+        Exception e = assertThrowsExactly(ReflectException.class, () ->
+                Reflect.on(DataGUI.newGUI(GUIType.ANVIL, s -> null)).invoke(method, 1)
+        );
+        Throwable cause = e.getCause();
+        assertNotNull(cause);
+        assertEquals(Reflect.on(DataGUI.class).get("ERROR_MESSAGE").get(), cause.getMessage());
     }
 
     @Test
@@ -172,13 +174,12 @@ class DataGUITest {
                 .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
 
         final PageableGUITest.MockViewer viewer = new PageableGUITest.MockViewer(UUID.randomUUID(), "Steve");
-        try (MockedStatic<ReflectionUtils> clazz = mockStatic(ReflectionUtils.class, CALLS_REAL_METHODS)) {
-            clazz.when(() -> ReflectionUtils.getClass("it.fulminazzo.yagl.GUIAdapter"))
-                    .thenReturn(PageableGUITest.MockGUIAdapter.class);
+        try (MockedStatic<GUIUtils> clazz = mockStatic(GUIUtils.class, CALLS_REAL_METHODS)) {
+            clazz.when(GUIUtils::getGUIAdapterClass).thenReturn(Optional.of(PageableGUITest.MockGUIAdapter.class));
 
             for (int i = 0; i < gui.pages(); i++) {
                 gui.open(viewer, i);
-                GUI expected = new Refl<>(gui).getFieldObject("templateGUI");
+                GUI expected = Reflect.on(gui).get("templateGUI").get();
                 assertNotNull(expected);
                 expected = PageableGUITest.generateExpected(expected.copy(), i);
 
