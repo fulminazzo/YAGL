@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A serialization interface for a Java type.
  *
- * @param <T> the type
+ * @param <T> the type of the object to serialize
  */
 public interface Serializer<T> {
 
