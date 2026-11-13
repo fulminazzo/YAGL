@@ -208,7 +208,12 @@ public final class ReflectUtils {
                     Class<?> current = given[j];
                     if (current == null) continue;
                     OptionalInt score = scoreTypeMatching(current, componentType);
-                    if (score.isEmpty()) return score;
+                    if (score.isEmpty()) {
+                        if (current.isArray()) {
+                            score = scoreTypeMatching(current.getComponentType(), componentType);
+                            if (score.isEmpty()) return score;
+                        } else return score;
+                    }
                     total += score.getAsInt();
                 }
                 return OptionalInt.of(total);
