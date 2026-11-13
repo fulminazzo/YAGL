@@ -13,8 +13,9 @@ rootProject.name = 'YAGL'
 include 'common'
 include 'common:common-base'
 project(':common:common-base').projectDir = file('common/base')
-include 'common:common-bukkit'
-project(':common:common-bukkit').projectDir = file('common/bukkit')
+//TODO: re-enable
+//include 'common:common-bukkit'
+//project(':common:common-bukkit').projectDir = file('common/bukkit')
 //TODO: re-enable
 //include 'common:common-serializer'
 //project(':common:common-serializer').projectDir = file('common/serializer')
@@ -22,12 +23,13 @@ project(':common:common-bukkit').projectDir = file('common/bukkit')
 include 'wrapper'
 include 'wrapper:wrapper-base'
 project(':wrapper:wrapper-base').projectDir = file('wrapper/base')
-include 'wrapper:wrapper-bukkit'
-project(':wrapper:wrapper-bukkit').projectDir = file('wrapper/bukkit')
-include ':wrapper:wrapper-bukkit:wrapper-legacy'
-project(':wrapper:wrapper-bukkit:wrapper-legacy').projectDir = file('wrapper/bukkit/legacy')
-include ':wrapper:wrapper-bukkit:wrapper-obsolete'
-project(':wrapper:wrapper-bukkit:wrapper-obsolete').projectDir = file('wrapper/bukkit/obsolete')
+//TODO: re-enable
+//include 'wrapper:wrapper-bukkit'
+//project(':wrapper:wrapper-bukkit').projectDir = file('wrapper/bukkit')
+//include ':wrapper:wrapper-bukkit:wrapper-legacy'
+//project(':wrapper:wrapper-bukkit:wrapper-legacy').projectDir = file('wrapper/bukkit/legacy')
+//include ':wrapper:wrapper-bukkit:wrapper-obsolete'
+//project(':wrapper:wrapper-bukkit:wrapper-obsolete').projectDir = file('wrapper/bukkit/obsolete')
 //TODO: re-enable
 //include 'wrapper:wrapper-serializer'
 //project(':wrapper:wrapper-serializer').projectDir = file('wrapper/serializer')
@@ -35,12 +37,13 @@ project(':wrapper:wrapper-bukkit:wrapper-obsolete').projectDir = file('wrapper/b
 include 'item'
 include 'item:item-base'
 project(':item:item-base').projectDir = file('item/base')
-include 'item:item-bukkit'
-project(':item:item-bukkit').projectDir = file('item/bukkit')
-include ':item:item-bukkit:item-legacy'
-project(':item:item-bukkit:item-legacy').projectDir = file('item/bukkit/legacy')
-include ':item:item-bukkit:item-obsolete'
-project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsolete')
+//include 'item:item-bukkit'
+//project(':item:item-bukkit').projectDir = file('item/bukkit')
+//TODO: re-enable
+//include ':item:item-bukkit:item-legacy'
+//project(':item:item-bukkit:item-legacy').projectDir = file('item/bukkit/legacy')
+//include ':item:item-bukkit:item-obsolete'
+//project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsolete')
 //TODO: re-enable
 //include 'item:item-serializer'
 //project(':item:item-serializer').projectDir = file('item/serializer')
@@ -48,8 +51,9 @@ project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsole
 include 'gui'
 include 'gui:gui-base'
 project(':gui:gui-base').projectDir = file('gui/base')
-include 'gui:gui-bukkit'
-project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
+//TODO: re-enable
+//include 'gui:gui-bukkit'
+//project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
 //TODO: re-enable
 //include 'gui:gui-serializer'
 //project(':gui:gui-serializer').projectDir = file('gui/serializer')
@@ -57,8 +61,9 @@ project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
 include 'testing'
 include 'testing:testing-base'
 project(':testing:testing-base').projectDir = file('testing/base')
-include 'testing:testing-bukkit'
-project(':testing:testing-bukkit').projectDir = file('testing/bukkit')
+//TODO: re-enable
+//include 'testing:testing-bukkit'
+//project(':testing:testing-bukkit').projectDir = file('testing/bukkit')
 //TODO: re-enable
 //include 'testing:testing-serializer'
 //project(':testing:testing-serializer').projectDir = file('testing/serializer')

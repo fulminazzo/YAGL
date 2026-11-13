@@ -122,7 +122,7 @@ allprojects {
         if (['common', 'wrapper', 'item', 'gui'].contains(projectName)) {
             //TODO: re-enable
 //            for (def s : ['base', 'serializer', 'bukkit'])
-            for (def s : ['base', 'bukkit'])
+            for (def s : ['base'])
                 api(project(":${projectName}:${projectName}-${s}"))
         }
 
@@ -189,7 +189,9 @@ allprojects {
             rootProject.subprojects
                     .findAll { !it.name.contains(TEST_MODULE) && it.name != DEMO_MODULE }
                     .each { implementation project(it.path) }
-            testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-bukkit")
+            //TODO: re-enable
+//            testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-bukkit")
+            testImplementation project(":${TEST_MODULE}:${TEST_MODULE}-base")
             testImplementation getJBukkitModule(latestVersion)
         }
     }
