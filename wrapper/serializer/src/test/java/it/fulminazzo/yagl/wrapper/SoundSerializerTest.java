@@ -58,6 +58,11 @@ public class SoundSerializerTest extends SerializerTestHelper<Sound> {
                         "custom_pitch",
                         new Sound("test", 2.5f, 0.5f),
                         "test" + WrapperSerializer.DATA_SEPARATOR + "2.5" + WrapperSerializer.DATA_SEPARATOR + "0.5"
+                },
+                new Object[]{
+                        "custom_category",
+                        new Sound("test", 2.5f, 0.5f, "category"),
+                        "test" + WrapperSerializer.DATA_SEPARATOR + "2.5" + WrapperSerializer.DATA_SEPARATOR + "0.5" + WrapperSerializer.DATA_SEPARATOR + "category"
                 }
         };
     }
