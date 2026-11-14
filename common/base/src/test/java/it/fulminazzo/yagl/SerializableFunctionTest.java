@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class SerializableFunctionTest {
 
     @Test
-    void testThatSerializationWorks() {
+    void testThatSerializationWorks() throws IOException {
         Person person = new Person("John", 30);
         String serialized = person.serialize();
         assertNotNull(serialized);
