@@ -1,7 +1,9 @@
 package it.fulminazzo.yagl.serializer;
 
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
+@EqualsAndHashCode
 final class ItalianGreet implements GreetFunction {
     private static final long serialVersionUID = -8637800499232016278L;
 

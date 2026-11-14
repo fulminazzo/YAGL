@@ -1,9 +1,5 @@
 package it.fulminazzo.yagl.serializer;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,63 +7,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TypedSerializerTest extends SerializerTestHelper<TypedSerializerTest.Cat> {
+class TypedSerializerTest extends SerializerTestHelper<Cat> {
 
     protected TypedSerializerTest() {
-        super(Cat.class, new TypedSerializer<>(Cat.class) {
-
-            @Override
-            protected void loadCommonData(final @NotNull TypedSerializerTest.Cat value, final @NotNull DataNode node) throws SerializationException {
-                node.get("age", Integer.class).ifPresent(value::setAge);
-            }
-
-            @Override
-            protected void dumpCommonData(final @NotNull TypedSerializerTest.Cat value, final @NotNull Map<String, Object> output) {
-                output.put("name", value.getName());
-                output.put("age", value.getAge());
-            }
-
-            {
-                registerSerializer(PersianCat.class, new ObjectSerializer<>() {
-                    @Override
-                    protected @Nullable PersianCat initialize(final @NotNull DataNode node) throws SerializationException {
-                        return node.get("name", String.class).map(PersianCat::new).orElse(null);
-                    }
-
-                    @Override
-                    protected void loadData(final @NotNull TypedSerializerTest.PersianCat value, final @NotNull DataNode node) throws SerializationException {
-                        node.get("color", String.class).ifPresent(value::setColor);
-                    }
-
-                    @Override
-                    protected void dumpData(final @NotNull TypedSerializerTest.PersianCat value, final @NotNull Map<String, Object> output) {
-                        output.put("color", value.getColor());
-                    }
-
-                });
-                registerSerializer(SiameseCat.class, new ObjectSerializer<>() {
-
-                    @Override
-                    protected @Nullable SiameseCat initialize(final @NotNull DataNode node) throws SerializationException {
-                        String name = node.getOrNull("name", String.class);
-                        if (name == null) return null;
-                        return node.get("master", String.class).map(m -> new SiameseCat(name, m)).orElse(null);
-                    }
-
-                    @Override
-                    protected void loadData(final @NotNull TypedSerializerTest.SiameseCat value, final @NotNull DataNode node) throws SerializationException {
-                        node.get("region", String.class).ifPresent(value::setRegion);
-                    }
-
-                    @Override
-                    protected void dumpData(final @NotNull TypedSerializerTest.SiameseCat value, final @NotNull Map<String, Object> output) {
-                        output.put("master", value.getMaster());
-                        output.put("region", value.getRegion());
-                    }
-
-                });
-            }
-        });
+        super(Cat.class, new CatSerializer());
     }
 
     @Test
@@ -132,45 +75,6 @@ class TypedSerializerTest extends SerializerTestHelper<TypedSerializerTest.Cat> 
         IOException exception = assertThrows(IOException.class, () -> load("missing-type"));
         Throwable cause = exception.getCause();
         assertInstanceOf(SerializationException.class, cause);
-    }
-
-    @Getter
-    @Setter
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @EqualsAndHashCode(callSuper = true)
-    @ToString(callSuper = true)
-    final static class PersianCat extends Cat {
-        @NotNull String color;
-
-        public PersianCat(final @NotNull String name) {
-            super(name);
-        }
-
-    }
-
-
-    @Getter
-    @Setter
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @EqualsAndHashCode(callSuper = true)
-    @ToString(callSuper = true)
-    final static class SiameseCat extends Cat {
-        final @NotNull String master;
-        @NotNull String region;
-
-        public SiameseCat(final @NotNull String name, final @NotNull String master) {
-            super(name);
-            this.master = master;
-        }
-
-    }
-
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    abstract static class Cat {
-        final @NotNull String name;
-        int age;
-
     }
 
 }
