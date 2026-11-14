@@ -1,6 +1,7 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.yagl.reflect.Reflect;
+import it.fulminazzo.yagl.structure.BiMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
@@ -98,8 +99,7 @@ public abstract class ClassEnum {
     private static final class EnumRegistry<E extends ClassEnum> {
         private final @NotNull Class<E> type;
         private final @NotNull List<E> values;
-        private final @NotNull Map<E, String> valueNameMap;
-        private final @NotNull Map<String, E> nameValueMap;
+        private final @NotNull BiMap<String, E> nameValueMap;
 
         /**
          * Instantiates a new Enum registry.
@@ -109,8 +109,7 @@ public abstract class ClassEnum {
         public EnumRegistry(final Class<?> type) {
             this.type = (Class<E>) type;
             this.values = new ArrayList<>();
-            this.valueNameMap = new IdentityHashMap<>();
-            this.nameValueMap = new HashMap<>();
+            this.nameValueMap = new BiMap<>(new HashMap<>(), new IdentityHashMap<>());
 
             Reflect reflect = Reflect.on(type);
             reflect.getStaticFields().stream()
@@ -119,7 +118,6 @@ public abstract class ClassEnum {
                         E value = reflect.get(f).get();
                         values.add(value);
                         String fieldName = f.getName().toUpperCase(Locale.ROOT);
-                        valueNameMap.put(value, fieldName);
                         nameValueMap.put(fieldName, value);
                     });
         }
@@ -141,7 +139,7 @@ public abstract class ClassEnum {
          * @return the name
          */
         public @NotNull String name(final @NotNull E value) {
-            String name = valueNameMap.get(value);
+            String name = nameValueMap.getByValue(value);
             if (name == null)
                 throw new IllegalArgumentException("No enum name found for " + value);
             return name;
@@ -154,7 +152,7 @@ public abstract class ClassEnum {
          * @return {@code true} if the given object is a valid known enum, {@code false} otherwise
          */
         public boolean isKnownEnum(final @NotNull E classEnum) {
-            return valueNameMap.containsKey(classEnum);
+            return nameValueMap.containsValue(classEnum);
         }
 
         public @NotNull E valueOf(final @Range(from = 0, to = Integer.MAX_VALUE) int index) {
