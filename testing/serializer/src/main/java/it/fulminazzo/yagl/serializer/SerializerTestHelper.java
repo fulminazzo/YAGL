@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import it.fulminazzo.yagl.SerializableFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +46,7 @@ public abstract class SerializerTestHelper<T> {
 
         String dirPath = getClass().getCanonicalName()
                 .replace(SerializerTestHelper.class.getPackage().getName() + ".", "")
+                .replace(SerializableFunction.class.getPackage().getName() + ".", "")
                 .replace(".", File.separator)
                 .toLowerCase(Locale.ROOT);
         this.workingDir = new File(BASE_PATH + File.separator + dirPath);
@@ -72,8 +74,18 @@ public abstract class SerializerTestHelper<T> {
      * @return the deserialized object
      */
     protected @Nullable T load(final @NotNull String fileName) throws IOException {
-        File file = new File(workingDir, LOAD_DIRECTORY_NAME + File.separator + fileName + ".yml");
+        File file = getLoadFile(fileName);
         return mapper.readValue(file, type);
+    }
+
+    /**
+     * Gets the file in the load directory with the given name.
+     *
+     * @param fileName the file name
+     * @return the file
+     */
+    protected @NotNull File getLoadFile(final @NotNull String fileName) {
+        return new File(workingDir, LOAD_DIRECTORY_NAME + File.separator + fileName + ".yml");
     }
 
     /**
