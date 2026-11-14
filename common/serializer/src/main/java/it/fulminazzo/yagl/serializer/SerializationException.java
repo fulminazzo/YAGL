@@ -21,4 +21,26 @@ public final class SerializationException extends Exception {
         super(String.format(message, args));
     }
 
+    /**
+     * Instantiates a new Serialization exception.
+     *
+     * @param cause the cause that caused the exception
+     */
+    public SerializationException(final @NotNull Throwable cause) {
+        this(cause, "An exception occurred during serialization");
+    }
+
+    /**
+     * Instantiates a new Serialization exception.
+     *
+     * @param cause   the cause that caused the exception
+     * @param message the message
+     * @param args    the arguments to format in the message
+     */
+    public SerializationException(final @NotNull Throwable cause,
+                                  final @NotNull String message,
+                                  final @NotNull Object @Nullable ... args) {
+        super(String.format(message, args), cause);
+    }
+
 }
