@@ -4,7 +4,6 @@ import it.fulminazzo.yagl.event.ClickItemEvent;
 import it.fulminazzo.yagl.gui.GUI;
 import it.fulminazzo.yagl.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * An implementation of {@link GUIItemAction} that closes the open {@link GUI} for the {@link Viewer}.
@@ -18,8 +17,8 @@ public final class GUIItemClose implements GUIItemAction {
     }
 
     @Override
-    public @Nullable String serialize() {
-        return null;
+    public @NotNull String serialize() {
+        throw new UnsupportedOperationException("This action cannot be serialized");
     }
 
     @Override

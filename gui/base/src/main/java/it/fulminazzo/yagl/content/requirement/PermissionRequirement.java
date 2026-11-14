@@ -34,7 +34,7 @@ public final class PermissionRequirement implements RequirementChecker {
     }
 
     @Override
-    public String serialize() {
+    public @NotNull String serialize() {
         return this.permission;
     }
 
