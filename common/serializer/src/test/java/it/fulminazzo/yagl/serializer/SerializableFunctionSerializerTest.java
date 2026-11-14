@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
@@ -44,13 +43,7 @@ class SerializableFunctionSerializerTest extends SerializerTestHelper<GreetFunct
         GreetFunction function = () -> "Hello!";
 
         File file = dump(function, "greet");
-        try (FileInputStream input = new FileInputStream(file)) {
-            String raw = new String(input.readAllBytes());
-            assertEquals(
-                    function.serialize(),
-                    raw.replace("--- ", "").strip().replace("\"", "")
-            );
-        }
+        assertEquals(function.serialize(), readRawString(file));
     }
 
     @Test

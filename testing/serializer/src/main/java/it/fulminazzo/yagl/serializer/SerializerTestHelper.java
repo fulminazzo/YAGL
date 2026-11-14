@@ -97,8 +97,19 @@ public abstract class SerializerTestHelper<T> {
      * @return the raw data
      * @throws IOException if any error occurs
      */
-    protected @NotNull Map<?, ?> readRaw(final @NotNull File file) throws IOException {
+    protected @Nullable Map<?, ?> readRaw(final @NotNull File file) throws IOException {
         return mapper.readValue(file, Map.class);
+    }
+
+    /**
+     * Reads the raw data as a string from the given file.
+     *
+     * @param file the file to read from
+     * @return the raw data as a string
+     * @throws IOException if any error occurs
+     */
+    protected @Nullable String readRawString(final @NotNull File file) throws IOException {
+        return mapper.readValue(file, String.class);
     }
 
     private class SerializerBoundDeserializer extends StdDeserializer<T> {
