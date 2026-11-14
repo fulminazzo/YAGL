@@ -18,8 +18,11 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class PotionEffect extends Wrapper {
+    static final double DEFAULT_DURATION = 1;
+    static final int MIN_AMPLIFIER = 1;
+    static final boolean DEFAULT_SHOWING_PARTICLES = true;
+    static final boolean DEFAULT_SHOWING_ICON = true;
     private static final int MIN_DURATION = 0;
-    private static final int MIN_AMPLIFIER = 1;
 
     private @NotNull String name;
     @Range(from = MIN_DURATION, to = Long.MAX_VALUE)
@@ -35,7 +38,7 @@ public final class PotionEffect extends Wrapper {
      * @param name the effect
      */
     public PotionEffect(final @NotNull String name) {
-        this(name, 1);
+        this(name, DEFAULT_DURATION);
     }
 
     /**
@@ -58,7 +61,7 @@ public final class PotionEffect extends Wrapper {
     public PotionEffect(final @NotNull String name,
                         final @Range(from = MIN_DURATION, to = Long.MAX_VALUE) double duration,
                         final @Range(from = MIN_AMPLIFIER, to = Integer.MAX_VALUE) int amplifier) {
-        this(name, duration, amplifier, true, true);
+        this(name, duration, amplifier, DEFAULT_SHOWING_PARTICLES);
     }
 
     /**
@@ -73,7 +76,7 @@ public final class PotionEffect extends Wrapper {
                         final @Range(from = MIN_DURATION, to = Long.MAX_VALUE) double duration,
                         final @Range(from = MIN_AMPLIFIER, to = Integer.MAX_VALUE) int amplifier,
                         final boolean enableParticles) {
-        this(name, duration, amplifier, enableParticles, true);
+        this(name, duration, amplifier, enableParticles, DEFAULT_SHOWING_ICON);
     }
 
     /**

@@ -18,7 +18,9 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Potion extends Wrapper {
-    private static final int MIN_LEVEL = 1;
+    static final int MIN_LEVEL = 1;
+    static final boolean DEFAULT_SPLASH = false;
+    static final boolean DEFAULT_EXTENDED = false;
     private static final int MAX_LEVEL = 2;
 
     private @NotNull String name;
@@ -44,7 +46,7 @@ public final class Potion extends Wrapper {
      * @param level the level
      */
     public Potion(final @NotNull String name, final @Range(from = MIN_LEVEL, to = MAX_LEVEL) int level) {
-        this(name, level, false, false);
+        this(name, level, DEFAULT_SPLASH);
     }
 
     /**
@@ -55,7 +57,7 @@ public final class Potion extends Wrapper {
      * @param splash if {@code true} the potion is throwable
      */
     public Potion(final @NotNull String name, final @Range(from = MIN_LEVEL, to = MAX_LEVEL) int level, final boolean splash) {
-        this(name, level, splash, false);
+        this(name, level, splash, DEFAULT_EXTENDED);
     }
 
     /**

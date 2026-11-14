@@ -18,12 +18,12 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Sound extends Wrapper {
-    private static final int MIN_VOLUME = 0;
-    private static final int DEFAULT_VOLUME = 1;
+    static final int DEFAULT_VOLUME = 1;
+    static final int DEFAULT_PITCH = 1;
 
+    private static final int MIN_VOLUME = 0;
     private static final int MIN_PITCH = 0;
     private static final int MAX_PITCH = 2;
-    private static final int DEFAULT_PITCH = 1;
 
     private @NotNull String name;
     @Range(from = MIN_VOLUME, to = Long.MAX_VALUE)

@@ -18,7 +18,7 @@ import java.util.Locale;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public final class Enchantment extends Wrapper {
-    private static final int MIN_LEVEL = 1;
+    static final int MIN_LEVEL = 1;
 
     private @NotNull String name;
     @Range(from = MIN_LEVEL, to = Integer.MAX_VALUE)
