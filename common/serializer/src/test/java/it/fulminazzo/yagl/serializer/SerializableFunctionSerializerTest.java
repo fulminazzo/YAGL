@@ -50,7 +50,7 @@ class SerializableFunctionSerializerTest extends SerializerTestHelper<GreetFunct
     void testSerializeCustomGreet() throws IOException {
         CustomGreet function = new CustomGreet("Hello!");
 
-        Map<?, ?> raw = readRaw(dump(function, "custom_greet"));
+        Map<?, ?> raw = readRawMap(dump(function, "custom_greet"));
         assertEquals(TYPE_CUSTOM_GREET, raw.get("type"));
         assertEquals("Hello!", raw.get("content"));
     }

@@ -31,7 +31,7 @@ class SerializerTestHelperTest extends SerializerTestHelper<Person> {
         File file = dump(person, "person");
         assertTrue(file.exists(), "File does not exist: " + file.getAbsolutePath());
 
-        Map<?, ?> raw = readRaw(file);
+        Map<?, ?> raw = readRawMap(file);
         assertNotNull(raw, "Expected non-null data");
         assertTrue(raw.containsKey("name"), "Expected 'name' key in serialized data");
         assertEquals(person.getName(), raw.get("name"), "Expected 'name' value to match");

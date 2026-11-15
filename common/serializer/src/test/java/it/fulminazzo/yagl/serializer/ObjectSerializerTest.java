@@ -38,7 +38,7 @@ class ObjectSerializerTest extends SerializerTestHelper<ObjectSerializerTest.Per
     void testSerialize() throws IOException {
         final Person person = new Person("Alex", 24);
 
-        Map<?, ?> raw = readRaw(dump(person, "person"));
+        Map<?, ?> raw = readRawMap(dump(person, "person"));
         assertEquals(person.getName(), raw.get("name"));
         assertEquals(person.getAge(), raw.get("age"));
     }

@@ -40,7 +40,7 @@ class TypedSerializerTest extends SerializerTestHelper<Cat> {
         persianCat.setAge(15);
         persianCat.setColor("orange");
 
-        Map<?, ?> raw = readRaw(dump(persianCat, "persian"));
+        Map<?, ?> raw = readRawMap(dump(persianCat, "persian"));
         assertEquals(persianCat.getName(), raw.get("name"));
         assertEquals(persianCat.getAge(), raw.get("age"));
         assertEquals(persianCat.getColor(), raw.get("color"));
@@ -53,7 +53,7 @@ class TypedSerializerTest extends SerializerTestHelper<Cat> {
         siameseCat.setAge(5);
         siameseCat.setRegion("Italy");
 
-        Map<?, ?> raw = readRaw(dump(siameseCat, "siamese"));
+        Map<?, ?> raw = readRawMap(dump(siameseCat, "siamese"));
         assertEquals(siameseCat.getName(), raw.get("name"));
         assertEquals(siameseCat.getAge(), raw.get("age"));
         assertEquals(siameseCat.getMaster(), raw.get("master"));

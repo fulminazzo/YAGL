@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.particle.*;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.YaglSerializer;
 import it.fulminazzo.yagl.wrapper.Enchantment;
@@ -20,7 +21,11 @@ class WrapperSerializersLoaderTest {
                 PotionEffect.class,
                 Potion.class,
                 Sound.class,
-                Color.class
+                Color.class,
+                PrimitiveParticleOption.class,
+                ColorParticleOption.class,
+                ItemParticleOption.class,
+                PotionParticleOption.class
         };
     }
 
