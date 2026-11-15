@@ -27,7 +27,8 @@ class WrapperSerializersLoaderTest {
                 ItemParticleOption.class,
                 PotionParticleOption.class,
                 DustParticleOption.class,
-                DustTransitionParticleOption.class
+                DustTransitionParticleOption.class,
+                BlockDataOption.class
         };
     }
 

@@ -47,6 +47,7 @@ public final class WrapperSerializersLoader implements SerializersLoader {
                                 .addProperty("to", new Property<>(Color.class, DustTransitionParticleOption::getTo))
                                 .addProperty("size", new Property<>(Float.class, DustTransitionParticleOption::getSize))
                 )
+                .registerSerializer(BlockDataOption.class, new BlockDataOptionSerializer())
         ;
     }
 
