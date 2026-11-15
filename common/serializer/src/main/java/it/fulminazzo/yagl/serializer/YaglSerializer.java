@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * <br>
  * Holds together many {@link Serializer}s of the YAGL project.
  */
-@SuppressWarnings("unchecked")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class YaglSerializer {
     private static @Nullable YaglSerializer instance;
@@ -56,7 +55,15 @@ public final class YaglSerializer {
             final @NotNull String path,
             final @NotNull String key
     ) throws SerializationException {
-        return (T) getSerializer(type).deserialize(new Node(rawData, path, key));
+        Object raw = getSerializer(type).deserialize(new Node(rawData, path, key));
+        try {
+            return type.cast(raw);
+        } catch (ClassCastException e) {
+            throw new SerializationException(
+                    "Invalid type for key '%s' in path '%s': expected %s but got %s",
+                    key, path, type.getName(), raw == null ? "null" : raw.getClass().getName()
+            );
+        }
     }
 
     /**
@@ -67,6 +74,7 @@ public final class YaglSerializer {
      * @return the serialized representation of the object
      * @throws SerializationException in case of any error
      */
+    @SuppressWarnings("unchecked")
     public <T> @Nullable Object serialize(final @Nullable T target) throws SerializationException {
         if (target == null) return null;
         else {
