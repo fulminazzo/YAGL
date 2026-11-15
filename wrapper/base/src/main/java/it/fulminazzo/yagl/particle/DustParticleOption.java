@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.particle;
 import it.fulminazzo.yagl.Color;
 import it.fulminazzo.yagl.structure.Pair;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An option used by {@link ParticleType#REDSTONE}.
  */
+@Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString

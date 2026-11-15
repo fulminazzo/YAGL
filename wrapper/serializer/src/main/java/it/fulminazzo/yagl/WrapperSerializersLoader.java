@@ -34,6 +34,19 @@ public final class WrapperSerializersLoader implements SerializersLoader {
                         PotionParticleOption.class,
                         PotionParticleOption::new
                 ))
+                .registerSerializer(DustParticleOption.class, new PropertyParticleOptionSerializer<>(
+                                m -> new DustParticleOption(m.get("color"), m.get("size"))
+                        )
+                                .addProperty("color", new Property<>(Color.class, DustParticleOption::getColor))
+                                .addProperty("size", new Property<>(Float.class, DustParticleOption::getSize))
+                )
+                .registerSerializer(DustTransitionParticleOption.class, new PropertyParticleOptionSerializer<>(
+                                m -> new DustTransitionParticleOption(m.get("from"), m.get("to"), m.get("size"))
+                        )
+                                .addProperty("from", new Property<>(Color.class, DustTransitionParticleOption::getFrom))
+                                .addProperty("to", new Property<>(Color.class, DustTransitionParticleOption::getTo))
+                                .addProperty("size", new Property<>(Float.class, DustTransitionParticleOption::getSize))
+                )
         ;
     }
 
