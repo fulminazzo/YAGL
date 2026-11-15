@@ -57,7 +57,9 @@ public final class YaglSerializer {
     ) throws SerializationException {
         Object raw = getSerializer(type).deserialize(new Node(rawData, path, key));
         try {
-            return type.cast(raw);
+            // Special case for double and float
+            if (raw instanceof Double && type == Float.class) return type.cast(((Double) raw).floatValue());
+            else return type.cast(raw);
         } catch (ClassCastException e) {
             throw new SerializationException(
                     "Invalid type for key '%s' in path '%s': expected %s but got %s",
