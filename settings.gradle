@@ -42,9 +42,8 @@ project(':item:item-base').projectDir = file('item/base')
 //project(':item:item-bukkit:item-legacy').projectDir = file('item/bukkit/legacy')
 //include ':item:item-bukkit:item-obsolete'
 //project(':item:item-bukkit:item-obsolete').projectDir = file('item/bukkit/obsolete')
-//TODO: re-enable
-//include 'item:item-serializer'
-//project(':item:item-serializer').projectDir = file('item/serializer')
+include 'item:item-serializer'
+project(':item:item-serializer').projectDir = file('item/serializer')
 
 include 'gui'
 include 'gui:gui-base'
