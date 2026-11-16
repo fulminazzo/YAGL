@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.util.Collections;
@@ -26,10 +27,6 @@ public final class FurnaceRecipe extends RecipeImpl {
     private float experience;
     @Range(from = 0, to = Long.MAX_VALUE)
     private double cookingTime;
-
-    private FurnaceRecipe() {
-        this("pending");
-    }
 
     /**
      * Instantiates a new Furnace recipe.
@@ -85,14 +82,13 @@ public final class FurnaceRecipe extends RecipeImpl {
     }
 
     @Override
-    public @NotNull FurnaceRecipe setOutput(final @NotNull Item output) {
-        this.output = output.copy(Item.class);
-        return this;
+    public @NotNull List<Item> getIngredients() {
+        return this.ingredient == null ? Collections.emptyList() : Collections.singletonList(this.ingredient);
     }
 
     @Override
-    public @NotNull List<Item> getIngredients() {
-        return this.ingredient == null ? Collections.emptyList() : Collections.singletonList(this.ingredient);
+    public @NotNull FurnaceRecipe setOutput(final @Nullable Item output) {
+        return (FurnaceRecipe) super.setOutput(output);
     }
 
 }

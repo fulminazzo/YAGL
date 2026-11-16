@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,7 @@ public interface Recipe extends Iterable<Item> {
      * @param item the item
      * @return this recipe
      */
-    @NotNull Recipe setOutput(final @NotNull Item item);
+    @NotNull Recipe setOutput(final @Nullable Item item);
 
     /**
      * Gets the output of the recipe.

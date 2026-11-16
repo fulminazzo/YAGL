@@ -4,6 +4,7 @@ import it.fulminazzo.yagl.item.Item;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,10 +20,6 @@ public final class ShapelessRecipe extends RecipeImpl {
     static final int MAX_SIZE = 9;
     private final @NotNull List<Item> ingredients;
 
-    private ShapelessRecipe() {
-        this("pending");
-    }
-
     /**
      * Instantiates a new Shapeless recipe.
      *
@@ -31,12 +28,6 @@ public final class ShapelessRecipe extends RecipeImpl {
     public ShapelessRecipe(final @NotNull String id) {
         super(id);
         this.ingredients = new ArrayList<>();
-    }
-
-    @Override
-    public @NotNull ShapelessRecipe setOutput(final @NotNull Item output) {
-        this.output = output.copy(Item.class);
-        return this;
     }
 
     /**
@@ -89,6 +80,11 @@ public final class ShapelessRecipe extends RecipeImpl {
     @Override
     public @NotNull List<Item> getIngredients() {
         return Collections.unmodifiableList(this.ingredients);
+    }
+
+    @Override
+    public @NotNull ShapelessRecipe setOutput(final @Nullable Item output) {
+        return (ShapelessRecipe) super.setOutput(output);
     }
 
 }

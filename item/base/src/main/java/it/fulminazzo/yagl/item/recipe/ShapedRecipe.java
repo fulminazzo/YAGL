@@ -24,10 +24,6 @@ public final class ShapedRecipe extends RecipeImpl {
     @Getter
     private final @NotNull Shape shape;
 
-    private ShapedRecipe() {
-        this("pending");
-    }
-
     /**
      * Instantiates a new Shaped recipe.
      *
@@ -37,12 +33,6 @@ public final class ShapedRecipe extends RecipeImpl {
         super(id);
         this.shape = new Shape();
         this.ingredients = new LinkedList<>();
-    }
-
-    @Override
-    public @NotNull ShapedRecipe setOutput(final @NotNull Item output) {
-        this.output = output.copy(Item.class);
-        return this;
     }
 
     /**
@@ -99,6 +89,11 @@ public final class ShapedRecipe extends RecipeImpl {
     @Override
     public @NotNull List<Item> getIngredients() {
         return Collections.unmodifiableList(this.ingredients);
+    }
+
+    @Override
+    public @NotNull ShapedRecipe setOutput(final @Nullable Item output) {
+        return (ShapedRecipe) super.setOutput(output);
     }
 
     /**
