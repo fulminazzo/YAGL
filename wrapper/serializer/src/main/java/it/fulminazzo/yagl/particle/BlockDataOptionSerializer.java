@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A {@link Serializer} for {@link BlockDataOption}.
+ *
+ * @see BlockDataOption
+ * @see Serializer
  */
 public final class BlockDataOptionSerializer implements Serializer<BlockDataOption> {
 

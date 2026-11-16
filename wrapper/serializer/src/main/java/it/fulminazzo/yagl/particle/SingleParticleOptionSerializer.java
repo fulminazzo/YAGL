@@ -17,6 +17,8 @@ import java.util.function.Function;
  *
  * @param <T> the type of the value
  * @param <P> the type of the particle option
+ * @see ParticleOption
+ * @see Serializer
  */
 public final class SingleParticleOptionSerializer<T, P extends ParticleOption<T>> implements Serializer<P> {
     private final @NotNull Class<T> fieldType;

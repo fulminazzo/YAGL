@@ -9,6 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A {@link Serializer} for {@link MaterialDataOption}.
+ *
+ * @see MaterialDataOption
+ * @see Serializer
  */
 public final class MaterialDataOptionSerializer implements Serializer<MaterialDataOption> {
 

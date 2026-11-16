@@ -13,6 +13,9 @@ import java.util.function.Function;
  * A special {@link Serializer} for {@link ParticleOption} that have two or more properties.
  *
  * @param <P> the type of the particle option
+ * @see Property
+ * @see ParticleOption
+ * @see Serializer
  */
 @RequiredArgsConstructor
 public final class PropertyParticleOptionSerializer<P extends ParticleOption<?>> extends ObjectSerializer<P> {

@@ -97,7 +97,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
      */
     @SuppressWarnings("unused")
     protected void loadCommonData(final @NotNull T value, final @NotNull DataNode node) throws SerializationException {
-
+        // Empty method on purpose, for implementations to optionally override.
     }
 
     /**
@@ -109,7 +109,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
      */
     @SuppressWarnings("unused")
     protected void dumpCommonData(final @NotNull T value, final @NotNull Map<String, Object> output) throws SerializationException {
-
+        // Empty method on purpose, for implementations to optionally override.
     }
 
     private @NotNull ObjectSerializer<T> getSerializer(final @NotNull T value) {
