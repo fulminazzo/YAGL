@@ -55,7 +55,9 @@ public class Node {
     /**
      * Attempts to retrieve the internal value casting it to the requested type.
      *
-     * @param type the expected type of the value
+     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
+     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
+     *             to complete deserialization.
      * @param <T>  the type of the value
      * @return the value
      * @throws SerializationException if the value is not of the expected type or was {@code null}
@@ -69,7 +71,9 @@ public class Node {
     /**
      * Attempts to retrieve the internal value casting it to the requested type.
      *
-     * @param type the expected type of the value
+     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
+     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
+     *             to complete deserialization.
      * @param <T>  the type of the value
      * @return the value or {@code null}
      * @throws SerializationException if the value is not of the expected type
@@ -81,7 +85,9 @@ public class Node {
     /**
      * Attempts to retrieve the internal value casting it to the requested type.
      *
-     * @param type the expected type of the value
+     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
+     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
+     *             to complete deserialization.
      * @param <T>  the type of the value
      * @return the value or an empty optional
      * @throws SerializationException if the value is not of the expected type

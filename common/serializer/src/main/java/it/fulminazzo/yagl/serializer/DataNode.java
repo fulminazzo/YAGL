@@ -50,7 +50,9 @@ public final class DataNode extends Node {
      * Attempts to retrieve the value corresponding to the given key from the internal data.
      *
      * @param key  the name of the key
-     * @param type the expected type of the value
+     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
+     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
+     *             to complete deserialization.
      * @param <T>  the type of the value
      * @return the value corresponding to the given key
      * @throws SerializationException if the value is not of the expected type or was not found
@@ -63,7 +65,9 @@ public final class DataNode extends Node {
      * Attempts to retrieve the value corresponding to the given key from the internal data.
      *
      * @param key  the name of the key
-     * @param type the expected type of the value
+     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
+     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
+     *             to complete deserialization.
      * @param <T>  the type of the value
      * @return the value corresponding to the given key, or {@code null} if the key is not present
      * @throws SerializationException if the value is not of the expected type
@@ -76,7 +80,9 @@ public final class DataNode extends Node {
      * Attempts to retrieve the value corresponding to the given key from the internal data.
      *
      * @param key  the name of the key
-     * @param type the expected type of the value
+     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
+     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
+     *             to complete deserialization.
      * @param <T>  the type of the value
      * @return the value corresponding to the given key, or an empty optional if the key is not present
      * @throws SerializationException if the value is not of the expected type
