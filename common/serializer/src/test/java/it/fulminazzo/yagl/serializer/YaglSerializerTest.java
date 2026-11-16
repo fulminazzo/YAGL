@@ -34,7 +34,8 @@ class YaglSerializerTest {
                 {Map.of("Hello", "world"), Map.of("Hello", "world")},
                 {new PersianCat("Billy"), CAT_SERIALIZED_DATA},
                 {new ItalianGreet(), "ITALIAN_GREET"},
-                {List.of(new PersianCat("Billy"), new ItalianGreet()), List.of(CAT_SERIALIZED_DATA, "ITALIAN_GREET")}
+                {List.of(new PersianCat("Billy"), new ItalianGreet()), List.of(CAT_SERIALIZED_DATA, "ITALIAN_GREET")},
+                {Map.of(new PersianCat("Billy"), new ItalianGreet()), new LinkedHashMap<>(Map.of(CAT_SERIALIZED_DATA, "ITALIAN_GREET"))}
         };
     }
 
@@ -46,10 +47,41 @@ class YaglSerializerTest {
         assertEquals(expected, serializer.deserializeCollection(rawData, Cat.class, "", ""));
     }
 
+    @Test
+    void testThatDeserializeMapWorksWithCustomKeyAndValue() throws SerializationException {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        Map<?, ?> rawData = new LinkedHashMap<>(Map.of(CAT_SERIALIZED_DATA, "ITALIAN_GREET"));
+        Map<?, ?> expected = new LinkedHashMap<>(Map.of(new PersianCat("Billy"), new ItalianGreet()));
+        assertEquals(expected, serializer.deserializeMap(rawData, Cat.class, GreetFunction.class, "", ""));
+    }
+
+    @Test
+    void testThatDeserializeMapWorksWithSimpleTypes() throws SerializationException {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        Map<?, ?> rawData = Map.of("key1", 1, "key2", 2);
+        Map<?, ?> expected = Map.of("key1", 1, "key2", 2);
+        assertEquals(expected, serializer.deserializeMap(rawData, String.class, Integer.class, "", ""));
+    }
+
+    @Test
+    void testThatDeserializeMapReturnsNullForNullData() throws SerializationException {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        assertEquals(null, serializer.deserializeMap(null, String.class, Integer.class, "", ""));
+    }
+
+    @Test
+    void testThatDeserializeMapThrowsForNonMapData() throws SerializationException {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        org.junit.jupiter.api.Assertions.assertThrows(
+                SerializationException.class,
+                () -> serializer.deserializeMap(List.of(1, 2, 3), String.class, Integer.class, "", "")
+        );
+    }
+
     @ParameterizedTest
     @MethodSource("getSerializationDataTest")
     void testThatDeserializeWorks(final @Nullable Object expected, final @Nullable Object rawData) throws SerializationException {
-        assumeTrue(expected == null || !Collection.class.isAssignableFrom(expected.getClass()));
+        assumeTrue(expected == null || (!Collection.class.isAssignableFrom(expected.getClass()) && !Map.class.isAssignableFrom(expected.getClass())));
         YaglSerializer serializer = YaglSerializer.getInstance();
         Class<?> type = expected == null ? String.class : expected.getClass();
         Object serialized = serializer.deserialize(rawData, type);
