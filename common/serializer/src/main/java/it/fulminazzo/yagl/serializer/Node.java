@@ -96,6 +96,8 @@ public class Node {
         Object raw = data;
         if (raw == null) return Optional.empty();
         try {
+            // Special case for double and float
+            if (raw instanceof Double && type == Float.class) raw = ((Double) raw).floatValue();
             return Optional.of(type.cast(raw));
         } catch (ClassCastException e) {
             throw new SerializationException(
