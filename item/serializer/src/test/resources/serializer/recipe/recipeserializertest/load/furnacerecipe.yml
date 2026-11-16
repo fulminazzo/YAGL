@@ -1,0 +1,10 @@
+type: FURNACE
+id: 'test_furnace'
+ingredient:
+  material: RAW_IRON
+  amount: 1
+output:
+  material: STONE
+  amount: 1
+experience: 0.1
+cookingTime: 10.0

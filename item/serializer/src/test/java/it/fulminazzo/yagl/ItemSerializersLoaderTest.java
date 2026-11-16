@@ -1,6 +1,9 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
+import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
+import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.YaglSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +16,11 @@ class ItemSerializersLoaderTest {
 
     private static Class<?>[] testTypes() {
         return new Class<?>[]{
-                ShapedRecipe.Shape.class
+                ShapedRecipe.Shape.class,
+                Recipe.class,
+                ShapedRecipe.class,
+                ShapelessRecipe.class,
+                FurnaceRecipe.class,
         };
     }
 

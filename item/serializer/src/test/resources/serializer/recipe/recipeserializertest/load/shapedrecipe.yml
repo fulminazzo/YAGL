@@ -1,0 +1,9 @@
+type: SHAPED
+id: 'test_shaped'
+shape: 1x1
+ingredients:
+  - material: COBBLESTONE
+    amount: 1
+output:
+  material: STONE
+  amount: 1
