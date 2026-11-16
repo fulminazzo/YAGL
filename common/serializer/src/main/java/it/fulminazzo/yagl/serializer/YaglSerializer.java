@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -20,6 +19,55 @@ public final class YaglSerializer {
 
     private final @NotNull Map<Class<?>, Serializer<?>> serializers = new ConcurrentHashMap<>();
     private final @NotNull Serializer<?> baseTypesSerializer = new IdentitySerializer();
+
+    private final @NotNull Serializer<?> collectionSerializer = new CollectionSerializer(this);
+    /**
+     * Converts the given raw data into a {@link Collection} with its element deserialized to the given type
+     * if a {@link Serializer} is registered for it.
+     *
+     * @param rawData        the raw data
+     * @param componentsType the type of the collection elements
+     * @param <T>            the type of the collection elements
+     * @return the deserialized collection
+     * @throws SerializationException in case of any error
+     */
+    public <T> @Nullable Collection<T> deserializeCollection(final @Nullable Object rawData,
+                                                             final @NotNull Class<T> componentsType) throws SerializationException {
+        return deserializeCollection(rawData, componentsType, "", "");
+    }
+
+    /**
+     * Converts the given raw data into a {@link Collection} with its element deserialized to the given type
+     * if a {@link Serializer} is registered for it.
+     *
+     * @param rawData        the raw data
+     * @param componentsType the type of the collection elements
+     * @param path           the current path to the raw data.
+     *                       This information is only useful if the raw data has been extracted from a configuration file.
+     *                       Otherwise, it can be set as an empty string.
+     * @param key            the current key of the raw data.
+     *                       This information is only useful if the raw data has been extracted from a configuration file.
+     *                       Otherwise, it can be set as an empty string.
+     * @param <T>            the type of the collection elements
+     * @return the deserialized collection
+     * @throws SerializationException in case of any error
+     */
+    public <T> @Nullable Collection<T> deserializeCollection(final @Nullable Object rawData,
+                                                             final @NotNull Class<T> componentsType,
+                                                             final @NotNull String path,
+                                                             final @NotNull String key) throws SerializationException {
+        if (rawData == null) return null;
+        if (rawData instanceof Collection) {
+            Collection<?> rawCollection = (Collection<?>) rawData;
+            List<T> result = new ArrayList<>(rawCollection.size());
+            for (Object raw : rawCollection)
+                result.add(deserialize(raw, componentsType, path, key));
+            return result;
+        } else throw new SerializationException(
+                "Invalid type for key '%s' in path '%s': expected list but got %s",
+                key, path, rawData.getClass().getName()
+        );
+    }
 
     /**
      * Converts the given raw data into an object of the given type if a {@link Serializer} is registered for it.
@@ -106,6 +154,7 @@ public final class YaglSerializer {
      * @throws SerializationException if no serializer could be found
      */
     public @NotNull Serializer<?> getSerializer(final @NotNull Class<?> type) throws SerializationException {
+        if (Collection.class.isAssignableFrom(type)) return collectionSerializer;
         Package typePackage = type.getPackage();
         if (typePackage != null && typePackage.getName().startsWith("java."))
             return baseTypesSerializer;

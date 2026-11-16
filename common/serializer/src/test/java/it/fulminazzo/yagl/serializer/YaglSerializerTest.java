@@ -6,14 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class YaglSerializerTest {
+    private static final HashMap<String, Object> CAT_SERIALIZED_DATA = new HashMap<>(Map.of(
+            "name", "Billy",
+            "type", "PERSIAN",
+            "age", 0
+    )) {{
+        put("color", null);
+    }};
 
     private static @NotNull Object[][] getSerializationDataTest() {
         return new Object[][]{
@@ -26,20 +32,24 @@ class YaglSerializerTest {
                 {"Hello", "Hello"},
                 {List.of(1, 2, 3), List.of(1, 2, 3)},
                 {Map.of("Hello", "world"), Map.of("Hello", "world")},
-                {new PersianCat("Billy"), new HashMap<String, Object>(Map.of(
-                        "name", "Billy",
-                        "type", "PERSIAN",
-                        "age", 0
-                )) {{
-                    put("color", null);
-                }}},
-                {new ItalianGreet(), "ITALIAN_GREET"}
+                {new PersianCat("Billy"), CAT_SERIALIZED_DATA},
+                {new ItalianGreet(), "ITALIAN_GREET"},
+                {List.of(new PersianCat("Billy"), new ItalianGreet()), List.of(CAT_SERIALIZED_DATA, "ITALIAN_GREET")}
         };
+    }
+
+    @Test
+    void testThatDeserializeCollectionWorks() throws SerializationException {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        List<?> rawData = List.of(CAT_SERIALIZED_DATA);
+        List<?> expected = List.of(new PersianCat("Billy"));
+        assertEquals(expected, serializer.deserializeCollection(rawData, Cat.class, "", ""));
     }
 
     @ParameterizedTest
     @MethodSource("getSerializationDataTest")
     void testThatDeserializeWorks(final @Nullable Object expected, final @Nullable Object rawData) throws SerializationException {
+        assumeTrue(expected == null || !Collection.class.isAssignableFrom(expected.getClass()));
         YaglSerializer serializer = YaglSerializer.getInstance();
         Class<?> type = expected == null ? String.class : expected.getClass();
         Object serialized = serializer.deserialize(rawData, type);
