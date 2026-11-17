@@ -137,6 +137,16 @@ class BukkitRecipeItemImpl extends RecipeItemImpl implements BukkitRecipeItem {
     }
 
     @Override
+    public @NotNull BukkitRecipeItem setComponent(final @NotNull ItemComponent component) {
+        return (BukkitRecipeItem) super.setComponent(component);
+    }
+
+    @Override
+    public @NotNull BukkitRecipeItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (BukkitRecipeItem) super.removeComponent(componentType);
+    }
+
+    @Override
     public @NotNull BukkitRecipeItem addRecipes(final Recipe @NotNull ... recipes) {
         return (BukkitRecipeItem) super.addRecipes(recipes);
     }

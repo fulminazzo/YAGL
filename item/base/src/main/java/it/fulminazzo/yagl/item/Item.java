@@ -439,6 +439,48 @@ public interface Item extends AbstractItem {
     int getCustomModelData();
 
     /**
+     * Gets the component of the given type.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
+     *
+     * @param componentType the type of the component
+     * @param <C>           the component type
+     * @return the component or {@code null} if not found
+     */
+    @Nullable <C extends ItemComponent> C getComponent(final @NotNull Class<C> componentType);
+
+    /**
+     * Gets all the components of this item.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
+     *
+     * @return the components
+     */
+    @NotNull Collection<ItemComponent> getComponents();
+
+    /**
+     * Sets the component to this item.
+     * <br>
+     * Will <b>override</b> any existing component of the same type.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
+     *
+     * @param component the component
+     * @return this item
+     */
+    @NotNull Item setComponent(final @NotNull ItemComponent component);
+
+    /**
+     * Removes the component of the given type.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
+     *
+     * @param componentType the type of the component
+     * @return this item
+     */
+    @NotNull Item removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
+
+    /**
      * Compares this item with the given one.
      * Uses the given {@link ItemField}s to skip checks on those.
      *

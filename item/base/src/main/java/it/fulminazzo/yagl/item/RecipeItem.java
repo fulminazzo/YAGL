@@ -178,6 +178,12 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     @NotNull RecipeItem setUnbreakable(final boolean unbreakable);
 
     @Override
+    @NotNull RecipeItem setComponent(final @NotNull ItemComponent component);
+
+    @Override
+    @NotNull RecipeItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
+
+    @Override
     @NotNull RecipeItem copy();
 
 }

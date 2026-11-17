@@ -172,6 +172,16 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
+    public @NotNull I setComponent(final @NotNull ItemComponent component) {
+        return (I) super.setComponent(component);
+    }
+
+    @Override
+    public @NotNull I removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (I) super.removeComponent(componentType);
+    }
+
+    @Override
     public @NotNull I copy() {
         return (I) super.copy();
     }

@@ -177,6 +177,12 @@ public interface BukkitItem extends Item {
     }
 
     @Override
+    @NotNull BukkitItem setComponent(final @NotNull ItemComponent component);
+
+    @Override
+    @NotNull BukkitItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
+
+    @Override
     @NotNull BukkitItem setCustomModelData(final int customModelData);
 
     @Override

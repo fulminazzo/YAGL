@@ -8,6 +8,7 @@ import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -174,6 +175,26 @@ class ItemTest {
         @Override
         public @NotNull Item setCustomModelData(int customModelData) {
             return null;
+        }
+
+        @Override
+        public @NotNull Collection<ItemComponent> getComponents() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public @Nullable <C extends ItemComponent> C getComponent(@NotNull Class<C> componentType) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public @NotNull Item setComponent(@NotNull ItemComponent component) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public @NotNull Item removeComponent(@NotNull Class<? extends ItemComponent> componentType) {
+            throw new UnsupportedOperationException();
         }
 
         @Override

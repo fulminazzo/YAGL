@@ -160,6 +160,12 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     }
 
     @Override
+    @NotNull BukkitRecipeItem setComponent(final @NotNull ItemComponent component);
+
+    @Override
+    @NotNull BukkitRecipeItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
+
+    @Override
     @NotNull BukkitRecipeItem setUnbreakable(final boolean unbreakable);
 
     @Override

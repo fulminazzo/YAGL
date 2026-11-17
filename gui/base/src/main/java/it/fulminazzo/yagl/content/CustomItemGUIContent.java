@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.content;
 
 import it.fulminazzo.yagl.item.Constants;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.item.ItemComponent;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
@@ -125,6 +126,28 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     @Override
     public int getCustomModelData() {
         return this.item.getCustomModelData();
+    }
+
+    @Override
+    public @Nullable <C extends ItemComponent> C getComponent(final @NotNull Class<C> componentType) {
+        return this.item.getComponent(componentType);
+    }
+
+    @Override
+    public @NotNull Collection<ItemComponent> getComponents() {
+        return this.item.getComponents();
+    }
+
+    @Override
+    public @NotNull C setComponent(final @NotNull ItemComponent component) {
+        this.item.setComponent(component);
+        return (C) this;
+    }
+
+    @Override
+    public @NotNull C removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        this.item.removeComponent(componentType);
+        return (C) this;
     }
 
     @Override

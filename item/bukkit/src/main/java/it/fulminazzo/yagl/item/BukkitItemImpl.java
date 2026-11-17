@@ -111,4 +111,14 @@ class BukkitItemImpl extends ItemImpl implements BukkitItem {
         return (BukkitItem) super.setCustomModelData(customModelData);
     }
 
+    @Override
+    public @NotNull BukkitItem setComponent(final @NotNull ItemComponent component) {
+        return (BukkitItem) super.setComponent(component);
+    }
+
+    @Override
+    public @NotNull BukkitItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (BukkitItem) super.removeComponent(componentType);
+    }
+
 }

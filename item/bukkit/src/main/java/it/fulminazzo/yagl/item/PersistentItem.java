@@ -252,6 +252,16 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
+    public @NotNull PersistentItem setComponent(final @NotNull ItemComponent component) {
+        return (PersistentItem) super.setComponent(component);
+    }
+
+    @Override
+    public @NotNull PersistentItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (PersistentItem) super.removeComponent(componentType);
+    }
+
+    @Override
     public @NotNull PersistentItem setMaterial(final @NotNull String material) {
         return (PersistentItem) super.setMaterial(material);
     }
