@@ -5,7 +5,6 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -104,11 +103,6 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     @Override
     public @NotNull Set<ItemFlag> getItemFlags() {
         return this.item.getItemFlags();
-    }
-
-    @Override
-    public @NotNull Set<PotionEffect> getPotionEffects() {
-        return this.item.getPotionEffects();
     }
 
     @Override
@@ -226,36 +220,6 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     @Override
     public @NotNull C removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (C) Item.super.removeItemFlags(itemFlags);
-    }
-
-    @Override
-    public @NotNull C addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (C) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (C) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (C) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (C) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (C) Item.super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (C) Item.super.setPotionEffects(potionEffects);
     }
 
     @Override

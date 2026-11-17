@@ -8,7 +8,6 @@ import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +31,6 @@ class ItemImpl extends Copiable<Item> implements Item {
     protected final @NotNull List<String> lore;
     protected final @NotNull Set<Enchantment> enchantments;
     protected final @NotNull Set<ItemFlag> itemFlags;
-    protected final @NotNull Set<PotionEffect> potionEffects;
     protected boolean unbreakable;
     protected int customModelData;
 
@@ -65,7 +63,6 @@ class ItemImpl extends Copiable<Item> implements Item {
         this.lore = new ArrayList<>();
         this.enchantments = new EnchantmentSet();
         this.itemFlags = new HashSet<>();
-        this.potionEffects = new HashSet<>();
     }
 
     @SuppressWarnings("unchecked")
@@ -79,7 +76,6 @@ class ItemImpl extends Copiable<Item> implements Item {
                 .setLore(lore)
                 .addEnchantments(enchantments)
                 .addItemFlags(itemFlags)
-                .setPotionEffects(potionEffects)
                 .setUnbreakable(unbreakable)
                 .setCustomModelData(customModelData);
     }

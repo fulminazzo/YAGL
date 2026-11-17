@@ -2,7 +2,6 @@ package it.fulminazzo.yagl.item;
 
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -160,36 +159,6 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     @Override
     public @NotNull I removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
         return (I) super.removeItemFlags(itemFlags);
-    }
-
-    @Override
-    public @NotNull I addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (I) super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (I) super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (I) super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (I) super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (I) super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (I) super.setPotionEffects(potionEffects);
     }
 
     @Override

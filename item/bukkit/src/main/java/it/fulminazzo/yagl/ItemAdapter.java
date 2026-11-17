@@ -79,12 +79,13 @@ public final class ItemAdapter {
                 }
             });
 
-            if (meta instanceof PotionMeta) {
-                PotionMeta potionMeta = (PotionMeta) meta;
-                potionMeta.getCustomEffects().stream()
-                        .map(WrappersAdapter::potionEffectToWPotionEffect)
-                        .forEach(item::addPotionEffects);
-            }
+            //TODO: PotionMeta support
+//            if (meta instanceof PotionMeta) {
+//                PotionMeta potionMeta = (PotionMeta) meta;
+//                potionMeta.getCustomEffects().stream()
+//                        .map(WrappersAdapter::potionEffectToWPotionEffect)
+//                        .forEach(item::addPotionEffects);
+//            }
         }
         return item;
     }
@@ -122,9 +123,10 @@ public final class ItemAdapter {
 
             if (meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta) meta;
-                item.getPotionEffects().stream()
-                        .map(WrappersAdapter::wPotionEffectToPotionEffect)
-                        .forEach(p -> potionMeta.addCustomEffect(p, true));
+                //TODO: PotionMeta support
+//                item.getPotionEffects().stream()
+//                        .map(WrappersAdapter::wPotionEffectToPotionEffect)
+//                        .forEach(p -> potionMeta.addCustomEffect(p, true));
             }
 
             try {

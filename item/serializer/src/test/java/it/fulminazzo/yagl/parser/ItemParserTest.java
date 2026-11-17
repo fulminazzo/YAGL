@@ -2,7 +2,6 @@ package it.fulminazzo.yagl.parser;
 
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import it.fulminazzo.yamlparser.configuration.FileConfiguration;
 import it.fulminazzo.yamlparser.configuration.IConfiguration;
 import it.fulminazzo.yamlparser.utils.FileUtils;
@@ -61,11 +60,7 @@ class ItemParserTest {
                 .setLore("&eDrink this to feel like", "&ea super hero!")
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS)
                 .setUnbreakable(true)
-                .setCustomModelData(1337)
-                .setPotionEffects(
-                        new PotionEffect("strength", 10, 2),
-                        new PotionEffect("speed", 20, 1)
-                );
+                .setCustomModelData(1337);
 
         File output = new File("build/resources/test/potion-item.yml");
         if (output.exists()) FileUtils.deleteFile(output);
@@ -101,8 +96,8 @@ class ItemParserTest {
         FileConfiguration configuration = new FileConfiguration(output);
         configuration.set("item", item);
         item.setMaterial("stone").removeEnchantments("ENCHANT_1", "ENCHANT_2")
-                        .addEnchantment("enchant_1", 10)
-                        .addEnchantment("enchant_2", 20);
+                .addEnchantment("enchant_1", 10)
+                .addEnchantment("enchant_2", 20);
         configuration.save();
 
         configuration = new FileConfiguration(output);

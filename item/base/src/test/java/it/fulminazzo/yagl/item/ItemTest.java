@@ -6,7 +6,6 @@ import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.reflect.ReflectException;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -82,20 +81,6 @@ class ItemTest {
     }
 
     @Test
-    void testRemovePotionEffect() {
-        assertEquals(1, Item.newItem()
-                        .setPotionEffects(
-                                new PotionEffect("strength", 10),
-                                new PotionEffect("speed", 5)
-                        )
-                        .removePotionEffects(
-                                new PotionEffect("speed", 5)
-                        )
-                        .getPotionEffects().size(),
-                "After removal there should be only one potion effect");
-    }
-
-    @Test
     void testIsNotSimilar() {
         Item i1 = Item.newItem().setAmount(1).setMaterial("grass").setDisplayName("Hello world");
         Item i2 = Item.newItem().setAmount(1).setMaterial("glass").setDisplayName("Hello world");
@@ -127,7 +112,6 @@ class ItemTest {
         private final List<String> lore = new LinkedList<>();
         private final Set<Enchantment> enchantments = new EnchantmentSet();
         private final Set<ItemFlag> itemFlags = new LinkedHashSet<>();
-        private final Set<PotionEffect> potionEffects = new LinkedHashSet<>();
         private boolean unbreakable;
         private int customModelData;
 
@@ -141,7 +125,6 @@ class ItemTest {
                     .setLore(lore)
                     .addEnchantments(enchantments)
                     .addItemFlags(itemFlags)
-                    .setPotionEffects(potionEffects)
                     .setUnbreakable(unbreakable)
                     .setCustomModelData(customModelData);
             return copy;
