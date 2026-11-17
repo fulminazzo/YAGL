@@ -227,7 +227,12 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull PersistentItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (PersistentItem) super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull PersistentItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (PersistentItem) super.addItemFlags(itemFlags);
     }
 
@@ -237,7 +242,12 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull PersistentItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem removeItemFlags(final String @NotNull ... itemFlags) {
+        return (PersistentItem) super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull PersistentItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 

@@ -150,7 +150,12 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     }
 
     @Override
-    default @NotNull RecipeItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull RecipeItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (RecipeItem) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull RecipeItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (RecipeItem) Item.super.addItemFlags(itemFlags);
     }
 
@@ -160,7 +165,12 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     }
 
     @Override
-    default @NotNull RecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull RecipeItem removeItemFlags(final String @NotNull ... itemFlags) {
+        return (RecipeItem) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull RecipeItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
         return (RecipeItem) Item.super.removeItemFlags(itemFlags);
     }
 

@@ -4,7 +4,6 @@ import it.fulminazzo.fulmicollection.interfaces.functions.BiFunctionException;
 import it.fulminazzo.fulmicollection.interfaces.functions.TriConsumer;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.RecipeItem;
-import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
@@ -49,7 +48,7 @@ public class ItemParser extends YAMLParser<Item> {
                 itemSection.getOptional("unbreakable", Boolean.class).ifPresent(item::setUnbreakable);
                 itemSection.getOptional("custom-model-data", Integer.class).ifPresent(item::setCustomModelData);
                 itemSection.getListOptional("enchantments", Enchantment.class).ifPresent(item::addEnchantments);
-                itemSection.getListOptional("item-flags", ItemFlag.class).ifPresent(item::addItemFlags);
+                itemSection.getListOptional("item-flags", String.class).ifPresent(item::addItemFlags);
 
                 if (itemSection.contains("recipes")) {
                     List<Recipe> recipes = itemSection.getList("recipes", Recipe.class);
@@ -76,7 +75,7 @@ public class ItemParser extends YAMLParser<Item> {
                 itemSection.set("display-name", MessageUtils.decolor(i.getDisplayName()));
                 itemSection.set("lore", i.getLore().stream().map(MessageUtils::decolor).collect(Collectors.toList()));
                 itemSection.setList("enchantments", i.getEnchantments());
-                itemSection.set("item-flags", i.getItemFlags().stream().map(Enum::name).map(flag -> flag.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
+                itemSection.set("item-flags", i.getItemFlags().stream().map(flag -> flag.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
                 itemSection.set("unbreakable", i.isUnbreakable());
                 itemSection.set("custom-model-data", i.getCustomModelData());
 

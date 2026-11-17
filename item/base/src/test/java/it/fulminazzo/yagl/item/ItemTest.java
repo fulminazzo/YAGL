@@ -111,7 +111,7 @@ class ItemTest {
         private String displayName = "";
         private final List<String> lore = new LinkedList<>();
         private final Set<Enchantment> enchantments = new EnchantmentSet();
-        private final Set<ItemFlag> itemFlags = new LinkedHashSet<>();
+        private final Set<String> itemFlags = new LinkedHashSet<>();
         private boolean unbreakable;
         private int customModelData;
 

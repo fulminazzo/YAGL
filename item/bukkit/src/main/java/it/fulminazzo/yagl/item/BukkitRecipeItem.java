@@ -135,7 +135,12 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     }
 
     @Override
-    default @NotNull BukkitRecipeItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitRecipeItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (BukkitRecipeItem) RecipeItem.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.addItemFlags(itemFlags);
     }
 
@@ -145,7 +150,12 @@ public interface BukkitRecipeItem extends RecipeItem, BukkitItem {
     }
 
     @Override
-    default @NotNull BukkitRecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitRecipeItem removeItemFlags(final String @NotNull ... itemFlags) {
+        return (BukkitRecipeItem) RecipeItem.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull BukkitRecipeItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
         return (BukkitRecipeItem) RecipeItem.super.removeItemFlags(itemFlags);
     }
 

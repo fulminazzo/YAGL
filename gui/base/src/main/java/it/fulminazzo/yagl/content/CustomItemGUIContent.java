@@ -101,7 +101,7 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull Set<ItemFlag> getItemFlags() {
+    public @NotNull Set<String> getItemFlags() {
         return this.item.getItemFlags();
     }
 
@@ -208,7 +208,12 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull C addItemFlags(final String @NotNull ... itemFlags) {
+        return (C) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull C addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (C) Item.super.addItemFlags(itemFlags);
     }
 
@@ -218,7 +223,12 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull C removeItemFlags(final String @NotNull ... itemFlags) {
+        return (C) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull C removeItemFlags(final @NotNull Collection<String> itemFlags) {
         return (C) Item.super.removeItemFlags(itemFlags);
     }
 

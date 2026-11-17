@@ -1,117 +1,34 @@
 package it.fulminazzo.yagl.item.field;
 
 /**
- * Wrapper for Bukkit ItemFlag counterpart.
+ * An item flag is a special attribute that can be applied to an item in order to have a special behavior.
  * <br>
- * NOTE: some flags may not be available in some versions.
+ * In this class you will find the <b>most common</b> and <b>widely used</b> item flags.
+ * However, {@link it.fulminazzo.yagl.item.Item} provides support for <b>all</b> item flags of the Minecraft version
+ * by specifying them with a <b>string</b> representation.
+ *
+ * @see it.fulminazzo.yagl.item.Item
  */
 public enum ItemFlag {
-    HIDE_ENCHANTS,
+    /**
+     * Hides the attributes of the item (like damage or attack speed).
+     */
     HIDE_ATTRIBUTES,
-    HIDE_UNBREAKABLE,
+    /**
+     * Hides the durability of the item.
+     */
     HIDE_DESTROYS,
+    /**
+     * Hides the enchantments applied to the item.
+     */
+    HIDE_ENCHANTS,
+    /**
+     * Hides the text containing the blocks on which the item can be placed.
+     */
     HIDE_PLACED_ON,
-    HIDE_POTION_EFFECTS,
-    HIDE_DYE,
-    // Available since 1.19+
-    HIDE_ARMOR_TRIM,
-    // Available since 1.20+
-    HIDE_ADDITIONAL_TOOLTIP,
-    // Available since 1.21+
-    HIDE_ATTRIBUTE_MODIFIERS,
-    HIDE_AXOLOTL_VARIANT,
-    HIDE_BANNER_PATTERNS,
-    HIDE_BASE_COLOR,
-    HIDE_BEES,
-    HIDE_BLOCK_ENTITY_DATA,
-    HIDE_BLOCK_STATE,
-    HIDE_BLOCKS_ATTACKS,
-    HIDE_BREAK_SOUND,
-    HIDE_BUCKET_ENTITY_DATA,
-    HIDE_BUNDLE_CONTENTS,
-    HIDE_CAN_BREAK,
-    HIDE_CAN_PLACE_ON,
-    HIDE_CAT_COLLAR,
-    HIDE_CAT_VARIANT,
-    HIDE_CHARGED_PROJECTILES,
-    HIDE_CHICKEN_VARIANT,
-    HIDE_CONSUMABLE,
-    HIDE_CONTAINER,
-    HIDE_CONTAINER_LOOT,
-    HIDE_COW_VARIANT,
-    HIDE_CREATIVE_SLOT_LOCK,
-    HIDE_CUSTOM_DATA,
-    HIDE_CUSTOM_MODEL_DATA,
-    HIDE_CUSTOM_NAME,
-    HIDE_DAMAGE,
-    HIDE_DAMAGE_RESISTANT,
-    HIDE_DEATH_PROTECTION,
-    HIDE_DEBUG_STICK_STATE,
-    HIDE_DYED_COLOR,
-    HIDE_ENCHANTABLE,
-    HIDE_ENCHANTMENT_GLINT_OVERRIDE,
-    HIDE_ENCHANTMENTS,
-    HIDE_ENTITY_DATA,
-    HIDE_EQUIPPABLE,
-    HIDE_FIREWORK_EXPLOSION,
-    HIDE_FIREWORKS,
-    HIDE_FOOD,
-    HIDE_FOX_VARIANT,
-    HIDE_FROG_VARIANT,
-    HIDE_GLIDER,
-    HIDE_HORSE_VARIANT,
-    HIDE_INSTRUMENT,
-    HIDE_INTANGIBLE_PROJECTILE,
-    HIDE_ITEM_MODEL,
-    HIDE_ITEM_NAME,
-    HIDE_JUKEBOX_PLAYABLE,
-    HIDE_LLAMA_VARIANT,
-    HIDE_LOCK,
-    HIDE_LODESTONE_TRACKER,
-    HIDE_LORE,
-    HIDE_MAP_COLOR,
-    HIDE_MAP_DECORATIONS,
-    HIDE_MAP_ID,
-    HIDE_MAP_POST_PROCESSING,
-    HIDE_MAX_DAMAGE,
-    HIDE_MAX_STACK_SIZE,
-    HIDE_MOOSHROOM_VARIANT,
-    HIDE_NOTE_BLOCK_SOUND,
-    HIDE_OMINOUS_BOTTLE_AMPLIFIER,
-    HIDE_PAINTING_VARIANT,
-    HIDE_PARROT_VARIANT,
-    HIDE_PIG_VARIANT,
-    HIDE_POT_DECORATIONS,
-    HIDE_POTION_CONTENTS,
-    HIDE_POTION_DURATION_SCALE,
-    HIDE_PROFILE,
-    HIDE_PROVIDES_BANNER_PATTERNS,
-    HIDE_PROVIDES_TRIM_MATERIAL,
-    HIDE_RABBIT_VARIANT,
-    HIDE_RARITY,
-    HIDE_RECIPES,
-    HIDE_REPAIR_COST,
-    HIDE_REPAIRABLE,
-    HIDE_SALMON_SIZE,
-    HIDE_SHEEP_COLOR,
-    HIDE_SHULKER_COLOR,
-    HIDE_STORED_ENCHANTMENTS,
-    HIDE_SUSPICIOUS_STEW_EFFECTS,
-    HIDE_TOOL,
-    HIDE_TOOLTIP_DISPLAY,
-    HIDE_TOOLTIP_STYLE,
-    HIDE_TRIM,
-    HIDE_TROPICAL_FISH_BASE_COLOR,
-    HIDE_TROPICAL_FISH_PATTERN,
-    HIDE_TROPICAL_FISH_PATTERN_COLOR,
-    HIDE_USE_COOLDOWN,
-    HIDE_USE_REMAINDER,
-    HIDE_VILLAGER_VARIANT,
-    HIDE_WEAPON,
-    HIDE_WOLF_COLLAR,
-    HIDE_WOLF_SOUND_VARIANT,
-    HIDE_WOLF_VARIANT,
-    HIDE_WRITABLE_BOOK_CONTENT,
-    HIDE_WRITTEN_BOOK_CONTENT
+    /**
+     * Hides the text that displays if the item is unbreakable.
+     */
+    HIDE_UNBREAKABLE
 
 }

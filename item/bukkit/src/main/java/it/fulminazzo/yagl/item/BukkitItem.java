@@ -152,7 +152,12 @@ public interface BukkitItem extends Item {
     }
 
     @Override
-    default @NotNull BukkitItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (BukkitItem) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull BukkitItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (BukkitItem) Item.super.addItemFlags(itemFlags);
     }
 
@@ -162,7 +167,12 @@ public interface BukkitItem extends Item {
     }
 
     @Override
-    default @NotNull BukkitItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitItem removeItemFlags(final String @NotNull ... itemFlags) {
+        return (BukkitItem) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull BukkitItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
         return (BukkitItem) Item.super.removeItemFlags(itemFlags);
     }
 

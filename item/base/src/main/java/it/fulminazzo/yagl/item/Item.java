@@ -299,6 +299,20 @@ public interface Item extends AbstractItem {
      * @return true if it does
      */
     default boolean hasItemFlag(final @NotNull ItemFlag flag) {
+        return hasItemFlag(flag.name());
+    }
+
+    /**
+     * Checks if the current item has the given enchantment.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
+     *
+     * @param flag the flag
+     * @return true if it does
+     */
+    default boolean hasItemFlag(final @NotNull String flag) {
         return getItemFlags().contains(flag);
     }
 
@@ -309,17 +323,35 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item addItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return addItemFlags(Arrays.stream(itemFlags).map(ItemFlag::name).collect(Collectors.toSet()));
+    }
+
+    /**
+     * Add item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
+     *
+     * @param itemFlags the item flags
+     * @return this item
+     */
+    default @NotNull Item addItemFlags(final String @NotNull ... itemFlags) {
         return addItemFlags(Arrays.asList(itemFlags));
     }
 
     /**
      * Add item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
      *
      * @param itemFlags the item flags
      * @return this item
      */
-    default @NotNull Item addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
-        Set<ItemFlag> flags = getItemFlags();
+    default @NotNull Item addItemFlags(final @NotNull Collection<String> itemFlags) {
+        Set<String> flags = getItemFlags();
         flags.addAll(itemFlags);
         return this;
     }
@@ -331,26 +363,48 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return removeItemFlags(Arrays.stream(itemFlags).map(ItemFlag::name).collect(Collectors.toSet()));
+    }
+
+    /**
+     * Remove item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
+     *
+     * @param itemFlags the item flags
+     * @return this item
+     */
+    default @NotNull Item removeItemFlags(final String @NotNull ... itemFlags) {
         return removeItemFlags(Arrays.asList(itemFlags));
     }
 
     /**
      * Remove item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
      *
      * @param itemFlags the item flags
      * @return this item
      */
-    default @NotNull Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull Item removeItemFlags(final @NotNull Collection<String> itemFlags) {
         getItemFlags().removeAll(itemFlags);
         return this;
     }
 
     /**
      * Gets item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
      *
      * @return the item flags
      */
-    @NotNull Set<ItemFlag> getItemFlags();
+    @NotNull Set<String> getItemFlags();
 
     /**
      * Sets unbreakable.

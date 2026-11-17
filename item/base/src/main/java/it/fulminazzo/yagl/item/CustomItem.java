@@ -147,7 +147,12 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
-    public @NotNull I addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull I addItemFlags(final String @NotNull ... itemFlags) {
+        return (I) super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull I addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (I) super.addItemFlags(itemFlags);
     }
 
@@ -157,7 +162,12 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
-    public @NotNull I removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull I removeItemFlags(final String @NotNull ... itemFlags) {
+        return (I) super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull I removeItemFlags(final @NotNull Collection<String> itemFlags) {
         return (I) super.removeItemFlags(itemFlags);
     }
 

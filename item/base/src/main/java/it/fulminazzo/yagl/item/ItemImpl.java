@@ -30,7 +30,7 @@ class ItemImpl extends Copiable<Item> implements Item {
     protected String displayName;
     protected final @NotNull List<String> lore;
     protected final @NotNull Set<Enchantment> enchantments;
-    protected final @NotNull Set<ItemFlag> itemFlags;
+    protected final @NotNull Set<String> itemFlags;
     protected boolean unbreakable;
     protected int customModelData;
 
@@ -78,6 +78,11 @@ class ItemImpl extends Copiable<Item> implements Item {
                 .addItemFlags(itemFlags)
                 .setUnbreakable(unbreakable)
                 .setCustomModelData(customModelData);
+    }
+
+    @Override
+    public boolean hasItemFlag(final @NotNull String flag) {
+        return this.itemFlags.contains(flag);
     }
 
     @Override
