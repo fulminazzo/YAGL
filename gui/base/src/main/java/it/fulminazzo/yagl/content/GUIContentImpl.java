@@ -7,27 +7,28 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * A basic implementation for {@link GUIContent}.
  */
+@Getter
 @EqualsAndHashCode
 abstract class GUIContentImpl implements GUIContent {
-    @Getter
     protected int priority = 0;
-    @Getter
-    protected Sound clickSound;
-    protected RequirementChecker requirements;
-    protected GUIItemAction clickAction;
-    protected final Map<String, String> variables = new HashMap<>();
+    protected @Nullable Sound clickSound;
+    protected @Nullable RequirementChecker requirements;
+    protected @Nullable GUIItemAction clickAction;
+    @Getter(AccessLevel.NONE)
+    protected final @NotNull Map<String, String> variables = new HashMap<>();
 
     @Override
     public @NotNull Item render() {
@@ -117,14 +118,6 @@ abstract class GUIContentImpl implements GUIContent {
     @Override
     public @NotNull Map<String, String> variables() {
         return this.variables;
-    }
-
-    @Override
-    public @NotNull Optional<GUIItemAction> clickItemAction() {
-        return Optional.of(e -> {
-            if (this.clickSound != null) e.getViewer().playSound(this.clickSound);
-            if (this.clickAction != null) this.clickAction.execute(e);
-        });
     }
 
 }

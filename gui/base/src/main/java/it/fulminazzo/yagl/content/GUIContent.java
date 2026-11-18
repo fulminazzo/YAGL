@@ -88,6 +88,13 @@ public interface GUIContent extends Metadatable {
     boolean hasViewRequirements(final @NotNull Viewer viewer);
 
     /**
+     * Gets the requirements to view this content (if set).
+     *
+     * @return the requirements
+     */
+    RequirementChecker getRequirements();
+
+    /**
      * Closes the opened GUI for the {@link Viewer}.
      *
      * @return this content
@@ -125,11 +132,25 @@ public interface GUIContent extends Metadatable {
     @NotNull GUIContent onClickItem(final @NotNull GUIItemAction action);
 
     /**
-     * Click item action.
+     * Gets the click item action combined with the {@link #getClickSound()}.
      *
-     * @return the action
+     * @return the action if present
      */
-    @NotNull Optional<GUIItemAction> clickItemAction();
+    default @NotNull Optional<GUIItemAction> clickItemAction() {
+        return Optional.of(e -> {
+            Sound clickSound = getClickSound();
+            if (clickSound != null) e.getViewer().playSound(clickSound);
+            GUIItemAction clickAction = getClickAction();
+            if (clickAction != null) clickAction.execute(e);
+        });
+    }
+
+    /**
+     * Gets the raw click item action.
+     *
+     * @return the item action if set
+     */
+    @Nullable GUIItemAction getClickAction();
 
     /**
      * Copy this content to another one.
