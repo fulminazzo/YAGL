@@ -1,11 +1,10 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.action.BiGUIAction;
 import it.fulminazzo.yagl.action.GUIAction;
 import it.fulminazzo.yagl.action.GUIItemAction;
-import it.fulminazzo.yagl.action.command.GUICommand;
-import it.fulminazzo.yagl.action.command.GUIConsoleCommand;
-import it.fulminazzo.yagl.action.command.GUIItemCommand;
-import it.fulminazzo.yagl.action.command.GUIItemConsoleCommand;
+import it.fulminazzo.yagl.action.command.*;
+import it.fulminazzo.yagl.action.message.BiGUIMessage;
 import it.fulminazzo.yagl.action.message.GUIItemMessage;
 import it.fulminazzo.yagl.action.message.GUIMessage;
 import it.fulminazzo.yagl.serializer.SerializationException;
@@ -21,6 +20,7 @@ class GUISerializersLoaderTest {
     private static Class<?>[] testTypes() {
         return new Class<?>[]{
                 GUIAction.class, GUIMessage.class, GUICommand.class, GUIConsoleCommand.class,
+                BiGUIAction.class, BiGUIMessage.class, BiGUICommand.class, BiGUIConsoleCommand.class,
                 GUIItemAction.class, GUIItemMessage.class, GUIItemCommand.class, GUIItemConsoleCommand.class
         };
     }
