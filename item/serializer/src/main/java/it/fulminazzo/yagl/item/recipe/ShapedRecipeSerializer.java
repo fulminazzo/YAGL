@@ -25,11 +25,11 @@ final class ShapedRecipeSerializer extends ObjectSerializer<ShapedRecipe> {
 
     @Override
     protected void loadData(final @NotNull ShapedRecipe value, final @NotNull DataNode node) throws SerializationException {
+        node.get(SHAPE_PATH, ShapedRecipe.Shape.class)
+                .ifPresent(s -> value.setShape(s.getRows(), s.getColumns()));
         node.getCollection(INGREDIENTS_PATH, Item.class)
                 .map(c -> c.toArray(new Item[0]))
                 .ifPresent(value::setIngredients);
-        node.get(SHAPE_PATH, ShapedRecipe.Shape.class)
-                .ifPresent(s -> value.setShape(s.getRows(), s.getColumns()));
     }
 
     @Override
