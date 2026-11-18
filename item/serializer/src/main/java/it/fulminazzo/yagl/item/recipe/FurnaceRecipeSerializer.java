@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * A {@link Serializer} for {@link FurnaceRecipe} objects.
@@ -30,11 +29,7 @@ final class FurnaceRecipeSerializer extends ObjectSerializer<FurnaceRecipe> {
 
     @Override
     protected void loadData(final @NotNull FurnaceRecipe value, final @NotNull DataNode node) throws SerializationException {
-        Optional<?> ingredientOpt = node.get(INGREDIENT_PATH, Object.class);
-        if (ingredientOpt.isPresent()) {
-            Item ingredient = mainSerializer().deserialize(ingredientOpt.get(), Item.class);
-            if (ingredient != null) value.setIngredient(ingredient);
-        }
+        node.get(INGREDIENT_PATH, Item.class).ifPresent(value::setIngredient);
         node.get(EXPERIENCE_PATH, Float.class).ifPresent(value::setExperience);
         node.get(COOKING_TIME_PATH, Double.class).ifPresent(value::setCookingTime);
     }

@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -47,12 +48,116 @@ public final class DataNode extends Node {
     }
 
     /**
+     * Attempts to retrieve the value corresponding to the given key from the internal data as a {@link Collection}.
+     *
+     * @param key          the name of the key
+     * @param elementsType the expected type of the elements.
+     *                     Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <T>          the type of the elements
+     * @return the collection corresponding to the given key
+     * @throws SerializationException if the value or the elements are not of the expected type, or they were not found
+     */
+    public <T> @NotNull Collection<T> getCollectionOrThrow(final @NotNull String key, final @NotNull Class<T> elementsType) throws SerializationException {
+        return getNode(key).getAsCollectionOrThrow(elementsType);
+    }
+
+    /**
+     * Attempts to retrieve the value corresponding to the given key from the internal data as a {@link Collection}.
+     *
+     * @param key          the name of the key
+     * @param elementsType the expected type of the elements.
+     *                     Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <T>          the type of the elements
+     * @return the collection corresponding to the given key, or {@code null} if the key is not present
+     * @throws SerializationException if the value or the elements are not of the expected type
+     */
+    public <T> @Nullable Collection<T> getCollectionOrNull(final @NotNull String key, final @NotNull Class<T> elementsType) throws SerializationException {
+        return getNode(key).getAsCollectionOrNull(elementsType);
+    }
+
+    /**
+     * Attempts to retrieve the value corresponding to the given key from the internal data as a {@link Collection}.
+     *
+     * @param key          the name of the key
+     * @param elementsType the expected type of the elements.
+     *                     Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <T>          the type of the elements
+     * @return the value corresponding to the given key, or an empty optional if the key is not present
+     * @throws SerializationException if the value or the elements are not of the expected type
+     */
+    public <T> @NotNull Optional<Collection<T>> getCollection(final @NotNull String key, final @NotNull Class<T> elementsType) throws SerializationException {
+        return getNode(key).getAsCollection(elementsType);
+    }
+
+    /**
+     * Attempts to retrieve the value corresponding to the given key from the internal data as a {@link Map}.
+     *
+     * @param key       the name of the key
+     * @param keyType   the expected type of the map keys.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param valueType the expected type of the map values.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
+     * @return the map corresponding to the given key
+     * @throws SerializationException if the value or the entries are not of the expected type, or they were not found
+     */
+    public <K, V> @NotNull Map<K, V> getMapOrThrow(
+            final @NotNull String key,
+            final @NotNull Class<K> keyType,
+            final @NotNull Class<V> valueType
+    ) throws SerializationException {
+        return getNode(key).getAsMapOrThrow(keyType, valueType);
+    }
+
+    /**
+     * Attempts to retrieve the value corresponding to the given key from the internal data as a {@link Map}.
+     *
+     * @param key       the name of the key
+     * @param keyType   the expected type of the map keys.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param valueType the expected type of the map values.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
+     * @return the map corresponding to the given key, or {@code null} if the key is not present
+     * @throws SerializationException if the value or the entries are not of the expected type
+     */
+    public <K, V> @Nullable Map<K, V> getMapOrNull(
+            final @NotNull String key,
+            final @NotNull Class<K> keyType,
+            final @NotNull Class<V> valueType
+    ) throws SerializationException {
+        return getNode(key).getAsMapOrNull(keyType, valueType);
+    }
+
+    /**
+     * Attempts to retrieve the value corresponding to the given key from the internal data as a {@link Map}.
+     *
+     * @param key       the name of the key
+     * @param keyType   the expected type of the map keys.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param valueType the expected type of the map values.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
+     * @return the value corresponding to the given key, or an empty optional if the key is not present
+     * @throws SerializationException if the value or the entries are not of the expected type
+     */
+    public <K, V> @NotNull Optional<Map<K, V>> getMap(
+            final @NotNull String key,
+            final @NotNull Class<K> keyType,
+            final @NotNull Class<V> valueType
+    ) throws SerializationException {
+        return getNode(key).getAsMap(keyType, valueType);
+    }
+
+    /**
      * Attempts to retrieve the value corresponding to the given key from the internal data.
      *
      * @param key  the name of the key
-     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
-     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
-     *             to complete deserialization.
+     * @param type the expected type of the value.
+     *             Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
      * @param <T>  the type of the value
      * @return the value corresponding to the given key
      * @throws SerializationException if the value is not of the expected type or was not found
@@ -65,9 +170,8 @@ public final class DataNode extends Node {
      * Attempts to retrieve the value corresponding to the given key from the internal data.
      *
      * @param key  the name of the key
-     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
-     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
-     *             to complete deserialization.
+     * @param type the expected type of the value.
+     *             Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
      * @param <T>  the type of the value
      * @return the value corresponding to the given key, or {@code null} if the key is not present
      * @throws SerializationException if the value is not of the expected type
@@ -80,9 +184,8 @@ public final class DataNode extends Node {
      * Attempts to retrieve the value corresponding to the given key from the internal data.
      *
      * @param key  the name of the key
-     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
-     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
-     *             to complete deserialization.
+     * @param type the expected type of the value.
+     *             Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
      * @param <T>  the type of the value
      * @return the value corresponding to the given key, or an empty optional if the key is not present
      * @throws SerializationException if the value is not of the expected type

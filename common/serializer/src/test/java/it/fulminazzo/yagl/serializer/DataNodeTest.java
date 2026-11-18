@@ -2,8 +2,7 @@ package it.fulminazzo.yagl.serializer;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,6 +56,74 @@ class DataNodeTest {
         data.put("subnode", "not a map");
         final DataNode node = new DataNode(data, "", "current");
         assertThrows(SerializationException.class, () -> node.getSubNode("subnode"));
+    }
+
+    @Test
+    void testThatGetCollectionOrThrowDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("key", List.of("value"));
+        final DataNode node = new DataNode(data, "", "current");
+        assertEquals(List.of("value"), node.getCollectionOrThrow("key", String.class));
+    }
+
+    @Test
+    void testThatGetCollectionOrThrowThrowsForMissingKey() {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        assertThrows(SerializationException.class, () -> node.getCollectionOrThrow("missing", String.class));
+    }
+
+    @Test
+    void testThatGetCollectionOrThrowThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("key", List.of("value"));
+        final DataNode node = new DataNode(data, "", "current");
+        assertThrows(SerializationException.class, () -> node.getCollectionOrThrow("key", Integer.class));
+    }
+
+    @Test
+    void testThatGetCollectionOrNullDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("key", List.of("value"));
+        final DataNode node = new DataNode(data, "", "current");
+        assertEquals(List.of("value"), node.getCollectionOrNull("key", String.class));
+    }
+
+    @Test
+    void testThatGetCollectionOrNullDoesNotThrowForMissingKey() throws SerializationException {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        assertNull(node.getCollectionOrNull("missing", String.class));
+    }
+
+    @Test
+    void testThatGetCollectionOrNullThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("key", List.of("value"));
+        final DataNode node = new DataNode(data, "", "current");
+        assertThrows(SerializationException.class, () -> node.getCollectionOrNull("key", Integer.class));
+    }
+
+    @Test
+    void testThatGetCollectionDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("key", List.of("value"));
+        final DataNode node = new DataNode(data, "", "current");
+        Optional<Collection<String>> opt = node.getCollection("key", String.class);
+        assertTrue(opt.isPresent(), "No value found");
+        assertEquals(List.of("value"), opt.get());
+    }
+
+    @Test
+    void testThatGetCollectionDoesNotThrowForMissingKey() throws SerializationException {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        assertTrue(node.getCollection("missing", String.class).isEmpty());
+    }
+
+    @Test
+    void testThatGetCollectionThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        data.put("key", List.of("value"));
+        final DataNode node = new DataNode(data, "", "current");
+        assertThrows(SerializationException.class, () -> node.getCollection("key", Integer.class));
     }
 
     @Test
@@ -125,6 +192,95 @@ class DataNodeTest {
         data.put("key", "value");
         final DataNode node = new DataNode(data, "", "current");
         assertThrows(SerializationException.class, () -> node.get("key", Integer.class));
+    }
+
+    @Test
+    void testThatGetMapOrThrowDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        HashMap<Object, Object> mapData = new HashMap<>();
+        mapData.put("k1", "v1");
+        data.put("key", mapData);
+        final DataNode node = new DataNode(data, "", "current");
+
+        HashMap<String, String> expected = new HashMap<>();
+        expected.put("k1", "v1");
+        assertEquals(expected, node.getMapOrThrow("key", String.class, String.class));
+    }
+
+    @Test
+    void testThatGetMapOrThrowThrowsForMissingKey() {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        assertThrows(SerializationException.class, () -> node.getMapOrThrow("missing", String.class, String.class));
+    }
+
+    @Test
+    void testThatGetMapOrThrowThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        HashMap<Object, Object> mapData = new HashMap<>();
+        mapData.put("k1", "v1");
+        data.put("key", mapData);
+        final DataNode node = new DataNode(data, "", "current");
+        assertThrows(SerializationException.class, () -> node.getMapOrThrow("key", Integer.class, Integer.class));
+    }
+
+    @Test
+    void testThatGetMapOrNullDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        HashMap<Object, Object> mapData = new HashMap<>();
+        mapData.put("k1", "v1");
+        data.put("key", mapData);
+        final DataNode node = new DataNode(data, "", "current");
+
+        HashMap<String, String> expected = new HashMap<>();
+        expected.put("k1", "v1");
+        assertEquals(expected, node.getMapOrNull("key", String.class, String.class));
+    }
+
+    @Test
+    void testThatGetMapOrNullDoesNotThrowForMissingKey() throws SerializationException {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        assertNull(node.getMapOrNull("missing", String.class, String.class));
+    }
+
+    @Test
+    void testThatGetMapOrNullThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        HashMap<Object, Object> mapData = new HashMap<>();
+        mapData.put("k1", "v1");
+        data.put("key", mapData);
+        final DataNode node = new DataNode(data, "", "current");
+        assertThrows(SerializationException.class, () -> node.getMapOrNull("key", Integer.class, Integer.class));
+    }
+
+    @Test
+    void testThatGetMapDoesNotThrowForExistingKey() throws SerializationException {
+        HashMap<Object, Object> data = new HashMap<>();
+        HashMap<Object, Object> mapData = new HashMap<>();
+        mapData.put("k1", "v1");
+        data.put("key", mapData);
+        final DataNode node = new DataNode(data, "", "current");
+
+        Optional<Map<String, String>> opt = node.getMap("key", String.class, String.class);
+        assertTrue(opt.isPresent(), "No value found");
+        HashMap<String, String> expected = new HashMap<>();
+        expected.put("k1", "v1");
+        assertEquals(expected, opt.get());
+    }
+
+    @Test
+    void testThatGetMapDoesNotThrowForMissingKey() throws SerializationException {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        assertTrue(node.getMap("missing", String.class, String.class).isEmpty());
+    }
+
+    @Test
+    void testThatGetMapThrowsForWrongType() {
+        HashMap<Object, Object> data = new HashMap<>();
+        HashMap<Object, Object> mapData = new HashMap<>();
+        mapData.put("k1", "v1");
+        data.put("key", mapData);
+        final DataNode node = new DataNode(data, "", "current");
+        assertThrows(SerializationException.class, () -> node.getMap("key", Integer.class, Integer.class));
     }
 
 }

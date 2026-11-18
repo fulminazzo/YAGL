@@ -7,8 +7,6 @@ import it.fulminazzo.yagl.wrapper.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,11 +20,9 @@ public class EnchantmentItemComponentSerializer extends ObjectSerializer<Enchant
 
     @Override
     protected @Nullable EnchantmentItemComponent initialize(final @NotNull DataNode node) throws SerializationException {
-        List<?> rawData = node.getOrNull(ENCHANTMENTS_PATH, List.class);
-        if (rawData == null) return null;
-        Collection<Enchantment> enchantments = mainSerializer().deserializeCollection(rawData, Enchantment.class);
-        if (enchantments == null) return null;
-        return new EnchantmentItemComponent(enchantments);
+        return node.getCollection(ENCHANTMENTS_PATH, Enchantment.class)
+                .map(EnchantmentItemComponent::new)
+                .orElse(null);
     }
 
     @Override

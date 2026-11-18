@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,11 +54,114 @@ public class Node {
     }
 
     /**
+     * Attempts to retrieve the internal value as a {@link Collection} casting its elements to the requested type.
+     *
+     * @param elementsType the expected type of the elements.
+     *                     Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <T>          the type of the elements
+     * @return the collection of elements
+     * @throws SerializationException if the value is not of the expected type or was {@code null}
+     */
+    public <T> @NotNull Collection<T> getAsCollectionOrThrow(final @NotNull Class<T> elementsType) throws SerializationException {
+        return getAsCollection(elementsType).orElseThrow(() ->
+                new SerializationException("Could not find required key '%s' in path '%s'", key, path)
+        );
+    }
+
+    /**
+     * Attempts to retrieve the internal value as a {@link Collection} casting its elements to the requested type.
+     *
+     * @param elementsType the expected type of the elements.
+     *                     Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <T>          the type of the elements
+     * @return the collection of elements or {@code null}
+     * @throws SerializationException if the value is not of the expected type
+     */
+    public <T> @Nullable Collection<T> getAsCollectionOrNull(final @NotNull Class<T> elementsType) throws SerializationException {
+        return getAsCollection(elementsType).orElse(null);
+    }
+
+    /**
+     * Attempts to retrieve the internal value as a {@link Collection} casting its elements to the requested type.
+     *
+     * @param elementsType the expected type of the elements.
+     *                     Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <T>          the type of the elements
+     * @return the collection of elements or an empty optional
+     * @throws SerializationException if the value is not of the expected type
+     */
+    public <T> @NotNull Optional<Collection<T>> getAsCollection(final @NotNull Class<T> elementsType) throws SerializationException {
+        Object raw = data;
+        if (raw == null) return Optional.empty();
+        else return Optional.ofNullable(YaglSerializer.getInstance().deserializeCollection(raw, elementsType));
+    }
+
+    /**
+     * Attempts to retrieve the internal value as a {@link Map} casting its keys and values to the requested types.
+     *
+     * @param keyType   the expected type of the map keys.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param valueType the expected type of the map values.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
+     * @return the map of entries
+     * @throws SerializationException if the value is not of the expected type or was {@code null}
+     */
+    public <K, V> @NotNull Map<K, V> getAsMapOrThrow(
+            final @NotNull Class<K> keyType,
+            final @NotNull Class<V> valueType
+    ) throws SerializationException {
+        return getAsMap(keyType, valueType).orElseThrow(() ->
+                new SerializationException("Could not find required key '%s' in path '%s'", key, path)
+        );
+    }
+
+    /**
+     * Attempts to retrieve the internal value as a {@link Map} casting its keys and values to the requested types.
+     *
+     * @param keyType   the expected type of the map keys.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param valueType the expected type of the map values.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
+     * @return the map of entries or {@code null}
+     * @throws SerializationException if the value is not of the expected type
+     */
+    public <K, V> @Nullable Map<K, V> getAsMapOrNull(
+            final @NotNull Class<K> keyType,
+            final @NotNull Class<V> valueType
+    ) throws SerializationException {
+        return getAsMap(keyType, valueType).orElse(null);
+    }
+
+    /**
+     * Attempts to retrieve the internal value as a {@link Map} casting its keys and values to the requested types.
+     *
+     * @param keyType   the expected type of the map keys.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param valueType the expected type of the map values.
+     *                  Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
+     * @return the map of entries or an empty optional
+     * @throws SerializationException if the value is not of the expected type
+     */
+    public <K, V> @NotNull Optional<Map<K, V>> getAsMap(
+            final @NotNull Class<K> keyType,
+            final @NotNull Class<V> valueType
+    ) throws SerializationException {
+        Object raw = data;
+        if (raw == null) return Optional.empty();
+        else return Optional.ofNullable(YaglSerializer.getInstance().deserializeMap(raw, keyType, valueType));
+    }
+
+    /**
      * Attempts to retrieve the internal value casting it to the requested type.
      *
-     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
-     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
-     *             to complete deserialization.
+     * @param type the expected type of the value.
+     *             Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
      * @param <T>  the type of the value
      * @return the value
      * @throws SerializationException if the value is not of the expected type or was {@code null}
@@ -71,9 +175,8 @@ public class Node {
     /**
      * Attempts to retrieve the internal value casting it to the requested type.
      *
-     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
-     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
-     *             to complete deserialization.
+     * @param type the expected type of the value.
+     *             Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
      * @param <T>  the type of the value
      * @return the value or {@code null}
      * @throws SerializationException if the value is not of the expected type
@@ -85,9 +188,8 @@ public class Node {
     /**
      * Attempts to retrieve the internal value casting it to the requested type.
      *
-     * @param type the expected type of the value. <b>WARNING</b>: only base Java types are supported.
-     *             Custom types require a custom {@link Serializer} and the use of {@link YaglSerializer}
-     *             to complete deserialization.
+     * @param type the expected type of the value.
+     *             Custom types are supported thanks to custom {@link Serializer} registered in {@link YaglSerializer}.
      * @param <T>  the type of the value
      * @return the value or an empty optional
      * @throws SerializationException if the value is not of the expected type
@@ -95,16 +197,7 @@ public class Node {
     public <T> @NotNull Optional<T> getAs(final @NotNull Class<T> type) throws SerializationException {
         Object raw = data;
         if (raw == null) return Optional.empty();
-        try {
-            // Special case for double and float
-            if (raw instanceof Double && type == Float.class) raw = ((Double) raw).floatValue();
-            return Optional.of(type.cast(raw));
-        } catch (ClassCastException e) {
-            throw new SerializationException(
-                    "Invalid type for key '%s' in path '%s': expected %s but got %s",
-                    key, path, type.getName(), raw.getClass().getName()
-            );
-        }
+        else return Optional.ofNullable(YaglSerializer.getInstance().deserialize(raw, type));
     }
 
     /**

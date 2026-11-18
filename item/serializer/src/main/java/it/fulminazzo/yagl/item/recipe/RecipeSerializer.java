@@ -7,7 +7,6 @@ import it.fulminazzo.yagl.serializer.TypedSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link Recipe} implementations.
@@ -31,9 +30,7 @@ public final class RecipeSerializer extends TypedSerializer<Recipe> {
 
     @Override
     protected void loadCommonData(final @NotNull Recipe value, final @NotNull DataNode node) throws SerializationException {
-        Optional<?> outputOpt = node.get(OUTPUT_PATH, Object.class);
-        if (outputOpt.isPresent())
-            value.setOutput(mainSerializer().deserialize(outputOpt.get(), Item.class));
+        node.get(OUTPUT_PATH, Item.class).ifPresent(value::setOutput);
     }
 
     @Override

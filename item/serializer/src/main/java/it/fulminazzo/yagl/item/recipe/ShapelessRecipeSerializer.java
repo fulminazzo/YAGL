@@ -8,9 +8,7 @@ import it.fulminazzo.yagl.serializer.Serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * A {@link Serializer} for {@link ShapelessRecipe} objects.
@@ -26,14 +24,11 @@ final class ShapelessRecipeSerializer extends ObjectSerializer<ShapelessRecipe> 
         return node.get(RecipeSerializer.ID_PATH, String.class).map(ShapelessRecipe::new).orElse(null);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void loadData(final @NotNull ShapelessRecipe value, final @NotNull DataNode node) throws SerializationException {
-        Optional<Collection<?>> ingredientsOpt = (Optional<Collection<?>>) (Optional<?>) node.get(INGREDIENTS_PATH, Collection.class);
-        if (ingredientsOpt.isPresent()) {
-            Collection<Item> ingredients = mainSerializer().deserializeCollection(ingredientsOpt.get(), Item.class);
-            if (ingredients != null) value.addIngredients(ingredients.toArray(new Item[0]));
-        }
+        node.getCollection(INGREDIENTS_PATH, Item.class)
+                .map(c -> c.toArray(new Item[0]))
+                .ifPresent(value::addIngredients);
     }
 
     @Override
