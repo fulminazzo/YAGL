@@ -35,9 +35,9 @@ final class FurnaceRecipeSerializer extends ObjectSerializer<FurnaceRecipe> {
     }
 
     @Override
-    protected void dumpData(final @NotNull FurnaceRecipe value, final @NotNull Map<String, Object> output) throws SerializationException {
+    protected void dumpData(final @NotNull FurnaceRecipe value, final @NotNull Map<String, Object> output) {
         List<Item> ingredients = value.getIngredients();
-        if (!ingredients.isEmpty()) output.put(INGREDIENT_PATH, mainSerializer().serialize(ingredients.get(0)));
+        if (!ingredients.isEmpty()) output.put(INGREDIENT_PATH, ingredients.get(0));
         output.put(EXPERIENCE_PATH, value.getExperience());
         output.put(COOKING_TIME_PATH, value.getCookingTime());
     }

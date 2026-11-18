@@ -35,9 +35,9 @@ final class ShapedRecipeSerializer extends ObjectSerializer<ShapedRecipe> {
     }
 
     @Override
-    protected void dumpData(final @NotNull ShapedRecipe value, final @NotNull Map<String, Object> output) throws SerializationException {
-        output.put(INGREDIENTS_PATH, mainSerializer().serialize(value.getIngredients()));
-        output.put(SHAPE_PATH, mainSerializer().serialize(value.getShape()));
+    protected void dumpData(final @NotNull ShapedRecipe value, final @NotNull Map<String, Object> output) {
+        output.put(INGREDIENTS_PATH, value.getIngredients());
+        output.put(SHAPE_PATH, value.getShape());
     }
 
 }

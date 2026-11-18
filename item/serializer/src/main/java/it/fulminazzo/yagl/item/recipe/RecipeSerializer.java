@@ -34,9 +34,9 @@ public final class RecipeSerializer extends TypedSerializer<Recipe> {
     }
 
     @Override
-    protected void dumpCommonData(final @NotNull Recipe value, final @NotNull Map<String, Object> output) throws SerializationException {
+    protected void dumpCommonData(final @NotNull Recipe value, final @NotNull Map<String, Object> output) {
         output.put(ID_PATH, value.getId());
-        output.put(OUTPUT_PATH, mainSerializer().serialize(value.getOutput()));
+        output.put(OUTPUT_PATH, value.getOutput());
     }
 
 }

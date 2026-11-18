@@ -32,8 +32,8 @@ final class ShapelessRecipeSerializer extends ObjectSerializer<ShapelessRecipe> 
     }
 
     @Override
-    protected void dumpData(final @NotNull ShapelessRecipe value, final @NotNull Map<String, Object> output) throws SerializationException {
-        output.put(INGREDIENTS_PATH, mainSerializer().serialize(value.getIngredients()));
+    protected void dumpData(final @NotNull ShapelessRecipe value, final @NotNull Map<String, Object> output) {
+        output.put(INGREDIENTS_PATH, value.getIngredients());
     }
 
 }

@@ -31,8 +31,8 @@ public class EnchantmentItemComponentSerializer extends ObjectSerializer<Enchant
     }
 
     @Override
-    protected void dumpData(final @NotNull EnchantmentItemComponent value, final @NotNull Map<String, Object> output) throws SerializationException {
-        output.put(ENCHANTMENTS_PATH, mainSerializer().serialize(value.getEnchantments()));
+    protected void dumpData(final @NotNull EnchantmentItemComponent value, final @NotNull Map<String, Object> output) {
+        output.put(ENCHANTMENTS_PATH, value.getEnchantments());
     }
 
 }
