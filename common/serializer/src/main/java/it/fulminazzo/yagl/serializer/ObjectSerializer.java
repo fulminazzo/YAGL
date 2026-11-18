@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +64,22 @@ public abstract class ObjectSerializer<T> implements Serializer<T> {
         if (value == null) return null;
         Map<String, Object> output = new HashMap<>();
         dumpData(value, new DataNode(output, "", ""));
+        stripDownData(output);
         return output;
+    }
+
+    private static void stripDownData(final @NotNull Map<?, ?> data) {
+        data.entrySet().removeIf(e -> {
+            final Object value = e.getValue();
+            if (value instanceof Collection && ((Collection<?>) value).isEmpty())
+                return true;
+            if (value instanceof Map) {
+                Map<?, ?> map = (Map<?, ?>) value;
+                if (map.isEmpty()) return true;
+                else stripDownData(map);
+            }
+            return false;
+        });
     }
 
 }
