@@ -11,6 +11,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemImplTest {
 
     @Test
+    void testMaterialShouldBeInLowerCase() {
+        Item i = new ItemImpl().setMaterial("MATERIAL");
+        assertEquals("material", i.getMaterial());
+    }
+
+    @Test
+    void testItemFlagsShouldBeInLowerCase() {
+        Item i = new ItemImpl().addItemFlags("FLAG");
+        assertTrue(i.hasItemFlag("flag"));
+        assertTrue(i.hasItemFlag("Flag"));
+        assertTrue(i.hasItemFlag("FlAg"));
+    }
+
+    @Test
     void testCopy() {
         Item i1 = new ItemImpl()
                 .setMaterial("material")

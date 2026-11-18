@@ -83,13 +83,8 @@ class ItemImpl extends Copiable<Item> implements Item {
     }
 
     @Override
-    public boolean hasItemFlag(final @NotNull String flag) {
-        return this.itemFlags.contains(flag);
-    }
-
-    @Override
     public @NotNull Item setMaterial(final @NotNull String material) {
-        this.material = material;
+        this.material = material.toLowerCase(Locale.ROOT);
         return this;
     }
 

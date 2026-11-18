@@ -9,6 +9,9 @@ import it.fulminazzo.yagl.serializer.TypedSerializer;
  * Custom components can be registered with {@link ItemComponentSerializer#registerSerializer(Class, ObjectSerializer)}.
  * <br>
  * This serializer can be obtained with {@link it.fulminazzo.yagl.ItemSerializersLoader#getItemComponentSerializer()}.
+ *
+ * @see ItemComponent
+ * @see TypedSerializer
  */
 public final class ItemComponentSerializer extends TypedSerializer<ItemComponent> {
 

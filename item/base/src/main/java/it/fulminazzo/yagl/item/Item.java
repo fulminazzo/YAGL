@@ -8,10 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -313,7 +310,7 @@ public interface Item extends AbstractItem {
      * @return true if it does
      */
     default boolean hasItemFlag(final @NotNull String flag) {
-        return getItemFlags().contains(flag);
+        return getItemFlags().contains(flag.toLowerCase(Locale.ROOT));
     }
 
     /**
@@ -351,8 +348,7 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item addItemFlags(final @NotNull Collection<String> itemFlags) {
-        Set<String> flags = getItemFlags();
-        flags.addAll(itemFlags);
+        itemFlags.forEach(f -> getItemFlags().add(f.toLowerCase(Locale.ROOT)));
         return this;
     }
 
@@ -391,7 +387,7 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item removeItemFlags(final @NotNull Collection<String> itemFlags) {
-        getItemFlags().removeAll(itemFlags);
+        itemFlags.forEach(f -> getItemFlags().remove(f.toLowerCase(Locale.ROOT)));
         return this;
     }
 
