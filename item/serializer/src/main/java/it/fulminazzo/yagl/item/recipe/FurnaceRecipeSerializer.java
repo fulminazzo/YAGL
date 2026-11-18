@@ -1,7 +1,6 @@
-package it.fulminazzo.yagl.recipe;
+package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
 import it.fulminazzo.yagl.serializer.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

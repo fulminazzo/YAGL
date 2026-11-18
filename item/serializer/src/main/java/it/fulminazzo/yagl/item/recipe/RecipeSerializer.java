@@ -1,10 +1,6 @@
-package it.fulminazzo.yagl.recipe;
+package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
-import it.fulminazzo.yagl.item.recipe.Recipe;
-import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
-import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
 import it.fulminazzo.yagl.serializer.DataNode;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.TypedSerializer;

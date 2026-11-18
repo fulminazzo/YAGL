@@ -1,6 +1,5 @@
-package it.fulminazzo.yagl.recipe;
+package it.fulminazzo.yagl.item.recipe;
 
-import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
 import it.fulminazzo.yagl.serializer.Node;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.Serializer;

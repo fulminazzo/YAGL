@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.content;
 import it.fulminazzo.yagl.action.command.GUIItemCommand;
 import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
 import it.fulminazzo.yagl.item.Item;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,6 +29,7 @@ public final class ItemGUIContent extends CustomItemGUIContent<ItemGUIContent> {
         return this.item.copy();
     }
 
+    @SneakyThrows // PermissionRequirement#serialize never throws
     @Override
     public @NotNull ItemGUIContent internalCopy() {
         ItemGUIContent copy = ItemGUIContent.newInstance(this.item.copy()).copyVariablesFrom(this, true);

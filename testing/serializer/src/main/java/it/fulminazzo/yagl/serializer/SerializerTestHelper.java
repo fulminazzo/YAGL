@@ -23,6 +23,8 @@ import java.util.Map;
 
 /**
  * A helper class for testing {@link Serializer}s objects.
+ *
+ * @param <T> the type of the object to serialize
  */
 public abstract class SerializerTestHelper<T> {
     private static final @NotNull String BASE_PATH = "build/resources/test/serializer";

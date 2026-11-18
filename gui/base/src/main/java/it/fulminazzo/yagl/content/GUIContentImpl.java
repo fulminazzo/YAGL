@@ -9,6 +9,7 @@ import it.fulminazzo.yagl.viewer.Viewer;
 import it.fulminazzo.yagl.wrapper.Sound;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -46,6 +47,7 @@ abstract class GUIContentImpl implements GUIContent {
      * @param copy the copy
      * @return the copy updated
      */
+    @SneakyThrows // PermissionRequirement#serialize never throws
     protected @NotNull GUIContent copyDataTo(final @NotNull GUIContent copy) {
         copy
                 .setPriority(this.priority)

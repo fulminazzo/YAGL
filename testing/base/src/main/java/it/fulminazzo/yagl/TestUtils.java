@@ -75,10 +75,13 @@ public final class TestUtils {
      * @param executor                the executor
      * @param methodFinder            the method finder
      * @param captorsValidator        the captors validator
-     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>. If the required class is present among these objects, then the one provided will be used.                                Otherwise, {@link #mockParameter(Class)} will be called.
+     * @param staticObjects           the objects that will be used for the creation of the parameters of <i>targetMethod</i>.
+     *                                If the required class is present among these objects, then the one provided will be used.
+     *                                Otherwise, {@link #mockParameter(Class)} will be called.
      * @param target                  the target
      * @param invokedMethod           the invoked method
-     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>. These will also be the types of the returned captors
+     * @param invokedMethodParamTypes the type of the parameters when invoking <i>invokedMethod</i>.
+     *                                These will also be the types of the returned captors
      */
     public static void testMultipleMethods(final @NotNull Object executor, final @NotNull Predicate<Method> methodFinder,
                                            final @NotNull Consumer<ArgumentCaptor<?>[]> captorsValidator,
@@ -260,6 +263,7 @@ public final class TestUtils {
      */
     public static Object mockParameter(Class<?> clazz) {
         clazz = Reflect.on(clazz).toWrapper().get();
+        if (clazz.equals(Class.class)) return Class.class;
         if (Number.class.isAssignableFrom(clazz)) return 1;
         if (String.class.isAssignableFrom(clazz)) return "STONE";
         if (Boolean.class.isAssignableFrom(clazz)) return false;
