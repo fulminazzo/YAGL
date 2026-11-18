@@ -41,6 +41,13 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
+    public @NotNull <I extends Item> I to(final @NotNull Class<I> type) {
+        if (getClass().equals(type)) return (I) this;
+        if (GUIContent.class.isAssignableFrom(type)) return copy(type);
+        else return this.item.to(type);
+    }
+
+    @Override
     public @NotNull <I extends Item> I copy(final @NotNull Class<I> type) {
         I copy = item.copy(type);
         if (copy instanceof GUIContent) copyDataTo((GUIContent) copy);

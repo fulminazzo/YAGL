@@ -487,6 +487,17 @@ public interface Item extends AbstractItem {
     boolean isSimilar(final @Nullable Item item, final ItemField @NotNull ... ignore);
 
     /**
+     * Converts the current item to the specified type.
+     * If the object is already of the given type, it is returned as is.
+     * Otherwise, {@link #copy(Class)} will be used.
+     *
+     * @param type the type to convert to
+     * @param <I>  the type of the converted item
+     * @return the converted item
+     */
+    <I extends Item> @NotNull I to(final @NotNull Class<I> type);
+
+    /**
      * Copies the current item to a new one.
      *
      * @return the item

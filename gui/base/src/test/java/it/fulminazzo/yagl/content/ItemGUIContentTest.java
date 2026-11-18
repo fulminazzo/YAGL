@@ -174,7 +174,9 @@ class ItemGUIContentTest {
 
     @Test
     void testReturnTypesItem() {
-        TestUtils.testReturnType(ItemGUIContent.newInstance(), Item.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(ItemGUIContent.newInstance(), Item.class,
+                m -> Arrays.asList("copy", "to").contains(m.getName())
+        );
     }
 
     @Test

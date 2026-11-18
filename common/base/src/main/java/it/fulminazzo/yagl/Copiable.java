@@ -22,6 +22,18 @@ public abstract class Copiable<C> {
     protected abstract <T extends C> @NotNull T copyDataTo(final @NotNull T copy);
 
     /**
+     * Converts the current object to the specified type.
+     * If the object is already of the given type, it is returned as is.
+     * Otherwise, {@link #copy(Class)} will be used.
+     *
+     * @param type the type to convert to
+     * @param <T>  the type of the converted object
+     */
+    public <T extends C> @NotNull T to(final @NotNull Class<T> type) {
+        return type.isInstance(this) ? type.cast(this) : copy(type);
+    }
+
+    /**
      * Creates a new copy of this object.
      *
      * @return the copy
