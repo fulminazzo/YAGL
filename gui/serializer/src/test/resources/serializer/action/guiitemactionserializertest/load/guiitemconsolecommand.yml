@@ -1,0 +1,2 @@
+type: GUI_ITEM_CONSOLE_COMMAND
+content: 'say Hello, world!'
