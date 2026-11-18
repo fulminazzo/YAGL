@@ -7,6 +7,8 @@ import it.fulminazzo.yagl.action.command.*;
 import it.fulminazzo.yagl.action.message.BiGUIMessage;
 import it.fulminazzo.yagl.action.message.GUIItemMessage;
 import it.fulminazzo.yagl.action.message.GUIMessage;
+import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
+import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.YaglSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,8 @@ class GUISerializersLoaderTest {
         return new Class<?>[]{
                 GUIAction.class, GUIMessage.class, GUICommand.class, GUIConsoleCommand.class,
                 BiGUIAction.class, BiGUIMessage.class, BiGUICommand.class, BiGUIConsoleCommand.class,
-                GUIItemAction.class, GUIItemMessage.class, GUIItemCommand.class, GUIItemConsoleCommand.class
+                GUIItemAction.class, GUIItemMessage.class, GUIItemCommand.class, GUIItemConsoleCommand.class,
+                RequirementChecker.class, PermissionRequirement.class
         };
     }
 
