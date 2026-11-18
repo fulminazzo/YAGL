@@ -17,6 +17,8 @@ import java.util.Optional;
  * @see TypedSerializer
  */
 public final class RecipeSerializer extends TypedSerializer<Recipe> {
+    static final @NotNull String ID_PATH = "id";
+    static final @NotNull String OUTPUT_PATH = "output";
 
     /**
      * Instantiates a new Recipe serializer.
@@ -30,15 +32,15 @@ public final class RecipeSerializer extends TypedSerializer<Recipe> {
 
     @Override
     protected void loadCommonData(final @NotNull Recipe value, final @NotNull DataNode node) throws SerializationException {
-        Optional<?> outputOpt = node.get("output", Object.class);
+        Optional<?> outputOpt = node.get(OUTPUT_PATH, Object.class);
         if (outputOpt.isPresent())
             value.setOutput(YaglSerializer.getInstance().deserialize(outputOpt.get(), Item.class));
     }
 
     @Override
     protected void dumpCommonData(final @NotNull Recipe value, final @NotNull Map<String, Object> output) throws SerializationException {
-        output.put("id", value.getId());
-        output.put("output", YaglSerializer.getInstance().serialize(value.getOutput()));
+        output.put(ID_PATH, value.getId());
+        output.put(OUTPUT_PATH, YaglSerializer.getInstance().serialize(value.getOutput()));
     }
 
 }

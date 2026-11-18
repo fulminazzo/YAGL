@@ -16,17 +16,18 @@ import java.util.Optional;
  * @see ObjectSerializer
  */
 final class ShapelessRecipeSerializer extends ObjectSerializer<ShapelessRecipe> {
+    static final @NotNull String INGREDIENTS_PATH = "ingredients";
 
     @Override
     protected @Nullable ShapelessRecipe initialize(final @NotNull DataNode node) throws SerializationException {
-        return node.get("id", String.class).map(ShapelessRecipe::new).orElse(null);
+        return node.get(RecipeSerializer.ID_PATH, String.class).map(ShapelessRecipe::new).orElse(null);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void loadData(final @NotNull ShapelessRecipe value, final @NotNull DataNode node) throws SerializationException {
         YaglSerializer mainSerializer = YaglSerializer.getInstance();
-        Optional<Collection<?>> ingredientsOpt = (Optional<Collection<?>>) (Optional<?>) node.get("ingredients", Collection.class);
+        Optional<Collection<?>> ingredientsOpt = (Optional<Collection<?>>) (Optional<?>) node.get(INGREDIENTS_PATH, Collection.class);
         if (ingredientsOpt.isPresent()) {
             Collection<Item> ingredients = mainSerializer.deserializeCollection(ingredientsOpt.get(), Item.class);
             if (ingredients != null) value.addIngredients(ingredients.toArray(new Item[0]));
@@ -36,7 +37,7 @@ final class ShapelessRecipeSerializer extends ObjectSerializer<ShapelessRecipe> 
     @Override
     protected void dumpData(final @NotNull ShapelessRecipe value, final @NotNull Map<String, Object> output) throws SerializationException {
         YaglSerializer mainSerializer = YaglSerializer.getInstance();
-        output.put("ingredients", mainSerializer.serialize(value.getIngredients()));
+        output.put(INGREDIENTS_PATH, mainSerializer.serialize(value.getIngredients()));
     }
 
 }

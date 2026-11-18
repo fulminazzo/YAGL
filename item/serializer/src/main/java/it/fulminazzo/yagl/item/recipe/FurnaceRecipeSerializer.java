@@ -16,31 +16,34 @@ import java.util.Optional;
  * @see ObjectSerializer
  */
 final class FurnaceRecipeSerializer extends ObjectSerializer<FurnaceRecipe> {
+    static final @NotNull String INGREDIENT_PATH = "ingredient";
+    static final @NotNull String EXPERIENCE_PATH = "experience";
+    static final @NotNull String COOKING_TIME_PATH = "cookingTime";
 
     @Override
     protected @Nullable FurnaceRecipe initialize(final @NotNull DataNode node) throws SerializationException {
-        return node.get("id", String.class).map(FurnaceRecipe::new).orElse(null);
+        return node.get(RecipeSerializer.ID_PATH, String.class).map(FurnaceRecipe::new).orElse(null);
     }
 
     @Override
     protected void loadData(final @NotNull FurnaceRecipe value, final @NotNull DataNode node) throws SerializationException {
         YaglSerializer mainSerializer = YaglSerializer.getInstance();
-        Optional<?> ingredientOpt = node.get("ingredient", Object.class);
+        Optional<?> ingredientOpt = node.get(INGREDIENT_PATH, Object.class);
         if (ingredientOpt.isPresent()) {
             Item ingredient = mainSerializer.deserialize(ingredientOpt.get(), Item.class);
             if (ingredient != null) value.setIngredient(ingredient);
         }
-        node.get("experience", Float.class).ifPresent(value::setExperience);
-        node.get("cookingTime", Double.class).ifPresent(value::setCookingTime);
+        node.get(EXPERIENCE_PATH, Float.class).ifPresent(value::setExperience);
+        node.get(COOKING_TIME_PATH, Double.class).ifPresent(value::setCookingTime);
     }
 
     @Override
     protected void dumpData(final @NotNull FurnaceRecipe value, final @NotNull Map<String, Object> output) throws SerializationException {
         YaglSerializer mainSerializer = YaglSerializer.getInstance();
         List<Item> ingredients = value.getIngredients();
-        if (!ingredients.isEmpty()) output.put("ingredient", mainSerializer.serialize(ingredients.get(0)));
-        output.put("experience", value.getExperience());
-        output.put("cookingTime", value.getCookingTime());
+        if (!ingredients.isEmpty()) output.put(INGREDIENT_PATH, mainSerializer.serialize(ingredients.get(0)));
+        output.put(EXPERIENCE_PATH, value.getExperience());
+        output.put(COOKING_TIME_PATH, value.getCookingTime());
     }
 
 }

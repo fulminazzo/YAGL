@@ -36,6 +36,11 @@ import java.util.Map;
  */
 @SuppressWarnings("unchecked")
 public class TypedSerializer<T> extends ObjectSerializer<T> {
+    /**
+     * The path where the type of the object is stored.
+     */
+    public static final @NotNull String TYPE_PATH = "type";
+
     private final @NotNull BiMap<String, Class<? extends T>> typeClassNames = new BiMap<>();
     private final @NotNull Map<Class<? extends T>, ObjectSerializer<? extends T>> classSerializers = new HashMap<>();
 
@@ -118,7 +123,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
 
     @Override
     protected @Nullable T initialize(final @NotNull DataNode node) throws SerializationException {
-        String typeName = node.getOrThrow("type", String.class);
+        String typeName = node.getOrThrow(TYPE_PATH, String.class);
         Class<? extends T> clazz = typeClassNames.get(typeName);
         if (clazz == null)
             throw new SerializationException("Unknown %s type: %s", type.getSimpleName(), typeName);
@@ -135,7 +140,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
     protected void dumpData(final @NotNull T value, final @NotNull Map<String, Object> output) throws SerializationException {
         dumpCommonData(value, output);
         getSerializer(value).dumpData(value, output);
-        output.put("type", typeClassNames.getByValue((Class<? extends T>) value.getClass()));
+        output.put(TYPE_PATH, typeClassNames.getByValue((Class<? extends T>) value.getClass()));
     }
 
 }

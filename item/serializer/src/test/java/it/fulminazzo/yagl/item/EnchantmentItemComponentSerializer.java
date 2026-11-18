@@ -19,10 +19,11 @@ import java.util.Map;
  * @see ObjectSerializer
  */
 public class EnchantmentItemComponentSerializer extends ObjectSerializer<EnchantmentItemComponent> {
+    static final @NotNull String ENCHANTMENTS_PATH = "enchants";
 
     @Override
     protected @Nullable EnchantmentItemComponent initialize(final @NotNull DataNode node) throws SerializationException {
-        List<?> rawData = node.getOrNull("enchants", List.class);
+        List<?> rawData = node.getOrNull(ENCHANTMENTS_PATH, List.class);
         if (rawData == null) return null;
         Collection<Enchantment> enchantments = YaglSerializer.getInstance().deserializeCollection(rawData, Enchantment.class);
         if (enchantments == null) return null;
@@ -36,7 +37,7 @@ public class EnchantmentItemComponentSerializer extends ObjectSerializer<Enchant
 
     @Override
     protected void dumpData(final @NotNull EnchantmentItemComponent value, final @NotNull Map<String, Object> output) throws SerializationException {
-        output.put("enchants", YaglSerializer.getInstance().serialize(value.getEnchantments()));
+        output.put(ENCHANTMENTS_PATH, YaglSerializer.getInstance().serialize(value.getEnchantments()));
     }
 
 }

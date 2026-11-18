@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.item;
 
 import it.fulminazzo.yagl.ItemSerializersLoader;
 import it.fulminazzo.yagl.serializer.SerializerTestHelper;
+import it.fulminazzo.yagl.serializer.TypedSerializer;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -42,8 +43,8 @@ class ItemComponentSerializerTest extends SerializerTestHelper<ItemComponent> {
     void testSerialize() throws IOException {
         Map<?, ?> rawData = readRawMap(dump(COMPONENT, "component"));
         assertNotNull(rawData);
-        assertEquals(TYPE_NAME, rawData.get("type"));
-        Object rawContents = rawData.get("enchants");
+        assertEquals(TYPE_NAME, rawData.get(TypedSerializer.TYPE_PATH));
+        Object rawContents = rawData.get(EnchantmentItemComponentSerializer.ENCHANTMENTS_PATH);
         assertNotNull(rawContents);
         assertInstanceOf(List.class, rawContents);
         int expectedSize = COMPONENT.getEnchantments().size();

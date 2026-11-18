@@ -48,6 +48,9 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor
 public final class SerializableFunctionSerializer<F extends SerializableFunction> implements Serializer<F> {
+    static final @NotNull String TYPE_PATH = "type";
+    static final @NotNull String CONTENT_PATH = "content";
+
     private final @NotNull Class<F> type;
 
     @Override
@@ -65,11 +68,11 @@ public final class SerializableFunctionSerializer<F extends SerializableFunction
             }
         } else {
             DataNode dataNode = node.asDataNodeOrThrow();
-            String typeName = dataNode.getOrThrow("type", String.class);
+            String typeName = dataNode.getOrThrow(TYPE_PATH, String.class);
             Class<? extends F> type = toType(typeName);
             if (type == null)
                 throw new SerializationException("Unknown %s type: %s", this.type.getSimpleName(), typeName);
-            return Reflect.on(type).init(dataNode.getOrThrow("content", String.class)).get();
+            return Reflect.on(type).init(dataNode.getOrThrow(CONTENT_PATH, String.class)).get();
         }
     }
 
@@ -84,8 +87,8 @@ public final class SerializableFunctionSerializer<F extends SerializableFunction
                 try {
                     String content = value.serialize();
                     Map<String, Object> result = new HashMap<>();
-                    result.put("type", valueTypeName);
-                    result.put("content", content);
+                    result.put(TYPE_PATH, valueTypeName);
+                    result.put(CONTENT_PATH, content);
                     return result;
                 } catch (UnsupportedOperationException e) {
                     return valueTypeName;

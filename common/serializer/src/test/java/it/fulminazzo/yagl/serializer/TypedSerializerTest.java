@@ -44,7 +44,7 @@ class TypedSerializerTest extends SerializerTestHelper<Cat> {
         assertEquals(persianCat.getName(), raw.get("name"));
         assertEquals(persianCat.getAge(), raw.get("age"));
         assertEquals(persianCat.getColor(), raw.get("color"));
-        assertEquals("PERSIAN", raw.get("type"));
+        assertEquals("PERSIAN", raw.get(TypedSerializer.TYPE_PATH));
     }
 
     @Test
@@ -58,7 +58,7 @@ class TypedSerializerTest extends SerializerTestHelper<Cat> {
         assertEquals(siameseCat.getAge(), raw.get("age"));
         assertEquals(siameseCat.getMaster(), raw.get("master"));
         assertEquals(siameseCat.getRegion(), raw.get("region"));
-        assertEquals("SIAMESE", raw.get("type"));
+        assertEquals("SIAMESE", raw.get(TypedSerializer.TYPE_PATH));
     }
 
     @Test

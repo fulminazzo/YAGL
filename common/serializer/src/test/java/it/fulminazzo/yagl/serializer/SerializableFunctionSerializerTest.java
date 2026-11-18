@@ -51,8 +51,8 @@ class SerializableFunctionSerializerTest extends SerializerTestHelper<GreetFunct
         CustomGreet function = new CustomGreet("Hello!");
 
         Map<?, ?> raw = readRawMap(dump(function, "custom_greet"));
-        assertEquals(TYPE_CUSTOM_GREET, raw.get("type"));
-        assertEquals("Hello!", raw.get("content"));
+        assertEquals(TYPE_CUSTOM_GREET, raw.get(SerializableFunctionSerializer.TYPE_PATH));
+        assertEquals("Hello!", raw.get(SerializableFunctionSerializer.CONTENT_PATH));
     }
 
     @Test

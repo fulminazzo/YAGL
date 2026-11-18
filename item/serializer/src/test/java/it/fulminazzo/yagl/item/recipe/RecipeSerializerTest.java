@@ -2,6 +2,7 @@ package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.serializer.SerializerTestHelper;
+import it.fulminazzo.yagl.serializer.TypedSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -58,25 +59,25 @@ class RecipeSerializerTest extends SerializerTestHelper<Recipe> {
         furnaceIngredient.put("amount", 1);
 
         Map<String, Object> shapedMap = new HashMap<>();
-        shapedMap.put("type", "SHAPED");
-        shapedMap.put("id", "test_shaped");
-        shapedMap.put("output", outputMap);
-        shapedMap.put("ingredients", List.of(shapedIngredient));
-        shapedMap.put("shape", "1x1");
+        shapedMap.put(TypedSerializer.TYPE_PATH, "SHAPED");
+        shapedMap.put(RecipeSerializer.ID_PATH, "test_shaped");
+        shapedMap.put(RecipeSerializer.OUTPUT_PATH, outputMap);
+        shapedMap.put(ShapedRecipeSerializer.INGREDIENTS_PATH, List.of(shapedIngredient));
+        shapedMap.put(ShapedRecipeSerializer.SHAPE_PATH, "1x1");
 
         Map<String, Object> shapelessMap = new HashMap<>();
-        shapelessMap.put("type", "SHAPELESS");
-        shapelessMap.put("id", "test_shapeless");
-        shapelessMap.put("output", outputMap);
-        shapelessMap.put("ingredients", List.of(shapelessIngredient));
+        shapelessMap.put(TypedSerializer.TYPE_PATH, "SHAPELESS");
+        shapelessMap.put(RecipeSerializer.ID_PATH, "test_shapeless");
+        shapelessMap.put(RecipeSerializer.OUTPUT_PATH, outputMap);
+        shapelessMap.put(ShapelessRecipeSerializer.INGREDIENTS_PATH, List.of(shapelessIngredient));
 
         Map<String, Object> furnaceMap = new HashMap<>();
-        furnaceMap.put("type", "FURNACE");
-        furnaceMap.put("id", "test_furnace");
-        furnaceMap.put("output", outputMap);
-        furnaceMap.put("ingredient", furnaceIngredient);
-        furnaceMap.put("experience", 0.1);
-        furnaceMap.put("cookingTime", 10.0);
+        furnaceMap.put(TypedSerializer.TYPE_PATH, "FURNACE");
+        furnaceMap.put(RecipeSerializer.ID_PATH, "test_furnace");
+        furnaceMap.put(RecipeSerializer.OUTPUT_PATH, outputMap);
+        furnaceMap.put(FurnaceRecipeSerializer.INGREDIENT_PATH, furnaceIngredient);
+        furnaceMap.put(FurnaceRecipeSerializer.EXPERIENCE_PATH, 0.1);
+        furnaceMap.put(FurnaceRecipeSerializer.COOKING_TIME_PATH, 10.0);
 
         return new Object[][]{
                 new Object[]{

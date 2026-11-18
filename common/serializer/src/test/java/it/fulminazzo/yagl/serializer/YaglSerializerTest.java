@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class YaglSerializerTest {
     private static final HashMap<String, Object> CAT_SERIALIZED_DATA = new HashMap<>(Map.of(
             "name", "Billy",
-            "type", "PERSIAN",
+            TypedSerializer.TYPE_PATH, "PERSIAN",
             "age", 0
     )) {{
         put("color", null);
