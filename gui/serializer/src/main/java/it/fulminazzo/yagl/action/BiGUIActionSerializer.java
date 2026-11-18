@@ -11,9 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BiGUIActionSerializer {
-    static final String BI_GUI_MESSAGE_TYPE_NAME = "BI_GUI_MESSAGE";
-    static final String BI_GUI_COMMAND_TYPE_NAME = "BI_GUI_COMMAND";
-    static final String BI_GUI_CONSOLE_COMMAND_TYPE_NAME = "BI_GUI_CONSOLE_COMMAND";
+    static final @NotNull String BI_GUI_MESSAGE_TYPE_NAME = "BI_GUI_MESSAGE";
+    static final @NotNull String BI_GUI_COMMAND_TYPE_NAME = "BI_GUI_COMMAND";
+    static final @NotNull String BI_GUI_CONSOLE_COMMAND_TYPE_NAME = "BI_GUI_CONSOLE_COMMAND";
 
     private static final @NotNull Serializer<BiGUIAction> SERIALIZER = new SerializableFunctionSerializer<>(BiGUIAction.class)
             .setCustomTypeName(BiGUIMessage.class, BI_GUI_MESSAGE_TYPE_NAME)

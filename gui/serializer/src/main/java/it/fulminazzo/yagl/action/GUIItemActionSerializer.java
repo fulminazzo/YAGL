@@ -11,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GUIItemActionSerializer {
-    static final String GUI_MESSAGE_TYPE_NAME = "GUI_ITEM_MESSAGE";
-    static final String GUI_COMMAND_TYPE_NAME = "GUI_ITEM_COMMAND";
-    static final String GUI_CONSOLE_COMMAND_TYPE_NAME = "GUI_ITEM_CONSOLE_COMMAND";
-    static final String GUI_ITEM_CLOSE_TYPE_NAME = "GUI_ITEM_CLOSE";
-    static final String GUI_ITEM_BACK_TYPE_NAME = "GUI_ITEM_BACK";
+    static final @NotNull String GUI_MESSAGE_TYPE_NAME = "GUI_ITEM_MESSAGE";
+    static final @NotNull String GUI_COMMAND_TYPE_NAME = "GUI_ITEM_COMMAND";
+    static final @NotNull String GUI_CONSOLE_COMMAND_TYPE_NAME = "GUI_ITEM_CONSOLE_COMMAND";
+    static final @NotNull String GUI_ITEM_CLOSE_TYPE_NAME = "GUI_ITEM_CLOSE";
+    static final @NotNull String GUI_ITEM_BACK_TYPE_NAME = "GUI_ITEM_BACK";
 
     private static final @NotNull Serializer<GUIItemAction> SERIALIZER = new SerializableFunctionSerializer<>(GUIItemAction.class)
             .setCustomTypeName(GUIItemMessage.class, GUI_MESSAGE_TYPE_NAME)

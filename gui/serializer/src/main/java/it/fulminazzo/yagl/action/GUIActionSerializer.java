@@ -11,9 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GUIActionSerializer {
-    static final String GUI_MESSAGE_TYPE_NAME = "GUI_MESSAGE";
-    static final String GUI_COMMAND_TYPE_NAME = "GUI_COMMAND";
-    static final String GUI_CONSOLE_COMMAND_TYPE_NAME = "GUI_CONSOLE_COMMAND";
+    static final @NotNull String GUI_MESSAGE_TYPE_NAME = "GUI_MESSAGE";
+    static final @NotNull String GUI_COMMAND_TYPE_NAME = "GUI_COMMAND";
+    static final @NotNull String GUI_CONSOLE_COMMAND_TYPE_NAME = "GUI_CONSOLE_COMMAND";
 
     private static final @NotNull Serializer<GUIAction> SERIALIZER = new SerializableFunctionSerializer<>(GUIAction.class)
             .setCustomTypeName(GUIMessage.class, GUI_MESSAGE_TYPE_NAME)
