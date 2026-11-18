@@ -51,9 +51,8 @@ project(':gui:gui-base').projectDir = file('gui/base')
 //TODO: re-enable
 //include 'gui:gui-bukkit'
 //project(':gui:gui-bukkit').projectDir = file('gui/bukkit')
-//TODO: re-enable
-//include 'gui:gui-serializer'
-//project(':gui:gui-serializer').projectDir = file('gui/serializer')
+include 'gui:gui-serializer'
+project(':gui:gui-serializer').projectDir = file('gui/serializer')
 
 include 'testing'
 include 'testing:testing-base'
