@@ -93,7 +93,7 @@ public class Node {
     public <T> @NotNull Optional<Collection<T>> getAsCollection(final @NotNull Class<T> elementsType) throws SerializationException {
         Object raw = data;
         if (raw == null) return Optional.empty();
-        else return Optional.ofNullable(YaglSerializer.getInstance().deserializeCollection(raw, elementsType));
+        else return Optional.ofNullable(YaglSerializer.getInstance().deserializeCollection(raw, elementsType, path, key));
     }
 
     /**
@@ -154,7 +154,7 @@ public class Node {
     ) throws SerializationException {
         Object raw = data;
         if (raw == null) return Optional.empty();
-        else return Optional.ofNullable(YaglSerializer.getInstance().deserializeMap(raw, keyType, valueType));
+        else return Optional.ofNullable(YaglSerializer.getInstance().deserializeMap(raw, keyType, valueType, path, key));
     }
 
     /**
@@ -197,7 +197,7 @@ public class Node {
     public <T> @NotNull Optional<T> getAs(final @NotNull Class<T> type) throws SerializationException {
         Object raw = data;
         if (raw == null) return Optional.empty();
-        else return Optional.ofNullable(YaglSerializer.getInstance().deserialize(raw, type));
+        else return Optional.ofNullable(YaglSerializer.getInstance().deserialize(raw, type, path, key));
     }
 
     /**
