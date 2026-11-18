@@ -1,7 +1,10 @@
 package it.fulminazzo.yagl.item.recipe;
 
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.serializer.*;
+import it.fulminazzo.yagl.serializer.DataNode;
+import it.fulminazzo.yagl.serializer.ObjectSerializer;
+import it.fulminazzo.yagl.serializer.SerializationException;
+import it.fulminazzo.yagl.serializer.Serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,18 +29,16 @@ final class ShapelessRecipeSerializer extends ObjectSerializer<ShapelessRecipe> 
     @SuppressWarnings("unchecked")
     @Override
     protected void loadData(final @NotNull ShapelessRecipe value, final @NotNull DataNode node) throws SerializationException {
-        YaglSerializer mainSerializer = YaglSerializer.getInstance();
         Optional<Collection<?>> ingredientsOpt = (Optional<Collection<?>>) (Optional<?>) node.get(INGREDIENTS_PATH, Collection.class);
         if (ingredientsOpt.isPresent()) {
-            Collection<Item> ingredients = mainSerializer.deserializeCollection(ingredientsOpt.get(), Item.class);
+            Collection<Item> ingredients = mainSerializer().deserializeCollection(ingredientsOpt.get(), Item.class);
             if (ingredients != null) value.addIngredients(ingredients.toArray(new Item[0]));
         }
     }
 
     @Override
     protected void dumpData(final @NotNull ShapelessRecipe value, final @NotNull Map<String, Object> output) throws SerializationException {
-        YaglSerializer mainSerializer = YaglSerializer.getInstance();
-        output.put(INGREDIENTS_PATH, mainSerializer.serialize(value.getIngredients()));
+        output.put(INGREDIENTS_PATH, mainSerializer().serialize(value.getIngredients()));
     }
 
 }

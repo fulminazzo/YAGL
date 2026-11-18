@@ -3,7 +3,6 @@ package it.fulminazzo.yagl.particle;
 import it.fulminazzo.yagl.serializer.Node;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.Serializer;
-import it.fulminazzo.yagl.serializer.YaglSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,13 +41,13 @@ public final class SingleParticleOptionSerializer<T, P extends ParticleOption<T>
 
     @Override
     public @Nullable P deserialize(final @NotNull Node node) throws SerializationException {
-        T option = YaglSerializer.getInstance().deserialize(node.getRaw(), this.fieldType);
+        T option = mainSerializer().deserialize(node.getRaw(), this.fieldType);
         return this.initializer.apply(option);
     }
 
     @Override
     public @Nullable Object serialize(final @Nullable P value) throws SerializationException {
-        return value == null ? null : YaglSerializer.getInstance().serialize(value.getOption());
+        return value == null ? null : mainSerializer().serialize(value.getOption());
     }
 
 }

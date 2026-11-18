@@ -3,7 +3,6 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.serializer.DataNode;
 import it.fulminazzo.yagl.serializer.ObjectSerializer;
 import it.fulminazzo.yagl.serializer.SerializationException;
-import it.fulminazzo.yagl.serializer.YaglSerializer;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +24,7 @@ public class EnchantmentItemComponentSerializer extends ObjectSerializer<Enchant
     protected @Nullable EnchantmentItemComponent initialize(final @NotNull DataNode node) throws SerializationException {
         List<?> rawData = node.getOrNull(ENCHANTMENTS_PATH, List.class);
         if (rawData == null) return null;
-        Collection<Enchantment> enchantments = YaglSerializer.getInstance().deserializeCollection(rawData, Enchantment.class);
+        Collection<Enchantment> enchantments = mainSerializer().deserializeCollection(rawData, Enchantment.class);
         if (enchantments == null) return null;
         return new EnchantmentItemComponent(enchantments);
     }
@@ -37,7 +36,7 @@ public class EnchantmentItemComponentSerializer extends ObjectSerializer<Enchant
 
     @Override
     protected void dumpData(final @NotNull EnchantmentItemComponent value, final @NotNull Map<String, Object> output) throws SerializationException {
-        output.put(ENCHANTMENTS_PATH, YaglSerializer.getInstance().serialize(value.getEnchantments()));
+        output.put(ENCHANTMENTS_PATH, mainSerializer().serialize(value.getEnchantments()));
     }
 
 }

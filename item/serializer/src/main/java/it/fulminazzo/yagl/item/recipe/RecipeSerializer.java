@@ -4,7 +4,6 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.serializer.DataNode;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.TypedSerializer;
-import it.fulminazzo.yagl.serializer.YaglSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -34,13 +33,13 @@ public final class RecipeSerializer extends TypedSerializer<Recipe> {
     protected void loadCommonData(final @NotNull Recipe value, final @NotNull DataNode node) throws SerializationException {
         Optional<?> outputOpt = node.get(OUTPUT_PATH, Object.class);
         if (outputOpt.isPresent())
-            value.setOutput(YaglSerializer.getInstance().deserialize(outputOpt.get(), Item.class));
+            value.setOutput(mainSerializer().deserialize(outputOpt.get(), Item.class));
     }
 
     @Override
     protected void dumpCommonData(final @NotNull Recipe value, final @NotNull Map<String, Object> output) throws SerializationException {
         output.put(ID_PATH, value.getId());
-        output.put(OUTPUT_PATH, YaglSerializer.getInstance().serialize(value.getOutput()));
+        output.put(OUTPUT_PATH, mainSerializer().serialize(value.getOutput()));
     }
 
 }

@@ -28,4 +28,13 @@ public interface Serializer<T> {
      */
     @Nullable Object serialize(final @Nullable T value) throws SerializationException;
 
+    /**
+     * Returns the main serializer combining all YAGL serializers in one place.
+     *
+     * @return the main serializer
+     */
+    default @NotNull YaglSerializer mainSerializer() {
+        return YaglSerializer.getInstance();
+    }
+
 }

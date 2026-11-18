@@ -1,6 +1,9 @@
 package it.fulminazzo.yagl.particle;
 
-import it.fulminazzo.yagl.serializer.*;
+import it.fulminazzo.yagl.serializer.DataNode;
+import it.fulminazzo.yagl.serializer.ObjectSerializer;
+import it.fulminazzo.yagl.serializer.SerializationException;
+import it.fulminazzo.yagl.serializer.Serializer;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +46,7 @@ public final class PropertyParticleOptionSerializer<P extends ParticleOption<?>>
         for (Map.Entry<String, Property<?, P>> entry : this.properties.entrySet()) {
             Property<?, P> property = entry.getValue();
             Object value = node.getOrThrow(entry.getKey(), Object.class);
-            value = YaglSerializer.getInstance().deserialize(value, property.getType());
+            value = mainSerializer().deserialize(value, property.getType());
             dataMap.put(entry.getKey(), value);
         }
         return this.initializer.apply(new ValueMap(dataMap));
@@ -58,7 +61,7 @@ public final class PropertyParticleOptionSerializer<P extends ParticleOption<?>>
     protected void dumpData(final @NotNull P value, final @NotNull Map<String, Object> output) throws SerializationException {
         for (Map.Entry<String, Property<?, P>> entry : this.properties.entrySet()) {
             Object v = entry.getValue().get(value);
-            v = YaglSerializer.getInstance().serialize(v);
+            v = mainSerializer().serialize(v);
             output.put(entry.getKey(), v);
         }
     }
