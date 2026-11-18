@@ -5,6 +5,7 @@ import it.fulminazzo.yagl.naming.CaseConverter;
 import it.fulminazzo.yagl.naming.Convention;
 import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.reflect.ReflectException;
+import it.fulminazzo.yagl.structure.BiMap;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,10 +49,32 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor
 public final class SerializableFunctionSerializer<F extends SerializableFunction> implements Serializer<F> {
-    static final @NotNull String TYPE_PATH = "type";
-    static final @NotNull String CONTENT_PATH = "content";
+    /**
+     * The path where the type of the function is stored.
+     */
+    public static final @NotNull String TYPE_PATH = "type";
+    /**
+     * The path where the content of the function is stored.
+     */
+    public static final @NotNull String CONTENT_PATH = "content";
 
+    private final @NotNull BiMap<Class<? extends F>, String> typeMap = new BiMap<>();
     private final @NotNull Class<F> type;
+
+    /**
+     * Overrides the default type name derivation system by manually specifying the name associated to a type.
+     *
+     * @param type     the type
+     * @param typeName the name
+     * @return this serializer
+     */
+    public @NotNull SerializableFunctionSerializer<F> setCustomTypeName(
+            final @NotNull Class<? extends F> type,
+            final @NotNull String typeName
+    ) {
+        typeMap.put(type, typeName);
+        return this;
+    }
 
     @Override
     public @Nullable F deserialize(final @NotNull Node node) throws SerializationException {
@@ -100,6 +123,7 @@ public final class SerializableFunctionSerializer<F extends SerializableFunction
     }
 
     private @Nullable Class<? extends F> toType(@NotNull String typeName) {
+        if (typeMap.containsValue(typeName)) return typeMap.getByValue(typeName);
         if (!typeName.contains(".")) {
             typeName = CaseConverter.convert(typeName.toLowerCase(Locale.ROOT), Convention.SNAKE_CASE, Convention.PASCAL_CASE);
             typeName = getPackageName() + typeName;
@@ -112,6 +136,7 @@ public final class SerializableFunctionSerializer<F extends SerializableFunction
     }
 
     private @NotNull String toTypeName(final @NotNull Class<? extends F> valueType) {
+        if (typeMap.containsKey(valueType)) return typeMap.get(valueType);
         String typeName = valueType.getCanonicalName().replace(getPackageName(), "");
         if (typeName.contains(".")) return typeName;
         else

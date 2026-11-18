@@ -1,5 +1,9 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.action.GUIAction;
+import it.fulminazzo.yagl.action.command.GUICommand;
+import it.fulminazzo.yagl.action.command.GUIConsoleCommand;
+import it.fulminazzo.yagl.action.message.GUIMessage;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.YaglSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +16,7 @@ class GUISerializersLoaderTest {
 
     private static Class<?>[] testTypes() {
         return new Class<?>[]{
+                GUIAction.class, GUIMessage.class, GUICommand.class, GUIConsoleCommand.class
         };
     }
 
