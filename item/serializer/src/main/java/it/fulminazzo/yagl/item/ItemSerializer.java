@@ -55,14 +55,14 @@ public final class ItemSerializer extends ObjectSerializer<Item> {
     @Override
     protected void dumpData(final @NotNull Item value, final @NotNull DataNode output) throws SerializationException {
         output.set(MATERIAL_PATH, value.getMaterial());
-        output.set(AMOUNT_PATH, value.getAmount());
-        output.set(DURABILITY_PATH, value.getDurability());
-        output.set(DISPLAY_NAME_PATH, value.getDisplayName());
+        output.set(AMOUNT_PATH, value.getAmount(), Constants.MIN_AMOUNT);
+        output.set(DURABILITY_PATH, value.getDurability(), 0);
+        output.set(DISPLAY_NAME_PATH, value.getDisplayName(), "");
         output.set(LORE_PATH, value.getLore());
         output.set(ENCHANTMENTS_PATH, value.getEnchantments());
         output.set(ITEM_FLAGS_PATH, value.getItemFlags());
-        output.set(UNBREAKABLE_PATH, value.isUnbreakable());
-        output.set(CUSTOM_MODEL_DATA_PATH, value.getCustomModelData());
+        output.set(UNBREAKABLE_PATH, value.isUnbreakable(), false);
+        output.set(CUSTOM_MODEL_DATA_PATH, value.getCustomModelData(), 0);
         output.set(COMPONENTS_PATH, value.getComponents());
         if (value instanceof RecipeItem)
             output.set(RECIPES_PATH, value.to(RecipeItem.class).getRecipes());

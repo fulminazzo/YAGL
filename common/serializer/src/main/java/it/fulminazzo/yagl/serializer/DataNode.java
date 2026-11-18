@@ -33,7 +33,21 @@ public final class DataNode extends Node {
      * @throws SerializationException in case of any errors
      */
     public void set(final @NotNull String key, final @Nullable Object value) throws SerializationException {
-        getActualData().put(key, YaglSerializer.getInstance().serialize(value));
+        set(key, value, null);
+    }
+
+    /**
+     * Updates the value at the given key.
+     *
+     * @param key   the name of the key
+     * @param value the value to be stored, serialized using {@link YaglSerializer}
+     * @param defaultValue if the value is the same as the default value, it will not be stored to preserve space
+     * @throws SerializationException in case of any errors
+     * @param <T> the type of the value
+     */
+    public <T> void set(final @NotNull String key, final @Nullable T value, final @Nullable T defaultValue) throws SerializationException {
+        if (defaultValue == null || !defaultValue.equals(value))
+            getActualData().put(key, YaglSerializer.getInstance().serialize(value));
     }
 
     /**
