@@ -1,0 +1,26 @@
+type: ITEM
+material: diamond
+amount: 32
+durability: 200
+displayName: 'Mana'
+lore:
+  - 'Use this item'
+  - 'to cast your'
+  - 'magic spells!'
+enchantments:
+  - 'unbreaking:1'
+itemFlags:
+  - 'hide_enchants'
+unbreakable: true
+customModelData: 15
+priority: 10
+clickSound: 'block.note_block.harp:2.0:1.5:master'
+requirements:
+  type: PERMISSION
+  content: 'yagl.test'
+clickAction:
+  type: GUI_ITEM_COMMAND
+  content: 'say hello'
+variables:
+  key1: 'value1'
+  key2: 'value2'

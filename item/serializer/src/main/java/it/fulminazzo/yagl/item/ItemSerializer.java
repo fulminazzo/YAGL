@@ -16,16 +16,46 @@ import org.jetbrains.annotations.Nullable;
  * and return the appropriate type.
  */
 public final class ItemSerializer extends ObjectSerializer<Item> {
-    static final @NotNull String MATERIAL_PATH = "material";
-    static final @NotNull String AMOUNT_PATH = "amount";
-    static final @NotNull String DURABILITY_PATH = "durability";
-    static final @NotNull String DISPLAY_NAME_PATH = "displayName";
-    static final @NotNull String LORE_PATH = "lore";
-    static final @NotNull String ENCHANTMENTS_PATH = "enchantments";
-    static final @NotNull String ITEM_FLAGS_PATH = "itemFlags";
-    static final @NotNull String UNBREAKABLE_PATH = "unbreakable";
-    static final @NotNull String CUSTOM_MODEL_DATA_PATH = "customModelData";
-    static final @NotNull String COMPONENTS_PATH = "components";
+    /**
+     * The path where the material of the item is stored.
+     */
+    public static final @NotNull String MATERIAL_PATH = "material";
+    /**
+     * The path where the amount of the item is stored.
+     */
+    public static final @NotNull String AMOUNT_PATH = "amount";
+    /**
+     * The path where the durability of the item is stored.
+     */
+    public static final @NotNull String DURABILITY_PATH = "durability";
+    /**
+     * The path where the display name of the item is stored.
+     */
+    public static final @NotNull String DISPLAY_NAME_PATH = "displayName";
+    /**
+     * The path where the lore of the item is stored.
+     */
+    public static final @NotNull String LORE_PATH = "lore";
+    /**
+     * The path where the enchantments of the item are stored.
+     */
+    public static final @NotNull String ENCHANTMENTS_PATH = "enchantments";
+    /**
+     * The path where the item flags of the item are stored.
+     */
+    public static final @NotNull String ITEM_FLAGS_PATH = "itemFlags";
+    /**
+     * The path where the unbreakable flag of the item is stored.
+     */
+    public static final @NotNull String UNBREAKABLE_PATH = "unbreakable";
+    /**
+     * The path where the custom model data of the item is stored.
+     */
+    public static final @NotNull String CUSTOM_MODEL_DATA_PATH = "customModelData";
+    /**
+     * The path where the components of the item are stored.
+     */
+    public static final @NotNull String COMPONENTS_PATH = "components";
 
     static final @NotNull String RECIPES_PATH = "recipes";
 
