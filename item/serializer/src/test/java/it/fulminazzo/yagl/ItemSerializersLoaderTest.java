@@ -1,5 +1,6 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.ItemComponent;
 import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
 import it.fulminazzo.yagl.item.recipe.Recipe;
@@ -22,7 +23,8 @@ class ItemSerializersLoaderTest {
                 ShapedRecipe.class,
                 ShapelessRecipe.class,
                 FurnaceRecipe.class,
-                ItemComponent.class
+                ItemComponent.class,
+                Item.class
         };
     }
 

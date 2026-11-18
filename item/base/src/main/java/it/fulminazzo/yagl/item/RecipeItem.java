@@ -59,6 +59,13 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
      */
     void unregisterRecipes();
 
+    /**
+     * Gets the registered recipes.
+     *
+     * @return the recipes
+     */
+    @NotNull Collection<Recipe> getRecipes();
+
     @Override
     @NotNull RecipeItem setMaterial(final @NotNull String material);
 

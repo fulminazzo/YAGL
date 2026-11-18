@@ -3,6 +3,7 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.exception.NotImplementedException;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
@@ -16,6 +17,7 @@ import java.util.function.Predicate;
 /**
  * An implementation of {@link RecipeItem}.
  */
+@Getter
 @EqualsAndHashCode(callSuper = true)
 class RecipeItemImpl extends ItemImpl implements RecipeItem {
     protected final List<Recipe> recipes = new ArrayList<>();

@@ -1,7 +1,9 @@
 package it.fulminazzo.yagl;
 
+import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.item.ItemComponent;
 import it.fulminazzo.yagl.item.ItemComponentSerializer;
+import it.fulminazzo.yagl.item.ItemSerializer;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.RecipeSerializer;
 import it.fulminazzo.yagl.item.recipe.ShapeSerializer;
@@ -19,6 +21,7 @@ public final class ItemSerializersLoader implements SerializersLoader {
                 .registerSerializer(ShapedRecipe.Shape.class, new ShapeSerializer())
                 .registerSerializer(Recipe.class, new RecipeSerializer())
                 .registerSerializer(ItemComponent.class, getItemComponentSerializer())
+                .registerSerializer(Item.class, new ItemSerializer())
         ;
     }
 

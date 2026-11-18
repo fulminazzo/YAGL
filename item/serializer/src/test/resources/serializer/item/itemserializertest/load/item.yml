@@ -1,0 +1,18 @@
+material: diamond
+amount: 32
+durability: 200
+displayName: 'Mana'
+lore:
+  - 'Use this item'
+  - 'to cast your'
+  - 'magic spells!'
+enchantments:
+  - 'unbreaking:1'
+itemFlags:
+  - 'hide_enchants'
+unbreakable: true
+customModelData: 15
+components:
+  - type: ENCHANTMENT
+    enchants:
+      - 'unbreaking:5'
