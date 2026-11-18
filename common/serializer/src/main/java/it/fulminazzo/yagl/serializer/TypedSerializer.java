@@ -113,7 +113,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
      * @throws SerializationException in case of any serialization errors
      */
     @SuppressWarnings("unused")
-    protected void dumpCommonData(final @NotNull T value, final @NotNull Map<String, Object> output) throws SerializationException {
+    protected void dumpCommonData(final @NotNull T value, final @NotNull DataNode output) throws SerializationException {
         // Empty method on purpose, for implementations to optionally override.
     }
 
@@ -137,10 +137,10 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
     }
 
     @Override
-    protected void dumpData(final @NotNull T value, final @NotNull Map<String, Object> output) throws SerializationException {
+    protected void dumpData(final @NotNull T value, final @NotNull DataNode output) throws SerializationException {
         dumpCommonData(value, output);
         getSerializer(value).dumpData(value, output);
-        output.put(TYPE_PATH, typeClassNames.getByValue((Class<? extends T>) value.getClass()));
+        output.set(TYPE_PATH, typeClassNames.getByValue((Class<? extends T>) value.getClass()));
     }
 
 }

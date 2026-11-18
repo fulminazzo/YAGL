@@ -2,9 +2,9 @@ type: FURNACE
 id: 'test_furnace'
 ingredient:
   material: RAW_IRON
-  amount: 1
+  amount: 3
 output:
   material: STONE
-  amount: 1
+  amount: 2
 experience: 0.1
 cookingTime: 10.0

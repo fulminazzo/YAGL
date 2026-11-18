@@ -58,9 +58,9 @@ class ObjectSerializerTest extends SerializerTestHelper<ObjectSerializerTest.Per
 
         @Override
         protected void dumpData(final @NotNull ObjectSerializerTest.Person value,
-                                final @NotNull Map<String, Object> output) {
-            output.put("name", value.getName());
-            output.put("age", value.getAge());
+                                final @NotNull DataNode output) throws SerializationException {
+            output.set("name", value.getName());
+            output.set("age", value.getAge());
         }
 
     }

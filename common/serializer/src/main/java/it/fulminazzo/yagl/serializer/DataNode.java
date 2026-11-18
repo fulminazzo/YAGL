@@ -26,6 +26,17 @@ public final class DataNode extends Node {
     }
 
     /**
+     * Updates the value at the given key.
+     *
+     * @param key   the name of the key
+     * @param value the value to be stored, serialized using {@link YaglSerializer}
+     * @throws SerializationException in case of any errors
+     */
+    public void set(final @NotNull String key, final @Nullable Object value) throws SerializationException {
+        getActualData().put(key, YaglSerializer.getInstance().serialize(value));
+    }
+
+    /**
      * Attempts to retrieve the sub-node corresponding to the given key from the internal data.
      *
      * @param key the name of the key
@@ -57,7 +68,10 @@ public final class DataNode extends Node {
      * @return the collection corresponding to the given key
      * @throws SerializationException if the value or the elements are not of the expected type, or they were not found
      */
-    public <T> @NotNull Collection<T> getCollectionOrThrow(final @NotNull String key, final @NotNull Class<T> elementsType) throws SerializationException {
+    public <T> @NotNull Collection<T> getCollectionOrThrow(
+            final @NotNull String key,
+            final @NotNull Class<T> elementsType
+    ) throws SerializationException {
         return getNode(key).getAsCollectionOrThrow(elementsType);
     }
 
@@ -71,7 +85,10 @@ public final class DataNode extends Node {
      * @return the collection corresponding to the given key, or {@code null} if the key is not present
      * @throws SerializationException if the value or the elements are not of the expected type
      */
-    public <T> @Nullable Collection<T> getCollectionOrNull(final @NotNull String key, final @NotNull Class<T> elementsType) throws SerializationException {
+    public <T> @Nullable Collection<T> getCollectionOrNull(
+            final @NotNull String key,
+            final @NotNull Class<T> elementsType
+    ) throws SerializationException {
         return getNode(key).getAsCollectionOrNull(elementsType);
     }
 
@@ -85,7 +102,10 @@ public final class DataNode extends Node {
      * @return the value corresponding to the given key, or an empty optional if the key is not present
      * @throws SerializationException if the value or the elements are not of the expected type
      */
-    public <T> @NotNull Optional<Collection<T>> getCollection(final @NotNull String key, final @NotNull Class<T> elementsType) throws SerializationException {
+    public <T> @NotNull Optional<Collection<T>> getCollection(
+            final @NotNull String key,
+            final @NotNull Class<T> elementsType
+    ) throws SerializationException {
         return getNode(key).getAsCollection(elementsType);
     }
 
@@ -211,9 +231,9 @@ public final class DataNode extends Node {
         return basePath + getKey();
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    private @NotNull Map<?, ?> getActualData() {
-        return (Map<?, ?>) data;
+    @SuppressWarnings({"DataFlowIssue", "unchecked"})
+    private @NotNull Map<Object, Object> getActualData() {
+        return (Map<Object, Object>) data;
     }
 
 }

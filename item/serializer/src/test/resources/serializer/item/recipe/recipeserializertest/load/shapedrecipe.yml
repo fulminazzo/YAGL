@@ -3,7 +3,7 @@ id: 'test_shaped'
 shape: 1x1
 ingredients:
   - material: COBBLESTONE
-    amount: 1
+    amount: 3
 output:
   material: STONE
-  amount: 1
+  amount: 2

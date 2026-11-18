@@ -58,10 +58,10 @@ public final class PropertyParticleOptionSerializer<P extends ParticleOption<?>>
     }
 
     @Override
-    protected void dumpData(final @NotNull P value, final @NotNull Map<String, Object> output) {
+    protected void dumpData(final @NotNull P value, final @NotNull DataNode output) throws SerializationException {
         for (Map.Entry<String, Property<?, P>> entry : this.properties.entrySet()) {
             Object v = entry.getValue().get(value);
-            output.put(entry.getKey(), v);
+            output.set(entry.getKey(), v);
         }
     }
 

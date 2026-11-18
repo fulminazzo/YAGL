@@ -43,20 +43,20 @@ class RecipeSerializerTest extends SerializerTestHelper<Recipe> {
 
     private static @NotNull Object[][] testData() {
         Map<String, Object> outputMap = new HashMap<>();
-        outputMap.put("material", "STONE");
-        outputMap.put("amount", 1);
+        outputMap.put("material", "stone");
+        outputMap.put("amount", 2);
 
         Map<String, Object> shapedIngredient = new HashMap<>();
-        shapedIngredient.put("material", "COBBLESTONE");
-        shapedIngredient.put("amount", 1);
+        shapedIngredient.put("material", "cobblestone");
+        shapedIngredient.put("amount", 3);
 
         Map<String, Object> shapelessIngredient = new HashMap<>();
-        shapelessIngredient.put("material", "ORANGE_TULIP");
-        shapelessIngredient.put("amount", 1);
+        shapelessIngredient.put("material", "orange_tulip");
+        shapelessIngredient.put("amount", 3);
 
         Map<String, Object> furnaceIngredient = new HashMap<>();
-        furnaceIngredient.put("material", "RAW_IRON");
-        furnaceIngredient.put("amount", 1);
+        furnaceIngredient.put("material", "raw_iron");
+        furnaceIngredient.put("amount", 3);
 
         Map<String, Object> shapedMap = new HashMap<>();
         shapedMap.put(TypedSerializer.TYPE_PATH, "SHAPED");
@@ -83,22 +83,22 @@ class RecipeSerializerTest extends SerializerTestHelper<Recipe> {
                 new Object[]{
                         new ShapedRecipe("test_shaped")
                                 .setShape(1, 1)
-                                .setIngredient(0, Item.newItem("COBBLESTONE").setAmount(1))
-                                .setOutput(Item.newItem("STONE").setAmount(1)),
+                                .setIngredient(0, Item.newItem("COBBLESTONE").setAmount(3))
+                                .setOutput(Item.newItem("STONE").setAmount(2)),
                         shapedMap
                 },
                 new Object[]{
                         new ShapelessRecipe("test_shapeless")
-                                .addIngredient(Item.newItem("ORANGE_TULIP").setAmount(1))
-                                .setOutput(Item.newItem("STONE").setAmount(1)),
+                                .addIngredient(Item.newItem("ORANGE_TULIP").setAmount(3))
+                                .setOutput(Item.newItem("STONE").setAmount(2)),
                         shapelessMap
                 },
                 new Object[]{
                         new FurnaceRecipe("test_furnace")
-                                .setIngredient(Item.newItem("RAW_IRON").setAmount(1))
+                                .setIngredient(Item.newItem("RAW_IRON").setAmount(3))
                                 .setExperience(0.1f)
                                 .setCookingTime(10.0)
-                                .setOutput(Item.newItem("STONE").setAmount(1)),
+                                .setOutput(Item.newItem("STONE").setAmount(2)),
                         furnaceMap
                 }
         };

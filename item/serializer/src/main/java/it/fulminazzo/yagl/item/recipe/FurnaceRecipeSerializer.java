@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A {@link Serializer} for {@link FurnaceRecipe} objects.
@@ -35,11 +34,11 @@ final class FurnaceRecipeSerializer extends ObjectSerializer<FurnaceRecipe> {
     }
 
     @Override
-    protected void dumpData(final @NotNull FurnaceRecipe value, final @NotNull Map<String, Object> output) {
+    protected void dumpData(final @NotNull FurnaceRecipe value, final @NotNull DataNode output) throws SerializationException {
         List<Item> ingredients = value.getIngredients();
-        if (!ingredients.isEmpty()) output.put(INGREDIENT_PATH, ingredients.get(0));
-        output.put(EXPERIENCE_PATH, value.getExperience());
-        output.put(COOKING_TIME_PATH, value.getCookingTime());
+        if (!ingredients.isEmpty()) output.set(INGREDIENT_PATH, ingredients.get(0));
+        output.set(EXPERIENCE_PATH, value.getExperience());
+        output.set(COOKING_TIME_PATH, value.getCookingTime());
     }
 
 }

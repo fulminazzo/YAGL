@@ -3,8 +3,6 @@ package it.fulminazzo.yagl.serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 final class CatSerializer extends TypedSerializer<Cat> {
 
     public CatSerializer() {
@@ -17,9 +15,9 @@ final class CatSerializer extends TypedSerializer<Cat> {
     }
 
     @Override
-    protected void dumpCommonData(final @NotNull Cat value, final @NotNull Map<String, Object> output) {
-        output.put("name", value.getName());
-        output.put("age", value.getAge());
+    protected void dumpCommonData(final @NotNull Cat value, final @NotNull DataNode output) throws SerializationException {
+        output.set("name", value.getName());
+        output.set("age", value.getAge());
     }
 
     {
@@ -35,8 +33,8 @@ final class CatSerializer extends TypedSerializer<Cat> {
             }
 
             @Override
-            protected void dumpData(final @NotNull PersianCat value, final @NotNull Map<String, Object> output) {
-                output.put("color", value.getColor());
+            protected void dumpData(final @NotNull PersianCat value, final @NotNull DataNode output) throws SerializationException {
+                output.set("color", value.getColor());
             }
 
         });
@@ -55,9 +53,9 @@ final class CatSerializer extends TypedSerializer<Cat> {
             }
 
             @Override
-            protected void dumpData(final @NotNull SiameseCat value, final @NotNull Map<String, Object> output) {
-                output.put("master", value.getMaster());
-                output.put("region", value.getRegion());
+            protected void dumpData(final @NotNull SiameseCat value, final @NotNull DataNode output) throws SerializationException {
+                output.set("master", value.getMaster());
+                output.set("region", value.getRegion());
             }
 
         });

@@ -9,8 +9,6 @@ import it.fulminazzo.yagl.wrapper.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 /**
  * A {@link Serializer} for {@link Item} implementations.
  * <br>
@@ -55,19 +53,19 @@ public final class ItemSerializer extends ObjectSerializer<Item> {
     }
 
     @Override
-    protected void dumpData(final @NotNull Item value, final @NotNull Map<String, Object> output) {
-        output.put(MATERIAL_PATH, value.getMaterial());
-        output.put(AMOUNT_PATH, value.getAmount());
-        output.put(DURABILITY_PATH, value.getDurability());
-        output.put(DISPLAY_NAME_PATH, value.getDisplayName());
-        output.put(LORE_PATH, value.getLore());
-        output.put(ENCHANTMENTS_PATH, value.getEnchantments());
-        output.put(ITEM_FLAGS_PATH, value.getItemFlags());
-        output.put(UNBREAKABLE_PATH, value.isUnbreakable());
-        output.put(CUSTOM_MODEL_DATA_PATH, value.getCustomModelData());
-        output.put(COMPONENTS_PATH, value.getComponents());
+    protected void dumpData(final @NotNull Item value, final @NotNull DataNode output) throws SerializationException {
+        output.set(MATERIAL_PATH, value.getMaterial());
+        output.set(AMOUNT_PATH, value.getAmount());
+        output.set(DURABILITY_PATH, value.getDurability());
+        output.set(DISPLAY_NAME_PATH, value.getDisplayName());
+        output.set(LORE_PATH, value.getLore());
+        output.set(ENCHANTMENTS_PATH, value.getEnchantments());
+        output.set(ITEM_FLAGS_PATH, value.getItemFlags());
+        output.set(UNBREAKABLE_PATH, value.isUnbreakable());
+        output.set(CUSTOM_MODEL_DATA_PATH, value.getCustomModelData());
+        output.set(COMPONENTS_PATH, value.getComponents());
         if (value instanceof RecipeItem)
-            output.put(RECIPES_PATH, value.to(RecipeItem.class).getRecipes());
+            output.set(RECIPES_PATH, value.to(RecipeItem.class).getRecipes());
     }
 
 }

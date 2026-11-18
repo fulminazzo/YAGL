@@ -38,7 +38,7 @@ public abstract class ObjectSerializer<T> implements Serializer<T> {
      * @param output the output map to dump data into
      * @throws SerializationException in case of any serialization errors
      */
-    protected abstract void dumpData(final @NotNull T value, final @NotNull Map<String, Object> output) throws SerializationException;
+    protected abstract void dumpData(final @NotNull T value, final @NotNull DataNode output) throws SerializationException;
 
     /**
      * Checks whether it is possible to return {@code null} values in case of a null {@link DataNode}.
@@ -62,7 +62,7 @@ public abstract class ObjectSerializer<T> implements Serializer<T> {
     public @Nullable Object serialize(final @Nullable T value) throws SerializationException {
         if (value == null) return null;
         Map<String, Object> output = new HashMap<>();
-        dumpData(value, output);
+        dumpData(value, new DataNode(output, "", ""));
         return output;
     }
 

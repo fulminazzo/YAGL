@@ -6,8 +6,6 @@ import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.TypedSerializer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
 /**
  * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link Recipe} implementations.
  *
@@ -34,9 +32,9 @@ public final class RecipeSerializer extends TypedSerializer<Recipe> {
     }
 
     @Override
-    protected void dumpCommonData(final @NotNull Recipe value, final @NotNull Map<String, Object> output) {
-        output.put(ID_PATH, value.getId());
-        output.put(OUTPUT_PATH, value.getOutput());
+    protected void dumpCommonData(final @NotNull Recipe value, final @NotNull DataNode output) throws SerializationException {
+        output.set(ID_PATH, value.getId());
+        output.set(OUTPUT_PATH, value.getOutput());
     }
 
 }

@@ -7,8 +7,6 @@ import it.fulminazzo.yagl.wrapper.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 /**
  * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link EnchantmentItemComponent}.
  *
@@ -31,8 +29,8 @@ public class EnchantmentItemComponentSerializer extends ObjectSerializer<Enchant
     }
 
     @Override
-    protected void dumpData(final @NotNull EnchantmentItemComponent value, final @NotNull Map<String, Object> output) {
-        output.put(ENCHANTMENTS_PATH, value.getEnchantments());
+    protected void dumpData(final @NotNull EnchantmentItemComponent value, final @NotNull DataNode output) throws SerializationException {
+        output.set(ENCHANTMENTS_PATH, value.getEnchantments());
     }
 
 }

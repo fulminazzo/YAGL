@@ -2,7 +2,7 @@ type: SHAPELESS
 id: 'test_shapeless'
 ingredients:
   - material: ORANGE_TULIP
-    amount: 1
+    amount: 3
 output:
   material: STONE
-  amount: 1
+  amount: 2

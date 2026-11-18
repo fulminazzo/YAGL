@@ -23,110 +23,110 @@ recipes:
       material: diamond_block
     ingredients:
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'
       - customModelData: 15
-        material: "diamond"
+        material: 'diamond'
         lore:
-          - "Use this item"
-          - "to cast your"
-          - "magic spells!"
-        displayName: "Mana"
+          - 'Use this item'
+          - 'to cast your'
+          - 'magic spells!'
+        displayName: 'Mana'
         itemFlags:
-          - "hide_enchants"
+          - 'hide_enchants'
         unbreakable: true
         enchantments:
           - 'unbreaking:1'

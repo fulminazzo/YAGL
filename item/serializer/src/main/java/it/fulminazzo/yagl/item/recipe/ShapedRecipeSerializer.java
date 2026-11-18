@@ -8,8 +8,6 @@ import it.fulminazzo.yagl.serializer.Serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 /**
  * A {@link Serializer} for {@link ShapedRecipe} objects.
  *
@@ -35,9 +33,9 @@ final class ShapedRecipeSerializer extends ObjectSerializer<ShapedRecipe> {
     }
 
     @Override
-    protected void dumpData(final @NotNull ShapedRecipe value, final @NotNull Map<String, Object> output) {
-        output.put(INGREDIENTS_PATH, value.getIngredients());
-        output.put(SHAPE_PATH, value.getShape());
+    protected void dumpData(final @NotNull ShapedRecipe value, final @NotNull DataNode output) throws SerializationException {
+        output.set(INGREDIENTS_PATH, value.getIngredients());
+        output.set(SHAPE_PATH, value.getShape());
     }
 
 }
