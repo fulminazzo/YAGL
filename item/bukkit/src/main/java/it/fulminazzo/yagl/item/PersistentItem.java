@@ -5,7 +5,6 @@ import it.fulminazzo.yagl.action.InteractItemAction;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.listener.PersistentListener;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -228,7 +227,12 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull PersistentItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (PersistentItem) super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull PersistentItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (PersistentItem) super.addItemFlags(itemFlags);
     }
 
@@ -238,38 +242,23 @@ public class PersistentItem extends BukkitItemImpl {
     }
 
     @Override
-    public @NotNull PersistentItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull PersistentItem removeItemFlags(final String @NotNull ... itemFlags) {
         return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull PersistentItem addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (PersistentItem) super.addPotionEffects(potionEffects);
+    public @NotNull PersistentItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
+        return (PersistentItem) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull PersistentItem addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (PersistentItem) super.addPotionEffects(potionEffects);
+    public @NotNull PersistentItem setComponent(final @NotNull ItemComponent component) {
+        return (PersistentItem) super.setComponent(component);
     }
 
     @Override
-    public @NotNull PersistentItem removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (PersistentItem) super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull PersistentItem removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (PersistentItem) super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull PersistentItem setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (PersistentItem) super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull PersistentItem setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (PersistentItem) super.setPotionEffects(potionEffects);
+    public @NotNull PersistentItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (PersistentItem) super.removeComponent(componentType);
     }
 
     @Override

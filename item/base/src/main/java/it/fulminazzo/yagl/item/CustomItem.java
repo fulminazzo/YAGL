@@ -2,7 +2,6 @@ package it.fulminazzo.yagl.item;
 
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -148,7 +147,12 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
-    public @NotNull I addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull I addItemFlags(final String @NotNull ... itemFlags) {
+        return (I) super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull I addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (I) super.addItemFlags(itemFlags);
     }
 
@@ -158,38 +162,23 @@ public abstract class CustomItem<I extends CustomItem<I>> extends ItemImpl {
     }
 
     @Override
-    public @NotNull I removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull I removeItemFlags(final String @NotNull ... itemFlags) {
         return (I) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull I addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (I) super.addPotionEffects(potionEffects);
+    public @NotNull I removeItemFlags(final @NotNull Collection<String> itemFlags) {
+        return (I) super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull I addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (I) super.addPotionEffects(potionEffects);
+    public @NotNull I setComponent(final @NotNull ItemComponent component) {
+        return (I) super.setComponent(component);
     }
 
     @Override
-    public @NotNull I removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (I) super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (I) super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (I) super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull I setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (I) super.setPotionEffects(potionEffects);
+    public @NotNull I removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (I) super.removeComponent(componentType);
     }
 
     @Override

@@ -4,7 +4,6 @@ import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
@@ -300,6 +299,20 @@ public interface Item extends AbstractItem {
      * @return true if it does
      */
     default boolean hasItemFlag(final @NotNull ItemFlag flag) {
+        return hasItemFlag(flag.name());
+    }
+
+    /**
+     * Checks if the current item has the given enchantment.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
+     *
+     * @param flag the flag
+     * @return true if it does
+     */
+    default boolean hasItemFlag(final @NotNull String flag) {
         return getItemFlags().contains(flag);
     }
 
@@ -310,17 +323,35 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item addItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return addItemFlags(Arrays.stream(itemFlags).map(ItemFlag::name).collect(Collectors.toSet()));
+    }
+
+    /**
+     * Add item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
+     *
+     * @param itemFlags the item flags
+     * @return this item
+     */
+    default @NotNull Item addItemFlags(final String @NotNull ... itemFlags) {
         return addItemFlags(Arrays.asList(itemFlags));
     }
 
     /**
      * Add item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
      *
      * @param itemFlags the item flags
      * @return this item
      */
-    default @NotNull Item addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
-        Set<ItemFlag> flags = getItemFlags();
+    default @NotNull Item addItemFlags(final @NotNull Collection<String> itemFlags) {
+        Set<String> flags = getItemFlags();
         flags.addAll(itemFlags);
         return this;
     }
@@ -332,26 +363,48 @@ public interface Item extends AbstractItem {
      * @return this item
      */
     default @NotNull Item removeItemFlags(final ItemFlag @NotNull ... itemFlags) {
+        return removeItemFlags(Arrays.stream(itemFlags).map(ItemFlag::name).collect(Collectors.toSet()));
+    }
+
+    /**
+     * Remove item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
+     *
+     * @param itemFlags the item flags
+     * @return this item
+     */
+    default @NotNull Item removeItemFlags(final String @NotNull ... itemFlags) {
         return removeItemFlags(Arrays.asList(itemFlags));
     }
 
     /**
      * Remove item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
      *
      * @param itemFlags the item flags
      * @return this item
      */
-    default @NotNull Item removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull Item removeItemFlags(final @NotNull Collection<String> itemFlags) {
         getItemFlags().removeAll(itemFlags);
         return this;
     }
 
     /**
      * Gets item flags.
+     * <br>
+     * Since item flags have changed drastically through Minecraft versions,
+     * this version <b>will not check</b> for the validity of the flags:
+     * they will only be validated upon conversion to the necessary representation based on the platform.
      *
      * @return the item flags
      */
-    @NotNull Set<ItemFlag> getItemFlags();
+    @NotNull Set<String> getItemFlags();
 
     /**
      * Sets unbreakable.
@@ -386,83 +439,46 @@ public interface Item extends AbstractItem {
     int getCustomModelData();
 
     /**
-     * Add potion effects.
-     * Only works for compatible items.
+     * Gets the component of the given type.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
      *
-     * @param potionEffects the potion effects
-     * @return this item
+     * @param componentType the type of the component
+     * @param <C>           the component type
+     * @return the component or {@code null} if not found
      */
-    default @NotNull Item addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return addPotionEffects(Arrays.asList(potionEffects));
-    }
+    @Nullable <C extends ItemComponent> C getComponent(final @NotNull Class<C> componentType);
 
     /**
-     * Add potion effects.
-     * Only works for compatible items.
+     * Gets all the components of this item.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
      *
-     * @param potionEffects the potion effects
-     * @return this item
+     * @return the components
      */
-    default @NotNull Item addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        @NotNull Set<PotionEffect> prevPotionEffect = getPotionEffects();
-        prevPotionEffect.addAll(potionEffects);
-        return this;
-    }
+    @NotNull Collection<ItemComponent> getComponents();
 
     /**
-     * Remove potion effects.
-     * Only works for compatible items.
+     * Sets the component to this item.
+     * <br>
+     * Will <b>override</b> any existing component of the same type.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
      *
-     * @param potionEffects the potion effects
+     * @param component the component
      * @return this item
      */
-    default @NotNull Item removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return removePotionEffects(Arrays.asList(potionEffects));
-    }
+    @NotNull Item setComponent(final @NotNull ItemComponent component);
 
     /**
-     * Remove potion effects.
-     * Only works for compatible items.
+     * Removes the component of the given type.
+     * <br>
+     * Check {@link ItemComponent} to understand what a component is and how it works.
      *
-     * @param potionEffects the potion effects
+     * @param componentType the type of the component
      * @return this item
      */
-    default @NotNull Item removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        @NotNull Set<PotionEffect> prevPotionEffect = getPotionEffects();
-        for (final PotionEffect e : potionEffects) prevPotionEffect.removeIf(e2 -> e2.equals(e));
-        return this;
-    }
-
-    /**
-     * Sets potion effects.
-     * Only works for compatible items.
-     *
-     * @param potionEffects the potion effects
-     * @return this item
-     */
-    default @NotNull Item setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return setPotionEffects(Arrays.asList(potionEffects));
-    }
-
-    /**
-     * Sets potion effects.
-     * Only works for compatible items.
-     *
-     * @param potionEffects the potion effects
-     * @return this item
-     */
-    default @NotNull Item setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        getPotionEffects().clear();
-        return addPotionEffects(potionEffects);
-    }
-
-    /**
-     * Gets potion effects.
-     * Only works for compatible items.
-     *
-     * @return this item
-     */
-    @NotNull Set<PotionEffect> getPotionEffects();
+    @NotNull Item removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
 
     /**
      * Compares this item with the given one.

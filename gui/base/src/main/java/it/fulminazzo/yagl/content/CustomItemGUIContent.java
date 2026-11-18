@@ -2,10 +2,10 @@ package it.fulminazzo.yagl.content;
 
 import it.fulminazzo.yagl.item.Constants;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.item.ItemComponent;
 import it.fulminazzo.yagl.item.field.ItemField;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,13 +102,8 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull Set<ItemFlag> getItemFlags() {
+    public @NotNull Set<String> getItemFlags() {
         return this.item.getItemFlags();
-    }
-
-    @Override
-    public @NotNull Set<PotionEffect> getPotionEffects() {
-        return this.item.getPotionEffects();
     }
 
     @Override
@@ -131,6 +126,28 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     @Override
     public int getCustomModelData() {
         return this.item.getCustomModelData();
+    }
+
+    @Override
+    public @Nullable <C extends ItemComponent> C getComponent(final @NotNull Class<C> componentType) {
+        return this.item.getComponent(componentType);
+    }
+
+    @Override
+    public @NotNull Collection<ItemComponent> getComponents() {
+        return this.item.getComponents();
+    }
+
+    @Override
+    public @NotNull C setComponent(final @NotNull ItemComponent component) {
+        this.item.setComponent(component);
+        return (C) this;
+    }
+
+    @Override
+    public @NotNull C removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        this.item.removeComponent(componentType);
+        return (C) this;
     }
 
     @Override
@@ -214,7 +231,12 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull C addItemFlags(final String @NotNull ... itemFlags) {
+        return (C) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    public @NotNull C addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (C) Item.super.addItemFlags(itemFlags);
     }
 
@@ -224,38 +246,13 @@ public abstract class CustomItemGUIContent<C extends CustomItemGUIContent<C>>
     }
 
     @Override
-    public @NotNull C removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    public @NotNull C removeItemFlags(final String @NotNull ... itemFlags) {
         return (C) Item.super.removeItemFlags(itemFlags);
     }
 
     @Override
-    public @NotNull C addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (C) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (C) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (C) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (C) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (C) Item.super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    public @NotNull C setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (C) Item.super.setPotionEffects(potionEffects);
+    public @NotNull C removeItemFlags(final @NotNull Collection<String> itemFlags) {
+        return (C) Item.super.removeItemFlags(itemFlags);
     }
 
     @Override

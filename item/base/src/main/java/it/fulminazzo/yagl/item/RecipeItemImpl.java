@@ -117,6 +117,16 @@ class RecipeItemImpl extends ItemImpl implements RecipeItem {
     }
 
     @Override
+    public @NotNull RecipeItem setComponent(final @NotNull ItemComponent component) {
+        return (RecipeItem) super.setComponent(component);
+    }
+
+    @Override
+    public @NotNull RecipeItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        return (RecipeItem) super.removeComponent(componentType);
+    }
+
+    @Override
     public @NotNull String toString() {
         String base = super.toString();
         return base.substring(0, base.length() - 1) + String.format(", recipes=%s}", this.recipes.size());

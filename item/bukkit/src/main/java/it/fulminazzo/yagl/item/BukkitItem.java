@@ -3,7 +3,6 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.ItemAdapter;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -153,7 +152,12 @@ public interface BukkitItem extends Item {
     }
 
     @Override
-    default @NotNull BukkitItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (BukkitItem) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull BukkitItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (BukkitItem) Item.super.addItemFlags(itemFlags);
     }
 
@@ -163,9 +167,20 @@ public interface BukkitItem extends Item {
     }
 
     @Override
-    default @NotNull BukkitItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull BukkitItem removeItemFlags(final String @NotNull ... itemFlags) {
         return (BukkitItem) Item.super.removeItemFlags(itemFlags);
     }
+
+    @Override
+    default @NotNull BukkitItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
+        return (BukkitItem) Item.super.removeItemFlags(itemFlags);
+    }
+
+    @Override
+    @NotNull BukkitItem setComponent(final @NotNull ItemComponent component);
+
+    @Override
+    @NotNull BukkitItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
 
     @Override
     @NotNull BukkitItem setCustomModelData(final int customModelData);
@@ -195,36 +210,6 @@ public interface BukkitItem extends Item {
 
     @Override
     @NotNull BukkitItem setUnbreakable(final boolean unbreakable);
-
-    @Override
-    default @NotNull BukkitItem addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (BukkitItem) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull BukkitItem addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (BukkitItem) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull BukkitItem removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (BukkitItem) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull BukkitItem removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (BukkitItem) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull BukkitItem setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (BukkitItem) Item.super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull BukkitItem setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (BukkitItem) Item.super.setPotionEffects(potionEffects);
-    }
 
     @Override
     @NotNull BukkitItem copy();

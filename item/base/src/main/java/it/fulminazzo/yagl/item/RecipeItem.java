@@ -3,7 +3,6 @@ package it.fulminazzo.yagl.item;
 import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
@@ -151,7 +150,12 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     }
 
     @Override
-    default @NotNull RecipeItem addItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull RecipeItem addItemFlags(final String @NotNull ... itemFlags) {
+        return (RecipeItem) Item.super.addItemFlags(itemFlags);
+    }
+
+    @Override
+    default @NotNull RecipeItem addItemFlags(final @NotNull Collection<String> itemFlags) {
         return (RecipeItem) Item.super.addItemFlags(itemFlags);
     }
 
@@ -161,42 +165,23 @@ public interface RecipeItem extends Item, Iterable<Recipe> {
     }
 
     @Override
-    default @NotNull RecipeItem removeItemFlags(final @NotNull Collection<ItemFlag> itemFlags) {
+    default @NotNull RecipeItem removeItemFlags(final String @NotNull ... itemFlags) {
         return (RecipeItem) Item.super.removeItemFlags(itemFlags);
     }
 
     @Override
-    default @NotNull RecipeItem addPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (RecipeItem) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull RecipeItem addPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (RecipeItem) Item.super.addPotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull RecipeItem removePotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (RecipeItem) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull RecipeItem removePotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (RecipeItem) Item.super.removePotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull RecipeItem setPotionEffects(final PotionEffect @NotNull ... potionEffects) {
-        return (RecipeItem) Item.super.setPotionEffects(potionEffects);
-    }
-
-    @Override
-    default @NotNull RecipeItem setPotionEffects(final @NotNull Collection<PotionEffect> potionEffects) {
-        return (RecipeItem) Item.super.setPotionEffects(potionEffects);
+    default @NotNull RecipeItem removeItemFlags(final @NotNull Collection<String> itemFlags) {
+        return (RecipeItem) Item.super.removeItemFlags(itemFlags);
     }
 
     @Override
     @NotNull RecipeItem setUnbreakable(final boolean unbreakable);
+
+    @Override
+    @NotNull RecipeItem setComponent(final @NotNull ItemComponent component);
+
+    @Override
+    @NotNull RecipeItem removeComponent(final @NotNull Class<? extends ItemComponent> componentType);
 
     @Override
     @NotNull RecipeItem copy();

@@ -2,13 +2,11 @@ package it.fulminazzo.yagl.item;
 
 import it.fulminazzo.yagl.Copiable;
 import it.fulminazzo.yagl.item.field.ItemField;
-import it.fulminazzo.yagl.item.field.ItemFlag;
 import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.structure.EnchantmentSet;
 import it.fulminazzo.yagl.util.MessageUtils;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.wrapper.Enchantment;
-import it.fulminazzo.yagl.wrapper.PotionEffect;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -31,10 +29,10 @@ class ItemImpl extends Copiable<Item> implements Item {
     protected String displayName;
     protected final @NotNull List<String> lore;
     protected final @NotNull Set<Enchantment> enchantments;
-    protected final @NotNull Set<ItemFlag> itemFlags;
-    protected final @NotNull Set<PotionEffect> potionEffects;
+    protected final @NotNull Set<String> itemFlags;
     protected boolean unbreakable;
     protected int customModelData;
+    protected final @NotNull Map<Class<? extends ItemComponent>, ItemComponent> components;
 
     /**
      * Instantiates a new Item.
@@ -65,13 +63,14 @@ class ItemImpl extends Copiable<Item> implements Item {
         this.lore = new ArrayList<>();
         this.enchantments = new EnchantmentSet();
         this.itemFlags = new HashSet<>();
-        this.potionEffects = new HashSet<>();
+        this.components = new HashMap<>();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected @NotNull <T extends Item> T copyDataTo(final @NotNull T copy) {
         if (material != null) copy.setMaterial(material);
+        components.values().forEach(copy::setComponent);
         return (T) copy
                 .setAmount(amount)
                 .setDurability(durability)
@@ -79,9 +78,13 @@ class ItemImpl extends Copiable<Item> implements Item {
                 .setLore(lore)
                 .addEnchantments(enchantments)
                 .addItemFlags(itemFlags)
-                .setPotionEffects(potionEffects)
                 .setUnbreakable(unbreakable)
                 .setCustomModelData(customModelData);
+    }
+
+    @Override
+    public boolean hasItemFlag(final @NotNull String flag) {
+        return this.itemFlags.contains(flag);
     }
 
     @Override
@@ -119,6 +122,29 @@ class ItemImpl extends Copiable<Item> implements Item {
     @Override
     public @NotNull Item setCustomModelData(final int customModelData) {
         this.customModelData = customModelData;
+        return this;
+    }
+
+    @Override
+    public @Nullable <C extends ItemComponent> C getComponent(final @NotNull Class<C> componentType) {
+        ItemComponent raw = this.components.get(componentType);
+        return raw == null ? null : componentType.cast(raw);
+    }
+
+    @Override
+    public @NotNull Collection<ItemComponent> getComponents() {
+        return new ArrayList<>(this.components.values());
+    }
+
+    @Override
+    public @NotNull Item setComponent(final @NotNull ItemComponent component) {
+        this.components.put(component.getClass(), component);
+        return this;
+    }
+
+    @Override
+    public @NotNull Item removeComponent(final @NotNull Class<? extends ItemComponent> componentType) {
+        this.components.remove(componentType);
         return this;
     }
 

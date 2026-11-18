@@ -1,14 +1,14 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.fulmicollection.objects.Refl;
-import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.item.BukkitItem;
 import it.fulminazzo.yagl.item.Item;
-import it.fulminazzo.yagl.item.field.ItemFlag;
+import it.fulminazzo.yagl.item.ItemComponent;
 import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
 import it.fulminazzo.yagl.item.recipe.ShapelessRecipe;
+import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.util.EnumUtils;
 import it.fulminazzo.yagl.util.NMSUtils;
 import lombok.AccessLevel;
@@ -22,8 +22,10 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +35,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemAdapter {
     private static final String ID_KEY = "yagl";
+
+    private static final Map<Class<? extends ItemComponent>, ItemComponentAdapter<?, ?>> COMPONENT_ADAPTERS = new ConcurrentHashMap<>();
+    //TODO:
+    //  For the time being, components are not supported.
+    //  This module is going under maintenance after which components will be usable.
 
     /**
      * Converts the given {@link ItemStack} to an {@link Item}.
@@ -56,7 +63,7 @@ public final class ItemAdapter {
             List<String> lore = meta.getLore();
             if (lore != null) item.setLore(lore);
             meta.getEnchants().forEach((e, l) -> item.addEnchantments(WrappersAdapter.enchantToWEnchant(e, l)));
-            meta.getItemFlags().forEach(f -> item.addItemFlags(EnumUtils.valueOf(ItemFlag.class, f.name())));
+            meta.getItemFlags().forEach(f -> item.addItemFlags(f.name()));
             invokeNoSuchMethod(() -> item.setUnbreakable(meta.isUnbreakable()), () ->
                     item.setUnbreakable(meta.spigot().isUnbreakable()));
             invokeNoSuchMethod(() -> {
@@ -79,12 +86,13 @@ public final class ItemAdapter {
                 }
             });
 
-            if (meta instanceof PotionMeta) {
-                PotionMeta potionMeta = (PotionMeta) meta;
-                potionMeta.getCustomEffects().stream()
-                        .map(WrappersAdapter::potionEffectToWPotionEffect)
-                        .forEach(item::addPotionEffects);
-            }
+            //TODO: PotionMeta support
+//            if (meta instanceof PotionMeta) {
+//                PotionMeta potionMeta = (PotionMeta) meta;
+//                potionMeta.getCustomEffects().stream()
+//                        .map(WrappersAdapter::potionEffectToWPotionEffect)
+//                        .forEach(item::addPotionEffects);
+//            }
         }
         return item;
     }
@@ -116,15 +124,16 @@ public final class ItemAdapter {
                 @NotNull Pair<Enchantment, Integer> pair = WrappersAdapter.wEnchantToEnchant(e);
                 meta.addEnchant(pair.getFirst(), pair.getSecond(), true);
             });
-            item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f.name())));
+            item.getItemFlags().forEach(f -> meta.addItemFlags(EnumUtils.valueOf(org.bukkit.inventory.ItemFlag.class, f)));
             invokeNoSuchMethod(() -> meta.setUnbreakable(item.isUnbreakable()), () ->
                     meta.spigot().setUnbreakable(item.isUnbreakable()));
 
             if (meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta) meta;
-                item.getPotionEffects().stream()
-                        .map(WrappersAdapter::wPotionEffectToPotionEffect)
-                        .forEach(p -> potionMeta.addCustomEffect(p, true));
+                //TODO: PotionMeta support
+//                item.getPotionEffects().stream()
+//                        .map(WrappersAdapter::wPotionEffectToPotionEffect)
+//                        .forEach(p -> potionMeta.addCustomEffect(p, true));
             }
 
             try {
@@ -154,6 +163,20 @@ public final class ItemAdapter {
         return itemStack;
     }
 
+    /**
+     * Registers a new adapter for the given component type.
+     *
+     * @param componentType the component type
+     * @param adapter       the adapter
+     * @param <C>           the component type
+     */
+    public static <C extends ItemComponent> void registerComponentAdapter(
+            final @NotNull Class<C> componentType,
+            final @NotNull ItemComponentAdapter<C, ?> adapter
+    ) {
+        COMPONENT_ADAPTERS.put(componentType, adapter);
+    }
+
     private static @Nullable ItemMeta getItemMeta(final @NotNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
@@ -164,7 +187,7 @@ public final class ItemAdapter {
      * Tries to execute the first given {@link Runnable}.
      * If it fails for a {@link NoSuchMethodError}, the second one is called.
      *
-     * @param get the first function
+     * @param get    the first function
      * @param orElse the second function
      */
     private static void invokeNoSuchMethod(final @NotNull Runnable get, final @Nullable Runnable orElse) {
