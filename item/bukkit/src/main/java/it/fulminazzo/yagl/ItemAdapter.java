@@ -3,6 +3,7 @@ package it.fulminazzo.yagl;
 import it.fulminazzo.fulmicollection.objects.Refl;
 import it.fulminazzo.yagl.item.BukkitItem;
 import it.fulminazzo.yagl.item.Item;
+import it.fulminazzo.yagl.item.ItemComponent;
 import it.fulminazzo.yagl.item.recipe.FurnaceRecipe;
 import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.item.recipe.ShapedRecipe;
@@ -21,8 +22,10 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +35,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemAdapter {
     private static final String ID_KEY = "yagl";
+
+    private static final Map<Class<? extends ItemComponent>, ItemComponentAdapter<?, ?>> COMPONENT_ADAPTERS = new ConcurrentHashMap<>();
+    //TODO:
+    //  For the time being, components are not supported.
+    //  This module is going under maintenance after which components will be usable.
 
     /**
      * Converts the given {@link ItemStack} to an {@link Item}.
@@ -153,6 +161,20 @@ public final class ItemAdapter {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    /**
+     * Registers a new adapter for the given component type.
+     *
+     * @param componentType the component type
+     * @param adapter       the adapter
+     * @param <C>           the component type
+     */
+    public static <C extends ItemComponent> void registerComponentAdapter(
+            final @NotNull Class<C> componentType,
+            final @NotNull ItemComponentAdapter<C, ?> adapter
+    ) {
+        COMPONENT_ADAPTERS.put(componentType, adapter);
     }
 
     private static @Nullable ItemMeta getItemMeta(final @NotNull ItemStack itemStack) {
