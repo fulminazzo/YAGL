@@ -235,7 +235,12 @@ public final class DataNode extends Node {
      * @param key the name of the key
      * @return the node corresponding to the given key
      */
-    public @NotNull Node getNode(final @NotNull String key) {
+    public @NotNull Node getNode(final @NotNull String key) throws SerializationException {
+        if (key.contains(".")) {
+            int dotIndex = key.indexOf('.');
+            String first = key.substring(0, dotIndex);
+            return getSubNodeOrThrow(first).getNode(key.substring(dotIndex + 1));
+        }
         return new Node(getActualData().get(key), getPath(), key);
     }
 
