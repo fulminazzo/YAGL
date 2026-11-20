@@ -341,6 +341,11 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
     }
 
     @Override
+    public @NotNull Set<Integer> getMovableSlots() {
+        return this.templateGUI.getMovableSlots();
+    }
+
+    @Override
     public @NotNull List<GUIContent> getContents(final @Range(from = 0, to = Constants.MAX_SLOT) int slot) {
         return this.templateGUI.getContents(slot);
     }

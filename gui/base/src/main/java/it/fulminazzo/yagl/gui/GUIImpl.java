@@ -21,6 +21,7 @@ abstract class GUIImpl implements GUI {
     @Getter
     protected @Nullable String title;
     protected List<Contents> contents;
+    @Getter
     protected final @NotNull Set<Integer> movableSlots;
     protected final Map<String, String> variables = new HashMap<>();
 

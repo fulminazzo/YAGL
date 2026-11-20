@@ -464,4 +464,17 @@ class FullscreenGUITest {
         assertThrowsExactly(IllegalStateException.class, () -> new FullscreenGUI(9).update(null));
     }
 
+    @Test
+    void testGetMovableSlotsReturnsCombinedSlots() {
+        FullscreenGUI gui = GUI.newFullscreenGUI(27, 27)
+                .setMovable(0, true)
+                .setMovable(13, true)
+                .setMovable(27, true)
+                .setMovable(50, true)
+                .setMovable(53, true);
+
+        Set<Integer> movable = gui.getMovableSlots();
+        assertEquals(Set.of(0, 13, 27, 50, 53), movable);
+    }
+
 }

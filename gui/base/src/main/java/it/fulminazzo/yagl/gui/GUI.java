@@ -100,6 +100,13 @@ public interface GUI extends Metadatable {
     @NotNull GUI setMovable(final @Range(from = 0, to = Constants.MAX_SLOT) int slot, final boolean movable);
 
     /**
+     * Gets the movable slots.
+     *
+     * @return the movable slots
+     */
+    @NotNull Set<Integer> getMovableSlots();
+
+    /**
      * Gets the most matching content at the given slot.
      * The contents are filtered using {@link GUIContent#hasViewRequirements(Viewer)}
      * and for those remaining, the one with higher {@link GUIContent#getPriority()} is returned.

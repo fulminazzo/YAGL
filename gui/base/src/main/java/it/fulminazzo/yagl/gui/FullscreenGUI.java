@@ -127,6 +127,14 @@ public class FullscreenGUI implements GUI {
     }
 
     @Override
+    public @NotNull Set<Integer> getMovableSlots() {
+        return Stream.concat(
+                this.upperGUI.getMovableSlots().stream(),
+                this.lowerGUI.getMovableSlots().stream().map(s -> s + this.upperGUI.size())
+        ).collect(Collectors.toSet());
+    }
+
+    @Override
     public @NotNull List<GUIContent> getContents(final @Range(from = 0, to = Constants.FULLSCREEN_MAX_SLOT) int slot) {
         return getCorrespondingGUI(slot).getContents(getCorrespondingSlot(slot));
     }

@@ -371,6 +371,11 @@ class GUIImplTest {
         }
 
         @Override
+        public RequirementChecker getRequirements() {
+            return null;
+        }
+
+        @Override
         public @NotNull GUIContent onClickItem(final @NotNull GUIItemAction action) {
             return null;
         }
@@ -378,6 +383,11 @@ class GUIImplTest {
         @Override
         public @NotNull Optional<GUIItemAction> clickItemAction() {
             return Optional.empty();
+        }
+
+        @Override
+        public @Nullable GUIItemAction getClickAction() {
+            return null;
         }
 
         @Override
