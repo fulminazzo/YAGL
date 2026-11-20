@@ -215,6 +215,7 @@ public final class YaglSerializer {
     public @NotNull Serializer<?> getSerializer(final @NotNull Class<?> type) throws SerializationException {
         if (Map.class.isAssignableFrom(type)) return mapSerializer;
         if (Collection.class.isAssignableFrom(type)) return collectionSerializer;
+        if (type.isEnum()) return new EnumSerializer<>(type);
         Package typePackage = type.getPackage();
         if (typePackage != null && typePackage.getName().startsWith("java."))
             return baseTypesSerializer;
