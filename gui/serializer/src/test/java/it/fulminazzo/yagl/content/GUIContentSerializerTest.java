@@ -45,7 +45,7 @@ class GUIContentSerializerTest extends SerializerTestHelper<GUIContent> {
     void testThatYaglSerializerGetSerializerGetsCorrectSerializer() throws SerializationException {
         Serializer<?> serializer = YaglSerializer.getInstance().getSerializer(ItemGUIContent.class);
         assertNotNull(serializer);
-        assertInstanceOf(GUIContentSerializer.class, serializer);
+        assertInstanceOf(CustomItemGUIContentSerializer.class, serializer);
     }
 
     @Test

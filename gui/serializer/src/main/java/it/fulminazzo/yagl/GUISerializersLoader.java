@@ -1,6 +1,8 @@
 package it.fulminazzo.yagl;
 
 import it.fulminazzo.yagl.action.*;
+import it.fulminazzo.yagl.content.CustomItemGUIContent;
+import it.fulminazzo.yagl.content.CustomItemGUIContentSerializer;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.GUIContentSerializer;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
@@ -21,6 +23,7 @@ public final class GUISerializersLoader implements SerializersLoader {
                 .registerSerializer(GUIItemAction.class, GUIItemActionSerializer.getInstance())
                 .registerSerializer(RequirementChecker.class, RequirementCheckerSerializer.getInstance())
                 .registerSerializer(GUIContent.class, new GUIContentSerializer())
+                .registerSerializer(CustomItemGUIContent.class, new CustomItemGUIContentSerializer())
                 .registerSerializer(GUI.class, new GUISerializer())
         ;
     }
