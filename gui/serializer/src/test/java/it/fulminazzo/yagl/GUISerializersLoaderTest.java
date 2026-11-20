@@ -13,6 +13,7 @@ import it.fulminazzo.yagl.content.requirement.PermissionRequirement;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.gui.DefaultGUI;
 import it.fulminazzo.yagl.gui.GUI;
+import it.fulminazzo.yagl.gui.ResizableGUI;
 import it.fulminazzo.yagl.gui.TypeGUI;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.YaglSerializer;
@@ -31,7 +32,7 @@ class GUISerializersLoaderTest {
                 GUIItemAction.class, GUIItemMessage.class, GUIItemCommand.class, GUIItemConsoleCommand.class,
                 RequirementChecker.class, PermissionRequirement.class,
                 GUIContent.class, ItemGUIContent.class,
-                GUI.class, DefaultGUI.class, TypeGUI.class
+                GUI.class, DefaultGUI.class, TypeGUI.class, ResizableGUI.class
         };
     }
 

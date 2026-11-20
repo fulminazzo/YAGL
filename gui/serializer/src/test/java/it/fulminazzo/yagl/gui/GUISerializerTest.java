@@ -140,6 +140,13 @@ class GUISerializerTest extends SerializerTestHelper<GUI> {
                         ((CustomCheck) (raw, expected) -> {
                             assertEquals(expected.get(TypeGUISerializer.INVENTORY_TYPE_PATH), raw.get(TypeGUISerializer.INVENTORY_TYPE_PATH));
                         })
+                },
+                {
+                        populateGUI(GUI.newResizableGUI(27)),
+                        combineMap.apply(Map.of(ResizableGUISerializer.SIZE_PATH, 27)),
+                        ((CustomCheck) (raw, expected) -> {
+                            assertEquals(expected.get(ResizableGUISerializer.SIZE_PATH), raw.get(ResizableGUISerializer.SIZE_PATH));
+                        })
                 }
         };
     }
