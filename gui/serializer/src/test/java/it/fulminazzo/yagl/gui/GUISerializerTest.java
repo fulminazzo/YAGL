@@ -127,7 +127,13 @@ class GUISerializerTest extends SerializerTestHelper<GUI> {
             return combined;
         };
         return new Object[][]{
-
+                {
+                        populateGUI(GUI.newGUI(27)),
+                        combineMap.apply(Map.of(DefaultGUISerializer.SIZE_PATH, 27)),
+                        ((CustomCheck) (raw, expected) -> {
+                            assertEquals(expected.get(DefaultGUISerializer.SIZE_PATH), raw.get(DefaultGUISerializer.SIZE_PATH));
+                        })
+                }
         };
     }
 
