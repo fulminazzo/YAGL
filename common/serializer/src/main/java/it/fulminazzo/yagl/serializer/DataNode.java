@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Special implementation of {@link Node} containing a chunk of unserialized data.
@@ -39,11 +40,11 @@ public final class DataNode extends Node {
     /**
      * Updates the value at the given key.
      *
-     * @param key   the name of the key
-     * @param value the value to be stored, serialized using {@link YaglSerializer}
+     * @param key          the name of the key
+     * @param value        the value to be stored, serialized using {@link YaglSerializer}
      * @param defaultValue if the value is the same as the default value, it will not be stored to preserve space
+     * @param <T>          the type of the value
      * @throws SerializationException in case of any errors
-     * @param <T> the type of the value
      */
     public <T> void set(final @NotNull String key, final @Nullable T value, final @Nullable T defaultValue) throws SerializationException {
         if (defaultValue == null || !defaultValue.equals(value))
@@ -236,6 +237,15 @@ public final class DataNode extends Node {
      */
     public @NotNull Node getNode(final @NotNull String key) {
         return new Node(getActualData().get(key), getPath(), key);
+    }
+
+    /**
+     * Gets the keys of this data node.
+     *
+     * @return the keys
+     */
+    public @NotNull Set<Object> keys() {
+        return getActualData().keySet();
     }
 
     @Override

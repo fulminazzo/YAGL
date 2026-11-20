@@ -5,6 +5,8 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.GUIContentSerializer;
 import it.fulminazzo.yagl.content.requirement.RequirementChecker;
 import it.fulminazzo.yagl.content.requirement.RequirementCheckerSerializer;
+import it.fulminazzo.yagl.gui.GUI;
+import it.fulminazzo.yagl.gui.GUISerializer;
 import it.fulminazzo.yagl.serializer.SerializersLoader;
 import it.fulminazzo.yagl.serializer.YaglSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +21,7 @@ public final class GUISerializersLoader implements SerializersLoader {
                 .registerSerializer(GUIItemAction.class, GUIItemActionSerializer.getInstance())
                 .registerSerializer(RequirementChecker.class, RequirementCheckerSerializer.getInstance())
                 .registerSerializer(GUIContent.class, new GUIContentSerializer())
+                .registerSerializer(GUI.class, new GUISerializer())
         ;
     }
 
