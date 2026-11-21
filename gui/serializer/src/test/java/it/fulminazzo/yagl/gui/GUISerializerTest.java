@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -121,73 +121,59 @@ class GUISerializerTest extends SerializerTestHelper<GUI> {
                         SerializableFunctionSerializer.CONTENT_PATH, "say I changed the GUI!"
                 )
         ));
-        Function<Map<String, Object>, Map<String, Object>> combineMap = m -> {
-            Map<String, Object> combined = new HashMap<>(baseExpected);
-            combined.putAll(m);
+        BiFunction<Map<String, ?>, Map<String, ?>, Map<String, ?>> combineMaps = (m1, m2) -> {
+            Map<String, Object> combined = new LinkedHashMap<>(m1);
+            combined.putAll(m2);
             return combined;
         };
-        Map<String, Integer> fullscreenContents = new LinkedHashMap<>();
-        fullscreenContents.put("1", 1);
-        fullscreenContents.put("5", 2);
-        fullscreenContents.put("10", 3);
-        fullscreenContents.put("27", 1);
-        Function<Map<String, Object>, Map<String, Object>> combineFullscreenMap = m -> {
-            Map<String, Object> combined = combineMap.apply(m);
-            combined.put(GUISerializer.CONTENTS_PATH, fullscreenContents);
-            return combined;
-        };
-        FullscreenGUI fullscreenGUIBySize = (FullscreenGUI) populateGUI(GUI.newFullscreenGUI(27, 18));
-        fullscreenGUIBySize.setContents(27, ItemGUIContent.newInstance("coal"));
-        FullscreenGUI fullscreenGUIByType = (FullscreenGUI) populateGUI(GUI.newFullscreenGUI(GUIType.CHEST, 18));
-        fullscreenGUIByType.setContents(27, ItemGUIContent.newInstance("coal"));
+        Map<String, Object> fullscreenGUIExtraContents = Map.of(
+                "27", 1,
+                "42", 1
+        );
         return new Object[][]{
                 {
                         populateGUI(GUI.newGUI(27)),
-                        combineMap.apply(Map.of(DefaultGUISerializer.SIZE_PATH, 27)),
+                        combineMaps.apply(baseExpected, Map.of(DefaultGUISerializer.SIZE_PATH, 27)),
                         ((CustomCheck) (raw, expected) -> {
                             assertEquals(expected.get(DefaultGUISerializer.SIZE_PATH), raw.get(DefaultGUISerializer.SIZE_PATH));
                         })
                 },
                 {
                         populateGUI(GUI.newGUI(GUIType.CHEST)),
-                        combineMap.apply(Map.of(TypeGUISerializer.INVENTORY_TYPE_PATH, GUIType.CHEST.name())),
+                        combineMaps.apply(baseExpected, Map.of(TypeGUISerializer.INVENTORY_TYPE_PATH, GUIType.CHEST.name())),
                         ((CustomCheck) (raw, expected) -> {
                             assertEquals(expected.get(TypeGUISerializer.INVENTORY_TYPE_PATH), raw.get(TypeGUISerializer.INVENTORY_TYPE_PATH));
                         })
                 },
                 {
                         populateGUI(GUI.newResizableGUI(27)),
-                        combineMap.apply(Map.of(ResizableGUISerializer.SIZE_PATH, 27)),
+                        combineMaps.apply(baseExpected, Map.of(ResizableGUISerializer.SIZE_PATH, 27)),
                         ((CustomCheck) (raw, expected) -> {
                             assertEquals(expected.get(ResizableGUISerializer.SIZE_PATH), raw.get(ResizableGUISerializer.SIZE_PATH));
                         })
                 },
                 {
-                        fullscreenGUIBySize,
-                        combineFullscreenMap.apply(Map.of()),
+                        populateGUI(GUI.newFullscreenGUI(27, 18))
+                                .setContents(27, ItemGUIContent.newInstance("coal"))
+                                .setContents(42, ItemGUIContent.newInstance("lapis_lazuli")),
+                        combineMaps.apply(baseExpected, Map.of(
+                                GUISerializer.CONTENTS_PATH, combineMaps.apply(contents, fullscreenGUIExtraContents)
+                        )),
                         ((CustomCheck) (raw, expected) -> {
-                            Map<?, ?> upperGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.UPPER_GUI_PATH);
-                            Map<?, ?> lowerGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.LOWER_GUI_PATH);
-                            assertEquals("DEFAULT", upperGUI.get(TypedSerializer.TYPE_PATH));
-                            assertEquals(27, upperGUI.get(DefaultGUISerializer.SIZE_PATH));
-                            assertEquals("RESIZABLE", lowerGUI.get(TypedSerializer.TYPE_PATH));
-                            assertEquals(18, lowerGUI.get(ResizableGUISerializer.SIZE_PATH));
-                            assertEquals(Set.of("1", "5", "10"), ((Map<?, ?>) upperGUI.get(GUISerializer.CONTENTS_PATH)).keySet());
-                            assertEquals(Set.of("0"), ((Map<?, ?>) lowerGUI.get(GUISerializer.CONTENTS_PATH)).keySet());
+                            assertEquals(27, raw.get(FullscreenGUISerializer.UPPER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH));
+                            assertEquals(18, raw.get(FullscreenGUISerializer.LOWER_GUI + "." + DefaultGUISerializer.SIZE_PATH));
                         })
                 },
                 {
-                        fullscreenGUIByType,
-                        combineFullscreenMap.apply(Map.of()),
+                        populateGUI(GUI.newFullscreenGUI(GUIType.CHEST, 18))
+                                .setContents(27, ItemGUIContent.newInstance("coal"))
+                                .setContents(42, ItemGUIContent.newInstance("lapis_lazuli")),
+                        combineMaps.apply(baseExpected, Map.of(
+                                GUISerializer.CONTENTS_PATH, combineMaps.apply(contents, fullscreenGUIExtraContents)
+                        )),
                         ((CustomCheck) (raw, expected) -> {
-                            Map<?, ?> upperGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.UPPER_GUI_PATH);
-                            Map<?, ?> lowerGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.LOWER_GUI_PATH);
-                            assertEquals("TYPE", upperGUI.get(TypedSerializer.TYPE_PATH));
-                            assertEquals(GUIType.CHEST.name(), upperGUI.get(TypeGUISerializer.INVENTORY_TYPE_PATH));
-                            assertEquals("RESIZABLE", lowerGUI.get(TypedSerializer.TYPE_PATH));
-                            assertEquals(18, lowerGUI.get(ResizableGUISerializer.SIZE_PATH));
-                            assertEquals(Set.of("1", "5", "10"), ((Map<?, ?>) upperGUI.get(GUISerializer.CONTENTS_PATH)).keySet());
-                            assertEquals(Set.of("0"), ((Map<?, ?>) lowerGUI.get(GUISerializer.CONTENTS_PATH)).keySet());
+                            assertEquals(GUIType.CHEST.name(), raw.get(FullscreenGUISerializer.UPPER_GUI_PATH + "." + TypeGUISerializer.INVENTORY_TYPE_PATH));
+                            assertEquals(18, raw.get(FullscreenGUISerializer.LOWER_GUI + "." + DefaultGUISerializer.SIZE_PATH));
                         })
                 }
         };

@@ -13,16 +13,14 @@ import org.jetbrains.annotations.Nullable;
  * @see ObjectSerializer
  */
 final class FullscreenGUISerializer extends ObjectSerializer<FullscreenGUI> {
-    //TODO: extensive file configurations with repeated elements. Optimize.
-
     static final @NotNull String UPPER_GUI_PATH = "upperGUI";
-    static final @NotNull String LOWER_GUI_PATH = "lowerGUI";
+    static final @NotNull String LOWER_GUI = "lowerGUI";
 
     @Override
     protected @Nullable FullscreenGUI initialize(final @NotNull DataNode node) throws SerializationException {
-        Integer lowerGUISize = node.getOrNull(LOWER_GUI_PATH + "." + ResizableGUISerializer.SIZE_PATH, Integer.class);
+        Integer lowerGUISize = node.getOrNull(LOWER_GUI + "." + DefaultGUISerializer.SIZE_PATH, Integer.class);
         if (lowerGUISize == null) return null;
-        Integer upperGUISize = node.getOrNull(UPPER_GUI_PATH + "." + ResizableGUISerializer.SIZE_PATH, Integer.class);
+        Integer upperGUISize = node.getOrNull(UPPER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH, Integer.class);
         if (upperGUISize == null)
             return node.get(UPPER_GUI_PATH + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, GUIType.class)
                     .map(type -> GUI.newFullscreenGUI(type, lowerGUISize))
@@ -31,15 +29,17 @@ final class FullscreenGUISerializer extends ObjectSerializer<FullscreenGUI> {
     }
 
     @Override
-    protected void loadData(final @NotNull FullscreenGUI value, final @NotNull DataNode node) throws SerializationException {
-        node.get(UPPER_GUI_PATH, GUI.class).ifPresent(u -> value.getUpperGUI().copyFrom(u, true));
-        node.get(LOWER_GUI_PATH, GUI.class).ifPresent(l -> value.getLowerGUI().copyFrom(l, true));
+    protected void loadData(final @NotNull FullscreenGUI value, final @NotNull DataNode node) {
+        // nothing else to set, already covered in initialization
     }
 
     @Override
     protected void dumpData(final @NotNull FullscreenGUI value, final @NotNull DataNode output) throws SerializationException {
-        output.set(UPPER_GUI_PATH, value.getUpperGUI());
-        output.set(LOWER_GUI_PATH, value.getLowerGUI().copy());
+        GUI upperGUI = value.getUpperGUI();
+        if (upperGUI instanceof TypeGUI)
+            output.set(UPPER_GUI_PATH + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, ((TypeGUI) upperGUI).getInventoryType());
+        else output.set(UPPER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH, value.getUpperGUI().size());
+        output.set(LOWER_GUI + "." + DefaultGUISerializer.SIZE_PATH, value.getLowerGUI().size());
     }
 
 }
