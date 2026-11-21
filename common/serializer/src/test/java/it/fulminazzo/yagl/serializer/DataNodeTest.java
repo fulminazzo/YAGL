@@ -9,6 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class DataNodeTest {
 
     @Test
+    void testNestedSet() throws SerializationException {
+        final DataNode node = new DataNode(new HashMap<>(), "", "current");
+        node.set("nested.subnode", 17);
+
+        DataNode nested = node.getSubNodeOrThrow("nested");
+        assertEquals(17, nested.getOrThrow("subnode", Integer.class));
+    }
+
+    @Test
     void testNestedGet() throws SerializationException {
         Map<Object, Object> nested = new HashMap<>();
         nested.put("nested", 17);

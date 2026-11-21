@@ -3,10 +3,7 @@ package it.fulminazzo.yagl.serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Special implementation of {@link Node} containing a chunk of unserialized data.
@@ -47,7 +44,12 @@ public final class DataNode extends Node {
      * @throws SerializationException in case of any errors
      */
     public <T> void set(final @NotNull String key, final @Nullable T value, final @Nullable T defaultValue) throws SerializationException {
-        if (defaultValue == null || !defaultValue.equals(value))
+        if (key.contains(".")) {
+            int dotIndex = key.indexOf('.');
+            String subnodeKey = key.substring(0, dotIndex);
+            getActualData().computeIfAbsent(subnodeKey, k -> new HashMap<>());
+            getSubNodeOrThrow(subnodeKey).set(key.substring(dotIndex + 1), value, defaultValue);
+        } else if (defaultValue == null || !defaultValue.equals(value))
             getActualData().put(key, YaglSerializer.getInstance().serialize(value));
     }
 
