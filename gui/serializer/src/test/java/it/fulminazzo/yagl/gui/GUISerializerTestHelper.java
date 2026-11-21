@@ -157,7 +157,12 @@ abstract class GUISerializerTestHelper<G extends GUI> extends SerializerTestHelp
      */
     protected static @NotNull String getFileName(final @NotNull GUI gui) {
         String fileName = gui.getClass().getSimpleName().toLowerCase(Locale.ROOT);
+        boolean isTyped = false;
         if (gui instanceof FullscreenGUI && ((FullscreenGUI) gui).getUpperGUI() instanceof TypeGUI)
+            isTyped = true;
+        if (gui instanceof PageableGUI && ((PageableGUI) gui).templateGUI instanceof TypeGUI)
+            isTyped = true;
+        if (isTyped)
             fileName += "_type";
         return fileName;
     }

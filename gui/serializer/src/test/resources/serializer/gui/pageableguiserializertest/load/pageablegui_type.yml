@@ -1,0 +1,66 @@
+type: PAGEABLE
+templateGUI:
+  inventoryType: CHEST
+pages: 3
+previousPage:
+  slot: 11
+  content:
+    type: ITEM
+    material: arrow
+nextPage:
+  slot: 15
+  content:
+    type: ITEM
+    material: paper
+guiPages:
+  0:
+    contents:
+      1:
+        - type: ITEM
+          material: coal
+      5:
+        - type: ITEM
+          material: iron_ingot
+      10:
+        - type: ITEM
+          material: lapis_lazuli
+  1:
+  2:
+    contents:
+      5:
+        - type: ITEM
+          material: diamond
+title: 'Awesome GUI'
+contents:
+  1:
+    - type: ITEM
+      material: stone
+  5:
+    - type: ITEM
+      material: diamond
+    - type: ITEM
+      material: emerald
+  10:
+    - type: ITEM
+      material: gold
+    - type: ITEM
+      material: iron
+    - type: ITEM
+      material: redstone
+movableSlots:
+- 5
+- 9
+variables:
+  hello: 'world'
+openGuiAction:
+  type: GUI_COMMAND
+  content: 'say I opened the GUI!'
+closeGuiAction:
+  type: GUI_COMMAND
+  content: 'say I closed the GUI!'
+changeGuiAction:
+  type: BI_GUI_COMMAND
+  content: 'say I changed the GUI!'
+clickOutsideAction:
+  type: GUI_COMMAND
+  content: 'say I clicked outside!'
