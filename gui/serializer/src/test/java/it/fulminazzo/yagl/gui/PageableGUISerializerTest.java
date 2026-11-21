@@ -7,8 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Getter
 class PageableGUISerializerTest extends DualGUISerializerTestHelper<PageableGUI> {
@@ -49,15 +48,19 @@ class PageableGUISerializerTest extends DualGUISerializerTestHelper<PageableGUI>
 
     @Override
     protected void testSerialize(final @NotNull Map<?, ?> raw) {
-        assertEquals(target.pages(), raw.get(PageableGUISerializer.PAGES_PATH));
+        int expectedPages = target.pages();
+        assertEquals(expectedPages, raw.get(PageableGUISerializer.PAGES_PATH));
         Map<?, ?> guiPages = (Map<?, ?>) raw.get(PageableGUISerializer.GUI_PAGES_PATH);
-        assertEquals(target.pages(), guiPages.size(), "Should have " + target.pages() + " gui pages");
+        assertNotNull(guiPages, "GUI pages should not be null");
+        int expectedGUIPages = expectedPages - 1;
+        assertEquals(expectedGUIPages, guiPages.size(), "Should have " + expectedGUIPages + " gui pages");
         for (Object key : guiPages.keySet()) {
             Map<?, ?> page = (Map<?, ?>) guiPages.get(key);
             assertNull(page.get(DefaultGUISerializer.SIZE_PATH), "Page " + key + " should not have size");
             assertNull(page.get(TypeGUISerializer.INVENTORY_TYPE_PATH), "Page " + key + " should not have inventoryType");
             assertNull(page.get(TypedSerializer.TYPE_PATH), "Page " + key + " should not have type");
         }
+        assertFalse(guiPages.containsKey("1"), PageableGUISerializer.GUI_PAGES_PATH + " should not contain second empty page");
     }
 
     @Override
@@ -75,15 +78,19 @@ class PageableGUISerializerTest extends DualGUISerializerTestHelper<PageableGUI>
                 raw.get(PageableGUISerializer.GUI_TYPE_PATH),
                 "Incorrect template GUI inventory type"
         );
-        assertEquals(targetTyped.pages(), raw.get(PageableGUISerializer.PAGES_PATH));
+        int expectedPages = targetTyped.pages();
+        assertEquals(expectedPages, raw.get(PageableGUISerializer.PAGES_PATH));
         Map<?, ?> guiPages = (Map<?, ?>) raw.get(PageableGUISerializer.GUI_PAGES_PATH);
-        assertEquals(targetTyped.pages(), guiPages.size(), "Should have " + targetTyped.pages() + " gui pages");
+        assertNotNull(guiPages, "GUI pages should not be null");
+        int expectedGUIPages = expectedPages - 1;
+        assertEquals(expectedGUIPages, guiPages.size(), "Should have " + expectedGUIPages + " gui pages");
         for (Object key : guiPages.keySet()) {
             Map<?, ?> page = (Map<?, ?>) guiPages.get(key);
             assertNull(page.get(DefaultGUISerializer.SIZE_PATH), "Page " + key + " should not have size");
             assertNull(page.get(TypeGUISerializer.INVENTORY_TYPE_PATH), "Page " + key + " should not have inventoryType");
             assertNull(page.get(TypedSerializer.TYPE_PATH), "Page " + key + " should not have type");
         }
+        assertFalse(guiPages.containsKey("1"), PageableGUISerializer.GUI_PAGES_PATH + " should not contain second empty page");
     }
 
 }

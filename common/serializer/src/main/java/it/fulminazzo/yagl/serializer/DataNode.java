@@ -48,12 +48,19 @@ public final class DataNode extends Node {
         if (key.contains(".")) {
             int dotIndex = key.indexOf('.');
             String subnodeKey = key.substring(0, dotIndex);
-            data.computeIfAbsent(subnodeKey, k -> new HashMap<>());
+            Map<?, ?> subnodeMap = (Map<?, ?>) data.computeIfAbsent(subnodeKey, k -> new HashMap<>());
             getSubNodeOrThrow(subnodeKey).set(key.substring(dotIndex + 1), value, defaultValue);
-        } else if (defaultValue == null || !defaultValue.equals(value)) {
-            if (value != null) data.put(key, YaglSerializer.getInstance().serialize(value));
-            else data.remove(key);
+            if (subnodeMap.isEmpty()) data.remove(subnodeKey);
+            return;
+        } else if ((defaultValue == null || !defaultValue.equals(value)) && value != null) {
+            if ((!(value instanceof Collection) || !((Collection<?>) value).isEmpty())
+                    && (!(value instanceof Map) || !((Map<?, ?>) value).isEmpty())
+            ) {
+                data.put(key, YaglSerializer.getInstance().serialize(value));
+                return;
+            }
         }
+        data.remove(key);
     }
 
     /**
