@@ -9,6 +9,7 @@ import it.fulminazzo.yagl.metadatable.Metadatable;
 import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,7 @@ import java.util.stream.Stream;
  * When shown to the player, their inventory will be used as well to
  * show contents.
  */
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @EqualsAndHashCode
 public class FullscreenGUI implements GUI {
     private final @NotNull GUI upperGUI;
