@@ -1,6 +1,5 @@
 type: PAGEABLE
-templateGUI:
-  inventoryType: CHEST
+guiType: CHEST
 pages: 3
 previousPage:
   slot: 11
@@ -24,7 +23,6 @@ guiPages:
       10:
         - type: ITEM
           material: lapis_lazuli
-  1:
   2:
     contents:
       5:

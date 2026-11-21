@@ -70,10 +70,9 @@ class PageableGUISerializerTest extends DualGUISerializerTestHelper<PageableGUI>
 
     @Override
     protected void testSerializeTyped(final @NotNull Map<?, ?> raw) {
-        Map<?, ?> templateGUI = (Map<?, ?>) raw.get(PageableGUISerializer.TEMPLATE_GUI_PATH);
         assertEquals(
                 ((TypeGUI) targetTyped.templateGUI).getInventoryType().name(),
-                templateGUI.get(TypeGUISerializer.INVENTORY_TYPE_PATH),
+                raw.get(PageableGUISerializer.GUI_TYPE_PATH),
                 "Incorrect template GUI inventory type"
         );
         assertEquals(targetTyped.pages(), raw.get(PageableGUISerializer.PAGES_PATH));

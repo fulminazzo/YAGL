@@ -13,31 +13,33 @@ import java.util.function.Function;
 final class GUISerializerUtils {
 
     /**
-     * Checks if in the given node, under the specified path, a {@link TypeGUISerializer#INVENTORY_TYPE_PATH} field is present.
+     * Checks if in the given node a type field at {@code typePath} or a size field at {@code sizePath} is present.
      * <br>
-     * If it is, the {@code ifTypePresent} function will be called.
+     * If a size field is present at {@code sizePath}, the {@code ifSizePresent} function will be called.
      * <br>
-     * Otherwise, if a {@link DefaultGUISerializer#SIZE_PATH} is present, the {@code ifSizePresent} function will be called.
+     * Otherwise, if a type field is present at {@code typePath}, the {@code ifTypePresent} function will be called.
      * <br>
      * If neither was present, {@code null} will be returned.
      *
-     * @param node          the node to check
-     * @param path          the path to check
-     * @param ifTypePresent the function to call if a {@link TypeGUISerializer#INVENTORY_TYPE_PATH} field is present
-     * @param ifSizePresent the function to call if a {@link DefaultGUISerializer#SIZE_PATH} field is present
      * @param <T>           the type of the result
+     * @param node          the node to check
+     * @param typePath      the path where the type field is expected
+     * @param ifTypePresent the function to call if a type field is present
+     * @param sizePath      the path where the size field is expected
+     * @param ifSizePresent the function to call if a size field is present
      * @return the result of the function called, or {@code null} if neither was present
      * @throws SerializationException if any error occurs
      */
     public static <T> @Nullable T callIfTypeOrSizeArePresent(
             final @NotNull DataNode node,
-            final @NotNull String path,
+            final @NotNull String typePath,
             final @NotNull Function<GUIType, T> ifTypePresent,
+            final @NotNull String sizePath,
             final @NotNull Function<Integer, T> ifSizePresent
     ) throws SerializationException {
-        Integer size = node.getOrNull(path + "." + DefaultGUISerializer.SIZE_PATH, Integer.class);
+        Integer size = node.getOrNull(sizePath, Integer.class);
         if (size == null)
-            return node.get(path + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, GUIType.class)
+            return node.get(typePath, GUIType.class)
                     .map(ifTypePresent)
                     .orElse(null);
         else return ifSizePresent.apply(size);
@@ -62,10 +64,35 @@ final class GUISerializerUtils {
             final @NotNull DataNode output,
             final @NotNull String path
     ) throws SerializationException {
-        if (target instanceof TypeGUI)
-            output.set(path + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, ((TypeGUI) target).getInventoryType());
-        else
-            output.set(path + "." + DefaultGUISerializer.SIZE_PATH, target.size());
+        dumpTypeOrNormalGUI(
+                target,
+                output,
+                path + "." + TypeGUISerializer.INVENTORY_TYPE_PATH,
+                path + "." + DefaultGUISerializer.SIZE_PATH
+        );
+    }
+
+    /**
+     * Checks if the given GUI is a {@link TypeGUI}.
+     * <br>
+     * If it is, it will store its type in the given {@link DataNode} under {@code typePath};
+     * <br>
+     * Otherwise, it will store its size under {@code sizePath}.
+     *
+     * @param target   the GUI to serialize
+     * @param output   the output to store to
+     * @param typePath the path where the type field will be stored
+     * @param sizePath the path where the size field will be stored
+     * @throws SerializationException if any error occurs
+     */
+    public static void dumpTypeOrNormalGUI(
+            final @NotNull GUI target,
+            final @NotNull DataNode output,
+            final @NotNull String typePath,
+            final @NotNull String sizePath
+    ) throws SerializationException {
+        if (target instanceof TypeGUI) output.set(typePath, ((TypeGUI) target).getInventoryType());
+        else output.set(sizePath, target.size());
     }
 
 }

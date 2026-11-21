@@ -1,8 +1,6 @@
 type: FULLSCREEN
-upperGUI:
-  size: 27
-lowerGUI:
-  size: 18
+upperGuiSize: 27
+lowerGuiSize: 18
 title: 'Awesome GUI'
 contents:
   1:

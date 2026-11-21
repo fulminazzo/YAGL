@@ -19,6 +19,8 @@ import java.util.Locale;
  */
 public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
     static final @NotNull String TEMPLATE_GUI_PATH = "templateGUI";
+    static final @NotNull String GUI_TYPE_PATH = "guiType";
+    static final @NotNull String GUI_SIZE_PATH = "guiSize";
     static final @NotNull String PAGES_PATH = "pages";
     static final @NotNull String GUI_PAGES_PATH = "guiPages";
     static final @NotNull String PREVIOUS_PAGE_PATH = "previousPage";
@@ -28,7 +30,7 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
 
     @Override
     protected @Nullable PageableGUI initialize(final @NotNull DataNode node) throws SerializationException {
-        return GUISerializerUtils.callIfTypeOrSizeArePresent(node, TEMPLATE_GUI_PATH, PageableGUI::newGUI, PageableGUI::newGUI);
+        return GUISerializerUtils.callIfTypeOrSizeArePresent(node, GUI_TYPE_PATH, PageableGUI::newGUI, GUI_SIZE_PATH, PageableGUI::newGUI);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
 
     @Override
     protected void dumpData(final @NotNull PageableGUI value, final @NotNull DataNode output) throws SerializationException {
-        GUISerializerUtils.dumpTypeOrNormalGUI(value.templateGUI, output, TEMPLATE_GUI_PATH);
+        GUISerializerUtils.dumpTypeOrNormalGUI(value.templateGUI, output, GUI_TYPE_PATH, GUI_SIZE_PATH);
         output.set(PAGES_PATH, value.pages(), 0);
 
         Pair<Integer, GUIContent> previousPage = value.previousPage;
