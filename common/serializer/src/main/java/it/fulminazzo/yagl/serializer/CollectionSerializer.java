@@ -9,9 +9,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A {@link Serializer} for {@link Collection} objects.
+ * A serializer for {@link Collection} objects.
  * <br>
  * Supports only serialization.
+ *
+ * @see Serializer
  */
 @RequiredArgsConstructor
 final class CollectionSerializer implements Serializer<Collection<?>> {

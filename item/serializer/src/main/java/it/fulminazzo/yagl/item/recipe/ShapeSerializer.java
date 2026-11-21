@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A {@link Serializer} for {@link ShapedRecipe.Shape} objects.
+ * A serializer for {@link ShapedRecipe.Shape} objects.
  *
  * @see ShapedRecipe.Shape
  * @see Serializer

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * A {@link Serializer} for {@link FurnaceRecipe} objects.
+ * A serializer for {@link FurnaceRecipe} objects.
  *
  * @see FurnaceRecipe
  * @see ObjectSerializer

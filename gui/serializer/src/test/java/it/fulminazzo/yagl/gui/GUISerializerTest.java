@@ -71,8 +71,14 @@ class GUISerializerTest extends SerializerTestHelper<GUI> {
                 contentsMap.size(),
                 "Invalid contents count, expected " + expectedContentsCount + " but got: " + contents
         );
-        assertIterableEquals(expectedContentsMap.keySet(), contentsMap.keySet(), "Invalid contents keys");
-        for (Object key : contentsMap.keySet()) {
+        Set<?> expectedSlots = new TreeSet<>(expectedContentsMap.keySet());
+        Set<?> actualSlots = new TreeSet<>(contentsMap.keySet());
+        assertIterableEquals(
+                expectedSlots,
+                actualSlots,
+                String.format("Invalid contents keys: %s != %s", expectedSlots, actualSlots)
+        );
+        for (Object key : actualSlots) {
             Object slotContents = contentsMap.get(key);
             assertInstanceOf(List.class, slotContents, "Expected contents per slot to be a list");
             List<?> slotContentsList = (List<?>) slotContents;

@@ -4,12 +4,11 @@ import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.serializer.DataNode;
 import it.fulminazzo.yagl.serializer.ObjectSerializer;
 import it.fulminazzo.yagl.serializer.SerializationException;
-import it.fulminazzo.yagl.serializer.Serializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link ShapedRecipe} objects.
+ * A serializer for {@link ShapedRecipe} objects.
  *
  * @see ShapedRecipe
  * @see ObjectSerializer

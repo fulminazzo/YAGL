@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A {@link Serializer} for {@link Map} objects.
+ * A serializer for {@link Map} objects.
  * <br>
  * Supports only serialization.
+ *
+ * @see Serializer
  */
 @RequiredArgsConstructor
 final class MapSerializer implements Serializer<Map<?, ?>> {

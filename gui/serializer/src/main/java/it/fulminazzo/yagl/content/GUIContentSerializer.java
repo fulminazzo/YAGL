@@ -9,7 +9,7 @@ import it.fulminazzo.yagl.wrapper.Sound;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link GUIContent} implementations.
+ * A serializer for {@link GUIContent} implementations.
  *
  * @see GUIContent
  * @see TypedSerializer

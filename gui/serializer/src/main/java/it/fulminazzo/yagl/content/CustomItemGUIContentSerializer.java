@@ -1,7 +1,5 @@
 package it.fulminazzo.yagl.content;
 
-import it.fulminazzo.yagl.content.CustomItemGUIContent;
-import it.fulminazzo.yagl.content.GUIContentSerializer;
 import it.fulminazzo.yagl.serializer.Node;
 import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.Serializer;
@@ -9,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link CustomItemGUIContent} that delegates to {@link GUIContentSerializer}.
+ * A serializer for {@link CustomItemGUIContent} that delegates to {@link GUIContentSerializer}.
  *
  * @see CustomItemGUIContent
  * @see GUIContentSerializer

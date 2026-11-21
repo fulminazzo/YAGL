@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A {@link WrapperSerializer} for {@link Sound} objects.
+ * A serializer for {@link Sound} objects.
  *
  * @see Sound
  * @see WrapperSerializer

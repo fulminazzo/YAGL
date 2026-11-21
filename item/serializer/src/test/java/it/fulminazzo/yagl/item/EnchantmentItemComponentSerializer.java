@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link EnchantmentItemComponent}.
+ * A serializer for {@link EnchantmentItemComponent}.
  *
  * @see EnchantmentItemComponent
  * @see ObjectSerializer

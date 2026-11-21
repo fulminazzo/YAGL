@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * A {@link WrapperSerializer} for {@link Enchantment} objects.
+ * A serializer for {@link Enchantment} objects.
  *
  * @see Enchantment
  * @see WrapperSerializer

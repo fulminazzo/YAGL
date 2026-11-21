@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link MaterialDataOption}.
+ * A serializer for {@link MaterialDataOption}.
  *
  * @see MaterialDataOption
  * @see Serializer

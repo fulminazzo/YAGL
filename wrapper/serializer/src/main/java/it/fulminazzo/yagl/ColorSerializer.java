@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link Color}.
+ * A serializer for {@link Color}.
  *
  * @see Color
  * @see Serializer

@@ -7,7 +7,7 @@ import it.fulminazzo.yagl.serializer.TypedSerializer;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link Recipe} implementations.
+ * A serializer for {@link Recipe} implementations.
  *
  * @see Recipe
  * @see TypedSerializer

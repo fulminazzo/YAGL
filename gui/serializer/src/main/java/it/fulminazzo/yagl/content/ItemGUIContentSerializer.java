@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link ItemGUIContent} objects.
+ * A serializer for {@link ItemGUIContent} objects.
  *
  * @see ItemGUIContent
  * @see ObjectSerializer

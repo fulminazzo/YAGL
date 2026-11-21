@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link AbstractItem} objects used in tests.
+ * A serializer for {@link AbstractItem} objects used in tests.
  */
 @SuppressWarnings("deprecation")
 public final class AbstractItemSerializer implements Serializer<AbstractItem> {

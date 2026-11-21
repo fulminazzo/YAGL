@@ -22,7 +22,7 @@ public final class EnumSerializer<E extends Enum<E>> implements Serializer<E> {
 
     @Override
     public @Nullable E deserialize(final @NotNull Node node) throws SerializationException {
-        String raw = node.getAs(String.class).orElse(null);
+        String raw = node.getAsOrNull(String.class);
         if (raw == null) return null;
         try {
             return EnumUtils.valueOf(this.enumType, raw);

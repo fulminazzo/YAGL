@@ -4,16 +4,18 @@ import it.fulminazzo.yagl.item.recipe.Recipe;
 import it.fulminazzo.yagl.serializer.DataNode;
 import it.fulminazzo.yagl.serializer.ObjectSerializer;
 import it.fulminazzo.yagl.serializer.SerializationException;
-import it.fulminazzo.yagl.serializer.Serializer;
 import it.fulminazzo.yagl.wrapper.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link Item} implementations.
+ * A serializer for {@link Item} implementations.
  * <br>
  * The serializer will dynamically determine if the serialized object is an {@link Item} or a {@link RecipeItem}
  * and return the appropriate type.
+ *
+ * @see Item
+ * @see ObjectSerializer
  */
 public final class ItemSerializer extends ObjectSerializer<Item> {
     /**

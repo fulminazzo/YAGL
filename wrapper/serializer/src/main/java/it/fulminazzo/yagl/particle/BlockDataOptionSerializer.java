@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link Serializer} for {@link BlockDataOption}.
+ * A serializer for {@link BlockDataOption}.
  *
  * @see BlockDataOption
  * @see Serializer

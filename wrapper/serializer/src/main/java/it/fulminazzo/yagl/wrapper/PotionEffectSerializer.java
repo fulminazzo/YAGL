@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * A {@link WrapperSerializer} for {@link PotionEffect} objects.
+ * A serializer for {@link PotionEffect} objects.
  *
  * @see PotionEffect
  * @see WrapperSerializer

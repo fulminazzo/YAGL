@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link TypeGUI}.
+ * A serializer for {@link TypeGUI}.
  *
  * @see TypeGUI
  * @see ObjectSerializer

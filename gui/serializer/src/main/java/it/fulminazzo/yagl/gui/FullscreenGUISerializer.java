@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link FullscreenGUI}.
+ * A serializer for {@link FullscreenGUI}.
  *
  * @see FullscreenGUI
  * @see ObjectSerializer

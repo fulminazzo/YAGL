@@ -8,12 +8,8 @@ import it.fulminazzo.yagl.serializer.SerializationException;
 import it.fulminazzo.yagl.serializer.TypedSerializer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
- * A {@link it.fulminazzo.yagl.serializer.Serializer} for {@link GUI} implementations.
+ * A serializer for {@link GUI} implementations.
  *
  * @see GUI
  * @see TypedSerializer
@@ -64,6 +60,8 @@ public final class GUISerializer extends TypedSerializer<GUI> {
     @Override
     protected void dumpCommonData(final @NotNull GUI value, final @NotNull DataNode output) throws SerializationException {
         output.set(TITLE_PATH, value.getTitle());
+        output.set(MOVABLE_SLOTS_PATH, value.getMovableSlots());
+        output.set(VARIABLES_PATH, value.variables());
         GUIAction clickOutsideAction = value.clickOutsideAction().orElse(null);
         if (clickOutsideAction != null) output.set(CLICK_OUTSIDE_ACTION_PATH, clickOutsideAction);
         GUIAction openGUIAction = value.openGUIAction().orElse(null);
@@ -73,11 +71,8 @@ public final class GUISerializer extends TypedSerializer<GUI> {
         BiGUIAction changeGUIAction = value.changeGUIAction().orElse(null);
         if (changeGUIAction != null) output.set(CHANGE_GUI_ACTION_PATH, changeGUIAction);
 
-        Map<Integer , List<GUIContent>> contents = new HashMap<>();
-        for (int i = 0; i < value.size(); i++) contents.put(i, value.getContents(i));
-        output.set(CONTENTS_PATH, contents);
-        output.set(MOVABLE_SLOTS_PATH, value.getMovableSlots());
-        output.set(VARIABLES_PATH, value.variables());
+        for (int i = 0; i < value.size(); i++)
+            output.set(CONTENTS_PATH + "." + i, value.getContents(i));
     }
 
 }
