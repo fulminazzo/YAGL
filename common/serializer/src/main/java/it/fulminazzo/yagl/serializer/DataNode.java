@@ -44,13 +44,16 @@ public final class DataNode extends Node {
      * @throws SerializationException in case of any errors
      */
     public <T> void set(final @NotNull String key, final @Nullable T value, final @Nullable T defaultValue) throws SerializationException {
+        Map<Object, Object> data = getActualData();
         if (key.contains(".")) {
             int dotIndex = key.indexOf('.');
             String subnodeKey = key.substring(0, dotIndex);
-            getActualData().computeIfAbsent(subnodeKey, k -> new HashMap<>());
+            data.computeIfAbsent(subnodeKey, k -> new HashMap<>());
             getSubNodeOrThrow(subnodeKey).set(key.substring(dotIndex + 1), value, defaultValue);
-        } else if (defaultValue == null || !defaultValue.equals(value))
-            getActualData().put(key, YaglSerializer.getInstance().serialize(value));
+        } else if (defaultValue == null || !defaultValue.equals(value)) {
+            if (value != null) data.put(key, YaglSerializer.getInstance().serialize(value));
+            else data.remove(key);
+        }
     }
 
     /**

@@ -6,20 +6,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class YaglSerializerTest {
-    private static final HashMap<String, Object> CAT_SERIALIZED_DATA = new HashMap<>(Map.of(
+    private static final Map<String, Object> CAT_SERIALIZED_DATA = Map.of(
             "name", "Billy",
             TypedSerializer.TYPE_PATH, "PERSIAN",
             "age", 0
-    )) {{
-        put("color", null);
-    }};
+    );
 
     private static @NotNull Object[][] getSerializationDataTest() {
         return new Object[][]{
@@ -70,7 +71,7 @@ class YaglSerializerTest {
     }
 
     @Test
-    void testThatDeserializeMapThrowsForNonMapData() throws SerializationException {
+    void testThatDeserializeMapThrowsForNonMapData() {
         YaglSerializer serializer = YaglSerializer.getInstance();
         org.junit.jupiter.api.Assertions.assertThrows(
                 SerializationException.class,
