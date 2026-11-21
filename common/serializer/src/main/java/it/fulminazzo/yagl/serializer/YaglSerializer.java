@@ -258,12 +258,12 @@ public final class YaglSerializer {
         if (superclass != null) {
             int parentScore = scoreType(superclass, reference);
             if (parentScore != -1)
-                return parentScore * 100;
+                return (parentScore + 1) * 100;
         }
         for (Class<?> interfaceType : type.getInterfaces()) {
             int interfaceScore = scoreType(interfaceType, reference);
             if (interfaceScore != -1)
-                return interfaceScore * 100;
+                return (interfaceScore + 2) * 100;
         }
         return -1;
     }
