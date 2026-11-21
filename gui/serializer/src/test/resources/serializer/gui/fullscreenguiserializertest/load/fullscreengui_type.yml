@@ -1,5 +1,6 @@
 type: FULLSCREEN
 upperGUI:
+  type: TYPE
   inventoryType: CHEST
 lowerGUI:
   size: 18
