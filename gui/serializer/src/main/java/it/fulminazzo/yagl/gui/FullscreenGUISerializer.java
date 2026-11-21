@@ -14,18 +14,18 @@ import org.jetbrains.annotations.Nullable;
  */
 final class FullscreenGUISerializer extends ObjectSerializer<FullscreenGUI> {
     static final @NotNull String UPPER_GUI_PATH = "upperGUI";
-    static final @NotNull String LOWER_GUI = "lowerGUI";
+    static final @NotNull String LOWER_GUI_PATH = "lowerGUI";
 
     @Override
     protected @Nullable FullscreenGUI initialize(final @NotNull DataNode node) throws SerializationException {
-        Integer lowerGUISize = node.getOrNull(LOWER_GUI + "." + DefaultGUISerializer.SIZE_PATH, Integer.class);
+        Integer lowerGUISize = node.getOrNull(LOWER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH, Integer.class);
         if (lowerGUISize == null) return null;
-        Integer upperGUISize = node.getOrNull(UPPER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH, Integer.class);
-        if (upperGUISize == null)
-            return node.get(UPPER_GUI_PATH + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, GUIType.class)
-                    .map(type -> GUI.newFullscreenGUI(type, lowerGUISize))
-                    .orElse(null);
-        else return GUI.newFullscreenGUI(upperGUISize, lowerGUISize);
+        else return GUISerializerUtils.callIfTypeOrSizeArePresent(
+                node,
+                UPPER_GUI_PATH,
+                t -> GUI.newFullscreenGUI(t, lowerGUISize),
+                s -> GUI.newFullscreenGUI(s, lowerGUISize)
+        );
     }
 
     @Override
@@ -35,11 +35,8 @@ final class FullscreenGUISerializer extends ObjectSerializer<FullscreenGUI> {
 
     @Override
     protected void dumpData(final @NotNull FullscreenGUI value, final @NotNull DataNode output) throws SerializationException {
-        GUI upperGUI = value.getUpperGUI();
-        if (upperGUI instanceof TypeGUI)
-            output.set(UPPER_GUI_PATH + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, ((TypeGUI) upperGUI).getInventoryType());
-        else output.set(UPPER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH, value.getUpperGUI().size());
-        output.set(LOWER_GUI + "." + DefaultGUISerializer.SIZE_PATH, value.getLowerGUI().size());
+        GUISerializerUtils.dumpTypeOrNormalGUI(value.getUpperGUI(), output, UPPER_GUI_PATH);
+        output.set(LOWER_GUI_PATH + "." + DefaultGUISerializer.SIZE_PATH, value.getLowerGUI().size());
     }
 
 }

@@ -36,7 +36,7 @@ class FullscreenGUISerializerTest extends DualGUISerializerTestHelper<Fullscreen
                 upperGUI.get(DefaultGUISerializer.SIZE_PATH),
                 "Incorrect upper GUI size"
         );
-        Map<?, ?> lowerGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.LOWER_GUI);
+        Map<?, ?> lowerGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.LOWER_GUI_PATH);
         assertEquals(
                 target.getLowerGUI().size(),
                 lowerGUI.get(DefaultGUISerializer.SIZE_PATH),
@@ -66,7 +66,7 @@ class FullscreenGUISerializerTest extends DualGUISerializerTestHelper<Fullscreen
                 upperGUI.get(TypeGUISerializer.INVENTORY_TYPE_PATH),
                 "Incorrect upper GUI inventory type"
         );
-        Map<?, ?> lowerGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.LOWER_GUI);
+        Map<?, ?> lowerGUI = (Map<?, ?>) raw.get(FullscreenGUISerializer.LOWER_GUI_PATH);
         assertEquals(
                 targetTyped.getLowerGUI().size(),
                 lowerGUI.get(DefaultGUISerializer.SIZE_PATH),
