@@ -14,6 +14,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,8 +26,7 @@ class SearchGUITest {
 
     @Test
     void testPrepareOpenGUIDoesNotFillExisting() {
-        SearchGUI<?> searchGUI = SearchGUI.newGUI(
-                9,
+        SearchGUI<?> searchGUI = SearchGUI.newSearchGUI(9).setData(
                 ItemGUIContent::newInstance,
                 String::contains,
                 Arrays.asList("stone", "grass_block")
@@ -54,8 +55,7 @@ class SearchGUITest {
 
     @Test
     void testPrepareOpenGUIFillsMissing() {
-        SearchGUI<?> searchGUI = SearchGUI.newGUI(
-                9,
+        SearchGUI<?> searchGUI = SearchGUI.newSearchGUI(9).setData(
                 ItemGUIContent::newInstance,
                 String::contains,
                 Arrays.asList("stone", "grass_block")
@@ -92,7 +92,7 @@ class SearchGUITest {
                 "jack_o_lantern", "stone_bricks", "melon", "nether_bricks", "end_stone"
         };
 
-        SearchGUI<String> searchGUI = SearchGUI.newGUI(
+        SearchGUI<String> searchGUI = SearchGUI.newSearchGUI().setData(
                 ItemGUIContent::newInstance,
                 String::contains,
                 materials
@@ -124,21 +124,25 @@ class SearchGUITest {
 
     @Test
     void testCopyAll() {
-        SearchGUI<String> src = SearchGUI.newGUI(s -> null, (f, s) -> true);
+        SearchGUI<String> src = SearchGUI.newSearchGUI().<String>setData(ItemGUIContent::newInstance, String::contains, "stone", "diamond");
+        src.setQuery("stone");
         src.setContents(0, ItemGUIContent.newInstance("stone"));
 
-        SearchGUI<String> dst = SearchGUI.newGUI(s -> null, (f, s) -> true);
+        SearchGUI<?> dst = SearchGUI.newSearchGUI();
 
         src.copyTo(dst, true);
 
-        Reflect.on(dst).set("searchFunction", Reflect.on(src).get("searchFunction").get());
         assertEquals(src, dst);
+        assertEquals(src.getData(), dst.getData());
+        assertEquals(src.getQuery(), dst.getQuery());
+        assertSame(src.dataConverter, dst.dataConverter);
+        assertSame(Reflect.on(src).get("searchFunction").get(), Reflect.on(dst).get("searchFunction").get());
     }
 
     @Test
     void testCopy() {
-        SearchGUI<String> gui = SearchGUI.newGUI(
-                        27,
+        SearchGUI<String> gui = SearchGUI.newSearchGUI(27)
+                .setData(
                         d -> ItemGUIContent.newInstance("stone"),
                         (s, t) -> true,
                         new String[]{"stone", "diamond", "emerald", "gold", "iron"}
@@ -151,6 +155,9 @@ class SearchGUITest {
 
         assertInstanceOf(SearchGUI.class, copy);
         assertEquals(gui.templateGUI, copy.templateGUI);
+        assertSame(gui.dataConverter, copy.dataConverter);
+        assertEquals(gui.getDataList(), copy.getDataList());
+        assertEquals(Reflect.on(gui).get("data"), Reflect.on(copy).get("data"));
         assertEquals(gui.getData(), copy.getData());
         assertEquals(gui.variables(), copy.variables());
         assertEquals(Reflect.on(gui).get("searchFunction"), Reflect.on(copy).get("searchFunction"));
@@ -161,24 +168,24 @@ class SearchGUITest {
         assertEquals(gui.getContents(4), copy.getContents(4));
         assertNotSame(gui, copy);
         assertEquals(gui, copy);
+        copy.clearData();
+        assertFalse(gui.getData().isEmpty());
     }
 
     @Test
     void testSetPagesThrows() {
         IllegalStateException e = assertThrows(IllegalStateException.class, () ->
-                SearchGUI.newGUI(s -> null, (f, s) -> true)
+                SearchGUI.newSearchGUI()
                         .setPages(2));
-        assertEquals(Reflect.on(DataGUI.class).get("ERROR_MESSAGE").get(), e.getMessage());
+        assertEquals(Reflect.on(DataGUI.class).get("PAGES_ERROR_MESSAGE").get(), e.getMessage());
     }
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(SearchGUI.newGUI(27,
-                        c -> null,
-                        (t, s) -> false),
+        TestUtils.testReturnType(SearchGUI.newSearchGUI(27),
                 DataGUI.class,
                 m -> {
-                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyTo", "initializeNewInstance"))
+                    for (String s : Arrays.asList("copy", "setPages", "getPage", "copyTo", "initializeNewInstance", "setData"))
                         if (s.equals(m.getName())) return true;
                     return false;
                 });
@@ -187,7 +194,7 @@ class SearchGUITest {
     @ParameterizedTest
     @ValueSource(strings = {
             ":",
-            "§r:",
+            "\u00a7r:",
             "query:query",
             "&colored:&colored"
     })
@@ -196,7 +203,7 @@ class SearchGUITest {
         String query = tmp.length < 1 ? "" : tmp[0];
         String expected = tmp.length < 2 ? "" : tmp[1];
 
-        SearchGUI<?> gui = SearchGUI.newGUI(s -> null, (f, s) -> true)
+        SearchGUI<?> gui = SearchGUI.newSearchGUI()
                 .setQuery(query);
 
         assertEquals(expected, gui.getQuery());
@@ -206,35 +213,60 @@ class SearchGUITest {
     @ValueSource(strings = {"getPage", "setPages"})
     void testPagesRelatedMethodShouldThrowException(String method) {
         Exception e = assertThrowsExactly(ReflectException.class, () ->
-                Reflect.on(SearchGUI.newGUI(s -> null, (t, s) -> false)).invoke(method, 1)
+                Reflect.on(SearchGUI.newSearchGUI()).invoke(method, 1)
         );
         Throwable cause = e.getCause();
         assertNotNull(cause);
-        assertEquals(Reflect.on(DataGUI.class).get("ERROR_MESSAGE").get(), cause.getMessage());
+        assertEquals(Reflect.on(DataGUI.class).get("PAGES_ERROR_MESSAGE").get(), cause.getMessage());
     }
 
     private static Object[] constructorParameters() {
         return new Object[]{
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false), false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false), false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, "Hello", "World"), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false, new String[]{"Hello", "World"}), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(null, (t, s) -> false, Arrays.asList("Hello", "World")), true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false, Arrays.asList("Hello", "World")), true}
+                new Object[]{(Supplier<SearchGUI<?>>) SearchGUI::newSearchGUI},
+                new Object[]{(Supplier<SearchGUI<?>>) () -> SearchGUI.newSearchGUI(Constants.SECONDARY_GUI_SIZE)}
         };
     }
 
     @ParameterizedTest
     @MethodSource("constructorParameters")
-    void testConstructors(Supplier<DataGUI<Object>> supplier, boolean dataProvided) {
-        @NotNull DataGUI<Object> expected = SearchGUI.newGUI(Constants.SECONDARY_GUI_SIZE, null, (t, s) -> false);
-        expected.setData("Hello", "World");
-        DataGUI<Object> actual = supplier.get();
-        if (!dataProvided) {
-            actual.setData("Hello", "World");
-        }
-        Reflect.on(actual).set("searchFunction", Reflect.on(expected).get("searchFunction").get());
-        assertEquals(expected, actual);
+    void testConstructors(Supplier<SearchGUI<?>> supplier) {
+        SearchGUI<?> actual = supplier.get();
+        assertEquals(SearchGUI.newSearchGUI(Constants.SECONDARY_GUI_SIZE), actual);
+        assertTrue(actual.getData().isEmpty());
+        assertNull(actual.dataConverter);
+        assertNull(Reflect.on(actual).get("searchFunction").get());
+    }
+
+    @Test
+    void testSetDataAndClearData() {
+        Function<String, GUIContent> converter = ItemGUIContent::newInstance;
+        BiPredicate<String, String> search = String::contains;
+        SearchGUI<?> empty = SearchGUI.newSearchGUI();
+        SearchGUI<String> gui = empty.setData(converter, search, "stone", "diamond");
+        assertSame(empty, gui);
+        assertEquals(Arrays.asList("stone", "diamond"), gui.getData());
+        assertSame(converter, gui.dataConverter);
+        assertSame(search, Reflect.on(gui).get("searchFunction").get());
+        gui.setQuery("stone");
+        assertEquals(Arrays.asList("stone"), gui.getDataList());
+
+        SearchGUI<Integer> replaced = gui.setData(i -> ItemGUIContent.newInstance("stone"),
+                (i, query) -> i.toString().contains(query), Arrays.asList(1, 2));
+        assertSame(gui, replaced);
+        assertEquals(Arrays.asList(1, 2), replaced.getData());
+        assertSame(replaced, replaced.clearData());
+        assertTrue(replaced.getData().isEmpty());
+        assertNull(replaced.dataConverter);
+        assertNull(Reflect.on(replaced).get("searchFunction").get());
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testInheritedSetDataOverloadsThrow() {
+        SearchGUI<?> gui = SearchGUI.newSearchGUI();
+        Function<String, GUIContent> converter = ItemGUIContent::newInstance;
+        assertThrows(IllegalStateException.class, () -> gui.setData(converter, "stone"));
+        assertThrows(IllegalStateException.class, () -> gui.setData(converter, Arrays.asList("stone")));
     }
 
     @Nested
