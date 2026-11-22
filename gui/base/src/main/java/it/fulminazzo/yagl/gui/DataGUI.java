@@ -6,7 +6,6 @@ import it.fulminazzo.yagl.content.CustomItemGUIContent;
 import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
-import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.viewer.Viewer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,9 +13,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * An implementation of {@link PageableGUI} that allows data to be automatically displayed in a multi-paged format.
@@ -26,12 +27,19 @@ import java.util.function.Predicate;
 @SuppressWarnings("unchecked")
 @EqualsAndHashCode(callSuper = true)
 public class DataGUI<T> extends PageableGUI {
-    static final String ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
+    static final @NotNull String PAGES_ERROR_MESSAGE = "Pages are dynamically calculated when opening this GUI. They cannot be singly edited";
 
     @Getter
     private final @NotNull List<T> data;
     @EqualsAndHashCode.Exclude
-    protected final @NotNull Function<T, GUIContent> dataConverter;
+    protected @Nullable Function<T, GUIContent> dataConverter;
+
+    /**
+     * Instantiates a new Data gui.
+     */
+    DataGUI(final @NotNull GUI templateGUI) {
+        this(templateGUI, null);
+    }
 
     /**
      * Instantiates a new Data gui.
@@ -39,109 +47,45 @@ public class DataGUI<T> extends PageableGUI {
      * @param templateGUI   the templateGUI
      * @param dataConverter the data converter
      */
-    DataGUI(final @NotNull GUI templateGUI, final @NotNull Function<T, GUIContent> dataConverter) {
+    DataGUI(final @NotNull GUI templateGUI, final @Nullable Function<T, GUIContent> dataConverter) {
         super(templateGUI);
         this.data = new ArrayList<>();
         this.dataConverter = dataConverter;
     }
 
     /**
-     * Adds the given data.
+     * Removes all the data from the internal data list and clears out the {@link #dataConverter} function.
      *
-     * @param data the data
-     * @return this gui
+     * @return this gui, but with a generic type since no data is present
      */
-    public @NotNull DataGUI<T> addData(final T @NotNull ... data) {
-        return addData(Arrays.asList(data));
-    }
-
-    /**
-     * Adds the given data.
-     *
-     * @param data the data
-     * @return this gui
-     */
-    public @NotNull DataGUI<T> addData(final @NotNull Collection<T> data) {
-        this.data.addAll(data);
-        return this;
-    }
-
-    /**
-     * Clears the current data and sets the given data.
-     *
-     * @param data the data
-     * @return the data
-     */
-    public @NotNull DataGUI<T> setData(final T @NotNull ... data) {
-        return setData(Arrays.asList(data));
-    }
-
-    /**
-     * Clears the current data and sets the given data.
-     *
-     * @param data the data
-     * @return the data
-     */
-    public @NotNull DataGUI<T> setData(final @NotNull Collection<T> data) {
-        return clearData().addData(data);
-    }
-
-    /**
-     * Removes the data equal to any of the given data.
-     *
-     * @param data the data
-     * @return this gui
-     */
-    public @NotNull DataGUI<T> removeData(final T @NotNull ... data) {
-        return removeData(Arrays.asList(data));
-    }
-
-    /**
-     * Removes the data equal to any of the given data.
-     *
-     * @param data the data
-     * @return this gui
-     */
-    public @NotNull DataGUI<T> removeData(final @NotNull Collection<T> data) {
-        return removeData(t -> data.stream().anyMatch(c -> Objects.equals(c, t)));
-    }
-
-    /**
-     * Removes the data that match the given {@link Predicate} function.
-     *
-     * @param function the function
-     * @return this gui
-     */
-    public @NotNull DataGUI<T> removeData(final @NotNull Predicate<T> function) {
-        this.data.removeIf(function);
-        return this;
-    }
-
-    /**
-     * Removes all the data.
-     *
-     * @return this gui
-     */
-    public @NotNull DataGUI<T> clearData() {
+    public @NotNull DataGUI<?> clearData() {
         this.data.clear();
+        this.dataConverter = null;
         return this;
     }
 
-    private @NotNull GUI fillContents(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
-        List<T> dataList = getDataList();
-        int emptySlots = getPageEmptySlots();
-        int min = emptySlots * page;
-        int dataSize = dataList.size();
-        if (dataSize == 0) return gui;
-        if (min >= dataSize)
-            throw new IllegalArgumentException(String.format("No such page '%s'", page));
-        if (page > 0) min++;
-        int size = Math.min(gui.emptySlots().size() + min, dataSize);
-        for (int i = min; i < size; i++) {
-            T data = dataList.get(i);
-            GUIContent content = this.dataConverter.apply(data);
-            gui.addContent(content);
-        }
+    /**
+     * Sets the given data in the internal data list and updates the data converter function.
+     *
+     * @param data the data
+     * @param <D>  the type of the data
+     * @return the data
+     */
+    public <D> @NotNull DataGUI<D> setData(final @NotNull Function<D, GUIContent> dataConverter, final D @NotNull ... data) {
+        return setData(dataConverter, Arrays.asList(data));
+    }
+
+    /**
+     * Sets the given data in the internal data list and updates the data converter function.
+     *
+     * @param data the data
+     * @param <D>  the type of the data
+     * @return the data
+     */
+    public <D> @NotNull DataGUI<D> setData(final @NotNull Function<D, GUIContent> dataConverter, final @NotNull Collection<D> data) {
+        DataGUI<D> gui = (DataGUI<D>) clearData();
+        gui.dataConverter = dataConverter;
+        gui.data.addAll(data);
         return gui;
     }
 
@@ -185,12 +129,29 @@ public class DataGUI<T> extends PageableGUI {
         return emptySlots().size();
     }
 
+    private @NotNull GUI fillContents(final @NotNull GUI gui, final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
+        if (this.dataConverter == null)
+            throw new IllegalStateException("No data converter function has been given. Please set data using setData");
+        List<T> dataList = getDataList();
+        int emptySlots = getPageEmptySlots();
+        int min = emptySlots * page;
+        int dataSize = dataList.size();
+        if (dataSize == 0) return gui;
+        if (min >= dataSize)
+            throw new IllegalArgumentException(String.format("No such page '%s'", page));
+        if (page > 0) min++;
+        int size = Math.min(gui.emptySlots().size() + min, dataSize);
+        for (int i = min; i < size; i++) {
+            T data = dataList.get(i);
+            GUIContent content = this.dataConverter.apply(data);
+            gui.addContent(content);
+        }
+        return gui;
+    }
+
     @Override
     protected @NotNull DataGUI<T> initializeNewInstance() {
-        return new DataGUI<>(
-                this.templateGUI.copy(),
-                this.dataConverter
-        );
+        return new DataGUI<>(this.templateGUI.copy());
     }
 
     @Override
@@ -201,9 +162,11 @@ public class DataGUI<T> extends PageableGUI {
     @Override
     public @NotNull DataGUI<T> copyTo(final @NotNull GUI other, final boolean replace) {
         super.copyTo(other, replace);
-        if (other instanceof DataGUI && replace) {
-            ((DataGUI<T>) other).setData(getData());
-            Reflect.on(other).set("dataConverter", this.dataConverter);
+        if (other instanceof DataGUI && other != this && replace && this.dataConverter != null) {
+            DataGUI<T> target = (DataGUI<T>) other;
+            target.clearData();
+            target.dataConverter = this.dataConverter;
+            target.data.addAll(this.data);
         }
         return this;
     }
@@ -254,7 +217,7 @@ public class DataGUI<T> extends PageableGUI {
     @Override
     @Deprecated
     public @NotNull GUI getPage(final @Range(from = 0, to = Integer.MAX_VALUE) int page) {
-        throw new IllegalStateException(ERROR_MESSAGE);
+        throw new IllegalStateException(PAGES_ERROR_MESSAGE);
     }
 
     /**
@@ -267,7 +230,7 @@ public class DataGUI<T> extends PageableGUI {
     @Override
     @Deprecated
     public @NotNull DataGUI<T> setPages(final @Range(from = Constants.MIN_TYPE_SIZE, to = Integer.MAX_VALUE) int pages) {
-        throw new IllegalStateException(ERROR_MESSAGE);
+        throw new IllegalStateException(PAGES_ERROR_MESSAGE);
     }
 
     /*
@@ -834,279 +797,67 @@ public class DataGUI<T> extends PageableGUI {
      */
 
     /**
-     * Creates a new {@link DataGUI} with the given size and converter.
+     * Creates a new {@link DataGUI} with the given size.
      *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param dataConverter the data converter
+     * @param size the size
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                 final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(GUI.newGUI(size), dataConverter);
+    public static @NotNull DataGUI<?> newDataGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+        return new DataGUI<>(GUI.newGUI(size));
     }
 
     /**
-     * Creates a new {@link DataGUI} with the given size, converter and data.
+     * Creates a new {@link DataGUI} with the given type.
      *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param type the type
      * @return the data gui
      */
-    @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                 final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final T @NotNull ... data) {
-        return new DataGUI<>(GUI.newGUI(size), dataConverter).setData(data);
+    public static @NotNull DataGUI<?> newDataGUI(final @NotNull GUIType type) {
+        return new DataGUI<>(GUI.newGUI(type));
     }
 
     /**
-     * Creates a new {@link DataGUI} with the given size, converter and data.
+     * Creates a new {@link DataGUI} with a {@link FullscreenGUI} as base.
      *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param size the size of the upper GUI
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                 final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final @NotNull Collection<T> data) {
-        return new DataGUI<>(GUI.newGUI(size), dataConverter).setData(data);
+    public static @NotNull DataGUI<?> newFullscreenDataGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+        return new DataGUI<>(GUI.newFullscreenGUI(size));
     }
 
     /**
-     * Creates a new {@link DataGUI} with the given type and converter.
+     * Creates a new {@link DataGUI} with a {@link FullscreenGUI} as base.
      *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param dataConverter the data converter
+     * @param size         the size of the upper GUI
+     * @param lowerGUISize the size of the lower GUI
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type,
-                                                 final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(GUI.newGUI(type), dataConverter);
+    public static @NotNull DataGUI<?> newFullscreenDataGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
+        return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize));
     }
 
     /**
-     * Creates a new {@link DataGUI} with the given type, converter and data.
+     * Creates a new {@link DataGUI} with a {@link FullscreenGUI} as base.
      *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param type the type of the upper GUI
      * @return the data gui
      */
-    @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type,
-                                                 final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final T @NotNull ... data) {
-        return new DataGUI<>(GUI.newGUI(type), dataConverter).setData(data);
+    public static @NotNull DataGUI<?> newFullscreenDataGUI(final @NotNull GUIType type) {
+        return new DataGUI<>(GUI.newFullscreenGUI(type));
     }
 
     /**
-     * Creates a new {@link DataGUI} with the given type, converter and data.
+     * Creates a new {@link DataGUI} with a {@link FullscreenGUI} as base.
      *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param dataConverter the data converter
-     * @param data          the data
+     * @param type         the type of the upper GUI
+     * @param lowerGUISize the size of the lower GUI
      * @return the data gui
      */
-    public static <T> @NotNull DataGUI<T> newGUI(final @NotNull GUIType type,
-                                                 final @NotNull Function<T, GUIContent> dataConverter,
-                                                 final @NotNull Collection<T> data) {
-        return new DataGUI<>(GUI.newGUI(type), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given size, converter and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param dataConverter the data converter
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                           final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(GUI.newFullscreenGUI(size), dataConverter);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given size, converter and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
-                                                           final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize), dataConverter);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final T @NotNull ... data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(size), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final T @NotNull ... data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final @NotNull Collection<T> data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(size), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given size, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param size          the size
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
-                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final @NotNull Collection<T> data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(size, lowerGUISize), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given type, converter and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param dataConverter the data converter
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(GUI.newFullscreenGUI(type), dataConverter);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given type, converter and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
-                                                           final @NotNull Function<T, GUIContent> dataConverter) {
-        return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize), dataConverter);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final T @NotNull ... data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(type), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    @SafeVarargs
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final T @NotNull ... data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final @NotNull Collection<T> data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(type), dataConverter).setData(data);
-    }
-
-    /**
-     * Creates a new {@link DataGUI} with the given type, converter, data and a full size {@link #templateGUI}.
-     *
-     * @param <T>           the type of the data
-     * @param type          the type
-     * @param lowerGUISize  the size of the lower GUI
-     * @param dataConverter the data converter
-     * @param data          the data
-     * @return the data gui
-     */
-    public static <T> @NotNull DataGUI<T> newFullscreenGUI(final @NotNull GUIType type,
-                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize,
-                                                           final @NotNull Function<T, GUIContent> dataConverter,
-                                                           final @NotNull Collection<T> data) {
-        return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize), dataConverter).setData(data);
+    public static @NotNull DataGUI<?> newFullscreenDataGUI(final @NotNull GUIType type,
+                                                           final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
+        return new DataGUI<>(GUI.newFullscreenGUI(type, lowerGUISize));
     }
 
 }

@@ -14,11 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -76,36 +72,20 @@ class DataGUITest {
 
     @Test
     void testThatDataGUIWithDifferentDataConverterAreEqual() {
-        DataGUI<String> first = DataGUI.newGUI(27, ItemGUIContent::newInstance);
-        DataGUI<String> second = DataGUI.newGUI(27, ItemGUIContent::newInstance);
+        DataGUI<String> first = DataGUI.newDataGUI(27).setData(ItemGUIContent::newInstance);
+        DataGUI<String> second = DataGUI.newDataGUI(27).setData(ItemGUIContent::newInstance);
         assertEquals(first, second);
     }
 
     private static @NotNull DataGUI<Integer> setupGUI(int contents, int data, boolean prev, boolean next, GUIContent convertedContent) {
-        DataGUI<Integer> dataGUI = DataGUI.newGUI(27, s -> convertedContent);
+        List<Integer> dataToAdd = new ArrayList<>();
+        for (int i = 0; i < data; i++) dataToAdd.add(i);
+        DataGUI<Integer> dataGUI = DataGUI.newDataGUI(27).setData(s -> convertedContent, dataToAdd);
         if (prev) dataGUI.setPreviousPage(0, Item.newItem());
         if (next) dataGUI.setNextPage(2, Item.newItem());
-        for (int i = 0; i < data; i++) dataGUI.addData(i);
         @NotNull Item stone = Item.newItem("stone");
         for (int i = 0; i < contents; i++) dataGUI.addContent(stone);
         return dataGUI;
-    }
-
-    private static Object[] removeDataParameters() {
-        return new Consumer[]{
-                (Consumer<DataGUI<String>>) g -> g.removeData("hello", "world"),
-                (Consumer<DataGUI<String>>) g -> g.removeData(Arrays.asList("hello", "world")),
-                (Consumer<DataGUI<String>>) g -> g.removeData(s -> s.equals("hello") || s.equals("world"))
-        };
-    }
-
-    @ParameterizedTest
-    @MethodSource("removeDataParameters")
-    void testRemoveData(Consumer<DataGUI<String>> consumer) {
-        DataGUI<String> gui = DataGUI.newGUI(9, s -> null, "hello", "world");
-        consumer.accept(gui);
-        @NotNull List<String> data = gui.getData();
-        assertTrue(data.isEmpty(), String.format("Expected empty but was '%s'", data));
     }
 
     @Test
@@ -113,15 +93,18 @@ class DataGUITest {
         try (MockedStatic<GUIUtils> clazz = mockStatic(GUIUtils.class, CALLS_REAL_METHODS)) {
             clazz.when(GUIUtils::getGUIAdapterClass).thenReturn(Optional.of(PageableGUITest.MockGUIAdapter.class));
 
-            DataGUI<?> gui = DataGUI.newGUI(9, s -> null);
+            DataGUI<?> gui = DataGUI.newDataGUI(9);
             int page = 3;
-            assertDoesNotThrow(() -> gui.open(new PageableGUITest.MockViewer(UUID.randomUUID(), "Mock"), page));
+            assertThrowsExactly(
+                    IllegalStateException.class,
+                    () -> gui.open(new PageableGUITest.MockViewer(UUID.randomUUID(), "Mock"), page)
+            );
         }
     }
 
     @Test
     void testInvalidPage() {
-        DataGUI<?> gui = DataGUI.newGUI(9, s -> null).setData("Hello");
+        DataGUI<?> gui = DataGUI.newDataGUI(9).setData(s -> null, "Hello");
         int page = 3;
         Throwable throwable = assertThrowsExactly(IllegalArgumentException.class, () ->
                 gui.open(null, page));
@@ -135,7 +118,7 @@ class DataGUITest {
         int size = 9;
         Item[] contents = new Item[size];
         Arrays.fill(contents, Item.newItem("stone"));
-        DataGUI<?> gui = DataGUI.newGUI(size, s -> null, "Hello").addContent(contents);
+        DataGUI<?> gui = DataGUI.newDataGUI(size).setData(s -> null, "Hello").addContent(contents);
         assertThrowsExactly(IllegalStateException.class, gui::pages);
     }
 
@@ -143,11 +126,11 @@ class DataGUITest {
     @ValueSource(strings = {"getPage", "setPages"})
     void testPagesRelatedMethodShouldThrowException(String method) {
         Exception e = assertThrowsExactly(ReflectException.class, () ->
-                Reflect.on(DataGUI.newGUI(GUIType.ANVIL, s -> null)).invoke(method, 1)
+                Reflect.on(DataGUI.newDataGUI(GUIType.ANVIL)).invoke(method, 1)
         );
         Throwable cause = e.getCause();
         assertNotNull(cause);
-        assertEquals(Reflect.on(DataGUI.class).get("ERROR_MESSAGE").get(), cause.getMessage());
+        assertEquals(Reflect.on(DataGUI.class).get("PAGES_ERROR_MESSAGE").get(), cause.getMessage());
     }
 
     @Test
@@ -166,7 +149,7 @@ class DataGUITest {
         Function<Double, GUIContent> cc = d -> ItemGUIContent.newInstance()
                 .setDisplayName("Data: " + d)
                 .setAmount((int) (d * 10));
-        PageableGUI gui = DataGUI.newGUI(9, cc, data)
+        PageableGUI gui = DataGUI.newDataGUI(9).setData(cc, data)
                 .setPreviousPage(0, Item.newItem("redstone_block")
                         .setDisplayName("&7Go to page &e<previous_page>"))
                 .setNextPage(8, Item.newItem("emerald_block")
@@ -202,7 +185,7 @@ class DataGUITest {
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(DataGUI.newGUI(45, c -> null), PageableGUI.class, m -> {
+        TestUtils.testReturnType(DataGUI.newDataGUI(45), PageableGUI.class, m -> {
             for (String s : Arrays.asList("copy", "setPages", "getPage", "initializeNewInstance"))
                 if (s.equals(m.getName())) return true;
             return false;
@@ -211,17 +194,21 @@ class DataGUITest {
 
     @Test
     void testCopy() {
-        DataGUI<Object> gui = DataGUI.newGUI(27, o -> ItemGUIContent.newInstance("stone"))
+        DataGUI<String> gui = DataGUI.newDataGUI(27)
                 .setTitle("Data GUI Title")
                 .setVariable("hello", "world")
-                .setData("stone", "diamond", "emerald", "gold", "iron")
+                .setData(
+                        o -> ItemGUIContent.newInstance("stone"),
+                        "stone", "diamond", "emerald", "gold", "iron"
+                )
                 .setContents(4, ItemGUIContent.newInstance("obsidian"));
 
-        DataGUI<Object> copy = gui.copy();
+        DataGUI<String> copy = gui.copy();
 
         assertInstanceOf(DataGUI.class, copy);
         assertEquals(gui.templateGUI, copy.templateGUI);
         assertEquals(gui.dataConverter, copy.dataConverter);
+        assertEquals(gui.getDataList(), copy.getDataList());
         assertEquals(Reflect.on(gui).get("data"), Reflect.on(copy).get("data"));
         assertEquals(gui.getData(), copy.getData());
         assertEquals(gui.variables(), copy.variables());
@@ -235,57 +222,37 @@ class DataGUITest {
 
     private static Object[] constructorParameters() {
         return new Object[]{
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(27, null), false, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(27, null, "Hello", "World"), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(27, null, Arrays.asList("Hello", "World")), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(GUIType.CHEST, null), true, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newDataGUI(27), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newDataGUI(GUIType.CHEST), true},
         };
     }
 
     @ParameterizedTest
     @MethodSource("constructorParameters")
-    void testConstructors(Supplier<DataGUI<Object>> supplier, boolean typeProvided, boolean dataProvided) {
-        @NotNull DataGUI<Object> expected = typeProvided ?
-                new DataGUI<>(GUI.newGUI(GUIType.CHEST), null) :
-                new DataGUI<>(GUI.newGUI(27), null);
-        expected.setData("Hello", "World");
-        DataGUI<Object> actual = supplier.get();
-        if (!dataProvided) {
-            actual.setData("Hello", "World");
-        }
+    void testConstructors(Supplier<DataGUI<?>> supplier, boolean typeProvided) {
+        @NotNull DataGUI<?> expected = typeProvided ?
+                new DataGUI<>(GUI.newGUI(GUIType.CHEST)) :
+                new DataGUI<>(GUI.newGUI(27));
+        DataGUI<?> actual = supplier.get();
         assertEquals(expected, actual);
     }
 
     private static Object[] fullscreenConstructorParameters() {
         return new Object[]{
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, null), false, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, Constants.SECONDARY_GUI_SIZE, null), false, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, null, "Hello", "World"), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, Constants.SECONDARY_GUI_SIZE, null, "Hello", "World"), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, null, Arrays.asList("Hello", "World")), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(27, Constants.SECONDARY_GUI_SIZE, null, Arrays.asList("Hello", "World")), false, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, null), true, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE, null), true, false},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, null, "Hello", "World"), true, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE, null, "Hello", "World"), true, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, null, Arrays.asList("Hello", "World")), true, true},
-                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE, null, Arrays.asList("Hello", "World")), true, true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenDataGUI(27), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenDataGUI(27, Constants.SECONDARY_GUI_SIZE), false},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenDataGUI(GUIType.CHEST), true},
+                new Object[]{(Supplier<DataGUI<?>>) () -> DataGUI.newFullscreenDataGUI(GUIType.CHEST, Constants.SECONDARY_GUI_SIZE), true},
         };
     }
 
     @ParameterizedTest
     @MethodSource("fullscreenConstructorParameters")
-    void testFullscreenConstructors(Supplier<DataGUI<Object>> supplier, boolean typeProvided, boolean dataProvided) {
-        @NotNull DataGUI<Object> expected = typeProvided ?
-                new DataGUI<>(GUI.newFullscreenGUI(GUIType.CHEST), null) :
-                new DataGUI<>(GUI.newFullscreenGUI(27), null);
-        expected.setData("Hello", "World");
-        DataGUI<Object> actual = supplier.get();
-        if (!dataProvided) {
-            actual.setData("Hello", "World");
-        }
+    void testFullscreenConstructors(Supplier<DataGUI<?>> supplier, boolean typeProvided) {
+        @NotNull DataGUI<?> expected = typeProvided ?
+                new DataGUI<>(GUI.newFullscreenGUI(GUIType.CHEST)) :
+                new DataGUI<>(GUI.newFullscreenGUI(27));
+        DataGUI<?> actual = supplier.get();
         assertEquals(expected, actual);
     }
 
