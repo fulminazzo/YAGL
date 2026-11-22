@@ -18,7 +18,6 @@ import java.util.Locale;
  * @see ObjectSerializer
  */
 public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
-    static final @NotNull String TEMPLATE_GUI_PATH = "templateGUI";
     static final @NotNull String GUI_TYPE_PATH = "guiType";
     static final @NotNull String GUI_SIZE_PATH = "guiSize";
     static final @NotNull String PAGES_PATH = "pages";
