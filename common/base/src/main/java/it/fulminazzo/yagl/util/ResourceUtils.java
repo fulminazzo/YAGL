@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -397,7 +398,12 @@ public final class ResourceUtils {
             final @NotNull Predicate<String> filter
     ) throws IOException {
         final char separator = '/';
-        final Path directory = Path.of(url.getPath());
+        final Path directory;
+        try {
+            directory = Path.of(url.toURI());
+        } catch (URISyntaxException | IllegalArgumentException e) {
+            throw new IOException("Invalid filesystem resource URL: " + url, e);
+        }
         try (Stream<Path> stream = Files.walk(directory)) {
             stream.filter(Files::isRegularFile)
                     .map(directory::relativize)
