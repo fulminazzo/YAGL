@@ -59,6 +59,13 @@ abstract class GUISerializerTestHelper<G extends GUI> extends SerializerTestHelp
 
         assertEquals(expected.getContents().size(), gui.getContents().size(), "Incorrect contents size");
 
+        for (int i = 0; i < expected.size(); i++)
+            assertEquals(
+                    expected.getContents(i),
+                    gui.getContents(i),
+                    "Incorrect contents at slot " + i
+            );
+
         assertEquals(expected, gui);
     }
 

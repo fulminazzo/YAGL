@@ -412,9 +412,9 @@ class GUIAdapterTest extends BukkitUtils {
 
             final PageableGUI gui;
             if (initializer instanceof Integer)
-                gui = PageableGUI.newFullScreenGUI((Integer) initializer);
+                gui = PageableGUI.newFullscreenGUI((Integer) initializer);
             else if (initializer instanceof GUIType)
-                gui = PageableGUI.newFullScreenGUI((GUIType) initializer);
+                gui = PageableGUI.newFullscreenGUI((GUIType) initializer);
             else throw new IllegalArgumentException(initializer.toString());
             gui.setPages(2);
 
@@ -487,9 +487,9 @@ class GUIAdapterTest extends BukkitUtils {
 
             final PageableGUI gui;
             if (initializer instanceof Integer)
-                gui = PageableGUI.newFullScreenGUI((Integer) initializer, 18);
+                gui = PageableGUI.newFullscreenGUI((Integer) initializer, 18);
             else if (initializer instanceof GUIType)
-                gui = PageableGUI.newFullScreenGUI((GUIType) initializer, 18);
+                gui = PageableGUI.newFullscreenGUI((GUIType) initializer, 18);
             else throw new IllegalArgumentException(initializer.toString());
             gui.setPages(2);
 

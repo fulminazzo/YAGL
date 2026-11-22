@@ -388,7 +388,7 @@ class FullscreenGUITest {
 
     @ParameterizedTest
     @MethodSource("methods")
-    void testFullScreenGUIDelegatesToUpperGUI(String methodName, Class<?>[] parameterTypes) {
+    void testFullscreenGUIDelegatesToUpperGUI(String methodName, Class<?>[] parameterTypes) {
         Reflect fullscreenGUI = Reflect.on(new FullscreenGUI(9));
 
         GUI upperGUI = mock(GUI.class);

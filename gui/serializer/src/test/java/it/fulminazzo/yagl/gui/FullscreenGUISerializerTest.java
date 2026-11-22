@@ -10,13 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Getter
 class FullscreenGUISerializerTest extends DualGUISerializerTestHelper<FullscreenGUI> {
-    private final @NotNull FullscreenGUI target = (FullscreenGUI) populateGUI(GUI.newFullscreenGUI(27, 18))
-            .setContents(27, ItemGUIContent.newInstance("coal"))
-            .setContents(42, ItemGUIContent.newInstance("lapis_lazuli"));
-
-    private final @NotNull FullscreenGUI targetTyped = (FullscreenGUI) populateGUI(GUI.newFullscreenGUI(GUIType.CHEST, 18))
-            .setContents(27, ItemGUIContent.newInstance("coal"))
-            .setContents(42, ItemGUIContent.newInstance("lapis_lazuli"));
+    private final @NotNull FullscreenGUI target = populateFullscreenGUI(GUI.newFullscreenGUI(27, 18));
+    private final @NotNull FullscreenGUI targetTyped = populateFullscreenGUI(GUI.newFullscreenGUI(GUIType.CHEST, 18));
 
     protected FullscreenGUISerializerTest() {
         super(FullscreenGUI.class);
@@ -68,6 +63,13 @@ class FullscreenGUISerializerTest extends DualGUISerializerTestHelper<Fullscreen
                 raw.get(FullscreenGUISerializer.LOWER_GUI_SIZE_PATH),
                 "Incorrect lower GUI size"
         );
+    }
+
+    private static @NotNull FullscreenGUI populateFullscreenGUI(final @NotNull FullscreenGUI gui) {
+        populateGUI(gui);
+        return gui
+                .setContents(27, ItemGUIContent.newInstance("coal"))
+                .setContents(42, ItemGUIContent.newInstance("lapis_lazuli"));
     }
 
 }

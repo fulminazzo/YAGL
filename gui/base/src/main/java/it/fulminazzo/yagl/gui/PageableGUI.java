@@ -1013,7 +1013,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param size the size
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+    public static @NotNull PageableGUI newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new PageableGUI(GUI.newFullscreenGUI(size));
     }
 
@@ -1024,7 +1024,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param lowerGUISize the size of the lower GUI
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
+    public static @NotNull PageableGUI newFullscreenGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size,
                                                         final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
         return new PageableGUI(GUI.newFullscreenGUI(size, lowerGUISize));
     }
@@ -1035,7 +1035,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param type the type
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final @NotNull GUIType type) {
+    public static @NotNull PageableGUI newFullscreenGUI(final @NotNull GUIType type) {
         return new PageableGUI(GUI.newFullscreenGUI(type));
     }
 
@@ -1046,7 +1046,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param lowerGUISize the size of the lower GUI
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newFullScreenGUI(final @NotNull GUIType type,
+    public static @NotNull PageableGUI newFullscreenGUI(final @NotNull GUIType type,
                                                         final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.SECONDARY_GUI_SIZE) int lowerGUISize) {
         return new PageableGUI(GUI.newFullscreenGUI(type, lowerGUISize));
     }
