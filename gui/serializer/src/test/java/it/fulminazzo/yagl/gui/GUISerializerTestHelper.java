@@ -47,6 +47,16 @@ abstract class GUISerializerTestHelper<G extends GUI> extends SerializerTestHelp
         testSerialize(raw);
     }
 
+    @Test
+    final void testSerializeAndDeserialize() throws IOException {
+        checkSerializeAndDeserialize(getTarget());
+    }
+
+    protected void checkSerializeAndDeserialize(final @NotNull G expected) throws IOException {
+        G gui = readRaw(dump(expected, "roundtrip"), type);
+        assertEquals(expected, gui);
+    }
+
     protected void checkDeserializeAssertions(final @NotNull G expected, final @NotNull G gui) {
         assertNotNull(gui, "Expected loaded GUI to not be null");
         assertEquals(expected.getTitle(), gui.getTitle(), "Incorrect title");

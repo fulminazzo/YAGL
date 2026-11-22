@@ -43,6 +43,11 @@ abstract class DualGUISerializerTestHelper<G extends GUI> extends GUISerializerT
         testSerializeTyped(raw);
     }
 
+    @Test
+    final void testSerializeAndDeserializeTyped() throws IOException {
+        checkSerializeAndDeserialize(getTargetTyped());
+    }
+
     /**
      * Override this method to add more assertions for the deserialized typed GUI.
      *

@@ -45,6 +45,11 @@ abstract class QuadGUISerializerTestHelper<G extends GUI> extends DualGUISeriali
     }
 
     @Test
+    final void testSerializeAndDeserializeFullscreen() throws IOException {
+        checkSerializeAndDeserialize(getTargetFullscreen());
+    }
+
+    @Test
     final void testDeserializeFullscreenTyped() throws IOException {
         G expected = getTargetFullscreenTyped();
         G gui = load(getFileNameFullscreenTyped(expected));
@@ -60,6 +65,11 @@ abstract class QuadGUISerializerTestHelper<G extends GUI> extends DualGUISeriali
         assertNotNull(raw, "Map data should not be null");
         checkSerializeAssertions(raw);
         testSerializeFullscreenTyped(raw);
+    }
+
+    @Test
+    final void testSerializeAndDeserializeFullscreenTyped() throws IOException {
+        checkSerializeAndDeserialize(getTargetFullscreenTyped());
     }
 
     /**
