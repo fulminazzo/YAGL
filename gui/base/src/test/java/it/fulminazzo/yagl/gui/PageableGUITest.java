@@ -50,13 +50,13 @@ class PageableGUITest {
 
     @Test
     void testCopyAllCopiesPageableInternalData() {
-        PageableGUI gui = PageableGUI.newGUI(GUIType.ANVIL).setPages(1);
+        PageableGUI gui = PageableGUI.newPageableGUI(GUIType.ANVIL).setPages(1);
         gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
         gui.setVariable("hello", "world");
         gui.setPreviousPage(2, Item.newItem("blue_concrete"));
         gui.setNextPage(3, Item.newItem("green_concrete"));
 
-        PageableGUI newGUI = PageableGUI.newGUI(GUIType.ANVIL).copyFrom(gui, true);
+        PageableGUI newGUI = PageableGUI.newPageableGUI(GUIType.ANVIL).copyFrom(gui, true);
 
         assertEquals(gui.templateGUI, newGUI.templateGUI, "TemplateGUI was not equal");
         assertEquals(gui.pages(), newGUI.pages(), "Pages were not equal");
@@ -67,7 +67,7 @@ class PageableGUITest {
 
     @Test
     void testOpen() {
-        PageableGUI gui = PageableGUI.newGUI(9).setPages(1);
+        PageableGUI gui = PageableGUI.newPageableGUI(9).setPages(1);
         gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
 
         final MockViewer viewer = new MockViewer(UUID.randomUUID(), "Steve");
@@ -88,7 +88,7 @@ class PageableGUITest {
 
     @Test
     void testOpenPage() {
-        PageableGUI gui = PageableGUI.newGUI(9)
+        PageableGUI gui = PageableGUI.newPageableGUI(9)
                 .setPreviousPage(0, Item.newItem("redstone_block")
                         .setDisplayName("&7Go to page &e<previous_page>"))
                 .setNextPage(8, Item.newItem("emerald_block")
@@ -142,7 +142,7 @@ class PageableGUITest {
 
     @Test
     void testOpenPageNoNextPageOrPreviousPage() {
-        PageableGUI gui = PageableGUI.newGUI(9).setPages(3)
+        PageableGUI gui = PageableGUI.newPageableGUI(9).setPages(3)
                 .setContents(4, Item.newItem("obsidian").setDisplayName("&7Page: &e<page>"));
         gui.getPage(0).setContents(1, Item.newItem("red_concrete"));
         gui.getPage(1).setContents(1, Item.newItem("lime_concrete"));
@@ -165,7 +165,7 @@ class PageableGUITest {
     @Test
     void testPageableGUIMethods() throws InvocationTargetException, IllegalAccessException {
         GUI expected = setupGUI(GUI.newGUI(18));
-        GUI actual = setupGUI(PageableGUI.newGUI(18));
+        GUI actual = setupGUI(PageableGUI.newPageableGUI(18));
 
         for (Method method : GUI.class.getDeclaredMethods()) {
             try {
@@ -193,27 +193,27 @@ class PageableGUITest {
 
     @Test
     void testSetInvalidPages() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(GUIType.CHEST).setPages(-1));
+        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newPageableGUI(GUIType.CHEST).setPages(-1));
     }
 
     @Test
     void testRemovePages() {
-        assertEquals(5, PageableGUI.newGUI(9).setPages(10).setPages(5).pages());
+        assertEquals(5, PageableGUI.newPageableGUI(9).setPages(10).setPages(5).pages());
     }
 
     @Test
     void testGetGUIPageException() {
-        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newGUI(9).getPage(1));
+        assertThrowsExactly(IndexOutOfBoundsException.class, () -> PageableGUI.newPageableGUI(9).getPage(1));
     }
 
     @Test
     void testReturnTypes() {
-        TestUtils.testReturnType(PageableGUI.newGUI(45), GUI.class, m -> m.getName().equals("copy"));
+        TestUtils.testReturnType(PageableGUI.newPageableGUI(45), GUI.class, m -> m.getName().equals("copy"));
     }
 
     @Test
     void testRemovePreviousPage() {
-        PageableGUI gui = PageableGUI.newGUI(9).setPreviousPage(1, Item.newItem()).unsetPreviousPage();
+        PageableGUI gui = PageableGUI.newPageableGUI(9).setPreviousPage(1, Item.newItem()).unsetPreviousPage();
         Pair<?, ?> previousPage = Reflect.on(gui).get("previousPage").get();
         assertNotNull(previousPage);
         assertFalse(previousPage.isPresent(), String.format("Expected empty but got '%s'", previousPage));
@@ -221,7 +221,7 @@ class PageableGUITest {
 
     @Test
     void testRemoveNextPage() {
-        PageableGUI gui = PageableGUI.newGUI(9).setNextPage(1, Item.newItem()).unsetNextPage();
+        PageableGUI gui = PageableGUI.newPageableGUI(9).setNextPage(1, Item.newItem()).unsetNextPage();
         Pair<?, ?> nextPage = Reflect.on(gui).get("nextPage").get();
         assertNotNull(nextPage);
         assertFalse(nextPage.isPresent(), String.format("Expected empty but got '%s'", nextPage));
@@ -229,17 +229,17 @@ class PageableGUITest {
 
     @Test
     void testLowerSlot() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(9).setNextPage(-1, Item.newItem()));
+        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newPageableGUI(9).setNextPage(-1, Item.newItem()));
     }
 
     @Test
     void testHigherSlot() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newGUI(9).setPreviousPage(10, Item.newItem()));
+        assertThrowsExactly(IllegalArgumentException.class, () -> PageableGUI.newPageableGUI(9).setPreviousPage(10, Item.newItem()));
     }
 
     @Test
     void testIteratorShouldReturnPages() {
-        PageableGUI gui = PageableGUI.newGUI(9).setPages(4);
+        PageableGUI gui = PageableGUI.newPageableGUI(9).setPages(4);
         List<GUI> pages = Arrays.asList(
                 gui.getPage(0).setContents(0, Item.newItem("stone")),
                 gui.getPage(1).setContents(0, Item.newItem("diamond")),
@@ -251,7 +251,7 @@ class PageableGUITest {
 
     @Test
     void testCopy() {
-        PageableGUI gui = PageableGUI.newGUI(27)
+        PageableGUI gui = PageableGUI.newPageableGUI(27)
                 .setTitle("Pageable Title")
                 .setVariable("hello", "world")
                 .setPages(3)

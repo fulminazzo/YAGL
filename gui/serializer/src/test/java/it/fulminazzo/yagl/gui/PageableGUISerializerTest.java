@@ -19,8 +19,8 @@ class PageableGUISerializerTest extends QuadGUISerializerTestHelper<PageableGUI>
     protected PageableGUISerializerTest() {
         super(PageableGUI.class);
 
-        target = populatePageableGUI(PageableGUI.newGUI(27));
-        targetTyped = populatePageableGUI(PageableGUI.newGUI(GUIType.CHEST));
+        target = populatePageableGUI(PageableGUI.newPageableGUI(27));
+        targetTyped = populatePageableGUI(PageableGUI.newPageableGUI(GUIType.CHEST));
         targetFullscreen = populatePageableFullscreenGUI(PageableGUI.newFullscreenGUI(27, 18));
         targetFullscreenTyped = populatePageableFullscreenGUI(PageableGUI.newFullscreenGUI(GUIType.CHEST, 18));
     }

@@ -993,7 +993,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param size the size
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
+    public static @NotNull PageableGUI newPageableGUI(final @Range(from = Constants.MIN_DEFAULT_SIZE, to = Constants.MAX_SIZE) int size) {
         return new PageableGUI(GUI.newGUI(size));
     }
 
@@ -1003,7 +1003,7 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
      * @param type the type
      * @return the pageable gui
      */
-    public static @NotNull PageableGUI newGUI(final @NotNull GUIType type) {
+    public static @NotNull PageableGUI newPageableGUI(final @NotNull GUIType type) {
         return new PageableGUI(GUI.newGUI(type));
     }
 

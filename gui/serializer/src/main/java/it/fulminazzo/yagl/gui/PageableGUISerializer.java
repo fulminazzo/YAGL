@@ -31,7 +31,7 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
     protected @Nullable PageableGUI initialize(final @NotNull DataNode node) throws SerializationException {
         Integer lowerGUISize = node.getOrNull(FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, Integer.class);
         if (lowerGUISize == null)
-            return GUISerializerUtils.callIfTypeOrSizeArePresent(node, GUI_TYPE_PATH, PageableGUI::newGUI, GUI_SIZE_PATH, PageableGUI::newGUI);
+            return GUISerializerUtils.callIfTypeOrSizeArePresent(node, GUI_TYPE_PATH, PageableGUI::newPageableGUI, GUI_SIZE_PATH, PageableGUI::newPageableGUI);
         else return GUISerializerUtils.callIfTypeOrSizeArePresent(
                 node,
                 FullscreenGUISerializer.UPPER_GUI_TYPE_PATH,
