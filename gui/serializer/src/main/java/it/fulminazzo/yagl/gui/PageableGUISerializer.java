@@ -29,7 +29,16 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
 
     @Override
     protected @Nullable PageableGUI initialize(final @NotNull DataNode node) throws SerializationException {
-        return GUISerializerUtils.callIfTypeOrSizeArePresent(node, GUI_TYPE_PATH, PageableGUI::newGUI, GUI_SIZE_PATH, PageableGUI::newGUI);
+        Integer lowerGUISize = node.getOrNull(FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, Integer.class);
+        if (lowerGUISize == null)
+            return GUISerializerUtils.callIfTypeOrSizeArePresent(node, GUI_TYPE_PATH, PageableGUI::newGUI, GUI_SIZE_PATH, PageableGUI::newGUI);
+        else return GUISerializerUtils.callIfTypeOrSizeArePresent(
+                node,
+                FullscreenGUISerializer.UPPER_GUI_TYPE_PATH,
+                t -> PageableGUI.newFullscreenGUI(t, lowerGUISize),
+                FullscreenGUISerializer.UPPER_GUI_SIZE_PATH,
+                s -> PageableGUI.newFullscreenGUI(s, lowerGUISize)
+        );
     }
 
     @Override
@@ -66,7 +75,19 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
                                     .toUpperCase(Locale.ROOT)
                     );
 
-                    GUISerializerUtils.dumpTypeOrNormalGUI(templateGUI, guiPagesNode, rawPage);
+                    if (templateGUI instanceof FullscreenGUI) {
+                        FullscreenGUI fullscreenGUI = (FullscreenGUI) templateGUI;
+                        GUISerializerUtils.dumpTypeOrNormalGUI(
+                                fullscreenGUI.getUpperGUI(),
+                                guiPagesNode,
+                                rawPage + "." + FullscreenGUISerializer.UPPER_GUI_TYPE_PATH,
+                                rawPage + "." + FullscreenGUISerializer.UPPER_GUI_SIZE_PATH
+                        );
+                        guiPagesNode.set(
+                                rawPage + "." + FullscreenGUISerializer.LOWER_GUI_SIZE_PATH,
+                                fullscreenGUI.getLowerGUI().size()
+                        );
+                    } else GUISerializerUtils.dumpTypeOrNormalGUI(templateGUI, guiPagesNode, rawPage);
 
                     guiPagesNode.get(rawPage, GUI.class)
                             .ifPresent(v -> value.getPage(page).copyFrom(v, true));
@@ -77,7 +98,16 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
 
     @Override
     protected void dumpData(final @NotNull PageableGUI value, final @NotNull DataNode output) throws SerializationException {
-        GUISerializerUtils.dumpTypeOrNormalGUI(value.templateGUI, output, GUI_TYPE_PATH, GUI_SIZE_PATH);
+        if (value.templateGUI instanceof FullscreenGUI) {
+            FullscreenGUI fullscreenGUI = (FullscreenGUI) value.templateGUI;
+            GUISerializerUtils.dumpTypeOrNormalGUI(
+                    fullscreenGUI.getUpperGUI(),
+                    output,
+                    FullscreenGUISerializer.UPPER_GUI_TYPE_PATH,
+                    FullscreenGUISerializer.UPPER_GUI_SIZE_PATH
+            );
+            output.set(FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, fullscreenGUI.getLowerGUI().size());
+        } else GUISerializerUtils.dumpTypeOrNormalGUI(value.templateGUI, output, GUI_TYPE_PATH, GUI_SIZE_PATH);
         output.set(PAGES_PATH, value.pages(), 0);
 
         Pair<Integer, GUIContent> previousPage = value.previousPage;
@@ -99,6 +129,9 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
             output.set(basePath + "." + TypedSerializer.TYPE_PATH, null);
             output.set(basePath + "." + DefaultGUISerializer.SIZE_PATH, null);
             output.set(basePath + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, null);
+            output.set(basePath + "." + FullscreenGUISerializer.UPPER_GUI_TYPE_PATH, null);
+            output.set(basePath + "." + FullscreenGUISerializer.UPPER_GUI_SIZE_PATH, null);
+            output.set(basePath + "." + FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, null);
         }
     }
 
