@@ -32,6 +32,7 @@ public final class GUISerializer extends TypedSerializer<GUI> {
         registerSerializer(FullscreenGUI.class, new FullscreenGUISerializer());
         registerSerializer(PageableGUI.class, new PageableGUISerializer());
         registerSerializer(DataGUI.class, new DataGUISerializer());
+        registerSerializer(SearchGUI.class, new SearchGUISerializer());
     }
 
     @Override

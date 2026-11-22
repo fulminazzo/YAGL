@@ -30,7 +30,7 @@ class GUISerializersLoaderTest {
                 RequirementChecker.class, PermissionRequirement.class,
                 GUIContent.class, ItemGUIContent.class,
                 GUI.class, DefaultGUI.class, TypeGUI.class, ResizableGUI.class, FullscreenGUI.class,
-                PageableGUI.class, DataGUI.class
+                PageableGUI.class, DataGUI.class, SearchGUI.class
         };
     }
 

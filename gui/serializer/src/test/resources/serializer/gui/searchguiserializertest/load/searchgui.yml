@@ -1,0 +1,46 @@
+type: SEARCH
+lowerGuiSize: 18
+previousPage:
+  slot: 11
+  content:
+    type: ITEM
+    material: arrow
+nextPage:
+  slot: 15
+  content:
+    type: ITEM
+    material: paper
+title: 'Awesome GUI'
+contents:
+  1:
+    - type: ITEM
+      material: stone
+  5:
+    - type: ITEM
+      material: diamond
+    - type: ITEM
+      material: emerald
+  10:
+    - type: ITEM
+      material: gold
+    - type: ITEM
+      material: iron
+    - type: ITEM
+      material: redstone
+movableSlots:
+  - 5
+  - 9
+variables:
+  hello: 'world'
+openGuiAction:
+  type: GUI_COMMAND
+  content: 'say I opened the GUI!'
+closeGuiAction:
+  type: GUI_COMMAND
+  content: 'say I closed the GUI!'
+changeGuiAction:
+  type: BI_GUI_COMMAND
+  content: 'say I changed the GUI!'
+clickOutsideAction:
+  type: GUI_COMMAND
+  content: 'say I clicked outside!'
