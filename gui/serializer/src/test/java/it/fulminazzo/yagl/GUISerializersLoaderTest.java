@@ -29,7 +29,8 @@ class GUISerializersLoaderTest {
                 GUIItemAction.class, GUIItemMessage.class, GUIItemCommand.class, GUIItemConsoleCommand.class,
                 RequirementChecker.class, PermissionRequirement.class,
                 GUIContent.class, ItemGUIContent.class,
-                GUI.class, DefaultGUI.class, TypeGUI.class, ResizableGUI.class, FullscreenGUI.class
+                GUI.class, DefaultGUI.class, TypeGUI.class, ResizableGUI.class, FullscreenGUI.class,
+                PageableGUI.class, DataGUI.class
         };
     }
 

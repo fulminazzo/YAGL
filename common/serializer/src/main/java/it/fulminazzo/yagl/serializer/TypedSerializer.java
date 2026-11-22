@@ -67,7 +67,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
      * @return this serializer
      */
     public <C extends T> @NotNull TypedSerializer<T> registerSerializer(
-            final @NotNull Class<C> type,
+            final @NotNull Class<? extends C> type,
             final @NotNull ObjectSerializer<C> serializer
     ) {
         return registerSerializer(type.getSimpleName().replace(this.type.getSimpleName(), ""), type, serializer);
@@ -84,7 +84,7 @@ public class TypedSerializer<T> extends ObjectSerializer<T> {
      */
     public <C extends T> @NotNull TypedSerializer<T> registerSerializer(
             final @NotNull String typeName,
-            final @NotNull Class<C> type,
+            final @NotNull Class<? extends C> type,
             final @NotNull ObjectSerializer<C> serializer
     ) {
         String actualType = typeName.toUpperCase(Locale.ROOT);

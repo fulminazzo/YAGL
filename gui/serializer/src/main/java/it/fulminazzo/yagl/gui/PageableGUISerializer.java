@@ -17,7 +17,7 @@ import java.util.Locale;
  * @see PageableGUI
  * @see ObjectSerializer
  */
-public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
+class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
     static final @NotNull String GUI_TYPE_PATH = "guiType";
     static final @NotNull String GUI_SIZE_PATH = "guiSize";
     static final @NotNull String PAGES_PATH = "pages";
@@ -43,8 +43,6 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
 
     @Override
     protected void loadData(final @NotNull PageableGUI value, final @NotNull DataNode node) throws SerializationException {
-        node.get(PAGES_PATH, Integer.class).ifPresent(value::setPages);
-
         DataNode previousPageNode = node.getSubNode(PREVIOUS_PAGE_PATH).orElse(null);
         if (previousPageNode != null) {
             Integer slot = previousPageNode.getOrNull(SLOT_PATH, Integer.class);
@@ -59,41 +57,44 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
                 nextPageNode.get(CONTENT_PATH, GUIContent.class).ifPresent(c -> value.setNextPage(slot, c));
         }
 
-        DataNode guiPagesNode = node.getSubNode(GUI_PAGES_PATH).orElse(null);
-        if (guiPagesNode != null)
-            for (Object key : guiPagesNode.keys())
-                try {
-                    String rawPage = key.toString();
-                    int page = Integer.parseInt(rawPage);
+        if (!(value instanceof DataGUI<?>)) {
+            node.get(PAGES_PATH, Integer.class).ifPresent(value::setPages);
+            DataNode guiPagesNode = node.getSubNode(GUI_PAGES_PATH).orElse(null);
+            if (guiPagesNode != null)
+                for (Object key : guiPagesNode.keys())
+                    try {
+                        String rawPage = key.toString();
+                        int page = Integer.parseInt(rawPage);
 
-                    // Declared from the main GUI
-                    GUI templateGUI = value.templateGUI;
-                    guiPagesNode.set(
-                            rawPage + "." + TypedSerializer.TYPE_PATH,
-                            templateGUI.getClass().getSimpleName()
-                                    .replace(GUI.class.getSimpleName(), "")
-                                    .toUpperCase(Locale.ROOT)
-                    );
-
-                    if (templateGUI instanceof FullscreenGUI) {
-                        FullscreenGUI fullscreenGUI = (FullscreenGUI) templateGUI;
-                        GUISerializerUtils.dumpTypeOrNormalGUI(
-                                fullscreenGUI.getUpperGUI(),
-                                guiPagesNode,
-                                rawPage + "." + FullscreenGUISerializer.UPPER_GUI_TYPE_PATH,
-                                rawPage + "." + FullscreenGUISerializer.UPPER_GUI_SIZE_PATH
-                        );
+                        // Declared from the main GUI
+                        GUI templateGUI = value.templateGUI;
                         guiPagesNode.set(
-                                rawPage + "." + FullscreenGUISerializer.LOWER_GUI_SIZE_PATH,
-                                fullscreenGUI.getLowerGUI().size()
+                                rawPage + "." + TypedSerializer.TYPE_PATH,
+                                templateGUI.getClass().getSimpleName()
+                                        .replace(GUI.class.getSimpleName(), "")
+                                        .toUpperCase(Locale.ROOT)
                         );
-                    } else GUISerializerUtils.dumpTypeOrNormalGUI(templateGUI, guiPagesNode, rawPage);
 
-                    guiPagesNode.get(rawPage, GUI.class)
-                            .ifPresent(v -> value.getPage(page).copyFrom(v, true));
-                } catch (NumberFormatException e) {
-                    throw new SerializationException("Invalid page '%s'", key);
-                }
+                        if (templateGUI instanceof FullscreenGUI) {
+                            FullscreenGUI fullscreenGUI = (FullscreenGUI) templateGUI;
+                            GUISerializerUtils.dumpTypeOrNormalGUI(
+                                    fullscreenGUI.getUpperGUI(),
+                                    guiPagesNode,
+                                    rawPage + "." + FullscreenGUISerializer.UPPER_GUI_TYPE_PATH,
+                                    rawPage + "." + FullscreenGUISerializer.UPPER_GUI_SIZE_PATH
+                            );
+                            guiPagesNode.set(
+                                    rawPage + "." + FullscreenGUISerializer.LOWER_GUI_SIZE_PATH,
+                                    fullscreenGUI.getLowerGUI().size()
+                            );
+                        } else GUISerializerUtils.dumpTypeOrNormalGUI(templateGUI, guiPagesNode, rawPage);
+
+                        guiPagesNode.get(rawPage, GUI.class)
+                                .ifPresent(v -> value.getPage(page).copyFrom(v, true));
+                    } catch (NumberFormatException e) {
+                        throw new SerializationException("Invalid page '%s'", key);
+                    }
+        }
     }
 
     @Override
@@ -108,7 +109,6 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
             );
             output.set(FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, fullscreenGUI.getLowerGUI().size());
         } else GUISerializerUtils.dumpTypeOrNormalGUI(value.templateGUI, output, GUI_TYPE_PATH, GUI_SIZE_PATH);
-        output.set(PAGES_PATH, value.pages(), 0);
 
         Pair<Integer, GUIContent> previousPage = value.previousPage;
         if (previousPage.isPresent()) {
@@ -122,16 +122,19 @@ public class PageableGUISerializer extends ObjectSerializer<PageableGUI> {
             output.set(NEXT_PAGE_PATH + "." + CONTENT_PATH, nextPage.getSecond());
         }
 
-        for (int i = 0; i < value.pages(); i++) {
-            String basePath = GUI_PAGES_PATH + "." + i;
-            output.set(basePath, value.getPage(i));
-            // Declared from the main GUI
-            output.set(basePath + "." + TypedSerializer.TYPE_PATH, null);
-            output.set(basePath + "." + DefaultGUISerializer.SIZE_PATH, null);
-            output.set(basePath + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, null);
-            output.set(basePath + "." + FullscreenGUISerializer.UPPER_GUI_TYPE_PATH, null);
-            output.set(basePath + "." + FullscreenGUISerializer.UPPER_GUI_SIZE_PATH, null);
-            output.set(basePath + "." + FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, null);
+        if (!(value instanceof DataGUI<?>)) {
+            output.set(PAGES_PATH, value.pages(), 0);
+            for (int i = 0; i < value.pages(); i++) {
+                String basePath = GUI_PAGES_PATH + "." + i;
+                output.set(basePath, value.getPage(i));
+                // Declared from the main GUI
+                output.set(basePath + "." + TypedSerializer.TYPE_PATH, null);
+                output.set(basePath + "." + DefaultGUISerializer.SIZE_PATH, null);
+                output.set(basePath + "." + TypeGUISerializer.INVENTORY_TYPE_PATH, null);
+                output.set(basePath + "." + FullscreenGUISerializer.UPPER_GUI_TYPE_PATH, null);
+                output.set(basePath + "." + FullscreenGUISerializer.UPPER_GUI_SIZE_PATH, null);
+                output.set(basePath + "." + FullscreenGUISerializer.LOWER_GUI_SIZE_PATH, null);
+            }
         }
     }
 
