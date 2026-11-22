@@ -7,7 +7,6 @@ import it.fulminazzo.yagl.content.GUIContent;
 import it.fulminazzo.yagl.content.ItemGUIContent;
 import it.fulminazzo.yagl.item.Item;
 import it.fulminazzo.yagl.metadatable.Metadatable;
-import it.fulminazzo.yagl.reflect.Reflect;
 import it.fulminazzo.yagl.structure.Pair;
 import it.fulminazzo.yagl.util.ValidationUtils;
 import it.fulminazzo.yagl.viewer.Viewer;
@@ -95,10 +94,11 @@ public class PageableGUI implements Iterable<GUI>, Metadatable, GUI {
         final GUI newTemplateGUI;
         if (this.templateGUI instanceof FullscreenGUI) {
             FullscreenGUI fullscreenGUI = (FullscreenGUI) this.templateGUI;
-            newTemplateGUI = Reflect.on(GUI.newFullscreenGUI(9)) // Temporary size, will be overwritten
-                    .set("upperGUI", fullscreenGUI.getUpperGUI().copy())
-                    .set("lowerGUI", fullscreenGUI.getLowerGUI().copy())
-                    .get();
+            int lowerGUISize = fullscreenGUI.getLowerGUI().size();
+            GUI upperGUI = fullscreenGUI.getUpperGUI();
+            if (upperGUI instanceof TypeGUI)
+                return GUI.newFullscreenGUI(((TypeGUI) upperGUI).getInventoryType(), lowerGUISize);
+            else return GUI.newFullscreenGUI(upperGUI.size(), lowerGUISize);
         } else {
             if (this.templateGUI instanceof TypeGUI)
                 newTemplateGUI = GUI.newGUI(((TypeGUI) this.templateGUI).getInventoryType());
