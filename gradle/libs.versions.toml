@@ -25,6 +25,7 @@ jbukkit = "3.8"
 
 io_netty = "4.1.112.Final"
 
+gson = "2.15.0"
 jackson = "2.21.2"
 snakeyaml = "2.7"
 
@@ -46,5 +47,6 @@ mockito = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
 
 io_netty = { module = "io.netty:netty-all", version.ref = "io_netty" }
 
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }

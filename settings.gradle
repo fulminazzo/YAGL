@@ -18,6 +18,8 @@ project(':common:common-base').projectDir = file('common/base')
 //project(':common:common-bukkit').projectDir = file('common/bukkit')
 include 'common:common-serializer'
 project(':common:common-serializer').projectDir = file('common/serializer')
+include 'common:common-serializer-gson'
+project(':common:common-serializer-gson').projectDir = file('common/serializer-gson')
 include 'common:common-serializer-jackson'
 project(':common:common-serializer-jackson').projectDir = file('common/serializer-jackson')
 include 'common:common-serializer-snakeyaml'
