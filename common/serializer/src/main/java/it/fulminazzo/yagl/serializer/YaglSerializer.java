@@ -164,10 +164,11 @@ public final class YaglSerializer {
     ) throws SerializationException {
         Object raw = getSerializer(type).deserialize(new Node(rawData, path, key));
         try {
-            // Special case for double and float
-            if (raw instanceof Double && type == Float.class) return type.cast(((Double) raw).floatValue());
-            else return type.cast(raw);
+            return type.cast(raw);
         } catch (ClassCastException e) {
+            // Try numeric conversion for numeric primitive wrapper types
+            Object converted = tryConvertNumeric(raw, type);
+            if (converted != null) return type.cast(converted);
             throw new SerializationException(
                     "Invalid type for key '%s' in path '%s': expected %s but got %s",
                     key, path, type.getName(), raw == null ? "null" : raw.getClass().getName()
@@ -243,6 +244,43 @@ public final class YaglSerializer {
      */
     public @NotNull Set<Class<?>> getRegisteredTypes() {
         return serializers.keySet();
+    }
+
+    /**
+     * Attempts to convert a numeric value to the target numeric type without losing information.
+     *
+     * @param raw  the raw numeric value
+     * @param type the target numeric type
+     * @return the converted value, or {@code null} if conversion is not possible or would lose information
+     */
+    private @Nullable Object tryConvertNumeric(final @Nullable Object raw, final @NotNull Class<?> type) {
+        if (!(raw instanceof Number)) return null;
+        Number number = (Number) raw;
+
+        if (type == Double.class) return number.doubleValue();
+        else if (type == Float.class) {
+            double d = number.doubleValue();
+            if (Double.isInfinite(d) || Double.isNaN(d)) return null;
+            float f = (float) d;
+            return Double.isInfinite(f) ? null : f;
+        } else if (type == Long.class) {
+            double d = number.doubleValue();
+            if (d == Math.floor(d) && d >= Long.MIN_VALUE && d <= Long.MAX_VALUE) return (long) d;
+            else return null;
+        } else if (type == Integer.class) {
+            double d = number.doubleValue();
+            if (d == Math.floor(d) && d >= Integer.MIN_VALUE && d <= Integer.MAX_VALUE) return (int) d;
+            else return null;
+        } else if (type == Short.class) {
+            double d = number.doubleValue();
+            if (d == Math.floor(d) && d >= Short.MIN_VALUE && d <= Short.MAX_VALUE) return (short) d;
+            else return null;
+        } else if (type == Byte.class) {
+            double d = number.doubleValue();
+            if (d == Math.floor(d) && d >= Byte.MIN_VALUE && d <= Byte.MAX_VALUE) return (byte) d;
+            else return null;
+        }
+        return null;
     }
 
     private @Nullable Serializer<?> findSerializer(final @NotNull Class<?> type) {

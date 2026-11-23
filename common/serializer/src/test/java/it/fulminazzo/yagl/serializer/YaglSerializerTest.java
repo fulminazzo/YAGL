@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class YaglSerializerTest {
@@ -124,6 +125,99 @@ class YaglSerializerTest {
         Serializer<?> serializer = YaglSerializer.getInstance().getSerializer(type);
         assertNotNull(serializer);
         assertEquals(expectedSerializerType, serializer.getClass());
+    }
+
+    private static @NotNull Object[][] getNumericConversionTestData() {
+        return new Object[][]{
+                // Double with no decimal part -> Long
+                {42.0, Long.class, 42L},
+                // Double with no decimal part -> Integer
+                {42.0, Integer.class, 42},
+                // Double with no decimal part -> Short
+                {42.0, Short.class, (short) 42},
+                // Double with no decimal part -> Byte
+                {42.0, Byte.class, (byte) 42},
+                // Double -> Float (within precision)
+                {3.0, Float.class, 3.0f},
+                // Integer -> Long
+                {42, Long.class, 42L},
+                // Integer -> Double
+                {42, Double.class, 42.0},
+                // Integer -> Float
+                {42, Float.class, 42.0f},
+                // Long -> Double
+                {42L, Double.class, 42.0},
+                // Long -> Integer (within range)
+                {42L, Integer.class, 42},
+                // Float -> Double
+                {3.0f, Double.class, 3.0},
+                // Short -> Integer
+                {(short) 42, Integer.class, 42},
+                // Short -> Long
+                {(short) 42, Long.class, 42L},
+                // Byte -> Integer
+                {(byte) 42, Integer.class, 42},
+                // Byte -> Long
+                {(byte) 42, Long.class, 42L},
+                // Byte -> Double
+                {(byte) 42, Double.class, 42.0},
+                // Negative Double -> Long
+                {-10.0, Long.class, -10L},
+                // Zero Double -> Integer
+                {0.0, Integer.class, 0},
+                // Double -> Float (exact float value)
+                {1.5, Float.class, 1.5f},
+                // Double -> Float (imprecise but within range — allowed)
+                {1.414, Float.class, 1.414f},
+                // Double -> Float (high precision — allowed, just truncated)
+                {0.123456789012345, Float.class, 0.12345679f},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNumericConversionTestData")
+    void testThatDeserializeConvertsNumericTypes(
+            final @NotNull Object rawData,
+            final @NotNull Class<?> targetType,
+            final @NotNull Object expected
+    ) throws SerializationException {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        Object result = serializer.deserialize(rawData, targetType);
+        assertEquals(expected, result);
+    }
+
+    private static @NotNull Object[][] getNumericConversionFailureData() {
+        return new Object[][]{
+                // Double with decimal part -> Long (would lose information)
+                {42.5, Long.class},
+                // Double with decimal part -> Integer
+                {42.5, Integer.class},
+                // Double too large for Integer
+                {Integer.MAX_VALUE + 1.0, Integer.class},
+                // Double too large for Short
+                {Short.MAX_VALUE + 1.0, Short.class},
+                // Double too large for Byte
+                {Byte.MAX_VALUE + 1.0, Byte.class},
+                // Negative double too small for Integer
+                {Integer.MIN_VALUE - 1.0, Integer.class},
+                // Double too large for Float (overflows to Infinity)
+                {Double.MAX_VALUE, Float.class},
+                // NaN -> Float (not allowed)
+                {Double.NaN, Float.class},
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNumericConversionFailureData")
+    void testThatDeserializeThrowsForLossyNumericConversion(
+            final @NotNull Object rawData,
+            final @NotNull Class<?> targetType
+    ) {
+        YaglSerializer serializer = YaglSerializer.getInstance();
+        assertThrows(
+                SerializationException.class,
+                () -> serializer.deserialize(rawData, targetType)
+        );
     }
 
 }
