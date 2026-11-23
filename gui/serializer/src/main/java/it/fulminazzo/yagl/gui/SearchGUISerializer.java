@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * @see SearchGUI
  * @see DataGUISerializer
  */
-class SearchGUISerializer extends DataGUISerializer {
+final class SearchGUISerializer extends DataGUISerializer {
 
     @Override
     protected @Nullable SearchGUI<?> initialize(final @NotNull DataNode node) throws SerializationException {
