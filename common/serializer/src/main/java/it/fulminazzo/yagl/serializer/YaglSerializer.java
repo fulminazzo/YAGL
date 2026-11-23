@@ -75,17 +75,17 @@ public final class YaglSerializer {
      * Converts the given raw data into a {@link Map} with its keys and values deserialized to the given types
      * if a {@link Serializer} is registered for them.
      *
-     * @param rawData      the raw data
-     * @param keyType      the type of the map keys
-     * @param valueType    the type of the map values
-     * @param <K>          the type of the map keys
-     * @param <V>          the type of the map values
+     * @param rawData   the raw data
+     * @param keyType   the type of the map keys
+     * @param valueType the type of the map values
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
      * @return the deserialized map
      * @throws SerializationException in case of any error
      */
     public <K, V> @Nullable Map<K, V> deserializeMap(final @Nullable Object rawData,
-                                                      final @NotNull Class<K> keyType,
-                                                      final @NotNull Class<V> valueType) throws SerializationException {
+                                                     final @NotNull Class<K> keyType,
+                                                     final @NotNull Class<V> valueType) throws SerializationException {
         return deserializeMap(rawData, keyType, valueType, "", "");
     }
 
@@ -93,25 +93,25 @@ public final class YaglSerializer {
      * Converts the given raw data into a {@link Map} with its keys and values deserialized to the given types
      * if a {@link Serializer} is registered for them.
      *
-     * @param rawData      the raw data
-     * @param keyType      the type of the map keys
-     * @param valueType    the type of the map values
-     * @param path         the current path to the raw data.
-     *                     This information is only useful if the raw data has been extracted from a configuration file.
-     *                     Otherwise, it can be set as an empty string.
-     * @param key          the current key of the raw data.
-     *                     This information is only useful if the raw data has been extracted from a configuration file.
-     *                     Otherwise, it can be set as an empty string.
-     * @param <K>          the type of the map keys
-     * @param <V>          the type of the map values
+     * @param rawData   the raw data
+     * @param keyType   the type of the map keys
+     * @param valueType the type of the map values
+     * @param path      the current path to the raw data.
+     *                  This information is only useful if the raw data has been extracted from a configuration file.
+     *                  Otherwise, it can be set as an empty string.
+     * @param key       the current key of the raw data.
+     *                  This information is only useful if the raw data has been extracted from a configuration file.
+     *                  Otherwise, it can be set as an empty string.
+     * @param <K>       the type of the map keys
+     * @param <V>       the type of the map values
      * @return the deserialized map
      * @throws SerializationException in case of any error
      */
     public <K, V> @Nullable Map<K, V> deserializeMap(final @Nullable Object rawData,
-                                                      final @NotNull Class<K> keyType,
-                                                      final @NotNull Class<V> valueType,
-                                                      final @NotNull String path,
-                                                      final @NotNull String key) throws SerializationException {
+                                                     final @NotNull Class<K> keyType,
+                                                     final @NotNull Class<V> valueType,
+                                                     final @NotNull String path,
+                                                     final @NotNull String key) throws SerializationException {
         if (rawData == null) return null;
         if (rawData instanceof Map) {
             Map<?, ?> rawMap = (Map<?, ?>) rawData;
@@ -193,6 +193,16 @@ public final class YaglSerializer {
     }
 
     /**
+     * Checks whether a serializer has been registered for the given type.
+     *
+     * @param type the type
+     * @return {@code true} if it has
+     */
+    public boolean hasSerializer(final @NotNull Class<?> type) {
+        return findSerializer(type) != null;
+    }
+
+    /**
      * Registers a serializer for the given type.
      *
      * @param type       the type
@@ -220,6 +230,22 @@ public final class YaglSerializer {
         if (typePackage != null && typePackage.getName().startsWith("java."))
             return baseTypesSerializer;
 
+        Serializer<?> current = findSerializer(type);
+        if (current == null)
+            throw new SerializationException("No serializer found for type: %s ", type.getCanonicalName());
+        return current;
+    }
+
+    /**
+     * Gets the types for which serializers are currently registered.
+     *
+     * @return the registered serializer types
+     */
+    public @NotNull Set<Class<?>> getRegisteredTypes() {
+        return serializers.keySet();
+    }
+
+    private @Nullable Serializer<?> findSerializer(final @NotNull Class<?> type) {
         Serializer<?> current = serializers.get(type);
         if (current != null) return current;
         int score = Integer.MAX_VALUE;
@@ -230,8 +256,6 @@ public final class YaglSerializer {
                 score = serializerScore;
             }
         }
-        if (current == null)
-            throw new SerializationException("No serializer found for type: %s ", type.getCanonicalName());
         return current;
     }
 
