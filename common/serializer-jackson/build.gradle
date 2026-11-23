@@ -1,0 +1,8 @@
+dependencies {
+    // Let developers decide their version
+    compileOnly libs.jackson.yaml
+
+    api project(":common:common-serializer")
+
+    testImplementation libs.jackson.yaml
+}
