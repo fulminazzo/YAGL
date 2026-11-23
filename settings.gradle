@@ -20,6 +20,8 @@ include 'common:common-serializer'
 project(':common:common-serializer').projectDir = file('common/serializer')
 include 'common:common-serializer-jackson'
 project(':common:common-serializer-jackson').projectDir = file('common/serializer-jackson')
+include 'common:common-serializer-snakeyaml'
+project(':common:common-serializer-snakeyaml').projectDir = file('common/serializer-snakeyaml')
 
 include 'wrapper'
 include 'wrapper:wrapper-base'

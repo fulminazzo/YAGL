@@ -1,0 +1,8 @@
+dependencies {
+    // Let developers decide their version
+    compileOnly libs.snakeyaml
+
+    api project(":common:common-serializer")
+
+    testImplementation libs.snakeyaml
+}
